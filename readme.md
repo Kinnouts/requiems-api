@@ -2,23 +2,23 @@
 
 Requiem API is a **managed API service** that provides a single API key to access a growing collection of production-ready APIs.
 
-We build, operate, and scale the APIs. Customers only consume them.
+We build, operate, and scale the APIs.
 
 ---
 
 ## What Requiem API Is
 
-* A unified API platform
-* One API key for many APIs
-* Managed infrastructure, scaling, and reliability
-* Usage-based billing with free tiers
-* Built for developers and product teams
+- A unified API platform
+- One API key for many APIs
+- Managed infrastructure, scaling, and reliability
+- Usage-based billing with free tiers
+- Built for developers and product teams
 
 ## What Requiem API Is Not
 
-* Not an API framework
-* Not a marketplace for third-party APIs
-* Not a no-code or low-code builder
+- Not an API framework
+- Not a marketplace for third-party APIs
+- Not a no-code or low-code builder
 
 ---
 
@@ -60,10 +60,10 @@ Runs at the edge using Cloudflare Workers.
 
 Responsibilities:
 
-* Validate API keys
-* Enforce rate limits and plans
-* Block abuse early
-* Forward trusted requests to the backend
+- Validate API keys
+- Enforce rate limits and plans
+- Block abuse early
+- Forward trusted requests to the backend
 
 The edge never runs business logic or long-running tasks.
 
@@ -75,11 +75,11 @@ A single monolithic Go service.
 
 Responsibilities:
 
-* Expose all public APIs
-* Track usage per customer
-* Integrate payments and plans
-* Generate signed upload URLs when required
-* Orchestrate asynchronous jobs
+- Expose all public APIs
+- Track usage per customer
+- Integrate payments and plans
+- Generate signed upload URLs when required
+- Orchestrate asynchronous jobs
 
 All backend traffic comes through the edge gateway.
 
@@ -91,10 +91,10 @@ Internal asynchronous workers.
 
 Responsibilities:
 
-* Execute heavy or slow tasks
-* Process files and data
-* Fetch external sources
-* Update job state
+- Execute heavy or slow tasks
+- Process files and data
+- Fetch external sources
+- Update job state
 
 Workers are private and never exposed publicly.
 
@@ -104,10 +104,10 @@ Workers are private and never exposed publicly.
 
 Responsibilities:
 
-* API documentation
-* API key management
-* Usage and billing visibility
-* Examples and SDK references
+- API documentation
+- API key management
+- Usage and billing visibility
+- Examples and SDK references
 
 Initially focused on documentation.
 
@@ -128,13 +128,12 @@ Files are uploaded directly to object storage using signed URLs. The API never r
 
 ## Technology Stack
 
-* Edge: Cloudflare Workers (TypeScript)
-* Backend API: Go
-* Workers: Go
-* Queue: Redis or managed queue service
-* Storage: S3-compatible object storage
-* Payments: Lemon Squeezy
-* Infrastructure: Docker, Caddy, VPS
+- Edge: Cloudflare Workers (TypeScript)
+- Backend API: Go
+- Workers: Go
+- Queue: Redis
+- Payments: Lemon Squeezy
+- Infrastructure: Docker, Caddy, VPS
 
 ---
 
@@ -142,27 +141,40 @@ Files are uploaded directly to object storage using signed URLs. The API never r
 
 ```
 apps/
-  edge-auth/        Edge authentication gateway
+  edge-auth/        Edge authentication gateway (Cloudflare Worker)
   api/              Backend API (Go)
-  worker/           Async workers (Go)
-  web/              Docs and dashboard
+  worker/           Async workers (Go, planned)
+  web/              Docs and dashboard (planned)
 
 infra/
   docker/           Dockerfiles and compose
-  caddy/            HTTPS and routing
-  scripts/          Deployment helpers
+  caddy/            HTTPS and routing (planned)
+  scripts/          Deployment helpers (planned)
 ```
+
+---
+
+## MVP Implementation Notes
+
+- **Database**: PostgreSQL (primary OLTP store) + Redis (queues/cache), started via Docker for local and single-VPS production.
+- **Auth**: Cloudflare Worker (`apps/edge-auth`) enforcing an `x-api-key` header and forwarding trusted traffic to the Go backend.
+- **First endpoint**: `GET /v1/advice` — simple entertainment endpoint returning random advice from an in-memory list.
+- **Run locally**:
+  - With Docker: `cd infra/docker && docker compose up --build`
+  - Direct Go: `go run ./apps/api` (defaults to `:8080`)
+
+See `apis.md` for the full list of planned APIs and their current status.
 
 ---
 
 ## Deployment Philosophy
 
-* Start on a single VPS
-* Everything runs in Docker
-* HTTPS via Caddy
-* Edge deployed independently
-* Scale workers horizontally
-* Migrate to managed services when needed
+- Start on a single VPS
+- Everything runs in Docker
+- HTTPS via Caddy
+- Edge deployed independently
+- Scale workers horizontally
+- Migrate to managed services when needed
 
 ---
 
@@ -173,14 +185,6 @@ This repository is source-available.
 The code is public to encourage transparency, feedback, and contributions.
 
 The hosted service, APIs, and brand are operated exclusively by Requiem API.
-
----
-
-## Project Status
-
-Early stage. APIs will be added incrementally. Breaking changes may occur.
-
----
 
 ## Philosophy
 
