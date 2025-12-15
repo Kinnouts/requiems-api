@@ -25,7 +25,7 @@ docker compose up --build
 This starts:
 
 - `api` – Go backend on internal port `8080` (exposed as `localhost:6969`)
-- `db` – PostgreSQL (`requiem` / `requiem` / `requiem`)
+- `db` – PostgreSQL (`requiem` / `requiem` / `requiem`, exposed as `localhost:5432`)
 - `redis` – Redis for future queues/cache
 
 Once the stack is up:
@@ -54,7 +54,37 @@ The API listens on `:8080` by default:
 - `http://localhost:8080/healthz`
 - `http://localhost:8080/v1/advice`
 
-### 1.4 Cloudflare Worker (edge auth) – dev notes
+### 1.4 Hybrid dev workflow (Docker infra + local Go with hot reload)
+
+For the best developer experience, run **Postgres and Redis in Docker**, and the Go API locally with a watcher:
+
+- Start infra only:
+
+```bash
+cd infra/docker
+docker compose up db redis
+```
+
+- In another terminal, from the repo root:
+
+```bash
+export DATABASE_URL="postgres://requiem:requiem@localhost:5432/requiem?sslmode=disable"
+go run ./apps/api
+```
+
+Or, with a hot-reload tool like `air`:
+
+```bash
+export DATABASE_URL="postgres://requiem:requiem@localhost:5432/requiem?sslmode=disable"
+air
+```
+
+The API is still available on:
+
+- `http://localhost:6969/healthz`
+- `http://localhost:6969/v1/advice`
+
+### 1.5 Cloudflare Worker (edge auth) – dev notes
 
 The Worker lives in `apps/edge-auth/index.ts`. A typical dev setup will:
 

@@ -33,7 +33,7 @@ func New(ctx context.Context, cfg config.Config) (*App, error) {
 
 	r := chi.NewRouter()
 
-		r.Get("/healthz", Healthz)
+	r.Get("/healthz", Healthz)
 
 	adviceSvc := advice.NewService(pool)
 	advice.RegisterRoutes(r, adviceSvc)
@@ -54,16 +54,15 @@ func (a *App) Handler() http.Handler {
 	return a.h
 }
 
-// migrateWithRetry wraps db.Migrate with a small retry loop so that
-// we don't fail just because Postgres is still starting up.
 func migrateWithRetry(dsn, dir string) error {
 	var lastErr error
 
-	for i := 0; i < 10; i++ {
+	for range 10 {
 		if err := db.Migrate(dsn, dir); err != nil {
 			lastErr = err
 
 			msg := err.Error()
+
 			if strings.Contains(msg, "the database system is starting up") ||
 				strings.Contains(msg, "connection refused") {
 				time.Sleep(1 * time.Second)
