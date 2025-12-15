@@ -129,13 +129,13 @@ CREATE TABLE words (id SERIAL, word TEXT, definition TEXT, ...);
 
 ## Why This Split?
 
-| Store          | Location                | Latency | Use Case                |
-| -------------- | ----------------------- | ------- | ----------------------- |
-| **KV**         | Edge (global)           | <10ms   | Auth, rate limits       |
-| **D1**         | Edge (global)           | ~50ms   | Usage tracking, billing |
-| **PostgreSQL** | Backend (single region) | ~100ms* | Business data           |
+| Store          | Location                | Latency  | Use Case                |
+| -------------- | ----------------------- | -------- | ----------------------- |
+| **KV**         | Edge (global)           | <10ms    | Auth, rate limits       |
+| **D1**         | Edge (global)           | ~50ms    | Usage tracking, billing |
+| **PostgreSQL** | Backend (single region) | ~100ms\* | Business data           |
 
-*Backend latency depends on user's distance to server region.
+\*Backend latency depends on user's distance to server region.
 
 **The Gateway (Worker) handles:**
 
