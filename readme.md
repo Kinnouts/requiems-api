@@ -1,6 +1,7 @@
 # ⚰️ Requiem API
 
-Requiem API is a **managed API service** that provides a single API key to access a growing collection of production-ready APIs.
+Requiem API is a **managed API service** that provides a single API key to
+access a growing collection of production-ready APIs.
 
 We build, operate, and scale the APIs.
 
@@ -122,7 +123,8 @@ Initially focused on documentation.
 5. Worker executes the job
 6. Client polls status or receives the result
 
-Files are uploaded directly to object storage using signed URLs. The API never receives raw files.
+Files are uploaded directly to object storage using signed URLs. The API never
+receives raw files.
 
 ---
 
@@ -156,9 +158,12 @@ infra/
 
 ## MVP Implementation Notes
 
-- **Database**: PostgreSQL (primary OLTP store) + Redis (queues/cache), started via Docker for local and single-VPS production.
-- **Auth**: Cloudflare Worker (`apps/edge-auth`) enforcing an `x-api-key` header and forwarding trusted traffic to the Go backend.
-- **First endpoint**: `GET /v1/advice` — simple entertainment endpoint returning random advice from the `advice` table in Postgres.
+- **Database**: PostgreSQL (primary OLTP store) + Redis (queues/cache), started
+  via Docker for local and single-VPS production.
+- **Auth**: Cloudflare Worker (`apps/edge-auth`) enforcing an `x-api-key` header
+  and forwarding trusted traffic to the Go backend.
+- **First endpoint**: `GET /v1/advice` — simple entertainment endpoint returning
+  random advice from the `advice` table in Postgres.
 - **Run locally**:
   - With Docker: `cd infra/docker && docker compose up --build`
   - Direct Go: `go run ./apps/api` (defaults to `:8080`, assumes local Postgres)
@@ -177,9 +182,11 @@ See `apis.md` for the full list of planned APIs and their current status.
     - Request/renew TLS certificates.
     - Reverse proxy `api.yourdomain.com` → `api:8080` (the Go API container).
 - **DNS**:
-  - Point `api.yourdomain.com` to your VPS IP with an `A` record (you can enable a proxy through your CDN if desired).
+  - Point `api.yourdomain.com` to your VPS IP with an `A` record (you can enable
+    a proxy through your CDN if desired).
 - **Edge Worker**:
-  - Configure the Worker to call `https://api.yourdomain.com` as `BACKEND_ORIGIN` and enforce `x-api-key`.
+  - Configure the Worker to call `https://api.yourdomain.com` as
+    `BACKEND_ORIGIN` and enforce `x-api-key`.
 
 ---
 
@@ -204,8 +211,6 @@ The hosted service, APIs, and brand are operated exclusively by Requiem API.
 
 ## Philosophy
 
-APIs are leverage.
-Infrastructure is power.
-Distribution decides the winner.
+APIs are leverage. Infrastructure is power. Distribution decides the winner.
 
 Requiem API focuses on owning the boring, hard parts so customers don’t have to.

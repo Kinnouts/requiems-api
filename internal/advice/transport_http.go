@@ -1,28 +1,24 @@
 package advice
 
 import (
-	"encoding/json"
 	"net/http"
+
+	"github.com/go-chi/chi/v5"
+
+	"requiems-api/internal/httpx"
 )
 
-// RegisterHTTP mounts advice handlers on the given mux.
-func RegisterHTTP(mux *http.ServeMux, svc *Service) {
-	mux.Handle("/v1/advice", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodGet {
-			w.WriteHeader(http.StatusMethodNotAllowed)
-			return
-		}
-
+// RegisterRoutes mounts advice handlers on the given router.
+func RegisterRoutes(r chi.Router, svc *Service) {
+	r.Get("/v1/advice", func(w http.ResponseWriter, r *http.Request) {
 		a, err := svc.Random(r.Context())
 		if err != nil {
-			w.WriteHeader(http.StatusServiceUnavailable)
-			_ = json.NewEncoder(w).Encode(map[string]string{"error": "no advice available"})
+			httpx.Error(w, http.StatusServiceUnavailable, "no advice available")
 			return
 		}
 
-		w.Header().Set("Content-Type", "application/json")
-		_ = json.NewEncoder(w).Encode(a)
-	}))
+		httpx.JSON(w, http.StatusOK, a)
+	})
 }
 
 

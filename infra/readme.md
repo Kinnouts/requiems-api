@@ -1,6 +1,7 @@
 ## Infrastructure Guide
 
-This document explains how to run Requiem API locally for development and how to deploy it to a single VPS.
+This document explains how to run Requiem API locally for development and how to
+deploy it to a single VPS.
 
 ---
 
@@ -32,13 +33,15 @@ Once the stack is up:
 - Health check: `http://localhost:6969/healthz`
 - Advice endpoint: `http://localhost:6969/v1/advice`
 
-> Note: Caddy is mainly for the VPS setup. For local development you can hit the API directly on `localhost:6969`.
+> Note: Caddy is mainly for the VPS setup. For local development you can hit the
+> API directly on `localhost:6969`.
 
 ### 1.3 Run the API directly (without Docker)
 
 If you prefer to run the Go server directly:
 
-1. Make sure PostgreSQL is running locally (matching the default DSN or set `DATABASE_URL`).
+1. Make sure PostgreSQL is running locally (matching the default DSN or set
+   `DATABASE_URL`).
 2. From the project root:
 
 ```bash
@@ -60,13 +63,15 @@ The Worker lives in `apps/edge-auth/index.ts`. A typical dev setup will:
   - `BACKEND_ORIGIN` – e.g. `http://localhost:8080`
   - `API_KEY_SECRET` – your shared API key used by clients in `x-api-key`.
 
-> The exact `wrangler.toml` configuration can be added once you hook up your Cloudflare account.
+> The exact `wrangler.toml` configuration can be added once you hook up your
+> Cloudflare account.
 
 ---
 
 ## 2. VPS Deployment Guide
 
-Target: single VPS (Docker + Docker Compose) running API, Postgres, Redis, and Caddy. Cloudflare Worker sits in front and forwards authorized traffic.
+Target: single VPS (Docker + Docker Compose) running API, Postgres, Redis, and
+Caddy. Cloudflare Worker sits in front and forwards authorized traffic.
 
 ### 2.1 Prepare the VPS
 
@@ -123,7 +128,8 @@ What this does:
 
 - Create an `A` record for `api.yourdomain.com` pointing to your VPS public IP.
 - Wait for DNS to propagate.
-- With DNS + Caddy running, `https://api.yourdomain.com/healthz` should respond successfully.
+- With DNS + Caddy running, `https://api.yourdomain.com/healthz` should respond
+  successfully.
 
 ### 2.5 Cloudflare Worker configuration (edge auth)
 
@@ -131,7 +137,8 @@ What this does:
 2. Configure environment variables/secrets:
    - `BACKEND_ORIGIN` – `https://api.yourdomain.com`
    - `API_KEY_SECRET` – a strong secret, used by clients in `x-api-key`.
-3. Route your public API endpoint to the Worker (e.g. `https://v1.yourdomain.com/*` → Worker).
+3. Route your public API endpoint to the Worker (e.g.
+   `https://v1.yourdomain.com/*` → Worker).
 
 Request flow in production:
 
@@ -147,7 +154,8 @@ Request flow in production:
 - **API container**
 
   - `PORT` – API listen port (default `8080`).
-  - `DATABASE_URL` – Postgres DSN (set by Docker Compose for container, or manually in local dev).
+  - `DATABASE_URL` – Postgres DSN (set by Docker Compose for container, or
+    manually in local dev).
   - `REDIS_URL` – Redis URL for future queues/cache.
 
 - **Cloudflare Worker**
@@ -158,6 +166,8 @@ Request flow in production:
 
 ## 4. Future Improvements
 
-- Add proper migration tooling (e.g. `golang-migrate`) instead of inline migrations.
+- Add proper migration tooling (e.g. `golang-migrate`) instead of inline
+  migrations.
 - Add rate limiting, plan checks, and usage accounting at the edge + backend.
-- Harden Caddy configuration (security headers, logging, etc.) and add staging/production configs if needed.
+- Harden Caddy configuration (security headers, logging, etc.) and add
+  staging/production configs if needed.

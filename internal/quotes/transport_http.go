@@ -1,28 +1,23 @@
 package quotes
 
 import (
-	"encoding/json"
 	"net/http"
+
+	"github.com/go-chi/chi/v5"
+
+	"requiems-api/internal/httpx"
 )
 
-func RegisterHTTP(mux *http.ServeMux, svc *Service) {
-	mux.Handle("/v1/quotes/random", http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodGet {
-			w.WriteHeader(http.StatusMethodNotAllowed)
-			return
-		}
-
+func RegisterRoutes(r chi.Router, svc *Service) {
+	r.Get("/v1/quotes/random", func(w http.ResponseWriter, r *http.Request) {
 		q, err := svc.Random(r.Context())
-		
 		if err != nil {
-			w.WriteHeader(http.StatusServiceUnavailable)
-			_ = json.NewEncoder(w).Encode(map[string]string{"error": "no quotes available"})
+			httpx.Error(w, http.StatusServiceUnavailable, "no quotes available")
 			return
 		}
 
-		w.Header().Set("Content-Type", "application/json")
-		_ = json.NewEncoder(w).Encode(q)
-	}))
+		httpx.JSON(w, http.StatusOK, q)
+	})
 }
 
 
