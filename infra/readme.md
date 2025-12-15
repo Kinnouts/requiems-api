@@ -23,17 +23,16 @@ docker compose up --build
 
 This starts:
 
-- `api` – Go backend on internal port `8080`
+- `api` – Go backend on internal port `8080` (exposed as `localhost:6969`)
 - `db` – PostgreSQL (`requiem` / `requiem` / `requiem`)
 - `redis` – Redis for future queues/cache
-- `caddy` – Reverse proxy (80/443) for production-like testing
 
 Once the stack is up:
 
-- Health check: `http://localhost:8080/healthz`
-- Advice endpoint: `http://localhost:8080/v1/advice`
+- Health check: `http://localhost:6969/healthz`
+- Advice endpoint: `http://localhost:6969/v1/advice`
 
-> Note: Caddy is mainly for the VPS setup. For local development you can hit the API directly on `localhost:8080`.
+> Note: Caddy is mainly for the VPS setup. For local development you can hit the API directly on `localhost:6969`.
 
 ### 1.3 Run the API directly (without Docker)
 

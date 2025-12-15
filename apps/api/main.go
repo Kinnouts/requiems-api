@@ -7,37 +7,48 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/jackc/pgx/v5/pgxpool"
-
+	"requiems-api/internal/advice"
 	appdb "requiems-api/internal/db"
+	"requiems-api/internal/quotes"
+	"requiems-api/internal/words"
 )
-
-type adviceResponse struct {
-	ID     int    `json:"id"`
-	Advice string `json:"advice"`
-}
 
 func main() {
 	ctx := context.Background()
 
-	pool, err := appdb.Connect(ctx)
+	dsn := os.Getenv("DATABASE_URL")
+	if dsn == "" {
+		dsn = "postgres://requiem:requiem@localhost:5432/requiem?sslmode=disable"
+	}
+
+	// Run migrations before starting the app.
+	if err := appdb.Migrate(dsn, "infra/migrations"); err != nil {
+		log.Fatalf("failed to run migrations: %v", err)
+	}
+
+	pool, err := appdb.Connect(ctx, dsn)
 	if err != nil {
 		log.Fatalf("failed to connect database: %v", err)
 	}
 	defer pool.Close()
 
-	if err := appdb.Migrate(ctx, pool); err != nil {
-		log.Fatalf("failed to run migrations: %v", err)
-	}
-
 	mux := http.NewServeMux()
 
+	// Health check
 	mux.HandleFunc("/healthz", func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
 		_ = json.NewEncoder(w).Encode(map[string]string{"status": "ok"})
 	})
 
-	mux.HandleFunc("/v1/advice", adviceHandler(pool))
+	// Feature modules
+	adviceSvc := advice.NewService(pool)
+	advice.RegisterHTTP(mux, adviceSvc)
+
+	quotesSvc := quotes.NewService(pool)
+	quotes.RegisterHTTP(mux, quotesSvc)
+
+	wordsSvc := words.NewService(pool)
+	words.RegisterHTTP(mux, wordsSvc)
 
 	addr := ":" + envOrDefault("PORT", "8080")
 	log.Printf("API server listening on %s\n", addr)
@@ -52,38 +63,4 @@ func envOrDefault(key, def string) string {
 	}
 	return def
 }
-
-func adviceHandler(pool *pgxpool.Pool) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		if r.Method != http.MethodGet {
-			w.WriteHeader(http.StatusMethodNotAllowed)
-			return
-		}
-
-		row := pool.QueryRow(r.Context(), `
-SELECT id, text
-FROM advice
-ORDER BY random()
-LIMIT 1;
-`)
-		var id int
-		var text string
-		if err := row.Scan(&id, &text); err != nil {
-			log.Printf("query advice failed: %v", err)
-			w.WriteHeader(http.StatusServiceUnavailable)
-			_ = json.NewEncoder(w).Encode(map[string]string{"error": "no advice available"})
-			return
-		}
-
-		resp := adviceResponse{
-			ID:     id,
-			Advice: text,
-		}
-
-		w.Header().Set("Content-Type", "application/json")
-		_ = json.NewEncoder(w).Encode(resp)
-	}
-}
-
-
 

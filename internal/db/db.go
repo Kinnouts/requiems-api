@@ -3,19 +3,13 @@ package db
 import (
 	"context"
 	"fmt"
-	"os"
 	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-func Connect(ctx context.Context) (*pgxpool.Pool, error) {
-	dsn := os.Getenv("DATABASE_URL")
-	if dsn == "" {
-		// Sensible default for local dev if not provided.
-		dsn = "postgres://requiem:requiem@localhost:5432/requiem?sslmode=disable"
-	}
-
+// Connect creates a pgx pool and verifies connectivity.
+func Connect(ctx context.Context, dsn string) (*pgxpool.Pool, error) {
 	cfg, err := pgxpool.ParseConfig(dsn)
 	if err != nil {
 		return nil, fmt.Errorf("parse DATABASE_URL: %w", err)
@@ -36,38 +30,4 @@ func Connect(ctx context.Context) (*pgxpool.Pool, error) {
 
 	return pool, nil
 }
-
-// Migrate applies minimal bootstrapping migrations needed for the MVP.
-func Migrate(ctx context.Context, pool *pgxpool.Pool) error {
-	// Advice table for the MVP endpoint.
-	_, err := pool.Exec(ctx, `
-CREATE TABLE IF NOT EXISTS advice (
-  id   SERIAL PRIMARY KEY,
-  text TEXT NOT NULL
-);
-`)
-	if err != nil {
-		return fmt.Errorf("create advice table: %w", err)
-	}
-
-	// Seed initial advice rows if table is empty.
-	_, err = pool.Exec(ctx, `
-INSERT INTO advice (text)
-SELECT v FROM (VALUES
-  ('Ship small, ship often.'),
-  ('Talk to users before you over-engineer.'),
-  ('Good logs today save you hours tomorrow.'),
-  ('Automate anything you do more than twice.'),
-  ('Optimize for readability over cleverness.'),
-  ('Start with the simplest data model that could work.')
-) AS seed(v)
-WHERE NOT EXISTS (SELECT 1 FROM advice);
-`)
-	if err != nil {
-		return fmt.Errorf("seed advice: %w", err)
-	}
-
-	return nil
-}
-
 

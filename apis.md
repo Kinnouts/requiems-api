@@ -8,7 +8,8 @@ Status legend:
 
 ### Entertainment
 
-- Advice — **mvp**
+-- Advice — **mvp**
+
 - Bucket List — **planned**
 - Celebrity — **planned**
 - Chuck Norris — **planned**
@@ -19,7 +20,7 @@ Status legend:
 - Hobbies — **planned**
 - Horoscope — **planned**
 - Jokes — **planned**
-- Quotes — **planned**
+- Quotes — **mvp**
 - Riddles — **planned**
 - Sudoku — **planned**
 - Trivia — **planned**
@@ -143,7 +144,7 @@ Status legend:
 - Dictionary — **planned**
 - Lorem Ipsum — **planned**
 - Profanity Filter — **planned**
-- Random Word — **planned**
+- Random Word — **mvp**
 - Rhyme — **planned**
 - Spell Check — **planned**
 - Text Language — **planned**
