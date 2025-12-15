@@ -29,12 +29,10 @@ LIMIT 1;
 `)
 
 	var q Quote
-	
+
 	if err := row.Scan(&q.ID, &q.Text, &q.Author); err != nil {
 		return Quote{}, err
 	}
 
 	return q, nil
 }
-
-

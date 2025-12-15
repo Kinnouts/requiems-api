@@ -33,5 +33,3 @@ LIMIT 1;
 	}
 	return a, nil
 }
-
-

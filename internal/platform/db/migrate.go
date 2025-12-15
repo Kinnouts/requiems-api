@@ -15,18 +15,22 @@ func Migrate(dsn, dir string) error {
 	// Ensure we always pass an absolute path to the file:// source.
 	if !filepath.IsAbs(dir) {
 		abs, err := filepath.Abs(dir)
+
 		if err != nil {
 			return fmt.Errorf("resolve migrations path: %w", err)
 		}
+		
 		dir = abs
 	}
 
 	sourceURL := "file://" + dir
 
 	m, err := migrate.New(sourceURL, dsn)
+
 	if err != nil {
 		return fmt.Errorf("create migrator: %w", err)
 	}
+	
 	defer m.Close()
 
 	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
@@ -35,5 +39,3 @@ func Migrate(dsn, dir string) error {
 
 	return nil
 }
-
-

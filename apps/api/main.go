@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"requiems-api/internal/app"
-	"requiems-api/internal/config"
+	"requiems-api/internal/platform/config"
 )
 
 func main() {

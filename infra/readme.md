@@ -25,7 +25,8 @@ docker compose up --build
 This starts:
 
 - `api` – Go backend on internal port `8080` (exposed as `localhost:6969`)
-- `db` – PostgreSQL (`requiem` / `requiem` / `requiem`, exposed as `localhost:5432`)
+- `db` – PostgreSQL (`requiem` / `requiem` / `requiem`, exposed as
+  `localhost:5432`)
 - `redis` – Redis for future queues/cache
 
 Once the stack is up:
@@ -56,7 +57,8 @@ The API listens on `:8080` by default:
 
 ### 1.4 Hybrid dev workflow (Docker infra + local Go with hot reload)
 
-For the best developer experience, run **Postgres and Redis in Docker**, and the Go API locally with a watcher:
+For the best developer experience, run **Postgres and Redis in Docker**, and the
+Go API locally with a watcher:
 
 - Start infra only:
 

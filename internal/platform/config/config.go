@@ -7,7 +7,6 @@ type Config struct {
 	DatabaseURL string
 }
 
-
 func Load() Config {
 	return Config{
 		Port:        envOrDefault("PORT", "8080"),
@@ -19,8 +18,6 @@ func envOrDefault(key, def string) string {
 	if v := os.Getenv(key); v != "" {
 		return v
 	}
-	
+
 	return def
 }
-
-

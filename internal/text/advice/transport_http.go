@@ -5,12 +5,13 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"requiems-api/internal/httpx"
+	"requiems-api/internal/platform/httpx"
 )
 
 // RegisterRoutes mounts advice handlers on the given router.
+// Paths are relative to the parent mount point.
 func RegisterRoutes(r chi.Router, svc *Service) {
-	r.Get("/v1/advice", func(w http.ResponseWriter, r *http.Request) {
+	r.Get("/advice", func(w http.ResponseWriter, r *http.Request) {
 		a, err := svc.Random(r.Context())
 		if err != nil {
 			httpx.Error(w, http.StatusServiceUnavailable, "no advice available")
@@ -20,5 +21,3 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 		httpx.JSON(w, http.StatusOK, a)
 	})
 }
-
-

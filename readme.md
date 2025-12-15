@@ -1,40 +1,45 @@
 ## ⚰️ Requiem API
 
-Requiem API is a **managed API platform** that gives you a single API key to access a growing collection of production-ready APIs.
+Requiem API is a **managed API platform** that gives you a single API key to
+access a growing collection of production-ready APIs.
 
 We build, operate, and scale the APIs. You focus on shipping product.
 
 ---
 
-## For Buyers / Product Teams
+## Quick Links
 
-- Requiem API provides:
-  - One API key for many APIs.
-  - Managed infrastructure, scaling, and reliability.
-  - Usage-based billing with free tiers (details on the website).
-- All APIs are owned, maintained, and operated by Requiem API.
-
-As the public site and dashboard go live, this README will link to:
-
-- `https://requiems-api.xyz` – marketing site & pricing.
-- `https://dashboard.requiems-api.xyz` – dashboard for keys, usage, billing.
-- `https://docs.requiems-api.xyz` – public API documentation.
+| Resource         | URL                                                              |
+| ---------------- | ---------------------------------------------------------------- |
+| 🌐 Website       | [requiems-api.xyz](https://requiems-api.xyz)                     |
+| 📚 Documentation | [docs.requiems-api.xyz/docs](https://docs.requiems-api.xyz/docs) |
+| 🎮 Dashboard     | [requiems-api.xyz/dashboard](https://requiems-api.xyz/dashboard) |
+| 🔗 API Base URL  | `https://api.requiems-api.xyz`                                   |
 
 ---
 
-## For Developers
+- **One API key** for many APIs
+- **Managed infrastructure**, scaling, and reliability
+- **Usage-based billing** with a generous free tier
+- **Web playground** to test endpoints before you buy
 
-- **Quick start**: see `docs/getting-started.md`
-- **Architecture**: see `docs/architecture.md`
-- **Backend structure**: see `docs/backend.md`
-- **API catalogue**: see `apis.md` (or `docs/api-catalogue.md`)
-- **Infrastructure & deployment**: see `infra/readme.md` and `docs/infra.md`
+### Getting Started
 
----
+1. Visit [requiems-api.xyz](https://requiems-api.xyz)
+2. Sign up for a free account
+3. Get your API key (50 credits /day)
+4. Try endpoints in the [playground](https://requiems-api.xyz/playground)
+5. Upgrade when you need more
+
+### Example Request
+
+```bash
+curl -H "x-api-key: YOUR_KEY" https://api.requiems-api.xyz/v1/text/advice
+```
 
 ## Source-Available License
 
 This repository is source-available.
 
-The code is public to encourage transparency, feedback, and contributions.
-The hosted service, APIs, and brand are operated exclusively by Requiem API.
+The code is public to encourage transparency, feedback, and contributions. The
+hosted service, APIs, and brand are operated exclusively by Requiem API.

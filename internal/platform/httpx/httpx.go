@@ -14,5 +14,3 @@ func JSON(w http.ResponseWriter, status int, v any) {
 func Error(w http.ResponseWriter, status int, msg string) {
 	JSON(w, status, map[string]string{"error": msg})
 }
-
-

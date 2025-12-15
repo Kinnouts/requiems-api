@@ -9,11 +9,9 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"requiems-api/internal/advice"
-	"requiems-api/internal/config"
-	"requiems-api/internal/db"
-	"requiems-api/internal/quotes"
-	"requiems-api/internal/words"
+	"requiems-api/internal/platform/config"
+	"requiems-api/internal/platform/db"
+	"requiems-api/internal/text"
 )
 
 type App struct {
@@ -35,14 +33,9 @@ func New(ctx context.Context, cfg config.Config) (*App, error) {
 
 	r.Get("/healthz", Healthz)
 
-	adviceSvc := advice.NewService(pool)
-	advice.RegisterRoutes(r, adviceSvc)
-
-	quotesSvc := quotes.NewService(pool)
-	quotes.RegisterRoutes(r, quotesSvc)
-
-	wordsSvc := words.NewService(pool)	
-	words.RegisterRoutes(r, wordsSvc)
+	textRouter := chi.NewRouter()
+	text.RegisterRoutes(textRouter, pool)
+	r.Mount("/v1/text", textRouter)
 
 	return &App{
 		cfg: cfg,
