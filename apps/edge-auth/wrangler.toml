@@ -1,0 +1,36 @@
+name = "requiem-api-gateway"
+main = "src/index.ts"
+compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
+
+# KV Namespace for API keys, config, and rate limiting
+[[kv_namespaces]]
+binding = "KV"
+id = "YOUR_KV_NAMESPACE_ID"  # Replace after: wrangler kv:namespace create KV
+
+# D1 Database for usage tracking
+[[d1_databases]]
+binding = "DB"
+database_name = "requiem-usage"
+database_id = "YOUR_D1_DATABASE_ID"  # Replace after: wrangler d1 create requiem-usage
+
+# Development settings
+[dev]
+port = 8787
+local_protocol = "http"
+
+# Non-secret vars
+[vars]
+ENVIRONMENT = "development"
+
+# Production environment
+[env.production]
+vars = { ENVIRONMENT = "production" }
+
+# Secrets (set via wrangler secret put):
+# - BACKEND_URL: Your internal Go backend URL
+# - BACKEND_SECRET: Secret key for gateway -> backend auth (min 32 chars)
+#
+# Example:
+#   wrangler secret put BACKEND_URL
+#   wrangler secret put BACKEND_SECRET

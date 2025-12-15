@@ -27,7 +27,7 @@ We build, operate, and scale the APIs. You focus on shipping product.
 
 1. Visit [requiems-api.xyz](https://requiems-api.xyz)
 2. Sign up for a free account
-3. Get your API key (50 credits /day)
+git push
 4. Try endpoints in the [playground](https://requiems-api.xyz/playground)
 5. Upgrade when you need more
 
