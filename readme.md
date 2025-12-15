@@ -158,12 +158,28 @@ infra/
 
 - **Database**: PostgreSQL (primary OLTP store) + Redis (queues/cache), started via Docker for local and single-VPS production.
 - **Auth**: Cloudflare Worker (`apps/edge-auth`) enforcing an `x-api-key` header and forwarding trusted traffic to the Go backend.
-- **First endpoint**: `GET /v1/advice` — simple entertainment endpoint returning random advice from an in-memory list.
+- **First endpoint**: `GET /v1/advice` — simple entertainment endpoint returning random advice from the `advice` table in Postgres.
 - **Run locally**:
   - With Docker: `cd infra/docker && docker compose up --build`
-  - Direct Go: `go run ./apps/api` (defaults to `:8080`)
+  - Direct Go: `go run ./apps/api` (defaults to `:8080`, assumes local Postgres)
 
 See `apis.md` for the full list of planned APIs and their current status.
+
+---
+
+## Exposing the API on a VPS
+
+- **On the VPS**:
+  - Install Docker and Docker Compose.
+  - Clone this repo and run: `cd infra/docker && docker compose up -d --build`
+  - Caddy will:
+    - Listen on ports 80/443.
+    - Request/renew TLS certificates.
+    - Reverse proxy `api.yourdomain.com` → `api:8080` (the Go API container).
+- **DNS**:
+  - Point `api.yourdomain.com` to your VPS IP with an `A` record (you can enable a proxy through your CDN if desired).
+- **Edge Worker**:
+  - Configure the Worker to call `https://api.yourdomain.com` as `BACKEND_ORIGIN` and enforce `x-api-key`.
 
 ---
 

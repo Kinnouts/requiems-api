@@ -1,0 +1,11 @@
+{
+  email you@example.com
+}
+
+api.yourdomain.com {
+  encode gzip
+
+  reverse_proxy api:8080
+}
+
+
