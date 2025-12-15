@@ -29,7 +29,8 @@ Free tier is designed for:
 - Hobby projects
 - Low-volume personal use
 
-> **Note:** Free credits do NOT accumulate. You get 50 fresh credits each day—use them or lose them.
+> **Note:** Free credits do NOT accumulate. You get 50 fresh credits each
+> day—use them or lose them.
 
 ---
 
@@ -120,7 +121,8 @@ X-Credits-Reset: 2025-12-16T00:00:00Z
 
 ### Dashboard
 
-View detailed usage at [requiems-api.xyz/dashboard](https://requiems-api.xyz/dashboard):
+View detailed usage at
+[requiems-api.xyz/dashboard](https://requiems-api.xyz/dashboard):
 
 - Real-time credit balance
 - Usage by endpoint
@@ -224,14 +226,15 @@ Store in KV for fast lookups at the edge.
 
 ## FAQ
 
-**Q: Do unused credits roll over?**  
+**Q: Do unused credits roll over?**\
 A: No, credits reset daily at midnight UTC.
 
-**Q: What happens if I hit the limit mid-request?**  
+**Q: What happens if I hit the limit mid-request?**\
 A: The request is rejected with `429 Too Many Requests`.
 
-**Q: Can I buy more credits without upgrading?**  
+**Q: Can I buy more credits without upgrading?**\
 A: Not yet. Upgrade to a paid plan for higher limits + overage billing.
 
-**Q: Why credits instead of request counts?**  
-A: Fair pricing. A simple text lookup shouldn't cost the same as a geocoding request that calls external APIs.
+**Q: Why credits instead of request counts?**\
+A: Fair pricing. A simple text lookup shouldn't cost the same as a geocoding
+request that calls external APIs.

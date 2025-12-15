@@ -26,10 +26,9 @@ We build, operate, and scale the APIs. You focus on shipping product.
 ### Getting Started
 
 1. Visit [requiems-api.xyz](https://requiems-api.xyz)
-2. Sign up for a free account
-git push
-4. Try endpoints in the [playground](https://requiems-api.xyz/playground)
-5. Upgrade when you need more
+2. Sign up for a free account git push
+3. Try endpoints in the [playground](https://requiems-api.xyz/playground)
+4. Upgrade when you need more
 
 ### Example Request
 

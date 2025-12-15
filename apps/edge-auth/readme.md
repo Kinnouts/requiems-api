@@ -1,6 +1,7 @@
 # Edge Auth Gateway
 
-Cloudflare Worker that handles API authentication, rate limiting, and credit tracking for Requiem API.
+Cloudflare Worker that handles API authentication, rate limiting, and credit
+tracking for Requiem API.
 
 ## Setup
 
@@ -31,8 +32,13 @@ wrangler d1 execute requiem-usage --file=schema.sql
 ### 4. Set Secrets
 
 ```bash
+# Backend URL (keep this private!)
 wrangler secret put BACKEND_URL
 # Enter your Go backend URL (e.g., https://requiem-backend.fly.dev)
+
+# Backend secret (min 32 chars - generate a strong random string)
+wrangler secret put BACKEND_SECRET
+# Enter a strong secret, e.g.: openssl rand -base64 32
 ```
 
 ### 5. Seed KV with API Keys
@@ -110,12 +116,33 @@ X-RateLimit-Remaining: 29
 
 ## Endpoint Costs
 
-Update `ENDPOINT_COSTS` in `index.ts` when adding new routes:
+Update `ENDPOINT_COSTS` in `src/config.ts` when adding new routes:
 
 ```typescript
-const ENDPOINT_COSTS: Record<string, number> = {
+export const ENDPOINT_COSTS: Record<string, number> = {
   "GET /v1/text/advice": 1,
   "GET /v1/text/quotes/random": 1,
   // Add new endpoints here
 };
+```
+
+## Environment Variables
+
+| Variable         | Source        | Description                                |
+| ---------------- | ------------- | ------------------------------------------ |
+| `BACKEND_URL`    | Secret        | Internal backend URL (not public)          |
+| `BACKEND_SECRET` | Secret        | Auth header sent to backend (min 32 chars) |
+| `ENVIRONMENT`    | wrangler.toml | `development`, `staging`, or `production`  |
+
+## Project Structure
+
+```
+src/
+├── index.ts        # Main fetch handler
+├── env.ts          # t3-env validation (process.env)
+├── types.ts        # TypeScript types
+├── config.ts       # PLANS + ENDPOINT_COSTS
+├── rate-limit.ts   # KV-based rate limiting
+├── credits.ts      # D1 usage tracking
+└── http.ts         # Response helpers
 ```

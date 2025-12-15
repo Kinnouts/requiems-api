@@ -6,10 +6,10 @@ import { z } from "zod";
  * These are passed by Cloudflare, not process.env
  */
 export interface CloudflareBindings {
-	/** Cloudflare KV namespace for API keys, config, rate limits */
-	KV: KVNamespace;
-	/** Cloudflare D1 database for usage tracking */
-	DB: D1Database;
+  /** Cloudflare KV namespace for API keys, config, rate limits */
+  KV: KVNamespace;
+  /** Cloudflare D1 database for usage tracking */
+  DB: D1Database;
 }
 
 /**
@@ -19,36 +19,36 @@ export interface CloudflareBindings {
  * Cloudflare vars/secrets are automatically available in process.env.
  */
 export const env = createEnv({
-	server: {
-		/**
-		 * Internal backend URL (kept secret)
-		 * Example: https://internal-backend.fly.dev
-		 */
-		BACKEND_URL: z.string().url(),
+  server: {
+    /**
+     * Internal backend URL (kept secret)
+     * Example: https://internal-backend.fly.dev
+     */
+    BACKEND_URL: z.string().url(),
 
-		/**
-		 * Secret key to authenticate gateway -> backend requests
-		 * Backend rejects requests without this header
-		 */
-		BACKEND_SECRET: z.string().min(32),
+    /**
+     * Secret key to authenticate gateway -> backend requests
+     * Backend rejects requests without this header
+     */
+    BACKEND_SECRET: z.string().min(32),
 
-		/**
-		 * Environment name
-		 */
-		ENVIRONMENT: z
-			.enum(["development", "staging", "production"])
-			.default("development"),
-	},
+    /**
+     * Environment name
+     */
+    ENVIRONMENT: z
+      .enum(["development", "staging", "production"])
+      .default("development"),
+  },
 
-	/**
-	 * Use process.env directly with nodejs_compat
-	 */
-	runtimeEnv: process.env,
+  /**
+   * Use process.env directly with nodejs_compat
+   */
+  runtimeEnv: process.env,
 
-	/**
-	 * Treat empty strings as undefined
-	 */
-	emptyStringAsUndefined: true,
+  /**
+   * Treat empty strings as undefined
+   */
+  emptyStringAsUndefined: true,
 });
 
 export type ValidatedEnv = typeof env;
