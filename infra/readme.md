@@ -168,7 +168,7 @@ What this does:
 1. Deploy `apps/edge-auth/index.ts` as a Worker in your Cloudflare account.
 2. Configure environment variables/secrets:
    - `BACKEND_ORIGIN` – `https://api.yourdomain.com`
-   - `API_KEY_SECRET` – a strong secret, used by clients in `x-api-key`.
+   - `BACKEND_SECRET` – a strong secret, used by clients in `x-api-key`.
 3. Route your public API endpoint to the Worker (e.g.
    `https://v1.yourdomain.com/*` → Worker).
 
@@ -192,14 +192,4 @@ Request flow in production:
 
 - **Cloudflare Worker**
   - `BACKEND_ORIGIN` – Base URL of the API behind Caddy.
-  - `API_KEY_SECRET` – Shared secret checked against `x-api-key`.
-
----
-
-## 4. Future Improvements
-
-- Add proper migration tooling (e.g. `golang-migrate`) instead of inline
-  migrations.
-- Add rate limiting, plan checks, and usage accounting at the edge + backend.
-- Harden Caddy configuration (security headers, logging, etc.) and add
-  staging/production configs if needed.
+  - `BACKEND_SECRET` – Shared secret checked against `x-api-key`.
