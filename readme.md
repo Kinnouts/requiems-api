@@ -12,7 +12,7 @@ We build, operate, and scale the APIs. You focus on shipping product.
 | Resource         | URL                                                              |
 | ---------------- | ---------------------------------------------------------------- |
 | 🌐 Website       | [requiems-api.xyz](https://requiems-api.xyz)                     |
-| 📚 Documentation | [requiems-api.xyz/docs](https://requiems-api.xyz/docs) |
+| 📚 Documentation | [requiems-api.xyz/docs](https://requiems-api.xyz/docs)           |
 | 🎮 Dashboard     | [requiems-api.xyz/dashboard](https://requiems-api.xyz/dashboard) |
 | 🔗 API Base URL  | `https://api.requiems-api.xyz`                                   |
 

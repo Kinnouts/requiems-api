@@ -1,4 +1,24 @@
-import type { PlanConfig, RateLimitResult, WorkerBindings } from "./types";
+import type {
+  PlanConfig,
+  PlanName,
+  RateLimitResult,
+  WorkerBindings,
+} from "./types";
+
+/**
+ * Get credit limits description for a plan
+ */
+export function getPlanLimits(plan: PlanName): string {
+  const limits: Record<PlanName, string> = {
+    free: "50 credits/day",
+    starter: "30k credits/month",
+    pro: "150k credits/month",
+    business: "500k credits/month",
+    enterprise: "custom limits",
+  };
+
+  return limits[plan];
+}
 
 /**
  * Sliding window rate limiter using KV

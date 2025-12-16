@@ -29,7 +29,7 @@ export default {
         },
       });
     }
-    
+
     const apiKey = request.headers.get("x-api-key");
 
     if (!apiKey) {
@@ -85,7 +85,7 @@ export default {
         },
       );
     }
-    
+
     const backendUrl = new URL(pathname + url.search, env.BACKEND_URL);
 
     const backendHeaders = filterHeaders(request.headers);

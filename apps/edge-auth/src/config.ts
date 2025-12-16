@@ -73,7 +73,7 @@ export const DEFAULT_ENDPOINT_COST = 1;
  */
 export function getEndpointCost(method: string, pathname: string): number {
   const exactKey = `${method} ${pathname}`;
-  
+
   if (ENDPOINT_COSTS[exactKey] !== undefined) {
     return ENDPOINT_COSTS[exactKey];
   }
@@ -81,7 +81,7 @@ export function getEndpointCost(method: string, pathname: string): number {
   // Try prefix matching (for routes like /v1/finance/stocks/:symbol)
   for (const [route, cost] of Object.entries(ENDPOINT_COSTS)) {
     const [routeMethod, routePath] = route.split(" ");
-    
+
     if (method === routeMethod && pathname.startsWith(routePath)) {
       return cost;
     }
