@@ -99,18 +99,25 @@ export default {
       return jsonError(502, "Backend unavailable");
     }
 
-    if (backendResponse.ok && endpointCost > 0) {
-      void recordUsage(bindings, apiKey, pathname, endpointCost);
+    if (!backendResponse.ok) {
+      const response = addUsageHeaders(backendResponse, {
+        creditsUsed: 0,
+        creditsRemaining: credits.remaining,
+        creditsReset: credits.resetAt,
+        plan: keyData.plan,
+        rateLimitLimit: plan.ratePerMinute,
+        rateLimitRemaining: rateLimit.remaining,
+      });
+
+      response.headers.set("Access-Control-Allow-Origin", "*");
+      return response;
     }
 
-    const creditsUsed = backendResponse.ok ? endpointCost : 0;
-    const creditsRemaining = backendResponse.ok
-      ? Math.max(0, credits.remaining - endpointCost)
-      : credits.remaining;
+    void recordUsage(bindings, apiKey, pathname, endpointCost);
 
     const response = addUsageHeaders(backendResponse, {
-      creditsUsed,
-      creditsRemaining,
+      creditsUsed: endpointCost,
+      creditsRemaining: Math.max(0, credits.remaining - endpointCost),
       creditsReset: credits.resetAt,
       plan: keyData.plan,
       rateLimitLimit: plan.ratePerMinute,
