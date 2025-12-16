@@ -25,6 +25,7 @@ func New(ctx context.Context, cfg config.Config) (*App, error) {
 	}
 
 	pool, err := db.Connect(ctx, cfg.DatabaseURL)
+	
 	if err != nil {
 		return nil, err
 	}
