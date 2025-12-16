@@ -12,16 +12,25 @@ Example using `curl` against the edge (replace `YOUR_API_KEY` and domain when
 live):
 
 ```bash
-curl https://api.requiems-api.xyz/v1/advice \
+curl https://api.requiems-api.xyz/v1/text/advice \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
-Development (local stack):
+Development (local Go backend via Docker Compose):
 
 ```bash
-curl http://localhost:6969/v1/advice \
-  -H "x-api-key: dev-key"  # if enforced by the Worker in local dev
+# Health check (no auth required)
+curl http://localhost:6969/healthz
+
+# API endpoints
+curl http://localhost:6969/v1/text/advice
+curl http://localhost:6969/v1/text/quotes/random
+curl http://localhost:6969/v1/text/words/random
 ```
+
+> **Note:** The local Go backend (port 6969) does not enforce auth. In
+> production, the Cloudflare Worker handles auth before forwarding to the
+> backend.
 
 ### 3. Explore available APIs
 

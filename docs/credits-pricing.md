@@ -58,7 +58,7 @@ Paid users need flexibility:
 - Batch processing? Run everything overnight
 - Seasonal business? Heavy usage some weeks, light others
 
-Rate limiting (requests/second) still protects infrastructure from abuse.
+Rate limiting (second) still protects infrastructure from abuse.
 
 ### Overage Behavior
 
@@ -156,10 +156,10 @@ In addition to credits, we apply rate limits to prevent abuse:
 | Plan       | Requests/second | Requests/minute |
 | ---------- | --------------- | --------------- |
 | Free       | 1               | 30              |
-| Starter    | 5               | 100             |
-| Pro        | 20              | 500             |
-| Business   | 50              | 2,000           |
-| Enterprise | Custom          | Custom          |
+| Starter    | 10              | 300             |
+| Pro        | 30              | 1,000           |
+| Business   | 100             | 5,000           |
+| Enterprise | 1,000           | 50,000          |
 
 Rate limit headers:
 

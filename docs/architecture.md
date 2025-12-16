@@ -150,8 +150,8 @@ CREATE TABLE words (id SERIAL, word TEXT, definition TEXT, ...);
 ## What We DON'T Use
 
 - **R2 (Object Storage):** Not needed. We don't store files/images.
-- **Redis:** PostgreSQL handles caching needs. Could add later for heavy
-  caching.
+- **Redis:** Provisioned in Docker Compose for future use (queues/cache), but
+  not currently used. PostgreSQL handles our needs.
 - **Durable Objects:** Overkill. KV + D1 covers our needs.
 
 ## Request Flow
