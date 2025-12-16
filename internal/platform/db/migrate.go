@@ -9,10 +9,7 @@ import (
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 )
 
-// Migrate runs all up migrations using golang-migrate.
-// dsn should match the DATABASE_URL, and dir is a filesystem path like "infra/migrations".
 func Migrate(dsn, dir string) error {
-	// Ensure we always pass an absolute path to the file:// source.
 	if !filepath.IsAbs(dir) {
 		abs, err := filepath.Abs(dir)
 
