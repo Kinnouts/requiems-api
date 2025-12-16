@@ -66,7 +66,6 @@ export function addUsageHeaders(
     rateLimitRemaining: number;
   },
 ): Response {
-  // Clone response to modify headers
   const newResponse = new Response(response.body, {
     status: response.status,
     statusText: response.statusText,
