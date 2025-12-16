@@ -36,19 +36,19 @@ Free tier is designed for:
 
 ## Paid Plans
 
-| Plan       | Monthly Credits | Monthly Price | Per-Credit Overage |
-| ---------- | --------------- | ------------- | ------------------ |
-| Starter    | 30,000          | $9            | $0.001             |
-| Pro        | 150,000         | $49           | $0.0008            |
-| Business   | 500,000         | $299          | $0.0005            |
-| Enterprise | Custom          | Custom        | Custom             |
+| Plan       | Monthly Credits | Monthly Price |
+| ---------- | --------------- | ------------- |
+| Starter    | 30,000          | $9            |
+| Pro        | 150,000         | $49           |
+| Business   | 500,000         | $299          |
+| Enterprise | Custom          | Custom        |
 
 ### How Paid Credits Work
 
 - **Monthly pool**: Use your credits whenever you want during the billing cycle
 - **No daily limits**: Burst 30k requests in one day if you need to
 - **Resets monthly**: Unused credits do NOT roll over to next month
-- **Overage**: If you exceed your plan, overage is billed per-credit
+- **Hard limit**: Requests rejected when credits exhausted (upgrade for more)
 
 ### Why Monthly Instead of Daily?
 
@@ -58,13 +58,7 @@ Paid users need flexibility:
 - Batch processing? Run everything overnight
 - Seasonal business? Heavy usage some weeks, light others
 
-Rate limiting (second) still protects infrastructure from abuse.
-
-### Overage Behavior
-
-- **Free**: Hard limit, requests rejected after 50 daily credits
-- **Paid**: Soft limit, overage billed at per-credit rate at end of month
-- **Enterprise**: Custom limits and pricing
+Rate limiting (per per second) still protects infrastructure from abuse.
 
 ### Text Domain (`/v1/text/*`)
 
@@ -153,19 +147,19 @@ curl -H "x-api-key: YOUR_KEY" https://api.requiems-api.xyz/v1/account/usage
 
 In addition to credits, we apply rate limits to prevent abuse:
 
-| Plan       | Requests/second | Requests/minute |
-| ---------- | --------------- | --------------- |
-| Free       | 1               | 30              |
-| Starter    | 10              | 300             |
-| Pro        | 30              | 1,000           |
-| Business   | 100             | 5,000           |
-| Enterprise | 1,000           | 50,000          |
+| Plan       | Requests/minute |
+| ---------- | --------------- |
+| Free       | 30              |
+| Starter    | 300             |
+| Pro        | 1,000           |
+| Business   | 5,000           |
+| Enterprise | 50,000          |
 
 Rate limit headers:
 
 ```
-X-RateLimit-Limit: 30
-X-RateLimit-Remaining: 29
+X-RateLimit-Limit: 300
+X-RateLimit-Remaining: 299
 X-RateLimit-Reset: 1702684800
 ```
 
@@ -227,13 +221,13 @@ Store in KV for fast lookups at the edge.
 ## FAQ
 
 **Q: Do unused credits roll over?**\
-A: No, credits reset daily at midnight UTC.
+A: No, credits reset daily (free) or monthly (paid) at midnight UTC.
 
 **Q: What happens if I hit the limit mid-request?**\
 A: The request is rejected with `429 Too Many Requests`.
 
 **Q: Can I buy more credits without upgrading?**\
-A: Not yet. Upgrade to a paid plan for higher limits + overage billing.
+A: Not yet. Upgrade to a higher plan for more credits.
 
 **Q: Why credits instead of request counts?**\
 A: Fair pricing. A simple text lookup shouldn't cost the same as a geocoding

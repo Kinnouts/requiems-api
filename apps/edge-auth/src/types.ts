@@ -30,12 +30,8 @@ export interface PlanConfig {
   creditLimit: number;
   /** Credit period (daily for free, monthly for paid) */
   creditPeriod: "daily" | "monthly";
-  /** Max requests per second */
-  ratePerSecond: number;
   /** Max requests per minute */
   ratePerMinute: number;
-  /** Overage rate per credit (null = hard limit) */
-  overageRate: number | null;
 }
 
 /**

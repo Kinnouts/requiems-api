@@ -6,11 +6,6 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
-type Advice struct {
-	ID   int    `json:"id"`
-	Text string `json:"advice"`
-}
-
 type Service struct {
 	db *pgxpool.Pool
 }

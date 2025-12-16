@@ -44,7 +44,7 @@ We use **3 data stores**, each optimized for its specific use case:
 **Used for:**
 
 - **API Key lookup** (`key:{api_key}` → user data, plan, etc.)
-- **Rate limiting counters** (`rl:s:{key}:{second}` and `rl:m:{key}:{minute}`)
+- **Rate limiting counters** (`rl:m:{key}:{minute}`)
 
 **Why KV:**
 
@@ -164,7 +164,6 @@ CREATE TABLE words (id SERIAL, word TEXT, definition TEXT, ...);
    └─ KV.get("key:rq_live_abc123") → { plan: "starter", ... }
 
 3. Check rate limit
-   └─ KV.get("rl:s:rq_live_abc123:1702656000") → "5"
    └─ KV.get("rl:m:rq_live_abc123:28377600") → "150"
    └─ Under limit? Continue. Over? Return 429.
 
