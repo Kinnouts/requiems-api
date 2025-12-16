@@ -26,7 +26,7 @@ export async function checkRateLimit(
   plan: PlanConfig,
 ): Promise<RateLimitResult> {
   const now = Date.now();
-  const currentMinute = Math.floor(now / 60000);
+  const currentMinute = Math.floor(now / 60_000);
 
   const minuteKey = `rl:m:${apiKey}:${currentMinute}`;
   const existing = (await bindings.KV.get(minuteKey)) ?? "0";

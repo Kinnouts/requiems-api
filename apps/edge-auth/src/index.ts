@@ -73,17 +73,17 @@ export default {
 
     const endpointCost = getEndpointCost(request.method, pathname);
 
-    if (plan.overageRate === null && credits.usage >= plan.creditLimit) {
-      return jsonError(
-        429,
-        "Daily credit limit exceeded. Upgrade at requiems-api.xyz",
-        {
-          "X-Credits-Used": "0",
-          "X-Credits-Remaining": "0",
-          "X-Credits-Reset": credits.resetAt,
-          "X-Plan": keyData.plan,
-        },
-      );
+    if (credits.usage >= plan.creditLimit) {
+      const message = plan.creditPeriod === "daily"
+        ? "Daily credit limit exceeded. Upgrade at requiems-api.xyz"
+        : "Monthly credit limit exceeded. Upgrade at requiems-api.xyz";
+
+      return jsonError(429, message, {
+        "X-Credits-Used": "0",
+        "X-Credits-Remaining": "0",
+        "X-Credits-Reset": credits.resetAt,
+        "X-Plan": keyData.plan,
+      });
     }
 
     const backendUrl = new URL(pathname + url.search, env.BACKEND_URL);
