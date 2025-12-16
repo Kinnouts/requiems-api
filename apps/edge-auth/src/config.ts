@@ -59,21 +59,6 @@ export const ENDPOINT_COSTS: Record<string, number> = {
   "GET /v1/text/words/random": 1,
   "GET /v1/text/words/define": 2,
   "GET /v1/text/words/synonyms": 2,
-
-  // ==========================================================================
-  // Finance Domain (/v1/finance/*) - Coming Soon
-  // ==========================================================================
-  "GET /v1/finance/commodities": 3,
-  "GET /v1/finance/stocks": 3,
-  "GET /v1/finance/crypto": 3,
-  "GET /v1/finance/exchange-rates": 2,
-
-  // ==========================================================================
-  // Places Domain (/v1/places/*) - Coming Soon
-  // ==========================================================================
-  "GET /v1/places/geocode": 5,
-  "GET /v1/places/reverse-geocode": 5,
-  "GET /v1/places/timezone": 2,
 };
 
 /**
@@ -87,8 +72,8 @@ export const DEFAULT_ENDPOINT_COST = 1;
  * Matches exact path first, then tries prefix matching for dynamic routes
  */
 export function getEndpointCost(method: string, pathname: string): number {
-  // Try exact match first
   const exactKey = `${method} ${pathname}`;
+  
   if (ENDPOINT_COSTS[exactKey] !== undefined) {
     return ENDPOINT_COSTS[exactKey];
   }
@@ -96,6 +81,7 @@ export function getEndpointCost(method: string, pathname: string): number {
   // Try prefix matching (for routes like /v1/finance/stocks/:symbol)
   for (const [route, cost] of Object.entries(ENDPOINT_COSTS)) {
     const [routeMethod, routePath] = route.split(" ");
+    
     if (method === routeMethod && pathname.startsWith(routePath)) {
       return cost;
     }
