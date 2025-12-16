@@ -20,7 +20,7 @@ We build, operate, and scale the APIs. You focus on shipping product.
 
 - **One API key** for many APIs
 - **Managed infrastructure**, scaling, and reliability
-- **Usage-based billing** with a generous free tier
+- **Tier-based billing** with a generous free tier
 - **Web playground** to test endpoints before you buy
 
 ### Getting Started
@@ -35,10 +35,3 @@ We build, operate, and scale the APIs. You focus on shipping product.
 ```bash
 curl -H "x-api-key: YOUR_KEY" https://api.requiems-api.xyz/v1/text/advice
 ```
-
-## Source-Available License
-
-This repository is source-available.
-
-The code is public to encourage transparency, feedback, and contributions. The
-hosted service, APIs, and brand are operated exclusively by Requiem API.
