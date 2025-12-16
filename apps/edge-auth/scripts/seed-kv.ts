@@ -43,6 +43,20 @@ function generateUserId(): string {
 	return `user_${random}`;
 }
 
+/**
+ * Get credit limits description for a plan
+ */
+function getPlanLimits(plan: PlanName): string {
+	const limits: Record<PlanName, string> = {
+		free: "50 credits/day",
+		starter: "30k credits/month",
+		pro: "150k credits/month",
+		business: "500k credits/month",
+	};
+
+	return limits[plan];
+}
+
 const now = new Date().toISOString();
 
 const TEST_KEYS: TestKey[] = [
@@ -108,20 +122,11 @@ for (const { key, data } of TEST_KEYS) {
 console.log("\n✅ Done! Test keys created:\n");
 
 for (const { key, plan } of createdKeys) {
-	const limits =
-		plan === "free"
-			? "50 credits/day"
-			: plan === "starter"
-				? "30k credits/month"
-				: plan === "pro"
-					? "150k credits/month"
-					: "500k credits/month";
-
-	console.log(`   ${plan.padEnd(10)} → ${key} (${limits})`);
+	console.log(`   ${plan.padEnd(10)} → ${key} (${getPlanLimits(plan)})`);
 }
 
 console.log(
 	"\n💡 Example:\n   curl -H 'x-api-key: " +
 		createdKeys[0].key +
-		"' http://localhost:8787/v1/text/advice",
+		"' http://localhost:6969/v1/text/advice",
 );

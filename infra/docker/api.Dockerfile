@@ -1,16 +1,32 @@
 FROM golang:1.22-alpine AS build
 
 WORKDIR /app
-COPY . .
 
-RUN go build -o /out/api ./apps/api
+# Copy only deps first (cache-friendly)
+COPY go.mod go.sum ./
+RUN go mod download
+
+# Copy only source code needed for build
+COPY apps ./apps
+COPY internal ./internal
+
+# Build static binary
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
+    go build -o /out/api ./apps/api
 
 FROM alpine:3.20
 
+# Security hardening
+RUN adduser -D appuser
+
 WORKDIR /app
 ENV PORT=8080
+
 COPY --from=build /out/api /app/api
 COPY infra/migrations /app/infra/migrations
+
+# Run as non-root
+USER appuser
 
 EXPOSE 8080
 
