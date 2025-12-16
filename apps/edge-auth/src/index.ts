@@ -1,18 +1,22 @@
-import type { ApiKeyData, WorkerBindings } from "./types";
-import { env } from "./env";
 import { getEndpointCost, PLANS } from "./config";
-import { checkRateLimit, getCreditLimitMessage } from "./rate-limit";
 import { checkCredits, recordUsage } from "./credits";
+import { env } from "./env";
 import {
   addUsageHeaders,
+  corsResponse,
   fetchBackend,
   filterHeaders,
   jsonError,
   jsonResponse,
 } from "./http";
+import { createLogger, maskApiKey } from "./logger";
+import { checkRateLimit, getCreditLimitMessage } from "./rate-limit";
+
+import type { ApiKeyData, WorkerBindings } from "./types";
 
 export default {
   async fetch(request: Request, bindings: WorkerBindings): Promise<Response> {
+    const log = createLogger(request);
     const url = new URL(request.url);
     const pathname = url.pathname;
 
@@ -21,23 +25,13 @@ export default {
     }
 
     if (request.method === "OPTIONS") {
-      return new Response(null, {
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type, x-api-key",
-          "Access-Control-Max-Age": "86400",
-        },
-      });
+      return corsResponse;
     }
 
     const apiKey = request.headers.get("x-api-key");
 
     if (!apiKey) {
-      return jsonError(
-        401,
-        "Missing x-api-key header. Get your key at requiems-api.xyz",
-      );
+      return jsonError(401, "Get your key at requiems-api.xyz");
     }
 
     const keyData = await bindings.KV.get<ApiKeyData>(`key:${apiKey}`, "json");
@@ -47,6 +41,7 @@ export default {
     }
 
     const plan = PLANS[keyData.plan];
+
     if (!plan) {
       return jsonError(500, "Invalid plan configuration");
     }
@@ -54,6 +49,11 @@ export default {
     const rateLimit = await checkRateLimit(bindings, apiKey, plan);
 
     if (!rateLimit.allowed) {
+      log.info("Rate limit exceeded", {
+        key: maskApiKey(apiKey),
+        plan: keyData.plan,
+      });
+
       return jsonError(429, "Rate limit exceeded", {
         "X-RateLimit-Limit": plan.ratePerMinute.toString(),
         "X-RateLimit-Remaining": "0",
@@ -75,6 +75,12 @@ export default {
     const endpointCost = getEndpointCost(request.method, pathname);
 
     if (credits.usage >= plan.creditLimit) {
+      log.info("Credit limit exceeded", {
+        key: maskApiKey(apiKey),
+        plan: keyData.plan,
+        usage: credits.usage,
+      });
+
       return jsonError(429, getCreditLimitMessage(plan.creditPeriod), {
         "X-Credits-Used": "0",
         "X-Credits-Remaining": "0",
@@ -86,21 +92,26 @@ export default {
     const backendUrl = new URL(pathname + url.search, env.BACKEND_URL);
 
     const backendHeaders = filterHeaders(request.headers);
-    backendHeaders.set("X-Backend-Secret", env.BACKEND_SECRET);
 
-    const result = await fetchBackend(backendUrl.toString(), {
+    const result = await fetchBackend(backendUrl, {
       method: request.method,
       headers: backendHeaders,
       body: request.body,
     });
 
     if (!result.ok) {
+      log.error("Backend fetch failed", { error: result.error });
       return jsonError(502, result.error);
     }
 
     const backendResponse = result.response;
 
     if (!backendResponse.ok) {
+      log.warn("Backend error response", {
+        status: backendResponse.status,
+        path: pathname,
+      });
+
       const response = addUsageHeaders(backendResponse, {
         creditsUsed: 0,
         creditsRemaining: credits.remaining,
@@ -110,7 +121,6 @@ export default {
         rateLimitRemaining: rateLimit.remaining,
       });
 
-      response.headers.set("Access-Control-Allow-Origin", "*");
       return response;
     }
 
@@ -124,8 +134,6 @@ export default {
       rateLimitLimit: plan.ratePerMinute,
       rateLimitRemaining: rateLimit.remaining,
     });
-
-    response.headers.set("Access-Control-Allow-Origin", "*");
 
     return response;
   },

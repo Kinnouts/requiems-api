@@ -1,3 +1,18 @@
+import { env } from "./env";
+
+const CORS_HEADERS = {
+  "Access-Control-Allow-Origin": "*",
+};
+
+export const corsResponse = new Response(null, {
+  headers: {
+    ...CORS_HEADERS,
+    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Headers": "Content-Type, x-api-key",
+    "Access-Control-Max-Age": "86400",
+  },
+});
+
 /**
  * JSON response helper
  */
@@ -10,6 +25,7 @@ export function jsonResponse(
     status,
     headers: {
       "Content-Type": "application/json",
+      ...CORS_HEADERS,
       ...headers,
     },
   });
@@ -36,18 +52,15 @@ export function filterHeaders(headers: Headers): Headers {
   for (const [key, value] of headers.entries()) {
     const lowerKey = key.toLowerCase();
 
-    // Skip Cloudflare-specific headers
     if (lowerKey.startsWith("cf-")) continue;
-
-    // Skip API key (backend trusts gateway)
     if (lowerKey === "x-api-key") continue;
-
-    // Skip hop-by-hop headers
     if (lowerKey === "connection") continue;
     if (lowerKey === "keep-alive") continue;
 
     filtered.set(key, value);
   }
+
+  filtered.set("X-Backend-Secret", env.BACKEND_SECRET);
 
   return filtered;
 }
@@ -72,6 +85,7 @@ export function addUsageHeaders(
     headers: response.headers,
   });
 
+  newResponse.headers.set("Access-Control-Allow-Origin", "*");
   newResponse.headers.set("X-Credits-Used", headers.creditsUsed.toString());
   newResponse.headers.set(
     "X-Credits-Remaining",
@@ -99,7 +113,7 @@ export type BackendResult =
  * Fetch from backend with error handling
  */
 export async function fetchBackend(
-  url: string,
+  url: string | URL,
   init: RequestInit,
 ): Promise<BackendResult> {
   try {
