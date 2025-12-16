@@ -1,7 +1,7 @@
 import type { ApiKeyData, WorkerBindings } from "./types";
 import { env } from "./env";
 import { getEndpointCost, PLANS } from "./config";
-import { checkRateLimit } from "./rate-limit";
+import { checkRateLimit, getCreditLimitMessage } from "./rate-limit";
 import { checkCredits, recordUsage } from "./credits";
 import {
   addUsageHeaders,
@@ -74,11 +74,7 @@ export default {
     const endpointCost = getEndpointCost(request.method, pathname);
 
     if (credits.usage >= plan.creditLimit) {
-      const message = plan.creditPeriod === "daily"
-        ? "Daily credit limit exceeded. Upgrade at requiems-api.xyz"
-        : "Monthly credit limit exceeded. Upgrade at requiems-api.xyz";
-
-      return jsonError(429, message, {
+      return jsonError(429, getCreditLimitMessage(plan.creditPeriod), {
         "X-Credits-Used": "0",
         "X-Credits-Remaining": "0",
         "X-Credits-Reset": credits.resetAt,
@@ -104,13 +100,12 @@ export default {
     }
 
     if (backendResponse.ok && endpointCost > 0) {
-      // Fire and forget - don't block response
-      recordUsage(bindings, apiKey, pathname, endpointCost);
+      void recordUsage(bindings, apiKey, pathname, endpointCost);
     }
 
     const creditsUsed = backendResponse.ok ? endpointCost : 0;
     const creditsRemaining = backendResponse.ok
-      ? Math.max(0, plan.creditLimit - credits.usage - endpointCost)
+      ? Math.max(0, credits.remaining - endpointCost)
       : credits.remaining;
 
     const response = addUsageHeaders(backendResponse, {

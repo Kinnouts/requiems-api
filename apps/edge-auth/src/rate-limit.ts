@@ -20,6 +20,15 @@ export function getPlanLimits(plan: PlanName): string {
   return limits[plan];
 }
 
+/**
+ * Get credit limit exceeded message based on period
+ */
+export function getCreditLimitMessage(period: "daily" | "monthly"): string {
+  return period === "daily"
+    ? "Daily credit limit exceeded. Upgrade at requiems-api.xyz"
+    : "Monthly credit limit exceeded. Upgrade at requiems-api.xyz";
+}
+
 export async function checkRateLimit(
   bindings: WorkerBindings,
   apiKey: string,
