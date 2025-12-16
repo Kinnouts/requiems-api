@@ -5,6 +5,7 @@ import { checkRateLimit, getCreditLimitMessage } from "./rate-limit";
 import { checkCredits, recordUsage } from "./credits";
 import {
   addUsageHeaders,
+  fetchBackend,
   filterHeaders,
   jsonError,
   jsonResponse,
@@ -87,17 +88,17 @@ export default {
     const backendHeaders = filterHeaders(request.headers);
     backendHeaders.set("X-Backend-Secret", env.BACKEND_SECRET);
 
-    let backendResponse: Response;
-    try {
-      backendResponse = await fetch(backendUrl.toString(), {
-        method: request.method,
-        headers: backendHeaders,
-        body: request.body,
-      });
-    } catch (error) {
-      console.error("Backend error:", error);
-      return jsonError(502, "Backend unavailable");
+    const result = await fetchBackend(backendUrl.toString(), {
+      method: request.method,
+      headers: backendHeaders,
+      body: request.body,
+    });
+
+    if (!result.ok) {
+      return jsonError(502, result.error);
     }
+
+    const backendResponse = result.response;
 
     if (!backendResponse.ok) {
       const response = addUsageHeaders(backendResponse, {

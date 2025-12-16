@@ -90,3 +90,23 @@ export function addUsageHeaders(
 
   return newResponse;
 }
+
+export type BackendResult =
+  | { ok: true; response: Response }
+  | { ok: false; error: string };
+
+/**
+ * Fetch from backend with error handling
+ */
+export async function fetchBackend(
+  url: string,
+  init: RequestInit,
+): Promise<BackendResult> {
+  try {
+    const response = await fetch(url, init);
+    return { ok: true, response };
+  } catch (error) {
+    console.error("Backend error:", error);
+    return { ok: false, error: "Backend unavailable" };
+  }
+}
