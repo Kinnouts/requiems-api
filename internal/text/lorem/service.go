@@ -35,6 +35,6 @@ func (s *Service) Generate(paragraphs int, sentences int) Lorem {
 	return Lorem{
 		Text:       text,
 		Paragraphs: paragraphs,
-		WordCount:  paragraphs * sentences * 8,
+		WordCount:  paragraphs * sentences * lorelai.ClassicWordsPerSentence(),
 	}
 }
