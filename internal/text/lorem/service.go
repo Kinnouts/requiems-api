@@ -1,6 +1,10 @@
 package lorem
 
-import "strings"
+import (
+	"strings"
+
+	lorelai "github.com/bobadilla-tech/lorelai/pkg"
+)
 
 type Service struct{}
 
@@ -22,7 +26,7 @@ func (s *Service) Generate(paragraphs int, sentences int) Lorem {
 			if s > 0 {
 				b.WriteByte(' ')
 			}
-			b.WriteString(GenerateSentence(10))
+			b.WriteString(lorelai.ClassicSentence())
 		}
 	}
 
@@ -31,6 +35,6 @@ func (s *Service) Generate(paragraphs int, sentences int) Lorem {
 	return Lorem{
 		Text:       text,
 		Paragraphs: paragraphs,
-		WordCount:  paragraphs * sentences * 10,
+		WordCount:  paragraphs * sentences * 8,
 	}
 }
