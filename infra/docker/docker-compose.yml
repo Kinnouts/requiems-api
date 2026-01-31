@@ -1,3 +1,5 @@
+name: requiem-backend
+
 services:
   api:
     build:
