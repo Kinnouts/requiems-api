@@ -2,6 +2,12 @@ github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 h1:L/gRVlceqvL25
 github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161/go.mod h1:xomTg63KZ2rFqZQzSB4Vz2SUXa1BpHTVz9L5PTmPC4E=
 github.com/Microsoft/go-winio v0.6.1 h1:9/kr64B9VUZrLm5YYwbGtUJnMgqWVOdUAXu6Migciow=
 github.com/Microsoft/go-winio v0.6.1/go.mod h1:LRdKpFKfdobln8UmuiYcKPot9D2v6svN5+sAH+4kjUM=
+github.com/bobadilla-tech/lorelai v1.3.1 h1:bqzZMcgY0MIYikKyROLjMQWNZLR/4t0chjxC2pnqmO8=
+github.com/bobadilla-tech/lorelai v1.3.1/go.mod h1:ql8Jou+8OBienKt7ByAC9J7zuya3D5YVL6ZUFbMiKr0=
+github.com/bobadilla-tech/lorelai v1.3.2 h1:HRskH3pY8yuWs0IPE5fLlfdG3D8JN6QGIx+Nk5J5Omc=
+github.com/bobadilla-tech/lorelai v1.3.2/go.mod h1:ql8Jou+8OBienKt7ByAC9J7zuya3D5YVL6ZUFbMiKr0=
+github.com/bobadilla-tech/lorelai v1.3.3 h1:59SqSzL+ICSW6MCA2OTzj6r+EJ7Nv7FXtbXd/uEhwVk=
+github.com/bobadilla-tech/lorelai v1.3.3/go.mod h1:ql8Jou+8OBienKt7ByAC9J7zuya3D5YVL6ZUFbMiKr0=
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
