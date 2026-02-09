@@ -28,6 +28,10 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_151938) do
     t.index ["user_id"], name: "index_abuse_reports_on_user_id"
   end
 
+  create_table "advice", id: :serial, force: :cascade do |t|
+    t.text "text", null: false
+  end
+
   create_table "api_keys", force: :cascade do |t|
     t.boolean "active"
     t.datetime "created_at", null: false
@@ -74,6 +78,15 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_151938) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_daily_usage_summaries_on_user_id"
+  end
+
+  create_table "quotes", id: :serial, force: :cascade do |t|
+    t.text "author"
+    t.text "text", null: false
+  end
+
+  create_table "schema_migrations", primary_key: "version", id: :bigint, default: nil, force: :cascade do |t|
+    t.boolean "dirty", null: false
   end
 
   create_table "subscriptions", force: :cascade do |t|
@@ -137,6 +150,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_151938) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["status"], name: "index_users_on_status"
+  end
+
+  create_table "words", id: :serial, force: :cascade do |t|
+    t.text "definition", null: false
+    t.text "part_of_speech"
+    t.text "word", null: false
   end
 
   add_foreign_key "abuse_reports", "api_keys"

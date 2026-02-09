@@ -1,28 +1,19 @@
 ## ⚰️ Requiem API
 
-Requiem API is a **managed API platform** that gives you a single API key to
-access a growing collection of production-ready APIs.
+A **managed API platform** that gives you one API key to access a growing collection of production-ready APIs. We handle the infrastructure, you ship faster.
 
-We build, operate, and scale the APIs. You focus on shipping product.
+**[Get Started →](https://requiems.xyz)** · **[Documentation](https://requiems.xyz/docs)** · **[Playground](https://requiems.xyz/playground)**
 
----
-
-## Quick Links
-
-| Resource         | URL                                                                            |
-| ---------------- | ------------------------------------------------------------------------------ |
-| 🌐 Website       | [requiems.xyz](https://requiems.xyz)                                           |
-| 📚 Documentation | [requiems.xyz/docs](https://requiems.xyz/docs)                                 |
-| 🎮 Dashboard     | [requiems.xyz/dashboard](https://requiems.xyz/dashboard)                       |
-| 🔗 API Base URL  | `https://api.requiems.xyz`                                                     |
-| 💼 LinkedIn      | [Requiems API](https://www.linkedin.com/showcase/requiems-api/)                |
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Requiems%20API-0077B5?logo=linkedin)](https://www.linkedin.com/showcase/requiems-api/)
 
 ---
 
-- **One API key** for many APIs
-- **Managed infrastructure**, scaling, and reliability
-- **Tier-based billing** with a generous free tier
-- **Web playground** to test endpoints before you buy
+### Why Requiems?
+
+- **One API key** for many APIs – no juggling multiple accounts
+- **Managed infrastructure** – scaling, monitoring, and uptime handled for you
+- **Generous free tier** – start building without a credit card
+- **Test in the playground** – try endpoints before committing
 
 ### Getting Started
 
@@ -41,188 +32,54 @@ curl -H "x-api-key: YOUR_KEY" https://api.requiems.xyz/v1/text/advice
 
 ## 🏗️ Architecture
 
-This is a **multi-language monorepo** with clean separation of concerns:
+Multi-language monorepo with three main apps:
 
-```
-apps/
-├── api/              # Go backend (internal API)
-├── dashboard/        # Rails 8 (landing, dashboard, admin)
-└── edge-auth/        # Cloudflare Worker (auth gateway)
-```
+- **Dashboard** (Rails 8) – Landing page, user dashboard, admin panel
+- **API** (Go 1.23) – Core backend with business logic
+- **Auth Gateway** (Cloudflare Worker) – Authentication, rate limiting, credit tracking
 
-### URL Structure
-
-| URL | Purpose | Technology |
-|-----|---------|------------|
-| `requiems.xyz` | Landing page + Dashboard + Admin | Rails 8.1 |
-| `api.requiems.xyz` | Public API gateway (auth, rate limiting) | Cloudflare Worker |
-| `internal.requiems.xyz` | Internal backend (business logic) | Go 1.23 |
-
-### Request Flow
-
-```
-Client
-  ↓ x-api-key: rq_live_xxx
-Cloudflare Worker (api.requiems.xyz)
-  ↓ validate key, check limits
-  ↓ X-Backend-Secret: xxx
-Go Backend (internal.requiems.xyz)
-  ↓ business logic
-PostgreSQL
-```
+Requests flow through the Cloudflare Worker for authentication, then route to the Go backend for processing.
 
 ## 🚀 Development
 
-### Prerequisites
+Want to run this locally or contribute? We've made it easy.
 
-- Go 1.23+
-- Ruby 3.4+
-- PostgreSQL 16
-- Redis 7
-- Docker & Docker Compose
+### Quick Start with Docker
 
-### Quick Start (Development with Hot Reloading)
+Everything runs with hot reload out of the box:
 
 ```bash
-# Clone the repository
-git clone https://github.com/bobadilla-tech/requiems-api.git
-cd requiems-api
-
-# Start all services with hot reloading
 cd infra/docker
 docker compose -f docker-compose.dev.yml up
-
-# Services will be available at:
-# - Rails dashboard: http://localhost:3000 (hot reload ✓)
-# - Go API: http://localhost:6969 (hot reload with Air ✓)
-# - PostgreSQL: localhost:5432
-# - Redis: localhost:6379
 ```
 
-**That's it!** Edit any `.go` or `.rb` file and changes will be picked up automatically.
+All services start automatically. Edit any code and see changes instantly.
 
-See [infra/docker/README.md](infra/docker/README.md) for detailed Docker commands.
-
-### Local Development (without Docker)
-
-**Go Backend:**
-```bash
-cd apps/api
-go mod download
-go run main.go
-# Runs on http://localhost:8080
-```
-
-**Rails Dashboard:**
-```bash
-cd apps/dashboard
-bundle install
-rails db:create db:migrate
-rails server
-# Runs on http://localhost:3000
-```
-
-**Cloudflare Worker:**
-```bash
-cd apps/edge-auth
-npm install
-npm run dev
-# Runs on http://localhost:8787
-```
-
-### Environment Variables
-
-Create `.env` files in each app directory:
-
-**apps/api/.env:**
-```env
-PORT=8080
-DATABASE_URL=postgres://requiem:requiem@localhost:5432/requiem?sslmode=disable
-```
-
-**apps/dashboard/.env:**
-```env
-DATABASE_URL=postgres://requiem:requiem@localhost:5432/requiem?sslmode=disable
-REDIS_URL=redis://localhost:6379
-SECRET_KEY_BASE=your_secret_key_base
-CLOUDFLARE_ACCOUNT_ID=your_account_id
-CLOUDFLARE_KV_NAMESPACE_ID=your_namespace_id
-CLOUDFLARE_API_TOKEN=your_api_token
-```
-
-**apps/edge-auth/.env:**
-```env
-BACKEND_URL=http://localhost:8080
-BACKEND_SECRET=your_backend_secret
-```
+See [infra/docker/README.md](infra/docker/README.md) for more details.
 
 ## 📁 Repository Structure
 
 ```
-requiems-api/
-├── apps/
-│   ├── api/                    # Go backend
-│   │   ├── internal/          # Domain-driven design
-│   │   │   ├── app/          # Application setup
-│   │   │   ├── email/        # Email APIs
-│   │   │   ├── text/         # Text APIs
-│   │   │   └── platform/     # Shared utilities
-│   │   ├── infra/migrations/ # Go database migrations
-│   │   ├── go.mod
-│   │   └── main.go
-│   ├── dashboard/             # Rails 8 dashboard
-│   │   ├── app/
-│   │   │   ├── controllers/
-│   │   │   │   ├── dashboard/  # User dashboard
-│   │   │   │   └── admin/      # Admin panel
-│   │   │   ├── models/        # User, ApiKey, Subscription, etc.
-│   │   │   ├── services/      # Cloudflare KV sync
-│   │   │   └── views/
-│   │   ├── db/migrate/        # Rails migrations
-│   │   ├── Gemfile
-│   │   └── config/
-│   └── edge-auth/             # Cloudflare Worker
-│       ├── src/
-│       │   ├── index.ts      # Main handler
-│       │   ├── rate-limit.ts # Rate limiting (KV)
-│       │   └── credits.ts    # Usage tracking (D1)
-│       └── wrangler.toml
-├── infra/
-│   ├── docker/
-│   │   ├── docker-compose.yml
-│   │   ├── api.Dockerfile
-│   │   └── dashboard.Dockerfile
-│   └── caddy/
-│       └── Caddyfile         # Reverse proxy config
-├── docs/                      # Documentation
-└── readme.md
+apps/
+├── api/           # Go backend (domain-driven design)
+├── dashboard/     # Rails 8 dashboard + admin
+└── edge-auth/     # Cloudflare Worker (auth gateway)
+
+infra/
+├── docker/        # Docker Compose setup
+└── caddy/         # Reverse proxy config
 ```
 
-## 🗄️ Database Architecture
-
-### Shared PostgreSQL
-
-Both Go and Rails use the same PostgreSQL database (`requiem`):
-
-- **Go manages:** `advice`, `quotes`, `words` (business data)
-- **Rails manages:** `users`, `api_keys`, `subscriptions`, `usage_logs` (user data)
-- **Migration tracking:** Separate tables (`schema_migrations` for Go, `rails_schema_migrations` for Rails)
-
-### Cloudflare Edge Storage
-
-- **KV Store:** API key lookup (<10ms latency)
-- **D1 SQLite:** Usage tracking and aggregations
+See full directory structure in [docs/](docs/).
 
 ---
 
 ## 📝 Contributing
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
+We welcome contributions! Whether it's bug fixes, performance improvements, documentation, or new features, we'd love your help.
 
-## 📄 License
+See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to get started.
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+---
+
+**Questions?** Open an issue or reach out on [LinkedIn](https://www.linkedin.com/showcase/requiems-api/). We're here to help.

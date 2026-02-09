@@ -60,7 +60,6 @@ services:
         bundle install &&
         bundle exec rails db:create db:migrate &&
         bundle exec rails tailwindcss:build &&
-        bundle exec rails tailwindcss:watch &
         bundle exec rails server -b 0.0.0.0 -p 3000
       "
     environment:
@@ -85,6 +84,7 @@ services:
     working_dir: /app
     command: >
       sh -c "
+        apk update &&
         apk add --no-cache build-base postgresql-dev tzdata yaml-dev &&
         bundle install &&
         bundle exec sidekiq
@@ -99,6 +99,7 @@ services:
     depends_on:
       - db
       - redis
+      - dashboard
 
 volumes:
   db_data:
