@@ -1,15 +1,95 @@
 Rails.application.routes.draw do
-  devise_for :users
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  # Devise authentication
+  devise_for :users, controllers: {
+    registrations: "users/registrations",
+    sessions: "users/sessions"
+  }
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
+  # Landing page
+  root "home#index"
+
+  # Health check
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+  # User dashboard namespace
+  namespace :dashboard do
+    root "overview#index"
 
-  # Defines the root path route ("/")
-  # root "posts#index"
+    resources :api_keys do
+      member do
+        post :regenerate
+        delete :revoke
+      end
+    end
+
+    resource :usage, only: [:show] do
+      collection do
+        get :by_endpoint
+        get :by_date
+        get :export # CSV export
+      end
+    end
+
+    resource :billing, only: [:show, :update] do
+      collection do
+        post :checkout # Stripe checkout
+        post :portal # Stripe customer portal
+        delete :cancel_subscription
+      end
+    end
+
+    resources :invoices, only: [:index, :show]
+
+    resource :settings, only: [:show, :update] do
+      member do
+        delete :account # Delete account
+      end
+    end
+  end
+
+  # Admin panel (requires admin authentication)
+  namespace :admin do
+    root "dashboard#index"
+
+    # Only allow authenticated admin users
+    authenticate :user, ->(u) { u.admin? } do
+      resources :users do
+        member do
+          post :suspend
+          post :unsuspend
+          post :ban
+          post :make_admin
+          post :remove_admin
+        end
+
+        resources :credit_adjustments, only: [:new, :create]
+      end
+
+      resources :api_keys, only: [:index, :show] do
+        member do
+          delete :revoke
+        end
+      end
+
+      resources :abuse_reports do
+        member do
+          post :resolve
+          post :investigate
+        end
+      end
+
+      resource :usage, only: [:show]
+      resource :revenue, only: [:show]
+      resource :system_health, only: [:show]
+    end
+  end
+
+  # Webhooks (unprotected, verified by signature)
+  namespace :webhooks do
+    post "stripe", to: "stripe#create"
+    post "cloudflare", to: "cloudflare#create" # Usage sync from Worker
+  end
+
+  # Documentation (placeholder)
+  get "docs", to: "home#docs"
 end

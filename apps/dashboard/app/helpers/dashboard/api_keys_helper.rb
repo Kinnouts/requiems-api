@@ -1,0 +1,2 @@
+module Dashboard::ApiKeysHelper
+end
