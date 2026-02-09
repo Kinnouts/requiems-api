@@ -2,9 +2,9 @@
 
 ### 1. Sign up and get an API key
 
-- Visit the Requiem API dashboard (coming soon).
+- Visit the Requiem API dashboard,
 - Create an account and generate an API key.
-- All requests must include your key in the `x-api-key` header.
+- All requests must include your key in the `requiems-api-key` header.
 
 ### 2. Make your first request
 
@@ -31,8 +31,3 @@ curl http://localhost:6969/v1/text/words/random
 > **Note:** The local Go backend (port 6969) does not enforce auth. In
 > production, the Cloudflare Worker handles auth before forwarding to the
 > backend.
-
-### 3. Explore available APIs
-
-- See `docs/api-catalogue.md` (or `apis.md` in the repo) for the full list of
-  APIs and their status.

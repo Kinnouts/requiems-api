@@ -85,7 +85,7 @@ infra/
 └── caddy/         # Reverse proxy
 ```
 
-→ [Full directory structure](docs/)
+→ [Full API developer docs](docs/)
 
 ---
 

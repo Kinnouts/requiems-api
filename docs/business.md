@@ -1,0 +1,6 @@
+API CALLS PER MONTH BUSINESS MODEL
+
+Free: 0 USD
+Developer: 25 USD
+Business: 50 USD
+Professional: 100 USD

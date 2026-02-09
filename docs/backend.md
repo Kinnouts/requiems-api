@@ -33,30 +33,25 @@
 ### Adding a new API feature (pattern)
 
 1. **Migrations**
-
    - Add a pair of migrations in `infra/migrations`:
      - `000X_feature_name.up.sql`
      - `000X_feature_name.down.sql`
 
 2. **Service package**
-
    - Create `internal/<feature>/service.go`:
      - Define types and methods, e.g. `Random`, `GetByID`, etc.
 
 3. **HTTP transport**
-
    - Create `internal/<feature>/transport_http.go` with:
      - `func RegisterRoutes(r chi.Router, svc *Service)`
      - Register your endpoints using `r.Get`, `r.Post`, etc.
 
 4. **Wire in `internal/text/router.go`**
-
    - Instantiate the service and call `RegisterRoutes`:
      - `featureSvc := feature.NewService(pool)`
      - `feature.RegisterRoutes(r, featureSvc)`
 
    Or for a new domain (non-text), wire in `internal/app/app.go`:
-
    - Create a new router: `domainRouter := chi.NewRouter()`
    - Register routes and mount: `r.Mount("/v1/domain", domainRouter)`
 
