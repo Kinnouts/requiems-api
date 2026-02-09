@@ -1,6 +1,7 @@
 # Contributing to Requiems API
 
-Thanks for your interest in contributing! We welcome improvements from the community and appreciate your help making this project better.
+Thanks for your interest in contributing! We welcome improvements from the
+community and appreciate your help making this project better.
 
 ## What We Accept
 
@@ -23,7 +24,9 @@ We'll review PRs as quickly as possible and provide constructive feedback.
 
 ## License Note
 
-By contributing, you agree that your contributions will be licensed under the same [Business Source License (BSL)](LICENSE) as the project. This allows wide usage including self-hosting while preventing competing hosted services.
+By contributing, you agree that your contributions will be licensed under the
+same [Business Source License (BSL)](LICENSE) as the project. This allows wide
+usage including self-hosting while preventing competing hosted services.
 
 ## Questions?
 

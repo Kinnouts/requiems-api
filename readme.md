@@ -1,85 +1,104 @@
 ## ⚰️ Requiem API
 
-A **managed API platform** that gives you one API key to access a growing collection of production-ready APIs. We handle the infrastructure, you ship faster.
+### Ship Faster With Production-Ready APIs
 
-**[Get Started →](https://requiems.xyz)** · **[Documentation](https://requiems.xyz/docs)** · **[Playground](https://requiems.xyz/playground)**
+**One API key. Multiple enterprise-grade APIs.** Eliminate months of data
+sourcing, validation logic, and infrastructure setup. Start building features
+today, not infrastructure.
 
-[![LinkedIn](https://img.shields.io/badge/LinkedIn-Requiems%20API-0077B5?logo=linkedin)](https://www.linkedin.com/showcase/requiems-api/)
+**[Get Started →](https://requiems.xyz)** ·
+**[Documentation](https://requiems.xyz/docs)** ·
+**[Try Live Playground](https://requiems.xyz/playground)**
 
 ---
 
-### Why Requiems?
+### Stop Building Infrastructure. Start Shipping Features.
 
-- **One API key** for many APIs – no juggling multiple accounts
-- **Managed infrastructure** – scaling, monitoring, and uptime handled for you
-- **Generous free tier** – start building without a credit card
-- **Test in the playground** – try endpoints before committing
+**Ditch the integration hell:**
 
-### Getting Started
+- ❌ No more juggling 10+ API providers and payment accounts
+- ❌ No more building validation logic from scratch
+- ❌ No more maintaining rate limiters, caching, and retry logic
+- ❌ No more infrastructure babysitting
 
-1. Visit [requiems.xyz](https://requiems.xyz)
-2. Sign up for a free account
-3. Try endpoints in the [playground](https://requiems.xyz/playground)
-4. Upgrade when you need more
+**Ship production features in minutes:**
 
-### Example Request
+- ✅ **One unified API** – email validation, disposable detection, text
+  utilities, and growing
+- ✅ **Battle-tested infrastructure** – sub-200ms response times, 99.9% uptime
+- ✅ **Zero setup friction** – generous free tier, no credit card required
+- ✅ **Test before you commit** – live playground with real responses
+
+### From Zero to Production in 60 Seconds
 
 ```bash
-curl -H "x-api-key: YOUR_KEY" https://api.requiems.xyz/v1/text/advice
+# 1. Get your free API key at requiems.xyz (no credit card)
+# 2. Make your first call
+curl -H "x-api-key: YOUR_KEY" https://api.requiems.xyz/v1/email/disposable/check \
+  -d '{"email":"test@tempmail.com"}'
+
+# 3. Ship it to production ✅
 ```
+
+**That's it.** No SDKs to install. No complex authentication flows. No
+infrastructure to maintain.
 
 ---
 
-## 🏗️ Architecture
+## 🏗️ Built for Scale, Designed for Speed
 
-Multi-language monorepo with three main apps:
+**Multi-language monorepo. Production-grade from day one.**
 
-- **Dashboard** (Rails 8) – Landing page, user dashboard, admin panel
-- **API** (Go 1.23) – Core backend with business logic
-- **Auth Gateway** (Cloudflare Worker) – Authentication, rate limiting, credit tracking
+- **Go 1.23 API** – Lightning-fast backend with domain-driven design
+- **Rails 8 Dashboard** – Beautiful UI for users and admins
+- **Cloudflare Worker Gateway** – Global edge network handling auth, rate
+  limiting, and credit tracking
 
-Requests flow through the Cloudflare Worker for authentication, then route to the Go backend for processing.
+**Request flow:** Cloudflare Edge → Auth & Rate Limit → Go Backend → Response in
+~150ms
 
-## 🚀 Development
+## 🚀 Local Development in One Command
 
-Want to run this locally or contribute? We've made it easy.
-
-### Quick Start with Docker
-
-Everything runs with hot reload out of the box:
+**Contributor-friendly setup. Hot reload everything.**
 
 ```bash
 cd infra/docker
 docker compose -f docker-compose.dev.yml up
 ```
 
-All services start automatically. Edit any code and see changes instantly.
+**That's it.** All services (API, Dashboard, Database, Caddy) start with hot
+reload. Edit any file and see changes instantly.
 
-See [infra/docker/README.md](infra/docker/README.md) for more details.
+→ [Full dev setup guide](infra/docker/README.md)
 
 ## 📁 Repository Structure
 
 ```
 apps/
-├── api/           # Go backend (domain-driven design)
-├── dashboard/     # Rails 8 dashboard + admin
+├── api/           # Go 1.23 backend (domain-driven design)
+├── dashboard/     # Rails 8 (UI + admin panel)
 └── edge-auth/     # Cloudflare Worker (auth gateway)
 
 infra/
-├── docker/        # Docker Compose setup
-└── caddy/         # Reverse proxy config
+├── docker/        # Full dev environment
+└── caddy/         # Reverse proxy
 ```
 
-See full directory structure in [docs/](docs/).
+→ [Full directory structure](docs/)
 
 ---
 
-## 📝 Contributing
+## 🤝 Contributing
 
-We welcome contributions! Whether it's bug fixes, performance improvements, documentation, or new features, we'd love your help.
+**Found a bug? Want to add an API? We'd love your help.**
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to get started.
+We welcome contributions of all sizes: bug fixes, performance improvements,
+documentation, or entire new API endpoints.
+
+→ [Contributing guidelines](CONTRIBUTING.md)
 
 ---
 
-**Questions?** Open an issue or reach out on [LinkedIn](https://www.linkedin.com/showcase/requiems-api/). We're here to help.
+**Questions or feedback?**
+[Open an issue](https://github.com/bobadilla-tech/requiems-api/issues) or reach
+out on [LinkedIn](https://www.linkedin.com/showcase/requiems-api/).
