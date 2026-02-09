@@ -54,7 +54,7 @@ services:
     working_dir: /app
     command: >
       sh -c "
-        apk add --no-cache build-base postgresql-dev nodejs npm tzdata git &&
+        apk add --no-cache build-base postgresql-dev nodejs npm tzdata git yaml-dev &&
         bundle check || bundle install &&
         bundle exec rails db:create db:migrate &&
         bundle exec rails server -b 0.0.0.0 -p 3000

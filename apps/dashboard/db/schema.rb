@@ -1,0 +1,151 @@
+# This file is auto-generated from the current state of the database. Instead
+# of editing this file, please use the migrations feature of Active Record to
+# incrementally modify your database, and then regenerate this schema definition.
+#
+# This file is the source Rails uses to define your schema when running `bin/rails
+# db:schema:load`. When creating a new database, `bin/rails db:schema:load` tends to
+# be faster and is potentially less error prone than running all of your
+# migrations from scratch. Old migrations may fail to apply correctly if those
+# migrations use external dependencies or application code.
+#
+# It's strongly recommended that you check this file into your version control system.
+
+ActiveRecord::Schema[8.1].define(version: 2026_02_09_151938) do
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "pg_catalog.plpgsql"
+
+  create_table "abuse_reports", force: :cascade do |t|
+    t.bigint "api_key_id", null: false
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.string "report_type"
+    t.datetime "resolved_at"
+    t.integer "resolved_by_id"
+    t.string "status"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["api_key_id"], name: "index_abuse_reports_on_api_key_id"
+    t.index ["user_id"], name: "index_abuse_reports_on_user_id"
+  end
+
+  create_table "api_keys", force: :cascade do |t|
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.string "environment"
+    t.string "key_hash"
+    t.string "key_prefix"
+    t.datetime "last_used_at"
+    t.string "last_used_ip"
+    t.string "name"
+    t.datetime "revoked_at"
+    t.string "revoked_reason"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_api_keys_on_user_id"
+  end
+
+  create_table "audit_logs", force: :cascade do |t|
+    t.string "action"
+    t.integer "admin_user_id"
+    t.datetime "created_at", null: false
+    t.text "details"
+    t.string "ip_address"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_audit_logs_on_user_id"
+  end
+
+  create_table "credit_adjustments", force: :cascade do |t|
+    t.string "adjustment_type"
+    t.integer "admin_user_id"
+    t.integer "amount"
+    t.datetime "created_at", null: false
+    t.text "reason"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_credit_adjustments_on_user_id"
+  end
+
+  create_table "daily_usage_summaries", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.date "date"
+    t.integer "total_credits"
+    t.integer "total_requests"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_daily_usage_summaries_on_user_id"
+  end
+
+  create_table "subscriptions", force: :cascade do |t|
+    t.datetime "canceled_at"
+    t.datetime "created_at", null: false
+    t.integer "credit_limit"
+    t.datetime "current_period_end"
+    t.datetime "current_period_start"
+    t.string "plan"
+    t.string "status"
+    t.string "stripe_customer_id"
+    t.string "stripe_subscription_id"
+    t.datetime "trial_ends_at"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_subscriptions_on_user_id"
+  end
+
+  create_table "usage_logs", force: :cascade do |t|
+    t.bigint "api_key_id", null: false
+    t.datetime "created_at", null: false
+    t.integer "credits_used"
+    t.string "endpoint"
+    t.integer "response_time_ms"
+    t.integer "status_code"
+    t.datetime "updated_at", null: false
+    t.date "usage_date"
+    t.datetime "used_at"
+    t.bigint "user_id", null: false
+    t.index ["api_key_id"], name: "index_usage_logs_on_api_key_id"
+    t.index ["user_id"], name: "index_usage_logs_on_user_id"
+  end
+
+  create_table "users", force: :cascade do |t|
+    t.boolean "active", default: true, null: false
+    t.boolean "admin", default: false, null: false
+    t.datetime "banned_at"
+    t.string "banned_reason"
+    t.string "company"
+    t.datetime "confirmation_sent_at"
+    t.string "confirmation_token"
+    t.datetime "confirmed_at"
+    t.datetime "created_at", null: false
+    t.datetime "current_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.datetime "last_sign_in_at"
+    t.string "last_sign_in_ip"
+    t.string "name"
+    t.text "notes"
+    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at"
+    t.string "reset_password_token"
+    t.integer "sign_in_count", default: 0, null: false
+    t.string "status", default: "active", null: false
+    t.string "unconfirmed_email"
+    t.datetime "updated_at", null: false
+    t.index ["admin"], name: "index_users_on_admin"
+    t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["status"], name: "index_users_on_status"
+  end
+
+  add_foreign_key "abuse_reports", "api_keys"
+  add_foreign_key "abuse_reports", "users"
+  add_foreign_key "api_keys", "users"
+  add_foreign_key "audit_logs", "users"
+  add_foreign_key "credit_adjustments", "users"
+  add_foreign_key "daily_usage_summaries", "users"
+  add_foreign_key "subscriptions", "users"
+  add_foreign_key "usage_logs", "api_keys"
+  add_foreign_key "usage_logs", "users"
+end
