@@ -81,23 +81,27 @@ PostgreSQL
 - Redis 7
 - Docker & Docker Compose
 
-### Quick Start
+### Quick Start (Development with Hot Reloading)
 
 ```bash
 # Clone the repository
 git clone https://github.com/bobadilla-tech/requiems-api.git
 cd requiems-api
 
-# Start all services with Docker Compose
+# Start all services with hot reloading
 cd infra/docker
-docker compose up --build
+docker compose -f docker-compose.dev.yml up
 
 # Services will be available at:
-# - Rails dashboard: http://localhost:3000
-# - Go API: http://localhost:6969
+# - Rails dashboard: http://localhost:3000 (hot reload ✓)
+# - Go API: http://localhost:6969 (hot reload with Air ✓)
 # - PostgreSQL: localhost:5432
 # - Redis: localhost:6379
 ```
+
+**That's it!** Edit any `.go` or `.rb` file and changes will be picked up automatically.
+
+See [infra/docker/README.md](infra/docker/README.md) for detailed Docker commands.
 
 ### Local Development (without Docker)
 
