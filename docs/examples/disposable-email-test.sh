@@ -3,7 +3,8 @@
 # Disposable Email API Testing Script
 # Make sure the API server is running: go run apps/api/main.go
 
-BASE_URL="http://localhost:8080/v1/email"
+BACKEND_PORT=6969
+BASE_URL="http://localhost:$BACKEND_PORT/v1/email"
 
 echo "=== Disposable Email API Tests ==="
 echo ""
