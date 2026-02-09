@@ -3,35 +3,109 @@
 ## Overview
 
 ```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                              INTERNET                                       │
-└─────────────────────────────────────────────────────────────────────────────┘
-                                    │
-                                    ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                     api.requiems.xyz (Cloudflare Worker)                │
-│                                                                             │
-│  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐                      │
-│  │ Auth (KV)   │    │ Rate Limit  │    │ Credits     │                      │
-│  │ API Keys    │    │ (KV)        │    │ (D1)        │                      │
-│  └─────────────┘    └─────────────┘    └─────────────┘                      │
-│                                                                             │
-│  Validates x-api-key → Checks rate limit → Checks credits → Forward         │
-└─────────────────────────────────────────────────────────────────────────────┘
-                                    │
-                                    │ X-Backend-Secret header
-                                    ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                     Internal Backend (Go + Chi)                             │
-│                     (Private URL, not public DNS)                           │
-│                                                                             │
-│  ┌─────────────────────────────────────────────────────────────────────┐    │
-│  │                         PostgreSQL                                  │    │
-│  │                    (Business Data Only)                             │    │
-│  │     advice, quotes, words, finance, places, etc.                    │    │
-│  └─────────────────────────────────────────────────────────────────────┘    │
-└─────────────────────────────────────────────────────────────────────────────┘
+┌──────────────────────────────────────────────────────────────────┐
+│                           INTERNET                               │
+└──────────────────────────────────────────────────────────────────┘
+           │                                │
+           │ API Requests                   │ Web Users
+           ▼                                ▼
+┌──────────────────────────────┐  ┌──────────────────────────────┐
+│   api.requiems.xyz           │  │   requiems.xyz               │
+│   (Cloudflare Worker)        │  │   (Rails Dashboard)          │
+│                              │  │                              │
+│  ┌────────┐  ┌────────┐     │  │  ┌────────┐  ┌────────┐     │
+│  │Auth KV │  │Credits │     │  │  │Landing │  │Dashboard│    │
+│  │        │  │  D1    │     │  │  │ Page   │  │/Admin   │    │
+│  └────────┘  └────────┘     │  │  └────────┘  └────────┘     │
+│                              │  │                              │
+│  x-api-key validation        │  │  User management             │
+│  Rate limiting               │  │  API key creation            │
+│  Credit tracking             │  │  Usage stats                 │
+└──────────────────────────────┘  └──────────────────────────────┘
+           │                                │
+           │ X-Backend-Secret               │ DB queries
+           ▼                                ▼
+┌───────────────────────────────────────────────────────────────────┐
+│              internal.requiems.xyz (Go Backend)                   │
+│                      (Hetzner VPS)                                │
+│                                                                   │
+│  ┌────────────────────────────────────────────────────────┐      │
+│  │              PostgreSQL (Shared Database)               │      │
+│  │                                                         │      │
+│  │  Go Tables:                                             │      │
+│  │    - advice, quotes, words (business data)             │      │
+│  │                                                         │      │
+│  │  Rails Tables:                                          │      │
+│  │    - users, api_keys, subscriptions                    │      │
+│  │    - usage_logs, daily_usage_summaries                 │      │
+│  │    - credit_adjustments, audit_logs, abuse_reports     │      │
+│  └────────────────────────────────────────────────────────┘      │
+│                                                                   │
+│  ┌────────────────────────────────────────────────────────┐      │
+│  │                      Redis                              │      │
+│  │              (Sidekiq background jobs)                  │      │
+│  └────────────────────────────────────────────────────────┘      │
+└───────────────────────────────────────────────────────────────────┘
 ```
+
+## Components
+
+### 1. Cloudflare Worker (api.requiems.xyz)
+**Purpose:** Public API gateway with global edge distribution
+
+**Responsibilities:**
+- API key validation (Cloudflare KV)
+- Rate limiting (KV counters)
+- Credit tracking (D1 SQLite)
+- Request forwarding to internal backend
+
+**Technology:** TypeScript on Cloudflare Workers
+
+### 2. Rails Dashboard (requiems.xyz)
+**Purpose:** Public-facing web application
+
+**Responsibilities:**
+- Landing page and marketing
+- User registration and authentication
+- User dashboard (`/dashboard/*`)
+  - API key management
+  - Usage statistics
+  - Billing/subscription management
+- Admin panel (`/admin/*`)
+  - User management
+  - System monitoring
+  - Revenue tracking
+  - Abuse detection
+- API key sync to Cloudflare KV
+
+**Technology:** Rails 8.1, Tailwind CSS, Hotwire (Turbo + Stimulus)
+
+### 3. Go Backend (internal.requiems.xyz)
+**Purpose:** Internal business logic API
+
+**Responsibilities:**
+- Execute business logic for all API endpoints
+- Database queries for business data
+- Only accessible with X-Backend-Secret header
+
+**Technology:** Go 1.23, Chi router
+
+### 4. Shared PostgreSQL
+**Purpose:** Single source of truth for all data
+
+**Schema Separation:**
+- **Go migrations:** Business data tables
+- **Rails migrations:** User/account data tables
+- Separate migration tracking tables to avoid conflicts
+
+### 5. Redis
+**Purpose:** Background job queue for Rails
+
+**Used for:**
+- Sidekiq background jobs
+- Usage sync from Cloudflare D1
+- Email sending
+- Scheduled tasks
 
 ## Data Stores Explained
 
