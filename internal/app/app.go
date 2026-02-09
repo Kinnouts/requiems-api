@@ -9,6 +9,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
+	"requiems-api/internal/email"
 	"requiems-api/internal/platform/config"
 	"requiems-api/internal/platform/db"
 	"requiems-api/internal/text"
@@ -37,6 +38,10 @@ func New(ctx context.Context, cfg config.Config) (*App, error) {
 	textRouter := chi.NewRouter()
 	text.RegisterRoutes(textRouter, pool)
 	r.Mount("/v1/text", textRouter)
+
+	emailRouter := chi.NewRouter()
+	email.RegisterRoutes(emailRouter)
+	r.Mount("/v1/email", emailRouter)
 
 	return &App{
 		cfg: cfg,

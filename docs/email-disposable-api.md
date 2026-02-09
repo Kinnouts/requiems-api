@@ -1,0 +1,281 @@
+# Disposable Email Detection API
+
+This API provides endpoints to detect disposable/temporary email addresses and domains using the [is-email-disposable](https://github.com/bobadilla-tech/is-email-disposable) package.
+
+## Base URL
+
+All endpoints are mounted under `/v1/email`
+
+## Endpoints
+
+### 1. Check Single Email
+
+Check if a single email address is disposable.
+
+**Endpoint:** `POST /v1/email/disposable/check`
+
+**Request Body:**
+```json
+{
+  "email": "user@tempmail.com"
+}
+```
+
+**Response:** `200 OK`
+```json
+{
+  "email": "user@tempmail.com",
+  "is_disposable": true,
+  "domain": "tempmail.com"
+}
+```
+
+**Example:**
+```bash
+curl -X POST http://localhost:8080/v1/email/disposable/check \
+  -H "Content-Type: application/json" \
+  -d '{"email": "user@tempmail.com"}'
+```
+
+---
+
+### 2. Check Multiple Emails (Batch)
+
+Check multiple email addresses in a single request. Maximum 100 emails per batch.
+
+**Endpoint:** `POST /v1/email/disposable/check-batch`
+
+**Request Body:**
+```json
+{
+  "emails": [
+    "user1@tempmail.com",
+    "user2@gmail.com",
+    "user3@10minutemail.com"
+  ]
+}
+```
+
+**Response:** `200 OK`
+```json
+{
+  "results": [
+    {
+      "email": "user1@tempmail.com",
+      "is_disposable": true,
+      "domain": "tempmail.com"
+    },
+    {
+      "email": "user2@gmail.com",
+      "is_disposable": false,
+      "domain": "gmail.com"
+    },
+    {
+      "email": "user3@10minutemail.com",
+      "is_disposable": true,
+      "domain": "10minutemail.com"
+    }
+  ],
+  "total": 3
+}
+```
+
+**Example:**
+```bash
+curl -X POST http://localhost:8080/v1/email/disposable/check-batch \
+  -H "Content-Type: application/json" \
+  -d '{
+    "emails": [
+      "user1@tempmail.com",
+      "user2@gmail.com",
+      "user3@10minutemail.com"
+    ]
+  }'
+```
+
+**Validation:**
+- Maximum 100 emails per batch
+- Returns `400 Bad Request` if limit exceeded
+
+---
+
+### 3. Check Domain
+
+Check if a specific domain is in the disposable list.
+
+**Endpoint:** `GET /v1/email/disposable/domain/{domain}`
+
+**Path Parameters:**
+- `domain` - The domain to check (e.g., `tempmail.com`)
+
+**Response:** `200 OK`
+```json
+{
+  "domain": "tempmail.com",
+  "is_disposable": true
+}
+```
+
+**Example:**
+```bash
+curl http://localhost:8080/v1/email/disposable/domain/tempmail.com
+```
+
+---
+
+### 4. List All Disposable Domains
+
+Get a paginated list of all disposable email domains in the blocklist.
+
+**Endpoint:** `GET /v1/email/disposable/domains`
+
+**Query Parameters:**
+- `page` (optional) - Page number, default: `1`
+- `per_page` (optional) - Results per page (1-1000), default: `100`
+
+**Response:** `200 OK`
+```json
+{
+  "domains": [
+    "0-mail.com",
+    "0815.ru",
+    "0clickemail.com",
+    "...more domains..."
+  ],
+  "total": 15432,
+  "page": 1,
+  "per_page": 100,
+  "has_more": true
+}
+```
+
+**Example:**
+```bash
+# Get first page (default 100 results)
+curl http://localhost:8080/v1/email/disposable/domains
+
+# Get page 2 with 50 results per page
+curl "http://localhost:8080/v1/email/disposable/domains?page=2&per_page=50"
+```
+
+**Notes:**
+- There are thousands of domains in the blocklist
+- Use pagination to avoid overwhelming responses
+- `has_more` indicates if there are more pages available
+
+---
+
+### 5. Get Statistics
+
+Get statistics about the disposable domains blocklist.
+
+**Endpoint:** `GET /v1/email/disposable/stats`
+
+**Response:** `200 OK`
+```json
+{
+  "total_domains": 15432
+}
+```
+
+**Example:**
+```bash
+curl http://localhost:8080/v1/email/disposable/stats
+```
+
+---
+
+## Error Responses
+
+All endpoints may return error responses in the following format:
+
+```json
+{
+  "error": "error message description"
+}
+```
+
+### Common Error Codes
+
+- `400 Bad Request` - Invalid input (missing email, invalid JSON, batch limit exceeded)
+- `503 Service Unavailable` - Service error
+
+---
+
+## Use Cases
+
+### User Registration Validation
+
+Prevent users from signing up with disposable email addresses:
+
+```javascript
+const response = await fetch('http://localhost:8080/v1/email/disposable/check', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ email: userEmail })
+});
+
+const result = await response.json();
+
+if (result.is_disposable) {
+  throw new Error('Please use a permanent email address');
+}
+```
+
+### Bulk Email List Cleaning
+
+Clean a list of email addresses by checking them in batches:
+
+```javascript
+const emails = [/* array of up to 100 emails */];
+
+const response = await fetch('http://localhost:8080/v1/email/disposable/check-batch', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ emails })
+});
+
+const result = await response.json();
+const validEmails = result.results
+  .filter(r => !r.is_disposable)
+  .map(r => r.email);
+```
+
+### Domain Allowlist/Blocklist
+
+Check if a domain should be blocked:
+
+```javascript
+const domain = email.split('@')[1];
+const response = await fetch(`http://localhost:8080/v1/email/disposable/domain/${domain}`);
+const result = await response.json();
+
+if (result.is_disposable) {
+  console.log('This domain is on the blocklist');
+}
+```
+
+---
+
+## Performance
+
+- Single email check: ~120ns (O(1) hash map lookup)
+- Domain check: ~85ns (O(1) hash map lookup)
+- Batch operations scale linearly with the number of emails
+
+---
+
+## Data Source
+
+The disposable domains blocklist is maintained by [disposable-email-domains](https://github.com/disposable-email-domains/disposable-email-domains) and is automatically updated monthly.
+
+---
+
+## Integration with Gateway
+
+These endpoints can be integrated with the Cloudflare Worker gateway for:
+- Rate limiting
+- API key authentication
+- Credit tracking
+
+See [architecture.md](./architecture.md) for more details on the gateway integration.

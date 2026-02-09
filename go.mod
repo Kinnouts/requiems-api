@@ -1,6 +1,6 @@
 module requiems-api
 
-go 1.22
+go 1.23
 
 require (
 	github.com/go-chi/chi/v5 v5.0.12
@@ -9,7 +9,9 @@ require (
 )
 
 require (
+	github.com/bobadilla-tech/is-email-disposable v1.0.0 // indirect
 	github.com/bobadilla-tech/lorelai v1.3.3 // indirect
+
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect

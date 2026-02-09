@@ -116,7 +116,7 @@ X-Credits-Reset: 2025-12-16T00:00:00Z
 ### Dashboard
 
 View detailed usage at
-[requiems-api.xyz/dashboard](https://requiems-api.xyz/dashboard):
+[requiems.xyz/dashboard](https://requiems.xyz/dashboard):
 
 - Real-time credit balance
 - Usage by endpoint
@@ -126,7 +126,7 @@ View detailed usage at
 ### API Endpoint
 
 ```bash
-curl -H "x-api-key: YOUR_KEY" https://api.requiems-api.xyz/v1/account/usage
+curl -H "x-api-key: YOUR_KEY" https://api.requiems.xyz/v1/account/usage
 ```
 
 ```json

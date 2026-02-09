@@ -12,7 +12,7 @@ Example using `curl` against the edge (replace `YOUR_API_KEY` and domain when
 live):
 
 ```bash
-curl https://api.requiems-api.xyz/v1/text/advice \
+curl https://api.requiems.xyz/v1/text/advice \
   -H "x-api-key: YOUR_API_KEY"
 ```
 
