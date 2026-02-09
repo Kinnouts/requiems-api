@@ -1,0 +1,102 @@
+name: requiem-dev
+
+services:
+  # PostgreSQL Database
+  db:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_USER=requiem
+      - POSTGRES_PASSWORD=requiem
+      - POSTGRES_DB=requiem
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U requiem"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  # Redis
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    ports:
+      - "6379:6379"
+
+  # Go API with hot reloading using Air
+  api:
+    image: golang:1.23-alpine
+    working_dir: /app
+    command: >
+      sh -c "
+        apk add --no-cache git &&
+        go install github.com/air-verse/air@latest &&
+        air
+      "
+    environment:
+      - PORT=8080
+      - DATABASE_URL=postgres://requiem:requiem@db:5432/requiem?sslmode=disable
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ../../apps/api:/app
+    ports:
+      - "6969:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # Rails Dashboard with hot reloading
+  dashboard:
+    image: ruby:3.4-alpine
+    working_dir: /app
+    command: >
+      sh -c "
+        apk add --no-cache build-base postgresql-dev nodejs npm tzdata git &&
+        bundle check || bundle install &&
+        bundle exec rails db:create db:migrate &&
+        bundle exec rails server -b 0.0.0.0 -p 3000
+      "
+    environment:
+      - RAILS_ENV=development
+      - DATABASE_URL=postgres://requiem:requiem@db:5432/requiem?sslmode=disable
+      - REDIS_URL=redis://redis:6379
+      - SECRET_KEY_BASE=development_secret_key_base_change_in_production
+    volumes:
+      - ../../apps/dashboard:/app
+      - bundle_cache:/usr/local/bundle
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    stdin_open: true
+    tty: true
+
+  # Sidekiq for background jobs
+  sidekiq:
+    image: ruby:3.4-alpine
+    working_dir: /app
+    command: >
+      sh -c "
+        apk add --no-cache build-base postgresql-dev tzdata &&
+        bundle check || bundle install &&
+        bundle exec sidekiq
+      "
+    environment:
+      - RAILS_ENV=development
+      - DATABASE_URL=postgres://requiem:requiem@db:5432/requiem?sslmode=disable
+      - REDIS_URL=redis://redis:6379
+    volumes:
+      - ../../apps/dashboard:/app
+      - bundle_cache:/usr/local/bundle
+    depends_on:
+      - db
+      - redis
+
+volumes:
+  db_data:
+  redis_data:
+  bundle_cache:
