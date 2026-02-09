@@ -13,10 +13,10 @@
 │   api.requiems.xyz           │  │   requiems.xyz               │
 │   (Cloudflare Worker)        │  │   (Rails Dashboard)          │
 │                              │  │                              │
-│  ┌────────┐  ┌────────┐     │  │  ┌────────┐  ┌────────┐     │
-│  │Auth KV │  │Credits │     │  │  │Landing │  │Dashboard│    │
-│  │        │  │  D1    │     │  │  │ Page   │  │/Admin   │    │
-│  └────────┘  └────────┘     │  │  └────────┘  └────────┘     │
+│  ┌────────┐  ┌────────┐      │  │  ┌────────┐  ┌─────────┐     │
+│  │Auth KV │  │Credits │      │  │  │Landing │  │Dashboard│     │
+│  │        │  │  D1    │      │  │  │ Page   │  │ & Admin │     │
+│  └────────┘  └────────┘      │  │  └────────┘  └─────────┘     │
 │                              │  │                              │
 │  x-api-key validation        │  │  User management             │
 │  Rate limiting               │  │  API key creation            │
@@ -29,22 +29,22 @@
 │              internal.requiems.xyz (Go Backend)                   │
 │                      (Hetzner VPS)                                │
 │                                                                   │
-│  ┌────────────────────────────────────────────────────────┐      │
+│  ┌─────────────────────────────────────────────────────────┐      │
 │  │              PostgreSQL (Shared Database)               │      │
 │  │                                                         │      │
 │  │  Go Tables:                                             │      │
-│  │    - advice, quotes, words (business data)             │      │
+│  │    - advice, quotes, words (business data)              │      │
 │  │                                                         │      │
 │  │  Rails Tables:                                          │      │
-│  │    - users, api_keys, subscriptions                    │      │
-│  │    - usage_logs, daily_usage_summaries                 │      │
-│  │    - credit_adjustments, audit_logs, abuse_reports     │      │
-│  └────────────────────────────────────────────────────────┘      │
+│  │    - users, api_keys, subscriptions                     │      │
+│  │    - usage_logs, daily_usage_summaries                  │      │
+│  │    - credit_adjustments, audit_logs, abuse_reports      │      │
+│  └─────────────────────────────────────────────────────────┘      │
 │                                                                   │
-│  ┌────────────────────────────────────────────────────────┐      │
+│  ┌─────────────────────────────────────────────────────────┐      │
 │  │                      Redis                              │      │
 │  │              (Sidekiq background jobs)                  │      │
-│  └────────────────────────────────────────────────────────┘      │
+│  └─────────────────────────────────────────────────────────┘      │
 └───────────────────────────────────────────────────────────────────┘
 ```
 
@@ -94,7 +94,7 @@
 - Database queries for business data
 - Only accessible with X-Backend-Secret header
 
-**Technology:** Go 1.23, Chi router
+**Technology:** Go 1.24, Chi router
 
 ### 4. Shared PostgreSQL
 
@@ -192,10 +192,10 @@ WHERE api_key = ? AND used_at >= '2024-12-01T00:00:00Z'
 **Used for:**
 
 - **All business data** (advice, quotes, words, etc.)
-- **User accounts** (future)
+- **User accounts**
 - **Anything the API actually returns**
 
-**Why PostgreSQL (not D1):**
+**Why PostgreSQL:**
 
 - Complex queries, joins, full-text search
 - Larger datasets (millions of rows)
@@ -213,13 +213,11 @@ CREATE TABLE words (id SERIAL, word TEXT, definition TEXT, ...);
 
 ## Why This Split?
 
-| Store          | Location                | Latency  | Use Case                |
-| -------------- | ----------------------- | -------- | ----------------------- |
-| **KV**         | Edge (global)           | <10ms    | Auth, rate limits       |
-| **D1**         | Edge (global)           | ~50ms    | Usage tracking, billing |
-| **PostgreSQL** | Backend (single region) | ~100ms\* | Business data           |
-
-\*Backend latency depends on user's distance to server region.
+| Store          | Location                | Latency | Use Case                |
+| -------------- | ----------------------- | ------- | ----------------------- |
+| **KV**         | Edge (global)           | <10ms   | Auth, rate limits       |
+| **D1**         | Edge (global)           | ~50ms   | Usage tracking, billing |
+| **PostgreSQL** | Backend (single region) | ~100ms  | Business data           |
 
 **The Gateway (Worker) handles:**
 
@@ -230,13 +228,6 @@ CREATE TABLE words (id SERIAL, word TEXT, definition TEXT, ...);
 
 - Business logic - complex queries on PostgreSQL
 - No auth overhead - trusts the gateway
-
-## What We DON'T Use
-
-- **R2 (Object Storage):** Not needed. We don't store files/images.
-- **Redis:** Provisioned in Docker Compose for future use (queues/cache), but
-  not currently used. PostgreSQL handles our needs.
-- **Durable Objects:** Overkill. KV + D1 covers our needs.
 
 ## Request Flow
 
@@ -271,47 +262,9 @@ CREATE TABLE words (id SERIAL, word TEXT, definition TEXT, ...);
    └─ X-RateLimit-Remaining: 149
 ```
 
-## Code Layout
-
-```
-apps/
-├── api/                    # Go backend entrypoint
-│   └── main.go
-└── edge-auth/              # Cloudflare Worker (gateway)
-    ├── src/
-    │   ├── index.ts        # Main handler
-    │   ├── env.ts          # t3-env validation
-    │   ├── types.ts        # TypeScript types
-    │   ├── config.ts       # Plans, endpoint costs
-    │   ├── rate-limit.ts   # KV rate limiting
-    │   ├── credits.ts      # D1 usage tracking
-    │   └── http.ts         # Response helpers
-    ├── schema.sql          # D1 schema
-    ├── wrangler.toml       # Worker config
-    └── package.json
-
-internal/
-├── app/                    # Router setup, healthz
-├── platform/               # Cross-cutting (config, db, httpx)
-│   ├── config/
-│   ├── db/
-│   └── httpx/
-└── text/                   # Domain: text APIs
-    ├── router.go           # Mounts advice, quotes, words
-    ├── advice/
-    ├── quotes/
-    └── words/
-
-infra/
-├── migrations/             # PostgreSQL migrations
-├── docker/
-└── caddy/
-```
-
 ## Security Model
 
 1. **API Keys** stored in KV, looked up on every request
 2. **Rate limits** enforced at edge before backend is touched
-3. **Backend URL** is secret (not in code, set via `wrangler secret`)
-4. **Backend Secret** header required - even if URL leaks, can't call without it
-5. **Backend trusts gateway** - no redundant auth checks
+3. **Backend Secret** header required
+4. **Backend trusts gateway** - no redundant auth checks
