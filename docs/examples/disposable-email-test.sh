@@ -13,7 +13,7 @@ echo ""
 echo "1. Testing single disposable email..."
 curl -X POST "$BASE_URL/disposable/check" \
   -H "Content-Type: application/json" \
-  -d '{"email": "user@tempmail.com"}' \
+  -d '{"email": "user@mailinator.com"}' \
   -w "\n\n"
 
 # Test 2: Check Single Email (Not Disposable)
@@ -29,7 +29,7 @@ curl -X POST "$BASE_URL/disposable/check-batch" \
   -H "Content-Type: application/json" \
   -d '{
     "emails": [
-      "user1@tempmail.com",
+      "user1@mailinator.com",
       "user2@gmail.com",
       "user3@10minutemail.com",
       "user4@outlook.com"
@@ -39,7 +39,7 @@ curl -X POST "$BASE_URL/disposable/check-batch" \
 
 # Test 4: Check Domain
 echo "4. Testing domain check..."
-curl "$BASE_URL/disposable/domain/tempmail.com" \
+curl "$BASE_URL/disposable/domain/guerrillamail.com" \
   -w "\n\n"
 
 # Test 5: Get Stats

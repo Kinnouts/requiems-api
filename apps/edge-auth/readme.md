@@ -73,7 +73,7 @@ User Request
     │
     ▼
 ┌─────────────────────────────────────────┐
-│  Worker (api.requiems-api.xyz)          │
+│  Worker (api.requiems.xyz)              │
 │                                         │
 │  1. Validate API key (KV lookup)        │
 │  2. Check rate limit (KV counter)       │

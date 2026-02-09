@@ -9,12 +9,12 @@ We build, operate, and scale the APIs. You focus on shipping product.
 
 ## Quick Links
 
-| Resource         | URL                                                              |
-| ---------------- | ---------------------------------------------------------------- |
-| 🌐 Website       | [requiems-api.xyz](https://requiems-api.xyz)                     |
-| 📚 Documentation | [requiems-api.xyz/docs](https://requiems-api.xyz/docs)           |
-| 🎮 Dashboard     | [requiems-api.xyz/dashboard](https://requiems-api.xyz/dashboard) |
-| 🔗 API Base URL  | `https://api.requiems-api.xyz`                                   |
+| Resource         | URL                                                        |
+| ---------------- | ---------------------------------------------------------- |
+| 🌐 Website       | [requiems.xyz](https://requiems.xyz)                       |
+| 📚 Documentation | [requiems.xyz/docs](https://requiems.xyz/docs)             |
+| 🎮 Dashboard     | [requiems.xyz/dashboard](https://requiems.xyz/dashboard)   |
+| 🔗 API Base URL  | `https://api.requiems.xyz`                                 |
 
 ---
 
@@ -25,13 +25,13 @@ We build, operate, and scale the APIs. You focus on shipping product.
 
 ### Getting Started
 
-1. Visit [requiems-api.xyz](https://requiems-api.xyz)
-2. Sign up for a free account git push
-3. Try endpoints in the [playground](https://requiems-api.xyz/playground)
+1. Visit [requiems.xyz](https://requiems.xyz)
+2. Sign up for a free account
+3. Try endpoints in the [playground](https://requiems.xyz/playground)
 4. Upgrade when you need more
 
 ### Example Request
 
 ```bash
-curl -H "x-api-key: YOUR_KEY" https://api.requiems-api.xyz/v1/text/advice
+curl -H "x-api-key: YOUR_KEY" https://api.requiems.xyz/v1/text/advice
 ```
