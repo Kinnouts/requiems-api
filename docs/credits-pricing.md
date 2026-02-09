@@ -115,8 +115,7 @@ X-Credits-Reset: 2025-12-16T00:00:00Z
 
 ### Dashboard
 
-View detailed usage at
-[requiems.xyz/dashboard](https://requiems.xyz/dashboard):
+View detailed usage at [requiems.xyz/dashboard](https://requiems.xyz/dashboard):
 
 - Real-time credit balance
 - Usage by endpoint

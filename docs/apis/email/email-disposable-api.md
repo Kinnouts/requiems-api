@@ -1,6 +1,9 @@
 # Disposable Email Detection API
 
-This API provides endpoints to detect disposable/temporary email addresses and domains using the [is-email-disposable](https://github.com/bobadilla-tech/is-email-disposable) package.
+This API provides endpoints to detect disposable/temporary email addresses and
+domains using the
+[is-email-disposable](https://github.com/bobadilla-tech/is-email-disposable)
+package.
 
 ## Base URL
 
@@ -46,7 +49,8 @@ curl -X POST https://api.requiems.xyz/v1/email/disposable/check \
 
 ### 2. Check Multiple Emails (Batch)
 
-Check multiple email addresses in a single request. Maximum 100 emails per batch.
+Check multiple email addresses in a single request. Maximum 100 emails per
+batch.
 
 **Endpoint:** `POST /v1/email/disposable/check-batch`
 
@@ -214,7 +218,8 @@ All endpoints may return error responses in the following format:
 
 ### Common Error Codes
 
-- `400 Bad Request` - Invalid input (missing email, invalid JSON, batch limit exceeded)
+- `400 Bad Request` - Invalid input (missing email, invalid JSON, batch limit
+  exceeded)
 - `503 Service Unavailable` - Service error
 
 ---
@@ -303,6 +308,8 @@ if (result.is_disposable) {
 
 ## Data Source
 
-The disposable domains blocklist is maintained by [disposable-email-domains](https://github.com/disposable-email-domains/disposable-email-domains) and is automatically updated monthly.
+The disposable domains blocklist is maintained by
+[disposable-email-domains](https://github.com/disposable-email-domains/disposable-email-domains)
+and is automatically updated monthly.
 
 ---

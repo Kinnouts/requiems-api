@@ -51,9 +51,11 @@
 ## Components
 
 ### 1. Cloudflare Worker (api.requiems.xyz)
+
 **Purpose:** Public API gateway with global edge distribution
 
 **Responsibilities:**
+
 - API key validation (Cloudflare KV)
 - Rate limiting (KV counters)
 - Credit tracking (D1 SQLite)
@@ -62,9 +64,11 @@
 **Technology:** TypeScript on Cloudflare Workers
 
 ### 2. Rails Dashboard (requiems.xyz)
+
 **Purpose:** Public-facing web application
 
 **Responsibilities:**
+
 - Landing page and marketing
 - User registration and authentication
 - User dashboard (`/dashboard/*`)
@@ -81,9 +85,11 @@
 **Technology:** Rails 8.1, Tailwind CSS, Hotwire (Turbo + Stimulus)
 
 ### 3. Go Backend (internal.requiems.xyz)
+
 **Purpose:** Internal business logic API
 
 **Responsibilities:**
+
 - Execute business logic for all API endpoints
 - Database queries for business data
 - Only accessible with X-Backend-Secret header
@@ -91,17 +97,21 @@
 **Technology:** Go 1.23, Chi router
 
 ### 4. Shared PostgreSQL
+
 **Purpose:** Single source of truth for all data
 
 **Schema Separation:**
+
 - **Go migrations:** Business data tables
 - **Rails migrations:** User/account data tables
 - Separate migration tracking tables to avoid conflicts
 
 ### 5. Redis
+
 **Purpose:** Background job queue for Rails
 
 **Used for:**
+
 - Sidekiq background jobs
 - Usage sync from Cloudflare D1
 - Email sending
