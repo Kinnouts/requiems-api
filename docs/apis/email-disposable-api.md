@@ -15,6 +15,7 @@ Check if a single email address is disposable.
 **Endpoint:** `POST /v1/email/disposable/check`
 
 **Request Body:**
+
 ```json
 {
   "email": "user@tempmail.com"
@@ -22,6 +23,7 @@ Check if a single email address is disposable.
 ```
 
 **Response:** `200 OK`
+
 ```json
 {
   "email": "user@tempmail.com",
@@ -31,16 +33,12 @@ Check if a single email address is disposable.
 ```
 
 **Example:**
+
 ```bash
 # Production
 curl -X POST https://api.requiems.xyz/v1/email/disposable/check \
   -H "Content-Type: application/json" \
   -H "x-api-key: YOUR_API_KEY" \
-  -d '{"email": "user@mailinator.com"}'
-
-# Local development
-curl -X POST http://localhost:6969/v1/email/disposable/check \
-  -H "Content-Type: application/json" \
   -d '{"email": "user@mailinator.com"}'
 ```
 
@@ -53,17 +51,15 @@ Check multiple email addresses in a single request. Maximum 100 emails per batch
 **Endpoint:** `POST /v1/email/disposable/check-batch`
 
 **Request Body:**
+
 ```json
 {
-  "emails": [
-    "user1@tempmail.com",
-    "user2@gmail.com",
-    "user3@10minutemail.com"
-  ]
+  "emails": ["user1@tempmail.com", "user2@gmail.com", "user3@10minutemail.com"]
 }
 ```
 
 **Response:** `200 OK`
+
 ```json
 {
   "results": [
@@ -88,6 +84,7 @@ Check multiple email addresses in a single request. Maximum 100 emails per batch
 ```
 
 **Example:**
+
 ```bash
 # Production
 curl -X POST https://api.requiems.xyz/v1/email/disposable/check-batch \
@@ -100,20 +97,10 @@ curl -X POST https://api.requiems.xyz/v1/email/disposable/check-batch \
       "user3@10minutemail.com"
     ]
   }'
-
-# Local development
-curl -X POST http://localhost:6969/v1/email/disposable/check-batch \
-  -H "Content-Type: application/json" \
-  -d '{
-    "emails": [
-      "user1@mailinator.com",
-      "user2@gmail.com",
-      "user3@10minutemail.com"
-    ]
-  }'
 ```
 
 **Validation:**
+
 - Maximum 100 emails per batch
 - Returns `400 Bad Request` if limit exceeded
 
@@ -126,9 +113,11 @@ Check if a specific domain is in the disposable list.
 **Endpoint:** `GET /v1/email/disposable/domain/{domain}`
 
 **Path Parameters:**
+
 - `domain` - The domain to check (e.g., `tempmail.com`)
 
 **Response:** `200 OK`
+
 ```json
 {
   "domain": "tempmail.com",
@@ -137,13 +126,11 @@ Check if a specific domain is in the disposable list.
 ```
 
 **Example:**
+
 ```bash
 # Production
 curl https://api.requiems.xyz/v1/email/disposable/domain/guerrillamail.com \
   -H "x-api-key: YOUR_API_KEY"
-
-# Local development
-curl http://localhost:6969/v1/email/disposable/domain/guerrillamail.com
 ```
 
 ---
@@ -155,18 +142,15 @@ Get a paginated list of all disposable email domains in the blocklist.
 **Endpoint:** `GET /v1/email/disposable/domains`
 
 **Query Parameters:**
+
 - `page` (optional) - Page number, default: `1`
 - `per_page` (optional) - Results per page (1-1000), default: `100`
 
 **Response:** `200 OK`
+
 ```json
 {
-  "domains": [
-    "0-mail.com",
-    "0815.ru",
-    "0clickemail.com",
-    "...more domains..."
-  ],
+  "domains": ["0-mail.com", "0815.ru", "0clickemail.com", "...more domains..."],
   "total": 15432,
   "page": 1,
   "per_page": 100,
@@ -175,6 +159,7 @@ Get a paginated list of all disposable email domains in the blocklist.
 ```
 
 **Example:**
+
 ```bash
 # Production - Get first page (default 100 results)
 curl https://api.requiems.xyz/v1/email/disposable/domains \
@@ -183,13 +168,10 @@ curl https://api.requiems.xyz/v1/email/disposable/domains \
 # Production - Get page 2 with 50 results per page
 curl "https://api.requiems.xyz/v1/email/disposable/domains?page=2&per_page=50" \
   -H "x-api-key: YOUR_API_KEY"
-
-# Local development
-curl http://localhost:6969/v1/email/disposable/domains
-curl "http://localhost:6969/v1/email/disposable/domains?page=2&per_page=50"
 ```
 
 **Notes:**
+
 - There are thousands of domains in the blocklist
 - Use pagination to avoid overwhelming responses
 - `has_more` indicates if there are more pages available
@@ -203,6 +185,7 @@ Get statistics about the disposable domains blocklist.
 **Endpoint:** `GET /v1/email/disposable/stats`
 
 **Response:** `200 OK`
+
 ```json
 {
   "total_domains": 15432
@@ -210,13 +193,11 @@ Get statistics about the disposable domains blocklist.
 ```
 
 **Example:**
+
 ```bash
 # Production
 curl https://api.requiems.xyz/v1/email/disposable/stats \
   -H "x-api-key: YOUR_API_KEY"
-
-# Local development
-curl http://localhost:6969/v1/email/disposable/stats
 ```
 
 ---
@@ -245,19 +226,22 @@ All endpoints may return error responses in the following format:
 Prevent users from signing up with disposable email addresses:
 
 ```javascript
-const response = await fetch('https://api.requiems.xyz/v1/email/disposable/check', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'x-api-key': 'YOUR_API_KEY'
+const response = await fetch(
+  "https://api.requiems.xyz/v1/email/disposable/check",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": "YOUR_API_KEY",
+    },
+    body: JSON.stringify({ email: userEmail }),
   },
-  body: JSON.stringify({ email: userEmail })
-});
+);
 
 const result = await response.json();
 
 if (result.is_disposable) {
-  throw new Error('Please use a permanent email address');
+  throw new Error("Please use a permanent email address");
 }
 ```
 
@@ -266,21 +250,26 @@ if (result.is_disposable) {
 Clean a list of email addresses by checking them in batches:
 
 ```javascript
-const emails = [/* array of up to 100 emails */];
+const emails = [
+  /* array of up to 100 emails */
+];
 
-const response = await fetch('https://api.requiems.xyz/v1/email/disposable/check-batch', {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-    'x-api-key': 'YOUR_API_KEY'
+const response = await fetch(
+  "https://api.requiems.xyz/v1/email/disposable/check-batch",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-api-key": "YOUR_API_KEY",
+    },
+    body: JSON.stringify({ emails }),
   },
-  body: JSON.stringify({ emails })
-});
+);
 
 const result = await response.json();
 const validEmails = result.results
-  .filter(r => !r.is_disposable)
-  .map(r => r.email);
+  .filter((r) => !r.is_disposable)
+  .map((r) => r.email);
 ```
 
 ### Domain Allowlist/Blocklist
@@ -288,14 +277,17 @@ const validEmails = result.results
 Check if a domain should be blocked:
 
 ```javascript
-const domain = email.split('@')[1];
-const response = await fetch(`https://api.requiems.xyz/v1/email/disposable/domain/${domain}`, {
-  headers: { 'x-api-key': 'YOUR_API_KEY' }
-});
+const domain = email.split("@")[1];
+const response = await fetch(
+  `https://api.requiems.xyz/v1/email/disposable/domain/${domain}`,
+  {
+    headers: { "x-api-key": "YOUR_API_KEY" },
+  },
+);
 const result = await response.json();
 
 if (result.is_disposable) {
-  console.log('This domain is on the blocklist');
+  console.log("This domain is on the blocklist");
 }
 ```
 
@@ -314,12 +306,3 @@ if (result.is_disposable) {
 The disposable domains blocklist is maintained by [disposable-email-domains](https://github.com/disposable-email-domains/disposable-email-domains) and is automatically updated monthly.
 
 ---
-
-## Integration with Gateway
-
-These endpoints can be integrated with the Cloudflare Worker gateway for:
-- Rate limiting
-- API key authentication
-- Credit tracking
-
-See [architecture.md](./architecture.md) for more details on the gateway integration.

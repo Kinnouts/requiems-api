@@ -33,6 +33,7 @@ today, not infrastructure.
 
 ```bash
 # 1. Get your free API key at requiems.xyz (no credit card)
+
 # 2. Make your first call
 curl -H "x-api-key: YOUR_KEY" https://api.requiems.xyz/v1/email/disposable/check \
   -d '{"email":"test@tempmail.com"}'
