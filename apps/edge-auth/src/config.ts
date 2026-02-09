@@ -12,22 +12,17 @@ export const PLANS: Record<PlanName, PlanConfig> = {
     creditPeriod: "daily",
     ratePerMinute: 30,
   },
-  starter: {
-    creditLimit: 30_000,
+  developer: {
+    creditLimit: 500_000,
     creditPeriod: "monthly",
-    ratePerMinute: 300,
-  },
-  pro: {
-    creditLimit: 150_000,
-    creditPeriod: "monthly",
-    ratePerMinute: 1000,
+    ratePerMinute: 5000,
   },
   business: {
     creditLimit: 500_000,
     creditPeriod: "monthly",
     ratePerMinute: 5000,
   },
-  enterprise: {
+  professional: {
     creditLimit: Infinity,
     creditPeriod: "monthly",
     ratePerMinute: 50000,

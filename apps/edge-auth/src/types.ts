@@ -19,8 +19,9 @@ export interface ApiKeyData {
 
 /**
  * Plan names
+ * https://github.com/bobadilla-tech/requiems-api/docs/business.md
  */
-export type PlanName = "free" | "starter" | "pro" | "business" | "enterprise";
+export type PlanName = "free" | "developer" | "business" | "professional";
 
 /**
  * Plan configuration

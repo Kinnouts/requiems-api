@@ -1,7 +1,3 @@
--- D1 Schema for Requiem API Gateway
--- This runs in Cloudflare D1 (edge SQLite)
-
--- Usage tracking table
 CREATE TABLE IF NOT EXISTS credit_usage (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   api_key TEXT NOT NULL,

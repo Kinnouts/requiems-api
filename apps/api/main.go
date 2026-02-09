@@ -14,7 +14,8 @@ func main() {
 
 	cfg := config.Load()
 
-	a, err := app.New(ctx, cfg)
+	appInstance, err := app.New(ctx, cfg)
+
 	if err != nil {
 		log.Fatalf("failed to initialise app: %v", err)
 	}
@@ -23,7 +24,7 @@ func main() {
 	
 	log.Printf("API server listening on %s\n", addr)
 
-	if err := http.ListenAndServe(addr, a.Handler()); err != nil {
+	if err := http.ListenAndServe(addr, appInstance.Handler()); err != nil {
 		log.Fatalf("server error: %v", err)
 	}
 }

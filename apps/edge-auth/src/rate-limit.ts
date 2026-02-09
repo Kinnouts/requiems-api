@@ -11,10 +11,9 @@ import type {
 export function getPlanLimits(plan: PlanName): string {
   const limits: Record<PlanName, string> = {
     free: "50 credits/day",
-    starter: "30k credits/month",
-    pro: "150k credits/month",
+    developer: "150k credits/month",
     business: "500k credits/month",
-    enterprise: "custom limits",
+    professional: "custom limits",
   };
 
   return limits[plan];

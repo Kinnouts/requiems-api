@@ -12,7 +12,7 @@ export const env = createEnv({
     BACKEND_SECRET: z.string().min(32),
     ENVIRONMENT: z
       .enum(["development", "staging", "production"])
-      .default("development"),
+      .default("production"),
   },
   runtimeEnv: process.env,
   emptyStringAsUndefined: true,

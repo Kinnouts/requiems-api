@@ -1,5 +1,3 @@
-#!/usr/bin/env npx tsx
-
 import { execSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
 import type { ApiKeyData, PlanName } from "../src/types";
