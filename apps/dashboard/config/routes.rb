@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  # Note: Devise deprecation warnings about hash arguments are from Devise internals (v4.9.4)
+  # and will be resolved in a future Devise release for Rails 8.2 compatibility.
+  # These warnings don't affect functionality.
+
   # Devise authentication
   devise_for :users, controllers: {
     registrations: "users/registrations",

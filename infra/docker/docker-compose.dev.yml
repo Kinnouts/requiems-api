@@ -33,7 +33,7 @@ services:
     command: >
       sh -c "
         apk add --no-cache git &&
-        go install github.com/air-verse/air@latest &&
+        go install github.com/cosmtrek/air@v1.52.0 &&
         air
       "
     environment:
@@ -57,6 +57,8 @@ services:
         apk add --no-cache build-base postgresql-dev nodejs npm tzdata git yaml-dev &&
         bundle check || bundle install &&
         bundle exec rails db:create db:migrate &&
+        bundle exec rails tailwindcss:build &&
+        bundle exec rails tailwindcss:watch &
         bundle exec rails server -b 0.0.0.0 -p 3000
       "
     environment:
@@ -81,7 +83,7 @@ services:
     working_dir: /app
     command: >
       sh -c "
-        apk add --no-cache build-base postgresql-dev tzdata &&
+        apk add --no-cache build-base postgresql-dev tzdata yaml-dev &&
         bundle check || bundle install &&
         bundle exec sidekiq
       "
