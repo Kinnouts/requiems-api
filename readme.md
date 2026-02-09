@@ -9,12 +9,13 @@ We build, operate, and scale the APIs. You focus on shipping product.
 
 ## Quick Links
 
-| Resource         | URL                                                        |
-| ---------------- | ---------------------------------------------------------- |
-| 🌐 Website       | [requiems.xyz](https://requiems.xyz)                       |
-| 📚 Documentation | [requiems.xyz/docs](https://requiems.xyz/docs)             |
-| 🎮 Dashboard     | [requiems.xyz/dashboard](https://requiems.xyz/dashboard)   |
-| 🔗 API Base URL  | `https://api.requiems.xyz`                                 |
+| Resource         | URL                                                                            |
+| ---------------- | ------------------------------------------------------------------------------ |
+| 🌐 Website       | [requiems.xyz](https://requiems.xyz)                                           |
+| 📚 Documentation | [requiems.xyz/docs](https://requiems.xyz/docs)                                 |
+| 🎮 Dashboard     | [requiems.xyz/dashboard](https://requiems.xyz/dashboard)                       |
+| 🔗 API Base URL  | `https://api.requiems.xyz`                                                     |
+| 💼 LinkedIn      | [Requiems API](https://www.linkedin.com/showcase/requiems-api/)                |
 
 ---
 
