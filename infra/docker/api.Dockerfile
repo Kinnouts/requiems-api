@@ -6,13 +6,12 @@ WORKDIR /app
 COPY go.mod go.sum ./
 RUN go mod download
 
-# Copy only source code needed for build
-COPY apps ./apps
-COPY internal ./internal
+# Copy source code
+COPY . .
 
 # Build static binary
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
-    go build -o /out/api ./apps/api
+    go build -o /out/api .
 
 FROM alpine:3.20
 

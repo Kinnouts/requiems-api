@@ -9,9 +9,8 @@ require (
 )
 
 require (
-	github.com/bobadilla-tech/is-email-disposable v1.0.0 // indirect
-	github.com/bobadilla-tech/lorelai v1.3.3 // indirect
-
+	github.com/bobadilla-tech/is-email-disposable v1.0.0
+	github.com/bobadilla-tech/lorelai v1.3.3
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-multierror v1.1.1 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
