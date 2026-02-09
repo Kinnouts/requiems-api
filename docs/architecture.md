@@ -9,7 +9,7 @@
                                     │
                                     ▼
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                     api.requiems-api.xyz (Cloudflare Worker)                │
+│                     api.requiems.xyz (Cloudflare Worker)                │
 │                                                                             │
 │  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐                      │
 │  │ Auth (KV)   │    │ Rate Limit  │    │ Credits     │                      │
@@ -157,7 +157,7 @@ CREATE TABLE words (id SERIAL, word TEXT, definition TEXT, ...);
 ## Request Flow
 
 ```
-1. User calls: GET api.requiems-api.xyz/v1/text/advice
+1. User calls: GET api.requiems.xyz/v1/text/advice
    └─ Header: x-api-key: rq_live_abc123
 
 2. Worker receives request
