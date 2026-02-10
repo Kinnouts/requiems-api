@@ -74,8 +74,6 @@ services:
 
   caddy:
     image: caddy:2-alpine
-    profiles:
-      - prod
     environment:
       - BACKEND_SECRET=${BACKEND_SECRET}
     depends_on:
