@@ -12,7 +12,7 @@ today, not infrastructure.
 
 ---
 
-### Stop Building Infrastructure. Start Shipping Features.
+### Stop Building Infrastructure. Start Shipping Features
 
 **Ditch the integration hell:**
 
@@ -70,22 +70,7 @@ docker compose -f docker-compose.dev.yml up
 **That's it.** All services (API, Dashboard, Database, Caddy) start with hot
 reload. Edit any file and see changes instantly.
 
-→ [Full dev setup guide](infra/docker/README.md)
-
-## 📁 Repository Structure
-
-```
-apps/
-├── api/           # Go 1.23 backend (domain-driven design)
-├── dashboard/     # Rails 8 (UI + admin panel)
-└── edge-auth/     # Cloudflare Worker (auth gateway)
-
-infra/
-├── docker/        # Full dev environment
-└── caddy/         # Reverse proxy
-```
-
-→ [Full API developer docs](docs/)
+[Full dev setup guide](infra/docker/README.md) | [Full API developer docs](docs/)
 
 ---
 
@@ -96,10 +81,4 @@ infra/
 We welcome contributions of all sizes: bug fixes, performance improvements,
 documentation, or entire new API endpoints.
 
-→ [Contributing guidelines](CONTRIBUTING.md)
-
----
-
-**Questions or feedback?**
-[Open an issue](https://github.com/bobadilla-tech/requiems-api/issues) or reach
-out on [LinkedIn](https://www.linkedin.com/showcase/requiems-api/).
+→ [Contributing guidelines](contributing.md)
