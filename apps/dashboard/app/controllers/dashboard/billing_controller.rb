@@ -4,6 +4,8 @@ class Dashboard::BillingController < ApplicationController
   before_action :authenticate_user!
   layout "dashboard"
 
+  helper_method :valid_plan?
+
   def show
     @subscription = current_user.subscription
     @current_plan = @subscription&.plan_name || "free"

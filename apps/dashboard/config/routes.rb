@@ -35,11 +35,9 @@ Rails.application.routes.draw do
     end
 
     resource :billing, only: [:show, :update] do
-      collection do
-        post :checkout # Stripe checkout
-        post :portal # Stripe customer portal
-        delete :cancel_subscription
-      end
+      post :checkout, on: :member
+      post :portal, on: :member
+      delete :cancel_subscription, on: :member
     end
 
     resources :invoices, only: [:index, :show]

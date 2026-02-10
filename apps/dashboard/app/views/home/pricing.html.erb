@@ -111,7 +111,7 @@
           "Self-hosting available"
         ],
         cta_text: "Start Free Trial",
-        cta_url: new_user_registration_path,
+        cta_url: user_signed_in? ? dashboard_billing_path(plan: "developer") : new_user_registration_path(plan: "developer"),
         popular: false %>
 
       <!-- Business Plan (Most Popular) -->
@@ -134,7 +134,7 @@
           "Custom SLAs available"
         ],
         cta_text: "Start Free Trial",
-        cta_url: new_user_registration_path,
+        cta_url: user_signed_in? ? dashboard_billing_path(plan: "business") : new_user_registration_path(plan: "business"),
         popular: true %>
 
       <!-- Professional Plan -->
@@ -158,7 +158,7 @@
           "Dedicated account manager"
         ],
         cta_text: "Start Free Trial",
-        cta_url: new_user_registration_path,
+        cta_url: user_signed_in? ? dashboard_billing_path(plan: "professional") : new_user_registration_path(plan: "professional"),
         popular: false %>
     </div>
 
