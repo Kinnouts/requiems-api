@@ -87,6 +87,7 @@ Rails.application.routes.draw do
 
   # Webhooks (unprotected, verified by signature)
   namespace :webhooks do
+    post "lemonsqueezy", to: "lemonsqueezy#create"
     post "stripe", to: "stripe#create"
     post "cloudflare", to: "cloudflare#create" # Usage sync from Worker
   end

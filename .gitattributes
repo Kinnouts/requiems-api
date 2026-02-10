@@ -1,0 +1,13 @@
+# Exclude HTML from language statistics
+*.html linguist-detectable=false
+
+# Exclude shell scripts from language statistics
+*.sh linguist-detectable=false
+
+# Mark Rails asset files as vendored
+apps/dashboard/app/assets/* linguist-vendored
+apps/dashboard/public/* linguist-vendored
+apps/dashboard/vendor/* linguist-vendored
+
+**/node_modules/* linguist-vendored
+**/vendor/* linguist-vendored

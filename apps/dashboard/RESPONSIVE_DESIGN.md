@@ -2,7 +2,8 @@
 
 ## Overview
 
-The Requiems API Dashboard is fully responsive and optimized for mobile, tablet, and desktop devices using Tailwind CSS's mobile-first approach.
+The Requiems API Dashboard is fully responsive and optimized for mobile, tablet,
+and desktop devices using Tailwind CSS's mobile-first approach.
 
 ## Breakpoints
 
@@ -20,6 +21,7 @@ We use Tailwind's default breakpoints:
 ### 1. Layouts
 
 #### Dashboard Layout (`layouts/dashboard.html.erb`)
+
 ```erb
 <div class="lg:grid lg:grid-cols-12 lg:gap-8">
   <aside class="lg:col-span-3">
@@ -35,12 +37,14 @@ We use Tailwind's default breakpoints:
 - **Desktop**: Sidebar (25%) and content (75%) side-by-side
 
 #### Admin Layout (`layouts/admin.html.erb`)
+
 - Same grid pattern as dashboard layout
 - Admin sidebar sticky on desktop, normal flow on mobile
 
 ### 2. Navigation
 
 #### Desktop Navigation
+
 ```erb
 <div class="hidden sm:ml-8 sm:flex sm:space-x-8">
   <!-- Navigation links visible on sm+ -->
@@ -48,6 +52,7 @@ We use Tailwind's default breakpoints:
 ```
 
 #### Mobile Navigation
+
 ```erb
 <div class="flex items-center sm:hidden">
   <button data-controller="dropdown">
@@ -66,6 +71,7 @@ We use Tailwind's default breakpoints:
 ### 3. Grid Layouts
 
 #### Stats Cards
+
 ```erb
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
   <!-- Cards adapt based on screen size -->
@@ -77,6 +83,7 @@ We use Tailwind's default breakpoints:
 - **Desktop**: 4 columns
 
 #### Content Grid
+
 ```erb
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
   <div class="lg:col-span-2"><!-- Main content --></div>
@@ -197,6 +204,7 @@ All interactive elements have minimum 44px touch targets:
 ## Testing Checklist
 
 ### Mobile (375px - 639px)
+
 - ✅ Navbar collapses to hamburger menu
 - ✅ Tables scroll horizontally
 - ✅ Forms stack vertically
@@ -205,12 +213,14 @@ All interactive elements have minimum 44px touch targets:
 - ✅ Text is readable without zooming
 
 ### Tablet (640px - 1023px)
+
 - ✅ Navigation partially visible
 - ✅ Grid layouts show 2 columns
 - ✅ Sidebar remains stacked or side-by-side
 - ✅ Tables display properly
 
 ### Desktop (1024px+)
+
 - ✅ Full navigation visible
 - ✅ Sidebars fixed/sticky
 - ✅ Multi-column grid layouts
@@ -227,6 +237,7 @@ All interactive elements have minimum 44px touch targets:
 ## Accessibility
 
 All responsive elements maintain:
+
 - Proper ARIA labels
 - Keyboard navigation
 - Screen reader compatibility
@@ -243,6 +254,7 @@ All responsive elements maintain:
 ## Common Patterns
 
 ### Dashboard/Admin Sidebar
+
 ```css
 /* Mobile: Full width, stacks above content */
 /* Desktop: 3-column width, sticky positioning */
@@ -250,6 +262,7 @@ class="lg:col-span-3 sticky top-8"
 ```
 
 ### Content Areas
+
 ```css
 /* Mobile: Full width with margin-top */
 /* Desktop: 9-column width, no top margin */
@@ -257,6 +270,7 @@ class="lg:col-span-9 mt-8 lg:mt-0"
 ```
 
 ### Action Buttons
+
 ```css
 /* Mobile: Full width, stacked */
 /* Desktop: Inline, auto width */
