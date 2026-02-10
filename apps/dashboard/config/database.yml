@@ -90,8 +90,8 @@ test:
 production:
   primary:
     <<: *default
-    url: <%= ENV.fetch("DATABASE_URL") %>
+    url: <%= ENV.fetch("DATABASE_URL", "postgres://dummy:dummy@localhost/dummy") %>
   cable:
     <<: *default
-    url: <%= ENV.fetch("DATABASE_URL") %>
+    url: <%= ENV.fetch("DATABASE_URL", "postgres://dummy:dummy@localhost/dummy") %>
     migrations_paths: db/cable_migrate
