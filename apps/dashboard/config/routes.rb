@@ -97,5 +97,10 @@ Rails.application.routes.draw do
   # Public pages
   get "docs", to: "home#docs"
   get "pricing", to: "home#pricing"
+  get "examples", to: "examples#index"
   resources :apis, only: [:index, :show]
+  resources :examples, only: [:show]
+
+  # API Playground Proxy
+  post "api/proxy", to: "api_proxy#create"
 end
