@@ -52,7 +52,7 @@ Add Usage Headers & Return Response
 - Checks credit usage against plan limits
 - Queries Cloudflare D1 (SQLite at the edge)
 - Tracks per-endpoint credit costs
-- Supports daily reset (free tier) and monthly reset (paid tiers)
+- Monthly reset
 
 ### 4. Request Forwarding
 
@@ -160,12 +160,13 @@ X-RateLimit-Remaining: 4999
 
 ## Plan Tiers
 
-| Plan         | Credit Limit | Period  | Rate Limit |
-| ------------ | ------------ | ------- | ---------- |
-| Free         | 50           | Daily   | 30/min     |
-| Developer    | 500,000      | Monthly | 5,000/min  |
-| Business     | 500,000      | Monthly | 5,000/min  |
-| Professional | Unlimited    | Monthly | 50,000/min |
+| Plan         | Credit Limit | Period  | Rate Limit | Price      |
+| ------------ | ------------ | ------- | ---------- | ---------- |
+| Free         | 500          | Monthly | 30/min     | $0/month   |
+| Developer    | 100,000      | Monthly | 5,000/min  | $29/month  |
+| Business     | 1,000,000    | Monthly | 10,000/min | $74/month  |
+| Professional | 10,000,000   | Monthly | 50,000/min | $149/month |
+| Enterprise   | Unlimited    | Monthly | Unlimited  | Custom     |
 
 ## Endpoint Costs
 

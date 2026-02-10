@@ -66,14 +66,14 @@ export function filterHeaders(headers: Headers): Headers {
 }
 
 /**
- * Add credit and rate limit headers to response
+ * Add request usage and rate limit headers to response
  */
 export function addUsageHeaders(
   response: Response,
   headers: {
-    creditsUsed: number;
-    creditsRemaining: number;
-    creditsReset: string;
+    requestsUsed: number;
+    requestsRemaining: number;
+    requestsReset: string;
     plan: string;
     rateLimitLimit: number;
     rateLimitRemaining: number;
@@ -86,12 +86,12 @@ export function addUsageHeaders(
   });
 
   newResponse.headers.set("Access-Control-Allow-Origin", "*");
-  newResponse.headers.set("X-Credits-Used", headers.creditsUsed.toString());
+  newResponse.headers.set("X-Requests-Used", headers.requestsUsed.toString());
   newResponse.headers.set(
-    "X-Credits-Remaining",
-    headers.creditsRemaining.toString(),
+    "X-Requests-Remaining",
+    headers.requestsRemaining.toString(),
   );
-  newResponse.headers.set("X-Credits-Reset", headers.creditsReset);
+  newResponse.headers.set("X-Requests-Reset", headers.requestsReset);
   newResponse.headers.set("X-Plan", headers.plan);
   newResponse.headers.set(
     "X-RateLimit-Limit",

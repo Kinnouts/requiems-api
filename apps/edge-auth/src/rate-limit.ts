@@ -6,26 +6,26 @@ import type {
 } from "./types";
 
 /**
- * Get credit limits description for a plan
+ * Get request limits description for a plan
  */
 export function getPlanLimits(plan: PlanName): string {
   const limits: Record<PlanName, string> = {
-    free: "50 credits/day",
-    developer: "150k credits/month",
-    business: "500k credits/month",
-    professional: "custom limits",
+    free: "500 requests/month",
+    developer: "100k requests/month",
+    business: "1M requests/month",
+    professional: "10M requests/month",
+    enterprise: "unlimited requests/month",
   };
 
   return limits[plan];
 }
 
 /**
- * Get credit limit exceeded message based on period
+ * Get request limit exceeded message
+ * All plans are monthly, so this always returns the monthly message
  */
-export function getCreditLimitMessage(period: "daily" | "monthly"): string {
-  return period === "daily"
-    ? "Daily credit limit exceeded. Upgrade at requiems-api.xyz"
-    : "Monthly credit limit exceeded. Upgrade at requiems-api.xyz";
+export function getRequestLimitMessage(): string {
+  return "Monthly request limit exceeded. Upgrade at requiems-api.xyz";
 }
 
 export async function checkRateLimit(

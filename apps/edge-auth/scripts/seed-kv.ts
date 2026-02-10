@@ -33,9 +33,9 @@ const now = new Date().toISOString();
 
 const TEST_KEYS: TestKey[] = [
   testKey("free"),
-  testKey("starter"),
-  testKey("pro"),
+  testKey("developer"),
   testKey("business"),
+  testKey("professional"),
   testKey("enterprise"),
 ];
 
@@ -51,7 +51,7 @@ for (const { key, data } of TEST_KEYS) {
 
   try {
     execSync(
-      `npx wrangler kv:key put --binding=KV "${kvKey}" '${value}' --local`,
+      `bun x wrangler kv:key put --binding=KV "${kvKey}" '${value}' --local`,
       { stdio: "pipe" },
     );
     createdKeys.push({ key, plan: data.plan });

@@ -1,5 +1,5 @@
-import { getEndpointCost, PLANS } from "./config";
-import { checkCredits, recordUsage } from "./credits";
+import { getRequestMultiplier, PLANS } from "./config";
+import { checkRequestUsage, recordRequestUsage } from "./requests";
 import { env } from "./env";
 import {
   addUsageHeaders,
@@ -10,7 +10,7 @@ import {
   jsonResponse,
 } from "./http";
 import { createLogger, maskApiKey } from "./logger";
-import { checkRateLimit, getCreditLimitMessage } from "./rate-limit";
+import { checkRateLimit, getRequestLimitMessage } from "./rate-limit";
 
 import type { ApiKeyData, WorkerBindings } from "./types";
 
@@ -66,27 +66,27 @@ async function fetch(
     });
   }
 
-  const credits = await checkCredits(
+  const requestUsage = await checkRequestUsage(
     bindings,
     apiKey,
-    plan.creditPeriod,
-    plan.creditLimit,
+    "monthly",
+    plan.requestLimit,
     keyData.billingCycleStart,
   );
 
-  const endpointCost = getEndpointCost(request.method, pathname);
+  const requestMultiplier = getRequestMultiplier(request.method, pathname);
 
-  if (credits.usage >= plan.creditLimit) {
-    log.info("Credit limit exceeded", {
+  if (requestUsage.usage >= plan.requestLimit) {
+    log.info("Request limit exceeded", {
       key: maskApiKey(apiKey),
       plan: keyData.plan,
-      usage: credits.usage,
+      usage: requestUsage.usage,
     });
 
-    return jsonError(429, getCreditLimitMessage(plan.creditPeriod), {
-      "X-Credits-Used": "0",
-      "X-Credits-Remaining": "0",
-      "X-Credits-Reset": credits.resetAt,
+    return jsonError(429, getRequestLimitMessage(), {
+      "X-Requests-Used": "0",
+      "X-Requests-Remaining": "0",
+      "X-Requests-Reset": requestUsage.resetAt,
       "X-Plan": keyData.plan,
     });
   }
@@ -115,9 +115,9 @@ async function fetch(
     });
 
     const response = addUsageHeaders(backendResponse, {
-      creditsUsed: 0,
-      creditsRemaining: credits.remaining,
-      creditsReset: credits.resetAt,
+      requestsUsed: 0,
+      requestsRemaining: requestUsage.remaining,
+      requestsReset: requestUsage.resetAt,
       plan: keyData.plan,
       rateLimitLimit: plan.ratePerMinute,
       rateLimitRemaining: rateLimit.remaining,
@@ -126,12 +126,12 @@ async function fetch(
     return response;
   }
 
-  void recordUsage(bindings, apiKey, pathname, endpointCost);
+  void recordRequestUsage(bindings, apiKey, pathname, requestMultiplier);
 
   const response = addUsageHeaders(backendResponse, {
-    creditsUsed: endpointCost,
-    creditsRemaining: Math.max(0, credits.remaining - endpointCost),
-    creditsReset: credits.resetAt,
+    requestsUsed: requestMultiplier,
+    requestsRemaining: Math.max(0, requestUsage.remaining - requestMultiplier),
+    requestsReset: requestUsage.resetAt,
     plan: keyData.plan,
     rateLimitLimit: plan.ratePerMinute,
     rateLimitRemaining: rateLimit.remaining,

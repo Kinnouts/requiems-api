@@ -1,12 +1,12 @@
-import type { CreditCheckResult, WorkerBindings } from "./types";
+import type { RequestCheckResult, WorkerBindings } from "./types";
 
 /**
- * Get current credit usage from D1
+ * Get current request usage from D1
  *
- * For free tier: queries today's usage (resets at midnight UTC)
- * For paid tier: queries current billing month's usage
+ * Note: Database tables still use "credit_" naming for historical reasons,
+ * but we treat these as request counts in the code.
  */
-export async function getUsage(
+export async function getRequestUsage(
   bindings: WorkerBindings,
   apiKey: string,
   period: "daily" | "monthly",
@@ -28,33 +28,33 @@ export async function getUsage(
 }
 
 /**
- * Record credit usage in D1
+ * Record request usage in D1
  */
-export async function recordUsage(
+export async function recordRequestUsage(
   bindings: WorkerBindings,
   apiKey: string,
   endpoint: string,
-  credits: number,
+  requests: number,
 ): Promise<void> {
   await bindings.DB.prepare(`
     INSERT INTO credit_usage (api_key, endpoint, credits_used, used_at)
     VALUES (?, ?, ?, datetime('now'))
   `)
-    .bind(apiKey, endpoint, credits)
+    .bind(apiKey, endpoint, requests)
     .run();
 }
 
 /**
- * Check credits and get current status
+ * Check request usage and get current status
  */
-export async function checkCredits(
+export async function checkRequestUsage(
   bindings: WorkerBindings,
   apiKey: string,
   period: "daily" | "monthly",
   limit: number,
   billingCycleStart?: string,
-): Promise<CreditCheckResult> {
-  const usage = await getUsage(bindings, apiKey, period, billingCycleStart);
+): Promise<RequestCheckResult> {
+  const usage = await getRequestUsage(bindings, apiKey, period, billingCycleStart);
   const remaining = Math.max(0, limit - usage);
   const resetAt = getResetTime(period, billingCycleStart);
 
@@ -68,7 +68,7 @@ export async function checkCredits(
 
 /**
  * Get start of today (midnight UTC)
- * Free tier credits reset here
+ * Used for daily reset periods
  */
 export function getTodayStart(): string {
   const now = new Date();
@@ -88,7 +88,7 @@ export function getMonthStart(): string {
 }
 
 /**
- * Get when credits will reset
+ * Get when request quota will reset
  */
 export function getResetTime(
   period: "daily" | "monthly",

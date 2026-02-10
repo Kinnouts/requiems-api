@@ -21,16 +21,15 @@ export interface ApiKeyData {
  * Plan names
  * https://github.com/bobadilla-tech/requiems-api/docs/business.md
  */
-export type PlanName = "free" | "developer" | "business" | "professional";
+export type PlanName = "free" | "developer" | "business" | "professional" | "enterprise";
 
 /**
  * Plan configuration
+ * All plans use monthly billing cycles
  */
 export interface PlanConfig {
-  /** Credit limit for the period */
-  creditLimit: number;
-  /** Credit period (daily for free, monthly for paid) */
-  creditPeriod: "daily" | "monthly";
+  /** Monthly request limit */
+  requestLimit: number;
   /** Max requests per minute */
   ratePerMinute: number;
 }
@@ -45,9 +44,9 @@ export interface RateLimitResult {
 }
 
 /**
- * Credit check result
+ * Request usage check result
  */
-export interface CreditCheckResult {
+export interface RequestCheckResult {
   usage: number;
   remaining: number;
   limit: number;
