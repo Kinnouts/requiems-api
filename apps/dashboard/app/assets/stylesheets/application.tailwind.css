@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+/* Syntax Highlighting */
+@import "https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css";
+
+/* Date Picker */
+@import "https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css";

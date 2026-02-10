@@ -97,7 +97,7 @@ class Dashboard::BillingController < ApplicationController
       "developer" => {
         name: "Developer",
         price_monthly: 30,
-        price_yearly: 240, # $20/month billed yearly
+        price_yearly: 300, # $25/month billed yearly
         requests_per_month: 100_000,
         rate_limit_per_minute: 5_000,
         lemonsqueezy_variant_id_monthly: ENV["LEMONSQUEEZY_DEVELOPER_MONTHLY_VARIANT_ID"],
@@ -112,7 +112,7 @@ class Dashboard::BillingController < ApplicationController
       "business" => {
         name: "Business",
         price_monthly: 75,
-        price_yearly: 600, # $50/month billed yearly
+        price_yearly: 750, # $62.50/month billed yearly
         requests_per_month: 1_000_000,
         rate_limit_per_minute: 10_000,
         lemonsqueezy_variant_id_monthly: ENV["LEMONSQUEEZY_BUSINESS_MONTHLY_VARIANT_ID"],
@@ -128,7 +128,7 @@ class Dashboard::BillingController < ApplicationController
       "professional" => {
         name: "Professional",
         price_monthly: 150,
-        price_yearly: 1200, # $100/month billed yearly
+        price_yearly: 1500, # $125/month billed yearly
         requests_per_month: 10_000_000,
         rate_limit_per_minute: 50_000,
         lemonsqueezy_variant_id_monthly: ENV["LEMONSQUEEZY_PROFESSIONAL_MONTHLY_VARIANT_ID"],

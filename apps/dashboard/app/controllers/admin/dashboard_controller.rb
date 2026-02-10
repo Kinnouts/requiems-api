@@ -44,9 +44,9 @@ class Admin::DashboardController < ApplicationController
   def calculate_mrr
     # Calculate Monthly Recurring Revenue
     plan_prices = {
-      "developer" => 59,
-      "business" => 149,
-      "professional" => 299
+      "developer" => 30,
+      "business" => 75,
+      "professional" => 150
     }
 
     Subscription.where.not(plan_name: "free")
