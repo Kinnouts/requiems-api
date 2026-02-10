@@ -11,6 +11,7 @@ import {
 } from "./http";
 import { createLogger, maskApiKey } from "./logger";
 import { checkRateLimit, getRequestLimitMessage } from "./rate-limit";
+import { handleUsageExport } from "./usage-export";
 
 import type { ApiKeyData, WorkerBindings } from "./types";
 
@@ -18,13 +19,18 @@ async function fetch(
   request: Request,
   bindings: WorkerBindings,
 ): Promise<Response> {
-  const log = createLogger(request);
   const url = new URL(request.url);
   const pathname = url.pathname;
 
   if (pathname === "/healthz") {
     return jsonResponse({ status: "ok" });
   }
+
+  if (pathname === "/internal/usage/export") {
+    return handleUsageExport(request, bindings);
+  }
+
+  const log = createLogger(request);
 
   if (request.method === "OPTIONS") {
     return corsResponse;
