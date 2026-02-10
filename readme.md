@@ -48,15 +48,10 @@ infrastructure to maintain.
 
 ## 🏗️ Built for Scale, Designed for Speed
 
-**Multi-language monorepo. Production-grade from day one.**
-
-- **Go 1.23 API** – Lightning-fast backend with domain-driven design
-- **Rails 8 Dashboard** – Beautiful UI for users and admins
+- **Go API** – Lightning-fast backend with domain-driven design
+- **Rails Dashboard** – Beautiful UI for users and admins
 - **Cloudflare Worker Gateway** – Global edge network handling auth, rate
   limiting, and credit tracking
-
-**Request flow:** Cloudflare Edge → Auth & Rate Limit → Go Backend → Response in
-~150ms
 
 ## 🚀 Local Development in One Command
 
