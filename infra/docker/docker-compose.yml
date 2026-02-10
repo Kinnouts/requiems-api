@@ -69,8 +69,7 @@ services:
       - db
       - redis
     command: >
-      sh -c "./bin/rails db:schema:load:cache &&
-             ./bin/rails db:prepare &&
+      sh -c "./bin/rails db:prepare &&
              ./bin/thrust ./bin/rails server"
 
   sidekiq:
