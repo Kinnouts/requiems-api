@@ -1,0 +1,99 @@
+# API Catalog Configuration
+# Defines all APIs available in the Requiems API platform
+
+categories:
+  - id: email
+    name: Email APIs
+    icon: "📧"
+    description: Validate, verify, and analyze email addresses
+
+  - id: text
+    name: Text APIs
+    icon: "📝"
+    description: Generate and manipulate text content
+
+  - id: data
+    name: Data APIs
+    icon: "📊"
+    description: Access structured data and utilities
+    coming_soon: true
+
+  - id: validation
+    name: Validation APIs
+    icon: "✓"
+    description: Validate various data formats
+    coming_soon: true
+
+  - id: conversion
+    name: Conversion APIs
+    icon: "🔄"
+    description: Convert between formats and units
+    coming_soon: true
+
+  - id: security
+    name: Security APIs
+    icon: "🔒"
+    description: Security and encryption utilities
+    coming_soon: true
+
+apis:
+  # Email APIs
+  - id: disposable_email
+    name: Disposable Email Checker
+    category: email
+    description: Detect disposable and temporary email addresses to prevent fraud and improve data quality
+    endpoints_count: 5
+    status: live
+    documentation_url: /apis/disposable-email
+    tags:
+      - Email Validation
+      - Fraud Prevention
+      - Data Quality
+
+  # Text APIs
+  - id: advice
+    name: Random Advice
+    category: text
+    description: Get random pieces of advice and wisdom for inspiration
+    endpoints_count: 1
+    status: live
+    documentation_url: /apis/advice
+    tags:
+      - Random
+      - Inspiration
+
+  - id: lorem_ipsum
+    name: Lorem Ipsum Generator
+    category: text
+    description: Generate placeholder text for design mockups and prototypes
+    endpoints_count: 3
+    status: live
+    documentation_url: /apis/lorem-ipsum
+    tags:
+      - Placeholder
+      - Design
+      - Testing
+
+  - id: quotes
+    name: Random Quotes
+    category: text
+    description: Access a database of inspirational and famous quotes
+    endpoints_count: 2
+    status: live
+    documentation_url: /apis/quotes
+    tags:
+      - Random
+      - Inspiration
+      - Literature
+
+  - id: words
+    name: Random Words
+    category: text
+    description: Generate random words for testing, games, and creative projects
+    endpoints_count: 2
+    status: live
+    documentation_url: /apis/words
+    tags:
+      - Random
+      - Testing
+      - Games

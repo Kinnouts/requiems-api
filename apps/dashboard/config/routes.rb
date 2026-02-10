@@ -97,4 +97,5 @@ Rails.application.routes.draw do
   # Public pages
   get "docs", to: "home#docs"
   get "pricing", to: "home#pricing"
+  resources :apis, only: [:index, :show]
 end

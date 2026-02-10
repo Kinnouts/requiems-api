@@ -32,11 +32,11 @@
               class="hidden absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
             >
               <div class="py-1">
-                <%= link_to "API Directory", "#", class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                <%= link_to "Email APIs", "#", class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                <%= link_to "Text APIs", "#", class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                <%= link_to "API Directory", apis_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                <%= link_to "Email APIs", apis_path(category: "email"), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
+                <%= link_to "Text APIs", apis_path(category: "text"), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
                 <div class="border-t border-gray-100"></div>
-                <%= link_to "Browse All APIs", "#", class: "block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 font-medium" %>
+                <%= link_to "Browse All APIs", apis_path, class: "block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 font-medium" %>
               </div>
             </div>
           </div>
