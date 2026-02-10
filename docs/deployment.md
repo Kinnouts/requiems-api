@@ -129,25 +129,28 @@ nano .env
 **Production .env file:**
 
 ```bash
-# Rails
-SECRET_KEY_BASE=your_secret_key_base_here
-RAILS_MASTER_KEY=your_rails_master_key_here
+# PostgreSQL Database
+POSTGRES_USER=requiem
+POSTGRES_PASSWORD=CHANGE_THIS_TO_STRONG_PASSWORD
+POSTGRES_DB=requiem
 
-# Cloudflare (for KV sync from Rails)
-CLOUDFLARE_ACCOUNT_ID=your_cloudflare_account_id
-CLOUDFLARE_KV_NAMESPACE_ID=your_kv_namespace_id
-CLOUDFLARE_API_TOKEN=your_cloudflare_api_token
-
-# Database
-DATABASE_URL=postgres://requiem:STRONG_PASSWORD@db:5432/requiem?sslmode=disable
+DATABASE_URL=postgres://requiem:CHANGE_THIS_TO_STRONG_PASSWORD@db:5432/requiem?sslmode=disable
 
 # Redis
 REDIS_URL=redis://redis:6379
 
-# Backend Secret (REQUIRED - must match Worker BACKEND_SECRET)
-# Go API will reject requests without valid X-Backend-Secret header
-# Minimum 32 characters
+# Rails Security
+SECRET_KEY_BASE=your_secret_key_base_here
+RAILS_MASTER_KEY=your_rails_master_key_here
+
+# Backend Secret (32+ characters)
+# Must match Cloudflare Worker BACKEND_SECRET
 BACKEND_SECRET=your_32_char_minimum_secret_here
+
+# Cloudflare Integration
+CLOUDFLARE_ACCOUNT_ID=your_cloudflare_account_id
+CLOUDFLARE_KV_NAMESPACE_ID=your_kv_namespace_id
+CLOUDFLARE_API_TOKEN=your_cloudflare_api_token
 ```
 
 **Generate secrets:**
@@ -172,20 +175,32 @@ nano ../caddy/Caddyfile
 **Update with your domain:**
 
 ```caddyfile
+{
+  email admin@requiems.xyz
+}
+
+# Main application (landing page, dashboard, admin, docs)
 requiems.xyz {
   encode gzip
   reverse_proxy dashboard:80
 }
 
+# Internal backend API (only accessible via Cloudflare Worker)
 internal.requiems.xyz {
   encode gzip
 
-  # Verify backend secret from Worker
-  @backend {
-    header X-Backend-Secret {$BACKEND_SECRET}
+  # Add X-Backend-Secret header verification
+  @authorized {
+    header X-Backend-Secret {env.BACKEND_SECRET}
   }
 
-  reverse_proxy @backend api:8080
+  handle @authorized {
+    reverse_proxy api:8080
+  }
+
+  handle {
+    respond "Unauthorized" 403
+  }
 }
 ```
 
@@ -198,7 +213,7 @@ internal.requiems.xyz {
 ```bash
 cd infra/docker
 
-# Start all services
+# Start all services (builds and starts automatically)
 docker compose up -d --build
 
 # Check status
@@ -215,19 +230,13 @@ docker compose logs -f
 - ✅ redis (Redis)
 - ✅ dashboard (Rails)
 - ✅ sidekiq (background jobs)
-- ✅ caddy (reverse proxy, prod profile)
+- ✅ caddy (reverse proxy with auto-HTTPS)
 
-### 3.2 Run Database Migrations
+**Note:** Migrations run automatically:
+- Rails migrations execute on dashboard startup (via `db:migrate` in startup command)
+- Go migrations execute on API startup (embedded in the application)
 
-```bash
-# Rails migrations
-docker compose exec dashboard rails db:create db:migrate
-
-# Go migrations (if applicable)
-docker compose exec api /app/api migrate
-```
-
-### 3.3 Verify Services
+### 3.2 Verify Services
 
 ```bash
 # Check API health
@@ -267,15 +276,18 @@ Wait for DNS propagation (5-30 minutes).
 
 In Cloudflare DNS settings, create these A records:
 
-| Type | Name     | Content     | Proxy Status    | TTL  |
-| ---- | -------- | ----------- | --------------- | ---- |
-| A    | @        | YOUR_VPS_IP | ☁️ Proxied      | Auto |
-| A    | internal | YOUR_VPS_IP | DNS only (grey) | Auto |
+| Type | Name     | Content     | Proxy Status | TTL  |
+| ---- | -------- | ----------- | ------------ | ---- |
+| A    | @        | YOUR_VPS_IP | ☁️ Proxied   | Auto |
+| A    | internal | YOUR_VPS_IP | ☁️ Proxied   | Auto |
 
 **Important:**
 
-- `@` (root domain) → Proxied (orange cloud) for DDoS protection
-- `internal` → DNS only (grey cloud) so Caddy can get Let's Encrypt certs
+- Both domains should be **Proxied (orange cloud)** for:
+  - DDoS protection
+  - Cloudflare CDN caching
+  - SSL/TLS termination
+- Caddy will obtain Let's Encrypt certificates automatically using HTTP-01 challenge (works with Cloudflare proxy)
 
 ### 4.4 Verify DNS
 
@@ -549,36 +561,78 @@ docker compose exec dashboard rails db:migrate
 
 **Check:**
 
-1. DNS records pointing to VPS
+1. DNS records pointing to VPS (both domains proxied via Cloudflare is OK)
 2. Ports 80/443 open in firewall
 3. Domain in Caddyfile matches DNS
-4. `internal` subdomain is DNS-only (grey cloud in Cloudflare)
+4. Wait 2-3 minutes for Let's Encrypt to issue certificates
 
 ---
 
 ## Updating Production
 
-### Pull Latest Code
+### Standard Update (Normal Deployment)
+
+Pull changes and rebuild automatically:
 
 ```bash
-cd /home/deploy/requiems-api
-git pull origin main
-```
+cd ~/server/requiems-api
+git pull
 
-### Rebuild and Restart
-
-```bash
 cd infra/docker
 docker compose up -d --build
-
-# Or specific service
-docker compose up -d --build api
 ```
 
-### Run Migrations
+The `--build` flag rebuilds any changed images automatically. Migrations run automatically on container startup.
+
+**Check deployment:**
 
 ```bash
-docker compose exec dashboard rails db:migrate
+docker compose ps
+docker compose logs -f
+```
+
+### Clean Deployment (Wipe Database)
+
+Use this when changing database credentials or starting fresh:
+
+```bash
+cd ~/server/requiems-api
+git pull
+
+cd infra/docker
+docker compose down -v    # -v removes volumes
+docker compose up -d --build
+```
+
+⚠️ **Warning:** The `-v` flag deletes all database data!
+
+### Docker Cache Issues
+
+If you encounter build errors like "parent snapshot does not exist":
+
+```bash
+# Clear build cache
+docker builder prune -a -f
+
+# Rebuild everything
+docker compose up -d --build
+```
+
+Or force rebuild without cache:
+
+```bash
+docker compose build --no-cache
+docker compose up -d
+```
+
+### Update Specific Service
+
+Rebuild only one service:
+
+```bash
+docker compose up -d --build api
+# or
+docker compose up -d --build dashboard
 ```
 
 ### Update Worker
@@ -586,6 +640,16 @@ docker compose exec dashboard rails db:migrate
 ```bash
 cd apps/edge-auth
 wrangler deploy --env production
+```
+
+### Quick Restart (No Rebuild)
+
+Restart services without rebuilding:
+
+```bash
+docker compose restart
+# or specific service
+docker compose restart api
 ```
 
 ---
