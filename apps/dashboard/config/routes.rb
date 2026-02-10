@@ -27,10 +27,10 @@ Rails.application.routes.draw do
     end
 
     resource :usage, only: [:show] do
-      collection do
+      member do
         get :by_endpoint
         get :by_date
-        get :export # CSV export
+        get :export
       end
     end
 
