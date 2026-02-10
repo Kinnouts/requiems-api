@@ -15,7 +15,7 @@ internal.requiems.xyz {
 
   # Add X-Backend-Secret header verification
   @authorized {
-    header X-Backend-Secret {$BACKEND_SECRET}
+    header X-Backend-Secret {env.BACKEND_SECRET}
   }
 
   handle @authorized {
