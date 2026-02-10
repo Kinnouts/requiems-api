@@ -552,9 +552,21 @@ docker compose logs dashboard
 # - Missing SECRET_KEY_BASE
 # - Missing RAILS_MASTER_KEY
 # - Database migration needed
+# - Missing database configs (Rails 8 Solid* gems)
 
-# Run migrations
-docker compose exec dashboard rails db:migrate
+# If you see "The `cache` database is not configured":
+# Rails 8 uses Solid Cache, Solid Queue, and Solid Cable
+# Each needs a database config in config/database.yml:
+#   - primary (main app)
+#   - cable (Action Cable)
+#   - queue (Solid Queue)
+#   - cache (Solid Cache)
+# All should point to the same DATABASE_URL
+
+# After fixing, rebuild without cache:
+docker builder prune -a -f
+docker compose build --no-cache dashboard sidekiq
+docker compose up -d
 ```
 
 ### Caddy can't get SSL certificates
