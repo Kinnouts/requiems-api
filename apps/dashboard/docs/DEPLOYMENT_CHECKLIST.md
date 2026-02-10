@@ -1,6 +1,7 @@
 # Deployment Checklist
 
-Use this checklist to ensure a smooth deployment of Requiems API Dashboard to production.
+Use this checklist to ensure a smooth deployment of Requiems API Dashboard to
+production.
 
 ## Pre-Deployment
 
@@ -95,6 +96,7 @@ SENTRY_DSN=your_sentry_dsn
 ```
 
 Generate secrets:
+
 ```bash
 # Generate SECRET_KEY_BASE
 bundle exec rails secret
@@ -513,8 +515,10 @@ ActiveRecord::Base.logger = Logger.new(STDOUT)
 ## Support Resources
 
 - **Documentation**: `/docs` folder
-- **GitHub Issues**: [github.com/bobadilla-tech/requiems-api/issues](https://github.com/bobadilla-tech/requiems-api/issues)
-- **Community**: [github.com/bobadilla-tech/requiems-api/discussions](https://github.com/bobadilla-tech/requiems-api/discussions)
+- **GitHub Issues**:
+  [github.com/bobadilla-tech/requiems-api/issues](https://github.com/bobadilla-tech/requiems-api/issues)
+- **Community**:
+  [github.com/bobadilla-tech/requiems-api/discussions](https://github.com/bobadilla-tech/requiems-api/discussions)
 - **Self-Hosting Guide**: `docs/SELF_HOSTING.md`
 - **User Guide**: `docs/USER_GUIDE.md`
 

@@ -29,6 +29,7 @@ This guide will help you deploy and run your own instance of Requiems API.
 ### When to Self-Host
 
 ✅ Self-hosting is great for:
+
 - Enterprise compliance requirements
 - Very high API volume (>10M requests/month)
 - Custom feature requirements
@@ -36,6 +37,7 @@ This guide will help you deploy and run your own instance of Requiems API.
 - Development and testing
 
 ❌ Use our managed service instead if:
+
 - You want zero maintenance
 - You need guaranteed uptime (99.9% SLA)
 - You want automatic updates
@@ -120,6 +122,7 @@ docker compose -f docker-compose.dev.yml up
 ```
 
 This starts:
+
 - Go API (http://localhost:8080)
 - Rails Dashboard (http://localhost:3000)
 - PostgreSQL (localhost:5432)
@@ -157,11 +160,13 @@ Visit http://localhost:3000 and log in with your admin credentials.
 ### 1. Install Dependencies
 
 #### macOS
+
 ```bash
 brew install go ruby node postgresql redis
 ```
 
 #### Ubuntu/Debian
+
 ```bash
 sudo apt update
 sudo apt install golang-go ruby-full nodejs npm postgresql redis-server
@@ -185,6 +190,7 @@ psql requiem -c "ALTER USER requiem WITH PASSWORD 'your_password';"
 Create `.env` files:
 
 #### Go API (`apps/api/.env`)
+
 ```env
 DATABASE_URL=postgresql://requiem:your_password@localhost:5432/requiem
 PORT=8080
@@ -192,6 +198,7 @@ ENV=development
 ```
 
 #### Rails Dashboard (`apps/dashboard/.env`)
+
 ```env
 DATABASE_URL=postgresql://requiem:your_password@localhost:5432/requiem
 REDIS_URL=redis://localhost:6379/0
@@ -202,6 +209,7 @@ BACKEND_API_URL=http://localhost:8080
 ```
 
 Generate Rails secret:
+
 ```bash
 cd apps/dashboard
 bundle exec rails secret
@@ -241,38 +249,38 @@ npx wrangler deploy
 
 #### Core Settings
 
-| Variable | Description | Default | Required |
-|----------|-------------|---------|----------|
-| `DATABASE_URL` | PostgreSQL connection string | - | Yes |
-| `REDIS_URL` | Redis connection string | - | Yes |
-| `SECRET_KEY_BASE` | Rails secret key | - | Yes |
-| `PORT` | Server port | 3000 | No |
+| Variable          | Description                  | Default | Required |
+| ----------------- | ---------------------------- | ------- | -------- |
+| `DATABASE_URL`    | PostgreSQL connection string | -       | Yes      |
+| `REDIS_URL`       | Redis connection string      | -       | Yes      |
+| `SECRET_KEY_BASE` | Rails secret key             | -       | Yes      |
+| `PORT`            | Server port                  | 3000    | No       |
 
 #### External Services
 
-| Variable | Description | Required |
-|----------|-------------|----------|
-| `LEMONSQUEEZY_API_KEY` | Payment processing | For billing |
-| `LEMONSQUEEZY_STORE_SLUG` | Store identifier | For billing |
-| `CLOUDFLARE_API_TOKEN` | For edge deployment | For Cloudflare |
+| Variable                  | Description         | Required       |
+| ------------------------- | ------------------- | -------------- |
+| `LEMONSQUEEZY_API_KEY`    | Payment processing  | For billing    |
+| `LEMONSQUEEZY_STORE_SLUG` | Store identifier    | For billing    |
+| `CLOUDFLARE_API_TOKEN`    | For edge deployment | For Cloudflare |
 
 #### Email (SMTP)
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `SMTP_ADDRESS` | SMTP server | smtp.gmail.com |
-| `SMTP_PORT` | SMTP port | 587 |
-| `SMTP_USERNAME` | Email username | - |
-| `SMTP_PASSWORD` | Email password | - |
-| `SMTP_DOMAIN` | Email domain | - |
+| Variable        | Description    | Default        |
+| --------------- | -------------- | -------------- |
+| `SMTP_ADDRESS`  | SMTP server    | smtp.gmail.com |
+| `SMTP_PORT`     | SMTP port      | 587            |
+| `SMTP_USERNAME` | Email username | -              |
+| `SMTP_PASSWORD` | Email password | -              |
+| `SMTP_DOMAIN`   | Email domain   | -              |
 
 #### Feature Flags
 
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `ENABLE_REGISTRATION` | Allow new signups | true |
-| `ENABLE_API_PLAYGROUND` | Interactive testing | true |
-| `RATE_LIMIT_ENABLED` | Rate limiting | true |
+| Variable                | Description         | Default |
+| ----------------------- | ------------------- | ------- |
+| `ENABLE_REGISTRATION`   | Allow new signups   | true    |
+| `ENABLE_API_PLAYGROUND` | Interactive testing | true    |
+| `RATE_LIMIT_ENABLED`    | Rate limiting       | true    |
 
 ### Database Configuration
 
@@ -310,6 +318,7 @@ find /backups -name "requiem_*.sql.gz" -mtime +30 -delete
 ```
 
 Add to crontab:
+
 ```bash
 0 2 * * * /path/to/backup_script.sh
 ```
@@ -343,12 +352,14 @@ Coming soon! See `infra/k8s/` for manifests.
 #### System Requirements
 
 **Minimum**:
+
 - 2 CPU cores
 - 4GB RAM
 - 40GB SSD
 - Ubuntu 22.04 LTS
 
 **Recommended**:
+
 - 4 CPU cores
 - 8GB RAM
 - 100GB SSD
@@ -431,6 +442,7 @@ server {
 ```
 
 Enable site:
+
 ```bash
 sudo ln -s /etc/nginx/sites-available/requiems /etc/nginx/sites-enabled/
 sudo nginx -t
@@ -485,6 +497,7 @@ WantedBy=multi-user.target
 ```
 
 Enable and start services:
+
 ```bash
 sudo systemctl daemon-reload
 sudo systemctl enable requiems-dashboard requiems-api
@@ -510,12 +523,14 @@ curl http://localhost:8080/healthz
 ### Logs
 
 #### Docker
+
 ```bash
 docker compose logs -f dashboard
 docker compose logs -f api
 ```
 
 #### Systemd
+
 ```bash
 sudo journalctl -u requiems-dashboard -f
 sudo journalctl -u requiems-api -f
@@ -530,6 +545,7 @@ Coming soon! See `infra/monitoring/` for configs.
 #### Application Performance
 
 Use tools like:
+
 - **New Relic** - APM
 - **DataDog** - Infrastructure monitoring
 - **Sentry** - Error tracking
@@ -654,8 +670,10 @@ rails db:migrate
 ### Getting Help
 
 - **Documentation**: Check `docs/` folder
-- **GitHub Issues**: [github.com/bobadilla-tech/requiems-api/issues](https://github.com/bobadilla-tech/requiems-api/issues)
-- **Discussions**: [github.com/bobadilla-tech/requiems-api/discussions](https://github.com/bobadilla-tech/requiems-api/discussions)
+- **GitHub Issues**:
+  [github.com/bobadilla-tech/requiems-api/issues](https://github.com/bobadilla-tech/requiems-api/issues)
+- **Discussions**:
+  [github.com/bobadilla-tech/requiems-api/discussions](https://github.com/bobadilla-tech/requiems-api/discussions)
 - **Community**: Join our Discord (coming soon)
 
 ---
@@ -697,15 +715,18 @@ rails db:migrate
 
 ## License
 
-Requiems API is open source under the MIT License. See [LICENSE](../../LICENSE) file.
+Requiems API is open source under the MIT License. See [LICENSE](../../LICENSE)
+file.
 
 ---
 
 ## Support
 
 - 🌟 Star us on [GitHub](https://github.com/bobadilla-tech/requiems-api)
-- 🐛 Report bugs in [Issues](https://github.com/bobadilla-tech/requiems-api/issues)
-- 💬 Ask questions in [Discussions](https://github.com/bobadilla-tech/requiems-api/discussions)
+- 🐛 Report bugs in
+  [Issues](https://github.com/bobadilla-tech/requiems-api/issues)
+- 💬 Ask questions in
+  [Discussions](https://github.com/bobadilla-tech/requiems-api/discussions)
 - 📧 Enterprise support: enterprise@requiems.xyz
 
 Built with ❤️ by Bobadilla Tech

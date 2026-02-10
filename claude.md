@@ -1,14 +1,19 @@
 # CLAUDE.md
 
-This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with
+code in this repository.
 
 ## Project Overview
 
-Requiems API is a production-ready API platform providing unified access to multiple enterprise-grade APIs (email validation, text utilities, etc.). Built as a multi-language monorepo with:
+Requiems API is a production-ready API platform providing unified access to
+multiple enterprise-grade APIs (email validation, text utilities, etc.). Built
+as a multi-language monorepo with:
 
 - **Go 1.23 API** (apps/api) - Internal business logic backend
-- **Rails 8 Dashboard** (apps/dashboard) - Public web UI, user management, admin panel
-- **Cloudflare Worker Gateway** (apps/edge-auth) - Global edge auth, rate limiting, credit tracking
+- **Rails 8 Dashboard** (apps/dashboard) - Public web UI, user management, admin
+  panel
+- **Cloudflare Worker Gateway** (apps/edge-auth) - Global edge auth, rate
+  limiting, credit tracking
 
 ## Development Commands
 
@@ -193,7 +198,8 @@ Domain-driven design with feature modules:
   - `db/` - PostgreSQL connection, migrations
   - `httpx/` - HTTP utilities
 
-**Pattern**: Each feature has `service.go` (business logic), `transport_http.go` (HTTP handlers), `type.go` (data types), and parent `router.go` (routes).
+**Pattern**: Each feature has `service.go` (business logic), `transport_http.go`
+(HTTP handlers), `type.go` (data types), and parent `router.go` (routes).
 
 #### Cloudflare Worker (apps/edge-auth/src/)
 
@@ -219,8 +225,10 @@ Standard Rails 8 structure with:
 
 Single database with two migration systems:
 
-- **Go migrations**: `infra/migrations/*.sql` (business data tables: advice, quotes, words)
-- **Rails migrations**: `apps/dashboard/db/migrate/*.rb` (user tables: users, api_keys, subscriptions, usage_logs)
+- **Go migrations**: `infra/migrations/*.sql` (business data tables: advice,
+  quotes, words)
+- **Rails migrations**: `apps/dashboard/db/migrate/*.rb` (user tables: users,
+  api_keys, subscriptions, usage_logs)
 
 Separate migration tracking tables prevent conflicts.
 

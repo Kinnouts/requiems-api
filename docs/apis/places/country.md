@@ -1,15 +1,19 @@
 # Country API
 
 ## Status
+
 ⏳ **Planned** - Not yet implemented
 
 ## Overview
-Get country information and details. This endpoint will provide country data and facts.
+
+Get country information and details. This endpoint will provide country data and
+facts.
 
 ## Planned Endpoints
 
 ### Get Country Information
-**Planned Endpoint:** `GET /v1/places/country`
-**Expected Credit Cost:** 1 credit
+
+**Planned Endpoint:** `GET /v1/places/country` **Expected Credit Cost:** 1
+credit
 
 Get country information and details.

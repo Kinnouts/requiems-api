@@ -1,6 +1,7 @@
 # Requiems API User Guide
 
-Welcome to Requiems API! This guide will help you get started with our platform and make the most of our APIs.
+Welcome to Requiems API! This guide will help you get started with our platform
+and make the most of our APIs.
 
 ## Table of Contents
 
@@ -64,7 +65,8 @@ Your dashboard shows:
 
 ### Creating API Keys
 
-**All API keys share your monthly quota** - it doesn't matter which key you use, they all count toward the same limit.
+**All API keys share your monthly quota** - it doesn't matter which key you use,
+they all count toward the same limit.
 
 #### Test vs. Live Keys
 
@@ -76,6 +78,7 @@ Both types count toward your monthly quota.
 ### Key Actions
 
 #### Regenerate a Key
+
 1. Go to **API Keys**
 2. Click "Regenerate" on the key you want to change
 3. The old key is immediately revoked
@@ -83,6 +86,7 @@ Both types count toward your monthly quota.
 5. Update your applications with the new key
 
 #### Revoke a Key
+
 1. Go to **API Keys**
 2. Click "Revoke" on the key
 3. Confirm the action
@@ -124,6 +128,7 @@ curl -X POST https://api.requiems.xyz/v1/email/disposable/check \
 ```
 
 **Response**:
+
 ```json
 {
   "email": "test@example.com",
@@ -136,12 +141,12 @@ curl -X POST https://api.requiems.xyz/v1/email/disposable/check \
 
 Rate limits depend on your plan:
 
-| Plan | Requests/Minute | Monthly Requests |
-|------|----------------|------------------|
-| Free | 30/min | 500 |
-| Developer | 5,000/min | 100,000 |
-| Business | 10,000/min | 1,000,000 |
-| Professional | 50,000/min | 10,000,000 |
+| Plan         | Requests/Minute | Monthly Requests |
+| ------------ | --------------- | ---------------- |
+| Free         | 30/min          | 500              |
+| Developer    | 5,000/min       | 100,000          |
+| Business     | 10,000/min      | 1,000,000        |
+| Professional | 50,000/min      | 10,000,000       |
 
 ### Response Headers
 
@@ -224,7 +229,8 @@ Each API call costs credits based on complexity:
 - **Email APIs** (Disposable Check): 1 credit
 - **Batch Operations**: Credits per item
 
-Your plan includes a monthly credit allowance. Track usage to avoid hitting your limit.
+Your plan includes a monthly credit allowance. Track usage to avoid hitting your
+limit.
 
 ---
 
@@ -233,18 +239,21 @@ Your plan includes a monthly credit allowance. Track usage to avoid hitting your
 ### Plans & Pricing
 
 #### Free Plan
+
 - 500 requests/month
 - 30 requests/minute
 - Community support
 - Perfect for testing
 
 #### Developer Plan - $30/month ($25/year)
+
 - 100,000 requests/month
 - 5,000 requests/minute
 - Email support
 - Ideal for small projects
 
 #### Business Plan - $75/month ($62.50/year) ⭐ Most Popular
+
 - 1,000,000 requests/month
 - 10,000 requests/minute
 - Priority support
@@ -252,6 +261,7 @@ Your plan includes a monthly credit allowance. Track usage to avoid hitting your
 - For growing businesses
 
 #### Professional Plan - $150/month ($125/year)
+
 - 10,000,000 requests/month
 - 50,000 requests/minute
 - Dedicated support
@@ -259,6 +269,7 @@ Your plan includes a monthly credit allowance. Track usage to avoid hitting your
 - SLA guarantee
 
 #### Enterprise Plan - Custom Pricing
+
 - Unlimited requests
 - Custom rate limits
 - Private servers
@@ -330,6 +341,7 @@ To delete your account:
 4. Click "Permanently Delete Account"
 
 All data will be deleted:
+
 - API keys (immediately revoked)
 - Usage history
 - Billing information
@@ -346,6 +358,7 @@ Your subscription will be canceled automatically.
 #### "Invalid API Key" Error
 
 **Solutions**:
+
 - Verify you're using the correct key
 - Check that the key hasn't been revoked
 - Ensure the key is in the correct header: `X-API-Key`
@@ -354,6 +367,7 @@ Your subscription will be canceled automatically.
 #### "Rate Limit Exceeded" Error
 
 **Solutions**:
+
 - Wait for the rate limit window to reset (check `X-RateLimit-Reset` header)
 - Upgrade to a higher plan for increased limits
 - Implement exponential backoff in your application
@@ -362,6 +376,7 @@ Your subscription will be canceled automatically.
 #### "Insufficient Credits" Error
 
 **Solutions**:
+
 - Check your usage at **Dashboard** → **Usage**
 - Upgrade your plan for more monthly credits
 - Wait for your billing cycle to reset
@@ -370,6 +385,7 @@ Your subscription will be canceled automatically.
 #### API Keys Not Showing in Dashboard
 
 **Solutions**:
+
 - Refresh the page
 - Clear browser cache
 - Try a different browser
@@ -378,6 +394,7 @@ Your subscription will be canceled automatically.
 #### Billing Issues
 
 **Solutions**:
+
 - Verify payment method in LemonSqueezy portal
 - Check for declined payments
 - Contact LemonSqueezy support for payment issues
@@ -386,6 +403,7 @@ Your subscription will be canceled automatically.
 ### Getting Help
 
 #### Documentation
+
 - **API Reference**: [docs.requiems.xyz](https://docs.requiems.xyz)
 - **Examples**: Check out code examples for common use cases
 - **Blog**: Tips, tutorials, and best practices
@@ -400,6 +418,7 @@ Your subscription will be canceled automatically.
 #### Status Page
 
 Check system status at [status.requiems.xyz](https://status.requiems.xyz):
+
 - API uptime
 - Scheduled maintenance
 - Incident reports
@@ -437,32 +456,34 @@ Check system status at [status.requiems.xyz](https://status.requiems.xyz):
 
 ## FAQ
 
-**Q: Do API keys share the same monthly quota?**
-A: Yes! All your API keys (test and live) count toward the same monthly request limit.
+**Q: Do API keys share the same monthly quota?** A: Yes! All your API keys (test
+and live) count toward the same monthly request limit.
 
-**Q: What happens when I hit my limit?**
-A: You'll receive a `429 Too Many Requests` error. Requests will work again when your billing cycle resets or you upgrade.
+**Q: What happens when I hit my limit?** A: You'll receive a
+`429 Too Many Requests` error. Requests will work again when your billing cycle
+resets or you upgrade.
 
-**Q: Can I test APIs without an account?**
-A: Yes! Use the interactive playground on each API documentation page for testing.
+**Q: Can I test APIs without an account?** A: Yes! Use the interactive
+playground on each API documentation page for testing.
 
-**Q: Is there a free tier?**
-A: Yes! The Free plan includes 500 requests/month with no credit card required.
+**Q: Is there a free tier?** A: Yes! The Free plan includes 500 requests/month
+with no credit card required.
 
-**Q: Can I cancel anytime?**
-A: Absolutely. Cancel anytime and retain access until your billing period ends.
+**Q: Can I cancel anytime?** A: Absolutely. Cancel anytime and retain access
+until your billing period ends.
 
-**Q: Do you offer refunds?**
-A: We offer a 30-day money-back guarantee for new subscriptions.
+**Q: Do you offer refunds?** A: We offer a 30-day money-back guarantee for new
+subscriptions.
 
-**Q: Where is data processed?**
-A: We have servers in both US and EU regions. Business+ plans can choose their preferred region.
+**Q: Where is data processed?** A: We have servers in both US and EU regions.
+Business+ plans can choose their preferred region.
 
-**Q: Is Requiems API open source?**
-A: Yes! All our code is open source at [github.com/bobadilla-tech/requiems-api](https://github.com/bobadilla-tech/requiems-api). You can self-host if desired.
+**Q: Is Requiems API open source?** A: Yes! All our code is open source at
+[github.com/bobadilla-tech/requiems-api](https://github.com/bobadilla-tech/requiems-api).
+You can self-host if desired.
 
-**Q: What's your SLA?**
-A: Professional and Enterprise plans include a 99.9% uptime SLA.
+**Q: What's your SLA?** A: Professional and Enterprise plans include a 99.9%
+uptime SLA.
 
 ---
 
@@ -472,10 +493,14 @@ A: Professional and Enterprise plans include a 99.9% uptime SLA.
 - 💡 [View Code Examples](https://requiems.xyz/examples)
 - 🚀 [Upgrade Your Plan](https://requiems.xyz/pricing)
 - 🐛 [Report Issues](https://github.com/bobadilla-tech/requiems-api/issues)
-- 💬 [Join Community](https://github.com/bobadilla-tech/requiems-api/discussions)
+- 💬
+  [Join Community](https://github.com/bobadilla-tech/requiems-api/discussions)
 
 ---
 
-**Need help?** Contact us at support@requiems.xyz or visit our [Help Center](https://help.requiems.xyz).
+**Need help?** Contact us at support@requiems.xyz or visit our
+[Help Center](https://help.requiems.xyz).
 
-Built with ❤️ by Bobadilla Tech | [GitHub](https://github.com/bobadilla-tech/requiems-api) | [Twitter](https://twitter.com/requiemsapi) | [Blog](https://blog.requiems.xyz)
+Built with ❤️ by Bobadilla Tech |
+[GitHub](https://github.com/bobadilla-tech/requiems-api) |
+[Twitter](https://twitter.com/requiemsapi) | [Blog](https://blog.requiems.xyz)

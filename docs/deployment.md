@@ -233,7 +233,9 @@ docker compose logs -f
 - ✅ caddy (reverse proxy with auto-HTTPS)
 
 **Note:** Migrations run automatically:
-- Rails migrations execute on dashboard startup (via `db:migrate` in startup command)
+
+- Rails migrations execute on dashboard startup (via `db:migrate` in startup
+  command)
 - Go migrations execute on API startup (embedded in the application)
 
 ### 3.2 Verify Services
@@ -287,7 +289,8 @@ In Cloudflare DNS settings, create these A records:
   - DDoS protection
   - Cloudflare CDN caching
   - SSL/TLS termination
-- Caddy will obtain Let's Encrypt certificates automatically using HTTP-01 challenge (works with Cloudflare proxy)
+- Caddy will obtain Let's Encrypt certificates automatically using HTTP-01
+  challenge (works with Cloudflare proxy)
 
 ### 4.4 Verify DNS
 
@@ -594,7 +597,8 @@ cd infra/docker
 docker compose up -d --build
 ```
 
-The `--build` flag rebuilds any changed images automatically. Migrations run automatically on container startup.
+The `--build` flag rebuilds any changed images automatically. Migrations run
+automatically on container startup.
 
 **Check deployment:**
 
