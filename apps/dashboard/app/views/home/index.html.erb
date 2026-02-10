@@ -53,7 +53,6 @@
             <pre class="text-xs sm:text-sm font-mono text-gray-300 whitespace-pre"><code><span class="text-pink-400">curl</span> <span class="text-blue-400">-H</span> <span class="text-green-400">"requiems-api-key: YOUR_KEY"</span> \
   <span class="text-yellow-400">https://api.requiems.xyz/v1/text/advice</span>
 
-<span class="text-gray-500"># Response (243ms):</span>
 {
   <span class="text-blue-400">"advice"</span>: <span class="text-green-400">"Don't compare yourself to others."</span>,
   <span class="text-blue-400">"id"</span>: <span class="text-yellow-400">42</span>
@@ -423,7 +422,7 @@
         </h2>
 
         <p class="text-xl text-gray-300 mb-8">
-          Every line of code is publicly available on GitHub. Audit the security, contribute improvements, or deploy it yourself. This is API infrastructure done right.
+          Our codebase is open on GitHub for transparency, security audits, and community contributions. Report bugs, suggest features, and help us build better API infrastructure.
         </p>
 
         <ul class="space-y-4 mb-8">
@@ -431,25 +430,25 @@
             <svg class="h-6 w-6 text-green-400 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
-            <span class="ml-3 text-lg">All code open source on GitHub under MIT license</span>
+            <span class="ml-3 text-lg">Open source codebase on GitHub under custom business license</span>
           </li>
           <li class="flex items-start">
             <svg class="h-6 w-6 text-green-400 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
-            <span class="ml-3 text-lg">Self-hosting guides and Docker support included</span>
+            <span class="ml-3 text-lg">Contribute bug fixes, features, and improvements</span>
           </li>
           <li class="flex items-start">
             <svg class="h-6 w-6 text-green-400 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
-            <span class="ml-3 text-lg">Community contributions welcome and encouraged</span>
+            <span class="ml-3 text-lg">Full code transparency for security audits and reviews</span>
           </li>
           <li class="flex items-start">
             <svg class="h-6 w-6 text-green-400 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
             </svg>
-            <span class="ml-3 text-lg">Transparent development roadmap and changelog</span>
+            <span class="ml-3 text-lg">Active discussions and community feedback</span>
           </li>
         </ul>
 
@@ -466,11 +465,11 @@
             View on GitHub
           </a>
 
-          <%= link_to "#", class: "inline-flex items-center justify-center px-6 py-3 bg-white text-gray-900 text-base font-medium rounded-lg hover:bg-gray-100 transition-colors" do %>
-            Self-Hosting Guide
-            <svg class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          <%= link_to "https://github.com/bobadilla-tech/requiems-api/blob/main/LICENSE.md", target: "_blank", rel: "noopener noreferrer", class: "inline-flex items-center justify-center px-6 py-3 bg-white text-gray-900 text-base font-medium rounded-lg hover:bg-gray-100 transition-colors" do %>
+            <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
+            View License
           <% end %>
         </div>
       </div>
@@ -488,7 +487,7 @@
 
             <div class="grid grid-cols-2 gap-4">
               <div class="bg-gray-900 rounded-lg p-4">
-                <div class="text-3xl font-bold text-white">MIT</div>
+                <div class="text-3xl font-bold text-white">Custom</div>
                 <div class="text-sm text-gray-400">License</div>
               </div>
               <div class="bg-gray-900 rounded-lg p-4">
@@ -520,7 +519,7 @@
                 <svg class="h-5 w-5 text-green-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                 </svg>
-                Docker & self-hosting ready
+                Production-ready Docker deployment
               </div>
             </div>
           </div>
@@ -565,20 +564,20 @@
           </svg>
         </button>
         <div class="mt-4 text-gray-600 hidden" data-tabs-target="panel">
-          Yes! 100% of the code is available on <a href="https://github.com/bobadilla-tech/requiems-api" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">GitHub</a> under the MIT license. This includes the Go backend, Cloudflare Worker gateway, and Rails dashboard. You can audit the code, contribute improvements, or self-host your own instance.
+          Yes! The codebase is publicly available on <a href="https://github.com/bobadilla-tech/requiems-api" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">GitHub</a> under a custom business license. You can review the code for security audits, contribute bug fixes and features, participate in discussions, and provide feedback. Note that the platform depends on several proprietary infrastructure assets.
         </div>
       <% end %>
 
       <!-- FAQ 3 -->
       <%= render "shared/card", padding: true do %>
         <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="2">
-          <span class="text-lg font-semibold text-gray-900">Can I self-host Requiems API?</span>
+          <span class="text-lg font-semibold text-gray-900">Can I contribute to the project?</span>
           <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
         <div class="mt-4 text-gray-600 hidden" data-tabs-target="panel">
-          Absolutely! We provide Docker images and comprehensive self-hosting documentation. Deploy to your own infrastructure, customize as needed, and maintain full control over your data. Check our self-hosting guide for detailed instructions.
+          Absolutely! We welcome contributions on GitHub including bug reports, feature requests, code improvements, and documentation updates. Check our contributing guidelines on the repository for more details on how to get involved.
         </div>
       <% end %>
 
@@ -591,7 +590,7 @@
           </svg>
         </button>
         <div class="mt-4 text-gray-600 hidden" data-tabs-target="panel">
-          Yes! All paid plans include commercial use. The free tier is also suitable for personal and commercial projects within the usage limits. There are no restrictions on commercial use at any tier.
+          Yes! All plans, including the free tier, can be used for commercial projects within the usage limits. Our managed service is designed for production use by businesses of all sizes.
         </div>
       <% end %>
 

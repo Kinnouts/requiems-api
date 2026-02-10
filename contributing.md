@@ -25,8 +25,8 @@ We'll review PRs as quickly as possible and provide constructive feedback.
 ## License Note
 
 By contributing, you agree that your contributions will be licensed under the
-same [Business Source License (BSL)](LICENSE) as the project. This allows wide
-usage including self-hosting while preventing competing hosted services.
+same custom business license as the project. The codebase is open for
+transparency, security audits, and community contributions.
 
 ## Questions?
 

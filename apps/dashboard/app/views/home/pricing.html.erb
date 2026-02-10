@@ -22,10 +22,10 @@
         </div>
         <div class="ml-4 flex-1">
           <h3 class="text-2xl font-bold text-gray-900 mb-2">
-            100% Open Source - Host it yourself or use our managed service
+            💯 Open Source - Transparent & Community-Driven
           </h3>
           <p class="text-gray-700 mb-4">
-            Requiems API is fully open source under the MIT license. You can self-host the entire platform on your own infrastructure for free, or use our managed cloud service for convenience and scalability.
+            Requiems API codebase is publicly available on GitHub under a custom business license. Review the code, contribute improvements, report bugs, and participate in discussions. Our managed cloud service provides enterprise-grade reliability and scalability.
           </p>
           <div class="flex flex-wrap gap-4">
             <a href="https://github.com/bobadilla-tech/requiems-api" target="_blank" rel="noopener" class="inline-flex items-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors">
@@ -34,12 +34,12 @@
               </svg>
               View on GitHub
             </a>
-            <%= link_to "#self-hosting", class: "inline-flex items-center px-4 py-2 border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors" do %>
+            <a href="https://github.com/bobadilla-tech/requiems-api/blob/main/LICENSE.md" target="_blank" rel="noopener" class="inline-flex items-center px-4 py-2 border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors">
               <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
               </svg>
-              Self-Hosting Guide
-            <% end %>
+              View License
+            </a>
           </div>
         </div>
       </div>
@@ -85,8 +85,7 @@
           "Community support",
           "US data centers",
           "SOC 2 in progress",
-          "Open source",
-          "Self-hosting available"
+          "Open source codebase"
         ],
         cta_text: "Start Free",
         cta_url: new_user_registration_path,
@@ -107,8 +106,7 @@
           "Email support (24h response)",
           "US data centers",
           "SOC 2 in progress",
-          "Open source",
-          "Self-hosting available"
+          "Open source codebase"
         ],
         cta_text: "Start Free Trial",
         cta_url: user_signed_in? ? dashboard_billing_path(plan: "developer") : new_user_registration_path(plan: "developer"),
@@ -129,8 +127,7 @@
           "Priority email support (4h response)",
           "US & EU data centers",
           "SOC 2 in progress",
-          "Open source",
-          "Self-hosting available",
+          "Open source codebase",
           "Custom SLAs available"
         ],
         cta_text: "Start Free Trial",
@@ -152,8 +149,7 @@
           "Priority support (1h response)",
           "US & EU data centers",
           "SOC 2 in progress",
-          "Open source",
-          "Self-hosting available",
+          "Open source codebase",
           "Custom SLAs",
           "Dedicated account manager"
         ],
@@ -237,7 +233,6 @@
             <%= render "home/pricing_table_row", feature: "Data centers", values: ["US", "US", "US & EU", "US & EU"] %>
             <%= render "home/pricing_table_row", feature: "SOC 2 Compliant", values: ["In Progress", "In Progress", "In Progress", "In Progress"] %>
             <%= render "home/pricing_table_row", feature: "Open source", values: ["Yes", "Yes", "Yes", "Yes"], all_check: true %>
-            <%= render "home/pricing_table_row", feature: "Self-hosting", values: ["Yes", "Yes", "Yes", "Yes"], all_check: true %>
             <%= render "home/pricing_table_row", feature: "Support response", values: ["Community", "24h", "4h", "1h"] %>
             <%= render "home/pricing_table_row", feature: "SLA", values: ["-", "-", "99.9%", "99.95%"] %>
             <%= render "home/pricing_table_row", feature: "Account manager", values: [false, false, false, true] %>
@@ -289,11 +284,11 @@
       <div class="space-y-4" data-controller="faq-accordion">
         <%= render "home/faq_item",
           question: "Is Requiems API really open source?",
-          answer: "Yes! Requiems API is 100% open source under the MIT license. You can view, fork, and contribute to the code on GitHub at https://github.com/bobadilla-tech/requiems-api. All APIs, the dashboard, and the edge gateway are open source." %>
+          answer: "Yes! Requiems API codebase is publicly available on GitHub under a custom business license. You can view the code, contribute bug fixes and features, report issues, and participate in discussions. The platform is built transparently to ensure security and quality." %>
 
         <%= render "home/faq_item",
-          question: "Can I self-host Requiems API?",
-          answer: "Absolutely! We provide comprehensive documentation for self-hosting the entire platform on your own infrastructure. You can deploy it on any cloud provider (AWS, GCP, Azure) or on-premise servers. Check our self-hosting guide for detailed instructions." %>
+          question: "Can I contribute to the project?",
+          answer: "Absolutely! We welcome contributions on GitHub including bug reports, feature requests, code improvements, and documentation updates. Visit our repository at https://github.com/bobadilla-tech/requiems-api to get started. Note that the platform depends on proprietary infrastructure assets for full operation." %>
 
         <%= render "home/faq_item",
           question: "What happens if I exceed my monthly quota?",
@@ -301,7 +296,7 @@
 
         <%= render "home/faq_item",
           question: "Can I use Requiems API for commercial projects?",
-          answer: "Yes! All plans, including the free tier, can be used for commercial projects. The MIT license allows commercial use whether you're using our hosted service or self-hosting." %>
+          answer: "Yes! All plans, including the free tier, can be used for commercial projects. Our managed cloud service provides enterprise-grade reliability, scalability, and support for production applications." %>
 
         <%= render "home/faq_item",
           question: "What's included in SOC 2 certification?",

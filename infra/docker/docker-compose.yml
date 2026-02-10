@@ -69,7 +69,7 @@ services:
       - db
       - redis
     command: >
-      sh -c "./bin/rails db:migrate &&
+      sh -c "./bin/rails db:prepare &&
              ./bin/thrust ./bin/rails server"
 
   sidekiq:
