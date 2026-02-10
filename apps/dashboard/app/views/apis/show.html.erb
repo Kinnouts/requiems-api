@@ -1,0 +1,214 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Header -->
+  <div class="bg-white border-b border-gray-200">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Breadcrumb -->
+      <nav class="flex mb-4" aria-label="Breadcrumb">
+        <ol class="flex items-center space-x-2 text-sm">
+          <li>
+            <%= link_to "Home", root_path, class: "text-gray-500 hover:text-gray-700" %>
+          </li>
+          <li class="flex items-center">
+            <svg class="h-4 w-4 text-gray-400 mx-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+            </svg>
+            <%= link_to "APIs", apis_path, class: "text-gray-500 hover:text-gray-700" %>
+          </li>
+          <li class="flex items-center">
+            <svg class="h-4 w-4 text-gray-400 mx-2" fill="currentColor" viewBox="0 0 20 20">
+              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
+            </svg>
+            <span class="text-gray-900 font-medium"><%= @documentation["api_name"] %></span>
+          </li>
+        </ol>
+      </nav>
+
+      <!-- API Header -->
+      <div class="flex items-start justify-between">
+        <div class="flex-1">
+          <div class="flex items-center space-x-3 mb-3">
+            <h1 class="text-3xl font-bold text-gray-900">
+              <%= @documentation["api_name"] %>
+            </h1>
+            <%= render "shared/badge", text: api_status_text(@api["status"]), variant: api_status_variant(@api["status"]) %>
+          </div>
+          <p class="text-lg text-gray-600 max-w-3xl">
+            <%= @documentation["description"] %>
+          </p>
+
+          <!-- Quick stats -->
+          <div class="mt-4 flex items-center space-x-6 text-sm text-gray-500">
+            <div class="flex items-center">
+              <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+              <span><%= @documentation["endpoints"]&.count || 0 %> endpoints</span>
+            </div>
+            <div class="flex items-center">
+              <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              <span class="text-green-600 font-medium">Online</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <% unless user_signed_in? %>
+            <%= link_to new_user_registration_path, class: "inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors" do %>
+              Get API Key
+              <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
+              </svg>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+      <!-- Left Sidebar Navigation -->
+      <aside class="hidden lg:block lg:col-span-3">
+        <div class="sticky top-8">
+          <nav class="space-y-1" data-controller="scroll-spy">
+            <a href="#overview" class="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Overview</a>
+            <a href="#endpoints" class="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Endpoints</a>
+            <% @documentation["endpoints"]&.each_with_index do |endpoint, index| %>
+              <a href="#endpoint-<%= index %>" class="block pl-6 py-2 text-sm text-gray-600 hover:text-gray-900">
+                <%= endpoint["method"] %> <%= endpoint["name"] %>
+              </a>
+            <% end %>
+            <a href="#pricing" class="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Pricing</a>
+            <% if @documentation["faq"].present? %>
+              <a href="#faq" class="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">FAQ</a>
+            <% end %>
+          </nav>
+        </div>
+      </aside>
+
+      <!-- Main Documentation Content -->
+      <main class="lg:col-span-9">
+        <div class="bg-white rounded-lg shadow">
+          <!-- Overview Section -->
+          <div id="overview" class="p-8 border-b border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-900 mb-4">Overview</h2>
+
+            <% if @documentation.dig("overview", "use_cases").present? %>
+              <div class="mb-6">
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Use Cases</h3>
+                <ul class="space-y-2">
+                  <% @documentation.dig("overview", "use_cases").each do |use_case| %>
+                    <li class="flex items-start">
+                      <svg class="h-5 w-5 text-green-500 mr-2 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+                      </svg>
+                      <span class="text-gray-700"><%= use_case %></span>
+                    </li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
+
+            <% if @documentation.dig("overview", "features").present? %>
+              <div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-3">Features</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <% @documentation.dig("overview", "features").each do |feature| %>
+                    <div class="flex items-start">
+                      <svg class="h-5 w-5 text-blue-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                      </svg>
+                      <span class="text-gray-700"><%= feature %></span>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+            <% end %>
+          </div>
+
+          <!-- Endpoints Section -->
+          <div id="endpoints" class="p-8">
+            <h2 class="text-2xl font-bold text-gray-900 mb-6">API Endpoints</h2>
+
+            <% @documentation["endpoints"]&.each_with_index do |endpoint, index| %>
+              <%= render "apis/endpoint_documentation", endpoint: endpoint, index: index, base_url: @documentation["base_url"] %>
+            <% end %>
+          </div>
+
+          <!-- Pricing Section -->
+          <% if @documentation["pricing"].present? %>
+            <div id="pricing" class="p-8 border-t border-gray-200">
+              <h2 class="text-2xl font-bold text-gray-900 mb-6">Pricing & Rate Limits</h2>
+
+              <% if @documentation.dig("pricing", "free_tier").present? %>
+                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                  <p class="text-blue-800">
+                    <strong>Free Tier:</strong> <%= @documentation.dig("pricing", "free_tier") %>
+                  </p>
+                </div>
+              <% end %>
+
+              <% if @documentation.dig("pricing", "rate_limits").present? %>
+                <div class="overflow-x-auto">
+                  <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                      <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Plan</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rate Limit</th>
+                      </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                      <% @documentation.dig("pricing", "rate_limits").each do |rate_limit| %>
+                        <tr>
+                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+                            <%= rate_limit["plan"] %>
+                          </td>
+                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                            <%= rate_limit["limit"] %>
+                          </td>
+                        </tr>
+                      <% end %>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="mt-6">
+                  <%= link_to "View Full Pricing", pricing_path, class: "inline-flex items-center text-blue-600 hover:text-blue-700 font-medium" %>
+                </div>
+              <% end %>
+            </div>
+          <% end %>
+
+          <!-- FAQ Section -->
+          <% if @documentation["faq"].present? %>
+            <div id="faq" class="p-8 border-t border-gray-200">
+              <h2 class="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
+
+              <div class="space-y-4" data-controller="faq-accordion">
+                <% @documentation["faq"].each_with_index do |faq, index| %>
+                  <div class="border border-gray-200 rounded-lg">
+                    <button type="button"
+                            class="w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50"
+                            data-action="click->faq-accordion#toggle"
+                            data-faq-accordion-target="button">
+                      <span class="font-medium text-gray-900"><%= faq["question"] %></span>
+                      <svg class="h-5 w-5 text-gray-500 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                      </svg>
+                    </button>
+                    <div class="hidden px-6 pb-4 text-gray-700" data-faq-accordion-target="content">
+                      <%= faq["answer"] %>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </main>
+    </div>
+  </div>
+</div>

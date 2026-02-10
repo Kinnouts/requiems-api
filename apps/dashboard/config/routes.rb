@@ -26,21 +26,15 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :usage, only: [:show] do
-      collection do
-        get :by_endpoint
-        get :by_date
-        get :export # CSV export
-      end
-    end
+    resource :usage, only: [:show], controller: 'usage'
+    get 'usage/by_endpoint', to: 'usage#by_endpoint', as: :by_endpoint_usage
+    get 'usage/by_date', to: 'usage#by_date', as: :by_date_usage
+    get 'usage/export', to: 'usage#export', as: :export_usage
 
-    resource :billing, only: [:show, :update] do
-      collection do
-        post :checkout # Stripe checkout
-        post :portal # Stripe customer portal
-        delete :cancel_subscription
-      end
-    end
+    resource :billing, only: [:show, :update], controller: 'billing'
+    post 'billing/checkout', to: 'billing#checkout', as: :checkout_billing
+    post 'billing/portal', to: 'billing#portal', as: :portal_billing
+    delete 'billing/cancel_subscription', to: 'billing#cancel_subscription', as: :cancel_subscription_billing
 
     resources :invoices, only: [:index, :show]
 
@@ -82,9 +76,12 @@ Rails.application.routes.draw do
         end
       end
 
-      resource :usage, only: [:show]
-      resource :revenue, only: [:show]
-      resource :system_health, only: [:show]
+      # Analytics namespace
+      namespace :analytics do
+        get :usage
+        get :revenue
+        get :system_health
+      end
     end
   end
 
@@ -94,6 +91,13 @@ Rails.application.routes.draw do
     post "cloudflare", to: "cloudflare#create" # Usage sync from Worker
   end
 
-  # Documentation (placeholder)
+  # Public pages
   get "docs", to: "home#docs"
+  get "pricing", to: "home#pricing"
+  get "examples", to: "examples#index"
+  resources :apis, only: [:index, :show]
+  resources :examples, only: [:show]
+
+  # API Playground Proxy
+  post "api/proxy", to: "api_proxy#create"
 end

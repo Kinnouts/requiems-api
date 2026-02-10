@@ -1,0 +1,25 @@
+<nav class="bg-white rounded-lg shadow mb-8">
+  <div class="px-6">
+    <div class="flex space-x-8">
+      <%
+        nav_items = [
+          { name: "Usage Analytics", path: usage_admin_analytics_path, action: "usage" },
+          { name: "Revenue Analytics", path: revenue_admin_analytics_path, action: "revenue" },
+          { name: "System Health", path: system_health_admin_analytics_path, action: "system_health" }
+        ]
+      %>
+
+      <% nav_items.each do |item| %>
+        <%
+          is_active = action_name == item[:action]
+          link_classes = if is_active
+            "border-b-2 border-blue-500 py-4 px-1 text-sm font-medium text-blue-600"
+          else
+            "border-b-2 border-transparent py-4 px-1 text-sm font-medium text-gray-500 hover:text-gray-700 hover:border-gray-300"
+          end
+        %>
+        <%= link_to item[:name], item[:path], class: link_classes %>
+      <% end %>
+    </div>
+  </div>
+</nav>

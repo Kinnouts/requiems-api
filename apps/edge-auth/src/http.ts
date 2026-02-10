@@ -1,5 +1,3 @@
-import { env } from "./env";
-
 const CORS_HEADERS = {
   "Access-Control-Allow-Origin": "*",
 };
@@ -46,7 +44,7 @@ export function jsonError(
  * Filter headers before forwarding to backend
  * Removes Cloudflare headers and sensitive data
  */
-export function filterHeaders(headers: Headers): Headers {
+export function filterHeaders(headers: Headers, backendSecret: string): Headers {
   const filtered = new Headers();
 
   for (const [key, value] of headers.entries()) {
@@ -60,7 +58,7 @@ export function filterHeaders(headers: Headers): Headers {
     filtered.set(key, value);
   }
 
-  filtered.set("X-Backend-Secret", env.BACKEND_SECRET);
+  filtered.set("X-Backend-Secret", backendSecret);
 
   return filtered;
 }

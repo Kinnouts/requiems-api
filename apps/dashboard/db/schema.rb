@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_09_151938) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_10_174437) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -77,6 +77,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_151938) do
     t.integer "total_requests"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.index ["user_id", "date"], name: "index_daily_usage_on_user_and_date"
     t.index ["user_id"], name: "index_daily_usage_summaries_on_user_id"
   end
 
@@ -116,7 +117,12 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_09_151938) do
     t.date "usage_date"
     t.datetime "used_at"
     t.bigint "user_id", null: false
+    t.index ["api_key_id", "used_at"], name: "index_usage_logs_on_api_key_and_time"
     t.index ["api_key_id"], name: "index_usage_logs_on_api_key_id"
+    t.index ["endpoint", "used_at"], name: "index_usage_logs_on_endpoint_and_time"
+    t.index ["status_code"], name: "index_usage_logs_on_status_code"
+    t.index ["usage_date"], name: "index_usage_logs_on_usage_date"
+    t.index ["user_id", "used_at"], name: "index_usage_logs_on_user_and_time"
     t.index ["user_id"], name: "index_usage_logs_on_user_id"
   end
 

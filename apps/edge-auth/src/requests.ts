@@ -3,12 +3,14 @@ import type { RequestCheckResult, WorkerBindings } from "./types";
 /**
  * Get current request usage from D1
  *
+ * IMPORTANT: Queries by user_id because all API keys for a user share the same quota
+ *
  * Note: Database tables still use "credit_" naming for historical reasons,
  * but we treat these as request counts in the code.
  */
 export async function getRequestUsage(
   bindings: WorkerBindings,
-  apiKey: string,
+  userId: string,
   period: "daily" | "monthly",
   billingCycleStart?: string,
 ): Promise<number> {
@@ -19,9 +21,9 @@ export async function getRequestUsage(
   const result = await bindings.DB.prepare(`
     SELECT COALESCE(SUM(credits_used), 0) as total
     FROM credit_usage
-    WHERE api_key = ? AND used_at >= ?
+    WHERE user_id = ? AND used_at >= ?
   `)
-    .bind(apiKey, startDate)
+    .bind(userId, startDate)
     .first<{ total: number }>();
 
   return result?.total || 0;
@@ -33,14 +35,15 @@ export async function getRequestUsage(
 export async function recordRequestUsage(
   bindings: WorkerBindings,
   apiKey: string,
+  userId: string,
   endpoint: string,
   requests: number,
 ): Promise<void> {
   await bindings.DB.prepare(`
-    INSERT INTO credit_usage (api_key, endpoint, credits_used, used_at)
-    VALUES (?, ?, ?, datetime('now'))
+    INSERT INTO credit_usage (api_key, user_id, endpoint, credits_used, used_at)
+    VALUES (?, ?, ?, ?, datetime('now'))
   `)
-    .bind(apiKey, endpoint, requests)
+    .bind(apiKey, userId, endpoint, requests)
     .run();
 }
 
@@ -49,12 +52,12 @@ export async function recordRequestUsage(
  */
 export async function checkRequestUsage(
   bindings: WorkerBindings,
-  apiKey: string,
+  userId: string,
   period: "daily" | "monthly",
   limit: number,
   billingCycleStart?: string,
 ): Promise<RequestCheckResult> {
-  const usage = await getRequestUsage(bindings, apiKey, period, billingCycleStart);
+  const usage = await getRequestUsage(bindings, userId, period, billingCycleStart);
   const remaining = Math.max(0, limit - usage);
   const resetAt = getResetTime(period, billingCycleStart);
 

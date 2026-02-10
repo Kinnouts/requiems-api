@@ -1,6 +1,6 @@
 import { getRequestMultiplier, PLANS } from "./config";
 import { checkRequestUsage, recordRequestUsage } from "./requests";
-import { env } from "./env";
+import { validateEnv } from "./env";
 import {
   addUsageHeaders,
   corsResponse,
@@ -11,6 +11,7 @@ import {
 } from "./http";
 import { createLogger, maskApiKey } from "./logger";
 import { checkRateLimit, getRequestLimitMessage } from "./rate-limit";
+import { handleUsageExport } from "./usage-export";
 
 import type { ApiKeyData, WorkerBindings } from "./types";
 
@@ -18,13 +19,20 @@ async function fetch(
   request: Request,
   bindings: WorkerBindings,
 ): Promise<Response> {
-  const log = createLogger(request);
+  // Validate environment variables
+  const env = validateEnv(bindings);
   const url = new URL(request.url);
   const pathname = url.pathname;
 
   if (pathname === "/healthz") {
     return jsonResponse({ status: "ok" });
   }
+
+  if (pathname === "/internal/usage/export") {
+    return handleUsageExport(request, bindings);
+  }
+
+  const log = createLogger(request);
 
   if (request.method === "OPTIONS") {
     return corsResponse;
@@ -68,7 +76,7 @@ async function fetch(
 
   const requestUsage = await checkRequestUsage(
     bindings,
-    apiKey,
+    keyData.userId,
     "monthly",
     plan.requestLimit,
     keyData.billingCycleStart,
@@ -93,7 +101,7 @@ async function fetch(
 
   const backendUrl = new URL(pathname + url.search, env.BACKEND_URL);
 
-  const backendHeaders = filterHeaders(request.headers);
+  const backendHeaders = filterHeaders(request.headers, env.BACKEND_SECRET);
 
   const result = await fetchBackend(backendUrl, {
     method: request.method,
@@ -126,7 +134,7 @@ async function fetch(
     return response;
   }
 
-  void recordRequestUsage(bindings, apiKey, pathname, requestMultiplier);
+  void recordRequestUsage(bindings, apiKey, keyData.userId, pathname, requestMultiplier);
 
   const response = addUsageHeaders(backendResponse, {
     requestsUsed: requestMultiplier,

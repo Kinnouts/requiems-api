@@ -1,0 +1,50 @@
+<%
+  # Reusable badge component
+  # Usage:
+  #   render "shared/badge", text: "New", variant: "success"
+  #   render "shared/badge", text: "Pro", variant: "primary", size: "lg"
+  #   render "shared/badge", text: "Beta", variant: "warning", rounded: true
+
+  badge_text = local_assigns.fetch(:text, "")
+  badge_variant = local_assigns.fetch(:variant, "default")
+  badge_size = local_assigns.fetch(:size, "md")
+  badge_rounded = local_assigns.fetch(:rounded, false)
+  badge_extra_classes = local_assigns.fetch(:class_names, "")
+
+  # Base styles
+  badge_base = "inline-flex items-center font-medium"
+  badge_base += badge_rounded ? " rounded-full" : " rounded-md"
+
+  # Size variants
+  badge_sizes = {
+    "xs" => "px-2 py-0.5 text-xs",
+    "sm" => "px-2.5 py-0.5 text-xs",
+    "md" => "px-3 py-1 text-sm",
+    "lg" => "px-3.5 py-1 text-sm"
+  }
+
+  # Color variants
+  badge_variants = {
+    "default" => "bg-gray-100 text-gray-800",
+    "primary" => "bg-blue-100 text-blue-800",
+    "secondary" => "bg-gray-100 text-gray-600",
+    "success" => "bg-green-100 text-green-800",
+    "danger" => "bg-red-100 text-red-800",
+    "warning" => "bg-yellow-100 text-yellow-800",
+    "info" => "bg-cyan-100 text-cyan-800",
+    "purple" => "bg-purple-100 text-purple-800",
+    "pink" => "bg-pink-100 text-pink-800",
+    "outline" => "bg-white border border-gray-300 text-gray-700"
+  }
+
+  badge_classes = [
+    badge_base,
+    badge_sizes[badge_size],
+    badge_variants[badge_variant],
+    badge_extra_classes
+  ].reject(&:blank?).join(" ")
+%>
+
+<span class="<%= badge_classes %>">
+  <%= badge_text %>
+</span>

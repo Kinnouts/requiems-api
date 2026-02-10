@@ -1,0 +1,115 @@
+# Example Projects and Tutorials
+
+examples:
+  - id: email-validator-web-app
+    title: Email Validator Web App
+    category: Web Apps
+    description: Build a simple web application that validates email addresses and detects disposable emails using the Disposable Email Checker API.
+    difficulty: Beginner
+    duration: 30 min
+    technologies:
+      - HTML
+      - JavaScript
+      - Tailwind CSS
+    apis_used:
+      - Disposable Email Checker
+    github_url: https://github.com/bobadilla-tech/requiems-examples/tree/main/email-validator
+    demo_url: https://email-validator-demo.requiems.xyz
+    thumbnail: /images/examples/email-validator.png
+
+  - id: random-quote-generator
+    title: Random Quote Generator
+    category: Web Apps
+    description: Create an inspiring quote generator web app with social sharing capabilities using the Random Quotes API.
+    difficulty: Beginner
+    duration: 20 min
+    technologies:
+      - HTML
+      - JavaScript
+      - CSS
+    apis_used:
+      - Random Quotes
+    github_url: https://github.com/bobadilla-tech/requiems-examples/tree/main/quote-generator
+    demo_url: https://quotes-demo.requiems.xyz
+    thumbnail: /images/examples/quote-generator.png
+
+  - id: lorem-ipsum-generator
+    title: Lorem Ipsum Generator
+    category: Web Apps
+    description: Build a customizable placeholder text generator for designers and developers using the Lorem Ipsum API.
+    difficulty: Beginner
+    duration: 25 min
+    technologies:
+      - React
+      - TypeScript
+      - Tailwind CSS
+    apis_used:
+      - Lorem Ipsum Generator
+    github_url: https://github.com/bobadilla-tech/requiems-examples/tree/main/lorem-generator
+    demo_url: https://lorem-demo.requiems.xyz
+    thumbnail: /images/examples/lorem-generator.png
+
+  - id: api-testing-cli
+    title: API Testing CLI Tool
+    category: CLI Tools
+    description: Create a command-line tool to test and monitor Requiems API endpoints with detailed reporting.
+    difficulty: Intermediate
+    duration: 45 min
+    technologies:
+      - Node.js
+      - Commander.js
+      - Chalk
+    apis_used:
+      - All APIs
+    github_url: https://github.com/bobadilla-tech/requiems-examples/tree/main/api-cli
+    demo_url: null
+    thumbnail: /images/examples/api-cli.png
+
+  - id: daily-advice-bot
+    title: Daily Advice Slack Bot
+    category: Bots & Automation
+    description: Build a Slack bot that posts daily advice to your team channel using the Random Advice API.
+    difficulty: Intermediate
+    duration: 40 min
+    technologies:
+      - Python
+      - Slack API
+      - Cron Jobs
+    apis_used:
+      - Random Advice
+    github_url: https://github.com/bobadilla-tech/requiems-examples/tree/main/slack-advice-bot
+    demo_url: null
+    thumbnail: /images/examples/slack-bot.png
+
+  - id: email-validation-service
+    title: Email Validation Microservice
+    category: Backend
+    description: Create a RESTful microservice that validates and enriches email addresses using multiple Requiems APIs.
+    difficulty: Advanced
+    duration: 60 min
+    technologies:
+      - Go
+      - Docker
+      - PostgreSQL
+    apis_used:
+      - Disposable Email Checker
+    github_url: https://github.com/bobadilla-tech/requiems-examples/tree/main/email-service
+    demo_url: null
+    thumbnail: /images/examples/email-service.png
+
+categories:
+  - name: Web Apps
+    icon: 🌐
+    description: Frontend applications using Requiems APIs
+  - name: Mobile Apps
+    icon: 📱
+    description: iOS and Android applications
+  - name: CLI Tools
+    icon: ⌨️
+    description: Command-line tools and scripts
+  - name: Bots & Automation
+    icon: 🤖
+    description: Automated workflows and bot integrations
+  - name: Backend
+    icon: 🔧
+    description: Backend services and microservices
