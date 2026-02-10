@@ -1,21 +1,29 @@
-import { createEnv } from "@t3-oss/env-core";
 import { z } from "zod";
 
 export interface CloudflareBindings {
   KV: KVNamespace;
   DB: D1Database;
+  BACKEND_URL: string;
+  BACKEND_SECRET: string;
+  ENVIRONMENT: "development" | "staging" | "production";
 }
 
-export const env = createEnv({
-  server: {
-    BACKEND_URL: z.string().url(),
-    BACKEND_SECRET: z.string().min(32),
-    ENVIRONMENT: z
-      .enum(["development", "staging", "production"])
-      .default("production"),
-  },
-  runtimeEnv: process.env,
-  emptyStringAsUndefined: true,
+const envSchema = z.object({
+  BACKEND_URL: z.string().url(),
+  BACKEND_SECRET: z.string().min(32),
+  ENVIRONMENT: z
+    .enum(["development", "staging", "production"])
+    .default("production"),
 });
 
-export type ValidatedEnv = typeof env;
+export function validateEnv(env: CloudflareBindings): CloudflareBindings {
+  envSchema.parse({
+    BACKEND_URL: env.BACKEND_URL,
+    BACKEND_SECRET: env.BACKEND_SECRET,
+    ENVIRONMENT: env.ENVIRONMENT,
+  });
+
+  return env;
+}
+
+export type ValidatedEnv = z.infer<typeof envSchema>;
