@@ -11,10 +11,10 @@ docker compose -f docker-compose.dev.yml up
 
 ### What You Get:
 
-✅ **Go API** with Air hot reloading on port **6969**
+✅ **Go API** with Air hot reloading on port **8080**
 
 - Changes to `.go` files automatically rebuild and restart
-- Access: http://localhost:6969/healthz
+- Access: http://localhost:8080/healthz
 
 ✅ **Rails Dashboard** with native hot reloading on port **3000**
 
@@ -68,7 +68,7 @@ docker compose -f docker-compose.dev.yml down -v
 | Service         | URL                   | Notes                                |
 | --------------- | --------------------- | ------------------------------------ |
 | Rails Dashboard | http://localhost:3000 | Sign up, sign in, dashboard          |
-| Go API          | http://localhost:6969 | Internal API endpoints               |
+| Go API          | http://localhost:8080 | Internal API endpoints               |
 | PostgreSQL      | localhost:5432        | User: `requiem`, Password: `requiem` |
 | Redis           | localhost:6379        | For Sidekiq                          |
 

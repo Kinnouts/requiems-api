@@ -30,7 +30,7 @@ async function fetch(
     return corsResponse;
   }
 
-  const apiKey = request.headers.get("x-api-key");
+  const apiKey = request.headers.get("requiems-api-key");
 
   if (!apiKey) {
     return jsonError(401, "Get your key at requiems-api.xyz");

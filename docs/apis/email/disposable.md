@@ -41,7 +41,7 @@ Check if a single email address is disposable.
 # Production
 curl -X POST https://api.requiems.xyz/v1/email/disposable/check \
   -H "Content-Type: application/json" \
-  -H "x-api-key: YOUR_API_KEY" \
+  -H "requiems-api-key: YOUR_API_KEY" \
   -d '{"email": "user@mailinator.com"}'
 ```
 
@@ -93,7 +93,7 @@ batch.
 # Production
 curl -X POST https://api.requiems.xyz/v1/email/disposable/check-batch \
   -H "Content-Type: application/json" \
-  -H "x-api-key: YOUR_API_KEY" \
+  -H "requiems-api-key: YOUR_API_KEY" \
   -d '{
     "emails": [
       "user1@mailinator.com",
@@ -134,7 +134,7 @@ Check if a specific domain is in the disposable list.
 ```bash
 # Production
 curl https://api.requiems.xyz/v1/email/disposable/domain/guerrillamail.com \
-  -H "x-api-key: YOUR_API_KEY"
+  -H "requiems-api-key: YOUR_API_KEY"
 ```
 
 ---
@@ -167,11 +167,11 @@ Get a paginated list of all disposable email domains in the blocklist.
 ```bash
 # Production - Get first page (default 100 results)
 curl https://api.requiems.xyz/v1/email/disposable/domains \
-  -H "x-api-key: YOUR_API_KEY"
+  -H "requiems-api-key: YOUR_API_KEY"
 
 # Production - Get page 2 with 50 results per page
 curl "https://api.requiems.xyz/v1/email/disposable/domains?page=2&per_page=50" \
-  -H "x-api-key: YOUR_API_KEY"
+  -H "requiems-api-key: YOUR_API_KEY"
 ```
 
 **Notes:**
@@ -201,7 +201,7 @@ Get statistics about the disposable domains blocklist.
 ```bash
 # Production
 curl https://api.requiems.xyz/v1/email/disposable/stats \
-  -H "x-api-key: YOUR_API_KEY"
+  -H "requiems-api-key: YOUR_API_KEY"
 ```
 
 ---
@@ -237,7 +237,7 @@ const response = await fetch(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": "YOUR_API_KEY",
+      "requiems-api-key": "YOUR_API_KEY",
     },
     body: JSON.stringify({ email: userEmail }),
   },
@@ -265,7 +265,7 @@ const response = await fetch(
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      "x-api-key": "YOUR_API_KEY",
+      "requiems-api-key": "YOUR_API_KEY",
     },
     body: JSON.stringify({ emails }),
   },
@@ -286,7 +286,7 @@ const domain = email.split("@")[1];
 const response = await fetch(
   `https://api.requiems.xyz/v1/email/disposable/domain/${domain}`,
   {
-    headers: { "x-api-key": "YOUR_API_KEY" },
+    headers: { "requiems-api-key": "YOUR_API_KEY" },
   },
 );
 const result = await response.json();

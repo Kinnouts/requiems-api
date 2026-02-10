@@ -68,7 +68,7 @@ for (const { key, plan } of createdKeys) {
 }
 
 console.log(
-  "\n💡 Example:\n   curl -H 'x-api-key: " +
+  "\n💡 Example:\n   curl -H 'requiems-api-key: " +
     createdKeys[0].key +
-    "' http://localhost:6969/v1/text/advice",
+    "' http://localhost:8080/v1/text/advice",
 );

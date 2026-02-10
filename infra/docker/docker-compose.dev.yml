@@ -44,7 +44,7 @@ services:
     volumes:
       - ../../apps/api:/app
     ports:
-      - "6969:8080"
+      - "8080:8080"
     depends_on:
       db:
         condition: service_healthy

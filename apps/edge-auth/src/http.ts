@@ -8,7 +8,7 @@ export const corsResponse = new Response(null, {
   headers: {
     ...CORS_HEADERS,
     "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, x-api-key",
+    "Access-Control-Allow-Headers": "Content-Type, requiems-api-key",
     "Access-Control-Max-Age": "86400",
   },
 });
@@ -53,7 +53,7 @@ export function filterHeaders(headers: Headers): Headers {
     const lowerKey = key.toLowerCase();
 
     if (lowerKey.startsWith("cf-")) continue;
-    if (lowerKey === "x-api-key") continue;
+    if (lowerKey === "requiems-api-key") continue;
     if (lowerKey === "connection") continue;
     if (lowerKey === "keep-alive") continue;
 

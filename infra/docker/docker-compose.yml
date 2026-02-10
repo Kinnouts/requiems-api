@@ -10,7 +10,7 @@ services:
       - DATABASE_URL=postgres://requiem:requiem@db:5432/requiem?sslmode=disable
       - REDIS_URL=redis://redis:6379
     ports:
-      - "6969:8080"
+      - "8080:8080"
     depends_on:
       - db
       - redis

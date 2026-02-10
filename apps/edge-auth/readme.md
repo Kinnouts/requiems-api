@@ -57,7 +57,7 @@ wrangler dev
 Test locally:
 
 ```bash
-curl -H "x-api-key: rq_test_123" http://localhost:8787/v1/text/advice
+curl -H "requiems-api-key: rq_test_123" http://localhost:8787/v1/text/advice
 ```
 
 ## Deploy

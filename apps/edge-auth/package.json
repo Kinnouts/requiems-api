@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit",
     "db:migrate": "wrangler d1 execute requiem-usage --file=schema.sql",
     "db:migrate:prod": "wrangler d1 execute requiem-usage --file=schema.sql --env production",
-    "kv:seed": "npx tsx scripts/seed-kv.ts"
+    "kv:seed": "bun run scripts/seed-kv.ts"
   },
   "dependencies": {
     "@t3-oss/env-core": "^0.11.1",

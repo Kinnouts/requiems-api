@@ -32,20 +32,33 @@ export const PLANS: Record<PlanName, PlanConfig> = {
 /**
  * Endpoint costs - credit cost per API call
  *
+ * DEFAULT COST: 1 credit per request
+ * This object ONLY lists endpoints that cost MORE than 1 credit.
+ *
+ * Most endpoints are simple lookups = 1 credit (default)
+ * Some endpoints require expensive operations = 2+ credits (listed below)
+ *
+ * Examples of expensive operations:
+ * - API calls to external services (2-3x cost)
+ * - Complex AI/ML inference (3-5x cost)
+ * - Large data processing (2-3x cost)
+ *
  * IMPORTANT: Keep this in sync with your Go backend routes!
- * When you add a new endpoint to the backend, add it here too.
+ * When adding expensive endpoints, add them here.
  */
 export const ENDPOINT_COSTS: Record<string, number> = {
-  "GET /v1/text/advice": 1,
-  "GET /v1/text/quotes/random": 1,
-  "GET /v1/text/words/random": 1,
+  // Dictionary operations are more expensive
   "GET /v1/text/words/define": 2,
   "GET /v1/text/words/synonyms": 2,
+
+  // Future expensive endpoints:
+  // "GET /v1/ai/image-recognition": 5,
+  // "POST /v1/text/translate": 3,
 };
 
 /**
- * Default cost for unknown endpoints
- * Backend will return 404, but we still need a cost for the attempt
+ * Default cost for endpoints not listed above
+ * This is the cost for 90%+ of endpoints
  */
 export const DEFAULT_ENDPOINT_COST = 1;
 

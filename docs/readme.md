@@ -2,12 +2,12 @@
 
 This folder contains developer-focused documentation for Requiem API.
 
-1. Getting started
-2. Architecture
-3. Business
-4. The Go Backend
-5. The Auth Gateway
-6. The Ruby on Rails App
-7. APIs
-8. Infraestructure
-9. Deployment
+1. [Getting started](./getting-started.md)
+2. [Architecture](./architecture.md)
+3. [Business](./business.md)
+4. [The Go Backend](./backend.md)
+5. [The Auth Gateway](./auth-gateway.md)
+6. [The Ruby on Rails App](./rails-app.md)
+7. [APIs](./apis/readme.md)
+8. [Infrastructure](./infrastructure.md)
+9. [Deployment](./deployment.md)

@@ -18,7 +18,7 @@
 │  │        │  │  D1    │      │  │  │ Page   │  │ & Admin │     │
 │  └────────┘  └────────┘      │  │  └────────┘  └─────────┘     │
 │                              │  │                              │
-│  x-api-key validation        │  │  User management             │
+│  requiems-api-key validation        │  │  User management             │
 │  Rate limiting               │  │  API key creation            │
 │  Credit tracking             │  │  Usage stats                 │
 └──────────────────────────────┘  └──────────────────────────────┘
@@ -233,7 +233,7 @@ CREATE TABLE words (id SERIAL, word TEXT, definition TEXT, ...);
 
 ```
 1. User calls: GET api.requiems.xyz/v1/text/advice
-   └─ Header: x-api-key: rq_live_abc123
+   └─ Header: requiems-api-key: rq_live_abc123
 
 2. Worker receives request
    └─ KV.get("key:rq_live_abc123") → { plan: "starter", ... }
