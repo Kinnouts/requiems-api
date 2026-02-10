@@ -11,42 +11,9 @@
     </div>
   </div>
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-    <!-- Open Source Notice -->
-    <div class="mb-12 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border-2 border-blue-200 p-8">
-      <div class="flex items-start">
-        <div class="flex-shrink-0">
-          <svg class="h-12 w-12 text-blue-600" fill="currentColor" viewBox="0 0 20 20">
-            <path d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 9a1 1 0 112 0v4a1 1 0 11-2 0V9zm1-5a1 1 0 100 2 1 1 0 000-2z"/>
-          </svg>
-        </div>
-        <div class="ml-4 flex-1">
-          <h3 class="text-2xl font-bold text-gray-900 mb-2">
-            💯 Open Source - Transparent & Community-Driven
-          </h3>
-          <p class="text-gray-700 mb-4">
-            Requiems API codebase is publicly available on GitHub under a custom business license. Review the code, contribute improvements, report bugs, and participate in discussions. Our managed cloud service provides enterprise-grade reliability and scalability.
-          </p>
-          <div class="flex flex-wrap gap-4">
-            <a href="https://github.com/bobadilla-tech/requiems-api" target="_blank" rel="noopener" class="inline-flex items-center px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 transition-colors">
-              <svg class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
-              </svg>
-              View on GitHub
-            </a>
-            <a href="https://github.com/bobadilla-tech/requiems-api/blob/main/LICENSE.md" target="_blank" rel="noopener" class="inline-flex items-center px-4 py-2 border-2 border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors">
-              <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-              </svg>
-              View License
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12" data-controller="pricing-toggle">
     <!-- Billing Toggle -->
-    <div class="flex justify-center mb-8" data-controller="pricing-toggle">
+    <div class="flex justify-center mb-8">
       <div class="bg-white rounded-lg border-2 border-gray-200 p-1 inline-flex">
         <button
           type="button"
@@ -62,14 +29,14 @@
           class="px-6 py-2 rounded-md text-sm font-medium transition-colors text-gray-700 hover:text-gray-900">
           Yearly
           <span class="ml-1 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
-            Save 33%
+            Save 17%
           </span>
         </button>
       </div>
     </div>
 
     <!-- Pricing Cards -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16" data-pricing-toggle-target="plans">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
       <!-- Free Plan -->
       <%= render "home/pricing_card",
         name: "Free",
@@ -83,9 +50,7 @@
           "30 requests/minute",
           "All API endpoints",
           "Community support",
-          "US data centers",
-          "SOC 2 in progress",
-          "Open source codebase"
+          "EU data centers"
         ],
         cta_text: "Start Free",
         cta_url: new_user_registration_path,
@@ -104,12 +69,10 @@
           "5,000 requests/minute",
           "All API endpoints",
           "Email support (24h response)",
-          "US data centers",
-          "SOC 2 in progress",
-          "Open source codebase"
+          "EU data centers"
         ],
         cta_text: "Start Free Trial",
-        cta_url: user_signed_in? ? dashboard_billing_path(plan: "developer") : new_user_registration_path(plan: "developer"),
+        cta_url: user_signed_in? ? { method: :post, url: dashboard_checkout_billing_path, params: { plan: "developer", billing_cycle: "monthly" } } : new_user_registration_path(plan: "developer"),
         popular: false %>
 
       <!-- Business Plan (Most Popular) -->
@@ -125,13 +88,11 @@
           "10,000 requests/minute",
           "All API endpoints",
           "Priority email support (4h response)",
-          "US & EU data centers",
-          "SOC 2 in progress",
-          "Open source codebase",
+          "EU data centers",
           "Custom SLAs available"
         ],
         cta_text: "Start Free Trial",
-        cta_url: user_signed_in? ? dashboard_billing_path(plan: "business") : new_user_registration_path(plan: "business"),
+        cta_url: user_signed_in? ? { method: :post, url: dashboard_checkout_billing_path, params: { plan: "business", billing_cycle: "monthly" } } : new_user_registration_path(plan: "business"),
         popular: true %>
 
       <!-- Professional Plan -->
@@ -147,14 +108,11 @@
           "50,000 requests/minute",
           "All API endpoints",
           "Priority support (1h response)",
-          "US & EU data centers",
-          "SOC 2 in progress",
-          "Open source codebase",
-          "Custom SLAs",
-          "Dedicated account manager"
+          "EU data centers",
+          "Custom SLAs"
         ],
         cta_text: "Start Free Trial",
-        cta_url: user_signed_in? ? dashboard_billing_path(plan: "professional") : new_user_registration_path(plan: "professional"),
+        cta_url: user_signed_in? ? { method: :post, url: dashboard_checkout_billing_path, params: { plan: "professional", billing_cycle: "monthly" } } : new_user_registration_path(plan: "professional"),
         popular: false %>
     </div>
 
@@ -199,7 +157,7 @@
         </div>
         <div class="text-center">
           <div class="text-4xl font-bold mb-4">Custom Pricing</div>
-          <a href="mailto:sales@requiems.xyz" class="inline-flex items-center px-8 py-4 bg-white text-gray-900 font-medium rounded-lg hover:bg-gray-100 transition-colors">
+          <a href="mailto:eliaz@bobadilla.tech" class="inline-flex items-center px-8 py-4 bg-white text-gray-900 font-medium rounded-lg hover:bg-gray-100 transition-colors">
             Contact Sales
             <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
@@ -230,12 +188,9 @@
             <%= render "home/pricing_table_row", feature: "Monthly requests", values: ["500", "100k", "1M", "10M"] %>
             <%= render "home/pricing_table_row", feature: "Rate limit", values: ["30/min", "5k/min", "10k/min", "50k/min"] %>
             <%= render "home/pricing_table_row", feature: "API endpoints", values: ["All", "All", "All", "All"] %>
-            <%= render "home/pricing_table_row", feature: "Data centers", values: ["US", "US", "US & EU", "US & EU"] %>
-            <%= render "home/pricing_table_row", feature: "SOC 2 Compliant", values: ["In Progress", "In Progress", "In Progress", "In Progress"] %>
-            <%= render "home/pricing_table_row", feature: "Open source", values: ["Yes", "Yes", "Yes", "Yes"], all_check: true %>
+            <%= render "home/pricing_table_row", feature: "Data centers", values: ["EU", "EU", "EU", "EU"] %>
             <%= render "home/pricing_table_row", feature: "Support response", values: ["Community", "24h", "4h", "1h"] %>
             <%= render "home/pricing_table_row", feature: "SLA", values: ["-", "-", "99.9%", "99.95%"] %>
-            <%= render "home/pricing_table_row", feature: "Account manager", values: [false, false, false, true] %>
           </tbody>
         </table>
       </div>
@@ -252,7 +207,7 @@
             </svg>
           </div>
           <h3 class="text-lg font-semibold text-gray-900 mb-2">SOC 2 Type II</h3>
-          <p class="text-gray-600 text-sm">Certification in progress. Ensuring the highest standards for security and data protection.</p>
+          <p class="text-gray-600 text-sm">In progress.</p>
         </div>
 
         <div class="text-center">
@@ -261,8 +216,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">Global Infrastructure</h3>
-          <p class="text-gray-600 text-sm">Data centers in the US and EU. Business+ plans include EU data residency options for GDPR compliance.</p>
+          <h3 class="text-lg font-semibold text-gray-900 mb-2">EU Infrastructure</h3>
+          <p class="text-gray-600 text-sm">All data centers located in the EU for GDPR compliance.</p>
         </div>
 
         <div class="text-center">
@@ -283,14 +238,6 @@
 
       <div class="space-y-4" data-controller="faq-accordion">
         <%= render "home/faq_item",
-          question: "Is Requiems API really open source?",
-          answer: "Yes! Requiems API codebase is publicly available on GitHub under a custom business license. You can view the code, contribute bug fixes and features, report issues, and participate in discussions. The platform is built transparently to ensure security and quality." %>
-
-        <%= render "home/faq_item",
-          question: "Can I contribute to the project?",
-          answer: "Absolutely! We welcome contributions on GitHub including bug reports, feature requests, code improvements, and documentation updates. Visit our repository at https://github.com/bobadilla-tech/requiems-api to get started. Note that the platform depends on proprietary infrastructure assets for full operation." %>
-
-        <%= render "home/faq_item",
           question: "What happens if I exceed my monthly quota?",
           answer: "Your API requests will return a 429 (Too Many Requests) error once you hit your monthly limit. We recommend upgrading to a higher plan before reaching your quota. You can monitor your usage in real-time from your dashboard." %>
 
@@ -299,20 +246,16 @@
           answer: "Yes! All plans, including the free tier, can be used for commercial projects. Our managed cloud service provides enterprise-grade reliability, scalability, and support for production applications." %>
 
         <%= render "home/faq_item",
-          question: "What's included in SOC 2 certification?",
-          answer: "SOC 2 Type II certification validates our security controls across five trust principles: security, availability, processing integrity, confidentiality, and privacy. We're currently in the certification process and expect completion in Q2 2026." %>
-
-        <%= render "home/faq_item",
           question: "Do you offer custom enterprise plans?",
-          answer: "Yes! Enterprise plans include custom pricing, dedicated infrastructure, private deployments, EU data residency, custom SLAs, and dedicated support. Contact our sales team at sales@requiems.xyz to discuss your requirements." %>
+          answer: "Yes! Enterprise plans include custom pricing, dedicated infrastructure, private deployments, EU data residency, custom SLAs, and dedicated support. Contact our sales team at eliaz@bobadilla.tech to discuss your requirements." %>
 
         <%= render "home/faq_item",
           question: "What data centers do you use?",
-          answer: "Free and Developer plans run on US data centers. Business and Professional plans have access to both US and EU data centers. Enterprise plans can choose specific regions or deploy on private infrastructure." %>
+          answer: "All plans run on EU data centers for GDPR compliance." %>
 
         <%= render "home/faq_item",
           question: "Is there a free trial for paid plans?",
-          answer: "Yes! All paid plans include a 7-day free trial with full access to plan features. No credit card required to start the trial. You can cancel anytime during the trial period." %>
+          answer: "Yes! All monthly paid plans include a 7-day free trial with full access to plan features. No credit card required to start the trial. You can cancel anytime during the trial period." %>
       </div>
     </div>
   </div>

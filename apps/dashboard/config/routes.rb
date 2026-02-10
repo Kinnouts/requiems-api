@@ -95,6 +95,12 @@ Rails.application.routes.draw do
   # Public pages
   get "docs", to: "home#docs"
   get "pricing", to: "home#pricing"
+  get "about", to: "home#about"
+  get "privacy", to: "home#privacy"
+  get "terms", to: "home#terms"
+  get "contact", to: "home#contact"
+  get "api_reference", to: "home#api_reference"
+  get "changelog", to: "home#changelog"
   get "examples", to: "examples#index"
   resources :apis, only: [:index, :show]
   resources :examples, only: [:show]

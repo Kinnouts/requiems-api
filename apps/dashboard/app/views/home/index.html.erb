@@ -11,15 +11,13 @@
     <div class="grid lg:grid-cols-2 gap-12 items-center">
       <!-- Left: Hero copy -->
       <div>
-        <%= render "shared/badge", text: "100% Open Source", variant: "success", size: "md", class_names: "mb-6" %>
-
         <h1 class="text-5xl lg:text-6xl font-bold leading-tight mb-6">
           Ship Faster With
           <span class="block text-yellow-300">Production-Ready APIs</span>
         </h1>
 
         <p class="text-xl text-blue-100 mb-8">
-          One API key. Unlimited possibilities. Access email validation, text utilities, and more through a single managed platform. SOC 2 compliant with EU & US servers.
+          One API key. Unlimited possibilities. Access email validation, text utilities, and more through a single managed platform hosted on EU servers.
         </p>
 
         <!-- CTA buttons -->
@@ -77,15 +75,15 @@
         Trusted by developers worldwide
       </h2>
       <p class="mt-2 text-lg text-gray-600">
-        Powering applications across 50+ countries
+        Powering applications across 100+ countries
       </p>
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-      <%= render "shared/stat_card", title: "Developers", value: "10,000+", subtitle: "Building with Requiems", change: "+23% this month", trend: "up" %>
-      <%= render "shared/stat_card", title: "API Calls", value: "200M+", subtitle: "Total requests served", change: "+156% YoY", trend: "up" %>
-      <%= render "shared/stat_card", title: "Countries", value: "50+", subtitle: "Global reach", change: "Growing daily", trend: nil %>
-      <%= render "shared/stat_card", title: "Uptime", value: "99.99%", subtitle: "Last 12 months", change: "Enterprise-grade", trend: nil %>
+      <%= render "shared/stat_card", title: "Developers", value: "10,000+", subtitle: "Building with Requiems" %>
+      <%= render "shared/stat_card", title: "API Calls", value: "200M+", subtitle: "Total requests served" %>
+      <%= render "shared/stat_card", title: "Countries", value: "100+", subtitle: "Global reach" %>
+      <%= render "shared/stat_card", title: "Uptime", value: "99.99%", subtitle: "Last 12 months" %>
     </div>
   </div>
 </div>
@@ -271,11 +269,7 @@
       <%= render "shared/stat_card", title: "Median Latency", value: "243ms", subtitle: "P50 response time", class_names: "border-2 border-blue-200" %>
       <%= render "shared/stat_card", title: "Uptime", value: "99.99%", subtitle: "Last 12 months SLA", class_names: "border-2 border-green-200" %>
       <%= render "shared/stat_card", title: "Monthly Requests", value: "200M+", subtitle: "Requests processed/month", class_names: "border-2 border-purple-200" %>
-      <%= render "shared/stat_card", title: "Data Centers", value: "US + EU", subtitle: "Global infrastructure", class_names: "border-2 border-yellow-200" %>
-    </div>
-
-    <div class="mt-12 text-center">
-      <%= render "shared/alert", message: "Powered by Cloudflare's global edge network for blazing-fast responses worldwide.", variant: "info", class_names: "inline-block max-w-2xl" %>
+      <%= render "shared/stat_card", title: "Data Centers", value: "EU", subtitle: "European Union", class_names: "border-2 border-yellow-200" %>
     </div>
   </div>
 </div>
@@ -306,7 +300,7 @@
           <h3 class="text-lg font-semibold text-gray-900">SOC 2 Certification</h3>
           <%= render "shared/badge", text: "In Progress", variant: "info", size: "sm", class_names: "mt-1" %>
           <p class="mt-2 text-gray-600">
-            Currently undergoing SOC 2 Type II audit. Expected completion Q2 2026.
+            In progress.
           </p>
         </div>
       </div>
@@ -339,10 +333,10 @@
           </div>
         </div>
         <div class="ml-4">
-          <h3 class="text-lg font-semibold text-gray-900">Global Infrastructure</h3>
-          <%= render "shared/badge", text: "US + EU", variant: "primary", size: "sm", class_names: "mt-1" %>
+          <h3 class="text-lg font-semibold text-gray-900">EU Infrastructure</h3>
+          <%= render "shared/badge", text: "EU", variant: "primary", size: "sm", class_names: "mt-1" %>
           <p class="mt-2 text-gray-600">
-            Data centers in both US and EU regions. GDPR & CCPA compliant.
+            All data centers located in the European Union. GDPR compliant.
           </p>
         </div>
       </div>
@@ -404,131 +398,6 @@
   </div>
 </div>
 
-<!-- Open Source & Transparency Section -->
-<div class="bg-gradient-to-br from-gray-900 to-gray-800 text-white py-20">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid lg:grid-cols-2 gap-12 items-center">
-      <!-- Left: Content -->
-      <div>
-        <div class="inline-flex items-center space-x-3 mb-6">
-          <%= render "shared/badge", text: "100% Open Source", variant: "success", size: "lg" %>
-          <svg class="h-8 w-8 text-white" fill="currentColor" viewBox="0 0 24 24">
-            <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
-          </svg>
-        </div>
-
-        <h2 class="text-4xl font-bold mb-6">
-          Fully Transparent. Fully Open.
-        </h2>
-
-        <p class="text-xl text-gray-300 mb-8">
-          Our codebase is open on GitHub for transparency, security audits, and community contributions. Report bugs, suggest features, and help us build better API infrastructure.
-        </p>
-
-        <ul class="space-y-4 mb-8">
-          <li class="flex items-start">
-            <svg class="h-6 w-6 text-green-400 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-            <span class="ml-3 text-lg">Open source codebase on GitHub under custom business license</span>
-          </li>
-          <li class="flex items-start">
-            <svg class="h-6 w-6 text-green-400 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-            <span class="ml-3 text-lg">Contribute bug fixes, features, and improvements</span>
-          </li>
-          <li class="flex items-start">
-            <svg class="h-6 w-6 text-green-400 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-            <span class="ml-3 text-lg">Full code transparency for security audits and reviews</span>
-          </li>
-          <li class="flex items-start">
-            <svg class="h-6 w-6 text-green-400 mt-1 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-            </svg>
-            <span class="ml-3 text-lg">Active discussions and community feedback</span>
-          </li>
-        </ul>
-
-        <div class="flex flex-col sm:flex-row gap-4">
-          <a
-            href="https://github.com/bobadilla-tech/requiems-api"
-            target="_blank"
-            rel="noopener noreferrer"
-            class="inline-flex items-center justify-center px-6 py-3 border-2 border-white text-base font-medium rounded-lg text-white hover:bg-white hover:text-gray-900 transition-colors"
-          >
-            <svg class="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
-              <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
-            </svg>
-            View on GitHub
-          </a>
-
-          <%= link_to "https://github.com/bobadilla-tech/requiems-api/blob/main/LICENSE.md", target: "_blank", rel: "noopener noreferrer", class: "inline-flex items-center justify-center px-6 py-3 bg-white text-gray-900 text-base font-medium rounded-lg hover:bg-gray-100 transition-colors" do %>
-            <svg class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            View License
-          <% end %>
-        </div>
-      </div>
-
-      <!-- Right: GitHub stats / visual -->
-      <div>
-        <%= render "shared/card", class_names: "bg-gray-800 border-gray-700" do %>
-          <div class="space-y-6">
-            <div class="flex items-center justify-between pb-4 border-b border-gray-700">
-              <h3 class="text-lg font-semibold text-white">Repository Stats</h3>
-              <a href="https://github.com/bobadilla-tech/requiems-api" target="_blank" rel="noopener noreferrer" class="text-blue-400 hover:text-blue-300">
-                View →
-              </a>
-            </div>
-
-            <div class="grid grid-cols-2 gap-4">
-              <div class="bg-gray-900 rounded-lg p-4">
-                <div class="text-3xl font-bold text-white">Custom</div>
-                <div class="text-sm text-gray-400">License</div>
-              </div>
-              <div class="bg-gray-900 rounded-lg p-4">
-                <div class="text-3xl font-bold text-white">Active</div>
-                <div class="text-sm text-gray-400">Maintenance</div>
-              </div>
-            </div>
-
-            <div class="space-y-3">
-              <div class="flex items-center text-gray-300">
-                <svg class="h-5 w-5 text-green-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                Go backend with Chi router
-              </div>
-              <div class="flex items-center text-gray-300">
-                <svg class="h-5 w-5 text-green-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                Cloudflare Worker gateway (TypeScript)
-              </div>
-              <div class="flex items-center text-gray-300">
-                <svg class="h-5 w-5 text-green-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                Rails 8 dashboard with Turbo
-              </div>
-              <div class="flex items-center text-gray-300">
-                <svg class="h-5 w-5 text-green-400 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                </svg>
-                Production-ready Docker deployment
-              </div>
-            </div>
-          </div>
-        <% end %>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- FAQ Accordion Section -->
 <div class="bg-white py-20">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -558,32 +427,6 @@
       <!-- FAQ 2 -->
       <%= render "shared/card", padding: true do %>
         <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="1">
-          <span class="text-lg font-semibold text-gray-900">Is the code really open source?</span>
-          <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-        <div class="mt-4 text-gray-600 hidden" data-tabs-target="panel">
-          Yes! The codebase is publicly available on <a href="https://github.com/bobadilla-tech/requiems-api" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:underline">GitHub</a> under a custom business license. You can review the code for security audits, contribute bug fixes and features, participate in discussions, and provide feedback. Note that the platform depends on several proprietary infrastructure assets.
-        </div>
-      <% end %>
-
-      <!-- FAQ 3 -->
-      <%= render "shared/card", padding: true do %>
-        <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="2">
-          <span class="text-lg font-semibold text-gray-900">Can I contribute to the project?</span>
-          <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
-        <div class="mt-4 text-gray-600 hidden" data-tabs-target="panel">
-          Absolutely! We welcome contributions on GitHub including bug reports, feature requests, code improvements, and documentation updates. Check our contributing guidelines on the repository for more details on how to get involved.
-        </div>
-      <% end %>
-
-      <!-- FAQ 4 -->
-      <%= render "shared/card", padding: true do %>
-        <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="3">
           <span class="text-lg font-semibold text-gray-900">Can I use this for commercial projects?</span>
           <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
@@ -594,22 +437,22 @@
         </div>
       <% end %>
 
-      <!-- FAQ 5 -->
+      <!-- FAQ 3 -->
       <%= render "shared/card", padding: true do %>
-        <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="4">
+        <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="2">
           <span class="text-lg font-semibold text-gray-900">Where are your servers located?</span>
           <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
         <div class="mt-4 text-gray-600 hidden" data-tabs-target="panel">
-          We have data centers in both the United States and European Union, powered by Cloudflare's global edge network. This ensures fast response times worldwide and helps with GDPR compliance for EU customers.
+          All our data centers are located in the European Union, powered by Cloudflare's global edge network for GDPR compliance.
         </div>
       <% end %>
 
-      <!-- FAQ 6 -->
+      <!-- FAQ 4 -->
       <%= render "shared/card", padding: true do %>
-        <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="5">
+        <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="3">
           <span class="text-lg font-semibold text-gray-900">What payment methods do you accept?</span>
           <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />

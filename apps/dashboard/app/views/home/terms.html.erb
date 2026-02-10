@@ -1,0 +1,135 @@
+<% content_for :title, "Terms of Service - Requiems API" %>
+
+<div class="min-h-screen bg-gray-50 py-16">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white rounded-lg shadow-lg p-8 md:p-12">
+      <h1 class="text-4xl font-bold text-gray-900 mb-6">Terms of Service</h1>
+
+      <p class="text-sm text-gray-600 mb-8">
+        Last updated: <%= Time.current.strftime("%B %d, %Y") %>
+      </p>
+
+      <div class="prose prose-lg max-w-none">
+        <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">1. Acceptance of Terms</h2>
+        <p class="text-gray-700 mb-6">
+          By accessing or using Requiems API, you agree to be bound by these Terms of Service and all applicable laws and regulations.
+          If you do not agree with any of these terms, you are prohibited from using or accessing this service.
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">2. API Access and Usage</h2>
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">2.1 API Keys</h3>
+        <p class="text-gray-700 mb-4">
+          You are responsible for maintaining the confidentiality of your API keys. Do not share your API keys publicly or
+          embed them in client-side code. You are responsible for all activity that occurs using your API keys.
+        </p>
+
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">2.2 Rate Limits</h3>
+        <p class="text-gray-700 mb-4">
+          Your API usage is subject to rate limits based on your subscription plan. Exceeding these limits may result in
+          temporary suspension of API access or additional charges.
+        </p>
+
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">2.3 Acceptable Use</h3>
+        <p class="text-gray-700 mb-4">
+          You agree not to use the API for:
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2 mb-6">
+          <li>Illegal activities or to violate any laws</li>
+          <li>Attempting to gain unauthorized access to our systems</li>
+          <li>Transmitting malware, viruses, or harmful code</li>
+          <li>Harassment, spam, or abusive behavior</li>
+          <li>Reselling or redistributing API access without permission</li>
+          <li>Reverse engineering or attempting to extract source code</li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">3. Billing and Payments</h2>
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">3.1 Subscription Plans</h3>
+        <p class="text-gray-700 mb-4">
+          Paid plans are billed monthly or annually in advance. All fees are non-refundable except as required by law or
+          as explicitly stated in these terms.
+        </p>
+
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">3.2 Free Trials</h3>
+        <p class="text-gray-700 mb-4">
+          Monthly paid plans include a 7-day free trial. You will not be charged until the trial period ends.
+          You may cancel anytime during the trial period.
+        </p>
+
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">3.3 Overages</h3>
+        <p class="text-gray-700 mb-6">
+          If you exceed your plan's monthly request quota, API requests will be blocked with a 429 error.
+          Upgrade your plan to restore access.
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">4. Service Level and Uptime</h2>
+        <p class="text-gray-700 mb-4">
+          We target 99.99% uptime but do not guarantee uninterrupted service. We are not liable for:
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2 mb-6">
+          <li>Scheduled maintenance windows</li>
+          <li>Force majeure events</li>
+          <li>Third-party service failures</li>
+          <li>Issues caused by your misuse of the API</li>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">5. Data and Privacy</h2>
+        <p class="text-gray-700 mb-6">
+          We do not log the content of API requests or responses. Usage metadata (timestamps, endpoints, status codes)
+          is retained for billing and analytics. See our <%= link_to "Privacy Policy", privacy_path, class: "text-blue-600 hover:text-blue-700" %>
+          for details.
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">6. Intellectual Property</h2>
+        <p class="text-gray-700 mb-6">
+          The API, documentation, and all related materials are owned by Bobadilla Tech and protected by copyright and
+          other intellectual property laws. You may not copy, modify, or create derivative works without permission.
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">7. Termination</h2>
+        <p class="text-gray-700 mb-4">
+          We may suspend or terminate your access to the API at any time for:
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 space-y-2 mb-6">
+          <li>Violation of these terms</li>
+          <li>Non-payment of fees</li>
+          <li>Fraudulent or illegal activity</li>
+          <li>At our discretion with 30 days notice</li>
+        </ul>
+        <p class="text-gray-700 mb-6">
+          You may cancel your account at any time from your dashboard settings.
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">8. Limitation of Liability</h2>
+        <p class="text-gray-700 mb-6">
+          TO THE MAXIMUM EXTENT PERMITTED BY LAW, BOBADILLA TECH SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL,
+          SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS OR REVENUES, WHETHER INCURRED DIRECTLY
+          OR INDIRECTLY, OR ANY LOSS OF DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES.
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">9. Changes to Terms</h2>
+        <p class="text-gray-700 mb-6">
+          We reserve the right to modify these terms at any time. We will notify you of material changes via email.
+          Continued use of the API after changes constitutes acceptance of the new terms.
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">10. Governing Law</h2>
+        <p class="text-gray-700 mb-6">
+          These terms are governed by the laws of the European Union. Any disputes shall be resolved in EU courts.
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 mt-8 mb-4">Contact</h2>
+        <p class="text-gray-700 mb-6">
+          Questions about these terms? Contact us at
+          <a href="mailto:eliaz@bobadilla.tech" class="text-blue-600 hover:text-blue-700 font-medium">eliaz@bobadilla.tech</a>
+        </p>
+      </div>
+
+      <div class="mt-12 pt-8 border-t border-gray-200">
+        <%= link_to "Back to Home", root_path, class: "text-blue-600 hover:text-blue-700 font-medium inline-flex items-center" %>
+        <svg class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+      </div>
+    </div>
+  </div>
+</div>

@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Toggle between monthly and yearly pricing
 export default class extends Controller {
-  static targets = ["monthlyButton", "yearlyButton", "monthlyPrice", "yearlyPrice"]
+  static targets = ["monthlyButton", "yearlyButton", "monthlyPrice", "yearlyPrice", "billingCycleInput"]
 
   connect() {
     this.showMonthly()
@@ -16,6 +16,9 @@ export default class extends Controller {
     // Show monthly prices, hide yearly prices
     this.monthlyPriceTargets.forEach(el => el.classList.remove("hidden"))
     this.yearlyPriceTargets.forEach(el => el.classList.add("hidden"))
+
+    // Update billing cycle inputs
+    this.billingCycleInputTargets.forEach(input => input.value = "monthly")
   }
 
   showYearly() {
@@ -26,5 +29,8 @@ export default class extends Controller {
     // Show yearly prices, hide monthly prices
     this.yearlyPriceTargets.forEach(el => el.classList.remove("hidden"))
     this.monthlyPriceTargets.forEach(el => el.classList.add("hidden"))
+
+    // Update billing cycle inputs
+    this.billingCycleInputTargets.forEach(input => input.value = "yearly")
   }
 }
