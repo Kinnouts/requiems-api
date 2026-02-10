@@ -138,10 +138,15 @@ CLOUDFLARE_ACCOUNT_ID=your_cloudflare_account_id
 CLOUDFLARE_KV_NAMESPACE_ID=your_kv_namespace_id
 CLOUDFLARE_API_TOKEN=your_cloudflare_api_token
 
-# Database (optional override)
-DATABASE_URL=postgres://requiem:requiem@db:5432/requiem?sslmode=disable
+# Database
+DATABASE_URL=postgres://requiem:STRONG_PASSWORD@db:5432/requiem?sslmode=disable
 
-# Backend Secret (must match Worker BACKEND_SECRET)
+# Redis
+REDIS_URL=redis://redis:6379
+
+# Backend Secret (REQUIRED - must match Worker BACKEND_SECRET)
+# Go API will reject requests without valid X-Backend-Secret header
+# Minimum 32 characters
 BACKEND_SECRET=your_32_char_minimum_secret_here
 ```
 

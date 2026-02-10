@@ -12,6 +12,7 @@ import (
 	"requiems-api/internal/email"
 	"requiems-api/internal/platform/config"
 	"requiems-api/internal/platform/db"
+	"requiems-api/internal/platform/middleware"
 	"requiems-api/internal/text"
 )
 
@@ -33,15 +34,22 @@ func New(ctx context.Context, cfg config.Config) (*App, error) {
 
 	r := chi.NewRouter()
 
+	// Public routes (no auth required)
 	r.Get("/healthz", Healthz)
 
-	textRouter := chi.NewRouter()
-	text.RegisterRoutes(textRouter, pool)
-	r.Mount("/v1/text", textRouter)
+	// Protected routes (require X-Backend-Secret header)
+	r.Group(func(protected chi.Router) {
+		// Apply backend secret authentication middleware
+		protected.Use(middleware.BackendSecretAuth(cfg.BackendSecret))
 
-	emailRouter := chi.NewRouter()
-	email.RegisterRoutes(emailRouter)
-	r.Mount("/v1/email", emailRouter)
+		textRouter := chi.NewRouter()
+		text.RegisterRoutes(textRouter, pool)
+		protected.Mount("/v1/text", textRouter)
+
+		emailRouter := chi.NewRouter()
+		email.RegisterRoutes(emailRouter)
+		protected.Mount("/v1/email", emailRouter)
+	})
 
 	return &App{
 		cfg: cfg,
