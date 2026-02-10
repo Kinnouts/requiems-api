@@ -26,19 +26,15 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :usage, only: [:show] do
-      member do
-        get :by_endpoint
-        get :by_date
-        get :export
-      end
-    end
+    resource :usage, only: [:show], controller: 'usage'
+    get 'usage/by_endpoint', to: 'usage#by_endpoint', as: :by_endpoint_usage
+    get 'usage/by_date', to: 'usage#by_date', as: :by_date_usage
+    get 'usage/export', to: 'usage#export', as: :export_usage
 
-    resource :billing, only: [:show, :update] do
-      post :checkout, on: :member
-      post :portal, on: :member
-      delete :cancel_subscription, on: :member
-    end
+    resource :billing, only: [:show, :update], controller: 'billing'
+    post 'billing/checkout', to: 'billing#checkout', as: :checkout_billing
+    post 'billing/portal', to: 'billing#portal', as: :portal_billing
+    delete 'billing/cancel_subscription', to: 'billing#cancel_subscription', as: :cancel_subscription_billing
 
     resources :invoices, only: [:index, :show]
 
