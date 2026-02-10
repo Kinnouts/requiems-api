@@ -17,12 +17,13 @@ class AggregateDailyUsageJob < ApplicationJob
     start_time = Time.current
 
     # Aggregate by user and date
+    # IMPORTANT: Group by user_id only (not api_key_id) because all API keys
+    # for a user share the same quota
     aggregated = UsageLog
       .where(usage_date: date)
-      .group(:user_id, :api_key_id, :usage_date)
+      .group(:user_id, :usage_date)
       .select(
         "user_id",
-        "api_key_id",
         "usage_date as date",
         "COUNT(*) as total_requests",
         "SUM(credits_used) as total_credits",
@@ -36,12 +37,9 @@ class AggregateDailyUsageJob < ApplicationJob
       DailyUsageSummary.upsert(
         {
           user_id: summary.user_id,
-          api_key_id: summary.api_key_id,
           date: summary.date,
           total_requests: summary.total_requests,
           total_credits: summary.total_credits,
-          avg_response_time_ms: summary.avg_response_time_ms&.round(2),
-          error_count: summary.error_count,
           updated_at: Time.current
         },
         unique_by: [:user_id, :date]

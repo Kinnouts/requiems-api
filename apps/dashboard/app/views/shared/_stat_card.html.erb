@@ -1,0 +1,59 @@
+<%
+  # Statistics card component for dashboards
+  # Usage:
+  #   <%= render "shared/stat_card", title: "Total Requests", value: "1.2M", change: "+12%", trend: "up" %>
+
+  title ||= ""
+  value ||= ""
+  subtitle ||= nil
+  change ||= nil
+  trend ||= nil  # "up", "down", or nil
+  icon ||= nil
+  class_names ||= ""
+
+  # Trend colors
+  trend_colors = {
+    "up" => "text-green-600",
+    "down" => "text-red-600"
+  }
+
+  trend_class = trend_colors[trend] || "text-gray-600"
+%>
+
+<div class="bg-white rounded-lg shadow p-6 <%= class_names %>">
+  <div class="flex items-center justify-between">
+    <div class="flex-1">
+      <p class="text-sm font-medium text-gray-600 uppercase tracking-wide">
+        <%= title %>
+      </p>
+      <p class="mt-2 text-3xl font-bold text-gray-900">
+        <%= value %>
+      </p>
+
+      <% if subtitle.present? %>
+        <p class="mt-1 text-sm text-gray-500">
+          <%= subtitle %>
+        </p>
+      <% end %>
+
+      <% if change.present? %>
+        <p class="mt-2 text-sm <%= trend_class %> font-medium">
+          <% if trend == "up" %>
+            <span>↑</span>
+          <% elsif trend == "down" %>
+            <span>↓</span>
+          <% end %>
+          <%= change %>
+        </p>
+      <% end %>
+    </div>
+
+    <% if icon.present? %>
+      <div class="flex-shrink-0">
+        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+          <%= icon %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>

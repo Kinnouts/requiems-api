@@ -1,0 +1,48 @@
+<%
+  # Reusable card component
+  # Usage:
+  #   <%= render "shared/card", title: "Statistics", padding: true do %>
+  #     <p>Card content here</p>
+  #   <% end %>
+
+  title ||= nil
+  subtitle ||= nil
+  padding ||= true
+  hover ||= false
+  class_names ||= ""
+  header_action ||= nil
+
+  # Base styles
+  base = "bg-white rounded-lg shadow"
+  base += " hover:shadow-lg transition-shadow" if hover
+
+  # Card wrapper class
+  card_class = [base, class_names].compact.join(" ")
+
+  # Content padding
+  content_padding = padding ? "p-6" : ""
+%>
+
+<div class="<%= card_class %>">
+  <% if title.present? || subtitle.present? || header_action.present? %>
+    <div class="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+      <div>
+        <% if title.present? %>
+          <h3 class="text-lg font-semibold text-gray-900"><%= title %></h3>
+        <% end %>
+        <% if subtitle.present? %>
+          <p class="mt-1 text-sm text-gray-500"><%= subtitle %></p>
+        <% end %>
+      </div>
+      <% if header_action.present? %>
+        <div class="flex-shrink-0">
+          <%= header_action %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="<%= content_padding %>">
+    <%= yield %>
+  </div>
+</div>
