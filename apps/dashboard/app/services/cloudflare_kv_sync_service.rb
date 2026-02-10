@@ -40,12 +40,19 @@ class CloudflareKvSyncService
 
       url = "https://api.cloudflare.com/client/v4/accounts/#{account_id}/storage/kv/namespaces/#{namespace_id}/values/key:#{api_key}"
 
-      response = HTTP
-        .auth("Bearer #{api_token}")
-        .headers("Content-Type" => "application/json")
-        .put(url, json: data)
+      conn = Faraday.new(url: url) do |f|
+        f.request :json
+        f.response :json
+        f.adapter Faraday.default_adapter
+      end
 
-      unless response.status.success?
+      response = conn.put do |req|
+        req.headers["Authorization"] = "Bearer #{api_token}"
+        req.headers["Content-Type"] = "application/json"
+        req.body = data.to_json
+      end
+
+      unless response.success?
         Rails.logger.error "[CloudflareKV] Failed to update key: #{response.body}"
         raise "Failed to sync to Cloudflare KV: #{response.status}"
       end

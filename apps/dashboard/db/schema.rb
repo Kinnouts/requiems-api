@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_02_10_174437) do
+ActiveRecord::Schema[8.1].define(version: 2026_02_10_212048) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -91,18 +91,25 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_10_174437) do
   end
 
   create_table "subscriptions", force: :cascade do |t|
+    t.boolean "cancel_at_period_end", default: false
     t.datetime "canceled_at"
     t.datetime "created_at", null: false
     t.integer "credit_limit"
     t.datetime "current_period_end"
     t.datetime "current_period_start"
+    t.string "lemonsqueezy_customer_id"
+    t.string "lemonsqueezy_subscription_id"
     t.string "plan"
+    t.string "plan_name"
     t.string "status"
     t.string "stripe_customer_id"
     t.string "stripe_subscription_id"
     t.datetime "trial_ends_at"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.index ["lemonsqueezy_customer_id"], name: "index_subscriptions_on_lemonsqueezy_customer_id"
+    t.index ["lemonsqueezy_subscription_id"], name: "index_subscriptions_on_lemonsqueezy_subscription_id", unique: true
+    t.index ["plan_name"], name: "index_subscriptions_on_plan_name"
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
