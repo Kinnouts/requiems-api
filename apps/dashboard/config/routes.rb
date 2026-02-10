@@ -82,9 +82,12 @@ Rails.application.routes.draw do
         end
       end
 
-      resource :usage, only: [:show]
-      resource :revenue, only: [:show]
-      resource :system_health, only: [:show]
+      # Analytics namespace
+      namespace :analytics do
+        get :usage
+        get :revenue
+        get :system_health
+      end
     end
   end
 

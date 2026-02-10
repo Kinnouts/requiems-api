@@ -10,9 +10,9 @@ import type { PlanConfig, PlanName } from "./types";
  *
  * Pricing:
  * - Free: $0/month - 500 requests
- * - Developer: $29/month - 100,000 requests
- * - Business: $74/month - 1,000,000 requests
- * - Professional: $149/month - 10,000,000 requests
+ * - Developer: $30/month - 100,000 requests
+ * - Business: $75/month - 1,000,000 requests
+ * - Professional: $150/month - 10,000,000 requests
  * - Enterprise: Custom - Unlimited requests
  */
 export const PLANS: Record<PlanName, PlanConfig> = {
