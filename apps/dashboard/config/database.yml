@@ -95,3 +95,7 @@ production:
     <<: *default
     url: <%= ENV.fetch("DATABASE_URL", "postgres://dummy:dummy@localhost/dummy") %>
     migrations_paths: db/cable_migrate
+  queue:
+    <<: *default
+    url: <%= ENV.fetch("DATABASE_URL", "postgres://dummy:dummy@localhost/dummy") %>
+    migrations_paths: db/queue_migrate
