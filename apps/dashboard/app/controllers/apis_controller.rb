@@ -25,5 +25,11 @@ class ApisController < ApplicationController
 
     @category = find_category(@api["category"])
     @categories = api_categories
+    @documentation = api_documentation(params[:id])
+
+    if @documentation.nil?
+      redirect_to apis_path, alert: "Documentation not available for this API yet"
+      return
+    end
   end
 end

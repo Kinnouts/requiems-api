@@ -8,6 +8,7 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static values = {
     text: String,
+    targetValue: String,
     successMessage: { type: String, default: "Copied!" },
     errorMessage: { type: String, default: "Failed to copy" }
   }
@@ -22,6 +23,24 @@ export default class extends Controller {
       this.showSuccess()
     } catch (err) {
       console.error("Failed to copy:", err)
+      this.showError()
+    }
+  }
+
+  async copyFromTarget(event) {
+    event.preventDefault()
+
+    try {
+      const targetName = this.targetValueValue || this.element.dataset.copyTargetValue
+      const targetElement = document.querySelector(`[data-api-playground-target="${targetName}"]`)
+
+      if (targetElement) {
+        const text = targetElement.textContent
+        await navigator.clipboard.writeText(text)
+        this.showSuccess()
+      }
+    } catch (err) {
+      console.error("Failed to copy from target:", err)
       this.showError()
     }
   }

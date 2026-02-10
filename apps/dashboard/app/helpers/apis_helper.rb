@@ -63,4 +63,13 @@ module ApisHelper
       status.to_s.titleize
     end
   end
+
+  # Load API documentation from YAML
+  def api_documentation(api_id)
+    doc_path = Rails.root.join("config", "api_docs", "#{api_id}.yml")
+    return nil unless File.exist?(doc_path)
+
+    @api_docs ||= {}
+    @api_docs[api_id] ||= YAML.load_file(doc_path)
+  end
 end
