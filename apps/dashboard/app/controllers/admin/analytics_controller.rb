@@ -73,9 +73,9 @@ class Admin::AnalyticsController < ApplicationController
 
     # Revenue by plan
     plan_prices = {
-      "developer" => { monthly: 59, yearly: 39 },
-      "business" => { monthly: 149, yearly: 99 },
-      "professional" => { monthly: 299, yearly: 199 }
+      "developer" => { monthly: 30, yearly: 25 },
+      "business" => { monthly: 75, yearly: 62.5 },
+      "professional" => { monthly: 150, yearly: 125 }
     }
 
     @revenue_by_plan = Subscription
@@ -249,9 +249,9 @@ class Admin::AnalyticsController < ApplicationController
 
   def calculate_mrr
     plan_prices = {
-      "developer" => { monthly: 59, yearly: 39 },
-      "business" => { monthly: 149, yearly: 99 },
-      "professional" => { monthly: 299, yearly: 199 }
+      "developer" => { monthly: 30, yearly: 25 },
+      "business" => { monthly: 75, yearly: 62.5 },
+      "professional" => { monthly: 150, yearly: 125 }
     }
 
     Subscription
