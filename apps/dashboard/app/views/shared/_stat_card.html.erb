@@ -1,57 +1,56 @@
 <%
   # Statistics card component for dashboards
-  # Usage:
-  #   <%= render "shared/stat_card", title: "Total Requests", value: "1.2M", change: "+12%", trend: "up" %>
+  # Usage: render "shared/stat_card", title: "Total Requests", value: "1.2M", change: "+12%", trend: "up"
 
-  title ||= ""
-  value ||= ""
-  subtitle ||= nil
-  change ||= nil
-  trend ||= nil  # "up", "down", or nil
-  icon ||= nil
-  class_names ||= ""
+  stat_title = local_assigns.fetch(:title, "")
+  stat_value = local_assigns.fetch(:value, "")
+  stat_subtitle = local_assigns.fetch(:subtitle, nil)
+  stat_change = local_assigns.fetch(:change, nil)
+  stat_trend = local_assigns.fetch(:trend, nil)  # "up", "down", or nil
+  stat_icon = local_assigns.fetch(:icon, nil)
+  stat_extra_classes = local_assigns.fetch(:class_names, "")
 
   # Trend colors
-  trend_colors = {
+  stat_trend_colors = {
     "up" => "text-green-600",
     "down" => "text-red-600"
   }
 
-  trend_class = trend_colors[trend] || "text-gray-600"
+  stat_trend_class = stat_trend_colors[stat_trend] || "text-gray-600"
 %>
 
-<div class="bg-white rounded-lg shadow p-6 <%= class_names %>">
+<div class="bg-white rounded-lg shadow p-6 <%= stat_extra_classes %>">
   <div class="flex items-center justify-between">
     <div class="flex-1">
       <p class="text-sm font-medium text-gray-600 uppercase tracking-wide">
-        <%= title %>
+        <%= stat_title %>
       </p>
       <p class="mt-2 text-3xl font-bold text-gray-900">
-        <%= value %>
+        <%= stat_value %>
       </p>
 
-      <% if subtitle.present? %>
+      <% if stat_subtitle.present? %>
         <p class="mt-1 text-sm text-gray-500">
-          <%= subtitle %>
+          <%= stat_subtitle %>
         </p>
       <% end %>
 
-      <% if change.present? %>
-        <p class="mt-2 text-sm <%= trend_class %> font-medium">
-          <% if trend == "up" %>
+      <% if stat_change.present? %>
+        <p class="mt-2 text-sm <%= stat_trend_class %> font-medium">
+          <% if stat_trend == "up" %>
             <span>↑</span>
-          <% elsif trend == "down" %>
+          <% elsif stat_trend == "down" %>
             <span>↓</span>
           <% end %>
-          <%= change %>
+          <%= stat_change %>
         </p>
       <% end %>
     </div>
 
-    <% if icon.present? %>
+    <% if stat_icon.present? %>
       <div class="flex-shrink-0">
         <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
-          <%= icon %>
+          <%= stat_icon %>
         </div>
       </div>
     <% end %>

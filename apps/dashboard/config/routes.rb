@@ -94,6 +94,7 @@ Rails.application.routes.draw do
     post "cloudflare", to: "cloudflare#create" # Usage sync from Worker
   end
 
-  # Documentation (placeholder)
+  # Public pages
   get "docs", to: "home#docs"
+  get "pricing", to: "home#pricing"
 end
