@@ -12,6 +12,7 @@ import {
 import { createLogger, maskApiKey } from "./logger";
 import { checkRateLimit, getRequestLimitMessage } from "./rate-limit";
 import { handleUsageExport } from "./usage-export";
+import { handleApiKeyManagement } from "./api-keys";
 
 import type { ApiKeyData, WorkerBindings } from "./types";
 
@@ -30,6 +31,10 @@ async function fetch(
 
   if (pathname === "/internal/usage/export") {
     return handleUsageExport(request, bindings);
+  }
+
+  if (pathname === "/internal/api-keys") {
+    return handleApiKeyManagement(request, bindings);
   }
 
   const log = createLogger(request);

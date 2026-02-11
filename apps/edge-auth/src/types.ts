@@ -52,3 +52,23 @@ export interface RequestCheckResult {
   limit: number;
   resetAt: string;
 }
+
+/**
+ * API key management request from Rails
+ */
+export interface ApiKeyManagementRequest {
+  action: "create" | "revoke" | "update";
+  key: string;
+  userId: string;
+  plan: PlanName;
+  billingCycleStart?: string;
+}
+
+/**
+ * API key management response to Rails
+ */
+export interface ApiKeyManagementResponse {
+  success: boolean;
+  message?: string;
+  error?: string;
+}

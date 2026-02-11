@@ -2,48 +2,81 @@
 
 module Cloudflare
   class KvSyncService
-    CLOUDFLARE_API_BASE = "https://api.cloudflare.com/client/v4"
-
     def initialize(api_key_record)
       @api_key = api_key_record
-      @account_id = ENV.fetch("CLOUDFLARE_ACCOUNT_ID")
-      @namespace_id = ENV.fetch("CLOUDFLARE_KV_NAMESPACE_ID")
-      @api_token = ENV.fetch("CLOUDFLARE_API_TOKEN")
+      @worker_url = ENV.fetch("CLOUDFLARE_WORKER_URL", "https://gateway.requiems.xyz")
+      @backend_secret = ENV.fetch("BACKEND_SECRET")
     end
 
-    # Sync API key to Cloudflare KV when created
+    # Sync API key to Cloudflare Worker (which writes to KV + D1)
     def sync_create
-      key_name = "key:#{@api_key.full_key}"
-      value = {
+      payload = {
+        action: "create",
+        key: @api_key.full_key,
         userId: @api_key.user_id.to_s,
         plan: @api_key.user.current_plan,
-        createdAt: @api_key.created_at.iso8601
+        billingCycleStart: billing_cycle_start
       }
 
-      response = connection.put(values_path(key_name)) do |req|
+      response = connection.post("/internal/api-keys") do |req|
         req.headers["Content-Type"] = "application/json"
-        req.body = value.to_json
+        req.headers["X-Backend-Secret"] = @backend_secret
+        req.body = payload.to_json
       end
 
       handle_response(response, "create")
     end
 
-    # Remove API key from Cloudflare KV when deleted
+    # Remove API key from Cloudflare Worker (deletes from KV + marks in D1)
     def sync_delete
-      key_name = "key:#{@api_key.full_key}"
+      payload = {
+        action: "revoke",
+        key: @api_key.full_key,
+        userId: @api_key.user_id.to_s,
+        plan: @api_key.user.current_plan
+      }
 
-      response = connection.delete(values_path(key_name))
+      response = connection.post("/internal/api-keys") do |req|
+        req.headers["Content-Type"] = "application/json"
+        req.headers["X-Backend-Secret"] = @backend_secret
+        req.body = payload.to_json
+      end
 
       handle_response(response, "delete")
     end
 
+    # Update API key plan (e.g., after subscription change)
+    def sync_update
+      payload = {
+        action: "update",
+        key: @api_key.full_key,
+        userId: @api_key.user_id.to_s,
+        plan: @api_key.user.current_plan,
+        billingCycleStart: billing_cycle_start
+      }
+
+      response = connection.post("/internal/api-keys") do |req|
+        req.headers["Content-Type"] = "application/json"
+        req.headers["X-Backend-Secret"] = @backend_secret
+        req.body = payload.to_json
+      end
+
+      handle_response(response, "update")
+    end
+
     private
+
+    def billing_cycle_start
+      # Use subscription created_at or current time as billing cycle start
+      subscription = @api_key.user.subscription
+      start_date = subscription&.created_at || Time.current
+      start_date.iso8601
+    end
 
     def connection
       @connection ||= Faraday.new(
-        url: "#{CLOUDFLARE_API_BASE}/accounts/#{@account_id}/storage/kv/namespaces/#{@namespace_id}",
+        url: @worker_url,
         headers: {
-          "Authorization" => "Bearer #{@api_token}",
           "Content-Type" => "application/json"
         }
       ) do |f|
@@ -52,20 +85,16 @@ module Cloudflare
       end
     end
 
-    def values_path(key_name)
-      "/values/#{key_name}"
-    end
-
     def handle_response(response, action)
       if response.success?
-        Rails.logger.info("Cloudflare KV #{action} succeeded for API key #{@api_key.key_prefix}")
+        Rails.logger.info("Cloudflare Worker #{action} succeeded for API key #{@api_key.key_prefix}")
         true
       else
-        Rails.logger.error("Cloudflare KV #{action} failed for API key #{@api_key.key_prefix}: #{response.body}")
+        Rails.logger.error("Cloudflare Worker #{action} failed for API key #{@api_key.key_prefix}: #{response.body}")
         false
       end
     rescue Faraday::Error => e
-      Rails.logger.error("Cloudflare KV #{action} error for API key #{@api_key.key_prefix}: #{e.message}")
+      Rails.logger.error("Cloudflare Worker #{action} error for API key #{@api_key.key_prefix}: #{e.message}")
       false
     end
   end
