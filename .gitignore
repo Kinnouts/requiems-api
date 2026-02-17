@@ -1,40 +1,24 @@
-# Binaries
 *.exe
 *.exe~
 *.dll
 *.so
 *.dylib
-
-# Test binary
 *.test
-
-# Output
 /bin/
 /dist/
 /tmp/
-
-# Go
 go.work
 go.work.sum
-
-# Environment
 .env
 .env.local
 .env.*.local
 .dev.vars
-
-# IDE
 .idea/
 .vscode/
 *.swp
 *.swo
-
-# OS
 .DS_Store
 Thumbs.db
-
-# Dependencies (edge-auth)
-apps/edge-auth/node_modules/
-apps/edge-auth/.wrangler/
-
+node_modules
+.wrangler
 .playwright-mcp/
