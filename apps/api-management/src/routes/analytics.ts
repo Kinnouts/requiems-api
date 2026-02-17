@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { jsonError, jsonResponse, requireApiManagementKey } from "../shared/http";
+import { jsonError, jsonResponse } from "../shared/http";
 import { createLogger } from "../shared/logger";
 import type { WorkerBindings } from "../shared/types";
 
@@ -49,13 +49,6 @@ export interface UsageSummary {
  */
 app.get("/by-endpoint", async (c) => {
   const log = createLogger(c.req.raw);
-
-  // Check authentication
-  const authError = requireApiManagementKey(c.req.raw, c.env.API_MANAGEMENT_API_KEY);
-  if (authError) {
-    log.warn("Unauthorized analytics request");
-    return authError;
-  }
 
   const userId = c.req.query("userId");
   const since = c.req.query("since");
@@ -126,13 +119,6 @@ app.get("/by-endpoint", async (c) => {
 app.get("/by-date", async (c) => {
   const log = createLogger(c.req.raw);
 
-  // Check authentication
-  const authError = requireApiManagementKey(c.req.raw, c.env.API_MANAGEMENT_API_KEY);
-  if (authError) {
-    log.warn("Unauthorized analytics request");
-    return authError;
-  }
-
   const userId = c.req.query("userId");
   const until = c.req.query("until") || new Date().toISOString();
   const since = c.req.query("since") || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
@@ -193,13 +179,6 @@ app.get("/by-date", async (c) => {
  */
 app.get("/summary", async (c) => {
   const log = createLogger(c.req.raw);
-
-  // Check authentication
-  const authError = requireApiManagementKey(c.req.raw, c.env.API_MANAGEMENT_API_KEY);
-  if (authError) {
-    log.warn("Unauthorized analytics request");
-    return authError;
-  }
 
   const userId = c.req.query("userId");
   const since = c.req.query("since");

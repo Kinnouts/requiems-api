@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { jsonError, jsonResponse, requireApiManagementKey } from "../shared/http";
+import { jsonError, jsonResponse } from "../shared/http";
 import { createLogger, maskApiKey } from "../shared/logger";
 import type {
   ApiKeyData,
@@ -17,13 +17,6 @@ const app = new Hono<{ Bindings: WorkerBindings }>();
  */
 app.post("/", async (c) => {
   const log = createLogger(c.req.raw);
-
-  // Check authentication
-  const authError = requireApiManagementKey(c.req.raw, c.env.API_MANAGEMENT_API_KEY);
-  if (authError) {
-    log.warn("Unauthorized API key management request");
-    return authError;
-  }
 
   // Parse request body
   let body: ApiKeyManagementRequest;

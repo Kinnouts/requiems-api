@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { jsonError, jsonResponse, requireApiManagementKey } from "../shared/http";
+import { jsonError, jsonResponse } from "../shared/http";
 import { createLogger } from "../shared/logger";
 import type { WorkerBindings } from "../shared/types";
 
@@ -38,13 +38,6 @@ export interface UsageExportResponse {
  */
 app.get("/export", async (c) => {
   const log = createLogger(c.req.raw);
-
-  // Check authentication
-  const authError = requireApiManagementKey(c.req.raw, c.env.API_MANAGEMENT_API_KEY);
-  if (authError) {
-    log.warn("Unauthorized usage export request");
-    return authError;
-  }
 
   const since = c.req.query("since");
   const limitParam = c.req.query("limit");
