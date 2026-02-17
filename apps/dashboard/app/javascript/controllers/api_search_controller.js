@@ -2,7 +2,7 @@ import { Controller } from "@hotwired/stimulus"
 
 // Client-side API search and filtering
 export default class extends Controller {
-  static targets = ["input", "card", "grid", "empty", "count", "resultCount"]
+  static targets = ["input", "card", "section", "empty"]
 
   connect() {
     this.totalCount = this.cardTargets.length
@@ -12,6 +12,7 @@ export default class extends Controller {
     const query = this.inputTarget.value.toLowerCase().trim()
     let visibleCount = 0
 
+    // Filter individual cards
     this.cardTargets.forEach((card) => {
       const name = card.dataset.apiName || ""
       const description = card.dataset.apiDescription || ""
@@ -29,18 +30,25 @@ export default class extends Controller {
       }
     })
 
-    // Update result count
-    if (this.hasResultCountTarget) {
-      this.resultCountTarget.textContent = visibleCount
+    // Hide/show sections based on visible cards
+    if (this.hasSectionTarget) {
+      this.sectionTargets.forEach((section) => {
+        const sectionCards = section.querySelectorAll('[data-api-search-target="card"]')
+        const visibleInSection = Array.from(sectionCards).some(card => !card.classList.contains("hidden"))
+
+        if (visibleInSection) {
+          section.classList.remove("hidden")
+        } else {
+          section.classList.add("hidden")
+        }
+      })
     }
 
     // Show/hide empty state
-    if (this.hasEmptyTarget && this.hasGridTarget) {
+    if (this.hasEmptyTarget) {
       if (visibleCount === 0 && query !== "") {
-        this.gridTarget.classList.add("hidden")
         this.emptyTarget.classList.remove("hidden")
       } else {
-        this.gridTarget.classList.remove("hidden")
         this.emptyTarget.classList.add("hidden")
       }
     }

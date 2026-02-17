@@ -13,34 +13,6 @@
 
         <!-- Desktop navigation -->
         <div class="hidden sm:ml-8 sm:flex sm:space-x-8">
-          <!-- APIs dropdown -->
-          <div class="relative" data-controller="dropdown">
-            <button
-              type="button"
-              class="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors"
-              data-action="click->dropdown#toggle"
-            >
-              APIs
-              <svg class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-              </svg>
-            </button>
-
-            <!-- Dropdown menu -->
-            <div
-              data-dropdown-target="menu"
-              class="hidden absolute left-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
-            >
-              <div class="py-1">
-                <%= link_to "API Directory", apis_path, class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                <%= link_to "Email APIs", apis_path(category: "email"), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                <%= link_to "Text APIs", apis_path(category: "text"), class: "block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" %>
-                <div class="border-t border-gray-100"></div>
-                <%= link_to "Browse All APIs", apis_path, class: "block px-4 py-2 text-sm text-blue-600 hover:bg-gray-100 font-medium" %>
-              </div>
-            </div>
-          </div>
-
           <%= link_to "Examples", examples_path, class: "inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors" %>
           <%= link_to "Pricing", pricing_path, class: "inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors" %>
           <%= link_to "Docs", docs_path, class: "inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-blue-600 transition-colors" %>
@@ -99,7 +71,6 @@
         <!-- Mobile menu (hidden by default) -->
         <div class="sm:hidden hidden absolute top-16 left-0 right-0 bg-white border-b border-gray-200 shadow-lg z-50" data-dropdown-target="menu">
     <div class="pt-2 pb-3 space-y-1">
-      <%= link_to "API Directory", apis_path, class: "block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50" %>
       <%= link_to "Examples", examples_path, class: "block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50" %>
       <%= link_to "Pricing", pricing_path, class: "block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50" %>
       <%= link_to "Docs", docs_path, class: "block pl-3 pr-4 py-2 text-base font-medium text-gray-700 hover:bg-gray-50" %>

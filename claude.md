@@ -219,6 +219,66 @@ Standard Rails 8 structure with:
 - Sidekiq for background jobs
 - Solid Queue/Cache for Rails 8 features
 
+**View Organization Pattern**:
+
+Rails views are organized to keep controller directories clean with page-specific partials in a dedicated `partials/` directory:
+
+```
+app/views/
+├── {controller}/
+│   ├── {action}.html.erb      # Main views only (one file per page)
+│   └── {another_action}.html.erb
+└── partials/
+    ├── {page_name}/
+    │   ├── _section_name.html.erb
+    │   └── _another_section.html.erb
+    └── shared/                 # Truly shared across multiple pages
+        └── _component.html.erb
+```
+
+Example structure:
+
+```
+app/views/
+├── home/
+│   ├── contact.html.erb       # Clean! Main views only
+│   ├── about.html.erb
+│   └── pricing.html.erb
+└── partials/
+    ├── contact/
+    │   ├── _info_sections.html.erb
+    │   ├── _additional_links.html.erb
+    │   └── _contact_form.html.erb
+    └── shared/
+        └── _footer.html.erb
+```
+
+**When to extract partials:**
+
+- Page exceeds ~100-150 lines
+- Content is reused across multiple pages
+- Sections have distinct responsibilities
+- Need to test sections independently
+
+**Rendering partials:**
+
+```erb
+<!-- Page-specific partials -->
+<%= render 'partials/contact/info_sections' %>
+<%= render 'partials/contact/contact_form' %>
+
+<!-- Shared partials -->
+<%= render 'partials/shared/footer' %>
+```
+
+**Why this structure:**
+
+- Keeps controller view directories clean (one file per page)
+- Clear separation between views and components
+- Easy to find partials organized by page name
+- Scales well as the application grows
+- Similar to React's component-per-folder structure
+
 ## Database Architecture
 
 ### PostgreSQL (Shared)

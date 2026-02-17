@@ -5,14 +5,9 @@ class ApisController < ApplicationController
 
   def index
     @categories = api_categories
-    @apis = all_apis
-    @selected_category = params[:category]
-
-    # Filter by category if specified
-    if @selected_category.present?
-      @apis = apis_by_category(@selected_category)
-      @category = find_category(@selected_category)
-    end
+    @popular_apis = popular_apis
+    @apis_by_category = apis_grouped_by_category
+    @categories_with_apis = categories_with_apis
   end
 
   def show
