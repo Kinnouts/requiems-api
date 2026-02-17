@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"time"
 
 	"requiems-api/internal/app"
 	"requiems-api/internal/platform/config"
@@ -24,7 +25,16 @@ func main() {
 
 	log.Printf("API server listening on %s\n", addr)
 
-	if err := http.ListenAndServe(addr, appInstance.Handler()); err != nil {
+	server := &http.Server{
+		Addr:              addr,
+		Handler:           appInstance.Handler(),
+		ReadTimeout:       15 * time.Second,
+		WriteTimeout:      15 * time.Second,
+		IdleTimeout:       60 * time.Second,
+		ReadHeaderTimeout: 5 * time.Second,
+	}
+
+	if err := server.ListenAndServe(); err != nil {
 		log.Fatalf("server error: %v", err)
 	}
 }
