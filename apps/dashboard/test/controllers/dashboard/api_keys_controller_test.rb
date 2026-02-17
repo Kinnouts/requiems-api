@@ -53,7 +53,8 @@ class Dashboard::ApiKeysControllerTest < ActionDispatch::IntegrationTest
 
     # Controller renders show_key template instead of redirecting
     assert_response :success
-    assert_select "h1", text: /API Key/i
+    # show_key template has h2 (success message) and h3 (key name), but no h1
+    assert_select "h2", text: /API Key Created Successfully/i
 
     new_key = ApiKey.last
     assert_equal "New Key", new_key.name

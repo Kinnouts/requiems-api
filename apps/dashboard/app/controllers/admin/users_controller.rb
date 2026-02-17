@@ -81,7 +81,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def ban
-    if @user.update(suspended: true, suspended_at: Time.current, banned: true, banned_at: Time.current)
+    if @user.update(status: "banned", banned_at: Time.current, active: false)
       # Revoke all API keys
       @user.api_keys.each do |key|
         key.revoke!(reason: "User banned by admin")
