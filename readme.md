@@ -15,7 +15,7 @@ today, not infrastructure.
 - **Cloudflare Worker Gateway** – Global edge network handling auth, rate
   limiting, and credit tracking
 
-## Local Development in One Command
+## Local Development
 
 ```bash
 cd infra/docker
