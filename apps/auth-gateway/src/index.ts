@@ -11,8 +11,6 @@ import {
 } from "./http";
 import { createLogger, maskApiKey } from "./logger";
 import { checkRateLimit, getRequestLimitMessage } from "./rate-limit";
-import { handleUsageExport } from "./usage-export";
-import { handleApiKeyManagement } from "./api-keys";
 
 import type { ApiKeyData, WorkerBindings } from "./types";
 
@@ -22,16 +20,9 @@ async function fetch(request: Request, bindings: WorkerBindings): Promise<Respon
   const url = new URL(request.url);
   const pathname = url.pathname;
 
+  // Health check endpoint
   if (pathname === "/healthz") {
-    return jsonResponse({ status: "ok" });
-  }
-
-  if (pathname === "/internal/usage/export") {
-    return handleUsageExport(request, bindings);
-  }
-
-  if (pathname === "/internal/api-keys") {
-    return handleApiKeyManagement(request, bindings);
+    return jsonResponse({ status: "ok", service: "auth-gateway" });
   }
 
   const log = createLogger(request);

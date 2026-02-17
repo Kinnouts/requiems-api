@@ -18,18 +18,30 @@ class ApiKey < ApplicationRecord
   scope :for_environment, ->(env) { where(environment: env) }
 
   # Callbacks
-  before_validation :generate_key, on: :create
-  after_create :sync_to_cloudflare
+  before_validation :request_key_from_server, on: :create
   after_destroy :remove_from_cloudflare
   after_update :sync_revocation_to_cloudflare, if: :saved_change_to_active?
 
-  # Generate a new API key
-  def generate_key
-    env = environment&.to_sym || :live
-    self.full_key = ApiKeyGenerator.generate(environment: env)
-    self.key_prefix = ApiKeyGenerator.extract_prefix(full_key)
-    self.key_hash = ApiKeyGenerator.hash_key(full_key)
-    self.active = true if active.nil?
+  # Request a new API key from api-management server
+  # The server generates the key and returns it (only once)
+  def request_key_from_server
+    return if key_prefix.present? # Skip if already generated
+
+    # Request key generation from api-management
+    service = Cloudflare::KvSyncService.new(self)
+    generated_key = service.sync_create
+
+    if generated_key
+      # Store the returned key
+      self.full_key = generated_key
+      self.key_prefix = ApiKeyGenerator.extract_prefix(generated_key)
+      self.key_hash = ApiKeyGenerator.hash_key(generated_key)
+      self.active = true if active.nil?
+    else
+      # Key generation failed
+      errors.add(:base, "Failed to generate API key")
+      throw :abort
+    end
   end
 
   # Verify a key matches this record
@@ -52,15 +64,6 @@ class ApiKey < ApplicationRecord
   end
 
   private
-
-  def sync_to_cloudflare
-    return unless Rails.env.production? || ENV["SYNC_TO_CLOUDFLARE"] == "true"
-
-    Cloudflare::KvSyncService.new(self).sync_create
-  rescue StandardError => e
-    Rails.logger.error("Failed to sync API key to Cloudflare: #{e.message}")
-    # Don't fail the creation if Cloudflare sync fails
-  end
 
   def remove_from_cloudflare
     return unless Rails.env.production? || ENV["SYNC_TO_CLOUDFLARE"] == "true"

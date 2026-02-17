@@ -4,64 +4,70 @@ module Cloudflare
   class KvSyncService
     def initialize(api_key_record)
       @api_key = api_key_record
-      @worker_url = ENV.fetch("CLOUDFLARE_WORKER_URL", "https://gateway.requiems.xyz")
-      @backend_secret = ENV.fetch("BACKEND_SECRET")
+      @api_management_url = ENV.fetch("API_MANAGEMENT_URL", "https://api-management.requiems.xyz")
+      @api_management_key = ENV.fetch("API_MANAGEMENT_API_KEY")
     end
 
-    # Sync API key to Cloudflare Worker (which writes to KV + D1)
+    # Create API key via api-management service
+    # Returns the full API key from the server (only shown once)
     def sync_create
       payload = {
-        action: "create",
-        key: @api_key.full_key,
         userId: @api_key.user_id.to_s,
         plan: @api_key.user.current_plan,
+        name: @api_key.name,
         billingCycleStart: billing_cycle_start
       }
 
-      response = connection.post("/internal/api-keys") do |req|
+      response = connection.post("/api-keys") do |req|
         req.headers["Content-Type"] = "application/json"
-        req.headers["X-Backend-Secret"] = @backend_secret
+        req.headers["X-API-Management-Key"] = @api_management_key
         req.body = payload.to_json
       end
 
-      handle_response(response, "create")
+      if response.success?
+        body = JSON.parse(response.body)
+        Rails.logger.info("API key created successfully via api-management: #{body['keyPrefix']}")
+
+        # Return the full API key so the model can hash and store it
+        body["apiKey"]
+      else
+        Rails.logger.error("API key creation failed: #{response.body}")
+        nil
+      end
+    rescue Faraday::Error => e
+      Rails.logger.error("API key creation error: #{e.message}")
+      nil
     end
 
-    # Remove API key from Cloudflare Worker (deletes from KV + marks in D1)
+    # Revoke API key via api-management service
     def sync_delete
-      payload = {
-        action: "revoke",
-        key: @api_key.full_key,
-        userId: @api_key.user_id.to_s,
-        plan: @api_key.user.current_plan
-      }
-
-      response = connection.post("/internal/api-keys") do |req|
-        req.headers["Content-Type"] = "application/json"
-        req.headers["X-Backend-Secret"] = @backend_secret
-        req.body = payload.to_json
+      response = connection.delete("/api-keys/#{@api_key.key_prefix}") do |req|
+        req.headers["X-API-Management-Key"] = @api_management_key
       end
 
-      handle_response(response, "delete")
+      handle_response(response, "revoke")
+    rescue Faraday::Error => e
+      Rails.logger.error("API key revocation error for #{@api_key.key_prefix}: #{e.message}")
+      false
     end
 
-    # Update API key plan (e.g., after subscription change)
+    # Update API key plan via api-management service
     def sync_update
       payload = {
-        action: "update",
-        key: @api_key.full_key,
-        userId: @api_key.user_id.to_s,
         plan: @api_key.user.current_plan,
         billingCycleStart: billing_cycle_start
       }
 
-      response = connection.post("/internal/api-keys") do |req|
+      response = connection.patch("/api-keys/#{@api_key.key_prefix}") do |req|
         req.headers["Content-Type"] = "application/json"
-        req.headers["X-Backend-Secret"] = @backend_secret
+        req.headers["X-API-Management-Key"] = @api_management_key
         req.body = payload.to_json
       end
 
       handle_response(response, "update")
+    rescue Faraday::Error => e
+      Rails.logger.error("API key update error for #{@api_key.key_prefix}: #{e.message}")
+      false
     end
 
     private
@@ -75,7 +81,7 @@ module Cloudflare
 
     def connection
       @connection ||= Faraday.new(
-        url: @worker_url,
+        url: @api_management_url,
         headers: {
           "Content-Type" => "application/json"
         }
@@ -87,15 +93,12 @@ module Cloudflare
 
     def handle_response(response, action)
       if response.success?
-        Rails.logger.info("Cloudflare Worker #{action} succeeded for API key #{@api_key.key_prefix}")
+        Rails.logger.info("API key #{action} succeeded for #{@api_key.key_prefix}")
         true
       else
-        Rails.logger.error("Cloudflare Worker #{action} failed for API key #{@api_key.key_prefix}: #{response.body}")
+        Rails.logger.error("API key #{action} failed for #{@api_key.key_prefix}: #{response.body}")
         false
       end
-    rescue Faraday::Error => e
-      Rails.logger.error("Cloudflare Worker #{action} error for API key #{@api_key.key_prefix}: #{e.message}")
-      false
     end
   end
 end
