@@ -6,6 +6,11 @@ export default class extends Controller {
 
   connect() {
     this.totalCount = this.cardTargets.length
+
+    // Auto-filter if input has value (from URL param)
+    if (this.inputTarget.value.trim() !== '') {
+      this.filter()
+    }
   }
 
   filter() {

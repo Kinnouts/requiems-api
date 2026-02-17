@@ -18,7 +18,7 @@
     <!-- API Cards Grid - 5 columns on larger screens -->
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3" data-api-search-target="grid">
       <% popular_apis_list.each do |api| %>
-        <%= render 'apis/index/api_card', api: api %>
+        <%= render 'partials/apis_index/api_card', api: api %>
       <% end %>
     </div>
   </section>

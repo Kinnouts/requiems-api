@@ -1,23 +1,22 @@
-<div class="min-h-screen bg-gray-50 flex">
-  <!-- Full Height Sidebar (glued to left edge) -->
-  <aside class="hidden lg:block w-52 bg-white border-r border-gray-200 fixed left-0 top-16 bottom-0 overflow-y-auto">
-    <%= render 'apis/index/sidebar', categories: @categories_with_apis %>
-  </aside>
+<div class="min-h-screen bg-gray-50">
+  <!-- Main Content with Sidebar -->
+  <div class="flex">
+    <!-- Sidebar (fixed width, not overlapping) -->
+    <aside class="hidden lg:block w-52 bg-white border-r border-gray-200 flex-shrink-0">
+      <div class="sticky top-16 max-h-[calc(100vh-4rem)] overflow-y-auto">
+        <%= render 'partials/apis_index/sidebar', categories: @categories_with_apis %>
+      </div>
+    </aside>
 
-  <!-- Main Content Area (offset by sidebar width) -->
-  <div class="flex-1 lg:ml-52">
-    <!-- Header -->
-    <%= render 'apis/index/header' %>
-
-    <!-- Main Content -->
-    <div class="px-8 py-6">
+    <!-- Main Content Area -->
+    <div class="flex-1 px-8 py-6">
       <!-- Most Popular Section -->
-      <%= render 'apis/index/most_popular', apis: @popular_apis %>
+      <%= render 'partials/apis_index/most_popular', apis: @popular_apis %>
 
       <!-- Category Sections -->
       <% @categories_with_apis.each do |category| %>
         <% category_apis = @apis_by_category[category["id"]] || [] %>
-        <%= render 'apis/index/category_section', category: category, apis: category_apis %>
+        <%= render 'partials/apis_index/category_section', category: category, apis: category_apis %>
       <% end %>
     </div>
   </div>

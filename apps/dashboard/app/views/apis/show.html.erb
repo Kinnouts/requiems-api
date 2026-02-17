@@ -134,7 +134,7 @@
             <h2 class="text-2xl font-bold text-gray-900 mb-6">API Endpoints</h2>
 
             <% @documentation["endpoints"]&.each_with_index do |endpoint, index| %>
-              <%= render "apis/endpoint_documentation", endpoint: endpoint, index: index, base_url: @documentation["base_url"] %>
+              <%= render "partials/apis_show/endpoint_documentation", endpoint: endpoint, index: index, base_url: @documentation["base_url"] %>
             <% end %>
           </div>
 

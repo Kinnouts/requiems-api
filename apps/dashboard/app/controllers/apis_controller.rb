@@ -8,6 +8,7 @@ class ApisController < ApplicationController
     @popular_apis = popular_apis
     @apis_by_category = apis_grouped_by_category
     @categories_with_apis = categories_with_apis
+    @search_query = params[:q] # Capture search query from URL
   end
 
   def show

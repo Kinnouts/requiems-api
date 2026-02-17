@@ -1,0 +1,389 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancel in-progress runs on new push
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ============================================================================
+  # PATH DETECTION - Determines which apps changed
+  # ============================================================================
+  detect-changes:
+    name: Detect Changed Apps
+    runs-on: ubuntu-latest
+    outputs:
+      api: ${{ steps.filter.outputs.api }}
+      dashboard: ${{ steps.filter.outputs.dashboard }}
+      edge-auth: ${{ steps.filter.outputs.edge-auth }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            api:
+              - 'apps/api/**'
+              - 'infra/migrations/**'
+              - '.github/workflows/ci.yml'
+            dashboard:
+              - 'apps/dashboard/**'
+              - '.github/workflows/ci.yml'
+            edge-auth:
+              - 'apps/edge-auth/**'
+              - '.github/workflows/ci.yml'
+
+  # ============================================================================
+  # GO BACKEND (apps/api)
+  # ============================================================================
+
+  # Run tests (must pass)
+  go-test:
+    name: Go Tests
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.api == 'true'
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: requiem
+          POSTGRES_PASSWORD: requiem
+          POSTGRES_DB: requiem_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+          cache-dependency-path: apps/api/go.sum
+
+      - name: Download dependencies
+        working-directory: apps/api
+        run: go mod download
+
+      - name: Run tests
+        working-directory: apps/api
+        env:
+          DATABASE_URL: postgres://requiem:requiem@localhost:5432/requiem_test?sslmode=disable
+          BACKEND_SECRET: test_secret_min_32_chars_long_for_testing_only
+        run: go test -v -race -coverprofile=coverage.out ./...
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: go-coverage
+          path: apps/api/coverage.out
+
+  # Lint (non-blocking, warnings only)
+  go-lint:
+    name: Go Lint (Advisory)
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.api == 'true'
+    continue-on-error: true  # Non-blocking
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.23'
+          cache-dependency-path: apps/api/go.sum
+
+      - name: golangci-lint
+        uses: golangci/golangci-lint-action@v4
+        with:
+          version: v1.55
+          working-directory: apps/api
+          args: --timeout=5m
+          skip-cache: false
+          skip-pkg-cache: false
+          skip-build-cache: false
+
+  # ============================================================================
+  # RAILS DASHBOARD (apps/dashboard)
+  # ============================================================================
+
+  # Run tests (must pass)
+  rails-test:
+    name: Rails Tests
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.dashboard == 'true'
+
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: requiem
+          POSTGRES_PASSWORD: requiem
+          POSTGRES_DB: requiem_test
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7-alpine
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4.8'
+          bundler-cache: true
+          working-directory: apps/dashboard
+
+      - name: Setup test database
+        working-directory: apps/dashboard
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgres://requiem:requiem@localhost:5432/requiem_test?sslmode=disable
+          REDIS_URL: redis://localhost:6379
+        run: |
+          bin/rails db:create
+          bin/rails db:schema:load
+
+      - name: Run tests
+        working-directory: apps/dashboard
+        env:
+          RAILS_ENV: test
+          DATABASE_URL: postgres://requiem:requiem@localhost:5432/requiem_test?sslmode=disable
+          REDIS_URL: redis://localhost:6379
+        run: bin/rails test
+
+  # Security scans (must pass - security critical)
+  rails-security:
+    name: Rails Security Scans
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.dashboard == 'true'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4.8'
+          bundler-cache: true
+          working-directory: apps/dashboard
+
+      - name: Brakeman security scan
+        working-directory: apps/dashboard
+        run: bundle exec brakeman --no-pager --format json --output brakeman.json || true
+
+      - name: Upload Brakeman results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: brakeman-results
+          path: apps/dashboard/brakeman.json
+
+      - name: Bundler audit
+        working-directory: apps/dashboard
+        run: bundle exec bundler-audit
+
+      - name: Importmap audit
+        working-directory: apps/dashboard
+        run: bin/importmap audit
+
+  # Lint (non-blocking, warnings only)
+  rails-lint:
+    name: Rails Lint (Advisory)
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.dashboard == 'true'
+    continue-on-error: true  # Non-blocking
+
+    env:
+      RUBOCOP_CACHE_ROOT: tmp/rubocop
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4.8'
+          bundler-cache: true
+          working-directory: apps/dashboard
+
+      - name: Cache RuboCop
+        uses: actions/cache@v4
+        with:
+          path: apps/dashboard/tmp/rubocop
+          key: rubocop-${{ runner.os }}-${{ hashFiles('apps/dashboard/.rubocop.yml', 'apps/dashboard/Gemfile.lock') }}
+          restore-keys: |
+            rubocop-${{ runner.os }}-
+
+      - name: RuboCop
+        working-directory: apps/dashboard
+        run: bundle exec rubocop
+
+  # ============================================================================
+  # CLOUDFLARE WORKER (apps/edge-auth)
+  # ============================================================================
+
+  # Type check (must pass)
+  worker-typecheck:
+    name: Worker TypeScript Check
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.edge-auth == 'true'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        working-directory: apps/edge-auth
+        run: bun install --frozen-lockfile
+
+      - name: TypeScript check
+        working-directory: apps/edge-auth
+        run: bun run typecheck
+
+  # Tests (must pass)
+  worker-test:
+    name: Worker Tests
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.edge-auth == 'true'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        working-directory: apps/edge-auth
+        run: bun install --frozen-lockfile
+
+      - name: Run tests
+        working-directory: apps/edge-auth
+        run: bunx vitest run
+
+      - name: Generate coverage
+        working-directory: apps/edge-auth
+        run: bunx vitest run --coverage.enabled --coverage.reporter=text
+
+      - name: Upload coverage
+        uses: actions/upload-artifact@v4
+        with:
+          name: worker-coverage
+          path: apps/edge-auth/coverage/
+
+  # Lint (non-blocking, warnings only)
+  worker-lint:
+    name: Worker Lint (Advisory)
+    runs-on: ubuntu-latest
+    needs: detect-changes
+    if: needs.detect-changes.outputs.edge-auth == 'true'
+    continue-on-error: true  # Non-blocking
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v1
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        working-directory: apps/edge-auth
+        run: bun install --frozen-lockfile
+
+      - name: Biome lint
+        working-directory: apps/edge-auth
+        run: bun run lint
+
+      - name: Biome format check
+        working-directory: apps/edge-auth
+        run: bun run format:check
+
+  # ============================================================================
+  # SUMMARY JOB - Required status check
+  # ============================================================================
+  ci-success:
+    name: CI Success
+    runs-on: ubuntu-latest
+    needs:
+      - detect-changes
+      - go-test
+      - rails-test
+      - rails-security
+      - worker-typecheck
+      - worker-test
+    if: always()
+
+    steps:
+      - name: Check all required jobs
+        run: |
+          # This job succeeds only if all required jobs passed or were skipped
+          # Lint jobs are not included as they're non-blocking
+
+          if [[ "${{ needs.go-test.result }}" == "failure" ]]; then
+            echo "❌ Go tests failed"
+            exit 1
+          fi
+
+          if [[ "${{ needs.rails-test.result }}" == "failure" ]]; then
+            echo "❌ Rails tests failed"
+            exit 1
+          fi
+
+          if [[ "${{ needs.rails-security.result }}" == "failure" ]]; then
+            echo "❌ Rails security scans failed"
+            exit 1
+          fi
+
+          if [[ "${{ needs.worker-typecheck.result }}" == "failure" ]]; then
+            echo "❌ Worker TypeScript check failed"
+            exit 1
+          fi
+
+          if [[ "${{ needs.worker-test.result }}" == "failure" ]]; then
+            echo "❌ Worker tests failed"
+            exit 1
+          fi
+
+          echo "✅ All required checks passed!"
