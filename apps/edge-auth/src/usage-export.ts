@@ -55,23 +55,23 @@ export async function handleUsageExport(
 
   // Validate ISO timestamp
   const sinceDate = new Date(since);
-  if (isNaN(sinceDate.getTime())) {
+  if (Number.isNaN(sinceDate.getTime())) {
     return jsonError(400, "Invalid timestamp format for 'since' parameter");
   }
 
   // Parse and validate limit
   const limit = Math.min(
-    parseInt(limitParam || "1000", 10),
+    Number.parseInt(limitParam || "1000", 10),
     5000 // Max 5000 records per request
   );
 
-  if (isNaN(limit) || limit < 1) {
+  if (Number.isNaN(limit) || limit < 1) {
     return jsonError(400, "Invalid limit parameter");
   }
 
   // Parse cursor (offset)
-  const offset = parseInt(cursorParam || "0", 10);
-  if (isNaN(offset) || offset < 0) {
+  const offset = Number.parseInt(cursorParam || "0", 10);
+  if (Number.isNaN(offset) || offset < 0) {
     return jsonError(400, "Invalid cursor parameter");
   }
 

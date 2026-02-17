@@ -33,8 +33,8 @@ export const PLANS: Record<PlanName, PlanConfig> = {
     ratePerMinute: 50000,
   },
   enterprise: {
-    requestLimit: Infinity,
-    ratePerMinute: Infinity,
+    requestLimit: Number.POSITIVE_INFINITY,
+    ratePerMinute: Number.POSITIVE_INFINITY,
   },
 };
 

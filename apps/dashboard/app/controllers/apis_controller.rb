@@ -25,7 +25,7 @@ class ApisController < ApplicationController
 
     if @documentation.nil?
       redirect_to apis_path, alert: "Documentation not available for this API yet"
-      return
+      nil
     end
   end
 end

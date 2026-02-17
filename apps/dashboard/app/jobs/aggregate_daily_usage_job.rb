@@ -42,7 +42,7 @@ class AggregateDailyUsageJob < ApplicationJob
           total_credits: summary.total_credits,
           updated_at: Time.current
         },
-        unique_by: [:user_id, :date]
+        unique_by: [ :user_id, :date ]
       )
       inserted_count += 1
     end

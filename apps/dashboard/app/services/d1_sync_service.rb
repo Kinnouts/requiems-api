@@ -73,7 +73,7 @@ class D1SyncService
     end.compact
 
     # Bulk insert using ActiveRecord
-    UsageLog.insert_all(values, unique_by: [:api_key_id, :used_at, :endpoint])
+    UsageLog.insert_all(values, unique_by: [ :api_key_id, :used_at, :endpoint ])
 
     values.size
   end
@@ -107,8 +107,8 @@ class D1SyncService
         max: MAX_RETRIES,
         interval: 0.5,
         backoff_factor: 2,
-        retry_statuses: [500, 502, 503, 504],
-        methods: [:get]
+        retry_statuses: [ 500, 502, 503, 504 ],
+        methods: [ :get ]
       }
       conn.response :json, content_type: /\bjson$/
       conn.adapter Faraday.default_adapter

@@ -42,7 +42,7 @@ class Dashboard::OverviewController < ApplicationController
     limit = plan_limits[@current_plan] || 500
     used = @usage_this_month
 
-    [limit - used, 0].max
+    [ limit - used, 0 ].max
   end
 
   def calculate_avg_response_time

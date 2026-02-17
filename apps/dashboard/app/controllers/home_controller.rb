@@ -10,7 +10,7 @@ class HomeController < ApplicationController
     ]
 
     @categories = categories.sort_by do |cat|
-      [cat["coming_soon"] ? 1 : 0, priority_order.index(cat["id"]) || 999]
+      [ cat["coming_soon"] ? 1 : 0, priority_order.index(cat["id"]) || 999 ]
     end
   end
 

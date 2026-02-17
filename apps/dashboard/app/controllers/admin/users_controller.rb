@@ -3,7 +3,7 @@
 class Admin::UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin!
-  before_action :set_user, only: [:show, :suspend, :unsuspend, :ban, :make_admin, :remove_admin]
+  before_action :set_user, only: [ :show, :suspend, :unsuspend, :ban, :make_admin, :remove_admin ]
   layout "admin"
 
   def index
@@ -41,13 +41,13 @@ class Admin::UsersController < ApplicationController
 
     # Sort
     @users = case params[:sort]
-             when "oldest"
+    when "oldest"
                @users.order(created_at: :asc)
-             when "name"
+    when "name"
                @users.order(name: :asc)
-             else # newest (default)
+    else # newest (default)
                @users.order(created_at: :desc)
-             end
+    end
 
     # Paginate (using pagy gem)
     @pagy, @users = pagy(@users, items: 20)

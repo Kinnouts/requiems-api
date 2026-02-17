@@ -3,7 +3,7 @@
 class Admin::AbuseReportsController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin!
-  before_action :set_abuse_report, only: [:show, :resolve, :investigate]
+  before_action :set_abuse_report, only: [ :show, :resolve, :investigate ]
   layout "admin"
 
   def index

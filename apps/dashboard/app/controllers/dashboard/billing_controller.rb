@@ -150,7 +150,7 @@ class Dashboard::BillingController < ApplicationController
   end
 
   def get_all_plans
-    ["free", "developer", "business", "professional"].map { |plan| get_plan_info(plan).merge(id: plan) }
+    [ "free", "developer", "business", "professional" ].map { |plan| get_plan_info(plan).merge(id: plan) }
   end
 
   def valid_plan?(plan)
@@ -162,9 +162,9 @@ class Dashboard::BillingController < ApplicationController
 
     variant_id = if billing_cycle == "yearly"
                    plan_info[:lemonsqueezy_variant_id_yearly]
-                 else
+    else
                    plan_info[:lemonsqueezy_variant_id_monthly]
-                 end
+    end
 
     store_id = ENV["LEMONSQUEEZY_STORE_ID"]
 

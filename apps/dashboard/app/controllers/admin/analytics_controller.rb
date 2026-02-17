@@ -80,7 +80,7 @@ class Admin::AnalyticsController < ApplicationController
 
     @revenue_by_plan = Subscription
       .where.not(plan_name: "free")
-      .where(cancel_at_period_end: [false, nil])
+      .where(cancel_at_period_end: [ false, nil ])
       .group(:plan_name, :billing_cycle)
       .count
       .transform_keys { |plan, cycle| "#{plan.titleize} (#{cycle&.titleize || 'Monthly'})" }
@@ -112,7 +112,7 @@ class Admin::AnalyticsController < ApplicationController
     # Active subscriptions
     @active_subscriptions = Subscription
       .where.not(plan_name: "free")
-      .where(cancel_at_period_end: [false, nil])
+      .where(cancel_at_period_end: [ false, nil ])
       .count
 
     # Subscriptions by plan
@@ -164,12 +164,12 @@ class Admin::AnalyticsController < ApplicationController
     # Time range for health metrics
     @time_range = params[:time_range] || "24h"
     @start_time = case @time_range
-                  when "1h" then 1.hour.ago
-                  when "24h" then 24.hours.ago
-                  when "7d" then 7.days.ago
-                  when "30d" then 30.days.ago
-                  else 24.hours.ago
-                  end
+    when "1h" then 1.hour.ago
+    when "24h" then 24.hours.ago
+    when "7d" then 7.days.ago
+    when "30d" then 30.days.ago
+    else 24.hours.ago
+    end
 
     # API Uptime (percentage of successful requests)
     total_requests = UsageLog.where(used_at: @start_time..Time.current).count
@@ -256,7 +256,7 @@ class Admin::AnalyticsController < ApplicationController
 
     Subscription
       .where.not(plan_name: "free")
-      .where(cancel_at_period_end: [false, nil])
+      .where(cancel_at_period_end: [ false, nil ])
       .sum do |sub|
         price = plan_prices[sub.plan_name]&.fetch(sub.billing_cycle&.to_sym || :monthly, 0) || 0
         sub.billing_cycle == "yearly" ? (price * 12 / 12.0) : price
