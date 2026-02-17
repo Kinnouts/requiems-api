@@ -87,6 +87,9 @@ services:
       - SMTP_PASSWORD=${SMTP_PASSWORD}
       - SMTP_FROM_EMAIL=${SMTP_FROM_EMAIL}
       - MAILER_HOST=${MAILER_HOST}
+      # Form Notifications
+      - OBSERVER_EMAILS=${OBSERVER_EMAILS:-eliaz@bobadilla.tech}
+      - MAILER_FROM=${MAILER_FROM:-noreply@requiems.xyz}
     volumes:
       - ../../apps/dashboard:/app
       - bundle_cache:/usr/local/bundle
