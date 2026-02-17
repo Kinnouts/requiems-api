@@ -1,6 +1,17 @@
 class HomeController < ApplicationController
   def index
-    @categories = YAML.load_file(Rails.root.join("config", "api_catalog.yml"))["categories"]
+    categories = YAML.load_file(Rails.root.join("config", "api_catalog.yml"))["categories"]
+
+    # Sort categories by priority: live first, then most important coming soon
+    priority_order = %w[
+      email text finance technology ai_vision data validation
+      security conversion health entertainment places transportation
+      animals tax misc
+    ]
+
+    @categories = categories.sort_by do |cat|
+      [cat["coming_soon"] ? 1 : 0, priority_order.index(cat["id"]) || 999]
+    end
   end
 
   def docs
