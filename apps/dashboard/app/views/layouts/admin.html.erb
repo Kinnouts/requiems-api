@@ -7,6 +7,9 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <%= favicon_link_tag "logo.png", rel: "icon", type: "image/png" %>
+    <%= favicon_link_tag "logo.png", rel: "apple-touch-icon" %>
+
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
   </head>

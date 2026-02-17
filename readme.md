@@ -1,38 +1,47 @@
-# Requiems API
+<p align="center">
+  <p align="center">
+    <a href="https://requiems.xyz/?utm_source=github&utm_medium=logo" target="_blank">
+      <img src="https://raw.githubusercontent.com/bobadilla-tech/requiems-api/refs/heads/main/apps/dashboard/app/assets/images/logo.png" alt="Requiems API" width="280" />
+    </a>
+  </p>
+  <p align="center">
+    One API key. Multiple enterprise-grade APIs.
+  </p>
+  <p align="center">
+    <i>A product by <a href="https://bobadilla.tech">Bobadilla Technologies</a></i>
+  </p>
+</p>
+
+# What's Requiems API?
+
+Requiems API is a production-ready API platform providing unified access to multiple enterprise-grade APIs. Eliminate months of data sourcing, validation logic, and infrastructure setup. Start building features today, not infrastructure.
 
 [![CI](https://github.com/bobadilla-tech/requiems-api/actions/workflows/ci.yml/badge.svg)](https://github.com/bobadilla-tech/requiems-api/actions/workflows/ci.yml)
 [![Get Started](https://img.shields.io/badge/Get_Started-→-blue)](https://requiems.xyz)
 [![Documentation](https://img.shields.io/badge/Documentation-📖-green)](https://requiems.xyz/apis)
 
-**One API key. Multiple enterprise-grade APIs.** Eliminate months of data
-sourcing, validation logic, and infrastructure setup. Start building features
-today, not infrastructure.
-
 ## Built for Scale, Designed for Speed
 
 - **Go API** – Lightning-fast backend with domain-driven design
 - **Rails Dashboard** – Beautiful UI for users and admins
-- **Cloudflare Worker Gateway** – Global edge network handling auth, rate
-  limiting, and credit tracking
+- **Cloudflare Worker Gateway** – Global edge network handling auth, rate limiting, and credit tracking
 
-## Local Development
+## Quick Start
+
+Get your API key at [requiems.xyz](https://requiems.xyz), then try it out:
 
 ```bash
-cd infra/docker
-docker compose -f docker-compose.dev.yml up
+# Check if an email is disposable
+curl -X POST https://api.requiems.xyz/v1/email/disposable/check \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"email": "test@tempmail.com"}'
+
+# Get random advice
+curl https://api.requiems.xyz/v1/text/advice \
+  -H "Authorization: Bearer YOUR_API_KEY"
+
+# Generate lorem ipsum text
+curl https://api.requiems.xyz/v1/text/lorem \
+  -H "Authorization: Bearer YOUR_API_KEY"
 ```
-
-All services (API, Dashboard, Database, etc...) start with hot reload. Edit any
-file and see changes instantly.
-
-[Full dev setup guide](./infra/docker/README.md) |
-[Full API developer docs](./docs/)
-
----
-
-## Contributing
-
-We welcome contributions of all sizes: bug fixes, performance improvements,
-documentation, or entire new API endpoints.
-
-→ [Contributing guidelines](./contributing.md)
