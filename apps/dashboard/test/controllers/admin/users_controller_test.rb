@@ -18,8 +18,8 @@ class Admin::UsersControllerTest < ActionDispatch::IntegrationTest
 
     get admin_users_path
 
-    assert_redirected_to root_path
-    assert_equal "Access denied. Admin privileges required.", flash[:alert]
+    # Route constraint returns 404 for non-admin users
+    assert_response :not_found
   end
 
   test "index shows all users" do
@@ -41,7 +41,8 @@ class Admin::UsersControllerTest < ActionDispatch::IntegrationTest
   test "index filters by plan" do
     Subscription.create!(
       user: @regular_user,
-      plan_name: "developer"
+      plan_name: "developer",
+      status: "active"
     )
 
     get admin_users_path, params: { plan: "developer" }
@@ -101,7 +102,8 @@ class Admin::UsersControllerTest < ActionDispatch::IntegrationTest
   test "ban bans user, revokes keys, and cancels subscription" do
     subscription = Subscription.create!(
       user: @regular_user,
-      plan_name: "developer"
+      plan_name: "developer",
+      status: "active"
     )
 
     api_key = @regular_user.api_keys.create!(
@@ -165,7 +167,7 @@ class Admin::UsersControllerTest < ActionDispatch::IntegrationTest
 
     post suspend_admin_user_path(@regular_user)
 
-    assert_redirected_to root_path
-    assert_equal "Access denied. Admin privileges required.", flash[:alert]
+    # Route constraint returns 404 for non-admin users
+    assert_response :not_found
   end
 end

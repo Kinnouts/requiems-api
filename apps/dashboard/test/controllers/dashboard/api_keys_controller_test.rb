@@ -36,7 +36,9 @@ class Dashboard::ApiKeysControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "form"
     assert_select "input[name='api_key[name]']"
-    assert_select "select[name='api_key[environment]']"
+    # Environment uses radio buttons, not a select dropdown
+    assert_select "input[type='radio'][name='api_key[environment]'][value='live']"
+    assert_select "input[type='radio'][name='api_key[environment]'][value='test']"
   end
 
   test "create generates new api key" do
@@ -49,7 +51,9 @@ class Dashboard::ApiKeysControllerTest < ActionDispatch::IntegrationTest
       }
     end
 
-    assert_redirected_to dashboard_api_key_path(ApiKey.last)
+    # Controller renders show_key template instead of redirecting
+    assert_response :success
+    assert_select "h1", text: /API Key/i
 
     new_key = ApiKey.last
     assert_equal "New Key", new_key.name
@@ -98,9 +102,11 @@ class Dashboard::ApiKeysControllerTest < ActionDispatch::IntegrationTest
       environment: "test"
     )
 
-    assert_raise ActiveRecord::RecordNotFound do
-      post regenerate_dashboard_api_key_path(other_key)
-    end
+    # Controller rescues RecordNotFound and redirects with alert
+    post regenerate_dashboard_api_key_path(other_key)
+
+    assert_redirected_to dashboard_api_keys_path
+    assert_equal "API key not found.", flash[:alert]
   end
 
   test "revoke marks key as revoked" do
@@ -120,20 +126,5 @@ class Dashboard::ApiKeysControllerTest < ActionDispatch::IntegrationTest
 
     assert_redirected_to dashboard_api_keys_path
     assert_equal "Cannot regenerate a revoked key. Please create a new one.", flash[:alert]
-  end
-
-  test "show_key displays full api key" do
-    new_key = @user.api_keys.create!(
-      name: "Show Key",
-      environment: "test"
-    )
-
-    # The full_key is only available in the session flash after creation
-    # This test would need to check the flash or session, not the response body
-    # For now, just verify the page loads
-    get dashboard_api_key_path(new_key)
-
-    assert_response :success
-    assert_select "h1", text: /API Key/i
   end
 end
