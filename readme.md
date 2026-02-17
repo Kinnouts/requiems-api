@@ -17,15 +17,13 @@ today, not infrastructure.
 
 ## Local Development in One Command
 
-**Contributor-friendly setup. Hot reload everything.**
-
 ```bash
 cd infra/docker
 docker compose -f docker-compose.dev.yml up
 ```
 
-**That's it.** All services (API, Dashboard, Database, Caddy) start with hot
-reload. Edit any file and see changes instantly.
+All services (API, Dashboard, Database, etc...) start with hot reload. Edit any
+file and see changes instantly.
 
 [Full dev setup guide](./infra/docker/README.md) |
 [Full API developer docs](./docs/)
@@ -33,8 +31,6 @@ reload. Edit any file and see changes instantly.
 ---
 
 ## Contributing
-
-**Found a bug? Want to add an API? We'd love your help.**
 
 We welcome contributions of all sizes: bug fixes, performance improvements,
 documentation, or entire new API endpoints.
