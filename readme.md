@@ -2,8 +2,7 @@
 
 [![CI](https://github.com/bobadilla-tech/requiems-api/actions/workflows/ci.yml/badge.svg)](https://github.com/bobadilla-tech/requiems-api/actions/workflows/ci.yml)
 [![Get Started](https://img.shields.io/badge/Get_Started-→-blue)](https://requiems.xyz)
-[![Documentation](https://img.shields.io/badge/Documentation-📖-green)](https://requiems.xyz/docs)
-[![Live Playground](https://img.shields.io/badge/Live_Playground-▶-orange)](https://requiems.xyz/playground)
+[![Documentation](https://img.shields.io/badge/Documentation-📖-green)](https://requiems.xyz/apis)
 
 **One API key. Multiple enterprise-grade APIs.** Eliminate months of data
 sourcing, validation logic, and infrastructure setup. Start building features
