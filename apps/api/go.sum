@@ -2,6 +2,8 @@ github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 h1:L/gRVlceqvL25
 github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161/go.mod h1:xomTg63KZ2rFqZQzSB4Vz2SUXa1BpHTVz9L5PTmPC4E=
 github.com/Microsoft/go-winio v0.6.1 h1:9/kr64B9VUZrLm5YYwbGtUJnMgqWVOdUAXu6Migciow=
 github.com/Microsoft/go-winio v0.6.1/go.mod h1:LRdKpFKfdobln8UmuiYcKPot9D2v6svN5+sAH+4kjUM=
+github.com/bobadilla-tech/business-days-calculator v1.0.0 h1:Vyf1E4WremYSCeFRF9JZ1Ci6fFwuJrdZfQPZhjmeRKc=
+github.com/bobadilla-tech/business-days-calculator v1.0.0/go.mod h1:uajXzi+6jJ40eBLLyU+G29RICvGGnL5pnP1NNFmJlOk=
 github.com/bobadilla-tech/is-email-disposable v1.0.0 h1:4Xj2LILMPkIM6Leo/pbVv9xNnPbbnEJ9u12YtwtJPcA=
 github.com/bobadilla-tech/is-email-disposable v1.0.0/go.mod h1:5pOQArvbNfKEfr2/prFb40Q1IL0GsDLCmXxT7hmOmqc=
 github.com/bobadilla-tech/lorelai v1.3.3 h1:59SqSzL+ICSW6MCA2OTzj6r+EJ7Nv7FXtbXd/uEhwVk=

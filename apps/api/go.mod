@@ -1,12 +1,14 @@
 module requiems-api
 
-go 1.23
+go 1.25.6
 
 require (
 	github.com/go-chi/chi/v5 v5.0.12
 	github.com/golang-migrate/migrate/v4 v4.17.0
 	github.com/jackc/pgx/v5 v5.5.5
 )
+
+require github.com/bobadilla-tech/business-days-calculator v1.0.0 // indirect
 
 require (
 	github.com/bobadilla-tech/is-email-disposable v1.0.0
