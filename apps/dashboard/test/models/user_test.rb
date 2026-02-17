@@ -44,14 +44,14 @@ class UserTest < ActiveSupport::TestCase
   test "suspended? returns suspension status" do
     assert_not @user.suspended?
 
-    @user.update(suspended: true, suspended_at: Time.current)
+    @user.update(status: "suspended")
     assert @user.suspended?
   end
 
   test "banned? returns ban status" do
     assert_not @user.banned?
 
-    @user.update(banned: true, banned_at: Time.current)
+    @user.update(status: "banned", banned_at: Time.current)
     assert @user.banned?
   end
 

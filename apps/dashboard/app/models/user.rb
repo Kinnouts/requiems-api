@@ -30,7 +30,7 @@ class User < ApplicationRecord
   end
 
   def suspended?
-    status == "suspended" || suspended_at.present?
+    status == "suspended"
   end
 
   def banned?

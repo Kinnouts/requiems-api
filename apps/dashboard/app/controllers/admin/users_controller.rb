@@ -34,9 +34,9 @@ class Admin::UsersController < ApplicationController
     when "admin"
       @users = @users.where(admin: true)
     when "suspended"
-      @users = @users.where(suspended: true)
+      @users = @users.where(status: "suspended")
     when "active"
-      @users = @users.where(suspended: false)
+      @users = @users.where(status: "active")
     end
 
     # Sort
@@ -60,7 +60,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def suspend
-    if @user.update(suspended: true, suspended_at: Time.current)
+    if @user.update(status: "suspended", active: false)
       # Revoke all API keys
       @user.api_keys.active_keys.each do |key|
         key.revoke!(reason: "User suspended by admin")
@@ -73,7 +73,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def unsuspend
-    if @user.update(suspended: false, suspended_at: nil)
+    if @user.update(status: "active", active: true)
       redirect_to admin_user_path(@user), notice: "User unsuspended successfully."
     else
       redirect_to admin_user_path(@user), alert: "Failed to unsuspend user."
