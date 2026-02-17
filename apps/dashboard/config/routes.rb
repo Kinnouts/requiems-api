@@ -26,10 +26,13 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :usage, only: [:show], controller: 'usage'
-    get 'usage/by_endpoint', to: 'usage#by_endpoint', as: :by_endpoint_usage
-    get 'usage/by_date', to: 'usage#by_date', as: :by_date_usage
-    get 'usage/export', to: 'usage#export', as: :export_usage
+    resource :usage, only: [:show], controller: 'usage' do
+      collection do
+        get :by_endpoint
+        get :by_date
+        get :export
+      end
+    end
 
     resource :billing, only: [:show, :update], controller: 'billing'
     post 'billing/checkout', to: 'billing#checkout', as: :checkout_billing

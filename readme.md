@@ -10,6 +10,8 @@ today, not infrastructure.
 **[Documentation](https://requiems.xyz/docs)** ·
 **[Try Live Playground](https://requiems.xyz/playground)**
 
+[![CI](https://github.com/bobadilla-tech/requiems-api/actions/workflows/ci.yml/badge.svg)](https://github.com/bobadilla-tech/requiems-api/actions/workflows/ci.yml)
+
 ---
 
 ### Stop Building Infrastructure. Start Shipping Features

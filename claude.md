@@ -143,6 +143,109 @@ cd apps/edge-auth
 npm run typecheck
 ```
 
+Run tests:
+
+```bash
+cd apps/edge-auth
+bunx vitest run              # Run all tests
+bunx vitest run --coverage   # With coverage report
+bun run test:watch           # Watch mode
+```
+
+Run linting and formatting:
+
+```bash
+cd apps/edge-auth
+bun run lint                 # Lint code
+bun run lint:fix             # Auto-fix lint issues
+bun run format:check         # Check formatting
+bun run format               # Auto-format code
+```
+
+## Continuous Integration
+
+The monorepo uses a unified GitHub Actions workflow at `.github/workflows/ci.yml` that automatically tests and validates code across all three applications.
+
+### CI Philosophy
+
+- **Tests are blocking** - PRs cannot merge if tests fail
+- **Security scans are blocking** - Critical for production safety
+- **Linting is advisory** - Shows warnings but doesn't block PRs
+- **Path-based execution** - Only runs jobs for changed apps (efficient)
+
+### What Gets Tested
+
+**Go Backend (`apps/api`):**
+- ✅ **Tests** (blocking) - `go test -race -coverprofile=coverage.out ./...`
+- ⚠️ **golangci-lint** (advisory) - 21 linters enabled (errcheck, gosimple, govet, staticcheck, etc.)
+
+**Rails Dashboard (`apps/dashboard`):**
+- ✅ **Tests** (blocking) - Minitest suite
+- ✅ **Security Scans** (blocking) - Brakeman, bundler-audit, importmap audit
+- ⚠️ **RuboCop** (advisory) - rails-omakase style guide
+
+**Cloudflare Worker (`apps/edge-auth`):**
+- ✅ **TypeScript Check** (blocking) - `tsc --noEmit`
+- ✅ **Tests** (blocking) - Vitest with 29% coverage (71 tests)
+- ⚠️ **Biome Lint** (advisory) - Modern fast linter + formatter
+
+### Local Testing Before Push
+
+Run these commands locally to catch issues before CI:
+
+```bash
+# Go Backend
+cd apps/api
+go test ./...                    # Tests (must pass)
+golangci-lint run                # Linting (advisory - requires golangci-lint installed)
+
+# Rails Dashboard
+cd apps/dashboard
+bin/rails test                   # Tests (must pass)
+bundle exec brakeman --no-pager  # Security scan (must pass)
+bundle exec bundler-audit        # Dependency audit (must pass)
+bin/importmap audit              # JS dependency audit (must pass)
+bundle exec rubocop              # Linting (advisory)
+
+# Cloudflare Worker
+cd apps/edge-auth
+bunx vitest run                  # Tests (must pass - 71 tests)
+bun run typecheck                # TypeScript (must pass)
+bun run lint                     # Linting (advisory)
+bun run format:check             # Formatting (advisory)
+```
+
+### CI Workflow Behavior
+
+The CI automatically detects which apps changed and runs only relevant tests:
+
+- **Change Go files** → Only Go tests and lint run
+- **Change Rails files** → Only Rails tests, security, and lint run
+- **Change Worker files** → Only Worker tests and lint run
+- **Change multiple apps** → All relevant jobs run in parallel
+
+This makes CI fast - typically under 5 minutes for single-app changes.
+
+### Branch Protection
+
+Configure GitHub branch protection to require the **"CI Success"** job for merging:
+
+1. Go to Settings → Branches → Branch protection rules
+2. Select `main` branch
+3. Enable "Require status checks to pass before merging"
+4. Select "CI Success" as required check
+5. Enable "Require branches to be up to date before merging"
+
+### CI Configuration Files
+
+**Tool Configurations:**
+- `apps/api/.golangci.yml` - Go linter config (21 linters)
+- `apps/edge-auth/vitest.config.ts` - Test framework config
+- `apps/edge-auth/biome.json` - Linter + formatter config
+
+**Workflow:**
+- `.github/workflows/ci.yml` - Main CI orchestrator (all apps)
+
 ## Architecture Overview
 
 ### Request Flow
