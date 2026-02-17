@@ -2,6 +2,9 @@ ENV["RAILS_ENV"] ||= "test"
 require_relative "../config/environment"
 require "rails/test_help"
 
+# Ensure Devise mappings are loaded
+Rails.application.reload_routes!
+
 module ActiveSupport
   class TestCase
     # Run tests in parallel with specified workers
