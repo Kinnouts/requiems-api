@@ -31,17 +31,11 @@ Requiems API is a production-ready API platform providing unified access to mult
 Get your API key at [requiems.xyz](https://requiems.xyz), then try it out:
 
 ```bash
-# Check if an email is disposable
+# Example: Check if an email is disposable (one of our many APIs)
 curl -X POST https://api.requiems.xyz/v1/email/disposable/check \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"email": "test@tempmail.com"}'
-
-# Get random advice
-curl https://api.requiems.xyz/v1/text/advice \
-  -H "Authorization: Bearer YOUR_API_KEY"
-
-# Generate lorem ipsum text
-curl https://api.requiems.xyz/v1/text/lorem \
-  -H "Authorization: Bearer YOUR_API_KEY"
 ```
+
+Explore our full catalog of APIs including email validation, finances utilities, and more in the [documentation](https://requiems.xyz/apis).
