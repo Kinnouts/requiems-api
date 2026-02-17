@@ -1,0 +1,20 @@
+ENTERPRISE INQUIRY
+====================
+
+!! ACTION REQUIRED: Respond within 24 hours !!
+
+Company: <%= @inquiry[:company] %>
+Contact Person: <%= @inquiry[:name] %>
+Email: <%= @inquiry[:email] %>
+
+<% if @inquiry[:message].present? %>
+Message / Specific Needs:
+<%= @inquiry[:message] %>
+<% end %>
+
+--
+Submitted: <%= @timestamp.strftime("%B %d, %Y at %I:%M %p %Z") %>
+
+REMINDER: Enterprise inquiries should receive a response within 24 hours to maintain our commitment to potential customers.
+
+Reply directly to this email to contact: <%= @inquiry[:email] %>

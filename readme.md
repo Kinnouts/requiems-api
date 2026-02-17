@@ -77,4 +77,4 @@ reload. Edit any file and see changes instantly.
 We welcome contributions of all sizes: bug fixes, performance improvements,
 documentation, or entire new API endpoints.
 
-→ [Contributing guidelines](contributing.md)
+→ [Contributing guidelines](./contributing.md)

@@ -8,42 +8,48 @@
         </h3>
         <ul class="space-y-3">
           <li><%= link_to "API Directory", apis_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
-          <li><%= link_to "Documentation", docs_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
-          <li><%= link_to "Examples", examples_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
-          <li><%= link_to "Status", "https://status.requiems.xyz", target: "_blank", rel: "noopener noreferrer", class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "API Status", status_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "Blog", blog_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "Example Apps", examples_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "API Glossary", glossary_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "Error Codes", error_codes_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
         </ul>
       </div>
 
-      <!-- APIs -->
+      <!-- API Categories -->
       <div>
         <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
-          APIs
+          API Categories
         </h3>
         <ul class="space-y-3">
-          <li><%= link_to "Email APIs", apis_path(category: "email"), class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
-          <li><%= link_to "Text APIs", apis_path(category: "text"), class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
-          <li>
-            <span class="text-gray-400 cursor-not-allowed">Data APIs</span>
-            <%= render "shared/badge", text: "Soon", variant: "secondary", size: "xs" %>
-          </li>
-          <li>
-            <span class="text-gray-400 cursor-not-allowed">Finance APIs</span>
-            <%= render "shared/badge", text: "Soon", variant: "secondary", size: "xs" %>
-          </li>
+          <li><%= link_to "Finance", apis_path(category: "finance"), class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "Internet/Technology", apis_path(category: "technology"), class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "AI/Computer Vision", apis_path(category: "ai_vision"), class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "Animals", apis_path(category: "animals"), class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "Entertainment", apis_path(category: "entertainment"), class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "Health/Wellness", apis_path(category: "health"), class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "Miscellaneous", apis_path(category: "misc"), class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "Places", apis_path(category: "places"), class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "Text", apis_path(category: "text"), class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "Transportation", apis_path(category: "transportation"), class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "Tax", apis_path(category: "tax"), class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
         </ul>
       </div>
 
-      <!-- Company -->
+      <!-- About -->
       <div>
         <h3 class="text-sm font-semibold text-gray-900 uppercase tracking-wider mb-4">
-          Company
+          About
         </h3>
         <ul class="space-y-3">
           <li><%= link_to "Pricing", pricing_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
-          <li><%= link_to "About", about_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "Our Team", team_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "Suggest an API", suggest_api_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "FAQ", faq_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
           <li><%= link_to "Privacy Policy", privacy_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
           <li><%= link_to "Terms of Service", terms_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
-          <li><%= link_to "Contact", contact_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "Contact Us", contact_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
+          <li><%= link_to "Talk to Sales", talk_to_sales_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
         </ul>
       </div>
 
@@ -67,8 +73,6 @@
             </a>
           </li>
           <li><%= link_to "Contributing", "https://github.com/bobadilla-tech/requiems-api/blob/main/contributing.md", target: "_blank", rel: "noopener noreferrer", class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
-          <li><%= link_to "License", "https://github.com/bobadilla-tech/requiems-api/blob/main/LICENSE", target: "_blank", rel: "noopener noreferrer", class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
-          <li><%= link_to "API Reference", api_reference_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
           <li><%= link_to "Changelog", changelog_path, class: "text-gray-600 hover:text-blue-600 transition-colors" %></li>
         </ul>
       </div>

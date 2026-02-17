@@ -96,11 +96,26 @@ Rails.application.routes.draw do
   get "docs", to: "home#docs"
   get "pricing", to: "home#pricing"
   get "about", to: "home#about"
+  get "team", to: "home#team"
   get "privacy", to: "home#privacy"
   get "terms", to: "home#terms"
   get "contact", to: "home#contact"
   get "api_reference", to: "home#api_reference"
   get "changelog", to: "home#changelog"
+
+  # New static pages
+  get "blog", to: "home#blog"
+  get "status", to: "home#status"
+  get "glossary", to: "home#glossary"
+  get "error_codes", to: "home#error_codes"
+  get "faq", to: "home#faq"
+
+  # Form pages
+  get "suggest_api", to: "suggestions#new"
+  post "suggest_api", to: "suggestions#create"
+  get "talk_to_sales", to: "sales_inquiries#new"
+  post "talk_to_sales", to: "sales_inquiries#create"
+
   get "examples", to: "examples#index"
   resources :apis, only: [:index, :show]
   resources :examples, only: [:show]
