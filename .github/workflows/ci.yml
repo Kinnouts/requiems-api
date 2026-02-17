@@ -19,7 +19,7 @@ jobs:
       dashboard: ${{ steps.filter.outputs.dashboard }}
       edge-auth: ${{ steps.filter.outputs.edge-auth }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - uses: dorny/paths-filter@v3
         id: filter
@@ -57,7 +57,7 @@ jobs:
           - 5432:5432
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -90,7 +90,7 @@ jobs:
     continue-on-error: true # Non-blocking
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Set up Go
         uses: actions/setup-go@v5
@@ -140,7 +140,7 @@ jobs:
           - 6379:6379
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -175,7 +175,7 @@ jobs:
     if: needs.detect-changes.outputs.dashboard == 'true'
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -203,7 +203,6 @@ jobs:
         working-directory: apps/dashboard
         run: bin/importmap audit
 
-  # Lint (non-blocking, warnings only)
   rails-lint:
     name: Rails Lint (Advisory)
     runs-on: ubuntu-latest
@@ -215,7 +214,7 @@ jobs:
       RUBOCOP_CACHE_ROOT: tmp/rubocop
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -236,11 +235,6 @@ jobs:
         working-directory: apps/dashboard
         run: bundle exec rubocop
 
-  # ============================================================================
-  # CLOUDFLARE WORKER (apps/edge-auth)
-  # ============================================================================
-
-  # Type check (must pass)
   worker-typecheck:
     name: Worker TypeScript Check
     runs-on: ubuntu-latest
@@ -248,10 +242,10 @@ jobs:
     if: needs.detect-changes.outputs.edge-auth == 'true'
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
+        uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
@@ -263,7 +257,6 @@ jobs:
         working-directory: apps/edge-auth
         run: bun run typecheck
 
-  # Tests (must pass)
   worker-test:
     name: Worker Tests
     runs-on: ubuntu-latest
@@ -271,10 +264,10 @@ jobs:
     if: needs.detect-changes.outputs.edge-auth == 'true'
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
+        uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
@@ -296,7 +289,6 @@ jobs:
           name: worker-coverage
           path: apps/edge-auth/coverage/
 
-  # Lint (non-blocking, warnings only)
   worker-lint:
     name: Worker Lint (Advisory)
     runs-on: ubuntu-latest
@@ -305,10 +297,10 @@ jobs:
     continue-on-error: true # Non-blocking
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Bun
-        uses: oven-sh/setup-bun@v1
+        uses: oven-sh/setup-bun@v2
         with:
           bun-version: latest
 
@@ -324,9 +316,6 @@ jobs:
         working-directory: apps/edge-auth
         run: bun run format:check
 
-  # ============================================================================
-  # SUMMARY JOB - Required status check
-  # ============================================================================
   ci-success:
     name: CI Success
     runs-on: ubuntu-latest
@@ -342,9 +331,6 @@ jobs:
     steps:
       - name: Check all required jobs
         run: |
-          # This job succeeds only if all required jobs passed or were skipped
-          # Lint jobs are not included as they're non-blocking
-
           if [[ "${{ needs.go-test.result }}" == "failure" ]]; then
             echo "❌ Go tests failed"
             exit 1
