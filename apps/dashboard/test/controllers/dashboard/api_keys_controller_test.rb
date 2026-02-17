@@ -2,7 +2,7 @@ require "test_helper"
 
 class Dashboard::ApiKeysControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @user = User.create!(
+    @user = create_user(
       email: "test@example.com",
       password: "password123",
       password_confirmation: "password123"
@@ -10,8 +10,6 @@ class Dashboard::ApiKeysControllerTest < ActionDispatch::IntegrationTest
 
     @api_key = @user.api_keys.create!(
       name: "Test Key",
-      key: "rq_test_" + SecureRandom.hex(32),
-      prefix: "rq_test_abc123",
       environment: "test"
     )
 
@@ -92,7 +90,7 @@ class Dashboard::ApiKeysControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "regenerate requires own key" do
-    other_user = User.create!(
+    other_user = create_user(
       email: "other@example.com",
       password: "password123",
       password_confirmation: "password123"

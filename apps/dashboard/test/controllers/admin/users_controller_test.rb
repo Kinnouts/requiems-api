@@ -2,14 +2,14 @@ require "test_helper"
 
 class Admin::UsersControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @admin = User.create!(
+    @admin = create_user(
       email: "admin@example.com",
       password: "password123",
       password_confirmation: "password123",
       admin: true
     )
 
-    @regular_user = User.create!(
+    @regular_user = create_user(
       email: "user@example.com",
       password: "password123",
       password_confirmation: "password123"

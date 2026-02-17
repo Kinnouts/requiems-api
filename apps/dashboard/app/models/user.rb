@@ -29,6 +29,14 @@ class User < ApplicationRecord
     status == "active" && !banned_at
   end
 
+  def suspended?
+    status == "suspended" || suspended_at.present?
+  end
+
+  def banned?
+    status == "banned" || banned_at.present?
+  end
+
   def current_plan
     subscription&.plan || "free"
   end

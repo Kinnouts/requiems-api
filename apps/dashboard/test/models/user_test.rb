@@ -2,7 +2,7 @@ require "test_helper"
 
 class UserTest < ActiveSupport::TestCase
   def setup
-    @user = User.create!(
+    @user = create_user(
       email: "test@example.com",
       password: "password123",
       password_confirmation: "password123"
@@ -60,8 +60,6 @@ class UserTest < ActiveSupport::TestCase
 
     api_key = @user.api_keys.create!(
       name: "Test Key",
-      key: "rq_test_" + SecureRandom.hex(32),
-      prefix: "rq_test_abc123",
       environment: "test"
     )
 
@@ -79,8 +77,6 @@ class UserTest < ActiveSupport::TestCase
   test "destroys dependent api_keys when destroyed" do
     api_key = @user.api_keys.create!(
       name: "Test Key",
-      key: "rq_test_" + SecureRandom.hex(32),
-      prefix: "rq_test_abc123",
       environment: "test"
     )
 
