@@ -55,9 +55,11 @@ Response:
 
 ### API Key Management
 
+#### Create API Key
+
 **POST /api-keys**
 
-Create, revoke, or update API keys.
+Generate a new API key. The key is generated on the server and returned once.
 
 **Headers:**
 - `X-API-Management-Key` (required)
@@ -66,52 +68,104 @@ Create, revoke, or update API keys.
 **Request Body:**
 ```json
 {
-  "action": "create" | "revoke" | "update",
-  "key": "rq_live_abc123...",
   "userId": "user-uuid",
   "plan": "free" | "developer" | "business" | "professional" | "enterprise",
+  "name": "My Production Key",
   "billingCycleStart": "2025-01-01T00:00:00Z" // Optional, ISO 8601
 }
 ```
 
-**Examples:**
-
-Create API key:
+**Example:**
 ```bash
 curl -X POST http://localhost:6001/api-keys \
   -H "X-API-Management-Key: $API_MANAGEMENT_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "action": "create",
-    "key": "rq_live_abc123xyz",
     "userId": "user-123",
     "plan": "developer",
+    "name": "Production API Key",
     "billingCycleStart": "2025-02-01T00:00:00Z"
   }'
 ```
 
-Revoke API key:
-```bash
-curl -X POST http://localhost:6001/api-keys \
-  -H "X-API-Management-Key: $API_MANAGEMENT_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "action": "revoke",
-    "key": "rq_live_abc123xyz",
-    "userId": "user-123",
-    "plan": "developer"
-  }'
+**Response (201 Created):**
+```json
+{
+  "apiKey": "requiem_abc123xyz789...",
+  "keyPrefix": "requiem_abc1",
+  "userId": "user-123",
+  "plan": "developer",
+  "createdAt": "2025-02-17T18:30:00Z"
+}
 ```
 
-Update API key (plan change):
+**Error Responses:**
+- `400` - Missing required fields
+- `401` - Invalid or missing API management key
+- `409` - Key collision (retry request)
+
+---
+
+#### Revoke API Key
+
+**DELETE /api-keys/:keyPrefix**
+
+Revoke an API key by its prefix. Deletes from KV and marks as revoked in D1.
+
+**Headers:**
+- `X-API-Management-Key` (required)
+
+**URL Parameters:**
+- `keyPrefix` - First 12 characters of the API key (e.g., `rq_live_abc1`)
+
+**Example:**
 ```bash
-curl -X POST http://localhost:6001/api-keys \
+curl -X DELETE http://localhost:6001/api-keys/rq_live_abc1 \
+  -H "X-API-Management-Key: $API_MANAGEMENT_API_KEY"
+```
+
+**Response:**
+```json
+{
+  "success": true,
+  "message": "API key revoked successfully",
+  "keyPrefix": "rq_live_abc1"
+}
+```
+
+**Error Responses:**
+- `401` - Invalid or missing API management key
+- `404` - API key not found
+
+---
+
+#### Update API Key
+
+**PATCH /api-keys/:keyPrefix**
+
+Update an API key's plan or billing cycle.
+
+**Headers:**
+- `X-API-Management-Key` (required)
+- `Content-Type: application/json`
+
+**URL Parameters:**
+- `keyPrefix` - First 12 characters of the API key (e.g., `rq_live_abc1`)
+
+**Request Body:**
+```json
+{
+  "plan": "business", // Optional
+  "billingCycleStart": "2025-03-01T00:00:00Z" // Optional
+}
+```
+
+**Example:**
+```bash
+curl -X PATCH http://localhost:6001/api-keys/rq_live_abc1 \
   -H "X-API-Management-Key: $API_MANAGEMENT_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "action": "update",
-    "key": "rq_live_abc123xyz",
-    "userId": "user-123",
     "plan": "business",
     "billingCycleStart": "2025-02-01T00:00:00Z"
   }'
@@ -121,15 +175,17 @@ curl -X POST http://localhost:6001/api-keys \
 ```json
 {
   "success": true,
-  "message": "API key created successfully"
+  "message": "API key updated successfully",
+  "keyPrefix": "rq_live_abc1",
+  "plan": "business",
+  "billingCycleStart": "2025-02-01T00:00:00Z"
 }
 ```
 
 **Error Responses:**
+- `400` - No fields provided for update
 - `401` - Invalid or missing API management key
-- `404` - API key not found (for revoke/update)
-- `409` - API key already exists (for create)
-- `400` - Missing required fields
+- `404` - API key not found
 
 ---
 

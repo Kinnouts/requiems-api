@@ -1,208 +1,265 @@
 import { Hono } from "hono";
 import { jsonError, jsonResponse } from "../shared/http";
-import { createLogger, maskApiKey } from "../shared/logger";
-import type {
-  ApiKeyData,
-  ApiKeyManagementRequest,
-  ApiKeyManagementResponse,
-  WorkerBindings,
-} from "../shared/types";
+import { createLogger } from "../shared/logger";
+import { ApiKeyGenerator } from "../shared/api-key-generator";
+import type { ApiKeyData, WorkerBindings } from "../shared/types";
 
 const app = new Hono<{ Bindings: WorkerBindings }>();
 
 /**
+ * Request body for creating a new API key
+ */
+interface CreateApiKeyRequest {
+	userId: string;
+	plan: "free" | "developer" | "business" | "professional" | "enterprise";
+	name: string;
+	billingCycleStart?: string;
+}
+
+/**
+ * Response when creating a new API key
+ */
+interface CreateApiKeyResponse {
+	apiKey: string; // Full key (only returned once)
+	keyPrefix: string;
+	userId: string;
+	plan: string;
+	createdAt: string;
+}
+
+/**
+ * Request body for updating an API key
+ */
+interface UpdateApiKeyRequest {
+	plan?: "free" | "developer" | "business" | "professional" | "enterprise";
+	billingCycleStart?: string;
+}
+
+/**
  * POST /api-keys
- * Create, revoke, or update API keys
+ * Create a new API key
  * Auth: X-API-Management-Key header (only Rails dashboard has this)
  */
 app.post("/", async (c) => {
-  const log = createLogger(c.req.raw);
+	const log = createLogger(c.req.raw);
 
-  // Parse request body
-  let body: ApiKeyManagementRequest;
-  try {
-    body = await c.req.json();
-  } catch (error) {
-    log.error("Invalid JSON in API key management request", { error });
-    return jsonError(400, "Invalid JSON body");
-  }
+	let body: CreateApiKeyRequest;
+	try {
+		body = await c.req.json();
+	} catch (error) {
+		log.error("Invalid JSON in create API key request", { error });
+		return jsonError(400, "Invalid JSON body");
+	}
 
-  // Validate required fields
-  if (!body.action || !body.key || !body.userId || !body.plan) {
-    log.error("Missing required fields in API key management request", { body });
-    return jsonError(400, "Missing required fields: action, key, userId, plan");
-  }
+	if (!body.userId || !body.plan || !body.name) {
+		log.error("Missing required fields", { body });
+		return jsonError(400, "Missing required fields: userId, plan, name");
+	}
 
-  log.info("API key management request", {
-    action: body.action,
-    userId: body.userId,
-    plan: body.plan,
-    keyPrefix: maskApiKey(body.key),
-  });
+	try {
+		const fullKey = ApiKeyGenerator.generate();
+		const keyPrefix = ApiKeyGenerator.extractPrefix(fullKey);
+		const keyName = `key:${fullKey}`;
 
-  try {
-    switch (body.action) {
-      case "create":
-        return await createApiKey(c.env, body, log);
-      case "revoke":
-        return await revokeApiKey(c.env, body, log);
-      case "update":
-        return await updateApiKey(c.env, body, log);
-      default:
-        return jsonError(400, `Invalid action: ${body.action}`);
-    }
-  } catch (error) {
-    log.error("API key management error", { error, action: body.action });
-    return jsonError(500, "Internal server error");
-  }
+		const existing = await c.env.KV.get(keyName);
+		
+    if (existing) {
+			log.warn("Generated key already exists (collision)", { keyPrefix });
+			return jsonError(409, "Key collision detected, please retry");
+		}
+
+		const now = new Date().toISOString();
+		
+    const keyData: ApiKeyData = {
+			userId: body.userId,
+			plan: body.plan,
+			createdAt: now,
+			billingCycleStart: body.billingCycleStart || now,
+		};
+
+		await c.env.KV.put(keyName, JSON.stringify(keyData));
+
+		await c.env.DB.prepare(
+			`INSERT INTO api_keys (key_prefix, user_id, plan, created_at, billing_cycle_start, active)
+       VALUES (?, ?, ?, ?, ?, 1)`,
+		)
+			.bind(keyPrefix, body.userId, body.plan, now, keyData.billingCycleStart)
+			.run();
+
+		log.info("API key created successfully", {
+			userId: body.userId,
+			plan: body.plan,
+			keyPrefix,
+		});
+
+		const response: CreateApiKeyResponse = {
+			apiKey: fullKey,
+			keyPrefix,
+			userId: body.userId,
+			plan: body.plan,
+			createdAt: now,
+		};
+
+		return jsonResponse(response, 201);
+	} catch (error) {
+		log.error("Failed to create API key", { error });
+		return jsonError(500, "Failed to create API key");
+	}
 });
 
 /**
- * Create a new API key in KV and D1
+ * DELETE /api-keys/:keyPrefix
+ * Revoke an API key by its prefix
+ * Auth: X-API-Management-Key header (only Rails dashboard has this)
  */
-async function createApiKey(
-  env: WorkerBindings,
-  body: ApiKeyManagementRequest,
-  log: ReturnType<typeof createLogger>,
-): Promise<Response> {
-  const keyName = `key:${body.key}`;
+app.delete("/:keyPrefix", async (c) => {
+	const log = createLogger(c.req.raw);
+	const keyPrefix = c.req.param("keyPrefix");
 
-  // Check if key already exists
-  const existing = await env.KV.get(keyName);
-  if (existing) {
-    log.warn("API key already exists", { userId: body.userId });
-    return jsonError(409, "API key already exists");
-  }
+	if (!keyPrefix) {
+		return jsonError(400, "Missing keyPrefix parameter");
+	}
 
-  // Prepare key data
-  const keyData: ApiKeyData = {
-    userId: body.userId,
-    plan: body.plan,
-    createdAt: new Date().toISOString(),
-    billingCycleStart: body.billingCycleStart || new Date().toISOString(),
-  };
+	try {
+		const keys = await c.env.KV.list({ prefix: "key:" });
 
-  // Write to KV
-  await env.KV.put(keyName, JSON.stringify(keyData));
+		let fullKey: string | null = null;
 
-  // Write to D1 for metadata/audit
-  await env.DB.prepare(
-    `INSERT INTO api_keys (key_prefix, user_id, plan, created_at, billing_cycle_start)
-     VALUES (?, ?, ?, ?, ?)`,
-  )
-    .bind(
-      body.key.substring(0, 12), // key_prefix
-      body.userId,
-      body.plan,
-      keyData.createdAt,
-      keyData.billingCycleStart,
-    )
-    .run();
+		for (const key of keys.keys) {
+			if (key.name.substring(4, 16) === keyPrefix) {
+				fullKey = key.name.substring(4);
+				break;
+			}
+		}
 
-  log.info("API key created successfully", {
-    userId: body.userId,
-    plan: body.plan,
-  });
+		if (!fullKey) {
+			log.warn("API key not found for revocation", { keyPrefix });
+			return jsonError(404, "API key not found");
+		}
 
-  const response: ApiKeyManagementResponse = {
-    success: true,
-    message: "API key created successfully",
-  };
+		const keyName = `key:${fullKey}`;
 
-  return jsonResponse(response);
-}
+		await c.env.KV.delete(keyName);
+
+		await c.env.DB.prepare(
+			`UPDATE api_keys
+       SET revoked_at = ?, active = 0
+       WHERE key_prefix = ?`,
+		)
+			.bind(new Date().toISOString(), keyPrefix)
+			.run();
+
+		log.info("API key revoked successfully", { keyPrefix });
+
+		return jsonResponse({
+			success: true,
+			message: "API key revoked successfully",
+			keyPrefix,
+		});
+	} catch (error) {
+		log.error("Failed to revoke API key", { error, keyPrefix });
+		return jsonError(500, "Failed to revoke API key");
+	}
+});
 
 /**
- * Revoke an API key by deleting from KV and marking in D1
- */
-async function revokeApiKey(
-  env: WorkerBindings,
-  body: ApiKeyManagementRequest,
-  log: ReturnType<typeof createLogger>,
-): Promise<Response> {
-  const keyName = `key:${body.key}`;
-
-  // Check if key exists
-  const existing = await env.KV.get(keyName);
-  if (!existing) {
-    log.warn("API key not found for revocation", { userId: body.userId });
-    return jsonError(404, "API key not found");
-  }
-
-  // Delete from KV (revokes access immediately)
-  await env.KV.delete(keyName);
-
-  // Mark as revoked in D1
-  await env.DB.prepare(
-    `UPDATE api_keys
-     SET revoked_at = ?, active = 0
-     WHERE key_prefix = ?`,
-  )
-    .bind(new Date().toISOString(), body.key.substring(0, 12))
-    .run();
-
-  log.info("API key revoked successfully", { userId: body.userId });
-
-  const response: ApiKeyManagementResponse = {
-    success: true,
-    message: "API key revoked successfully",
-  };
-
-  return jsonResponse(response);
-}
-
-/**
+ * PATCH /api-keys/:keyPrefix
  * Update an API key (plan change, billing cycle)
+ * Auth: X-API-Management-Key header (only Rails dashboard has this)
  */
-async function updateApiKey(
-  env: WorkerBindings,
-  body: ApiKeyManagementRequest,
-  log: ReturnType<typeof createLogger>,
-): Promise<Response> {
-  const keyName = `key:${body.key}`;
+app.patch("/:keyPrefix", async (c) => {
+	const log = createLogger(c.req.raw);
+	const keyPrefix = c.req.param("keyPrefix");
 
-  // Get existing key data
-  const existingData = await env.KV.get<ApiKeyData>(keyName, "json");
-  if (!existingData) {
-    log.warn("API key not found for update", { userId: body.userId });
-    return jsonError(404, "API key not found");
-  }
+	if (!keyPrefix) {
+		return jsonError(400, "Missing keyPrefix parameter");
+	}
 
-  // Update key data
-  const updatedData: ApiKeyData = {
-    ...existingData,
-    plan: body.plan,
-    billingCycleStart: body.billingCycleStart || existingData.billingCycleStart,
-  };
+	let body: UpdateApiKeyRequest;
+	try {
+		body = await c.req.json();
+	} catch (error) {
+		log.error("Invalid JSON in update API key request", { error });
+		return jsonError(400, "Invalid JSON body");
+	}
 
-  // Write updated data to KV
-  await env.KV.put(keyName, JSON.stringify(updatedData));
+	// Validate at least one field to update
+	if (!body.plan && !body.billingCycleStart) {
+		return jsonError(400, "Must provide at least one field to update: plan, billingCycleStart");
+	}
 
-  // Update in D1
-  await env.DB.prepare(
-    `UPDATE api_keys
-     SET plan = ?, billing_cycle_start = ?, updated_at = ?
-     WHERE key_prefix = ?`,
-  )
-    .bind(
-      updatedData.plan,
-      updatedData.billingCycleStart,
-      new Date().toISOString(),
-      body.key.substring(0, 12),
-    )
-    .run();
+	try {
+		const keys = await c.env.KV.list({ prefix: "key:" });
 
-  log.info("API key updated successfully", {
-    userId: body.userId,
-    newPlan: body.plan,
-  });
+		let fullKey: string | null = null;
 
-  const response: ApiKeyManagementResponse = {
-    success: true,
-    message: "API key updated successfully",
-  };
+		for (const key of keys.keys) {
+			if (key.name.substring(4, 16) === keyPrefix) {
+				fullKey = key.name.substring(4);
+				break;
+			}
+		}
 
-  return jsonResponse(response);
-}
+		if (!fullKey) {
+			log.warn("API key not found for update", { keyPrefix });
+			return jsonError(404, "API key not found");
+		}
+
+		const keyName = `key:${fullKey}`;
+
+		const existingData = await c.env.KV.get<ApiKeyData>(keyName, "json");
+		if (!existingData) {
+			log.warn("API key data not found in KV", { keyPrefix });
+			return jsonError(404, "API key not found");
+		}
+
+		const updatedData: ApiKeyData = {
+			...existingData,
+			...(body.plan && { plan: body.plan }),
+			...(body.billingCycleStart && { billingCycleStart: body.billingCycleStart }),
+		};
+
+		await c.env.KV.put(keyName, JSON.stringify(updatedData));
+
+		const updates: string[] = [];
+		const bindings: (string | number)[] = [];
+
+		if (body.plan) {
+			updates.push("plan = ?");
+			bindings.push(body.plan);
+		}
+		if (body.billingCycleStart) {
+			updates.push("billing_cycle_start = ?");
+			bindings.push(body.billingCycleStart);
+		}
+		updates.push("updated_at = ?");
+		bindings.push(new Date().toISOString());
+		bindings.push(keyPrefix);
+
+		await c.env.DB.prepare(
+			`UPDATE api_keys
+       SET ${updates.join(", ")}
+       WHERE key_prefix = ?`,
+		)
+			.bind(...bindings)
+			.run();
+
+		log.info("API key updated successfully", {
+			keyPrefix,
+			updates: body,
+		});
+
+		return jsonResponse({
+			success: true,
+			message: "API key updated successfully",
+			keyPrefix,
+			plan: updatedData.plan,
+			billingCycleStart: updatedData.billingCycleStart,
+		});
+	} catch (error) {
+		log.error("Failed to update API key", { error, keyPrefix });
+		return jsonError(500, "Failed to update API key");
+	}
+});
 
 export default app;
