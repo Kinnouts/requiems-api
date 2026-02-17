@@ -159,7 +159,7 @@
       </p>
     </div>
 
-    <div class="grid gap-3 mb-16 grid-cols-2 md:grid-cols-4 lg:grid-cols-8">
+    <div class="grid gap-3 mb-16 grid-cols-2 md:grid-cols-8">
       <% @categories.first(16).each_with_index do |category, index| %>
         <%= link_to apis_path(category: category["id"]),
             class: "group bg-gray-50 rounded-lg p-4 text-center transition-all duration-200 hover:bg-blue-50 #{index >= 8 ? 'hidden md:block' : ''}" do %>
