@@ -105,12 +105,31 @@
           <% end %>
         </div>
 
-        <!-- API Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-api-search-target="grid">
-          <% @apis.each do |api| %>
-            <%= render "apis/api_card", api: api %>
-          <% end %>
-        </div>
+        <!-- Coming Soon Message -->
+        <% if @apis.empty? && @selected_category.present? && @category && @category["coming_soon"] %>
+          <div class="text-center py-16 bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="text-6xl mb-6"><%= @category["icon"] %></div>
+            <h2 class="text-2xl font-bold text-gray-900 mb-3">Coming Soon</h2>
+            <p class="text-gray-600 mb-8 max-w-md mx-auto">
+              We're working on bringing you <%= @category["name"] %>. Check back soon!
+            </p>
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+              <%= link_to apis_path, class: "inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors" do %>
+                Explore Available APIs
+              <% end %>
+              <%= link_to suggest_api_path, class: "inline-flex items-center justify-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 transition-colors" do %>
+                Suggest an API
+              <% end %>
+            </div>
+          </div>
+        <% else %>
+          <!-- API Cards Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-api-search-target="grid">
+            <% @apis.each do |api| %>
+              <%= render "apis/api_card", api: api %>
+            <% end %>
+          </div>
+        <% end %>
 
         <!-- Empty State (when filtered) -->
         <div class="hidden text-center py-12" data-api-search-target="empty">

@@ -74,9 +74,6 @@
       <h2 class="text-3xl font-bold text-gray-900">
         Trusted by developers worldwide
       </h2>
-      <p class="mt-2 text-lg text-gray-600">
-        Powering applications across 100+ countries
-      </p>
     </div>
 
     <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
@@ -153,101 +150,30 @@
 <!-- API Categories Grid -->
 <div class="bg-white py-20" id="api-docs">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
+    <div class="text-center mb-12">
       <h2 class="text-4xl font-bold text-gray-900">
-        Available API Categories
+        API Categories
       </h2>
-      <p class="mt-4 text-xl text-gray-600">
-        Growing collection of production-ready endpoints
+      <p class="mt-4 text-lg text-gray-600">
+        Explore our comprehensive collection of APIs organized by category to find exactly what you need.
       </p>
     </div>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Email APIs -->
-      <%= render "shared/card", title: "Email APIs", padding: true, hover: true do %>
-        <div class="mb-4">
-          <%= render "shared/badge", text: "Live", variant: "success", size: "sm" %>
-          <%= render "shared/badge", text: "4 Endpoints", variant: "info", size: "sm", class_names: "ml-2" %>
-        </div>
-        <p class="text-gray-600 mb-4">
-          Disposable email detection, domain validation, and batch checking. Block fake signups instantly.
-        </p>
-        <%= link_to api_path("disposable_email"), class: "text-blue-600 hover:text-blue-700 font-medium inline-flex items-center" do %>
-          View docs
-          <svg class="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
+    <div class="grid gap-3 mb-16 grid-cols-2 md:grid-cols-8">
+      <% @categories.first(16).each_with_index do |category, index| %>
+        <%= link_to apis_path(category: category["id"]),
+            class: "group bg-gray-50 rounded-lg p-4 text-center transition-all duration-200 hover:bg-blue-50 #{index >= 8 ? 'hidden md:block' : ''}" do %>
+          <div class="text-3xl mb-2"><%= category["icon"] %></div>
+          <h3 class="text-xs font-semibold text-gray-900 group-hover:text-blue-600 leading-tight">
+            <%= category["name"] %>
+          </h3>
         <% end %>
-      <% end %>
-
-      <!-- Text APIs -->
-      <%= render "shared/card", title: "Text APIs", padding: true, hover: true do %>
-        <div class="mb-4">
-          <%= render "shared/badge", text: "Live", variant: "success", size: "sm" %>
-          <%= render "shared/badge", text: "4 Endpoints", variant: "info", size: "sm", class_names: "ml-2" %>
-        </div>
-        <p class="text-gray-600 mb-4">
-          Random advice, quotes, words, and Lorem Ipsum generation. Perfect for placeholders and content.
-        </p>
-        <%= link_to api_path("lorem_ipsum"), class: "text-blue-600 hover:text-blue-700 font-medium inline-flex items-center" do %>
-          View docs
-          <svg class="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-        <% end %>
-      <% end %>
-
-      <!-- Data APIs - Coming Soon -->
-      <%= render "shared/card", title: "Data APIs", padding: true, class_names: "opacity-75" do %>
-        <div class="mb-4">
-          <%= render "shared/badge", text: "Coming Soon", variant: "warning", size: "sm" %>
-        </div>
-        <p class="text-gray-600 mb-4">
-          IP geolocation, currency conversion, timezone info, and more data utilities.
-        </p>
-        <span class="text-gray-400">Available Q2 2026</span>
-      <% end %>
-
-      <!-- Finance APIs - Coming Soon -->
-      <%= render "shared/card", title: "Finance APIs", padding: true, class_names: "opacity-75" do %>
-        <div class="mb-4">
-          <%= render "shared/badge", text: "Coming Soon", variant: "warning", size: "sm" %>
-        </div>
-        <p class="text-gray-600 mb-4">
-          Stock quotes, crypto prices, exchange rates, and financial data endpoints.
-        </p>
-        <span class="text-gray-400">Available Q3 2026</span>
-      <% end %>
-
-      <!-- Image APIs - Coming Soon -->
-      <%= render "shared/card", title: "Image APIs", padding: true, class_names: "opacity-75" do %>
-        <div class="mb-4">
-          <%= render "shared/badge", text: "Coming Soon", variant: "warning", size: "sm" %>
-        </div>
-        <p class="text-gray-600 mb-4">
-          Image optimization, placeholder generation, QR codes, and visual content tools.
-        </p>
-        <span class="text-gray-400">Available Q4 2026</span>
-      <% end %>
-
-      <!-- Utility APIs - Coming Soon -->
-      <%= render "shared/card", title: "Utility APIs", padding: true, class_names: "opacity-75" do %>
-        <div class="mb-4">
-          <%= render "shared/badge", text: "Coming Soon", variant: "warning", size: "sm" %>
-        </div>
-        <p class="text-gray-600 mb-4">
-          URL shortening, QR codes, barcode generation, and other developer utilities.
-        </p>
-        <span class="text-gray-400">Roadmap TBD</span>
       <% end %>
     </div>
 
-    <div class="text-center mt-12">
-      <%= link_to apis_path, class: "inline-flex items-center px-6 py-3 border border-blue-600 text-base font-medium rounded-lg text-blue-600 hover:bg-blue-50 transition-colors" do %>
-        Browse Full API Directory
-        <svg class="ml-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-        </svg>
+    <div class="text-center">
+      <%= link_to apis_path, class: "inline-flex items-center justify-center px-8 py-3 bg-blue-600 text-white text-base font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm" do %>
+        Browse All APIs
       <% end %>
     </div>
   </div>

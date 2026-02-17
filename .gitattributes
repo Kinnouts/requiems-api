@@ -1,5 +1,6 @@
 # Exclude HTML from language statistics
 *.html linguist-detectable=false
+*.erb linguist-detectable=false
 
 # Exclude shell scripts from language statistics
 *.sh linguist-detectable=false
