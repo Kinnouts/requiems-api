@@ -1,37 +1,13 @@
-## ⚰️ Requiem API
+# Requiems API
 
-### Ship Faster With Production-Ready APIs
+[![CI](https://github.com/bobadilla-tech/requiems-api/actions/workflows/ci.yml/badge.svg)](https://github.com/bobadilla-tech/requiems-api/actions/workflows/ci.yml)
+[![Get Started](https://img.shields.io/badge/Get_Started-→-blue?style=for-the-badge)](https://requiems.xyz)
+[![Documentation](https://img.shields.io/badge/Documentation-📖-green?style=for-the-badge)](https://requiems.xyz/docs)
+[![Live Playground](https://img.shields.io/badge/Live_Playground-▶-orange?style=for-the-badge)](https://requiems.xyz/playground)
 
 **One API key. Multiple enterprise-grade APIs.** Eliminate months of data
 sourcing, validation logic, and infrastructure setup. Start building features
 today, not infrastructure.
-
-**[Get Started →](https://requiems.xyz)** ·
-**[Documentation](https://requiems.xyz/docs)** ·
-**[Try Live Playground](https://requiems.xyz/playground)**
-
-[![CI](https://github.com/bobadilla-tech/requiems-api/actions/workflows/ci.yml/badge.svg)](https://github.com/bobadilla-tech/requiems-api/actions/workflows/ci.yml)
-
----
-
-### Stop Building Infrastructure. Start Shipping Features
-
-**Ditch the integration hell:**
-
-- ❌ No more juggling 10+ API providers and payment accounts
-- ❌ No more building validation logic from scratch
-- ❌ No more maintaining rate limiters, caching, and retry logic
-- ❌ No more infrastructure babysitting
-
-**Ship production features in minutes:**
-
-- ✅ **One unified API** – email validation, disposable detection, text
-  utilities, and growing
-- ✅ **Battle-tested infrastructure** – sub-200ms response times, 99.9% uptime
-- ✅ **Zero setup friction** – generous free tier, no credit card required
-- ✅ **Test before you commit** – live playground with real responses
-
-### From Zero to Production in 60 Seconds
 
 ```bash
 # 1. Get your free API key at requiems.xyz (no credit card)
@@ -42,9 +18,6 @@ curl -H "requiems-api-key: YOUR_KEY" https://api.requiems.xyz/v1/email/disposabl
 
 # 3. Ship it to production ✅
 ```
-
-**That's it.** No SDKs to install. No complex authentication flows. No
-infrastructure to maintain.
 
 ---
 
