@@ -74,7 +74,6 @@ This security policy covers:
 
 ## Questions?
 
-For general security questions or concerns, please contact:
-eliaz@bobadilla.tech
+For general security questions or concerns, please contact: eliaz@bobadilla.tech
 
 Thank you for helping keep Requiems API and our users secure! 🛡️

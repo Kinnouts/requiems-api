@@ -14,7 +14,10 @@
 
 # What's Requiems API?
 
-Requiems API is a production-ready API platform providing unified access to multiple enterprise-grade APIs. Eliminate months of data sourcing, validation logic, and infrastructure setup. Start building features today, not infrastructure.
+Requiems API is a production-ready API platform providing unified access to
+multiple enterprise-grade APIs. Eliminate months of data sourcing, validation
+logic, and infrastructure setup. Start building features today, not
+infrastructure.
 
 [![CI](https://github.com/bobadilla-tech/requiems-api/actions/workflows/ci.yml/badge.svg)](https://github.com/bobadilla-tech/requiems-api/actions/workflows/ci.yml)
 [![Get Started](https://img.shields.io/badge/Get_Started-→-blue)](https://requiems.xyz)
@@ -24,7 +27,8 @@ Requiems API is a production-ready API platform providing unified access to mult
 
 - **Go API** – Lightning-fast backend with domain-driven design
 - **Rails Dashboard** – Beautiful UI for users and admins
-- **Cloudflare Worker Gateway** – Global edge network handling auth, rate limiting, and credit tracking
+- **Cloudflare Worker Gateway** – Global edge network handling auth, rate
+  limiting, and credit tracking
 
 ## Quick Start
 
@@ -38,4 +42,5 @@ curl -X POST https://api.requiems.xyz/v1/email/disposable/check \
   -d '{"email": "test@tempmail.com"}'
 ```
 
-Explore our full catalog of APIs including email validation, finances utilities, and more in the [documentation](https://requiems.xyz/apis).
+Explore our full catalog of APIs including email validation, finances utilities,
+and more in the [documentation](https://requiems.xyz/apis).

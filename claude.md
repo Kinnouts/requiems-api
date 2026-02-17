@@ -1,28 +1,22 @@
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with
-code in this repository.
-
-## Project Overview
+# Project Overview
 
 Requiems API is a production-ready API platform providing unified access to
 multiple enterprise-grade APIs (email validation, text utilities, etc.). Built
 as a multi-language monorepo with:
 
-- **Go 1.23 API** (apps/api) - Internal business logic backend
-- **Rails 8 Dashboard** (apps/dashboard) - Public web UI, user management, admin
+- **Go API** (apps/api) - Internal business logic backend
+- **Rails Dashboard** (apps/dashboard) - Public web UI, user management, admin
   panel
 - **Cloudflare Worker Gateway** (apps/edge-auth) - Global edge auth, rate
   limiting, credit tracking
 
 ## Development Commands
 
-### Full Stack Development (Recommended)
+### Full Stack Development
 
 Start all services with hot reload:
 
 ```bash
-cd infra/docker
 docker compose -f docker-compose.dev.yml up
 ```
 
@@ -33,84 +27,75 @@ Services:
 - PostgreSQL: localhost:5432 (user: `requiem`, password: `requiem`)
 - Redis: localhost:6379
 
-Rebuild after dependency changes:
-
-```bash
-docker compose -f docker-compose.dev.yml up --build
-```
-
 ### Go API (apps/api)
 
-Run locally (requires PostgreSQL):
-
-```bash
-cd apps/api
-go run main.go
-```
+**Note:** Commands assume containers are running. Container: `requiem-dev-api-1`
 
 Run tests:
 
 ```bash
-cd apps/api
-go test ./...
+docker exec requiem-dev-api-1 go test ./...
+```
+
+Run tests with coverage:
+
+```bash
+docker exec requiem-dev-api-1 go test -race -coverprofile=coverage.out ./...
 ```
 
 Run specific test:
 
 ```bash
-cd apps/api
-go test ./internal/email/disposable -v -run TestCheckDisposable
-```
-
-Build:
-
-```bash
-cd apps/api
-go build -o bin/api main.go
-```
-
-Hot reload (via Air):
-
-```bash
-cd apps/api
-air
+docker exec requiem-dev-api-1 go test ./internal/text/advice -v -run TestGetAdvice
 ```
 
 ### Rails Dashboard (apps/dashboard)
 
+**Note:** Commands assume containers are running. Container: `requiem-dev-dashboard-1`
+
 Rails console:
 
 ```bash
-docker compose -f docker-compose.dev.yml exec dashboard rails console
-```
-
-Or locally:
-
-```bash
-cd apps/dashboard
-bin/rails console
+docker exec -it requiem-dev-dashboard-1 rails console
 ```
 
 Run tests:
 
 ```bash
-cd apps/dashboard
-bin/rails test
+docker exec requiem-dev-dashboard-1 bin/rails test
 ```
 
 Run specific test:
 
 ```bash
-cd apps/dashboard
-bin/rails test test/models/user_test.rb
+docker exec requiem-dev-dashboard-1 bin/rails test test/models/user_test.rb
+```
+
+Run security scans:
+
+```bash
+docker exec requiem-dev-dashboard-1 bundle exec brakeman --no-pager
+docker exec requiem-dev-dashboard-1 bundle exec bundler-audit
+docker exec requiem-dev-dashboard-1 bin/importmap audit
+```
+
+Run linting:
+
+```bash
+docker exec requiem-dev-dashboard-1 bundle exec rubocop
 ```
 
 Migrations:
 
 ```bash
-cd apps/dashboard
-bin/rails db:migrate
-bin/rails db:rollback
+docker exec requiem-dev-dashboard-1 bin/rails db:migrate
+docker exec requiem-dev-dashboard-1 bin/rails db:rollback
+```
+
+Generate migration:
+
+```bash
+docker exec requiem-dev-dashboard-1 bin/rails generate migration AddFieldToTable
 ```
 
 ### Cloudflare Worker (apps/edge-auth)
@@ -119,28 +104,14 @@ Dev mode:
 
 ```bash
 cd apps/edge-auth
-npm run dev
-```
-
-Deploy to staging:
-
-```bash
-cd apps/edge-auth
-npm run deploy
-```
-
-Deploy to production:
-
-```bash
-cd apps/edge-auth
-npm run deploy:prod
+bun dev
 ```
 
 Type check:
 
 ```bash
 cd apps/edge-auth
-npm run typecheck
+bun run typecheck
 ```
 
 Run tests:
@@ -162,98 +133,35 @@ bun run format:check         # Check formatting
 bun run format               # Auto-format code
 ```
 
-## Continuous Integration
-
-The monorepo uses a unified GitHub Actions workflow at
-`.github/workflows/ci.yml` that automatically tests and validates code across
-all three applications.
-
-### CI Philosophy
-
-- **Tests are blocking** - PRs cannot merge if tests fail
-- **Security scans are blocking** - Critical for production safety
-- **Linting is advisory** - Shows warnings but doesn't block PRs
-- **Path-based execution** - Only runs jobs for changed apps (efficient)
-
-### What Gets Tested
-
-**Go Backend (`apps/api`):**
-
-- ✅ **Tests** (blocking) - `go test -race -coverprofile=coverage.out ./...`
-- ⚠️ **golangci-lint** (advisory) - 21 linters enabled (errcheck, gosimple,
-  govet, staticcheck, etc.)
-
-**Rails Dashboard (`apps/dashboard`):**
-
-- ✅ **Tests** (blocking) - Minitest suite
-- ✅ **Security Scans** (blocking) - Brakeman, bundler-audit, importmap audit
-- ⚠️ **RuboCop** (advisory) - rails-omakase style guide
-
-**Cloudflare Worker (`apps/edge-auth`):**
-
-- ✅ **TypeScript Check** (blocking) - `tsc --noEmit`
-- ✅ **Tests** (blocking) - Vitest with 29% coverage (71 tests)
-- ⚠️ **Biome Lint** (advisory) - Modern fast linter + formatter
-
 ### Local Testing Before Push
 
-Run these commands locally to catch issues before CI:
+Run these commands locally to catch issues before CI.
+
+**Note:** Containers must be running. Use `docker compose -f docker-compose.dev.yml up` in `infra/docker` first.
 
 ```bash
+
 # Go Backend
-cd apps/api
-go test ./...                    # Tests (must pass)
-golangci-lint run                # Linting (advisory - requires golangci-lint installed)
+docker exec requiem-dev-api-1 go test ./...                    # Tests (must pass)
+docker exec requiem-dev-api-1 golangci-lint run                # Linting (advisory)
 
 # Rails Dashboard
-cd apps/dashboard
-bin/rails test                   # Tests (must pass)
-bundle exec brakeman --no-pager  # Security scan (must pass)
-bundle exec bundler-audit        # Dependency audit (must pass)
-bin/importmap audit              # JS dependency audit (must pass)
-bundle exec rubocop              # Linting (advisory)
+docker exec requiem-dev-dashboard-1 bin/rails test             # Tests (must pass)
+docker exec requiem-dev-dashboard-1 bundle exec brakeman --no-pager  # Security (must pass)
+docker exec requiem-dev-dashboard-1 bundle exec bundler-audit  # Dependency audit (must pass)
+docker exec requiem-dev-dashboard-1 bin/importmap audit        # JS audit (must pass)
+docker exec requiem-dev-dashboard-1 bundle exec rubocop        # Linting (advisory)
+```
 
-# Cloudflare Worker
+For Cloudflare Worker (run locally, not in Docker):
+
+```bash
 cd apps/edge-auth
 bunx vitest run                  # Tests (must pass - 71 tests)
 bun run typecheck                # TypeScript (must pass)
 bun run lint                     # Linting (advisory)
 bun run format:check             # Formatting (advisory)
 ```
-
-### CI Workflow Behavior
-
-The CI automatically detects which apps changed and runs only relevant tests:
-
-- **Change Go files** → Only Go tests and lint run
-- **Change Rails files** → Only Rails tests, security, and lint run
-- **Change Worker files** → Only Worker tests and lint run
-- **Change multiple apps** → All relevant jobs run in parallel
-
-This makes CI fast - typically under 5 minutes for single-app changes.
-
-### Branch Protection
-
-Configure GitHub branch protection to require the **"CI Success"** job for
-merging:
-
-1. Go to Settings → Branches → Branch protection rules
-2. Select `main` branch
-3. Enable "Require status checks to pass before merging"
-4. Select "CI Success" as required check
-5. Enable "Require branches to be up to date before merging"
-
-### CI Configuration Files
-
-**Tool Configurations:**
-
-- `apps/api/.golangci.yml` - Go linter config (21 linters)
-- `apps/edge-auth/vitest.config.ts` - Test framework config
-- `apps/edge-auth/biome.json` - Linter + formatter config
-
-**Workflow:**
-
-- `.github/workflows/ci.yml` - Main CI orchestrator (all apps)
 
 ## Architecture Overview
 
@@ -267,7 +175,6 @@ User → Cloudflare Worker (edge-auth) → Go Backend (api) → PostgreSQL
 ```
 
 1. **Cloudflare Worker** (`apps/edge-auth/src/index.ts`):
-
    - Validates API key from Cloudflare KV
    - Checks rate limits (KV counters)
    - Checks credit usage (D1 SQLite queries)
@@ -276,7 +183,6 @@ User → Cloudflare Worker (edge-auth) → Go Backend (api) → PostgreSQL
    - Returns response with usage headers
 
 2. **Go Backend** (`apps/api/main.go`):
-
    - Receives requests from gateway only
    - Executes business logic
    - Queries PostgreSQL for data
@@ -365,32 +271,6 @@ app/views/
     └── shared/
         └── _footer.html.erb
 ```
-
-**When to extract partials:**
-
-- Page exceeds ~100-150 lines
-- Content is reused across multiple pages
-- Sections have distinct responsibilities
-- Need to test sections independently
-
-**Rendering partials:**
-
-```erb
-<!-- Page-specific partials -->
-<%= render 'partials/contact/info_sections' %>
-<%= render 'partials/contact/contact_form' %>
-
-<!-- Shared partials -->
-<%= render 'partials/shared/footer' %>
-```
-
-**Why this structure:**
-
-- Keeps controller view directories clean (one file per page)
-- Clear separation between views and components
-- Easy to find partials organized by page name
-- Scales well as the application grows
-- Similar to React's component-per-folder structure
 
 ## Database Architecture
 
@@ -489,9 +369,8 @@ The Go backend trusts the Cloudflare Worker gateway completely:
 **Rails migrations** (user data):
 
 ```bash
-cd apps/dashboard
-bin/rails generate migration AddFieldToTable
-bin/rails db:migrate
+docker exec requiem-dev-dashboard-1 bin/rails generate migration AddFieldToTable
+docker exec requiem-dev-dashboard-1 bin/rails db:migrate
 ```
 
 ### Cloudflare Worker Development
@@ -503,33 +382,14 @@ bin/rails db:migrate
 3. KV/D1 bindings configured in `wrangler.toml`
 4. Seed KV with: `bun run scripts/seed-kv.ts`
 
-### Hot Reload
-
-- **Go**: Air watches `.go` files, rebuilds (~2-3s)
-- **Rails**: Native Rails reloader, instant for most changes
-- **Cloudflare Worker**: Wrangler dev mode with instant reload
-
-### Running Single Tests
-
-Go:
-
-```bash
-cd apps/api
-go test ./internal/text/advice -v -run TestGetAdvice
-```
-
-Rails:
-
-```bash
-cd apps/dashboard
-bin/rails test test/models/api_key_test.rb:15  # Line number
-```
-
 ## Common Development Tasks
+
+**Note:** These commands manage the Docker containers. Run from `infra/docker` directory.
 
 View service logs:
 
 ```bash
+cd infra/docker
 docker compose -f docker-compose.dev.yml logs -f api
 docker compose -f docker-compose.dev.yml logs -f dashboard
 ```
@@ -537,8 +397,17 @@ docker compose -f docker-compose.dev.yml logs -f dashboard
 Reset database:
 
 ```bash
+cd infra/docker
 docker compose -f docker-compose.dev.yml down -v
 docker compose -f docker-compose.dev.yml up
+```
+
+Restart a specific service:
+
+```bash
+cd infra/docker
+docker compose -f docker-compose.dev.yml restart api
+docker compose -f docker-compose.dev.yml restart dashboard
 ```
 
 Connect to database:
