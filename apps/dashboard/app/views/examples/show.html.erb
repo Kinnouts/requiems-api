@@ -29,7 +29,7 @@
             <h1 class="text-3xl font-bold text-gray-900">
               <%= @example["title"] %>
             </h1>
-            <%= render "shared/badge",
+            <%= render "partials/shared/badge",
               text: @example["difficulty"],
               variant: case @example["difficulty"]
                 when "Beginner" then "success"

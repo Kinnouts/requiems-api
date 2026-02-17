@@ -128,7 +128,7 @@
                     else "default"
                   end
                 %>
-                <%= render "shared/badge", text: (report.report_type || "Unknown").titleize, variant: type_variant, size: "xs" %>
+                <%= render "partials/shared/badge", text: (report.report_type || "Unknown").titleize, variant: type_variant, size: "xs" %>
               </td>
               <td class="px-6 py-4 max-w-xs truncate text-sm text-gray-600">
                 <%= report.description.present? ? truncate(report.description, length: 60) : "—" %>
@@ -145,7 +145,7 @@
                     else "default"
                   end
                 %>
-                <%= render "shared/badge", text: (report.status || "Pending").titleize, variant: status_variant, size: "xs" %>
+                <%= render "partials/shared/badge", text: (report.status || "Pending").titleize, variant: status_variant, size: "xs" %>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <%= link_to "View", admin_abuse_report_path(report), class: "text-blue-600 hover:text-blue-700" %>

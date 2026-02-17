@@ -5,7 +5,7 @@
     <div class="bg-white rounded-lg shadow-lg p-8 md:p-12">
       <div class="flex items-center justify-between mb-6">
         <h1 class="text-4xl font-bold text-gray-900">Changelog</h1>
-        <%= render "shared/badge", text: "v0.9", variant: "info", size: "md" %>
+        <%= render "partials/shared/badge", text: "v0.9", variant: "info", size: "md" %>
       </div>
 
       <p class="text-xl text-gray-600 mb-12">
@@ -17,7 +17,7 @@
         <div class="border-l-4 border-blue-600 pl-6">
           <div class="flex items-center mb-2">
             <h2 class="text-2xl font-bold text-gray-900">v0.9.0</h2>
-            <%= render "shared/badge", text: "Latest", variant: "success", size: "sm", class_names: "ml-3" %>
+            <%= render "partials/shared/badge", text: "Latest", variant: "success", size: "sm", class_names: "ml-3" %>
           </div>
           <p class="text-sm text-gray-600 mb-4"><%= Time.current.strftime("%B %d, %Y") %></p>
 
@@ -50,7 +50,7 @@
         <div class="border-l-4 border-gray-300 pl-6 opacity-75">
           <div class="flex items-center mb-2">
             <h2 class="text-2xl font-bold text-gray-900">v1.0.0</h2>
-            <%= render "shared/badge", text: "Coming Soon", variant: "warning", size: "sm", class_names: "ml-3" %>
+            <%= render "partials/shared/badge", text: "Coming Soon", variant: "warning", size: "sm", class_names: "ml-3" %>
           </div>
           <p class="text-sm text-gray-600 mb-4">Planned Release: Q2 2026</p>
 

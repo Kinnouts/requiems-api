@@ -70,7 +70,7 @@
             <div class="flex-1">
               <div class="flex items-center">
                 <span class="font-medium text-gray-900">Live</span>
-                <%= render "shared/badge", text: "Production", variant: "primary", size: "xs", class_names: "ml-2" %>
+                <%= render "partials/shared/badge", text: "Production", variant: "primary", size: "xs", class_names: "ml-2" %>
               </div>
               <p class="text-sm text-gray-600 mt-1">Use for production environments. All requests will be counted against your quota.</p>
             </div>
@@ -81,7 +81,7 @@
             <div class="flex-1">
               <div class="flex items-center">
                 <span class="font-medium text-gray-900">Test</span>
-                <%= render "shared/badge", text: "Development", variant: "default", size: "xs", class_names: "ml-2" %>
+                <%= render "partials/shared/badge", text: "Development", variant: "default", size: "xs", class_names: "ml-2" %>
               </div>
               <p class="text-sm text-gray-600 mt-1">Use for development and testing. Limited functionality, does not count against your quota.</p>
             </div>

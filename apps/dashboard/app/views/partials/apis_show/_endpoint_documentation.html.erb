@@ -37,7 +37,7 @@
 
   <!-- Method and URL -->
   <div class="bg-gray-50 rounded-lg p-4 mb-6 flex items-center space-x-3">
-    <%= render "shared/badge", text: endpoint_method, variant: endpoint_method_variant, size: "md" %>
+    <%= render "partials/shared/badge", text: endpoint_method, variant: endpoint_method_variant, size: "md" %>
     <code class="text-sm font-mono text-gray-800 flex-1"><%= endpoint_full_url %></code>
     <button type="button"
             data-controller="copy"
@@ -72,9 +72,9 @@
                 <td class="px-4 py-3 text-sm text-gray-600"><code class="text-xs bg-gray-100 px-2 py-1 rounded"><%= param["type"] %></code></td>
                 <td class="px-4 py-3 text-sm">
                   <% if param["required"] %>
-                    <%= render "shared/badge", text: "Required", variant: "danger", size: "xs" %>
+                    <%= render "partials/shared/badge", text: "Required", variant: "danger", size: "xs" %>
                   <% else %>
-                    <%= render "shared/badge", text: "Optional", variant: "default", size: "xs" %>
+                    <%= render "partials/shared/badge", text: "Optional", variant: "default", size: "xs" %>
                   <% end %>
                 </td>
                 <td class="px-4 py-3 text-sm text-gray-700"><%= param["description"] %></td>
@@ -96,7 +96,7 @@
         </svg>
         Try it out
       </h4>
-      <%= render "shared/badge", text: "Live Demo", variant: "success", size: "sm" %>
+      <%= render "partials/shared/badge", text: "Live Demo", variant: "success", size: "sm" %>
     </div>
 
     <%= render "partials/apis_show/playground", endpoint: endpoint_data, full_url: endpoint_full_url, index: endpoint_index %>

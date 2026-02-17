@@ -176,7 +176,7 @@
                       else "default"
                     end
                   %>
-                  <%= render "shared/badge", text: status_code.to_s, variant: status_variant, size: "sm" %>
+                  <%= render "partials/shared/badge", text: status_code.to_s, variant: status_variant, size: "sm" %>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                   <%= status_descriptions[status_code] || "Unknown" %>
@@ -221,9 +221,9 @@
           </div>
         </div>
         <% if @failed_auth_attempts > 100 %>
-          <%= render "shared/badge", text: "High", variant: "danger", size: "sm" %>
+          <%= render "partials/shared/badge", text: "High", variant: "danger", size: "sm" %>
         <% else %>
-          <%= render "shared/badge", text: "Normal", variant: "success", size: "sm" %>
+          <%= render "partials/shared/badge", text: "Normal", variant: "success", size: "sm" %>
         <% end %>
       </div>
 
@@ -240,7 +240,7 @@
             <p class="text-2xl font-bold text-gray-900"><%= number_with_delimiter(@rate_limit_hits) %></p>
           </div>
         </div>
-        <%= render "shared/badge", text: "Coming Soon", variant: "default", size: "sm" %>
+        <%= render "partials/shared/badge", text: "Coming Soon", variant: "default", size: "sm" %>
       </div>
 
       <!-- Security Notice -->
