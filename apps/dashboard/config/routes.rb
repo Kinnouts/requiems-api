@@ -26,19 +26,22 @@ Rails.application.routes.draw do
       end
     end
 
-    resource :usage, only: [:show], controller: 'usage'
-    get 'usage/by_endpoint', to: 'usage#by_endpoint', as: :by_endpoint_usage
-    get 'usage/by_date', to: 'usage#by_date', as: :by_date_usage
-    get 'usage/export', to: 'usage#export', as: :export_usage
+    resource :usage, only: [ :show ], controller: "usage" do
+      collection do
+        get :by_endpoint
+        get :by_date
+        get :export
+      end
+    end
 
-    resource :billing, only: [:show, :update], controller: 'billing'
-    post 'billing/checkout', to: 'billing#checkout', as: :checkout_billing
-    post 'billing/portal', to: 'billing#portal', as: :portal_billing
-    delete 'billing/cancel_subscription', to: 'billing#cancel_subscription', as: :cancel_subscription_billing
+    resource :billing, only: [ :show, :update ], controller: "billing"
+    post "billing/checkout", to: "billing#checkout", as: :checkout_billing
+    post "billing/portal", to: "billing#portal", as: :portal_billing
+    delete "billing/cancel_subscription", to: "billing#cancel_subscription", as: :cancel_subscription_billing
 
-    resources :invoices, only: [:index, :show]
+    resources :invoices, only: [ :index, :show ]
 
-    resource :settings, only: [:show, :update] do
+    resource :settings, only: [ :show, :update ] do
       member do
         delete :account # Delete account
       end
@@ -60,10 +63,10 @@ Rails.application.routes.draw do
           post :remove_admin
         end
 
-        resources :credit_adjustments, only: [:new, :create]
+        resources :credit_adjustments, only: [ :new, :create ]
       end
 
-      resources :api_keys, only: [:index, :show] do
+      resources :api_keys, only: [ :index, :show ] do
         member do
           delete :revoke
         end
@@ -117,8 +120,8 @@ Rails.application.routes.draw do
   post "talk_to_sales", to: "sales_inquiries#create"
 
   get "examples", to: "examples#index"
-  resources :apis, only: [:index, :show]
-  resources :examples, only: [:show]
+  resources :apis, only: [ :index, :show ]
+  resources :examples, only: [ :show ]
 
   # API Playground Proxy
   post "api/proxy", to: "api_proxy#create"

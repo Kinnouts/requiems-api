@@ -3,7 +3,7 @@
 class Admin::UsersController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin!
-  before_action :set_user, only: [:show, :suspend, :unsuspend, :ban, :make_admin, :remove_admin]
+  before_action :set_user, only: [ :show, :suspend, :unsuspend, :ban, :make_admin, :remove_admin ]
   layout "admin"
 
   def index
@@ -34,20 +34,20 @@ class Admin::UsersController < ApplicationController
     when "admin"
       @users = @users.where(admin: true)
     when "suspended"
-      @users = @users.where(suspended: true)
+      @users = @users.where(status: "suspended")
     when "active"
-      @users = @users.where(suspended: false)
+      @users = @users.where(status: "active")
     end
 
     # Sort
     @users = case params[:sort]
-             when "oldest"
+    when "oldest"
                @users.order(created_at: :asc)
-             when "name"
+    when "name"
                @users.order(name: :asc)
-             else # newest (default)
+    else # newest (default)
                @users.order(created_at: :desc)
-             end
+    end
 
     # Paginate (using pagy gem)
     @pagy, @users = pagy(@users, items: 20)
@@ -60,7 +60,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def suspend
-    if @user.update(suspended: true, suspended_at: Time.current)
+    if @user.update(status: "suspended", active: false)
       # Revoke all API keys
       @user.api_keys.active_keys.each do |key|
         key.revoke!(reason: "User suspended by admin")
@@ -73,7 +73,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def unsuspend
-    if @user.update(suspended: false, suspended_at: nil)
+    if @user.update(status: "active", active: true)
       redirect_to admin_user_path(@user), notice: "User unsuspended successfully."
     else
       redirect_to admin_user_path(@user), alert: "Failed to unsuspend user."
@@ -81,7 +81,7 @@ class Admin::UsersController < ApplicationController
   end
 
   def ban
-    if @user.update(suspended: true, suspended_at: Time.current, banned: true, banned_at: Time.current)
+    if @user.update(status: "banned", banned_at: Time.current, active: false)
       # Revoke all API keys
       @user.api_keys.each do |key|
         key.revoke!(reason: "User banned by admin")

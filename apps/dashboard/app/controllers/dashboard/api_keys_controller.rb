@@ -2,7 +2,7 @@
 
 class Dashboard::ApiKeysController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_api_key, only: [:regenerate, :revoke]
+  before_action :set_api_key, only: [ :regenerate, :revoke ]
   layout "dashboard"
 
   def index

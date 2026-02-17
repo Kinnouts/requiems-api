@@ -31,18 +31,18 @@
         <div class="lg:grid lg:grid-cols-12 lg:gap-8">
           <!-- Sidebar -->
           <aside class="lg:col-span-3">
-            <%= render "admin/sidebar" %>
+            <%= render "partials/admin/sidebar" %>
           </aside>
 
           <!-- Main Content -->
           <main class="lg:col-span-9 mt-8 lg:mt-0">
             <!-- Flash Messages -->
             <% if notice %>
-              <%= render "shared/alert", message: notice, variant: "success", dismissible: true, class_names: "mb-6" %>
+              <%= render "partials/shared/alert", message: notice, variant: "success", dismissible: true, class_names: "mb-6" %>
             <% end %>
 
             <% if alert %>
-              <%= render "shared/alert", message: alert, variant: "error", dismissible: true, class_names: "mb-6" %>
+              <%= render "partials/shared/alert", message: alert, variant: "error", dismissible: true, class_names: "mb-6" %>
             <% end %>
 
             <%= yield %>

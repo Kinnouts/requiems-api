@@ -22,11 +22,11 @@
     <div class="mb-6">
       <h3 class="text-xl font-bold text-gray-900 mb-2"><%= @api_key.name %></h3>
       <div class="flex items-center space-x-3">
-        <%= render "shared/badge",
+        <%= render "partials/shared/badge",
           text: @api_key.environment.titleize,
           variant: @api_key.environment == "live" ? "primary" : "default",
           size: "sm" %>
-        <%= render "shared/badge", text: "Active", variant: "success", size: "sm" %>
+        <%= render "partials/shared/badge", text: "Active", variant: "success", size: "sm" %>
       </div>
     </div>
 

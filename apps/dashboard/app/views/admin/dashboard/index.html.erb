@@ -132,7 +132,7 @@
                   <% end %>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <%= render "shared/badge",
+                  <%= render "partials/shared/badge",
                     text: (user.subscription&.plan_name || "free").titleize,
                     variant: user.subscription&.plan_name == "free" ? "default" : "primary",
                     size: "xs" %>
@@ -142,9 +142,9 @@
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
                   <% if user.admin? %>
-                    <%= render "shared/badge", text: "Admin", variant: "danger", size: "xs" %>
+                    <%= render "partials/shared/badge", text: "Admin", variant: "danger", size: "xs" %>
                   <% else %>
-                    <%= render "shared/badge", text: "User", variant: "success", size: "xs" %>
+                    <%= render "partials/shared/badge", text: "User", variant: "success", size: "xs" %>
                   <% end %>
                 </td>
               </tr>
@@ -177,7 +177,7 @@
                 <p class="text-xs text-gray-500"><%= api_key.user.email %></p>
               </div>
               <div class="ml-4 flex-shrink-0 flex items-center space-x-2">
-                <%= render "shared/badge",
+                <%= render "partials/shared/badge",
                   text: api_key.environment.titleize,
                   variant: api_key.environment == "live" ? "primary" : "default",
                   size: "xs" %>

@@ -37,7 +37,4 @@ Thumbs.db
 apps/edge-auth/node_modules/
 apps/edge-auth/.wrangler/
 
-# Old backup (can remove after confirming new structure works)
-_old_internal/
-apps/api/tmp/main
-apps/api/tmp
+.playwright-mcp/

@@ -101,23 +101,23 @@ class ApiProxyController < ApplicationController
 
     # Create request based on method
     request = case method
-              when "GET"
+    when "GET"
                 # For GET, add params to query string
                 uri.query = URI.encode_www_form(request_params) if request_params.any?
                 Net::HTTP::Get.new(uri)
-              when "POST"
+    when "POST"
                 req = Net::HTTP::Post.new(uri)
                 req.body = request_params.to_json
                 req
-              when "PUT"
+    when "PUT"
                 req = Net::HTTP::Put.new(uri)
                 req.body = request_params.to_json
                 req
-              when "DELETE"
+    when "DELETE"
                 Net::HTTP::Delete.new(uri)
-              else
+    else
                 raise "Unsupported HTTP method: #{method}"
-              end
+    end
 
     # Set headers
     headers.each { |key, value| request[key] = value }

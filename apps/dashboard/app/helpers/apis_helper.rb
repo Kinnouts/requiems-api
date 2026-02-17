@@ -72,4 +72,21 @@ module ApisHelper
     @api_docs ||= {}
     @api_docs[api_id] ||= YAML.load_file(doc_path)
   end
+
+  # Get popular APIs (for "Most Popular" section)
+  def popular_apis
+    live_apis.select { |api| api["popular"] == true }
+  end
+
+  # Group live APIs by category (returns hash)
+  def apis_grouped_by_category
+    live_apis.group_by { |api| api["category"] }
+  end
+
+  # Get categories that have live APIs
+  def categories_with_apis
+    api_categories.select do |category|
+      !category["coming_soon"] && apis_by_category(category["id"]).any?
+    end
+  end
 end

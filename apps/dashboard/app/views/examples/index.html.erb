@@ -31,7 +31,7 @@
     <% if @examples.any? %>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <% @examples.each do |example| %>
-          <%= render "examples/example_card", example: example %>
+          <%= render "partials/examples_index/example_card", example: example %>
         <% end %>
       </div>
     <% else %>

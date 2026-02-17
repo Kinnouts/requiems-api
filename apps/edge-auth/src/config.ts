@@ -33,8 +33,8 @@ export const PLANS: Record<PlanName, PlanConfig> = {
     ratePerMinute: 50000,
   },
   enterprise: {
-    requestLimit: Infinity,
-    ratePerMinute: Infinity,
+    requestLimit: Number.POSITIVE_INFINITY,
+    ratePerMinute: Number.POSITIVE_INFINITY,
   },
 };
 
@@ -94,7 +94,7 @@ export function getRequestMultiplier(method: string, pathname: string): number {
     return exactMatch;
   }
 
-   // Prefix matching for dynamic routes (e.g., /v1/finance/stocks/:symbol)
+  // Prefix matching for dynamic routes (e.g., /v1/finance/stocks/:symbol)
   for (const [routeMethod, routePath, multiplier] of ENDPOINT_PREFIXES) {
     if (method === routeMethod && pathname.startsWith(routePath)) {
       return multiplier;

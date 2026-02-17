@@ -10,7 +10,7 @@ func NewService() *Service {
 	return &Service{}
 }
 
-func (s *Service) Generate(paragraphs int, sentences int) Lorem {
+func (s *Service) Generate(paragraphs, sentences int) Lorem {
 	lorem := lorelai.ClassicGenerate(paragraphs, sentences)
 	return Lorem{
 		Text:       lorem.Text,

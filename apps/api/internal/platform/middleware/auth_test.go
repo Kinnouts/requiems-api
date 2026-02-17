@@ -19,7 +19,7 @@ func TestBackendSecretAuth(t *testing.T) {
 		middleware := BackendSecretAuth(validSecret)
 		handler := middleware(testHandler)
 
-		req := httptest.NewRequest(http.MethodGet, "/test", nil)
+		req := httptest.NewRequest(http.MethodGet, "/test", http.NoBody)
 		req.Header.Set("X-Backend-Secret", validSecret)
 		w := httptest.NewRecorder()
 
@@ -34,7 +34,7 @@ func TestBackendSecretAuth(t *testing.T) {
 		middleware := BackendSecretAuth(validSecret)
 		handler := middleware(testHandler)
 
-		req := httptest.NewRequest(http.MethodGet, "/test", nil)
+		req := httptest.NewRequest(http.MethodGet, "/test", http.NoBody)
 		w := httptest.NewRecorder()
 
 		handler.ServeHTTP(w, req)
@@ -48,7 +48,7 @@ func TestBackendSecretAuth(t *testing.T) {
 		middleware := BackendSecretAuth(validSecret)
 		handler := middleware(testHandler)
 
-		req := httptest.NewRequest(http.MethodGet, "/test", nil)
+		req := httptest.NewRequest(http.MethodGet, "/test", http.NoBody)
 		req.Header.Set("X-Backend-Secret", "wrong_secret")
 		w := httptest.NewRecorder()
 

@@ -12,13 +12,13 @@
           <%= current_user.email %>
         </p>
         <% if current_user.subscription %>
-          <%= render "shared/badge",
+          <%= render "partials/shared/badge",
             text: current_user.subscription.plan_name.titleize,
             variant: current_user.subscription.plan_name == "free" ? "default" : "primary",
             size: "xs",
             class_names: "mt-1" %>
         <% else %>
-          <%= render "shared/badge", text: "Free", variant: "default", size: "xs", class_names: "mt-1" %>
+          <%= render "partials/shared/badge", text: "Free", variant: "default", size: "xs", class_names: "mt-1" %>
         <% end %>
       </div>
     </div>
@@ -27,31 +27,31 @@
   <!-- Navigation -->
   <nav class="p-4">
     <ul class="space-y-1">
-      <%= render "dashboard/sidebar_link",
+      <%= render "partials/dashboard/sidebar_link",
         icon: "chart-bar",
         text: "Dashboard",
         path: dashboard_root_path,
         active: controller_name == "overview" %>
 
-      <%= render "dashboard/sidebar_link",
+      <%= render "partials/dashboard/sidebar_link",
         icon: "key",
         text: "API Keys",
         path: dashboard_api_keys_path,
         active: controller_name == "api_keys" %>
 
-      <%= render "dashboard/sidebar_link",
+      <%= render "partials/dashboard/sidebar_link",
         icon: "chart-line",
         text: "Usage & Analytics",
         path: dashboard_usage_path,
         active: controller_name == "usage" %>
 
-      <%= render "dashboard/sidebar_link",
+      <%= render "partials/dashboard/sidebar_link",
         icon: "credit-card",
         text: "Billing",
         path: dashboard_billing_path,
         active: controller_name == "billing" %>
 
-      <%= render "dashboard/sidebar_link",
+      <%= render "partials/dashboard/sidebar_link",
         icon: "cog",
         text: "Settings",
         path: dashboard_settings_path,

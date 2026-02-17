@@ -19,12 +19,7 @@ interface LogEntry {
   [key: string]: unknown;
 }
 
-function formatLog(
-  level: string,
-  rayId: string,
-  msg: string,
-  data?: object,
-): string {
+function formatLog(level: string, rayId: string, msg: string, data?: object): string {
   const entry: LogEntry = { level, rayId, msg, ...data };
   return JSON.stringify(entry);
 }
@@ -35,8 +30,7 @@ function formatLog(
  * @param request - The incoming request (uses cf-ray header as trace ID)
  */
 export function createLogger(request: Request): Logger {
-  const rayId = request.headers.get("cf-ray") ??
-    crypto.randomUUID().slice(0, 16);
+  const rayId = request.headers.get("cf-ray") ?? crypto.randomUUID().slice(0, 16);
 
   return {
     info: (msg, data) => console.log(formatLog("info", rayId, msg, data)),

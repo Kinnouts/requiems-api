@@ -120,15 +120,15 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <% if api_key.revoked_at.present? %>
-                  <%= render "shared/badge", text: "Revoked", variant: "danger", size: "sm" %>
+                  <%= render "partials/shared/badge", text: "Revoked", variant: "danger", size: "sm" %>
                 <% elsif api_key.active? %>
-                  <%= render "shared/badge", text: "Active", variant: "success", size: "sm" %>
+                  <%= render "partials/shared/badge", text: "Active", variant: "success", size: "sm" %>
                 <% else %>
-                  <%= render "shared/badge", text: "Inactive", variant: "default", size: "sm" %>
+                  <%= render "partials/shared/badge", text: "Inactive", variant: "default", size: "sm" %>
                 <% end %>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <%= render "shared/badge",
+                <%= render "partials/shared/badge",
                   text: api_key.environment.titleize,
                   variant: api_key.environment == "live" ? "primary" : "default",
                   size: "sm" %>

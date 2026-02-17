@@ -12,9 +12,12 @@ class D1SyncService
   class InvalidResponseError < Error; end
 
   WORKER_URL = ENV.fetch("CLOUDFLARE_WORKER_URL", "https://auth.requiems.xyz")
-  BACKEND_SECRET = ENV.fetch("BACKEND_SECRET")
   TIMEOUT = 30 # seconds
   MAX_RETRIES = 3
+
+  def self.backend_secret
+    ENV.fetch("BACKEND_SECRET")
+  end
 
   # Fetch usage data from Cloudflare D1
   #
@@ -73,7 +76,7 @@ class D1SyncService
     end.compact
 
     # Bulk insert using ActiveRecord
-    UsageLog.insert_all(values, unique_by: [:api_key_id, :used_at, :endpoint])
+    UsageLog.insert_all(values, unique_by: [ :api_key_id, :used_at, :endpoint ])
 
     values.size
   end
@@ -107,13 +110,13 @@ class D1SyncService
         max: MAX_RETRIES,
         interval: 0.5,
         backoff_factor: 2,
-        retry_statuses: [500, 502, 503, 504],
-        methods: [:get]
+        retry_statuses: [ 500, 502, 503, 504 ],
+        methods: [ :get ]
       }
       conn.response :json, content_type: /\bjson$/
       conn.adapter Faraday.default_adapter
       conn.options.timeout = TIMEOUT
-      conn.headers["X-Backend-Secret"] = BACKEND_SECRET
+      conn.headers["X-Backend-Secret"] = self.class.backend_secret
       conn.headers["Content-Type"] = "application/json"
     end
   end

@@ -1,0 +1,30 @@
+<%
+  section_category = local_assigns.fetch(:category, {})
+  section_apis = local_assigns.fetch(:apis, [])
+  category_id = section_category["id"]
+  category_name = section_category["name"]
+  category_icon = section_category["icon"]
+  category_description = section_category["description"]
+%>
+
+<% if section_apis.any? %>
+  <section id="category-<%= category_id %>" class="mb-10 scroll-mt-6" data-api-search-target="section">
+    <!-- Section Header -->
+    <div class="mb-4">
+      <h2 class="text-xl font-bold text-gray-900 flex items-center">
+        <span class="mr-2"><%= category_icon %></span>
+        <%= category_name %>
+      </h2>
+      <p class="mt-1 text-sm text-gray-600">
+        <%= category_description %>
+      </p>
+    </div>
+
+    <!-- API Cards Grid - 5 columns on larger screens -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3" data-api-search-target="grid">
+      <% section_apis.each do |api| %>
+        <%= render 'partials/apis_index/api_card', api: api %>
+      <% end %>
+    </div>
+  </section>
+<% end %>

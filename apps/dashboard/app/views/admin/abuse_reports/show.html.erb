@@ -23,7 +23,7 @@
           else "default"
         end
       %>
-      <%= render "shared/badge", text: (@abuse_report.status || "Pending").titleize, variant: status_variant, size: "sm" %>
+      <%= render "partials/shared/badge", text: (@abuse_report.status || "Pending").titleize, variant: status_variant, size: "sm" %>
     </div>
   </div>
 </div>
@@ -48,7 +48,7 @@
               else "default"
             end
           %>
-          <%= render "shared/badge", text: (@abuse_report.report_type || "Unknown").titleize, variant: type_variant, size: "sm" %>
+          <%= render "partials/shared/badge", text: (@abuse_report.report_type || "Unknown").titleize, variant: type_variant, size: "sm" %>
         </div>
 
         <!-- Description -->
@@ -108,7 +108,7 @@
         </div>
         <div>
           <label class="block text-sm font-medium text-gray-500 mb-1">Environment</label>
-          <%= render "shared/badge",
+          <%= render "partials/shared/badge",
             text: @api_key.environment.titleize,
             variant: @api_key.environment == "live" ? "primary" : "default",
             size: "xs" %>
@@ -116,9 +116,9 @@
         <div>
           <label class="block text-sm font-medium text-gray-500 mb-1">Status</label>
           <% if @api_key.revoked_at.present? %>
-            <%= render "shared/badge", text: "Revoked", variant: "danger", size: "xs" %>
+            <%= render "partials/shared/badge", text: "Revoked", variant: "danger", size: "xs" %>
           <% else %>
-            <%= render "shared/badge", text: "Active", variant: "success", size: "xs" %>
+            <%= render "partials/shared/badge", text: "Active", variant: "success", size: "xs" %>
           <% end %>
         </div>
       </div>
@@ -174,20 +174,20 @@
     <!-- User Status -->
     <div class="flex items-center space-x-2">
       <% if @user.admin? %>
-        <%= render "shared/badge", text: "Admin", variant: "danger", size: "xs" %>
+        <%= render "partials/shared/badge", text: "Admin", variant: "danger", size: "xs" %>
       <% elsif @user.suspended? %>
-        <%= render "shared/badge", text: "Suspended", variant: "warning", size: "xs" %>
+        <%= render "partials/shared/badge", text: "Suspended", variant: "warning", size: "xs" %>
       <% else %>
-        <%= render "shared/badge", text: "Active", variant: "success", size: "xs" %>
+        <%= render "partials/shared/badge", text: "Active", variant: "success", size: "xs" %>
       <% end %>
 
       <% if @user.subscription.present? %>
-        <%= render "shared/badge",
+        <%= render "partials/shared/badge",
           text: @user.subscription.plan_name.titleize,
           variant: @user.subscription.plan_name == "free" ? "default" : "primary",
           size: "xs" %>
       <% else %>
-        <%= render "shared/badge", text: "Free Plan", variant: "default", size: "xs" %>
+        <%= render "partials/shared/badge", text: "Free Plan", variant: "default", size: "xs" %>
       <% end %>
     </div>
   </div>
@@ -221,7 +221,7 @@
                     else "default"
                   end
                 %>
-                <%= render "shared/badge", text: (report.report_type || "Unknown").titleize, variant: type_variant, size: "xs" %>
+                <%= render "partials/shared/badge", text: (report.report_type || "Unknown").titleize, variant: type_variant, size: "xs" %>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                 <%= time_ago_in_words(report.created_at) %> ago
@@ -235,7 +235,7 @@
                     else "default"
                   end
                 %>
-                <%= render "shared/badge", text: (report.status || "Pending").titleize, variant: status_variant, size: "xs" %>
+                <%= render "partials/shared/badge", text: (report.status || "Pending").titleize, variant: status_variant, size: "xs" %>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                 <%= link_to "View", admin_abuse_report_path(report), class: "text-blue-600 hover:text-blue-700" %>

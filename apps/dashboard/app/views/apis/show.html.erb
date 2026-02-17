@@ -30,7 +30,7 @@
             <h1 class="text-3xl font-bold text-gray-900">
               <%= @documentation["api_name"] %>
             </h1>
-            <%= render "shared/badge", text: api_status_text(@api["status"]), variant: api_status_variant(@api["status"]) %>
+            <%= render "partials/shared/badge", text: api_status_text(@api["status"]), variant: api_status_variant(@api["status"]) %>
           </div>
           <p class="text-lg text-gray-600 max-w-3xl">
             <%= @documentation["description"] %>
@@ -134,7 +134,7 @@
             <h2 class="text-2xl font-bold text-gray-900 mb-6">API Endpoints</h2>
 
             <% @documentation["endpoints"]&.each_with_index do |endpoint, index| %>
-              <%= render "apis/endpoint_documentation", endpoint: endpoint, index: index, base_url: @documentation["base_url"] %>
+              <%= render "partials/apis_show/endpoint_documentation", endpoint: endpoint, index: index, base_url: @documentation["base_url"] %>
             <% end %>
           </div>
 

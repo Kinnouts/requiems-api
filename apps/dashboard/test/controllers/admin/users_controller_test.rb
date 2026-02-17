@@ -2,18 +2,12 @@ require "test_helper"
 
 class Admin::UsersControllerTest < ActionDispatch::IntegrationTest
   def setup
-    @admin = User.create!(
+    @admin = create_user(
       email: "admin@example.com",
-      password: "password123",
-      password_confirmation: "password123",
       admin: true
     )
 
-    @regular_user = User.create!(
-      email: "user@example.com",
-      password: "password123",
-      password_confirmation: "password123"
-    )
+    @regular_user = create_user(email: "user@example.com")
 
     sign_in @admin
   end
@@ -24,8 +18,8 @@ class Admin::UsersControllerTest < ActionDispatch::IntegrationTest
 
     get admin_users_path
 
-    assert_redirected_to root_path
-    assert_equal "Access denied. Admin privileges required.", flash[:alert]
+    # Route constraint returns 404 for non-admin users
+    assert_response :not_found
   end
 
   test "index shows all users" do
@@ -45,10 +39,10 @@ class Admin::UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "index filters by plan" do
-    subscription = Subscription.create!(
+    Subscription.create!(
       user: @regular_user,
       plan_name: "developer",
-      billing_cycle: "monthly"
+      status: "active"
     )
 
     get admin_users_path, params: { plan: "developer" }
@@ -77,8 +71,6 @@ class Admin::UsersControllerTest < ActionDispatch::IntegrationTest
   test "suspend suspends user and revokes api keys" do
     api_key = @regular_user.api_keys.create!(
       name: "Test Key",
-      key: "rq_test_" + SecureRandom.hex(32),
-      prefix: "rq_test_abc123",
       environment: "test"
     )
 
@@ -86,7 +78,6 @@ class Admin::UsersControllerTest < ActionDispatch::IntegrationTest
 
     @regular_user.reload
     assert @regular_user.suspended?
-    assert_not_nil @regular_user.suspended_at
 
     api_key.reload
     assert_not_nil api_key.revoked_at
@@ -97,13 +88,12 @@ class Admin::UsersControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "unsuspend removes suspension" do
-    @regular_user.update(suspended: true, suspended_at: Time.current)
+    @regular_user.update(status: "suspended")
 
     post unsuspend_admin_user_path(@regular_user)
 
     @regular_user.reload
     assert_not @regular_user.suspended?
-    assert_nil @regular_user.suspended_at
 
     assert_redirected_to admin_user_path(@regular_user)
     assert_match /unsuspended successfully/i, flash[:notice]
@@ -113,13 +103,11 @@ class Admin::UsersControllerTest < ActionDispatch::IntegrationTest
     subscription = Subscription.create!(
       user: @regular_user,
       plan_name: "developer",
-      billing_cycle: "monthly"
+      status: "active"
     )
 
     api_key = @regular_user.api_keys.create!(
       name: "Test Key",
-      key: "rq_test_" + SecureRandom.hex(32),
-      prefix: "rq_test_abc123",
       environment: "test"
     )
 
@@ -127,7 +115,6 @@ class Admin::UsersControllerTest < ActionDispatch::IntegrationTest
 
     @regular_user.reload
     assert @regular_user.banned?
-    assert @regular_user.suspended?
     assert_not_nil @regular_user.banned_at
 
     api_key.reload
@@ -180,7 +167,7 @@ class Admin::UsersControllerTest < ActionDispatch::IntegrationTest
 
     post suspend_admin_user_path(@regular_user)
 
-    assert_redirected_to root_path
-    assert_equal "Access denied. Admin privileges required.", flash[:alert]
+    # Route constraint returns 404 for non-admin users
+    assert_response :not_found
   end
 end

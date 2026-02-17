@@ -1,0 +1,32 @@
+<%
+  card_api = local_assigns.fetch(:api, {})
+  card_api_name = card_api["name"]
+  card_api_description = card_api["description"]
+  card_api_tags = card_api["tags"] || []
+  card_api_doc_url = card_api["documentation_url"]
+%>
+
+<a href="<%= card_api_doc_url %>"
+   class="block bg-white rounded-lg hover:shadow-md transition-shadow border border-gray-200 p-3 group"
+   data-api-search-target="card"
+   data-api-name="<%= card_api_name.downcase %>"
+   data-api-description="<%= card_api_description.downcase %>"
+   data-api-tags="<%= card_api_tags.map(&:downcase).join(' ') %>">
+
+  <!-- Live Demo Badge -->
+  <div class="mb-2">
+    <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 text-green-800">
+      Live Demo
+    </span>
+  </div>
+
+  <!-- API Name -->
+  <h3 class="text-sm font-semibold text-gray-900 mb-1 group-hover:text-blue-600 transition-colors">
+    <%= card_api_name %>
+  </h3>
+
+  <!-- Description -->
+  <p class="text-xs text-gray-600 line-clamp-2 leading-relaxed">
+    <%= card_api_description %>
+  </p>
+</a>

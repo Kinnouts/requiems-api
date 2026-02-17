@@ -9,7 +9,7 @@ class ApiKey < ApplicationRecord
   # Validations
   validates :key_prefix, presence: true, uniqueness: true
   validates :key_hash, presence: true
-  validates :name, length: { maximum: 100 }
+  validates :name, presence: true, length: { maximum: 100 }
   validates :environment, inclusion: { in: %w[test live] }, allow_nil: true
 
   # Scopes
@@ -18,7 +18,7 @@ class ApiKey < ApplicationRecord
   scope :for_environment, ->(env) { where(environment: env) }
 
   # Callbacks
-  before_create :generate_key
+  before_validation :generate_key, on: :create
   after_create :sync_to_cloudflare
   after_destroy :remove_from_cloudflare
   after_update :sync_revocation_to_cloudflare, if: :saved_change_to_active?
