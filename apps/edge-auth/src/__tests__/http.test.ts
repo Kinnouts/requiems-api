@@ -69,7 +69,7 @@ describe("HTTP Utilities", () => {
 
     it("includes error message in body", async () => {
       const response = jsonError(404, "Not found");
-      const data = await response.json();
+      const data = (await response.json()) as { error: string };
 
       expect(data).toHaveProperty("error", "Not found");
     });
@@ -78,7 +78,7 @@ describe("HTTP Utilities", () => {
       const response = jsonError(401, "Unauthorized");
 
       expect(response.status).toBe(401);
-      const data = await response.json();
+      const data = (await response.json()) as { error: string };
       expect(data.error).toBe("Unauthorized");
     });
 
@@ -86,7 +86,7 @@ describe("HTTP Utilities", () => {
       const response = jsonError(403, "Forbidden");
 
       expect(response.status).toBe(403);
-      const data = await response.json();
+      const data = (await response.json()) as { error: string };
       expect(data.error).toBe("Forbidden");
     });
 

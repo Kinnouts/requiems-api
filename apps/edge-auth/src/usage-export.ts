@@ -1,4 +1,3 @@
-import { env } from "./env";
 import { jsonError, jsonResponse } from "./http";
 import type { WorkerBindings } from "./types";
 
@@ -40,7 +39,7 @@ export async function handleUsageExport(
   // Verify backend secret
   const backendSecret = request.headers.get("X-Backend-Secret");
 
-  if (!backendSecret || backendSecret !== env.BACKEND_SECRET) {
+  if (!backendSecret || backendSecret !== bindings.BACKEND_SECRET) {
     return jsonError(401, "Unauthorized - Invalid backend secret");
   }
 

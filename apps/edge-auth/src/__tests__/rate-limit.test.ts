@@ -29,9 +29,11 @@ describe("Rate Limiting", () => {
         ) => {
           mockKV.set(key, { value, expirationTtl: options?.expirationTtl });
         },
-      },
-      D1: {} as any,
-      ENV: {} as any,
+      } as any,
+      DB: {} as any,
+      BACKEND_URL: "http://test",
+      BACKEND_SECRET: "test-secret",
+      ENVIRONMENT: "development",
     };
 
     // Mock Date.now to control time in tests
