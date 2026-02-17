@@ -62,7 +62,7 @@ export async function handleUsageExport(
   // Parse and validate limit
   const limit = Math.min(
     Number.parseInt(limitParam || "1000", 10),
-    5000 // Max 5000 records per request
+    5000, // Max 5000 records per request
   );
 
   if (Number.isNaN(limit) || limit < 1) {
@@ -103,7 +103,7 @@ export async function handleUsageExport(
       .all<UsageRecord>();
 
     const usage = result.results || [];
-    const hasMore = (offset + usage.length) < total;
+    const hasMore = offset + usage.length < total;
     const nextCursor = hasMore ? (offset + usage.length).toString() : undefined;
 
     const response: UsageExportResponse = {

@@ -164,7 +164,9 @@ bun run format               # Auto-format code
 
 ## Continuous Integration
 
-The monorepo uses a unified GitHub Actions workflow at `.github/workflows/ci.yml` that automatically tests and validates code across all three applications.
+The monorepo uses a unified GitHub Actions workflow at
+`.github/workflows/ci.yml` that automatically tests and validates code across
+all three applications.
 
 ### CI Philosophy
 
@@ -176,15 +178,19 @@ The monorepo uses a unified GitHub Actions workflow at `.github/workflows/ci.yml
 ### What Gets Tested
 
 **Go Backend (`apps/api`):**
+
 - ✅ **Tests** (blocking) - `go test -race -coverprofile=coverage.out ./...`
-- ⚠️ **golangci-lint** (advisory) - 21 linters enabled (errcheck, gosimple, govet, staticcheck, etc.)
+- ⚠️ **golangci-lint** (advisory) - 21 linters enabled (errcheck, gosimple,
+  govet, staticcheck, etc.)
 
 **Rails Dashboard (`apps/dashboard`):**
+
 - ✅ **Tests** (blocking) - Minitest suite
 - ✅ **Security Scans** (blocking) - Brakeman, bundler-audit, importmap audit
 - ⚠️ **RuboCop** (advisory) - rails-omakase style guide
 
 **Cloudflare Worker (`apps/edge-auth`):**
+
 - ✅ **TypeScript Check** (blocking) - `tsc --noEmit`
 - ✅ **Tests** (blocking) - Vitest with 29% coverage (71 tests)
 - ⚠️ **Biome Lint** (advisory) - Modern fast linter + formatter
@@ -228,7 +234,8 @@ This makes CI fast - typically under 5 minutes for single-app changes.
 
 ### Branch Protection
 
-Configure GitHub branch protection to require the **"CI Success"** job for merging:
+Configure GitHub branch protection to require the **"CI Success"** job for
+merging:
 
 1. Go to Settings → Branches → Branch protection rules
 2. Select `main` branch
@@ -239,11 +246,13 @@ Configure GitHub branch protection to require the **"CI Success"** job for mergi
 ### CI Configuration Files
 
 **Tool Configurations:**
+
 - `apps/api/.golangci.yml` - Go linter config (21 linters)
 - `apps/edge-auth/vitest.config.ts` - Test framework config
 - `apps/edge-auth/biome.json` - Linter + formatter config
 
 **Workflow:**
+
 - `.github/workflows/ci.yml` - Main CI orchestrator (all apps)
 
 ## Architecture Overview
@@ -324,7 +333,8 @@ Standard Rails 8 structure with:
 
 **View Organization Pattern**:
 
-Rails views are organized to keep controller directories clean with page-specific partials in a dedicated `partials/` directory:
+Rails views are organized to keep controller directories clean with
+page-specific partials in a dedicated `partials/` directory:
 
 ```
 app/views/

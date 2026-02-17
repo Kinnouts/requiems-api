@@ -7,9 +7,9 @@ type CheckEmailRequest struct {
 
 // CheckEmailResponse represents the response for a single email check
 type CheckEmailResponse struct {
-	Email       string `json:"email"`
+	Email        string `json:"email"`
 	IsDisposable bool   `json:"is_disposable"`
-	Domain      string `json:"domain,omitempty"`
+	Domain       string `json:"domain,omitempty"`
 }
 
 // BatchCheckRequest represents a request to check multiple emails

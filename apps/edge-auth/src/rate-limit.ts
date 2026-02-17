@@ -1,9 +1,4 @@
-import type {
-  PlanConfig,
-  PlanName,
-  RateLimitResult,
-  WorkerBindings,
-} from "./types";
+import type { PlanConfig, PlanName, RateLimitResult, WorkerBindings } from "./types";
 
 /**
  * Get request limits description for a plan

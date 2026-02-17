@@ -16,10 +16,7 @@ import { handleApiKeyManagement } from "./api-keys";
 
 import type { ApiKeyData, WorkerBindings } from "./types";
 
-async function fetch(
-  request: Request,
-  bindings: WorkerBindings,
-): Promise<Response> {
+async function fetch(request: Request, bindings: WorkerBindings): Promise<Response> {
   // Validate environment variables
   const env = validateEnv(bindings);
   const url = new URL(request.url);
@@ -73,9 +70,7 @@ async function fetch(
       "X-RateLimit-Limit": plan.ratePerMinute.toString(),
       "X-RateLimit-Remaining": "0",
       "X-RateLimit-Reset": Math.ceil(rateLimit.resetAt / 1000).toString(),
-      "Retry-After": Math.ceil(
-        (rateLimit.resetAt - Date.now()) / 1000,
-      ).toString(),
+      "Retry-After": Math.ceil((rateLimit.resetAt - Date.now()) / 1000).toString(),
     });
   }
 

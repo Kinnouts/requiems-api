@@ -42,18 +42,11 @@ describe("Configuration", () => {
     });
 
     it("plans are in ascending order by request limits", () => {
-      const plans = [
-        PLANS.free,
-        PLANS.developer,
-        PLANS.business,
-        PLANS.professional,
-      ];
+      const plans = [PLANS.free, PLANS.developer, PLANS.business, PLANS.professional];
 
       for (let i = 0; i < plans.length - 1; i++) {
         expect(plans[i].requestLimit).toBeLessThan(plans[i + 1].requestLimit);
-        expect(plans[i].ratePerMinute).toBeLessThan(
-          plans[i + 1].ratePerMinute,
-        );
+        expect(plans[i].ratePerMinute).toBeLessThan(plans[i + 1].ratePerMinute);
       }
     });
 
@@ -102,18 +95,12 @@ describe("Configuration", () => {
 
   describe("getRequestMultiplier", () => {
     it("returns exact match for dictionary define endpoint", () => {
-      const multiplier = getRequestMultiplier(
-        "GET",
-        "/v1/text/words/define",
-      );
+      const multiplier = getRequestMultiplier("GET", "/v1/text/words/define");
       expect(multiplier).toBe(2);
     });
 
     it("returns exact match for dictionary synonyms endpoint", () => {
-      const multiplier = getRequestMultiplier(
-        "GET",
-        "/v1/text/words/synonyms",
-      );
+      const multiplier = getRequestMultiplier("GET", "/v1/text/words/synonyms");
       expect(multiplier).toBe(2);
     });
 
@@ -123,12 +110,7 @@ describe("Configuration", () => {
     });
 
     it("returns default multiplier for common text endpoints", () => {
-      const endpoints = [
-        "/v1/text/advice",
-        "/v1/text/lorem",
-        "/v1/text/quotes",
-        "/v1/text/words",
-      ];
+      const endpoints = ["/v1/text/advice", "/v1/text/lorem", "/v1/text/quotes", "/v1/text/words"];
 
       endpoints.forEach((path) => {
         const multiplier = getRequestMultiplier("GET", path);
@@ -148,10 +130,7 @@ describe("Configuration", () => {
     it("handles prefix matching for dynamic routes", () => {
       // If /v1/text/words/define is configured with multiplier 2,
       // and we call /v1/text/words/define/something, it should match via prefix
-      const multiplier = getRequestMultiplier(
-        "GET",
-        "/v1/text/words/define/something",
-      );
+      const multiplier = getRequestMultiplier("GET", "/v1/text/words/define/something");
       expect(multiplier).toBe(2);
     });
 
@@ -180,21 +159,15 @@ describe("Configuration", () => {
 
   describe("Plan comparison", () => {
     it("developer plan has 200x more requests than free", () => {
-      expect(PLANS.developer.requestLimit / PLANS.free.requestLimit).toBe(
-        200,
-      );
+      expect(PLANS.developer.requestLimit / PLANS.free.requestLimit).toBe(200);
     });
 
     it("business plan has 10x more requests than developer", () => {
-      expect(
-        PLANS.business.requestLimit / PLANS.developer.requestLimit,
-      ).toBe(10);
+      expect(PLANS.business.requestLimit / PLANS.developer.requestLimit).toBe(10);
     });
 
     it("professional plan has 10x more requests than business", () => {
-      expect(
-        PLANS.professional.requestLimit / PLANS.business.requestLimit,
-      ).toBe(10);
+      expect(PLANS.professional.requestLimit / PLANS.business.requestLimit).toBe(10);
     });
   });
 

@@ -21,11 +21,10 @@ func main() {
 	}
 
 	addr := ":" + cfg.Port
-	
+
 	log.Printf("API server listening on %s\n", addr)
 
 	if err := http.ListenAndServe(addr, appInstance.Handler()); err != nil {
 		log.Fatalf("server error: %v", err)
 	}
 }
-

@@ -16,7 +16,7 @@ func Migrate(dsn, dir string) error {
 		if err != nil {
 			return fmt.Errorf("resolve migrations path: %w", err)
 		}
-		
+
 		dir = abs
 	}
 
@@ -27,7 +27,7 @@ func Migrate(dsn, dir string) error {
 	if err != nil {
 		return fmt.Errorf("create migrator: %w", err)
 	}
-	
+
 	defer m.Close()
 
 	if err := m.Up(); err != nil && err != migrate.ErrNoChange {

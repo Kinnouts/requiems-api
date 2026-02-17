@@ -38,21 +38,13 @@ describe("HTTP Utilities", () => {
     });
 
     it("accepts custom headers", () => {
-      const response = jsonResponse(
-        { status: "ok" },
-        200,
-        { "X-Custom-Header": "test" },
-      );
+      const response = jsonResponse({ status: "ok" }, 200, { "X-Custom-Header": "test" });
 
       expect(response.headers.get("X-Custom-Header")).toBe("test");
     });
 
     it("merges custom headers with default headers", () => {
-      const response = jsonResponse(
-        { status: "ok" },
-        200,
-        { "X-Custom": "value" },
-      );
+      const response = jsonResponse({ status: "ok" }, 200, { "X-Custom": "value" });
 
       expect(response.headers.get("Content-Type")).toBe("application/json");
       expect(response.headers.get("Access-Control-Allow-Origin")).toBe("*");
@@ -98,9 +90,7 @@ describe("HTTP Utilities", () => {
 
       expect(response.status).toBe(429);
       expect(response.headers.get("X-RateLimit-Remaining")).toBe("0");
-      expect(response.headers.get("X-RateLimit-Reset")).toBe(
-        "2024-01-01T00:00:00Z",
-      );
+      expect(response.headers.get("X-RateLimit-Reset")).toBe("2024-01-01T00:00:00Z");
     });
   });
 
@@ -190,9 +180,7 @@ describe("HTTP Utilities", () => {
 
       expect(modified.headers.get("X-Requests-Used")).toBe("5");
       expect(modified.headers.get("X-Requests-Remaining")).toBe("95");
-      expect(modified.headers.get("X-Requests-Reset")).toBe(
-        "2024-01-01T00:00:00Z",
-      );
+      expect(modified.headers.get("X-Requests-Reset")).toBe("2024-01-01T00:00:00Z");
       expect(modified.headers.get("X-Plan")).toBe("developer");
       expect(modified.headers.get("X-RateLimit-Limit")).toBe("60");
       expect(modified.headers.get("X-RateLimit-Remaining")).toBe("55");
@@ -283,9 +271,7 @@ describe("HTTP Utilities", () => {
 
   describe("corsResponse", () => {
     it("has correct CORS headers", () => {
-      expect(corsResponse.headers.get("Access-Control-Allow-Origin")).toBe(
-        "*",
-      );
+      expect(corsResponse.headers.get("Access-Control-Allow-Origin")).toBe("*");
       expect(corsResponse.headers.get("Access-Control-Allow-Methods")).toBe(
         "GET, POST, PUT, DELETE, OPTIONS",
       );
