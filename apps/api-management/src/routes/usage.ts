@@ -1,5 +1,9 @@
-import { jsonError, jsonResponse } from "./http";
-import type { WorkerBindings } from "./types";
+import { Hono } from "hono";
+import { jsonError, jsonResponse, requireBackendSecret } from "../shared/http";
+import { createLogger } from "../shared/logger";
+import type { WorkerBindings } from "../shared/types";
+
+const app = new Hono<{ Bindings: WorkerBindings }>();
 
 /**
  * Usage data record from D1
@@ -22,31 +26,29 @@ export interface UsageExportResponse {
 }
 
 /**
+ * GET /usage/export
  * Export usage data from D1 for sync to PostgreSQL
- *
- * This endpoint is protected by X-Backend-Secret header
- * and should only be called by the Rails backend.
  *
  * Query parameters:
  * - since: ISO timestamp - get records after this time (required)
  * - limit: number - max records to return (default: 1000, max: 5000)
  * - cursor: string - pagination cursor (offset)
+ *
+ * Auth: X-Backend-Secret header
  */
-export async function handleUsageExport(
-  request: Request,
-  bindings: WorkerBindings,
-): Promise<Response> {
-  // Verify backend secret
-  const backendSecret = request.headers.get("X-Backend-Secret");
+app.get("/export", async (c) => {
+  const log = createLogger(c.req.raw);
 
-  if (!backendSecret || backendSecret !== bindings.BACKEND_SECRET) {
-    return jsonError(401, "Unauthorized - Invalid backend secret");
+  // Check authentication
+  const authError = requireBackendSecret(c.req.raw, c.env.BACKEND_SECRET);
+  if (authError) {
+    log.warn("Unauthorized usage export request");
+    return authError;
   }
 
-  const url = new URL(request.url);
-  const since = url.searchParams.get("since");
-  const limitParam = url.searchParams.get("limit");
-  const cursorParam = url.searchParams.get("cursor");
+  const since = c.req.query("since");
+  const limitParam = c.req.query("limit");
+  const cursorParam = c.req.query("cursor");
 
   // Validate required parameter
   if (!since) {
@@ -77,7 +79,7 @@ export async function handleUsageExport(
 
   try {
     // Get total count for hasMore calculation
-    const countResult = await bindings.DB.prepare(`
+    const countResult = await c.env.DB.prepare(`
       SELECT COUNT(*) as total
       FROM credit_usage
       WHERE used_at >= ?
@@ -88,7 +90,7 @@ export async function handleUsageExport(
     const total = countResult?.total || 0;
 
     // Fetch usage records with pagination
-    const result = await bindings.DB.prepare(`
+    const result = await c.env.DB.prepare(`
       SELECT
         api_key,
         endpoint,
@@ -106,6 +108,12 @@ export async function handleUsageExport(
     const hasMore = offset + usage.length < total;
     const nextCursor = hasMore ? (offset + usage.length).toString() : undefined;
 
+    log.info("Usage export successful", {
+      total,
+      returned: usage.length,
+      hasMore,
+    });
+
     const response: UsageExportResponse = {
       usage,
       total,
@@ -115,7 +123,9 @@ export async function handleUsageExport(
 
     return jsonResponse(response);
   } catch (error) {
-    console.error("Error exporting usage data:", error);
+    log.error("Error exporting usage data", { error });
     return jsonError(500, "Failed to export usage data");
   }
-}
+});
+
+export default app;

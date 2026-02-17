@@ -1,3 +1,5 @@
+// SHARED FILE - Keep in sync with auth-gateway/src/shared/config.ts
+
 import type { PlanConfig, PlanName } from "./types";
 
 /**

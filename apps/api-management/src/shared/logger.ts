@@ -1,3 +1,5 @@
+// SHARED FILE - Keep in sync with auth-gateway/src/shared/logger.ts
+
 /**
  * Simple structured logger using cf-ray as trace ID
  *

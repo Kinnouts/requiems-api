@@ -7,7 +7,7 @@ export default defineConfig({
 
     // File patterns
     include: ["src/**/*.{test,spec}.ts"],
-    exclude: ["node_modules", "dist", "scripts"],
+    exclude: ["node_modules", "dist"],
 
     // Coverage configuration
     coverage: {
@@ -16,12 +16,9 @@ export default defineConfig({
       exclude: [
         "node_modules/",
         "dist/",
-        "scripts/",
         "**/*.config.ts",
         "**/*.d.ts",
       ],
-      // Non-blocking: no thresholds initially
-      // Can add thresholds later as coverage improves
     },
 
     // Output

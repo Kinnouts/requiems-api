@@ -1,3 +1,5 @@
+// SHARED FILE - Keep in sync with auth-gateway/src/shared/types.ts
+
 import type { CloudflareBindings } from "./env";
 
 /**
