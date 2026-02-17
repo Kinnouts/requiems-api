@@ -12,6 +12,11 @@ binding = "DB"
 database_name = "requiem-usage"
 database_id = "8cc5cae5-caff-4878-80f7-94eed1931ea8"
 
+[observability]
+[observability.logs]
+enabled = true
+invocation_logs = true
+
 [dev]
 port = 6001
 
@@ -20,3 +25,17 @@ ENVIRONMENT = "development"
 
 [env.production]
 name = "requiem-api-management-production"
+workers_dev = true
+preview_urls = true
+
+[env.production.vars]
+ENVIRONMENT = "production"
+
+[[env.production.kv_namespaces]]
+binding = "KV"
+id = "7cc847da3f3143b2ba8f7c531f416b35"
+
+[[env.production.d1_databases]]
+binding = "DB"
+database_name = "requiem-usage"
+database_id = "8cc5cae5-caff-4878-80f7-94eed1931ea8"
