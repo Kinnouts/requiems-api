@@ -4,8 +4,8 @@ module Cloudflare
   class KvSyncService
     def initialize(api_key_record)
       @api_key = api_key_record
-      @worker_url = ENV.fetch("CLOUDFLARE_WORKER_URL", "https://gateway.requiems.xyz")
-      @backend_secret = ENV.fetch("BACKEND_SECRET")
+      @api_management_url = ENV.fetch("API_MANAGEMENT_URL", "https://api-management.requiems.xyz")
+      @api_management_key = ENV.fetch("API_MANAGEMENT_API_KEY")
     end
 
     # Sync API key to Cloudflare Worker (which writes to KV + D1)
@@ -18,9 +18,9 @@ module Cloudflare
         billingCycleStart: billing_cycle_start
       }
 
-      response = connection.post("/internal/api-keys") do |req|
+      response = connection.post("/api-keys") do |req|
         req.headers["Content-Type"] = "application/json"
-        req.headers["X-Backend-Secret"] = @backend_secret
+        req.headers["X-API-Management-Key"] = @api_management_key
         req.body = payload.to_json
       end
 
@@ -36,9 +36,9 @@ module Cloudflare
         plan: @api_key.user.current_plan
       }
 
-      response = connection.post("/internal/api-keys") do |req|
+      response = connection.post("/api-keys") do |req|
         req.headers["Content-Type"] = "application/json"
-        req.headers["X-Backend-Secret"] = @backend_secret
+        req.headers["X-API-Management-Key"] = @api_management_key
         req.body = payload.to_json
       end
 
@@ -55,9 +55,9 @@ module Cloudflare
         billingCycleStart: billing_cycle_start
       }
 
-      response = connection.post("/internal/api-keys") do |req|
+      response = connection.post("/api-keys") do |req|
         req.headers["Content-Type"] = "application/json"
-        req.headers["X-Backend-Secret"] = @backend_secret
+        req.headers["X-API-Management-Key"] = @api_management_key
         req.body = payload.to_json
       end
 
@@ -75,7 +75,7 @@ module Cloudflare
 
     def connection
       @connection ||= Faraday.new(
-        url: @worker_url,
+        url: @api_management_url,
         headers: {
           "Content-Type" => "application/json"
         }

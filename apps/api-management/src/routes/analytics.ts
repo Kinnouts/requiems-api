@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { jsonError, jsonResponse, requireBackendSecret } from "../shared/http";
+import { jsonError, jsonResponse, requireApiManagementKey } from "../shared/http";
 import { createLogger } from "../shared/logger";
 import type { WorkerBindings } from "../shared/types";
 
@@ -51,7 +51,7 @@ app.get("/by-endpoint", async (c) => {
   const log = createLogger(c.req.raw);
 
   // Check authentication
-  const authError = requireBackendSecret(c.req.raw, c.env.BACKEND_SECRET);
+  const authError = requireApiManagementKey(c.req.raw, c.env.API_MANAGEMENT_API_KEY);
   if (authError) {
     log.warn("Unauthorized analytics request");
     return authError;
@@ -127,7 +127,7 @@ app.get("/by-date", async (c) => {
   const log = createLogger(c.req.raw);
 
   // Check authentication
-  const authError = requireBackendSecret(c.req.raw, c.env.BACKEND_SECRET);
+  const authError = requireApiManagementKey(c.req.raw, c.env.API_MANAGEMENT_API_KEY);
   if (authError) {
     log.warn("Unauthorized analytics request");
     return authError;
@@ -195,7 +195,7 @@ app.get("/summary", async (c) => {
   const log = createLogger(c.req.raw);
 
   // Check authentication
-  const authError = requireBackendSecret(c.req.raw, c.env.BACKEND_SECRET);
+  const authError = requireApiManagementKey(c.req.raw, c.env.API_MANAGEMENT_API_KEY);
   if (authError) {
     log.warn("Unauthorized analytics request");
     return authError;

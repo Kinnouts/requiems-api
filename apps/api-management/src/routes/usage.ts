@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import { jsonError, jsonResponse, requireBackendSecret } from "../shared/http";
+import { jsonError, jsonResponse, requireApiManagementKey } from "../shared/http";
 import { createLogger } from "../shared/logger";
 import type { WorkerBindings } from "../shared/types";
 
@@ -34,13 +34,13 @@ export interface UsageExportResponse {
  * - limit: number - max records to return (default: 1000, max: 5000)
  * - cursor: string - pagination cursor (offset)
  *
- * Auth: X-Backend-Secret header
+ * Auth: X-API-Management-Key header (only Rails dashboard has this)
  */
 app.get("/export", async (c) => {
   const log = createLogger(c.req.raw);
 
   // Check authentication
-  const authError = requireBackendSecret(c.req.raw, c.env.BACKEND_SECRET);
+  const authError = requireApiManagementKey(c.req.raw, c.env.API_MANAGEMENT_API_KEY);
   if (authError) {
     log.warn("Unauthorized usage export request");
     return authError;

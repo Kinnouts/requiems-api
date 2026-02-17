@@ -11,12 +11,12 @@ class D1SyncService
   class UnauthorizedError < Error; end
   class InvalidResponseError < Error; end
 
-  WORKER_URL = ENV.fetch("CLOUDFLARE_WORKER_URL", "https://auth.requiems.xyz")
+  API_MANAGEMENT_URL = ENV.fetch("API_MANAGEMENT_URL", "https://api-management.requiems.xyz")
   TIMEOUT = 30 # seconds
   MAX_RETRIES = 3
 
-  def self.backend_secret
-    ENV.fetch("BACKEND_SECRET")
+  def self.api_management_key
+    ENV.fetch("API_MANAGEMENT_API_KEY")
   end
 
   # Fetch usage data from Cloudflare D1
@@ -85,7 +85,7 @@ class D1SyncService
 
   # Fetch a single page of usage data
   def fetch_page(since:, limit:, cursor: nil)
-    url = "#{WORKER_URL}/internal/usage/export"
+    url = "#{API_MANAGEMENT_URL}/usage/export"
 
     params = {
       since: since,
@@ -116,7 +116,7 @@ class D1SyncService
       conn.response :json, content_type: /\bjson$/
       conn.adapter Faraday.default_adapter
       conn.options.timeout = TIMEOUT
-      conn.headers["X-Backend-Secret"] = self.class.backend_secret
+      conn.headers["X-API-Management-Key"] = self.class.api_management_key
       conn.headers["Content-Type"] = "application/json"
     end
   end
@@ -135,7 +135,7 @@ class D1SyncService
   def handle_error_response(response)
     case response.status
     when 401
-      raise UnauthorizedError, "Invalid backend secret"
+      raise UnauthorizedError, "Invalid API management key"
     when 400
       raise Error, "Bad request: #{response.body}"
     else
