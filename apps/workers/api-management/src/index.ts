@@ -39,16 +39,7 @@ export default {
     } catch (error) {
       console.error("Environment validation failed:", error);
 
-      return new Response(
-        JSON.stringify({
-          error: "Configuration error",
-          details: error instanceof Error ? error.message : String(error),
-        }),
-        {
-          status: 500,
-          headers: { "Content-Type": "application/json" },
-        },
-      );
+      return  jsonResponse({ error: "Configuration error" },500);
     }
 
     return app.fetch(request, env);
