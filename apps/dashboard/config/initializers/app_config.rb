@@ -3,6 +3,12 @@
 # Load and validate application configuration at startup
 # This ensures the app fails fast if required environment variables are missing
 Rails.application.config.to_prepare do
+  # Skip config validation for rake tasks that don't need the full app
+  # (db:create, db:migrate, assets:precompile, etc.)
+  next if defined?(Rake) && Rake.application.top_level_tasks.any? { |task|
+    task.start_with?("db:", "assets:", "tmp:", "log:", "about")
+  }
+
   begin
     AppConfig.instance
     Rails.logger.info("AppConfig initialized successfully")
