@@ -5,7 +5,6 @@ import { validateEnv } from "./shared/env";
 import { jsonResponse } from "./shared/http";
 
 import { apiKeyAuthMiddleware } from "./middleware/api-key-auth";
-import { swaggerAuthMiddleware } from "./middleware/swagger-auth";
 
 import apiKeysRoute from "./routes/api-keys";
 import usageRoute from "./routes/usage";
@@ -13,12 +12,16 @@ import analyticsRoute from "./routes/analytics";
 import swaggerRoute from "./routes/swagger";
 
 import type { WorkerBindings } from "./shared/types";
+import { basicAuth } from "hono/basic-auth";
 
 const app = new Hono<{ Bindings: WorkerBindings }>();
 
 app.get("/healthz", (_c) => jsonResponse({ status: "ok", service: "api-management" }));
 
-app.use("/docs*", swaggerAuthMiddleware);
+app.use("/docs/*", basicAuth({
+  username: process.env.SWAGGER_USERNAME!,
+  password: process.env.SWAGGER_PASSWORD!,
+}));
 
 app.get("/docs", swaggerUI({ url: "/openapi.json" }));
 

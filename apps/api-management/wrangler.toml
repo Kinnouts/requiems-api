@@ -1,7 +1,7 @@
 name = "requiem-api-management"
 main = "src/index.ts"
-compatibility_date = "2024-01-01"
-compatibility_flags = ["nodejs_compat"]
+compatibility_date = "2025-0f-01"
+compatibility_flags = ["nodejs_compat", "nodejs_compat_populate_process_env"]
 
 [[kv_namespaces]]
 binding = "KV"
