@@ -25,11 +25,11 @@ ENVIRONMENT = "development"
 
 [env.production]
 name = "requiem-api-management-production"
-workers_dev = true
+workers_dev = false
 preview_urls = false
 
 [[env.production.routes]]
-pattern = "api-management.requiems.xyz/*"
+pattern = "api-management.requiems.xyz"
 custom_domain = true
 
 [env.production.vars]
