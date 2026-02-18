@@ -1,5 +1,5 @@
 import type { MiddlewareHandler } from "hono";
-import { corsResponse } from "@requiem/workers-shared";
+import { corsResponse } from "../http";
 
 /**
  * CORS Middleware
