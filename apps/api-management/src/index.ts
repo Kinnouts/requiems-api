@@ -1,5 +1,4 @@
 import { Hono } from "hono";
-import { HTTPException } from "hono/http-exception";
 import { swaggerUI } from "@hono/swagger-ui";
 
 import { validateEnv } from "./shared/env";
@@ -29,14 +28,17 @@ app.use("/docs", async (c, next) => {
 });
 
 app.use("/docs", basicAuth({
-  verifyUser: (username, password, c) => {
-    const adminUser = c.env.SWAGGER_USERNAME!
-    const adminPass = c.env.SWAGGER_PASSWORD!
+  verifyUser: async (username, password, c) => {
+    const env = c.env;
 
-    return (
-      username === adminUser && password === adminPass
-    )
+    if (!env.SWAGGER_USERNAME || !env.SWAGGER_PASSWORD) {
+      console.error("SWAGGER credentials not configured");
+      return false;
+    }
+
+    return username === env.SWAGGER_USERNAME && password === env.SWAGGER_PASSWORD;
   },
+  realm: "API Management Documentation",
 }));
 
 app.get("/docs", swaggerUI({ url: "/openapi.json" }));
@@ -56,10 +58,6 @@ app.notFound((_c) => {
 });
 
 app.onError((err, c) => {
-  if (err instanceof HTTPException) {
-    return err.getResponse();
-  }
-
   console.error("Unhandled error:", {
     message: err.message,
     name: err.name,
