@@ -1,8 +1,8 @@
 import { Hono } from "hono";
 import { swaggerUI } from "@hono/swagger-ui";
 
-import { validateEnv } from "./shared/env";
-import { jsonResponse } from "./shared/http";
+import { validateEnv, type WorkerBindings } from "./shared/env";
+import { jsonResponse } from "@requiem/workers-shared";
 
 import { apiKeyAuthMiddleware } from "./middleware/api-key-auth";
 import { basicAuthMiddleware } from "./middleware/basic-auth";
@@ -12,8 +12,6 @@ import apiKeysRoute from "./routes/api-keys";
 import usageRoute from "./routes/usage";
 import analyticsRoute from "./routes/analytics";
 import swaggerRoute from "./routes/swagger";
-
-import type { WorkerBindings } from "./shared/types";
 
 const app = new Hono<{ Bindings: WorkerBindings }>();
 

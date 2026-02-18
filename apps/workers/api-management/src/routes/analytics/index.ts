@@ -1,5 +1,5 @@
 import { Hono } from "hono";
-import type { WorkerBindings } from "../../shared/types";
+import type { WorkerBindings } from "../../shared/env";
 import byEndpointRoute from "./by-endpoint";
 import byDateRoute from "./by-date";
 import summaryRoute from "./summary";

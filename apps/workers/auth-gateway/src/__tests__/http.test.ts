@@ -2,10 +2,12 @@ import { describe, it, expect } from "vitest";
 import {
   jsonResponse,
   jsonError,
+  corsResponse,
+} from "@requiem/workers-shared";
+import {
   filterHeaders,
   addUsageHeaders,
   fetchBackend,
-  corsResponse,
 } from "../http";
 
 describe("HTTP Utilities", () => {

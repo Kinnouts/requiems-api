@@ -7,9 +7,9 @@ as a multi-language monorepo with:
 - **Go API** (apps/api) - Internal business logic backend
 - **Rails Dashboard** (apps/dashboard) - Public web UI, user management, admin
   panel
-- **Auth Gateway** (apps/auth-gateway) - Public edge gateway for auth, rate
+- **Auth Gateway** (apps/workers/auth-gateway) - Public edge gateway for auth, rate
   limiting, and request proxying
-- **API Management** (apps/api-management) - Internal service for API key
+- **API Management** (apps/workers/api-management) - Internal service for API key
   management, usage exports, and analytics
 
 ## Development Commands
@@ -100,28 +100,28 @@ Generate migration:
 docker exec requiem-dev-dashboard-1 bin/rails generate migration AddFieldToTable
 ```
 
-### Auth Gateway (apps/auth-gateway)
+### Auth Gateway (apps/workers/auth-gateway)
 
 Public-facing edge gateway for request authentication and proxying.
 
 Dev mode:
 
 ```bash
-cd apps/auth-gateway
+cd apps/workers/auth-gateway
 bun dev  # Port 6000
 ```
 
 Type check:
 
 ```bash
-cd apps/auth-gateway
+cd apps/workers/auth-gateway
 bun run typecheck
 ```
 
 Run tests:
 
 ```bash
-cd apps/auth-gateway
+cd apps/workers/auth-gateway
 bunx vitest run              # Run all tests (71 tests)
 bunx vitest run --coverage   # With coverage report
 bun run test:watch           # Watch mode
@@ -130,35 +130,35 @@ bun run test:watch           # Watch mode
 Run linting and formatting:
 
 ```bash
-cd apps/auth-gateway
+cd apps/workers/auth-gateway
 bun run lint                 # Lint code
 bun run lint:fix             # Auto-fix lint issues
 bun run format:check         # Check formatting
 bun run format               # Auto-format code
 ```
 
-### API Management (apps/api-management)
+### API Management (apps/workers/api-management)
 
 Internal service for API key management, usage exports, and analytics.
 
 Dev mode:
 
 ```bash
-cd apps/api-management
+cd apps/workers/api-management
 bun dev  # Port 6001
 ```
 
 Type check:
 
 ```bash
-cd apps/api-management
+cd apps/workers/api-management
 bun run typecheck
 ```
 
 Run tests:
 
 ```bash
-cd apps/api-management
+cd apps/workers/api-management
 bunx vitest run              # Run all tests
 bunx vitest run --coverage   # With coverage report
 ```
@@ -187,14 +187,14 @@ For Cloudflare Workers (run locally, not in Docker):
 
 ```bash
 # Auth Gateway
-cd apps/auth-gateway
+cd apps/workers/auth-gateway
 bunx vitest run                  # Tests (must pass - 71 tests)
 bun run typecheck                # TypeScript (must pass)
 bun run lint                     # Linting (advisory)
 bun run format:check             # Formatting (advisory)
 
 # API Management
-cd apps/api-management
+cd apps/workers/api-management
 bunx vitest run                  # Tests (must pass)
 bun run typecheck                # TypeScript (must pass)
 bun run lint                     # Linting (advisory)
@@ -218,7 +218,7 @@ Rails Dashboard → API Management (api-management.requiems.xyz) → KV + D1
                  API key CRUD, usage exports, analytics
 ```
 
-1. **Auth Gateway** (`apps/auth-gateway/` - Port 6000):
+1. **Auth Gateway** (`apps/workers/auth-gateway/` - Port 6000):
    - **Public-facing** service at api.requiems.xyz
    - Validates API keys from Cloudflare KV
    - Checks per-minute rate limits (KV counters)
@@ -228,7 +228,7 @@ Rails Dashboard → API Management (api-management.requiems.xyz) → KV + D1
    - Adds usage headers to responses
    - **Authentication:** `requiems-api-key` header from end users
 
-2. **API Management** (`apps/api-management/` - Port 6001):
+2. **API Management** (`apps/workers/api-management/` - Port 6001):
    - **Internal-only** service at api-management.requiems.xyz
    - API key management (create, revoke, update in KV + D1)
    - Usage data export for Rails sync (D1 → PostgreSQL)
@@ -274,26 +274,40 @@ Domain-driven design with feature modules:
 **Pattern**: Each feature has `service.go` (business logic), `transport_http.go`
 (HTTP handlers), `type.go` (data types), and parent `router.go` (routes).
 
-#### Auth Gateway (apps/auth-gateway/src/)
+#### Cloudflare Workers (apps/workers/)
+
+**Shared Package** (`apps/workers/shared/`):
+
+Common utilities and types used by all Cloudflare Workers:
+
+- `types.ts` - Core types (PlanName, ApiKeyData, RateLimitResult, etc.)
+- `config.ts` - Plan definitions and endpoint multipliers
+- `logger.ts` - Structured logging with cf-ray tracing
+- `http.ts` - HTTP utilities (jsonResponse, jsonError, CORS)
+
+Workers import from shared via `@requiem/workers-shared` path alias.
+
+**Auth Gateway** (`apps/workers/auth-gateway/src/`):
 
 Lean public gateway focused on request flow:
 
 - `index.ts` - Main request handler (auth validation, rate limiting, proxying)
+- `env.ts` - Worker-specific environment (BACKEND_URL, BACKEND_SECRET)
 - `requests.ts` - Usage tracking (D1 queries and recording)
 - `rate-limit.ts` - Rate limiting logic (KV counters)
-- `shared/config.ts` - Plan definitions, endpoint multipliers
-- `shared/http.ts` - HTTP utilities
-- `shared/types.ts` - TypeScript interfaces
+- `http.ts` - Backend-specific HTTP utilities (filterHeaders, addUsageHeaders)
 
-#### API Management (apps/api-management/src/)
+**API Management** (`apps/workers/api-management/src/`):
 
 Internal management service with Hono framework:
 
 - `index.ts` - Hono app with Swagger documentation
-- `routes/api-keys.ts` - API key CRUD operations
-- `routes/usage.ts` - Usage data export with pagination
-- `routes/analytics.ts` - Analytics queries (endpoint, date, summary)
-- `shared/` - Shared utilities (same as auth-gateway)
+- `shared/env.ts` - Worker-specific environment (API_MANAGEMENT_API_KEY)
+- `shared/api-key-generator.ts` - API key generation utilities
+- `routes/api-keys/` - API key CRUD operations
+- `routes/usage/` - Usage data export with pagination
+- `routes/analytics/` - Analytics queries (endpoint, date, summary)
+- `middleware/` - API key auth, basic auth, error handling
 
 #### Rails Dashboard (apps/dashboard/)
 

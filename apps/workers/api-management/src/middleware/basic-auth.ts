@@ -1,6 +1,6 @@
 import type { Context, Next } from "hono";
-import { jsonResponse } from "../shared/http";
-import type { WorkerBindings } from "../shared/types";
+import { jsonResponse } from '@requiem/workers-shared';
+import type { WorkerBindings } from '../shared/env';
 
 /**
  * Custom Basic Authentication Middleware

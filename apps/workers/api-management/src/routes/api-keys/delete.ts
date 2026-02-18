@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { jsonError, jsonResponse } from "../../shared/http";
-import { createLogger } from "../../shared/logger";
-import type { WorkerBindings } from "../../shared/types";
+import { jsonError, jsonResponse } from "@requiem/workers-shared";
+import { createLogger } from "@requiem/workers-shared";
+import type { WorkerBindings } from "../../shared/env";
 
 const app = new Hono<{ Bindings: WorkerBindings }>();
 

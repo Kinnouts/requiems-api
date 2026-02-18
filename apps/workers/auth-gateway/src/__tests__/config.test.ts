@@ -4,7 +4,7 @@ import {
   ENDPOINT_MULTIPLIERS,
   DEFAULT_REQUEST_MULTIPLIER,
   getRequestMultiplier,
-} from "../config";
+} from "@requiem/workers-shared";
 
 describe("Configuration", () => {
   describe("PLANS", () => {

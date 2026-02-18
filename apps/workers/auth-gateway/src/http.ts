@@ -1,44 +1,7 @@
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-};
-
-export const corsResponse = new Response(null, {
-  headers: {
-    ...CORS_HEADERS,
-    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, requiems-api-key",
-    "Access-Control-Max-Age": "86400",
-  },
-});
-
 /**
- * JSON response helper
+ * Auth gateway specific HTTP utilities
+ * Base utilities (jsonResponse, jsonError, corsResponse) are in @requiem/workers-shared
  */
-export function jsonResponse(
-  data: unknown,
-  status = 200,
-  headers: Record<string, string> = {},
-): Response {
-  return new Response(JSON.stringify(data), {
-    status,
-    headers: {
-      "Content-Type": "application/json",
-      ...CORS_HEADERS,
-      ...headers,
-    },
-  });
-}
-
-/**
- * JSON error response helper
- */
-export function jsonError(
-  status: number,
-  message: string,
-  headers: Record<string, string> = {},
-): Response {
-  return jsonResponse({ error: message }, status, headers);
-}
 
 /**
  * Filter headers before forwarding to backend

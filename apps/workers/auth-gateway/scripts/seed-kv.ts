@@ -1,6 +1,6 @@
 import { execSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
-import type { ApiKeyData, PlanName } from "../src/types";
+import type { ApiKeyData, PlanName } from "@requiem/workers-shared";
 import { getPlanLimits } from "../src/rate-limit";
 
 interface TestKey {

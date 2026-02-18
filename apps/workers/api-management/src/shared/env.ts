@@ -1,14 +1,10 @@
-// SHARED FILE - Keep in sync with auth-gateway/src/shared/env.ts
-
 import { z } from "zod";
+import type { BaseWorkerBindings } from "@requiem/workers-shared";
 
-export interface CloudflareBindings {
-  KV: KVNamespace;
-  DB: D1Database;
+export interface WorkerBindings extends BaseWorkerBindings {
   API_MANAGEMENT_API_KEY: string;
   SWAGGER_USERNAME?: string;
   SWAGGER_PASSWORD?: string;
-  ENVIRONMENT: "development" | "staging" | "production";
 }
 
 const envSchema = z.object({
@@ -18,7 +14,7 @@ const envSchema = z.object({
   ENVIRONMENT: z.enum(["development", "staging", "production"]).default("production"),
 });
 
-export function validateEnv(env: CloudflareBindings): CloudflareBindings {
+export function validateEnv(env: WorkerBindings): WorkerBindings {
   envSchema.parse({
     API_MANAGEMENT_API_KEY: env.API_MANAGEMENT_API_KEY,
     SWAGGER_USERNAME: env.SWAGGER_USERNAME,
