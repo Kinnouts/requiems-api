@@ -18,10 +18,19 @@ const app = new Hono<{ Bindings: WorkerBindings }>();
 
 app.get("/healthz", (_c) => jsonResponse({ status: "ok", service: "api-management" }));
 
-app.use("/docs/*", basicAuth({
-  username: process.env.SWAGGER_USERNAME!,
-  password: process.env.SWAGGER_PASSWORD!,
-}));
+app.use("/docs/*", async (c, next) => {
+  const auth = basicAuth({
+    username: c.env.SWAGGER_USERNAME!,
+    password: c.env.SWAGGER_PASSWORD!,
+  });
+
+  console.log("Swagger UI access attempt:", {
+    ip: c.req.header("CF-Connecting-IP") || c.req.header("X-Forwarded-For") || "unknown",
+     userAgent: c.req.header("User-Agent") || "unknown", 
+  });
+
+  return auth(c, next);
+});
 
 app.get("/docs", swaggerUI({ url: "/openapi.json" }));
 
