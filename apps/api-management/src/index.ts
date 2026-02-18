@@ -12,7 +12,6 @@ import analyticsRoute from "./routes/analytics";
 import swaggerRoute from "./routes/swagger";
 
 import type { WorkerBindings } from "./shared/types";
-import { basicAuth } from "hono/basic-auth";
 
 const app = new Hono<{ Bindings: WorkerBindings }>();
 
@@ -24,22 +23,52 @@ app.use("/docs", async (c, next) => {
     userAgent: c.req.header("User-Agent") || "unknown",
   });
 
-  await next();
-});
+  // Custom basic auth implementation
+  const authHeader = c.req.header("Authorization");
 
-app.use("/docs", basicAuth({
-  verifyUser: async (username, password, c) => {
-    const env = c.env;
+  if (!authHeader || !authHeader.startsWith("Basic ")) {
+    return new Response("Unauthorized", {
+      status: 401,
+      headers: {
+        "WWW-Authenticate": 'Basic realm="API Management Documentation"',
+      },
+    });
+  }
 
-    if (!env.SWAGGER_USERNAME || !env.SWAGGER_PASSWORD) {
+  try {
+    const base64Credentials = authHeader.substring(6);
+    const credentials = atob(base64Credentials);
+    const [username, password] = credentials.split(":");
+
+    const validUsername = c.env.SWAGGER_USERNAME;
+    const validPassword = c.env.SWAGGER_PASSWORD;
+
+    if (!validUsername || !validPassword) {
       console.error("SWAGGER credentials not configured");
-      return false;
+      return jsonResponse({ error: "Service unavailable" }, 503);
     }
 
-    return username === env.SWAGGER_USERNAME && password === env.SWAGGER_PASSWORD;
-  },
-  realm: "API Management Documentation",
-}));
+    if (username === validUsername && password === validPassword) {
+      await next();
+      return;
+    }
+
+    return new Response("Unauthorized", {
+      status: 401,
+      headers: {
+        "WWW-Authenticate": 'Basic realm="API Management Documentation"',
+      },
+    });
+  } catch (error) {
+    console.error("Basic auth error:", error);
+    return new Response("Unauthorized", {
+      status: 401,
+      headers: {
+        "WWW-Authenticate": 'Basic realm="API Management Documentation"',
+      },
+    });
+  }
+});
 
 app.get("/docs", swaggerUI({ url: "/openapi.json" }));
 
