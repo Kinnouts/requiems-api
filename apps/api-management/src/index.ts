@@ -18,7 +18,7 @@ const app = new Hono<{ Bindings: WorkerBindings }>();
 
 app.get("/healthz", (_c) => jsonResponse({ status: "ok", service: "api-management" }));
 
-app.use("/docs/*", async (c, next) => {
+app.use("/docs", async (c, next) => {
   console.log("Swagger UI access attempt:", {
     ip: c.req.header("CF-Connecting-IP") || c.req.header("X-Forwarded-For") || "unknown",
     userAgent: c.req.header("User-Agent") || "unknown",
@@ -27,7 +27,7 @@ app.use("/docs/*", async (c, next) => {
   await next();
 });
 
-app.use("/docs/*", basicAuth({
+app.use("/docs", basicAuth({
   verifyUser: (username, password, c) => {
     const adminUser = c.env.SWAGGER_USERNAME!
     const adminPass = c.env.SWAGGER_PASSWORD!
