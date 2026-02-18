@@ -93,7 +93,10 @@ app.get("/summary", async (c) => {
     });
 
     if (c.env.ENVIRONMENT === "development") {
-      return jsonError(500, `Failed to fetch analytics: ${error instanceof Error ? error.message : String(error)}`);
+      return jsonError(
+        500,
+        `Failed to fetch analytics: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
 
     return jsonError(500, "Failed to fetch analytics");

@@ -104,7 +104,10 @@ app.get("/export", async (c) => {
 
     // Return more detailed error in development
     if (c.env.ENVIRONMENT === "development") {
-      return jsonError(500, `Failed to export usage data: ${error instanceof Error ? error.message : String(error)}`);
+      return jsonError(
+        500,
+        `Failed to export usage data: ${error instanceof Error ? error.message : String(error)}`,
+      );
     }
 
     return jsonError(500, "Failed to export usage data");

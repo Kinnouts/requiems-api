@@ -1,5 +1,3 @@
-// SHARED FILE - Keep in sync with auth-gateway/src/shared/logger.ts
-
 /**
  * Simple structured logger using cf-ray as trace ID
  *
@@ -34,7 +32,7 @@ function serializeError(error: unknown): object {
     };
   }
 
-  if (typeof error === "object" && error !== null) {
+  if (typeof error === 'object' && error !== null) {
     return error;
   }
 
@@ -42,20 +40,15 @@ function serializeError(error: unknown): object {
 }
 
 function formatLog(level: string, rayId: string, msg: string, data?: object): string {
-  const processedData = data
-    ? Object.entries(data).reduce(
-        (acc, [key, value]) => {
-          // Serialize error objects properly
-          if (key === "error" || value instanceof Error) {
-            acc[key] = serializeError(value);
-          } else {
-            acc[key] = value;
-          }
-          return acc;
-        },
-        {} as Record<string, unknown>,
-      )
-    : {};
+  const processedData = data ? Object.entries(data).reduce((acc, [key, value]) => {
+    // Serialize error objects properly
+    if (key === 'error' || value instanceof Error) {
+      acc[key] = serializeError(value);
+    } else {
+      acc[key] = value;
+    }
+    return acc;
+  }, {} as Record<string, unknown>) : {};
 
   const entry: LogEntry = { level, rayId, msg, ...processedData };
   return JSON.stringify(entry);
