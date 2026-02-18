@@ -126,5 +126,5 @@ LIABILITY ARISING FROM THE USE OF THE SOFTWARE.
 
 ## Questions?
 
-For licensing inquiries or commercial use discussions, please contact: [Your
-contact information]
+For licensing inquiries or commercial use discussions, please contact:
+<eliaz@bobadilla.tech>

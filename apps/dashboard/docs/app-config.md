@@ -100,10 +100,24 @@ The initializer automatically skips validation for database and asset tasks:
 - `assets:precompile`, `assets:clean`, etc.
 - `tmp:clear`, `log:clear`, etc.
 
-For CI pipelines running tests or serving the app, you **must** provide all
-required environment variables.
+### Test Environment
 
-### GitHub Actions Example
+For test environment, AppConfig automatically provides safe defaults for all
+required environment variables. **You do NOT need to set any environment
+variables to run tests.**
+
+This means CI pipelines work out of the box without managing test secrets:
+
+```yaml
+# No environment variables needed for tests!
+- name: Run tests
+  run: bin/rails test
+```
+
+### Production/Staging Environment
+
+For production or staging deployments, you **must** provide all required
+environment variables:
 
 ```yaml
 env:
@@ -135,9 +149,21 @@ AppConfig::InvalidConfigError: API_BASE_URL must be a valid HTTP/HTTPS URL
 ### Behavior by Environment
 
 - **Production**: App fails to start if config is missing or invalid
-- **Test**: App fails to start if config is missing or invalid
+- **Test**: Uses safe test defaults if environment variables are not set (tests
+  run without secrets)
 - **Development**: App starts with a warning (allows local dev without all
   secrets)
+
+#### Test Defaults
+
+In test environment, AppConfig provides these defaults automatically:
+
+- `API_MANAGEMENT_API_KEY`: `"test_api_management_key"`
+- `LEMONSQUEEZY_STORE_ID`: `"12345"`
+- `LEMONSQUEEZY_SIGNING_SECRET`: `"test_signing_secret"`
+- All variant IDs: `"123456"`, `"123457"`, etc.
+
+This means tests can run without any environment variables set.
 
 ## Adding New Configuration
 
