@@ -1,18 +1,21 @@
-import { getRequestMultiplier, PLANS } from "./config";
-import { checkRequestUsage, recordRequestUsage } from "./requests";
-import { validateEnv } from "./env";
 import {
-  addUsageHeaders,
+  getRequestMultiplier,
+  PLANS,
+  createLogger,
+  maskApiKey,
   corsResponse,
-  fetchBackend,
-  filterHeaders,
   jsonError,
   jsonResponse,
+  type ApiKeyData,
+} from "@requiem/workers-shared";
+import { checkRequestUsage, recordRequestUsage } from "./requests";
+import { validateEnv, type WorkerBindings } from "./env";
+import {
+  addUsageHeaders,
+  fetchBackend,
+  filterHeaders,
 } from "./http";
-import { createLogger, maskApiKey } from "./logger";
 import { checkRateLimit, getRequestLimitMessage } from "./rate-limit";
-
-import type { ApiKeyData, WorkerBindings } from "./types";
 
 async function fetch(request: Request, bindings: WorkerBindings): Promise<Response> {
   // Validate environment variables
@@ -141,4 +144,5 @@ async function fetch(request: Request, bindings: WorkerBindings): Promise<Respon
 
 export default { fetch };
 
-export type { ApiKeyData, WorkerBindings } from "./types";
+export type { ApiKeyData } from "@requiem/workers-shared";
+export type { WorkerBindings } from "./env";

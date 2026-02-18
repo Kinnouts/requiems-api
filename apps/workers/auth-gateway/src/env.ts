@@ -1,11 +1,9 @@
 import { z } from "zod";
+import type { BaseWorkerBindings } from "@requiem/workers-shared";
 
-export interface CloudflareBindings {
-  KV: KVNamespace;
-  DB: D1Database;
+export interface WorkerBindings extends BaseWorkerBindings {
   BACKEND_URL: string;
   BACKEND_SECRET: string;
-  ENVIRONMENT: "development" | "staging" | "production";
 }
 
 const envSchema = z.object({
@@ -14,7 +12,7 @@ const envSchema = z.object({
   ENVIRONMENT: z.enum(["development", "staging", "production"]).default("production"),
 });
 
-export function validateEnv(env: CloudflareBindings): CloudflareBindings {
+export function validateEnv(env: WorkerBindings): WorkerBindings {
   envSchema.parse({
     BACKEND_URL: env.BACKEND_URL,
     BACKEND_SECRET: env.BACKEND_SECRET,
