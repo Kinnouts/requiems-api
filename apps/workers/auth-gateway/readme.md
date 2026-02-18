@@ -1,7 +1,109 @@
-# Edge Auth Gateway
+# Auth Gateway
 
-Cloudflare Worker that handles API authentication, rate limiting, and credit
-tracking for Requiem API.
+Public-facing Cloudflare Worker at `api.requiems.xyz`. Validates API keys,
+enforces rate limits and monthly quotas, then proxies authenticated requests to
+the Go backend.
+
+## Request Flow
+
+```
+User → Auth Gateway
+         ├── 1. Extract `requiems-api-key` header
+         ├── 2. Lookup key in KV → ApiKeyData
+         ├── 3. Check per-minute rate limit (KV counter)
+         ├── 4. Check monthly quota (D1 query)
+         └── 5. Proxy to Go backend (X-Backend-Secret)
+                    ↓
+              Go Backend response
+                    ↓
+         ├── Record usage async (D1 insert, fire-and-forget)
+         └── Add usage headers → return to user
+```
+
+## Endpoints
+
+| Method | Path       | Description                                  |
+| ------ | ---------- | -------------------------------------------- |
+| `GET`  | `/healthz` | Health check                                 |
+| `*`    | `/*`       | Proxy to Go backend (requires valid API key) |
+
+## Authentication
+
+All requests (except `/healthz`) require the `requiems-api-key` header:
+
+```
+requiems-api-key: requiem_xxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+Error responses:
+
+| Status | Reason                         |
+| ------ | ------------------------------ |
+| `401`  | Missing or invalid API key     |
+| `429`  | Per-minute rate limit exceeded |
+| `429`  | Monthly quota exceeded         |
+
+## Response Headers
+
+Every proxied response includes usage information:
+
+| Header                  | Description                               |
+| ----------------------- | ----------------------------------------- |
+| `X-Requests-Used`       | Credits used this billing period          |
+| `X-Requests-Remaining`  | Credits remaining this billing period     |
+| `X-Requests-Reset`      | Billing period reset timestamp (ISO 8601) |
+| `X-Plan`                | User's current plan                       |
+| `X-RateLimit-Limit`     | Per-minute rate limit for the plan        |
+| `X-RateLimit-Remaining` | Remaining requests in the current minute  |
+
+## Structure
+
+```
+src/
+├── index.ts                  # Hono app entry point
+├── http.ts                   # filterHeaders, addUsageHeaders, fetchBackend
+├── rate-limit.ts             # Per-minute rate limiting (KV counters)
+├── requests.ts               # Quota checks and usage recording (D1)
+├── shared/
+│   └── env.ts                # WorkerBindings type + env schema
+├── middleware/
+│   └── api-key-auth.ts       # Auth middleware (validates key, checks limits)
+└── routes/
+    └── proxy.ts              # Wildcard proxy handler
+```
+
+## Data Storage
+
+### Cloudflare KV
+
+| Key                      | Value                                               | TTL       |
+| ------------------------ | --------------------------------------------------- | --------- |
+| `key:{apiKey}`           | `ApiKeyData` JSON (userId, plan, billingCycleStart) | No expiry |
+| `rl:m:{apiKey}:{minute}` | Request count                                       | 60s       |
+
+### Cloudflare D1 (`credit_usage` table)
+
+Records every API call:
+
+```sql
+CREATE TABLE credit_usage (
+  id           INTEGER PRIMARY KEY AUTOINCREMENT,
+  api_key      TEXT    NOT NULL,
+  user_id      TEXT    NOT NULL,
+  endpoint     TEXT    NOT NULL,
+  credits_used INTEGER NOT NULL DEFAULT 1,
+  used_at      TEXT    NOT NULL  -- ISO 8601
+);
+```
+
+## Environment Variables
+
+Set via `wrangler secret put`:
+
+| Variable         | Description                                    |
+| ---------------- | ---------------------------------------------- |
+| `BACKEND_URL`    | Internal URL of the Go backend                 |
+| `BACKEND_SECRET` | Secret value sent as `X-Backend-Secret` header |
 
 ## Setup
 
@@ -27,122 +129,59 @@ wrangler d1 create requiem-usage
 
 # Apply schema
 wrangler d1 execute requiem-usage --file=schema.sql
+
+# Or run migrations
+bun run db:migrate
 ```
 
 ### 4. Set Secrets
 
 ```bash
-# Backend URL (keep this private!)
 wrangler secret put BACKEND_URL
-# Enter your Go backend URL (e.g., https://requiem-backend.fly.dev)
+# Enter your Go backend URL (e.g., https://api-internal.requiems.xyz)
 
-# Backend secret (min 32 chars - generate a strong random string)
 wrangler secret put BACKEND_SECRET
-# Enter a strong secret, e.g.: openssl rand -base64 32
+# Enter a strong secret: openssl rand -base64 32
 ```
 
-### 5. Seed KV with API Keys
+### 5. Seed KV with Test API Keys
 
 ```bash
-# Add a test API key
-wrangler kv:key put --binding=KV "key:rq_test_123" '{"userId":"user-1","plan":"free","createdAt":"2025-01-01T00:00:00Z"}'
+bun run kv:seed
 ```
 
-## Local Development
+## Development
 
 ```bash
-wrangler dev
+bun dev              # Start local dev server (port 6000)
+bunx vitest run      # Run tests
+bunx vitest run --coverage  # Tests with coverage
+bun run typecheck    # TypeScript type check
+bun run lint         # Lint code
+bun run lint:fix     # Auto-fix lint issues
+bun run format       # Format code
+bun run format:check # Check formatting
 ```
 
-Test locally:
+### Database
 
 ```bash
-curl -H "requiems-api-key: rq_test_123" http://localhost:8787/v1/text/advice
+bun run db:migrate       # Run D1 migrations (local)
+bun run db:migrate:prod  # Run D1 migrations (production)
 ```
 
-## Deploy
+## Deployment
 
 ```bash
-wrangler deploy
+bun run deploy       # Deploy to staging
+bun run deploy:prod  # Deploy to production
 ```
 
-## Architecture
+## Tests
 
 ```
-User Request
-    │
-    ▼
-┌─────────────────────────────────────────┐
-│  Worker (api.requiems.xyz)              │
-│                                         │
-│  1. Validate API key (KV lookup)        │
-│  2. Check rate limit (KV counter)       │
-│  3. Check credits (D1 query)            │
-│  4. Forward to backend                  │
-│  5. Record usage (D1 insert)            │
-│  6. Add headers, return response        │
-│                                         │
-└─────────────────────────────────────────┘
-    │
-    ▼
-  Backend (internal URL)
-```
-
-## Data Storage
-
-### KV (Key-Value)
-
-- **Fast reads** (~10ms globally)
-- API keys: `key:{api_key}` → `{ userId, plan, createdAt }`
-- Rate limits: `ratelimit:{api_key}:{minute}` → count
-
-### D1 (SQLite)
-
-- **Queryable** (can SUM, filter by date)
-- Usage logs: `credit_usage` table
-
-## Response Headers
-
-Every response includes:
-
-```
-X-Credits-Used: 1
-X-Credits-Remaining: 49
-X-Credits-Reset: 2025-12-16T00:00:00Z
-X-Plan: free
-X-RateLimit-Limit: 30
-X-RateLimit-Remaining: 29
-```
-
-## Endpoint Costs
-
-Update `ENDPOINT_COSTS` in `src/config.ts` when adding new routes:
-
-```typescript
-export const ENDPOINT_COSTS: Record<string, number> = {
-  "GET /v1/text/advice": 1,
-  "GET /v1/text/quotes/random": 1,
-  // Add new endpoints here
-};
-```
-
-## Environment Variables
-
-| Variable         | Source        | Description                                |
-| ---------------- | ------------- | ------------------------------------------ |
-| `BACKEND_URL`    | Secret        | Internal backend URL (not public)          |
-| `BACKEND_SECRET` | Secret        | Auth header sent to backend (min 32 chars) |
-| `ENVIRONMENT`    | wrangler.toml | `development`, `staging`, or `production`  |
-
-## Project Structure
-
-```
-src/
-├── index.ts        # Main fetch handler
-├── env.ts          # t3-env validation (process.env)
-├── types.ts        # TypeScript types
-├── config.ts       # PLANS + ENDPOINT_COSTS
-├── rate-limit.ts   # KV-based rate limiting
-├── credits.ts      # D1 usage tracking
-└── http.ts         # Response helpers
+src/__tests__/
+├── config.test.ts      # Plan limits and endpoint multipliers
+├── http.test.ts        # Header filtering and usage headers
+└── rate-limit.test.ts  # Rate limiting logic
 ```
