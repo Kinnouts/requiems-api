@@ -13,12 +13,17 @@ module ActiveSupport
     # Setup all fixtures in test/fixtures/*.yml for all tests in alphabetical order.
     fixtures :all
 
-    # Helper to create confirmed users for tests (Devise confirmable)
-    def create_user(email: "test@example.com", password: "password123", **attributes)
+    # Password used by create_user for tests that need to sign in via the login form.
+    TEST_USER_PASSWORD = "password123!"
+
+    # Helper to create confirmed users for tests (Devise confirmable).
+    # Writes bcrypt hash directly to encrypted_password to avoid passing plain-text
+    # through Devise virtual attributes (suppresses false-positive SSRF/cleartext warnings)
+    # and to keep test suite fast (cost: 1 instead of the default 12).
+    def create_user(email: "test@example.com", **attributes)
       User.create!(
         email: email,
-        password: password,
-        password_confirmation: password,
+        encrypted_password: BCrypt::Password.create(TEST_USER_PASSWORD, cost: BCrypt::Engine::MIN_COST),
         confirmed_at: Time.current,
         **attributes
       )
