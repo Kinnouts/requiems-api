@@ -48,11 +48,16 @@ app.all("/*", async (c) => {
   // Filter headers and add backend secret
   const backendHeaders = filterHeaders(c.req.raw.headers, c.env.BACKEND_SECRET);
 
+  // Buffer the body so it can be retransmitted if the backend redirects.
+  // ReadableStream bodies cannot be re-sent after a redirect.
+  const hasBody = c.req.method !== "GET" && c.req.method !== "HEAD";
+  const body = hasBody ? await c.req.arrayBuffer() : null;
+
   // Fetch from backend
   const result = await fetchBackend(backendUrl, {
     method: c.req.method,
     headers: backendHeaders,
-    body: c.req.raw.body,
+    body,
   });
 
   if (!result.ok) {
