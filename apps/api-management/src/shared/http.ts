@@ -1,18 +1,5 @@
 // SHARED FILE - Keep in sync with auth-gateway/src/shared/http.ts
 
-const CORS_HEADERS = {
-  "Access-Control-Allow-Origin": "*",
-};
-
-export const corsResponse = new Response(null, {
-  headers: {
-    ...CORS_HEADERS,
-    "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type, requiems-api-key, X-API-Management-Key",
-    "Access-Control-Max-Age": "86400",
-  },
-});
-
 /**
  * JSON response helper
  */
@@ -25,7 +12,6 @@ export function jsonResponse(
     status,
     headers: {
       "Content-Type": "application/json",
-      ...CORS_HEADERS,
       ...headers,
     },
   });
