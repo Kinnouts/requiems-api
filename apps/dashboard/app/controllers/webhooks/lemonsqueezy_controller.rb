@@ -86,7 +86,7 @@ class Webhooks::LemonsqueezyController < ApplicationController
     )
 
     # Sync to Cloudflare KV
-    CloudflareKvSyncService.sync_user_plan(user, plan_name)
+    Cloudflare::ApiManagementService.new.sync_user_plan(user, plan_name)
 
     Rails.logger.info "[LemonSqueezy] Subscription created for user #{user.id}: #{plan_name}"
   end
@@ -110,7 +110,7 @@ class Webhooks::LemonsqueezyController < ApplicationController
     )
 
     # Sync to Cloudflare KV
-    CloudflareKvSyncService.sync_user_plan(subscription.user, plan_name)
+    Cloudflare::ApiManagementService.new.sync_user_plan(subscription.user, plan_name)
 
     Rails.logger.info "[LemonSqueezy] Subscription updated: #{subscription.id}"
   end
@@ -131,7 +131,7 @@ class Webhooks::LemonsqueezyController < ApplicationController
     )
 
     # Downgrade to free plan in Cloudflare KV
-    CloudflareKvSyncService.sync_user_plan(subscription.user, "free")
+    Cloudflare::ApiManagementService.new.sync_user_plan(subscription.user, "free")
 
     Rails.logger.info "[LemonSqueezy] Subscription cancelled: #{subscription.id}"
   end
@@ -154,7 +154,7 @@ class Webhooks::LemonsqueezyController < ApplicationController
     )
 
     # Restore plan in Cloudflare KV
-    CloudflareKvSyncService.sync_user_plan(subscription.user, plan_name)
+    Cloudflare::ApiManagementService.new.sync_user_plan(subscription.user, plan_name)
 
     Rails.logger.info "[LemonSqueezy] Subscription resumed: #{subscription.id}"
   end

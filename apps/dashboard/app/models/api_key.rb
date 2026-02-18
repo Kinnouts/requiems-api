@@ -22,28 +22,34 @@ class ApiKey < ApplicationRecord
   after_destroy :remove_from_cloudflare
   after_update :sync_revocation_to_cloudflare, if: :saved_change_to_active?
 
-  # Request a new API key from api-management server
-  # The server generates the key and returns it (only once)
+  # Request a new API key from the api-management worker.
+  # The worker generates the key, stores it in KV + D1, and returns it once.
   def request_key_from_server
     return if key_prefix.present? # Skip if already generated
 
-    # In test/development, generate keys locally without external API calls
-    if Rails.env.test? || Rails.env.development?
+    if Rails.env.test?
+      # In tests, generate locally to avoid external dependencies
       generate_key_locally
     else
-      # In production, request from api-management service
-      service = Cloudflare::KvSyncService.new(self)
-      generated_key = service.sync_create
+      # In all other environments, use the api-management worker so that
+      # the key is immediately available in Cloudflare KV (auth) and D1 (usage)
+      service = Cloudflare::ApiManagementService.new
+      billing_start = user.subscription&.created_at || Time.current
+
+      generated_key = service.create_key(
+        user_id: user_id,
+        plan: user.current_plan,
+        name: name,
+        billing_cycle_start: billing_start.iso8601
+      )
 
       if generated_key
-        # Store the returned key
         self.full_key = generated_key
         self.key_prefix = ApiKeyGenerator.extract_prefix(generated_key)
         self.key_hash = ApiKeyGenerator.hash_key(generated_key)
         self.active = true if active.nil?
       else
-        # Key generation failed
-        errors.add(:base, "Failed to generate API key")
+        errors.add(:base, "Failed to generate API key. Please try again.")
         throw :abort
       end
     end
@@ -81,11 +87,11 @@ class ApiKey < ApplicationRecord
   private
 
   def remove_from_cloudflare
-    return unless Rails.env.production? || ENV["SYNC_TO_CLOUDFLARE"] == "true"
+    return if Rails.env.test?
 
-    Cloudflare::KvSyncService.new(self).sync_delete
+    Cloudflare::ApiManagementService.new.revoke_key(key_prefix)
   rescue StandardError => e
-    Rails.logger.error("Failed to remove API key from Cloudflare: #{e.message}")
+    Rails.logger.error("[ApiManagement] Failed to revoke API key #{key_prefix}: #{e.message}")
   end
 
   def sync_revocation_to_cloudflare
