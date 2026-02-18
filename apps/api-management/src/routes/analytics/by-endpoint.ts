@@ -17,34 +17,35 @@ const app = new Hono<{ Bindings: WorkerBindings }>();
  * - limit: number (optional, max top endpoints to return, default: 10)
  */
 app.get("/by-endpoint", async (c) => {
-	const log = createLogger(c.req.raw);
+  const log = createLogger(c.req.raw);
 
-	const userId = c.req.query("userId");
-	const since = c.req.query("since");
-	const until = c.req.query("until") || new Date().toISOString();
-	const limit = Math.min(Number.parseInt(c.req.query("limit") || "10", 10), 100);
+  const userId = c.req.query("userId");
+  const since = c.req.query("since");
+  const until = c.req.query("until") || new Date().toISOString();
+  const limit = Math.min(Number.parseInt(c.req.query("limit") || "10", 10), 100);
 
-	if (!userId) {
-		return jsonError(400, "Missing required parameter: userId");
-	}
+  if (!userId) {
+    return jsonError(400, "Missing required parameter: userId");
+  }
 
-	try {
-		// If no "since" provided, get the earliest billing cycle start for this user
-		let sinceDate = since;
-		if (!sinceDate) {
-			const billingResult = await c.env.DB.prepare(`
+  try {
+    // If no "since" provided, get the earliest billing cycle start for this user
+    let sinceDate = since;
+    if (!sinceDate) {
+      const billingResult = await c.env.DB.prepare(`
         SELECT MIN(billing_cycle_start) as earliest
         FROM api_keys
         WHERE user_id = ? AND active = 1
       `)
-				.bind(userId)
-				.first<{ earliest: string }>();
+        .bind(userId)
+        .first<{ earliest: string }>();
 
-			sinceDate = billingResult?.earliest || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-		}
+      sinceDate =
+        billingResult?.earliest || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    }
 
-		// Query usage by endpoint
-		const result = await c.env.DB.prepare(`
+    // Query usage by endpoint
+    const result = await c.env.DB.prepare(`
       SELECT
         endpoint,
         COUNT(*) as requests,
@@ -57,22 +58,22 @@ app.get("/by-endpoint", async (c) => {
       ORDER BY credits DESC
       LIMIT ?
     `)
-			.bind(userId, sinceDate, until, limit)
-			.all<EndpointStats>();
+      .bind(userId, sinceDate, until, limit)
+      .all<EndpointStats>();
 
-		log.info("Analytics by endpoint fetched", {
-			userId,
-			endpoints: result.results?.length || 0,
-		});
+    log.info("Analytics by endpoint fetched", {
+      userId,
+      endpoints: result.results?.length || 0,
+    });
 
-		return jsonResponse({
-			endpoints: result.results || [],
-			dateRange: { since: sinceDate, until },
-		});
-	} catch (error) {
-		log.error("Error fetching endpoint analytics", { error });
-		return jsonError(500, "Failed to fetch analytics");
-	}
+    return jsonResponse({
+      endpoints: result.results || [],
+      dateRange: { since: sinceDate, until },
+    });
+  } catch (error) {
+    log.error("Error fetching endpoint analytics", { error });
+    return jsonError(500, "Failed to fetch analytics");
+  }
 });
 
 export default app;

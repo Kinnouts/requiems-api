@@ -6,7 +6,6 @@ import patchRoute from "./patch";
 
 import type { WorkerBindings } from "../../shared/types";
 
-
 const app = new Hono<{ Bindings: WorkerBindings }>();
 
 app.route("/", createRoute);

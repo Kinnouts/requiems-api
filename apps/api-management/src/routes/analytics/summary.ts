@@ -16,33 +16,34 @@ const app = new Hono<{ Bindings: WorkerBindings }>();
  * - until: ISO timestamp (optional, defaults to now)
  */
 app.get("/summary", async (c) => {
-	const log = createLogger(c.req.raw);
+  const log = createLogger(c.req.raw);
 
-	const userId = c.req.query("userId");
-	const since = c.req.query("since");
-	const until = c.req.query("until") || new Date().toISOString();
+  const userId = c.req.query("userId");
+  const since = c.req.query("since");
+  const until = c.req.query("until") || new Date().toISOString();
 
-	if (!userId) {
-		return jsonError(400, "Missing required parameter: userId");
-	}
+  if (!userId) {
+    return jsonError(400, "Missing required parameter: userId");
+  }
 
-	try {
-		// If no "since" provided, get the earliest billing cycle start
-		let sinceDate = since;
-		if (!sinceDate) {
-			const billingResult = await c.env.DB.prepare(`
+  try {
+    // If no "since" provided, get the earliest billing cycle start
+    let sinceDate = since;
+    if (!sinceDate) {
+      const billingResult = await c.env.DB.prepare(`
         SELECT MIN(billing_cycle_start) as earliest
         FROM api_keys
         WHERE user_id = ? AND active = 1
       `)
-				.bind(userId)
-				.first<{ earliest: string }>();
+        .bind(userId)
+        .first<{ earliest: string }>();
 
-			sinceDate = billingResult?.earliest || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-		}
+      sinceDate =
+        billingResult?.earliest || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+    }
 
-		// Get total requests and credits
-		const totalsResult = await c.env.DB.prepare(`
+    // Get total requests and credits
+    const totalsResult = await c.env.DB.prepare(`
       SELECT
         COUNT(*) as totalRequests,
         SUM(credits_used) as totalCredits
@@ -51,11 +52,11 @@ app.get("/summary", async (c) => {
         AND used_at >= ?
         AND used_at <= ?
     `)
-			.bind(userId, sinceDate, until)
-			.first<{ totalRequests: number; totalCredits: number }>();
+      .bind(userId, sinceDate, until)
+      .first<{ totalRequests: number; totalCredits: number }>();
 
-		// Get top 5 endpoints
-		const topEndpointsResult = await c.env.DB.prepare(`
+    // Get top 5 endpoints
+    const topEndpointsResult = await c.env.DB.prepare(`
       SELECT
         endpoint,
         COUNT(*) as requests,
@@ -68,27 +69,27 @@ app.get("/summary", async (c) => {
       ORDER BY credits DESC
       LIMIT 5
     `)
-			.bind(userId, sinceDate, until)
-			.all<EndpointStats>();
+      .bind(userId, sinceDate, until)
+      .all<EndpointStats>();
 
-		const summary: UsageSummary = {
-			userId,
-			totalRequests: totalsResult?.totalRequests || 0,
-			totalCredits: totalsResult?.totalCredits || 0,
-			dateRange: {
-				since: sinceDate,
-				until,
-			},
-			topEndpoints: topEndpointsResult.results || [],
-		};
+    const summary: UsageSummary = {
+      userId,
+      totalRequests: totalsResult?.totalRequests || 0,
+      totalCredits: totalsResult?.totalCredits || 0,
+      dateRange: {
+        since: sinceDate,
+        until,
+      },
+      topEndpoints: topEndpointsResult.results || [],
+    };
 
-		log.info("Analytics summary fetched", { userId });
+    log.info("Analytics summary fetched", { userId });
 
-		return jsonResponse(summary);
-	} catch (error) {
-		log.error("Error fetching analytics summary", { error });
-		return jsonError(500, "Failed to fetch analytics");
-	}
+    return jsonResponse(summary);
+  } catch (error) {
+    log.error("Error fetching analytics summary", { error });
+    return jsonError(500, "Failed to fetch analytics");
+  }
 });
 
 export default app;

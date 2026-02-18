@@ -17,26 +17,27 @@ const app = new Hono<{ Bindings: WorkerBindings }>();
  * - groupBy: "day" | "hour" (optional, defaults to "day")
  */
 app.get("/by-date", async (c) => {
-	const log = createLogger(c.req.raw);
+  const log = createLogger(c.req.raw);
 
-	const userId = c.req.query("userId");
-	const until = c.req.query("until") || new Date().toISOString();
-	const since = c.req.query("since") || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-	const groupBy = c.req.query("groupBy") || "day";
+  const userId = c.req.query("userId");
+  const until = c.req.query("until") || new Date().toISOString();
+  const since =
+    c.req.query("since") || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  const groupBy = c.req.query("groupBy") || "day";
 
-	if (!userId) {
-		return jsonError(400, "Missing required parameter: userId");
-	}
+  if (!userId) {
+    return jsonError(400, "Missing required parameter: userId");
+  }
 
-	if (groupBy !== "day" && groupBy !== "hour") {
-		return jsonError(400, "Invalid groupBy parameter. Must be 'day' or 'hour'");
-	}
+  if (groupBy !== "day" && groupBy !== "hour") {
+    return jsonError(400, "Invalid groupBy parameter. Must be 'day' or 'hour'");
+  }
 
-	try {
-		// SQLite date formatting: strftime for day or hour grouping
-		const dateFormat = groupBy === "day" ? "%Y-%m-%d" : "%Y-%m-%d %H:00:00";
+  try {
+    // SQLite date formatting: strftime for day or hour grouping
+    const dateFormat = groupBy === "day" ? "%Y-%m-%d" : "%Y-%m-%d %H:00:00";
 
-		const result = await c.env.DB.prepare(`
+    const result = await c.env.DB.prepare(`
       SELECT
         strftime('${dateFormat}', used_at) as date,
         COUNT(*) as requests,
@@ -48,24 +49,24 @@ app.get("/by-date", async (c) => {
       GROUP BY date
       ORDER BY date ASC
     `)
-			.bind(userId, since, until)
-			.all<DateStats>();
+      .bind(userId, since, until)
+      .all<DateStats>();
 
-		log.info("Analytics by date fetched", {
-			userId,
-			dataPoints: result.results?.length || 0,
-			groupBy,
-		});
+    log.info("Analytics by date fetched", {
+      userId,
+      dataPoints: result.results?.length || 0,
+      groupBy,
+    });
 
-		return jsonResponse({
-			timeSeries: result.results || [],
-			dateRange: { since, until },
-			groupBy,
-		});
-	} catch (error) {
-		log.error("Error fetching date analytics", { error });
-		return jsonError(500, "Failed to fetch analytics");
-	}
+    return jsonResponse({
+      timeSeries: result.results || [],
+      dateRange: { since, until },
+      groupBy,
+    });
+  } catch (error) {
+    log.error("Error fetching date analytics", { error });
+    return jsonError(500, "Failed to fetch analytics");
+  }
 });
 
 export default app;
