@@ -1,4 +1,5 @@
 import { Hono } from "hono";
+import { HTTPException } from "hono/http-exception";
 import { swaggerUI } from "@hono/swagger-ui";
 
 import { validateEnv } from "./shared/env";
@@ -55,6 +56,10 @@ app.notFound((_c) => {
 });
 
 app.onError((err, c) => {
+  if (err instanceof HTTPException) {
+    return err.getResponse();
+  }
+
   console.error("Unhandled error:", {
     message: err.message,
     name: err.name,
