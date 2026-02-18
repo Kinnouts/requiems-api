@@ -107,9 +107,8 @@ jobs:
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v4
         with:
-          version: v1.62
+          version: v2.10.1
           working-directory: apps/api
-          args: --timeout=5m
           skip-cache: false
           skip-pkg-cache: false
           skip-build-cache: false

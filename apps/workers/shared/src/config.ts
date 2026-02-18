@@ -1,4 +1,4 @@
-import type { PlanConfig, PlanName } from "./types";
+import type { PlanConfig } from "./types";
 
 /**
  * Plan configurations
@@ -15,7 +15,7 @@ import type { PlanConfig, PlanName } from "./types";
  * - Professional: $150/month - 10,000,000 requests
  * - Enterprise: Custom - Unlimited requests
  */
-export const PLANS: Record<PlanName, PlanConfig> = {
+export const PLANS = {
   free: {
     requestLimit: 500,
     ratePerMinute: 30,
@@ -36,7 +36,16 @@ export const PLANS: Record<PlanName, PlanConfig> = {
     requestLimit: Number.POSITIVE_INFINITY,
     ratePerMinute: Number.POSITIVE_INFINITY,
   },
-};
+} as const;
+
+/**
+ * Plan names
+ * https://github.com/bobadilla-tech/requiems-api/docs/business.md
+ */
+export type PlanName = keyof typeof PLANS;
+
+export const PLAN_NAMES = Object.keys(PLANS) as PlanName[];
+
 
 /**
  * Request multipliers - how many requests an endpoint counts as

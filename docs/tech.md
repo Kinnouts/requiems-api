@@ -154,13 +154,12 @@ Update:**
 
 **Note:** Installed dynamically in dev container, not in production.
 
-### golangci-lint 1.62
+### golangci-lint 2.10.1
 
-**What:** Go meta-linter **Current Version:** v1.62 **Files to Update:**
+**What:** Go meta-linter **Current Version:** v2.10.1 (built with Go 1.24) **Files to Update:**
 
-- `.github/workflows/ci.yml` - CI linter (line 104: `version: v1.62`)
-- `apps/api/.golangci.yml` - Linter configuration (rules don't need version
-  updates)
+- `.github/workflows/ci.yml` - CI linter (line 110: `version: v2.10.1`)
+- `apps/api/.golangci.yml` - Linter v2 configuration (use `golangci-lint migrate` to upgrade from v1)
 
 **Verification:**
 

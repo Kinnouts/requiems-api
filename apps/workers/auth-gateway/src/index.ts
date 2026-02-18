@@ -14,12 +14,10 @@ import { addUsageHeaders, fetchBackend, filterHeaders } from "./http";
 import { checkRateLimit, getRequestLimitMessage } from "./rate-limit";
 
 async function fetch(request: Request, bindings: WorkerBindings): Promise<Response> {
-  // Validate environment variables
   const env = validateEnv(bindings);
   const url = new URL(request.url);
   const pathname = url.pathname;
 
-  // Health check endpoint
   if (pathname === "/healthz") {
     return jsonResponse({ status: "ok", service: "auth-gateway" });
   }
@@ -42,7 +40,7 @@ async function fetch(request: Request, bindings: WorkerBindings): Promise<Respon
     return jsonError(401, "Invalid API key");
   }
 
-  const plan = PLANS[keyData.plan];
+  const plan = PLANS[keyData.plan as keyof typeof PLANS];
 
   if (!plan) {
     return jsonError(500, "Invalid plan configuration");

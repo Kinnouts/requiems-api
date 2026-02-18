@@ -1,3 +1,8 @@
+import type { PlanName } from "./config";
+
+// Re-export PlanName for convenience
+export type { PlanName };
+
 /**
  * Base Cloudflare bindings shared by all workers
  * Workers should extend this with their specific env vars
@@ -19,11 +24,6 @@ export interface ApiKeyData {
   billingCycleStart?: string;
 }
 
-/**
- * Plan names
- * https://github.com/bobadilla-tech/requiems-api/docs/business.md
- */
-export type PlanName = "free" | "developer" | "business" | "professional" | "enterprise";
 
 /**
  * Plan configuration
