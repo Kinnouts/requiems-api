@@ -33,10 +33,12 @@ jobs:
               - 'apps/dashboard/**'
               - '.github/workflows/ci.yml'
             auth-gateway:
-              - 'apps/auth-gateway/**'
+              - 'apps/workers/auth-gateway/**'
+              - 'apps/workers/shared/**'
               - '.github/workflows/ci.yml'
             api-management:
-              - 'apps/api-management/**'
+              - 'apps/workers/api-management/**'
+              - 'apps/workers/shared/**'
               - '.github/workflows/ci.yml'
 
   go-test:
@@ -253,12 +255,16 @@ jobs:
         with:
           bun-version: latest
 
+      - name: Install shared dependencies
+        working-directory: apps/workers/shared
+        run: bun install --frozen-lockfile
+
       - name: Install dependencies
-        working-directory: apps/auth-gateway
+        working-directory: apps/workers/auth-gateway
         run: bun install --frozen-lockfile
 
       - name: TypeScript check
-        working-directory: apps/auth-gateway
+        working-directory: apps/workers/auth-gateway
         run: bun run typecheck
 
   worker-test:
@@ -275,23 +281,27 @@ jobs:
         with:
           bun-version: latest
 
+      - name: Install shared dependencies
+        working-directory: apps/workers/shared
+        run: bun install --frozen-lockfile
+
       - name: Install dependencies
-        working-directory: apps/auth-gateway
+        working-directory: apps/workers/auth-gateway
         run: bun install --frozen-lockfile
 
       - name: Run tests
-        working-directory: apps/auth-gateway
+        working-directory: apps/workers/auth-gateway
         run: bunx vitest run
 
       - name: Generate coverage
-        working-directory: apps/auth-gateway
+        working-directory: apps/workers/auth-gateway
         run: bunx vitest run --coverage.enabled --coverage.reporter=text
 
       - name: Upload coverage
         uses: actions/upload-artifact@v4
         with:
           name: worker-coverage
-          path: apps/auth-gateway/coverage/
+          path: apps/workers/auth-gateway/coverage/
 
   worker-lint:
     name: Worker Lint (Advisory)
@@ -308,16 +318,20 @@ jobs:
         with:
           bun-version: latest
 
+      - name: Install shared dependencies
+        working-directory: apps/workers/shared
+        run: bun install --frozen-lockfile
+
       - name: Install dependencies
-        working-directory: apps/auth-gateway
+        working-directory: apps/workers/auth-gateway
         run: bun install --frozen-lockfile
 
       - name: Biome lint
-        working-directory: apps/auth-gateway
+        working-directory: apps/workers/auth-gateway
         run: bun run lint
 
       - name: Biome format check
-        working-directory: apps/auth-gateway
+        working-directory: apps/workers/auth-gateway
         run: bun run format:check
 
   api-management-typecheck:
@@ -334,12 +348,16 @@ jobs:
         with:
           bun-version: latest
 
+      - name: Install shared dependencies
+        working-directory: apps/workers/shared
+        run: bun install --frozen-lockfile
+
       - name: Install dependencies
-        working-directory: apps/api-management
+        working-directory: apps/workers/api-management
         run: bun install --frozen-lockfile
 
       - name: TypeScript check
-        working-directory: apps/api-management
+        working-directory: apps/workers/api-management
         run: bun run typecheck
 
   api-management-test:
@@ -356,12 +374,16 @@ jobs:
         with:
           bun-version: latest
 
+      - name: Install shared dependencies
+        working-directory: apps/workers/shared
+        run: bun install --frozen-lockfile
+
       - name: Install dependencies
-        working-directory: apps/api-management
+        working-directory: apps/workers/api-management
         run: bun install --frozen-lockfile
 
       - name: Run tests
-        working-directory: apps/api-management
+        working-directory: apps/workers/api-management
         run: bunx vitest run
 
   ci-success:
