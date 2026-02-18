@@ -27,14 +27,16 @@ app.use("/docs/*", async (c, next) => {
   await next();
 });
 
-app.use("/docs/*", async (c, next) => {
-  const auth = basicAuth({
-    username: c.env.SWAGGER_USERNAME!,
-    password: c.env.SWAGGER_PASSWORD!,
-  });
-  
-  return auth(c, next);
-});
+app.use("/docs/*", basicAuth({
+  verifyUser: (username, password, c) => {
+    const adminUser = c.env.SWAGGER_USERNAME!
+    const adminPass = c.env.SWAGGER_PASSWORD!
+
+    return (
+      username === adminUser && password === adminPass
+    )
+  },
+}));
 
 app.get("/docs", swaggerUI({ url: "/openapi.json" }));
 
