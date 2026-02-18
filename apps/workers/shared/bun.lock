@@ -5,6 +5,8 @@
       "name": "@requiem/workers-shared",
       "dependencies": {
         "@t3-oss/env-core": "^0.11.1",
+        "hono": "^4.11.9",
+        "nanoid": "^5.1.6",
         "zod": "^3.24.1",
       },
       "devDependencies": {
@@ -17,6 +19,10 @@
     "@cloudflare/workers-types": ["@cloudflare/workers-types@4.20260218.0", "", {}, "sha512-E28uJNJb9J9pca3RaxjXm1JxAjp8td9/cudkY+IT8rio71NlshN7NKMe2Cr/6GN+RufbSnp+N3ZKP74xgUaL0A=="],
 
     "@t3-oss/env-core": ["@t3-oss/env-core@0.11.1", "", { "peerDependencies": { "typescript": ">=5.0.0", "zod": "^3.0.0" }, "optionalPeers": ["typescript"] }, "sha512-MaxOwEoG1ntCFoKJsS7nqwgcxLW1SJw238AJwfJeaz3P/8GtkxXZsPPolsz1AdYvUTbe3XvqZ/VCdfjt+3zmKw=="],
+
+    "hono": ["hono@4.11.9", "", {}, "sha512-Eaw2YTGM6WOxA6CXbckaEvslr2Ne4NFsKrvc0v97JD5awbmeBLO5w9Ho9L9kmKonrwF9RJlW6BxT1PVv/agBHQ=="],
+
+    "nanoid": ["nanoid@5.1.6", "", { "bin": { "nanoid": "bin/nanoid.js" } }, "sha512-c7+7RQ+dMB5dPwwCp4ee1/iV/q2P6aK1mTZcfr1BTuVlyW9hJYiMPybJCcnBlQtuSmTIWNeazm/zqNoZSSElBg=="],
 
     "typescript": ["typescript@5.9.3", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-jl1vZzPDinLr9eUt3J/t7V6FgNEw9QjvBPdysz9KfQDD41fQrC2Y4vKQdiaUpFT4bXlb1RHhLpp8wtm6M5TgSw=="],
 

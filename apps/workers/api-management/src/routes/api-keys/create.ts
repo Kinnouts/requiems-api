@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { jsonError, jsonResponse, createLogger, type ApiKeyData } from "@requiem/workers-shared";
-import { ApiKeyGenerator } from "../../shared/api-key-generator";
-import type { WorkerBindings } from "../../shared/env";
+import { ApiKeyGenerator } from "../../../../shared/src/api-key-generator";
+import type { WorkerBindings } from "../../env";
 
 const app = new Hono<{ Bindings: WorkerBindings }>();
 

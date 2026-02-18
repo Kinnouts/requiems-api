@@ -1,142 +1,47 @@
-import {
-  getRequestMultiplier,
-  PLANS,
-  createLogger,
-  maskApiKey,
-  corsResponse,
-  jsonError,
-  jsonResponse,
-  type ApiKeyData,
-} from "@requiem/workers-shared";
-import { checkRequestUsage, recordRequestUsage } from "./requests";
-import { validateEnv, type WorkerBindings } from "./env";
-import { addUsageHeaders, fetchBackend, filterHeaders } from "./http";
-import { checkRateLimit, getRequestLimitMessage } from "./rate-limit";
+import { Hono } from "hono";
 
-async function fetch(request: Request, bindings: WorkerBindings): Promise<Response> {
-  const env = validateEnv(bindings);
-  const url = new URL(request.url);
-  const pathname = url.pathname;
+import { validateEnv, type WorkerBindings } from "./shared/env";
+import { errorHandler, jsonResponse, corsMiddleware } from "@requiem/workers-shared";
 
-  if (pathname === "/healthz") {
-    return jsonResponse({ status: "ok", service: "auth-gateway" });
-  }
+import { apiKeyAuthMiddleware } from "./middleware/api-key-auth";
 
-  const log = createLogger(request);
+import proxyRoute from "./routes/proxy";
 
-  if (request.method === "OPTIONS") {
-    return corsResponse;
-  }
+const app = new Hono<{ Bindings: WorkerBindings }>();
 
-  const apiKey = request.headers.get("requiems-api-key");
+app.get("/healthz", (_c) => jsonResponse({ status: "ok", service: "auth-gateway" }));
 
-  if (!apiKey) {
-    return jsonError(401, "Get your key at requiems-api.xyz");
-  }
+app.use("*", corsMiddleware);
 
-  const keyData = await bindings.KV.get<ApiKeyData>(`key:${apiKey}`, "json");
+app.use("/*", apiKeyAuthMiddleware);
 
-  if (!keyData) {
-    return jsonError(401, "Invalid API key");
-  }
+app.route("/", proxyRoute);
 
-  const plan = PLANS[keyData.plan as keyof typeof PLANS];
+app.notFound((_c) => {
+  return jsonResponse({ error: "Not found" }, 404);
+});
 
-  if (!plan) {
-    return jsonError(500, "Invalid plan configuration");
-  }
+app.onError(errorHandler);
 
-  const rateLimit = await checkRateLimit(bindings, apiKey, plan);
+export default {
+  async fetch(request: Request, env: WorkerBindings): Promise<Response> {
+    try {
+      validateEnv(env);
+    } catch (error) {
+      console.error("Environment validation failed:", error);
 
-  if (!rateLimit.allowed) {
-    log.info("Rate limit exceeded", {
-      key: maskApiKey(apiKey),
-      plan: keyData.plan,
-    });
+      return new Response(
+        JSON.stringify({
+          error: "Configuration error",
+          details: error instanceof Error ? error.message : String(error),
+        }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json" },
+        },
+      );
+    }
 
-    return jsonError(429, "Rate limit exceeded", {
-      "X-RateLimit-Limit": plan.ratePerMinute.toString(),
-      "X-RateLimit-Remaining": "0",
-      "X-RateLimit-Reset": Math.ceil(rateLimit.resetAt / 1000).toString(),
-      "Retry-After": Math.ceil((rateLimit.resetAt - Date.now()) / 1000).toString(),
-    });
-  }
-
-  const requestUsage = await checkRequestUsage(
-    bindings,
-    keyData.userId,
-    "monthly",
-    plan.requestLimit,
-    keyData.billingCycleStart,
-  );
-
-  const requestMultiplier = getRequestMultiplier(request.method, pathname);
-
-  if (requestUsage.usage >= plan.requestLimit) {
-    log.info("Request limit exceeded", {
-      key: maskApiKey(apiKey),
-      plan: keyData.plan,
-      usage: requestUsage.usage,
-    });
-
-    return jsonError(429, getRequestLimitMessage(), {
-      "X-Requests-Used": "0",
-      "X-Requests-Remaining": "0",
-      "X-Requests-Reset": requestUsage.resetAt,
-      "X-Plan": keyData.plan,
-    });
-  }
-
-  const backendUrl = new URL(pathname + url.search, env.BACKEND_URL);
-
-  const backendHeaders = filterHeaders(request.headers, env.BACKEND_SECRET);
-
-  const result = await fetchBackend(backendUrl, {
-    method: request.method,
-    headers: backendHeaders,
-    body: request.body,
-  });
-
-  if (!result.ok) {
-    log.error("Backend fetch failed", { error: result.error });
-    return jsonError(502, result.error);
-  }
-
-  const backendResponse = result.response;
-
-  if (!backendResponse.ok) {
-    log.warn("Backend error response", {
-      status: backendResponse.status,
-      path: pathname,
-    });
-
-    const response = addUsageHeaders(backendResponse, {
-      requestsUsed: 0,
-      requestsRemaining: requestUsage.remaining,
-      requestsReset: requestUsage.resetAt,
-      plan: keyData.plan,
-      rateLimitLimit: plan.ratePerMinute,
-      rateLimitRemaining: rateLimit.remaining,
-    });
-
-    return response;
-  }
-
-  void recordRequestUsage(bindings, apiKey, keyData.userId, pathname, requestMultiplier);
-
-  const response = addUsageHeaders(backendResponse, {
-    requestsUsed: requestMultiplier,
-    requestsRemaining: Math.max(0, requestUsage.remaining - requestMultiplier),
-    requestsReset: requestUsage.resetAt,
-    plan: keyData.plan,
-    rateLimitLimit: plan.ratePerMinute,
-    rateLimitRemaining: rateLimit.remaining,
-  });
-
-  return response;
-}
-
-export default { fetch };
-
-export type { ApiKeyData } from "@requiem/workers-shared";
-export type { WorkerBindings } from "./env";
+    return app.fetch(request, env);
+  },
+};

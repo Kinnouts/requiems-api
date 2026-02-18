@@ -4,7 +4,7 @@ import createRoute from "./create";
 import deleteRoute from "./delete";
 import patchRoute from "./patch";
 
-import type { WorkerBindings } from "../../shared/env";
+import type { WorkerBindings } from "../../env";
 
 const app = new Hono<{ Bindings: WorkerBindings }>();
 

@@ -1,7 +1,7 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 import { checkRateLimit, getPlanLimits, getRequestLimitMessage } from "../rate-limit";
 import { PLANS } from "@requiem/workers-shared";
-import type { WorkerBindings } from "../env";
+import type { WorkerBindings } from "../shared/env";
 
 describe("Rate Limiting", () => {
   // Mock KV store

@@ -1,6 +1,11 @@
 import type { Context, Next } from "hono";
 import { jsonResponse } from "@requiem/workers-shared";
-import type { WorkerBindings } from "../shared/env";
+
+// Generic bindings interface for basic auth
+interface BasicAuthBindings {
+  SWAGGER_USERNAME?: string;
+  SWAGGER_PASSWORD?: string;
+}
 
 /**
  * Custom Basic Authentication Middleware
@@ -38,7 +43,7 @@ export const basicAuthMiddleware = async (c: Context, next: Next) => {
     const credentials = atob(base64Credentials);
     const [username, password] = credentials.split(":");
 
-    const env = c.env as WorkerBindings;
+    const env = c.env as BasicAuthBindings;
     const validUsername = env.SWAGGER_USERNAME;
     const validPassword = env.SWAGGER_PASSWORD;
 

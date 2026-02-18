@@ -105,13 +105,10 @@ jobs:
           cache-dependency-path: apps/api/go.sum
 
       - name: golangci-lint
-        uses: golangci/golangci-lint-action@v4
+        uses: golangci/golangci-lint-action@v9
         with:
-          version: v2.10.1
+          version: v2.10
           working-directory: apps/api
-          skip-cache: false
-          skip-pkg-cache: false
-          skip-build-cache: false
 
   rails-test:
     name: Rails Tests
