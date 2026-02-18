@@ -18,17 +18,12 @@ export async function swaggerAuthMiddleware(c: Context<{ Bindings: WorkerBinding
 			return c.json({ error: "Documentation access requires authentication configuration" }, 403);
 		}
 
-		try {
-			const auth = basicAuth({
-				username,
-				password,
-			});
-			
-			return auth(c, next);
-		} catch (error) {
-			console.error("Basic auth error:", error);
-			return c.json({ error: "Authentication configuration error" }, 500);
-		}
+		const auth = basicAuth({
+			username,
+			password,
+		});
+
+		return await auth(c, next);
 	}
 
 	await next();
