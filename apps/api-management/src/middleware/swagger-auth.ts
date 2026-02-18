@@ -9,13 +9,26 @@ import type { WorkerBindings } from "../shared/types";
 export async function swaggerAuthMiddleware(c: Context<{ Bindings: WorkerBindings }>, next: Next) {
 	const env = c.env;
 
-	if (env.ENVIRONMENT === "production" && env.SWAGGER_USERNAME && env.SWAGGER_PASSWORD) {
-		const auth = basicAuth({
-			username: env.SWAGGER_USERNAME,
-			password: env.SWAGGER_PASSWORD,
-		});
+	if (env.ENVIRONMENT === "production") {
+		const username = env.SWAGGER_USERNAME;
+		const password = env.SWAGGER_PASSWORD;
 
-		return auth(c, next);
+		if (!username || !password) {
+			console.error("Swagger docs access denied: authentication not configured in production");
+			return c.json({ error: "Documentation access requires authentication configuration" }, 403);
+		}
+
+		try {
+			const auth = basicAuth({
+				username,
+				password,
+			});
+			
+			return auth(c, next);
+		} catch (error) {
+			console.error("Basic auth error:", error);
+			return c.json({ error: "Authentication configuration error" }, 500);
+		}
 	}
 
 	await next();

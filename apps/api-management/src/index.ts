@@ -4,8 +4,8 @@ import { swaggerUI } from "@hono/swagger-ui";
 import { validateEnv } from "./shared/env";
 import { jsonResponse } from "./shared/http";
 
-import { swaggerAuthMiddleware } from "./middleware/swagger-auth";
 import { apiKeyAuthMiddleware } from "./middleware/api-key-auth";
+import { swaggerAuthMiddleware } from "./middleware/swagger-auth";
 
 import apiKeysRoute from "./routes/api-keys";
 import usageRoute from "./routes/usage";
@@ -37,16 +37,12 @@ app.notFound((_c) => {
 });
 
 app.onError((err, c) => {
-  // Log full error details
-  console.error("Unhandled error:", err);
-  console.error("Error details:", {
+  console.error("Unhandled error:", {
     message: err.message,
     name: err.name,
     stack: err.stack,
-    toString: err.toString(),
   });
 
-  // In development, return detailed error
   if (c.env?.ENVIRONMENT === "development") {
     return jsonResponse({
       error: "Internal server error",
@@ -68,6 +64,7 @@ export default {
       validateEnv(env);
     } catch (error) {
       console.error("Environment validation failed:", error);
+
       return new Response(JSON.stringify({
         error: "Configuration error",
         details: error instanceof Error ? error.message : String(error),
