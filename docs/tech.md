@@ -5,20 +5,22 @@ them when upgrading.
 
 ## Core Languages & Runtimes
 
-### Go 1.23
+### Go 1.24
 
-**What:** Backend API service language **Current Version:** 1.23 **Files to
+**What:** Backend API service language **Current Version:** 1.24 **Files to
 Update:**
 
-- `.github/workflows/ci.yml` - CI test runner (line 65: `go-version: "1.23"`)
-- `apps/api/go.mod` - Go module definition (line 3: `go 1.23`)
+- `.github/workflows/ci.yml` - CI test runner (line 65: `go-version: "1.24"`)
+- `apps/api/go.mod` - Go module definition (line 3: `go 1.24`)
 - `infra/docker/docker-compose.dev.yml` - Dev container (line 31:
-  `image: golang:1.23-alpine`)
+  `image: golang:1.24-alpine`)
+- `infra/docker/api.Dockerfile` - Production build (line 1: `FROM golang:1.24-alpine AS build`)
+- `apps/api/.golangci.yml` - Linter configuration (line 6: `go: "1.24"`)
 
 **Verification:**
 
 ```bash
-cd apps/api && go version  # Should show go1.23.x
+cd apps/api && go version  # Should show go1.24.x
 ```
 
 ### Ruby 3.4.8
@@ -223,7 +225,7 @@ When updating a core technology:
 
 ## Version Pinning Philosophy
 
-- **Go/Ruby/TypeScript:** Pin major + minor (e.g., 1.23, 3.4.8, 5.3.3) for
+- **Go/Ruby/TypeScript:** Pin major + minor (e.g., 1.24, 3.4.8, 5.3.3) for
   stability
 - **Rails/Gems:** Use `~>` for patch updates (e.g., `~> 8.1.2` allows 8.1.x)
 - **Node packages:** Use `^` for minor updates (e.g., `^1.2.0` allows 1.x.x)
@@ -234,7 +236,7 @@ When updating a core technology:
 
 Current CI runs:
 
-- **Go 1.23** + PostgreSQL 16 + Redis 7
+- **Go 1.24** + PostgreSQL 16 + Redis 7
 - **Ruby 3.4.8** + Rails 8.1 + PostgreSQL 16 + Redis 7
 - **Bun latest** + TypeScript 5.3.3 + Vitest 1.2.0
 
@@ -244,7 +246,7 @@ See `.github/workflows/ci.yml` for full test configuration.
 
 ```bash
 # Check all versions locally
-go version                    # Go 1.23.x
+go version                    # Go 1.24.x
 ruby -v                       # Ruby 3.4.8
 cd apps/dashboard && bin/rails -v  # Rails 8.1.2.x
 cd apps/edge-auth && bun --version # Latest
