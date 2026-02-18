@@ -36,8 +36,21 @@ app.notFound((_c) => {
   return jsonResponse({ error: "Not found" }, 404);
 });
 
-app.onError((err, _c) => {
-  console.error("Unhandled error:", err);
+app.onError((err, c) => {
+=  console.error("Unhandled error:", {
+    message: err.message,
+    stack: err.stack,
+    name: err.name,
+  });
+
+  if (c.env?.ENVIRONMENT === "development") {
+    return jsonResponse({
+      error: "Internal server error",
+      details: err.message,
+      stack: err.stack
+    }, 500);
+  }
+
   return jsonResponse({ error: "Internal server error" }, 500);
 });
 
