@@ -2,30 +2,15 @@ import { Hono } from "hono";
 import { swaggerUI } from "@hono/swagger-ui";
 
 import { validateEnv, type WorkerBindings } from "./env";
-import { jsonResponse } from "@requiem/workers-shared";
+import { basicAuthMiddleware, errorHandler, jsonResponse } from "@requiem/workers-shared";
 
-import { apiKeyAuthMiddleware } from "./middleware/api-key-auth";
+import { apiKeyAuthMiddleware } from "./middleware/";
 
-import apiKeysRoute from "./routes/api-keys";
-import usageRoute from "./routes/usage";
-import analyticsRoute from "./routes/analytics";
-import swaggerRoute from "./routes/swagger";
-
-import { basicAuthMiddleware } from "@requiem/workers-shared/middleware/basic-auth";
-import { errorHandler } from "@requiem/workers-shared/middleware/error-handler";
+import { apiKeysRoute, usageRoute, analyticsRoute, swaggerRoute } from "./routes";
 
 const app = new Hono<{ Bindings: WorkerBindings }>();
 
 app.get("/healthz", (_c) => jsonResponse({ status: "ok", service: "api-management" }));
-
-app.use("/docs", async (c, next) => {
-  console.log("Swagger UI access attempt:", {
-    ip: c.req.header("CF-Connecting-IP") || c.req.header("X-Forwarded-For") || "unknown",
-    userAgent: c.req.header("User-Agent") || "unknown",
-  });
-
-  await next();
-});
 
 app.use("/docs", basicAuthMiddleware);
 

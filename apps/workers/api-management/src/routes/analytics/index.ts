@@ -4,11 +4,11 @@ import byEndpointRoute from "./by-endpoint";
 import byDateRoute from "./by-date";
 import summaryRoute from "./summary";
 
-const app = new Hono<{ Bindings: WorkerBindings }>();
+const analyticsRoute = new Hono<{ Bindings: WorkerBindings }>();
 
 // Mount endpoint routes
-app.route("/", byEndpointRoute);
-app.route("/", byDateRoute);
-app.route("/", summaryRoute);
+analyticsRoute.route("/", byEndpointRoute);
+analyticsRoute.route("/", byDateRoute);
+analyticsRoute.route("/", summaryRoute);
 
-export default app;
+export { analyticsRoute };

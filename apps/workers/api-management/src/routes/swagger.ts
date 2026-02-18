@@ -1,13 +1,13 @@
 import { Hono } from "hono";
 import type { WorkerBindings } from "../env";
 
-const app = new Hono<{ Bindings: WorkerBindings }>();
+const swaggerRoute = new Hono<{ Bindings: WorkerBindings }>();
 
 /**
  * OpenAPI specification endpoint
  * Provides machine-readable API documentation
  */
-app.get("/openapi.json", (c) => {
+swaggerRoute.get("/openapi.json", (c) => {
   return c.json({
     openapi: "3.0.0",
     info: {
@@ -190,4 +190,4 @@ app.get("/openapi.json", (c) => {
   });
 });
 
-export default app;
+export { swaggerRoute };

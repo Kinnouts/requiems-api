@@ -6,10 +6,10 @@ import patchRoute from "./patch";
 
 import type { WorkerBindings } from "../../env";
 
-const app = new Hono<{ Bindings: WorkerBindings }>();
+const apiKeysRoute = new Hono<{ Bindings: WorkerBindings }>();
 
-app.route("/", createRoute);
-app.route("/", deleteRoute);
-app.route("/", patchRoute);
+apiKeysRoute.route("/", createRoute);
+apiKeysRoute.route("/", deleteRoute);
+apiKeysRoute.route("/", patchRoute);
 
-export default app;
+export { apiKeysRoute };

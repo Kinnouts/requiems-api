@@ -2,9 +2,9 @@ import { Hono } from "hono";
 import type { WorkerBindings } from "../../env";
 import exportRoute from "./export";
 
-const app = new Hono<{ Bindings: WorkerBindings }>();
+const usageRoute = new Hono<{ Bindings: WorkerBindings }>();
 
 // Mount endpoint routes
-app.route("/", exportRoute);
+usageRoute.route("/", exportRoute);
 
-export default app;
+export { usageRoute };

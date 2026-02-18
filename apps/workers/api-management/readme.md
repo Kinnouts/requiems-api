@@ -1,5 +1,7 @@
 # API Management
 
+> https://api-management.requiems.xyz/docs
+
 Internal-only Cloudflare Worker at `api-management.requiems.xyz`. Provides a
 REST API for the Rails dashboard to manage API keys, export usage data to
 PostgreSQL, and query analytics from D1.
@@ -8,43 +10,43 @@ PostgreSQL, and query analytics from D1.
 
 ### Health
 
-| Method | Path | Description |
-|---|---|---|
-| `GET` | `/healthz` | Health check |
-| `GET` | `/docs` | Swagger UI (basic auth protected in production) |
-| `GET` | `/openapi.json` | OpenAPI spec |
+| Method | Path            | Description                                     |
+| ------ | --------------- | ----------------------------------------------- |
+| `GET`  | `/healthz`      | Health check                                    |
+| `GET`  | `/docs`         | Swagger UI (basic auth protected in production) |
+| `GET`  | `/openapi.json` | OpenAPI spec                                    |
 
 ### API Keys
 
-| Method | Path | Description |
-|---|---|---|
-| `POST` | `/api-keys` | Create a new API key |
-| `DELETE` | `/api-keys/:keyPrefix` | Revoke an API key |
-| `PATCH` | `/api-keys/:keyPrefix` | Update API key metadata |
+| Method   | Path                   | Description             |
+| -------- | ---------------------- | ----------------------- |
+| `POST`   | `/api-keys`            | Create a new API key    |
+| `DELETE` | `/api-keys/:keyPrefix` | Revoke an API key       |
+| `PATCH`  | `/api-keys/:keyPrefix` | Update API key metadata |
 
 ### Usage Export
 
-| Method | Path | Description |
-|---|---|---|
-| `GET` | `/usage/export` | Export usage records for PostgreSQL sync |
+| Method | Path            | Description                              |
+| ------ | --------------- | ---------------------------------------- |
+| `GET`  | `/usage/export` | Export usage records for PostgreSQL sync |
 
 Query params for `/usage/export`:
 
-| Param | Required | Default | Description |
-|---|---|---|---|
-| `since` | Yes | — | ISO 8601 timestamp; returns records after this |
-| `limit` | No | 1000 | Max records per page (max: 5000) |
-| `cursor` | No | — | Pagination offset |
+| Param    | Required | Default | Description                                    |
+| -------- | -------- | ------- | ---------------------------------------------- |
+| `since`  | Yes      | —       | ISO 8601 timestamp; returns records after this |
+| `limit`  | No       | 1000    | Max records per page (max: 5000)               |
+| `cursor` | No       | —       | Pagination offset                              |
 
 Returns paginated `UsageRecord[]` with `hasMore` and `nextCursor`.
 
 ### Analytics
 
-| Method | Path | Description |
-|---|---|---|
-| `GET` | `/analytics/summary` | Overall usage summary for a user |
-| `GET` | `/analytics/by-endpoint` | Usage breakdown by endpoint |
-| `GET` | `/analytics/by-date` | Usage breakdown by date |
+| Method | Path                     | Description                      |
+| ------ | ------------------------ | -------------------------------- |
+| `GET`  | `/analytics/summary`     | Overall usage summary for a user |
+| `GET`  | `/analytics/by-endpoint` | Usage breakdown by endpoint      |
+| `GET`  | `/analytics/by-date`     | Usage breakdown by date          |
 
 ## Authentication
 
@@ -119,11 +121,11 @@ Repeat with cursor until hasMore = false
 
 Set via `wrangler secret put`:
 
-| Variable | Description |
-|---|---|
+| Variable                 | Description                                                |
+| ------------------------ | ---------------------------------------------------------- |
 | `API_MANAGEMENT_API_KEY` | Secret key; Rails must send this as `X-API-Management-Key` |
-| `SWAGGER_USERNAME` | Basic auth username for `/docs` |
-| `SWAGGER_PASSWORD` | Basic auth password for `/docs` |
+| `SWAGGER_USERNAME`       | Basic auth username for `/docs`                            |
+| `SWAGGER_PASSWORD`       | Basic auth password for `/docs`                            |
 
 ## Development
 
