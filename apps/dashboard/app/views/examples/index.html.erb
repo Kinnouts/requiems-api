@@ -31,7 +31,7 @@
     <% if @examples.any? %>
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <% @examples.each do |example| %>
-          <%= render "examples/example_card", example: example %>
+          <%= render "partials/examples_index/example_card", example: example %>
         <% end %>
       </div>
     <% else %>
@@ -57,12 +57,12 @@
           </svg>
           Submit an Example
         </a>
-        <a href="mailto:examples@requiems.xyz" class="inline-flex items-center px-6 py-3 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-400 transition-colors">
+        <%= link_to contact_path, class: "inline-flex items-center px-6 py-3 bg-blue-500 text-white font-medium rounded-lg hover:bg-blue-400 transition-colors" do %>
           <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
           </svg>
           Contact Us
-        </a>
+        <% end %>
       </div>
     </div>
   </div>

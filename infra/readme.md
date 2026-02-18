@@ -7,16 +7,10 @@ deploy it to a single VPS.
 
 ## 1. Local Development Setup
 
-### 1.1 Requirements (Quick Start)
-
-**Recommended:**
+### 1.1 Requirements
 
 - Docker and Docker Compose (required for the main stack)
 - Bun or Node.js 18+ (only for edge-auth development)
-
-**Optional (Advanced):**
-
-- Go 1.22+ (only if running API without Docker)
 
 ### 1.2 Run everything with Docker (RECOMMENDED)
 
@@ -32,14 +26,11 @@ This starts:
 - `api` – Go backend on internal port `8080` (exposed as `localhost:8080`)
 - `db` – PostgreSQL (`requiem` / `requiem` / `requiem`, exposed as
   `localhost:5432`)
-- `redis` – Redis for future queues/cache
+- `redis` – Redis for queues/cache
 
 Once the stack is up:
 
 - Health check: `http://localhost:8080/healthz`
-
-> Note: Caddy is mainly for the VPS setup. For local development you can hit the
-> API directly on `localhost:8080`.
 
 ### 1.3 Edge Auth (Cloudflare Worker) - Local Development
 
@@ -60,57 +51,6 @@ Set environment variables in `wrangler.toml` or as secrets:
 
 - `BACKEND_URL` – e.g., `http://localhost:8080`
 - `BACKEND_SECRET` – shared secret for backend authentication
-
-### 1.4 Run the API directly (without Docker) - Advanced
-
-If you prefer to run the Go server directly:
-
-1. Make sure PostgreSQL is running locally (matching the default DSN or set
-   `DATABASE_URL`).
-2. From the project root:
-
-```bash
-export DATABASE_URL="postgres://requiem:requiem@localhost:5432/requiem?sslmode=disable"
-go run ./apps/api
-```
-
-The API listens on `:8080` by default:
-
-- `http://localhost:8080/healthz`
-- `http://localhost:8080/v1/advice`
-
-### 1.5 Hybrid dev workflow (Docker infra + local Go) - Advanced
-
-For advanced users who want hot reload without Docker overhead, run **Postgres
-and Redis in Docker**, and the Go API locally with a watcher:
-
-- Start infra only:
-
-```bash
-cd infra/docker
-docker compose up db redis
-```
-
-- In another terminal, from the repo root:
-
-```bash
-export DATABASE_URL="postgres://requiem:requiem@localhost:5432/requiem?sslmode=disable"
-go run ./apps/api
-```
-
-Or, with a hot-reload tool like `air`:
-
-```bash
-export DATABASE_URL="postgres://requiem:requiem@localhost:5432/requiem?sslmode=disable"
-air
-```
-
-The API is still available on:
-
-- `http://localhost:8080/healthz`
-- `http://localhost:8080/v1/advice`
-
----
 
 ## 2. VPS Deployment Guide
 
@@ -245,7 +185,6 @@ What this does:
 ```bash
 dig api.yourdomain.com
 dig internal.yourdomain.com
-# Or use: nslookup api.yourdomain.com
 ```
 
 4. **Wait for DNS** to propagate (5-30 minutes)
@@ -290,17 +229,3 @@ Request flow in production:
 2. Worker validates `requiems-api-key`.
 3. Worker forwards to `https://api.yourdomain.com/...`.
 4. Cloudflare → Caddy on VPS → Go API.
-
----
-
-## 3. Environment Variables Summary
-
-- **API container**
-  - `PORT` – API listen port (default `8080`).
-  - `DATABASE_URL` – Postgres DSN (set by Docker Compose for container, or
-    manually in local dev).
-  - `REDIS_URL` – Redis URL for future queues/cache.
-
-- **Cloudflare Worker**
-  - `BACKEND_ORIGIN` – Base URL of the API behind Caddy.
-  - `BACKEND_SECRET` – Shared secret checked against `requiems-api-key`.

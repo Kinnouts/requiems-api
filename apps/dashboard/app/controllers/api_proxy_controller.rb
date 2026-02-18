@@ -62,7 +62,12 @@ class ApiProxyController < ApplicationController
 
   def valid_endpoint?(endpoint)
     return false if endpoint.blank?
-    endpoint.start_with?("/v1/")
+    return false unless endpoint.start_with?("/v1/")
+    # Reject anything that could manipulate URI parsing (schemes, fragments, newlines, path traversal)
+    return false if endpoint.match?(/[#\r\n]|:\/\//)
+    return false if endpoint.include?("..")
+
+    true
   end
 
   def get_api_key
@@ -72,13 +77,17 @@ class ApiProxyController < ApplicationController
     else
       # Use test/demo API key for anonymous users
       # This should be a special key with limited access and rate limits
-      ENV["PLAYGROUND_API_KEY"] || "rq_test_playground_demo_key"
+      AppConfig.playground_api_key
     end
   end
 
   def make_api_request(endpoint, method, request_params, api_key, request_headers)
-    api_base_url = ENV["API_BASE_URL"] || "https://api.requiems.xyz"
-    url = "#{api_base_url}#{endpoint}"
+    api_base_url = AppConfig.api_base_url
+
+    base_uri = URI(api_base_url)
+    uri = base_uri.dup
+    uri.path = endpoint
+    uri.query = nil
 
     # Prepare headers
     headers = {
@@ -92,8 +101,6 @@ class ApiProxyController < ApplicationController
       headers[key] = value if allowed_header?(key)
     end
 
-    # Make HTTP request using Net::HTTP
-    uri = URI(url)
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = uri.scheme == "https"
     http.open_timeout = 10
@@ -101,23 +108,23 @@ class ApiProxyController < ApplicationController
 
     # Create request based on method
     request = case method
-              when "GET"
+    when "GET"
                 # For GET, add params to query string
                 uri.query = URI.encode_www_form(request_params) if request_params.any?
                 Net::HTTP::Get.new(uri)
-              when "POST"
+    when "POST"
                 req = Net::HTTP::Post.new(uri)
                 req.body = request_params.to_json
                 req
-              when "PUT"
+    when "PUT"
                 req = Net::HTTP::Put.new(uri)
                 req.body = request_params.to_json
                 req
-              when "DELETE"
+    when "DELETE"
                 Net::HTTP::Delete.new(uri)
-              else
+    else
                 raise "Unsupported HTTP method: #{method}"
-              end
+    end
 
     # Set headers
     headers.each { |key, value| request[key] = value }

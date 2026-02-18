@@ -28,7 +28,7 @@ func New(ctx context.Context, cfg config.Config) (*App, error) {
 	}
 
 	pool, err := db.Connect(ctx, cfg.DatabaseURL)
-	
+
 	if err != nil {
 		return nil, err
 	}
@@ -93,4 +93,3 @@ func migrateWithRetry(dsn, dir string) error {
 
 	return fmt.Errorf("migrations failed after retries with unknown error")
 }
-

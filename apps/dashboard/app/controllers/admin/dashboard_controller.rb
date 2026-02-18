@@ -50,7 +50,7 @@ class Admin::DashboardController < ApplicationController
     }
 
     Subscription.where.not(plan_name: "free")
-      .where(cancel_at_period_end: [false, nil])
+      .where(cancel_at_period_end: [ false, nil ])
       .group(:plan_name)
       .count
       .sum { |plan, count| (plan_prices[plan] || 0) * count }

@@ -16,11 +16,11 @@
     <!-- User Status Badge -->
     <div>
       <% if @user.admin? %>
-        <%= render "shared/badge", text: "Admin", variant: "danger", size: "sm" %>
+        <%= render "partials/shared/badge", text: "Admin", variant: "danger", size: "sm" %>
       <% elsif @user.suspended? %>
-        <%= render "shared/badge", text: "Suspended", variant: "warning", size: "sm" %>
+        <%= render "partials/shared/badge", text: "Suspended", variant: "warning", size: "sm" %>
       <% else %>
-        <%= render "shared/badge", text: "Active", variant: "success", size: "sm" %>
+        <%= render "partials/shared/badge", text: "Active", variant: "success", size: "sm" %>
       <% end %>
     </div>
   </div>
@@ -95,8 +95,8 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-500 mb-1">Plan</label>
-            <%= render "shared/badge",
-              text: @user.subscription.plan_name.titleize,
+            <%= render "partials/shared/badge",
+              text: h(@user.subscription.plan_name.titleize),
               variant: @user.subscription.plan_name == "free" ? "default" : "primary",
               size: "sm" %>
           </div>
@@ -110,7 +110,7 @@
           </div>
           <% if @user.subscription.cancel_at_period_end? %>
             <div>
-              <%= render "shared/badge", text: "Canceling at Period End", variant: "warning", size: "xs" %>
+              <%= render "partials/shared/badge", text: "Canceling at Period End", variant: "warning", size: "xs" %>
               <p class="text-xs text-gray-600 mt-1">
                 Ends: <%= @user.subscription.billing_cycle_end&.strftime("%B %d, %Y") || "—" %>
               </p>
@@ -125,7 +125,7 @@
         </div>
       <% else %>
         <div class="text-center py-6">
-          <%= render "shared/badge", text: "Free Plan", variant: "default", size: "sm" %>
+          <%= render "partials/shared/badge", text: "Free Plan", variant: "default", size: "sm" %>
           <p class="text-sm text-gray-600 mt-2">No active subscription</p>
         </div>
       <% end %>
@@ -191,8 +191,8 @@
                 <%= api_key.prefix %>••••••••••••••••
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <%= render "shared/badge",
-                  text: api_key.environment.titleize,
+                <%= render "partials/shared/badge",
+                  text: h(api_key.environment.to_s.titleize),
                   variant: api_key.environment == "live" ? "primary" : "default",
                   size: "xs" %>
               </td>
@@ -201,9 +201,9 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <% if api_key.revoked_at.present? %>
-                  <%= render "shared/badge", text: "Revoked", variant: "danger", size: "xs" %>
+                  <%= render "partials/shared/badge", text: "Revoked", variant: "danger", size: "xs" %>
                 <% else %>
-                  <%= render "shared/badge", text: "Active", variant: "success", size: "xs" %>
+                  <%= render "partials/shared/badge", text: "Active", variant: "success", size: "xs" %>
                 <% end %>
               </td>
             </tr>
@@ -257,7 +257,7 @@
                     else "default"
                   end
                 %>
-                <%= render "shared/badge", text: log.status_code.to_s, variant: status_variant, size: "xs" %>
+                <%= render "partials/shared/badge", text: log.status_code.to_s, variant: status_variant, size: "xs" %>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                 <%= log.response_time_ms || "—" %>ms

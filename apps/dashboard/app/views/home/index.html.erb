@@ -67,27 +67,6 @@
   </div>
 </div>
 
-<!-- Trust / Social Proof Section -->
-<div class="bg-white py-16">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-12">
-      <h2 class="text-3xl font-bold text-gray-900">
-        Trusted by developers worldwide
-      </h2>
-      <p class="mt-2 text-lg text-gray-600">
-        Powering applications across 100+ countries
-      </p>
-    </div>
-
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8">
-      <%= render "shared/stat_card", title: "Developers", value: "10,000+", subtitle: "Building with Requiems" %>
-      <%= render "shared/stat_card", title: "API Calls", value: "200M+", subtitle: "Total requests served" %>
-      <%= render "shared/stat_card", title: "Countries", value: "100+", subtitle: "Global reach" %>
-      <%= render "shared/stat_card", title: "Uptime", value: "99.99%", subtitle: "Last 12 months" %>
-    </div>
-  </div>
-</div>
-
 <!-- Documentation Quality Section -->
 <div class="bg-gray-50 py-20">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -102,7 +81,7 @@
 
     <div class="grid md:grid-cols-3 gap-8">
       <!-- Feature 1: Live Demos -->
-      <%= render "shared/card", padding: true, hover: true do %>
+      <%= render "partials/shared/card", padding: true, hover: true do %>
         <div class="text-center">
           <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 text-blue-600 mb-4">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -118,7 +97,7 @@
       <% end %>
 
       <!-- Feature 2: Code Examples -->
-      <%= render "shared/card", padding: true, hover: true do %>
+      <%= render "partials/shared/card", padding: true, hover: true do %>
         <div class="text-center">
           <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 text-green-600 mb-4">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -133,7 +112,7 @@
       <% end %>
 
       <!-- Feature 3: Precise Docs -->
-      <%= render "shared/card", padding: true, hover: true do %>
+      <%= render "partials/shared/card", padding: true, hover: true do %>
         <div class="text-center">
           <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-purple-100 text-purple-600 mb-4">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -153,101 +132,30 @@
 <!-- API Categories Grid -->
 <div class="bg-white py-20" id="api-docs">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-16">
+    <div class="text-center mb-12">
       <h2 class="text-4xl font-bold text-gray-900">
-        Available API Categories
+        API Categories
       </h2>
-      <p class="mt-4 text-xl text-gray-600">
-        Growing collection of production-ready endpoints
+      <p class="mt-4 text-lg text-gray-600">
+        Explore our comprehensive collection of APIs organized by category to find exactly what you need.
       </p>
     </div>
 
-    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <!-- Email APIs -->
-      <%= render "shared/card", title: "Email APIs", padding: true, hover: true do %>
-        <div class="mb-4">
-          <%= render "shared/badge", text: "Live", variant: "success", size: "sm" %>
-          <%= render "shared/badge", text: "4 Endpoints", variant: "info", size: "sm", class_names: "ml-2" %>
-        </div>
-        <p class="text-gray-600 mb-4">
-          Disposable email detection, domain validation, and batch checking. Block fake signups instantly.
-        </p>
-        <%= link_to api_path("disposable_email"), class: "text-blue-600 hover:text-blue-700 font-medium inline-flex items-center" do %>
-          View docs
-          <svg class="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
+    <div class="grid gap-3 mb-16 grid-cols-2 md:grid-cols-8">
+      <% @categories.first(16).each_with_index do |category, index| %>
+        <%= link_to apis_path(category: category["id"]),
+            class: "group bg-gray-50 rounded-lg p-4 text-center transition-all duration-200 hover:bg-blue-50 #{index >= 8 ? 'hidden md:block' : ''}" do %>
+          <div class="text-3xl mb-2"><%= category["icon"] %></div>
+          <h3 class="text-xs font-semibold text-gray-900 group-hover:text-blue-600 leading-tight">
+            <%= category["name"] %>
+          </h3>
         <% end %>
-      <% end %>
-
-      <!-- Text APIs -->
-      <%= render "shared/card", title: "Text APIs", padding: true, hover: true do %>
-        <div class="mb-4">
-          <%= render "shared/badge", text: "Live", variant: "success", size: "sm" %>
-          <%= render "shared/badge", text: "4 Endpoints", variant: "info", size: "sm", class_names: "ml-2" %>
-        </div>
-        <p class="text-gray-600 mb-4">
-          Random advice, quotes, words, and Lorem Ipsum generation. Perfect for placeholders and content.
-        </p>
-        <%= link_to api_path("lorem_ipsum"), class: "text-blue-600 hover:text-blue-700 font-medium inline-flex items-center" do %>
-          View docs
-          <svg class="ml-1 w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-          </svg>
-        <% end %>
-      <% end %>
-
-      <!-- Data APIs - Coming Soon -->
-      <%= render "shared/card", title: "Data APIs", padding: true, class_names: "opacity-75" do %>
-        <div class="mb-4">
-          <%= render "shared/badge", text: "Coming Soon", variant: "warning", size: "sm" %>
-        </div>
-        <p class="text-gray-600 mb-4">
-          IP geolocation, currency conversion, timezone info, and more data utilities.
-        </p>
-        <span class="text-gray-400">Available Q2 2026</span>
-      <% end %>
-
-      <!-- Finance APIs - Coming Soon -->
-      <%= render "shared/card", title: "Finance APIs", padding: true, class_names: "opacity-75" do %>
-        <div class="mb-4">
-          <%= render "shared/badge", text: "Coming Soon", variant: "warning", size: "sm" %>
-        </div>
-        <p class="text-gray-600 mb-4">
-          Stock quotes, crypto prices, exchange rates, and financial data endpoints.
-        </p>
-        <span class="text-gray-400">Available Q3 2026</span>
-      <% end %>
-
-      <!-- Image APIs - Coming Soon -->
-      <%= render "shared/card", title: "Image APIs", padding: true, class_names: "opacity-75" do %>
-        <div class="mb-4">
-          <%= render "shared/badge", text: "Coming Soon", variant: "warning", size: "sm" %>
-        </div>
-        <p class="text-gray-600 mb-4">
-          Image optimization, placeholder generation, QR codes, and visual content tools.
-        </p>
-        <span class="text-gray-400">Available Q4 2026</span>
-      <% end %>
-
-      <!-- Utility APIs - Coming Soon -->
-      <%= render "shared/card", title: "Utility APIs", padding: true, class_names: "opacity-75" do %>
-        <div class="mb-4">
-          <%= render "shared/badge", text: "Coming Soon", variant: "warning", size: "sm" %>
-        </div>
-        <p class="text-gray-600 mb-4">
-          URL shortening, QR codes, barcode generation, and other developer utilities.
-        </p>
-        <span class="text-gray-400">Roadmap TBD</span>
       <% end %>
     </div>
 
-    <div class="text-center mt-12">
-      <%= link_to apis_path, class: "inline-flex items-center px-6 py-3 border border-blue-600 text-base font-medium rounded-lg text-blue-600 hover:bg-blue-50 transition-colors" do %>
-        Browse Full API Directory
-        <svg class="ml-2 w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-        </svg>
+    <div class="text-center">
+      <%= link_to apis_path, class: "inline-flex items-center justify-center px-8 py-3 bg-blue-600 text-white text-base font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm" do %>
+        Browse All APIs
       <% end %>
     </div>
   </div>
@@ -266,10 +174,10 @@
     </div>
 
     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <%= render "shared/stat_card", title: "Median Latency", value: "243ms", subtitle: "P50 response time", class_names: "border-2 border-blue-200" %>
-      <%= render "shared/stat_card", title: "Uptime", value: "99.99%", subtitle: "Last 12 months SLA", class_names: "border-2 border-green-200" %>
-      <%= render "shared/stat_card", title: "Monthly Requests", value: "200M+", subtitle: "Requests processed/month", class_names: "border-2 border-purple-200" %>
-      <%= render "shared/stat_card", title: "Data Centers", value: "EU", subtitle: "European Union", class_names: "border-2 border-yellow-200" %>
+      <%= render "partials/shared/stat_card", title: "Median Latency", value: "243ms", subtitle: "P50 response time", class_names: "border-2 border-blue-200" %>
+      <%= render "partials/shared/stat_card", title: "Uptime", value: "99.99%", subtitle: "Last 12 months SLA", class_names: "border-2 border-green-200" %>
+      <%= render "partials/shared/stat_card", title: "Monthly Requests", value: "200M+", subtitle: "Requests processed/month", class_names: "border-2 border-purple-200" %>
+      <%= render "partials/shared/stat_card", title: "Data Centers", value: "EU", subtitle: "European Union", class_names: "border-2 border-yellow-200" %>
     </div>
   </div>
 </div>
@@ -298,7 +206,7 @@
         </div>
         <div class="ml-4">
           <h3 class="text-lg font-semibold text-gray-900">SOC 2 Certification</h3>
-          <%= render "shared/badge", text: "In Progress", variant: "info", size: "sm", class_names: "mt-1" %>
+          <%= render "partials/shared/badge", text: "In Progress", variant: "info", size: "sm", class_names: "mt-1" %>
           <p class="mt-2 text-gray-600">
             In progress.
           </p>
@@ -316,7 +224,7 @@
         </div>
         <div class="ml-4">
           <h3 class="text-lg font-semibold text-gray-900">Data Encryption</h3>
-          <%= render "shared/badge", text: "Active", variant: "success", size: "sm", class_names: "mt-1" %>
+          <%= render "partials/shared/badge", text: "Active", variant: "success", size: "sm", class_names: "mt-1" %>
           <p class="mt-2 text-gray-600">
             TLS 1.3 in transit, AES-256 at rest. Zero data storage policy for API inputs/outputs.
           </p>
@@ -334,7 +242,7 @@
         </div>
         <div class="ml-4">
           <h3 class="text-lg font-semibold text-gray-900">EU Infrastructure</h3>
-          <%= render "shared/badge", text: "EU", variant: "primary", size: "sm", class_names: "mt-1" %>
+          <%= render "partials/shared/badge", text: "EU", variant: "primary", size: "sm", class_names: "mt-1" %>
           <p class="mt-2 text-gray-600">
             All data centers located in the European Union. GDPR compliant.
           </p>
@@ -352,7 +260,7 @@
         </div>
         <div class="ml-4">
           <h3 class="text-lg font-semibold text-gray-900">Secure Payments</h3>
-          <%= render "shared/badge", text: "Stripe", variant: "success", size: "sm", class_names: "mt-1" %>
+          <%= render "partials/shared/badge", text: "Stripe", variant: "success", size: "sm", class_names: "mt-1" %>
           <p class="mt-2 text-gray-600">
             All payments processed through Stripe. We never see or store your payment details.
           </p>
@@ -370,7 +278,7 @@
         </div>
         <div class="ml-4">
           <h3 class="text-lg font-semibold text-gray-900">GDPR / CCPA Compliant</h3>
-          <%= render "shared/badge", text: "Compliant", variant: "success", size: "sm", class_names: "mt-1" %>
+          <%= render "partials/shared/badge", text: "Compliant", variant: "success", size: "sm", class_names: "mt-1" %>
           <p class="mt-2 text-gray-600">
             Full compliance with GDPR, CCPA, and international privacy regulations.
           </p>
@@ -388,7 +296,7 @@
         </div>
         <div class="ml-4">
           <h3 class="text-lg font-semibold text-gray-900">API Security</h3>
-          <%= render "shared/badge", text: "Rate Limited", variant: "success", size: "sm", class_names: "mt-1" %>
+          <%= render "partials/shared/badge", text: "Rate Limited", variant: "success", size: "sm", class_names: "mt-1" %>
           <p class="mt-2 text-gray-600">
             Built-in rate limiting, DDoS protection, and abuse prevention at the edge.
           </p>
@@ -412,7 +320,7 @@
 
     <div class="space-y-4" data-controller="tabs">
       <!-- FAQ 1 -->
-      <%= render "shared/card", padding: true do %>
+      <%= render "partials/shared/card", padding: true do %>
         <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="0">
           <span class="text-lg font-semibold text-gray-900">Is Requiems API really free to start?</span>
           <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -425,7 +333,7 @@
       <% end %>
 
       <!-- FAQ 2 -->
-      <%= render "shared/card", padding: true do %>
+      <%= render "partials/shared/card", padding: true do %>
         <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="1">
           <span class="text-lg font-semibold text-gray-900">Can I use this for commercial projects?</span>
           <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -438,7 +346,7 @@
       <% end %>
 
       <!-- FAQ 3 -->
-      <%= render "shared/card", padding: true do %>
+      <%= render "partials/shared/card", padding: true do %>
         <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="2">
           <span class="text-lg font-semibold text-gray-900">Where are your servers located?</span>
           <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -451,7 +359,7 @@
       <% end %>
 
       <!-- FAQ 4 -->
-      <%= render "shared/card", padding: true do %>
+      <%= render "partials/shared/card", padding: true do %>
         <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="3">
           <span class="text-lg font-semibold text-gray-900">What payment methods do you accept?</span>
           <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -466,7 +374,7 @@
 
     <div class="mt-12 text-center">
       <p class="text-gray-600 mb-4">Still have questions?</p>
-      <%= link_to "#", class: "inline-flex items-center text-blue-600 hover:text-blue-700 font-medium" do %>
+      <%= link_to contact_path, class: "inline-flex items-center text-blue-600 hover:text-blue-700 font-medium" do %>
         Contact our support team
         <svg class="ml-1 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -500,7 +408,7 @@
     </div>
 
     <p class="text-sm text-blue-200">
-      No credit card required • 500 requests/month free • Cancel anytime
+      No credit card required • Get started free • Cancel anytime
     </p>
   </div>
 </div>

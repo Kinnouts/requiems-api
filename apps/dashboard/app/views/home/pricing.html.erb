@@ -38,7 +38,7 @@
     <!-- Pricing Cards -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
       <!-- Free Plan -->
-      <%= render "home/pricing_card",
+      <%= render "partials/pricing/pricing_card",
         name: "Free",
         monthly_price: 0,
         yearly_price: 0,
@@ -57,7 +57,7 @@
         popular: false %>
 
       <!-- Developer Plan -->
-      <%= render "home/pricing_card",
+      <%= render "partials/pricing/pricing_card",
         name: "Developer",
         monthly_price: 30,
         yearly_price: 25,
@@ -76,7 +76,7 @@
         popular: false %>
 
       <!-- Business Plan (Most Popular) -->
-      <%= render "home/pricing_card",
+      <%= render "partials/pricing/pricing_card",
         name: "Business",
         monthly_price: 75,
         yearly_price: 62.5,
@@ -96,7 +96,7 @@
         popular: true %>
 
       <!-- Professional Plan -->
-      <%= render "home/pricing_card",
+      <%= render "partials/pricing/pricing_card",
         name: "Professional",
         monthly_price: 150,
         yearly_price: 125,
@@ -185,12 +185,12 @@
             </tr>
           </thead>
           <tbody class="bg-white divide-y divide-gray-200">
-            <%= render "home/pricing_table_row", feature: "Monthly requests", values: ["500", "100k", "1M", "10M"] %>
-            <%= render "home/pricing_table_row", feature: "Rate limit", values: ["30/min", "5k/min", "10k/min", "50k/min"] %>
-            <%= render "home/pricing_table_row", feature: "API endpoints", values: ["All", "All", "All", "All"] %>
-            <%= render "home/pricing_table_row", feature: "Data centers", values: ["EU", "EU", "EU", "EU"] %>
-            <%= render "home/pricing_table_row", feature: "Support response", values: ["Community", "24h", "4h", "1h"] %>
-            <%= render "home/pricing_table_row", feature: "SLA", values: ["-", "-", "99.9%", "99.95%"] %>
+            <%= render "partials/pricing/pricing_table_row", feature: "Monthly requests", values: ["500", "100k", "1M", "10M"] %>
+            <%= render "partials/pricing/pricing_table_row", feature: "Rate limit", values: ["30/min", "5k/min", "10k/min", "50k/min"] %>
+            <%= render "partials/pricing/pricing_table_row", feature: "API endpoints", values: ["All", "All", "All", "All"] %>
+            <%= render "partials/pricing/pricing_table_row", feature: "Data centers", values: ["EU", "EU", "EU", "EU"] %>
+            <%= render "partials/pricing/pricing_table_row", feature: "Support response", values: ["Community", "24h", "4h", "1h"] %>
+            <%= render "partials/pricing/pricing_table_row", feature: "SLA", values: ["-", "-", "99.9%", "99.95%"] %>
           </tbody>
         </table>
       </div>
@@ -237,23 +237,23 @@
       <h2 class="text-2xl font-bold text-gray-900 mb-6">Frequently Asked Questions</h2>
 
       <div class="space-y-4" data-controller="faq-accordion">
-        <%= render "home/faq_item",
+        <%= render "partials/pricing/faq_item",
           question: "What happens if I exceed my monthly quota?",
           answer: "Your API requests will return a 429 (Too Many Requests) error once you hit your monthly limit. We recommend upgrading to a higher plan before reaching your quota. You can monitor your usage in real-time from your dashboard." %>
 
-        <%= render "home/faq_item",
+        <%= render "partials/pricing/faq_item",
           question: "Can I use Requiems API for commercial projects?",
           answer: "Yes! All plans, including the free tier, can be used for commercial projects. Our managed cloud service provides enterprise-grade reliability, scalability, and support for production applications." %>
 
-        <%= render "home/faq_item",
+        <%= render "partials/pricing/faq_item",
           question: "Do you offer custom enterprise plans?",
           answer: "Yes! Enterprise plans include custom pricing, dedicated infrastructure, private deployments, EU data residency, custom SLAs, and dedicated support. Contact our sales team at eliaz@bobadilla.tech to discuss your requirements." %>
 
-        <%= render "home/faq_item",
+        <%= render "partials/pricing/faq_item",
           question: "What data centers do you use?",
           answer: "All plans run on EU data centers for GDPR compliance." %>
 
-        <%= render "home/faq_item",
+        <%= render "partials/pricing/faq_item",
           question: "Is there a free trial for paid plans?",
           answer: "Yes! All monthly paid plans include a 7-day free trial with full access to plan features. No credit card required to start the trial. You can cancel anytime during the trial period." %>
       </div>

@@ -1,5 +1,11 @@
 # Deployment Guide
 
+Maintainer trick:
+
+```sh
+cd server/requiems-api/ && git pull && cd infra/docker && docker compose up -d --build
+```
+
 ## Overview
 
 This guide covers deploying Requiem API to production on a Hetzner VPS with

@@ -1,126 +1,23 @@
 <div class="min-h-screen bg-gray-50">
-  <!-- Header -->
-  <div class="bg-white border-b border-gray-200">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <!-- Breadcrumb -->
-      <nav class="flex mb-4" aria-label="Breadcrumb">
-        <ol class="flex items-center space-x-2 text-sm">
-          <li>
-            <%= link_to "Home", root_path, class: "text-gray-500 hover:text-gray-700" %>
-          </li>
-          <li class="flex items-center">
-            <svg class="h-4 w-4 text-gray-400 mx-2" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-            </svg>
-            <span class="text-gray-900 font-medium">API Directory</span>
-          </li>
-          <% if @selected_category.present? && @category %>
-            <li class="flex items-center">
-              <svg class="h-4 w-4 text-gray-400 mx-2" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-              </svg>
-              <span class="text-gray-900 font-medium"><%= @category["name"] %></span>
-            </li>
-          <% end %>
-        </ol>
-      </nav>
-
-      <!-- Page Title & Description -->
-      <div class="flex items-center justify-between">
-        <div>
-          <h1 class="text-3xl font-bold text-gray-900">
-            <% if @selected_category.present? && @category %>
-              <%= @category["icon"] %> <%= @category["name"] %>
-            <% else %>
-              API Directory
-            <% end %>
-          </h1>
-          <p class="mt-2 text-gray-600">
-            <% if @selected_category.present? && @category %>
-              <%= @category["description"] %>
-            <% else %>
-              Browse our collection of production-ready APIs
-            <% end %>
-          </p>
-        </div>
-        <div>
-          <%= link_to "Get Free API Key", new_user_registration_path, class: "inline-flex items-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors" unless user_signed_in? %>
-        </div>
+  <!-- Main Content with Sidebar -->
+  <div class="flex">
+    <!-- Sidebar (fixed width, not overlapping) -->
+    <aside class="hidden lg:block w-52 bg-white border-r border-gray-200 flex-shrink-0">
+      <div class="sticky top-16 max-h-[calc(100vh-4rem)] overflow-y-auto">
+        <%= render 'partials/apis_index/sidebar', categories: @categories_with_apis %>
       </div>
+    </aside>
 
-      <!-- Search Bar -->
-      <div class="mt-6" data-controller="api-search">
-        <div class="relative">
-          <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-            <svg class="h-5 w-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-            </svg>
-          </div>
-          <input type="text"
-                 data-api-search-target="input"
-                 data-action="input->api-search#filter"
-                 placeholder="Search APIs by name, description, or tags..."
-                 class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500">
-        </div>
-      </div>
-    </div>
-  </div>
+    <!-- Main Content Area -->
+    <div class="flex-1 px-8 py-6">
+      <!-- Most Popular Section -->
+      <%= render 'partials/apis_index/most_popular', apis: @popular_apis %>
 
-  <!-- Main Content -->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <div class="lg:grid lg:grid-cols-12 lg:gap-8">
-      <!-- Sidebar -->
-      <aside class="hidden lg:block lg:col-span-3">
-        <%= render "apis/sidebar", categories: @categories, selected_category: @selected_category %>
-      </aside>
-
-      <!-- API Grid -->
-      <main class="lg:col-span-9">
-        <!-- Mobile Category Dropdown -->
-        <div class="lg:hidden mb-6">
-          <label for="category-select" class="sr-only">Select category</label>
-          <select id="category-select"
-                  onchange="window.location.href = this.value"
-                  class="block w-full rounded-lg border-gray-300 focus:ring-blue-500 focus:border-blue-500">
-            <option value="<%= apis_path %>">All Categories</option>
-            <% @categories.each do |category| %>
-              <% unless category["coming_soon"] %>
-                <option value="<%= apis_path(category: category["id"]) %>" <%= "selected" if @selected_category == category["id"] %>>
-                  <%= category["icon"] %> <%= category["name"] %>
-                </option>
-              <% end %>
-            <% end %>
-          </select>
-        </div>
-
-        <!-- Results Count -->
-        <div class="mb-6 flex items-center justify-between">
-          <p class="text-sm text-gray-600" data-api-search-target="count">
-            <span data-api-search-target="resultCount"><%= @apis.count %></span>
-            <%= "API".pluralize(@apis.count) %> found
-          </p>
-
-          <% if @selected_category.present? %>
-            <%= link_to "View All APIs", apis_path, class: "text-sm text-blue-600 hover:text-blue-700 font-medium" %>
-          <% end %>
-        </div>
-
-        <!-- API Cards Grid -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6" data-api-search-target="grid">
-          <% @apis.each do |api| %>
-            <%= render "apis/api_card", api: api %>
-          <% end %>
-        </div>
-
-        <!-- Empty State (when filtered) -->
-        <div class="hidden text-center py-12" data-api-search-target="empty">
-          <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          <h3 class="mt-2 text-sm font-medium text-gray-900">No APIs found</h3>
-          <p class="mt-1 text-sm text-gray-500">Try adjusting your search terms.</p>
-        </div>
-      </main>
+      <!-- Category Sections -->
+      <% @categories_with_apis.each do |category| %>
+        <% category_apis = @apis_by_category[category["id"]] || [] %>
+        <%= render 'partials/apis_index/category_section', category: category, apis: category_apis %>
+      <% end %>
     </div>
   </div>
 </div>

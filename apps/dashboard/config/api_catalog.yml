@@ -12,6 +12,66 @@ categories:
     icon: "📝"
     description: Generate and manipulate text content
 
+  - id: finance
+    name: Finance
+    icon: "💰"
+    description: Financial data and calculations
+    coming_soon: true
+
+  - id: technology
+    name: Internet/Technology
+    icon: "💻"
+    description: Technology and internet utilities
+    coming_soon: true
+
+  - id: ai_vision
+    name: AI/Computer Vision
+    icon: "🤖"
+    description: AI-powered image analysis and computer vision
+    coming_soon: true
+
+  - id: animals
+    name: Animals
+    icon: "🐾"
+    description: Animal facts, data, and information
+    coming_soon: true
+
+  - id: entertainment
+    name: Entertainment
+    icon: "🎬"
+    description: Movies, music, and entertainment data
+    coming_soon: true
+
+  - id: health
+    name: Health/Wellness
+    icon: "🏥"
+    description: Health, fitness, and wellness APIs
+    coming_soon: true
+
+  - id: misc
+    name: Miscellaneous
+    icon: "🔧"
+    description: Various utility APIs
+    coming_soon: true
+
+  - id: places
+    name: Places
+    icon: "📍"
+    description: Location, places, and geography data
+    coming_soon: true
+
+  - id: transportation
+    name: Transportation
+    icon: "🚗"
+    description: Transportation and logistics data
+    coming_soon: true
+
+  - id: tax
+    name: Tax
+    icon: "📋"
+    description: Tax calculations and data
+    coming_soon: true
+
   - id: data
     name: Data APIs
     icon: "📊"
@@ -44,6 +104,7 @@ apis:
     description: Detect disposable and temporary email addresses to prevent fraud and improve data quality
     endpoints_count: 5
     status: live
+    popular: true
     documentation_url: /apis/disposable-email
     tags:
       - Email Validation
@@ -57,6 +118,7 @@ apis:
     description: Get random pieces of advice and wisdom for inspiration
     endpoints_count: 1
     status: live
+    popular: true
     documentation_url: /apis/advice
     tags:
       - Random
@@ -68,6 +130,7 @@ apis:
     description: Generate placeholder text for design mockups and prototypes
     endpoints_count: 3
     status: live
+    popular: true
     documentation_url: /apis/lorem-ipsum
     tags:
       - Placeholder
@@ -80,6 +143,7 @@ apis:
     description: Access a database of inspirational and famous quotes
     endpoints_count: 2
     status: live
+    popular: true
     documentation_url: /apis/quotes
     tags:
       - Random
@@ -92,6 +156,7 @@ apis:
     description: Generate random words for testing, games, and creative projects
     endpoints_count: 2
     status: live
+    popular: true
     documentation_url: /apis/words
     tags:
       - Random

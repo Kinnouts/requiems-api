@@ -1,0 +1,90 @@
+# yaml-language-server: $schema=https://golangci-lint.run/jsonschema/golangci.jsonschema.json
+# golangci-lint v2 configuration for Requiems API Go backend
+# Philosophy: Non-blocking quality checks to help engineers improve code
+
+version: "2"
+run:
+  go: "1.24"
+  modules-download-mode: readonly
+linters:
+  enable:
+    - dupl
+    - gocritic
+    - gocyclo
+    - gosec
+    - misspell
+    - revive
+    - unconvert
+    - unparam
+  disable:
+    - funlen
+    - gocognit
+    - goconst
+    - nestif
+  settings:
+    errcheck:
+      check-type-assertions: true
+      check-blank: false
+      exclude-functions:
+        - (io.Closer).Close
+        - (*database/sql.Rows).Close
+    gocritic:
+      enabled-tags:
+        - diagnostic
+        - style
+    gocyclo:
+      min-complexity: 15
+    lll:
+      line-length: 120
+      tab-width: 4
+    revive:
+      rules:
+        - name: var-naming
+          severity: warning
+        - name: package-comments
+          severity: warning
+        - name: exported
+          arguments:
+            - checkPrivateReceivers
+            - sayRepetitiveInsteadOfStutters
+          severity: warning
+          disabled: false
+  exclusions:
+    generated: lax
+    presets:
+      - comments
+      - common-false-positives
+      - legacy
+      - std-error-handling
+    rules:
+      - linters:
+          - dupl
+          - errcheck
+          - gosec
+        path: _test\.go
+      - linters:
+          - lll
+        source: ^//.*$
+    paths:
+      - third_party$
+      - builtin$
+      - examples$
+issues:
+  max-issues-per-linter: 0
+  max-same-issues: 0
+  new: false
+  fix: false
+formatters:
+  enable:
+    - gofmt
+    - goimports
+  settings:
+    goimports:
+      local-prefixes:
+        - requiems-api
+  exclusions:
+    generated: lax
+    paths:
+      - third_party$
+      - builtin$
+      - examples$

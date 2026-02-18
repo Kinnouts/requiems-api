@@ -1,0 +1,20 @@
+NEW API SUGGESTION
+====================
+
+API Name: <%= @suggestion[:api_name] %>
+
+Description:
+<%= @suggestion[:description] %>
+
+Use Case:
+<%= @suggestion[:use_case] %>
+
+<% if @suggestion[:email].present? %>
+Contact Email (for follow-up): <%= @suggestion[:email] %>
+<% end %>
+
+--
+Submitted: <%= @timestamp.strftime("%B %d, %Y at %I:%M %p %Z") %>
+
+This suggestion was submitted through the Requiems API website.
+Consider creating an issue or discussion on GitHub: https://github.com/bobadilla-tech/requiems-api

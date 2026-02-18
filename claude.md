@@ -1,28 +1,24 @@
-# CLAUDE.md
-
-This file provides guidance to Claude Code (claude.ai/code) when working with
-code in this repository.
-
-## Project Overview
+# Project Overview
 
 Requiems API is a production-ready API platform providing unified access to
 multiple enterprise-grade APIs (email validation, text utilities, etc.). Built
 as a multi-language monorepo with:
 
-- **Go 1.23 API** (apps/api) - Internal business logic backend
-- **Rails 8 Dashboard** (apps/dashboard) - Public web UI, user management, admin
+- **Go API** (apps/api) - Internal business logic backend
+- **Rails Dashboard** (apps/dashboard) - Public web UI, user management, admin
   panel
-- **Cloudflare Worker Gateway** (apps/edge-auth) - Global edge auth, rate
-  limiting, credit tracking
+- **Auth Gateway** (apps/workers/auth-gateway) - Public edge gateway for auth, rate
+  limiting, and request proxying
+- **API Management** (apps/workers/api-management) - Internal service for API key
+  management, usage exports, and analytics
 
 ## Development Commands
 
-### Full Stack Development (Recommended)
+### Full Stack Development
 
 Start all services with hot reload:
 
 ```bash
-cd infra/docker
 docker compose -f docker-compose.dev.yml up
 ```
 
@@ -33,114 +29,176 @@ Services:
 - PostgreSQL: localhost:5432 (user: `requiem`, password: `requiem`)
 - Redis: localhost:6379
 
-Rebuild after dependency changes:
-
-```bash
-docker compose -f docker-compose.dev.yml up --build
-```
-
 ### Go API (apps/api)
 
-Run locally (requires PostgreSQL):
-
-```bash
-cd apps/api
-go run main.go
-```
+**Note:** Commands assume containers are running. Container: `requiem-dev-api-1`
 
 Run tests:
 
 ```bash
-cd apps/api
-go test ./...
+docker exec requiem-dev-api-1 go test ./...
+```
+
+Run tests with coverage:
+
+```bash
+docker exec requiem-dev-api-1 go test -race -coverprofile=coverage.out ./...
 ```
 
 Run specific test:
 
 ```bash
-cd apps/api
-go test ./internal/email/disposable -v -run TestCheckDisposable
-```
-
-Build:
-
-```bash
-cd apps/api
-go build -o bin/api main.go
-```
-
-Hot reload (via Air):
-
-```bash
-cd apps/api
-air
+docker exec requiem-dev-api-1 go test ./internal/text/advice -v -run TestGetAdvice
 ```
 
 ### Rails Dashboard (apps/dashboard)
 
+**Note:** Commands assume containers are running. Container: `requiem-dev-dashboard-1`
+
 Rails console:
 
 ```bash
-docker compose -f docker-compose.dev.yml exec dashboard rails console
-```
-
-Or locally:
-
-```bash
-cd apps/dashboard
-bin/rails console
+docker exec -it requiem-dev-dashboard-1 rails console
 ```
 
 Run tests:
 
 ```bash
-cd apps/dashboard
-bin/rails test
+docker exec requiem-dev-dashboard-1 bin/rails test
 ```
 
 Run specific test:
 
 ```bash
-cd apps/dashboard
-bin/rails test test/models/user_test.rb
+docker exec requiem-dev-dashboard-1 bin/rails test test/models/user_test.rb
+```
+
+Run security scans:
+
+```bash
+docker exec requiem-dev-dashboard-1 bundle exec brakeman --no-pager
+docker exec requiem-dev-dashboard-1 bundle exec bundler-audit
+docker exec requiem-dev-dashboard-1 bin/importmap audit
+```
+
+Run linting:
+
+```bash
+docker exec requiem-dev-dashboard-1 bundle exec rubocop
 ```
 
 Migrations:
 
 ```bash
-cd apps/dashboard
-bin/rails db:migrate
-bin/rails db:rollback
+docker exec requiem-dev-dashboard-1 bin/rails db:migrate
+docker exec requiem-dev-dashboard-1 bin/rails db:rollback
 ```
 
-### Cloudflare Worker (apps/edge-auth)
+Generate migration:
+
+```bash
+docker exec requiem-dev-dashboard-1 bin/rails generate migration AddFieldToTable
+```
+
+### Auth Gateway (apps/workers/auth-gateway)
+
+Public-facing edge gateway for request authentication and proxying.
 
 Dev mode:
 
 ```bash
-cd apps/edge-auth
-npm run dev
-```
-
-Deploy to staging:
-
-```bash
-cd apps/edge-auth
-npm run deploy
-```
-
-Deploy to production:
-
-```bash
-cd apps/edge-auth
-npm run deploy:prod
+cd apps/workers/auth-gateway
+bun dev  # Port 6000
 ```
 
 Type check:
 
 ```bash
-cd apps/edge-auth
-npm run typecheck
+cd apps/workers/auth-gateway
+bun run typecheck
+```
+
+Run tests:
+
+```bash
+cd apps/workers/auth-gateway
+bunx vitest run              # Run all tests (71 tests)
+bunx vitest run --coverage   # With coverage report
+bun run test:watch           # Watch mode
+```
+
+Run linting and formatting:
+
+```bash
+cd apps/workers/auth-gateway
+bun run lint                 # Lint code
+bun run lint:fix             # Auto-fix lint issues
+bun run format:check         # Check formatting
+bun run format               # Auto-format code
+```
+
+### API Management (apps/workers/api-management)
+
+Internal service for API key management, usage exports, and analytics.
+
+Dev mode:
+
+```bash
+cd apps/workers/api-management
+bun dev  # Port 6001
+```
+
+Type check:
+
+```bash
+cd apps/workers/api-management
+bun run typecheck
+```
+
+Run tests:
+
+```bash
+cd apps/workers/api-management
+bunx vitest run              # Run all tests
+bunx vitest run --coverage   # With coverage report
+```
+
+### Local Testing Before Push
+
+Run these commands locally to catch issues before CI.
+
+**Note:** Containers must be running. Use `docker compose -f docker-compose.dev.yml up` in `infra/docker` first.
+
+```bash
+
+# Go Backend
+docker exec requiem-dev-api-1 go test ./...                    # Tests (must pass)
+docker exec requiem-dev-api-1 golangci-lint run                # Linting (advisory)
+
+# Rails Dashboard
+docker exec requiem-dev-dashboard-1 bin/rails test             # Tests (must pass)
+docker exec requiem-dev-dashboard-1 bundle exec brakeman --no-pager  # Security (must pass)
+docker exec requiem-dev-dashboard-1 bundle exec bundler-audit  # Dependency audit (must pass)
+docker exec requiem-dev-dashboard-1 bin/importmap audit        # JS audit (must pass)
+docker exec requiem-dev-dashboard-1 bundle exec rubocop        # Linting (advisory)
+```
+
+For Cloudflare Workers (run locally, not in Docker):
+
+```bash
+# Auth Gateway
+cd apps/workers/auth-gateway
+bunx vitest run                  # Tests (must pass - 71 tests)
+bun run typecheck                # TypeScript (must pass)
+bun run lint                     # Linting (advisory)
+bun run format:check             # Formatting (advisory)
+
+# API Management
+cd apps/workers/api-management
+bunx vitest run                  # Tests (must pass)
+bun run typecheck                # TypeScript (must pass)
+bun run lint                     # Linting (advisory)
+bun run format:check             # Formatting (advisory)
 ```
 
 ## Architecture Overview
@@ -148,35 +206,50 @@ npm run typecheck
 ### Request Flow
 
 ```
-User → Cloudflare Worker (edge-auth) → Go Backend (api) → PostgreSQL
-       ↓                                  ↓
-       KV (auth, rate limit)              Business logic
-       D1 (usage tracking)
+Public API Requests:
+User → Auth Gateway (api.requiems.xyz) → Go Backend → PostgreSQL
+       ↓                                   ↓
+       KV (auth, rate limits)             Business logic
+       D1 (usage recording)
+
+Internal Management:
+Rails Dashboard → API Management (api-management.requiems.xyz) → KV + D1
+                 ↓
+                 API key CRUD, usage exports, analytics
 ```
 
-1. **Cloudflare Worker** (`apps/edge-auth/src/index.ts`):
+1. **Auth Gateway** (`apps/workers/auth-gateway/` - Port 6000):
+   - **Public-facing** service at api.requiems.xyz
+   - Validates API keys from Cloudflare KV
+   - Checks per-minute rate limits (KV counters)
+   - Checks monthly quota limits (D1 queries)
+   - Records usage to D1 (asynchronous)
+   - Proxies requests to Go backend with `X-Backend-Secret` header
+   - Adds usage headers to responses
+   - **Authentication:** `requiems-api-key` header from end users
 
-   - Validates API key from Cloudflare KV
-   - Checks rate limits (KV counters)
-   - Checks credit usage (D1 SQLite queries)
-   - Forwards to Go backend with `X-Backend-Secret` header
-   - Records usage in D1
-   - Returns response with usage headers
+2. **API Management** (`apps/workers/api-management/` - Port 6001):
+   - **Internal-only** service at api-management.requiems.xyz
+   - API key management (create, revoke, update in KV + D1)
+   - Usage data export for Rails sync (D1 → PostgreSQL)
+   - Analytics queries (by endpoint, by date, summary)
+   - Swagger documentation at `/docs` (basic auth protected in production)
+   - **Authentication:** `X-API-Management-Key` header (only Rails has this)
 
-2. **Go Backend** (`apps/api/main.go`):
-
-   - Receives requests from gateway only
+3. **Go Backend** (`apps/api/`):
+   - Receives requests from auth-gateway only
    - Executes business logic
    - Queries PostgreSQL for data
    - Returns JSON responses
    - **No authentication** - trusts the gateway
 
-3. **Rails Dashboard** (`apps/dashboard`):
+4. **Rails Dashboard** (`apps/dashboard/`):
    - User registration/login
-   - API key management
-   - Usage statistics
+   - Subscription management
+   - API key management (via API Management service)
+   - Usage statistics and analytics
    - Admin panel
-   - Syncs API keys to Cloudflare KV
+   - Background jobs (D1 sync, aggregation)
 
 ### Code Organization
 
@@ -201,14 +274,40 @@ Domain-driven design with feature modules:
 **Pattern**: Each feature has `service.go` (business logic), `transport_http.go`
 (HTTP handlers), `type.go` (data types), and parent `router.go` (routes).
 
-#### Cloudflare Worker (apps/edge-auth/src/)
+#### Cloudflare Workers (apps/workers/)
 
-- `index.ts` - Main request handler (auth, rate limit, proxy)
-- `requests.ts` - Usage tracking (D1 queries)
-- `rate-limit.ts` - Rate limiting logic (KV)
-- `http.ts` - HTTP utilities
-- `config.ts` - Plans, pricing
-- `types.ts` - TypeScript types
+**Shared Package** (`apps/workers/shared/`):
+
+Common utilities and types used by all Cloudflare Workers:
+
+- `types.ts` - Core types (PlanName, ApiKeyData, RateLimitResult, etc.)
+- `config.ts` - Plan definitions and endpoint multipliers
+- `logger.ts` - Structured logging with cf-ray tracing
+- `http.ts` - HTTP utilities (jsonResponse, jsonError, CORS)
+
+Workers import from shared via `@requiem/workers-shared` path alias.
+
+**Auth Gateway** (`apps/workers/auth-gateway/src/`):
+
+Lean public gateway focused on request flow:
+
+- `index.ts` - Main request handler (auth validation, rate limiting, proxying)
+- `env.ts` - Worker-specific environment (BACKEND_URL, BACKEND_SECRET)
+- `requests.ts` - Usage tracking (D1 queries and recording)
+- `rate-limit.ts` - Rate limiting logic (KV counters)
+- `http.ts` - Backend-specific HTTP utilities (filterHeaders, addUsageHeaders)
+
+**API Management** (`apps/workers/api-management/src/`):
+
+Internal management service with Hono framework:
+
+- `index.ts` - Hono app with Swagger documentation
+- `shared/env.ts` - Worker-specific environment (API_MANAGEMENT_API_KEY)
+- `shared/api-key-generator.ts` - API key generation utilities
+- `routes/api-keys/` - API key CRUD operations
+- `routes/usage/` - Usage data export with pagination
+- `routes/analytics/` - Analytics queries (endpoint, date, summary)
+- `middleware/` - API key auth, basic auth, error handling
 
 #### Rails Dashboard (apps/dashboard/)
 
@@ -218,6 +317,41 @@ Standard Rails 8 structure with:
 - Tailwind CSS for styling
 - Sidekiq for background jobs
 - Solid Queue/Cache for Rails 8 features
+
+**View Organization Pattern**:
+
+Rails views are organized to keep controller directories clean with
+page-specific partials in a dedicated `partials/` directory:
+
+```
+app/views/
+├── {controller}/
+│   ├── {action}.html.erb      # Main views only (one file per page)
+│   └── {another_action}.html.erb
+└── partials/
+    ├── {page_name}/
+    │   ├── _section_name.html.erb
+    │   └── _another_section.html.erb
+    └── shared/                 # Truly shared across multiple pages
+        └── _component.html.erb
+```
+
+Example structure:
+
+```
+app/views/
+├── home/
+│   ├── contact.html.erb       # Clean! Main views only
+│   ├── about.html.erb
+│   └── pricing.html.erb
+└── partials/
+    ├── contact/
+    │   ├── _info_sections.html.erb
+    │   ├── _additional_links.html.erb
+    │   └── _contact_form.html.erb
+    └── shared/
+        └── _footer.html.erb
+```
 
 ## Database Architecture
 
@@ -316,9 +450,8 @@ The Go backend trusts the Cloudflare Worker gateway completely:
 **Rails migrations** (user data):
 
 ```bash
-cd apps/dashboard
-bin/rails generate migration AddFieldToTable
-bin/rails db:migrate
+docker exec requiem-dev-dashboard-1 bin/rails generate migration AddFieldToTable
+docker exec requiem-dev-dashboard-1 bin/rails db:migrate
 ```
 
 ### Cloudflare Worker Development
@@ -330,33 +463,14 @@ bin/rails db:migrate
 3. KV/D1 bindings configured in `wrangler.toml`
 4. Seed KV with: `bun run scripts/seed-kv.ts`
 
-### Hot Reload
-
-- **Go**: Air watches `.go` files, rebuilds (~2-3s)
-- **Rails**: Native Rails reloader, instant for most changes
-- **Cloudflare Worker**: Wrangler dev mode with instant reload
-
-### Running Single Tests
-
-Go:
-
-```bash
-cd apps/api
-go test ./internal/text/advice -v -run TestGetAdvice
-```
-
-Rails:
-
-```bash
-cd apps/dashboard
-bin/rails test test/models/api_key_test.rb:15  # Line number
-```
-
 ## Common Development Tasks
+
+**Note:** These commands manage the Docker containers. Run from `infra/docker` directory.
 
 View service logs:
 
 ```bash
+cd infra/docker
 docker compose -f docker-compose.dev.yml logs -f api
 docker compose -f docker-compose.dev.yml logs -f dashboard
 ```
@@ -364,8 +478,17 @@ docker compose -f docker-compose.dev.yml logs -f dashboard
 Reset database:
 
 ```bash
+cd infra/docker
 docker compose -f docker-compose.dev.yml down -v
 docker compose -f docker-compose.dev.yml up
+```
+
+Restart a specific service:
+
+```bash
+cd infra/docker
+docker compose -f docker-compose.dev.yml restart api
+docker compose -f docker-compose.dev.yml restart dashboard
 ```
 
 Connect to database:

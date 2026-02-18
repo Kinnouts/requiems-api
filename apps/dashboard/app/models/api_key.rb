@@ -9,7 +9,7 @@ class ApiKey < ApplicationRecord
   # Validations
   validates :key_prefix, presence: true, uniqueness: true
   validates :key_hash, presence: true
-  validates :name, length: { maximum: 100 }
+  validates :name, presence: true, length: { maximum: 100 }
   validates :environment, inclusion: { in: %w[test live] }, allow_nil: true
 
   # Scopes
@@ -18,17 +18,50 @@ class ApiKey < ApplicationRecord
   scope :for_environment, ->(env) { where(environment: env) }
 
   # Callbacks
-  before_create :generate_key
-  after_create :sync_to_cloudflare
+  before_validation :request_key_from_server, on: :create
   after_destroy :remove_from_cloudflare
   after_update :sync_revocation_to_cloudflare, if: :saved_change_to_active?
 
-  # Generate a new API key
-  def generate_key
+  # Request a new API key from the api-management worker.
+  # The worker generates the key, stores it in KV + D1, and returns it once.
+  def request_key_from_server
+    return if key_prefix.present? # Skip if already generated
+
+    if Rails.env.test?
+      # In tests, generate locally to avoid external dependencies
+      generate_key_locally
+    else
+      # In all other environments, use the api-management worker so that
+      # the key is immediately available in Cloudflare KV (auth) and D1 (usage)
+      service = Cloudflare::ApiManagementService.new
+      billing_start = user.subscription&.created_at || Time.current
+
+      generated_key = service.create_key(
+        user_id: user_id,
+        plan: user.current_plan,
+        name: name,
+        billing_cycle_start: billing_start.iso8601
+      )
+
+      if generated_key
+        self.full_key = generated_key
+        self.key_prefix = ApiKeyGenerator.extract_prefix(generated_key)
+        self.key_hash = ApiKeyGenerator.hash_key(generated_key)
+        self.active = true if active.nil?
+      else
+        errors.add(:base, "Failed to generate API key. Please try again.")
+        throw :abort
+      end
+    end
+  end
+
+  def generate_key_locally
+    # Generate a local API key for test/development
     env = environment&.to_sym || :live
-    self.full_key = ApiKeyGenerator.generate(environment: env)
-    self.key_prefix = ApiKeyGenerator.extract_prefix(full_key)
-    self.key_hash = ApiKeyGenerator.hash_key(full_key)
+    generated_key = ApiKeyGenerator.generate(environment: env)
+    self.full_key = generated_key
+    self.key_prefix = ApiKeyGenerator.extract_prefix(generated_key)
+    self.key_hash = ApiKeyGenerator.hash_key(generated_key)
     self.active = true if active.nil?
   end
 
@@ -53,21 +86,12 @@ class ApiKey < ApplicationRecord
 
   private
 
-  def sync_to_cloudflare
-    return unless Rails.env.production? || ENV["SYNC_TO_CLOUDFLARE"] == "true"
-
-    Cloudflare::KvSyncService.new(self).sync_create
-  rescue StandardError => e
-    Rails.logger.error("Failed to sync API key to Cloudflare: #{e.message}")
-    # Don't fail the creation if Cloudflare sync fails
-  end
-
   def remove_from_cloudflare
-    return unless Rails.env.production? || ENV["SYNC_TO_CLOUDFLARE"] == "true"
+    return if Rails.env.test?
 
-    Cloudflare::KvSyncService.new(self).sync_delete
+    Cloudflare::ApiManagementService.new.revoke_key(key_prefix)
   rescue StandardError => e
-    Rails.logger.error("Failed to remove API key from Cloudflare: #{e.message}")
+    Rails.logger.error("[ApiManagement] Failed to revoke API key #{key_prefix}: #{e.message}")
   end
 
   def sync_revocation_to_cloudflare

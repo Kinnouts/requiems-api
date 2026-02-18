@@ -18,20 +18,24 @@ Rails.application.configure do
   config.solid_cache.connects_to = { database: { writing: :cache } }
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_caching = false
-  config.action_mailer.default_url_options = {
-    host: ENV.fetch("MAILER_HOST", "requiems.xyz"),
-    protocol: "https"
-  }
-  config.action_mailer.delivery_method = :smtp
-  config.action_mailer.smtp_settings = {
-    address: ENV["SMTP_ADDRESS"],
-    port: ENV.fetch("SMTP_PORT", 587).to_i,
-    domain: ENV["SMTP_DOMAIN"],
-    user_name: ENV["SMTP_USERNAME"],
-    password: ENV["SMTP_PASSWORD"],
-    authentication: :plain,
-    enable_starttls_auto: true
-  }
+
+  # Only configure mailer if AppConfig is available (skipped during asset precompilation)
+  if defined?(AppConfig)
+    config.action_mailer.default_url_options = {
+      host: AppConfig.mailer_host,
+      protocol: "https"
+    }
+    config.action_mailer.delivery_method = :smtp
+    config.action_mailer.smtp_settings = {
+      address: AppConfig.smtp_address,
+      port: AppConfig.smtp_port,
+      domain: AppConfig.smtp_domain,
+      user_name: AppConfig.smtp_username,
+      password: AppConfig.smtp_password,
+      authentication: :plain,
+      enable_starttls_auto: true
+    }
+  end
 
   config.i18n.fallbacks = true
   config.active_record.dump_schema_after_migration = false

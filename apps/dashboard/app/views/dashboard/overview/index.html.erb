@@ -16,7 +16,7 @@
   <div class="bg-white rounded-lg shadow p-6">
     <div class="flex items-center justify-between mb-4">
       <h3 class="text-sm font-medium text-gray-500">Current Usage</h3>
-      <%= render "shared/badge", text: @current_plan.titleize, variant: @current_plan == "free" ? "default" : "primary", size: "xs" %>
+      <%= render "partials/shared/badge", text: @current_plan.titleize, variant: @current_plan == "free" ? "default" : "primary", size: "xs" %>
     </div>
 
     <div class="mb-2">
@@ -150,7 +150,7 @@
                         "danger"
                       end
                     %>
-                    <%= render "shared/badge", text: log.status_code.to_s, variant: status_color, size: "xs" %>
+                    <%= render "partials/shared/badge", text: log.status_code.to_s, variant: status_color, size: "xs" %>
                   </td>
                   <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
                     <%= log.response_time_ms || "—" %>ms

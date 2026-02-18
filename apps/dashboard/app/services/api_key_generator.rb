@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "bcrypt"
+
 class ApiKeyGenerator
   # Generate a new API key in the format: rq_live_<24_random_chars>
   # Returns the full key (which should be shown to the user once)

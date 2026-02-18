@@ -119,7 +119,7 @@
                 </div>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
-                <%= render "shared/badge",
+                <%= render "partials/shared/badge",
                   text: (user.subscription&.plan_name || "free").titleize,
                   variant: user.subscription&.plan_name == "free" ? "default" : "primary",
                   size: "xs" %>
@@ -132,11 +132,11 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <% if user.admin? %>
-                  <%= render "shared/badge", text: "Admin", variant: "danger", size: "xs" %>
+                  <%= render "partials/shared/badge", text: "Admin", variant: "danger", size: "xs" %>
                 <% elsif user.suspended? %>
-                  <%= render "shared/badge", text: "Suspended", variant: "warning", size: "xs" %>
+                  <%= render "partials/shared/badge", text: "Suspended", variant: "warning", size: "xs" %>
                 <% else %>
-                  <%= render "shared/badge", text: "Active", variant: "success", size: "xs" %>
+                  <%= render "partials/shared/badge", text: "Active", variant: "success", size: "xs" %>
                 <% end %>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

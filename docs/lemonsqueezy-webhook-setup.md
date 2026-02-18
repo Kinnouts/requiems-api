@@ -2,11 +2,13 @@
 
 ## Overview
 
-The LemonSqueezy webhook integration is now fully implemented. This document explains how to complete the setup.
+The LemonSqueezy webhook integration is now fully implemented. This document
+explains how to complete the setup.
 
 ## What's Been Implemented
 
 ### 1. Database Migration ✅
+
 - Added LemonSqueezy fields to `subscriptions` table:
   - `lemonsqueezy_subscription_id` (string, unique index)
   - `lemonsqueezy_customer_id` (string, indexed)
@@ -14,14 +16,17 @@ The LemonSqueezy webhook integration is now fully implemented. This document exp
   - `cancel_at_period_end` (boolean, default: false)
 
 ### 2. Subscription Model ✅
+
 - Validations for `plan_name` and `lemonsqueezy_subscription_id`
 - Scopes: `active`, `cancelled`
 - Auto-sync to Cloudflare KV when created or plan changes
 
 ### 3. Webhook Controller ✅
+
 Location: `apps/dashboard/app/controllers/webhooks/lemonsqueezy_controller.rb`
 
 Handles these webhook events:
+
 - `subscription_created` - New subscription started
 - `subscription_updated` - Plan changed or subscription modified
 - `subscription_cancelled` / `subscription_expired` - Subscription ended
@@ -29,9 +34,12 @@ Handles these webhook events:
 - `subscription_payment_success` - Successful payment processed
 
 ### 4. Cloudflare KV Sync Service ✅
+
 Location: `apps/dashboard/app/services/cloudflare_kv_sync_service.rb`
 
-Automatically syncs subscription changes to Cloudflare KV so the Worker can enforce:
+Automatically syncs subscription changes to Cloudflare KV so the Worker can
+enforce:
+
 - Plan limits
 - Rate limits
 - Credit quotas
@@ -40,7 +48,8 @@ Automatically syncs subscription changes to Cloudflare KV so the Worker can enfo
 
 ### Step 1: Configure Webhook in LemonSqueezy Dashboard
 
-1. Go to your LemonSqueezy dashboard: https://app.lemonsqueezy.com/settings/webhooks
+1. Go to your LemonSqueezy dashboard:
+   https://app.lemonsqueezy.com/settings/webhooks
 2. Click "Create Webhook"
 3. Enter webhook URL: `https://requiems.xyz/webhooks/lemonsqueezy`
 4. Select events to send:
@@ -61,7 +70,8 @@ Update the signing secret in your environment:
 LEMONSQUEEZY_SIGNING_SECRET=your_actual_signing_secret_here
 ```
 
-**Important:** Replace `your_webhook_signing_secret_from_lemonsqueezy` with the actual signing secret from Step 1.
+**Important:** Replace `your_webhook_signing_secret_from_lemonsqueezy` with the
+actual signing secret from Step 1.
 
 ### Step 3: Restart Services
 
@@ -84,6 +94,7 @@ docker compose logs -f dashboard | grep LemonSqueezy
 ```
 
 You should see logs like:
+
 ```
 [LemonSqueezy Webhook] Received: subscription_created
 [LemonSqueezy] Subscription created for user 123: developer
@@ -101,6 +112,7 @@ npx wrangler kv:key get "key:YOUR_API_KEY" --namespace-id=7cc847da3f3143b2ba8f7c
 ```
 
 Should return:
+
 ```json
 {
   "userId": "123",
@@ -128,26 +140,26 @@ User Checkout → LemonSqueezy → Webhook Event
 
 ## Subscription Status Mapping
 
-| LemonSqueezy Status | Plan Name    | Cloudflare KV Plan |
-|---------------------|--------------|---------------------|
-| active              | developer    | developer           |
-| trialing            | developer    | developer           |
-| cancelled           | free         | free                |
-| expired             | free         | free                |
-| on_trial            | developer    | developer           |
+| LemonSqueezy Status | Plan Name | Cloudflare KV Plan |
+| ------------------- | --------- | ------------------ |
+| active              | developer | developer          |
+| trialing            | developer | developer          |
+| cancelled           | free      | free               |
+| expired             | free      | free               |
+| on_trial            | developer | developer          |
 
 ## Variant ID to Plan Mapping
 
 Configured in `.env`:
 
-| Variant ID | Plan           | Billing |
-|------------|----------------|---------|
-| 822585     | Developer      | Monthly |
-| 822595     | Developer      | Yearly  |
-| 822596     | Business       | Monthly |
-| 822601     | Business       | Yearly  |
-| 822603     | Professional   | Monthly |
-| 822604     | Professional   | Yearly  |
+| Variant ID | Plan         | Billing |
+| ---------- | ------------ | ------- |
+| 822585     | Developer    | Monthly |
+| 822595     | Developer    | Yearly  |
+| 822596     | Business     | Monthly |
+| 822601     | Business     | Yearly  |
+| 822603     | Professional | Monthly |
+| 822604     | Professional | Yearly  |
 
 ## Security
 
@@ -163,8 +175,10 @@ Configured in `.env`:
 **Cause:** Invalid signature or missing signing secret
 
 **Fix:**
+
 1. Verify `LEMONSQUEEZY_SIGNING_SECRET` is set correctly
-2. Check webhook logs: `docker compose logs dashboard | grep "Invalid signature"`
+2. Check webhook logs:
+   `docker compose logs dashboard | grep "Invalid signature"`
 3. Regenerate signing secret in LemonSqueezy dashboard
 
 ### Plan Not Syncing to Cloudflare KV
@@ -172,6 +186,7 @@ Configured in `.env`:
 **Cause:** Cloudflare API credentials missing or incorrect
 
 **Fix:**
+
 1. Verify these environment variables are set:
    - `CLOUDFLARE_ACCOUNT_ID`
    - `CLOUDFLARE_KV_NAMESPACE_ID`
@@ -183,11 +198,13 @@ Configured in `.env`:
 **Cause:** Custom data `user_id` not passed in checkout URL
 
 **Fix:** Verify checkout URL includes:
+
 ```
 ?checkout[custom][user_id]=123
 ```
 
-This is automatically added by `billing_controller.rb:create_lemonsqueezy_checkout_url`
+This is automatically added by
+`billing_controller.rb:create_lemonsqueezy_checkout_url`
 
 ## Next Steps
 
@@ -200,7 +217,8 @@ This is automatically added by `billing_controller.rb:create_lemonsqueezy_checko
 
 ## API Key Sync
 
-When a subscription changes, **all active API keys** for that user are automatically updated in Cloudflare KV. This ensures:
+When a subscription changes, **all active API keys** for that user are
+automatically updated in Cloudflare KV. This ensures:
 
 - Existing API keys immediately get new rate limits
 - Credit quotas are updated for the new billing cycle

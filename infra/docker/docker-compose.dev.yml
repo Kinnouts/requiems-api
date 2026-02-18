@@ -22,13 +22,13 @@ services:
   redis:
     image: redis:7-alpine
     volumes:
-      - redis_data:/data
+    - redis_data:/data
     ports:
       - "6379:6379"
 
   # Go API with hot reloading using Air
   api:
-    image: golang:1.23-alpine
+    image: golang:1.24-alpine
     working_dir: /app
     command: >
       sh -c "
@@ -68,6 +68,9 @@ services:
       - DATABASE_URL=postgres://requiem:requiem@db:5432/requiem?sslmode=disable
       - REDIS_URL=redis://redis:6379
       - SECRET_KEY_BASE=development_secret_key_base_change_in_production
+      # API Management Configuration
+      - API_MANAGEMENT_API_KEY=${API_MANAGEMENT_API_KEY}
+      - API_MANAGEMENT_URL=${API_MANAGEMENT_URL:-https://api-management.requiems.xyz}
       # LemonSqueezy Configuration
       - LEMONSQUEEZY_STORE_SLUG=${LEMONSQUEEZY_STORE_SLUG}
       - LEMONSQUEEZY_STORE_ID=${LEMONSQUEEZY_STORE_ID}
@@ -87,6 +90,9 @@ services:
       - SMTP_PASSWORD=${SMTP_PASSWORD}
       - SMTP_FROM_EMAIL=${SMTP_FROM_EMAIL}
       - MAILER_HOST=${MAILER_HOST}
+      # Form Notifications
+      - OBSERVER_EMAILS=${OBSERVER_EMAILS:-eliaz@bobadilla.tech}
+      - MAILER_FROM=${MAILER_FROM:-noreply@requiems.xyz}
     volumes:
       - ../../apps/dashboard:/app
       - bundle_cache:/usr/local/bundle
@@ -113,6 +119,9 @@ services:
       - RAILS_ENV=development
       - DATABASE_URL=postgres://requiem:requiem@db:5432/requiem?sslmode=disable
       - REDIS_URL=redis://redis:6379
+      # API Management Configuration
+      - API_MANAGEMENT_API_KEY=${API_MANAGEMENT_API_KEY}
+      - API_MANAGEMENT_URL=${API_MANAGEMENT_URL:-https://api-management.requiems.xyz}
     volumes:
       - ../../apps/dashboard:/app
       - bundle_cache:/usr/local/bundle

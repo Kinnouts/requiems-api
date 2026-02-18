@@ -17,9 +17,9 @@ class Subscription < ApplicationRecord
   private
 
   def sync_to_cloudflare
-    CloudflareKvSyncService.sync_user_plan(user, plan_name)
+    Cloudflare::ApiManagementService.new.sync_user_plan(user, plan_name)
   rescue StandardError => e
-    Rails.logger.error "[Subscription] Failed to sync to Cloudflare KV: #{e.message}"
-    # Don't raise - subscription should still be saved even if KV sync fails
+    Rails.logger.error "[Subscription] Failed to sync plan to api-management: #{e.message}"
+    # Don't raise - subscription should still be saved even if sync fails
   end
 end
