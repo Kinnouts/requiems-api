@@ -1,1 +1,1 @@
-../edge-auth/schema.sql
+../auth-gateway/schema.sql
