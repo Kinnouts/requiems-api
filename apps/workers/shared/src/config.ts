@@ -16,26 +16,26 @@ import type { PlanConfig } from "./types";
  * - Enterprise: Custom - Unlimited requests
  */
 export const PLANS = {
-  free: {
-    requestLimit: 500,
-    ratePerMinute: 30,
-  },
-  developer: {
-    requestLimit: 100_000,
-    ratePerMinute: 5000,
-  },
-  business: {
-    requestLimit: 1_000_000,
-    ratePerMinute: 10000,
-  },
-  professional: {
-    requestLimit: 10_000_000,
-    ratePerMinute: 50000,
-  },
-  enterprise: {
-    requestLimit: Number.POSITIVE_INFINITY,
-    ratePerMinute: Number.POSITIVE_INFINITY,
-  },
+	free: {
+		requestLimit: 500,
+		ratePerMinute: 30,
+	},
+	developer: {
+		requestLimit: 100_000,
+		ratePerMinute: 5000,
+	},
+	business: {
+		requestLimit: 1_000_000,
+		ratePerMinute: 10000,
+	},
+	professional: {
+		requestLimit: 10_000_000,
+		ratePerMinute: 50000,
+	},
+	enterprise: {
+		requestLimit: Number.POSITIVE_INFINITY,
+		ratePerMinute: Number.POSITIVE_INFINITY,
+	},
 } as const;
 
 /**
@@ -45,7 +45,6 @@ export const PLANS = {
 export type PlanName = keyof typeof PLANS;
 
 export const PLAN_NAMES = Object.keys(PLANS) as PlanName[];
-
 
 /**
  * Request multipliers - how many requests an endpoint counts as
@@ -65,13 +64,13 @@ export const PLAN_NAMES = Object.keys(PLANS) as PlanName[];
  * When adding expensive endpoints, add them here.
  */
 export const ENDPOINT_MULTIPLIERS = new Map<string, number>([
-  // Dictionary operations count as 2 requests
-  ["GET /v1/text/words/define", 2],
-  ["GET /v1/text/words/synonyms", 2],
+	// Dictionary operations count as 2 requests
+	["GET /v1/text/words/define", 2],
+	["GET /v1/text/words/synonyms", 2],
 
-  // Future expensive endpoints:
-  // ["GET /v1/ai/image-recognition", 5],
-  // ["POST /v1/text/translate", 3],
+	// Future expensive endpoints:
+	// ["GET /v1/ai/image-recognition", 5],
+	// ["POST /v1/text/translate", 3],
 ]);
 
 /**
@@ -79,10 +78,10 @@ export const ENDPOINT_MULTIPLIERS = new Map<string, number>([
  * Format: [method, pathPrefix, multiplier]
  */
 const ENDPOINT_PREFIXES: Array<[string, string, number]> = Array.from(
-  ENDPOINT_MULTIPLIERS.entries(),
+	ENDPOINT_MULTIPLIERS.entries(),
 ).map(([route, multiplier]) => {
-  const [method, path] = route.split(" ", 2);
-  return [method, path, multiplier];
+	const [method, path] = route.split(" ", 2);
+	return [method, path, multiplier];
 });
 
 /**
@@ -96,19 +95,19 @@ export const DEFAULT_REQUEST_MULTIPLIER = 1;
  * Matches exact path first, then tries prefix matching for dynamic routes
  */
 export function getRequestMultiplier(method: string, pathname: string): number {
-  const exactKey = `${method} ${pathname}`;
+	const exactKey = `${method} ${pathname}`;
 
-  const exactMatch = ENDPOINT_MULTIPLIERS.get(exactKey);
-  if (exactMatch !== undefined) {
-    return exactMatch;
-  }
+	const exactMatch = ENDPOINT_MULTIPLIERS.get(exactKey);
+	if (exactMatch !== undefined) {
+		return exactMatch;
+	}
 
-  // Prefix matching for dynamic routes (e.g., /v1/finance/stocks/:symbol)
-  for (const [routeMethod, routePath, multiplier] of ENDPOINT_PREFIXES) {
-    if (method === routeMethod && pathname.startsWith(routePath)) {
-      return multiplier;
-    }
-  }
+	// Prefix matching for dynamic routes (e.g., /v1/finance/stocks/:symbol)
+	for (const [routeMethod, routePath, multiplier] of ENDPOINT_PREFIXES) {
+		if (method === routeMethod && pathname.startsWith(routePath)) {
+			return multiplier;
+		}
+	}
 
-  return DEFAULT_REQUEST_MULTIPLIER;
+	return DEFAULT_REQUEST_MULTIPLIER;
 }

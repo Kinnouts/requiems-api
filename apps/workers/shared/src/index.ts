@@ -5,7 +5,6 @@
  * This package eliminates code duplication across workers.
  */
 
-
 export * from "./types";
 export * from "./config";
 export * from "./logger";

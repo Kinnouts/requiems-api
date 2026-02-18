@@ -1,20 +1,25 @@
 {
-  "name": "@requiem/workers-shared",
-  "version": "1.0.0",
-  "type": "module",
-  "main": "./src/index.ts",
-  "types": "./src/index.ts",
-  "scripts": {
-    "typecheck": "tsc --noEmit"
-  },
-  "dependencies": {
-    "hono": "^4.11.9",
-    "nanoid": "^5.1.6",
-    "zod": "^3.24.1",
-    "@t3-oss/env-core": "^0.11.1"
-  },
-  "devDependencies": {
-    "@cloudflare/workers-types": "^4.20250117.0",
-    "typescript": "^5.7.3"
-  }
+	"name": "@requiem/workers-shared",
+	"version": "1.0.0",
+	"type": "module",
+	"main": "./src/index.ts",
+	"types": "./src/index.ts",
+	"scripts": {
+		"typecheck": "tsc --noEmit",
+		"lint": "biome lint ./src",
+		"lint:fix": "biome lint --apply ./src",
+		"format": "biome format --write ./src",
+		"format:check": "biome format ./src"
+	},
+	"dependencies": {
+		"hono": "^4.11.9",
+		"nanoid": "^5.1.6",
+		"zod": "^3.24.1",
+		"@t3-oss/env-core": "^0.11.1"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "^1.5.3",
+		"@cloudflare/workers-types": "^4.20250117.0",
+		"typescript": "^5.7.3"
+	}
 }
