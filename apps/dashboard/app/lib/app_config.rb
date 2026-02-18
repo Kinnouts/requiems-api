@@ -135,12 +135,32 @@ class AppConfig
 
   def require_env(key)
     ENV.fetch(key) do
-      raise MissingConfigError, "Missing required environment variable: #{key}"
+      # In test environment, provide safe defaults instead of failing
+      if Rails.env.test?
+        test_defaults[key]
+      else
+        raise MissingConfigError, "Missing required environment variable: #{key}"
+      end
     end
   end
 
   def optional_env(key, default: nil)
     ENV.fetch(key, default)
+  end
+
+  # Safe test defaults for required environment variables
+  def test_defaults
+    {
+      "API_MANAGEMENT_API_KEY" => "test_api_management_key",
+      "LEMONSQUEEZY_STORE_ID" => "12345",
+      "LEMONSQUEEZY_SIGNING_SECRET" => "test_signing_secret",
+      "LEMONSQUEEZY_DEVELOPER_MONTHLY_VARIANT_ID" => "123456",
+      "LEMONSQUEEZY_DEVELOPER_YEARLY_VARIANT_ID" => "123457",
+      "LEMONSQUEEZY_BUSINESS_MONTHLY_VARIANT_ID" => "123458",
+      "LEMONSQUEEZY_BUSINESS_YEARLY_VARIANT_ID" => "123459",
+      "LEMONSQUEEZY_PROFESSIONAL_MONTHLY_VARIANT_ID" => "123460",
+      "LEMONSQUEEZY_PROFESSIONAL_YEARLY_VARIANT_ID" => "123461"
+    }
   end
 
   def validate_url(url, key)
