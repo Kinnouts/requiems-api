@@ -96,7 +96,7 @@
           <div>
             <label class="block text-sm font-medium text-gray-500 mb-1">Plan</label>
             <%= render "partials/shared/badge",
-              text: @user.subscription.plan_name.titleize,
+              text: h(@user.subscription.plan_name.titleize),
               variant: @user.subscription.plan_name == "free" ? "default" : "primary",
               size: "sm" %>
           </div>
@@ -192,7 +192,7 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <%= render "partials/shared/badge",
-                  text: api_key.environment.titleize,
+                  text: h(api_key.environment.to_s.titleize),
                   variant: api_key.environment == "live" ? "primary" : "default",
                   size: "xs" %>
               </td>

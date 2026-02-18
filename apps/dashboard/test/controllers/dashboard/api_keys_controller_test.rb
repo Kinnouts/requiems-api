@@ -10,7 +10,7 @@ class Dashboard::ApiKeysControllerTest < ActionDispatch::IntegrationTest
 
     @api_key = @user.api_keys.create!(
       name: "Test Key",
-      environment: "test"
+      environment: "live"
     )
 
     sign_in @user
@@ -36,9 +36,8 @@ class Dashboard::ApiKeysControllerTest < ActionDispatch::IntegrationTest
     assert_response :success
     assert_select "form"
     assert_select "input[name='api_key[name]']"
-    # Environment uses radio buttons, not a select dropdown
-    assert_select "input[type='radio'][name='api_key[environment]'][value='live']"
-    assert_select "input[type='radio'][name='api_key[environment]'][value='test']"
+    # Environment is a hidden field defaulting to live (no test environment)
+    assert_select "input[type='hidden'][name='api_key[environment]'][value='live']"
   end
 
   test "create generates new api key" do
@@ -70,7 +69,7 @@ class Dashboard::ApiKeysControllerTest < ActionDispatch::IntegrationTest
       post dashboard_api_keys_path, params: {
         api_key: {
           name: "",
-          environment: "test"
+          environment: "live"
         }
       }
     end
@@ -100,7 +99,7 @@ class Dashboard::ApiKeysControllerTest < ActionDispatch::IntegrationTest
 
     other_key = other_user.api_keys.create!(
       name: "Other Key",
-      environment: "test"
+      environment: "live"
     )
 
     # Controller rescues RecordNotFound and redirects with alert

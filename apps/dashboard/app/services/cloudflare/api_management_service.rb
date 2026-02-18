@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "cgi"
+
 module Cloudflare
   # Service to interact with the API Management Cloudflare Worker.
   # All API key CRUD operations go through this service so that both
@@ -39,7 +41,7 @@ module Cloudflare
 
     # Revoke an API key by prefix via the api-management worker.
     def revoke_key(key_prefix)
-      response = connection.delete("/api-keys/#{key_prefix}")
+      response = connection.delete("/api-keys/#{CGI.escape(key_prefix.to_s)}")
       handle_response(response, "revoke", key_prefix)
     rescue Faraday::Error => e
       Rails.logger.error "[ApiManagement] Revoke key network error for #{key_prefix}: #{e.message}"
@@ -53,7 +55,7 @@ module Cloudflare
       payload[:billingCycleStart] = billing_cycle_start if billing_cycle_start
       return false if payload.empty?
 
-      response = connection.patch("/api-keys/#{key_prefix}") do |req|
+      response = connection.patch("/api-keys/#{CGI.escape(key_prefix.to_s)}") do |req|
         req.body = payload.to_json
       end
 

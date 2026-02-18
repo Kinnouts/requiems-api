@@ -109,7 +109,7 @@
         <div>
           <label class="block text-sm font-medium text-gray-500 mb-1">Environment</label>
           <%= render "partials/shared/badge",
-            text: @api_key.environment.titleize,
+            text: h(@api_key.environment.to_s.titleize),
             variant: @api_key.environment == "live" ? "primary" : "default",
             size: "xs" %>
         </div>
@@ -183,7 +183,7 @@
 
       <% if @user.subscription.present? %>
         <%= render "partials/shared/badge",
-          text: @user.subscription.plan_name.titleize,
+          text: h(@user.subscription.plan_name.titleize),
           variant: @user.subscription.plan_name == "free" ? "default" : "primary",
           size: "xs" %>
       <% else %>

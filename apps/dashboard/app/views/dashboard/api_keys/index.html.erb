@@ -37,7 +37,7 @@
         </li>
         <li class="flex items-start">
           <span class="text-blue-500 mr-2">•</span>
-          <span><strong>Environments:</strong> Use test keys for development and live keys for production.</span>
+          <span><strong>Regenerate if Compromised:</strong> Revoke and regenerate immediately if a key is exposed.</span>
         </li>
       </ul>
     </div>
@@ -105,7 +105,6 @@
           <tr>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Environment</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Key</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Last Used</th>
@@ -126,12 +125,6 @@
                 <% else %>
                   <%= render "partials/shared/badge", text: "Inactive", variant: "default", size: "sm" %>
                 <% end %>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap">
-                <%= render "partials/shared/badge",
-                  text: api_key.environment.titleize,
-                  variant: api_key.environment == "live" ? "primary" : "default",
-                  size: "sm" %>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="flex items-center">
