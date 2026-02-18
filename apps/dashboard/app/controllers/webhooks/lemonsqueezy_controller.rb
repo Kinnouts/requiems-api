@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class Webhooks::LemonsqueezyController < ApplicationController
-  skip_before_action :verify_authenticity_token
+  # Webhooks are server-to-server calls; CSRF tokens are not applicable.
+  # Authentication is enforced via HMAC-SHA256 signature verification below.
+  skip_before_action :verify_authenticity_token # rubocop:disable Rails/LexicallyScopedActionFilter
   before_action :verify_signature
 
   def create

@@ -62,7 +62,11 @@ class ApiProxyController < ApplicationController
 
   def valid_endpoint?(endpoint)
     return false if endpoint.blank?
-    endpoint.start_with?("/v1/")
+    return false unless endpoint.start_with?("/v1/")
+    # Reject anything that could manipulate URI parsing (schemes, fragments, newlines)
+    return false if endpoint.match?(/[#\r\n]|:\/\//)
+
+    true
   end
 
   def get_api_key
@@ -92,8 +96,11 @@ class ApiProxyController < ApplicationController
       headers[key] = value if allowed_header?(key)
     end
 
-    # Make HTTP request using Net::HTTP
     uri = URI(url)
+
+    expected_host = URI(api_base_url).host
+    raise "Invalid request target" unless uri.host == expected_host
+
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = uri.scheme == "https"
     http.open_timeout = 10
