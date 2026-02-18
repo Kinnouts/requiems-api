@@ -103,11 +103,11 @@ Get weather information for locations
 - **Planned Endpoint:** `GET /v1/places/weather`
 - **Expected Credit Cost:** 1
 
-### [Working Days](./working-days.md) - ⏳ Planned
+### [Working Days](./working-days.md) - ✅ MVP
 
 Get working days and business hours
 
-- **Status:** planned
+- **Status:** MVP
 - **Planned Endpoint:** `GET /v1/places/working-days`
 - **Expected Credit Cost:** 1
 
