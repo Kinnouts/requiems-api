@@ -27,21 +27,36 @@ class ApiKey < ApplicationRecord
   def request_key_from_server
     return if key_prefix.present? # Skip if already generated
 
-    # Request key generation from api-management
-    service = Cloudflare::KvSyncService.new(self)
-    generated_key = service.sync_create
-
-    if generated_key
-      # Store the returned key
-      self.full_key = generated_key
-      self.key_prefix = ApiKeyGenerator.extract_prefix(generated_key)
-      self.key_hash = ApiKeyGenerator.hash_key(generated_key)
-      self.active = true if active.nil?
+    # In test/development, generate keys locally without external API calls
+    if Rails.env.test? || Rails.env.development?
+      generate_key_locally
     else
-      # Key generation failed
-      errors.add(:base, "Failed to generate API key")
-      throw :abort
+      # In production, request from api-management service
+      service = Cloudflare::KvSyncService.new(self)
+      generated_key = service.sync_create
+
+      if generated_key
+        # Store the returned key
+        self.full_key = generated_key
+        self.key_prefix = ApiKeyGenerator.extract_prefix(generated_key)
+        self.key_hash = ApiKeyGenerator.hash_key(generated_key)
+        self.active = true if active.nil?
+      else
+        # Key generation failed
+        errors.add(:base, "Failed to generate API key")
+        throw :abort
+      end
     end
+  end
+
+  def generate_key_locally
+    # Generate a local API key for test/development
+    env = environment&.to_sym || :live
+    generated_key = ApiKeyGenerator.generate(environment: env)
+    self.full_key = generated_key
+    self.key_prefix = ApiKeyGenerator.extract_prefix(generated_key)
+    self.key_hash = ApiKeyGenerator.hash_key(generated_key)
+    self.active = true if active.nil?
   end
 
   # Verify a key matches this record

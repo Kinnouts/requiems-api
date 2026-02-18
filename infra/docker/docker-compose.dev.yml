@@ -68,6 +68,9 @@ services:
       - DATABASE_URL=postgres://requiem:requiem@db:5432/requiem?sslmode=disable
       - REDIS_URL=redis://redis:6379
       - SECRET_KEY_BASE=development_secret_key_base_change_in_production
+      # API Management Configuration
+      - API_MANAGEMENT_API_KEY=${API_MANAGEMENT_API_KEY}
+      - API_MANAGEMENT_URL=${API_MANAGEMENT_URL:-https://api-management.requiems.xyz}
       # LemonSqueezy Configuration
       - LEMONSQUEEZY_STORE_SLUG=${LEMONSQUEEZY_STORE_SLUG}
       - LEMONSQUEEZY_STORE_ID=${LEMONSQUEEZY_STORE_ID}
@@ -116,6 +119,9 @@ services:
       - RAILS_ENV=development
       - DATABASE_URL=postgres://requiem:requiem@db:5432/requiem?sslmode=disable
       - REDIS_URL=redis://redis:6379
+      # API Management Configuration
+      - API_MANAGEMENT_API_KEY=${API_MANAGEMENT_API_KEY}
+      - API_MANAGEMENT_URL=${API_MANAGEMENT_URL:-https://api-management.requiems.xyz}
     volumes:
       - ../../apps/dashboard:/app
       - bundle_cache:/usr/local/bundle
