@@ -63,8 +63,9 @@ class ApiProxyController < ApplicationController
   def valid_endpoint?(endpoint)
     return false if endpoint.blank?
     return false unless endpoint.start_with?("/v1/")
-    # Reject anything that could manipulate URI parsing (schemes, fragments, newlines)
+    # Reject anything that could manipulate URI parsing (schemes, fragments, newlines, path traversal)
     return false if endpoint.match?(/[#\r\n]|:\/\//)
+    return false if endpoint.include?("..")
 
     true
   end
@@ -82,7 +83,11 @@ class ApiProxyController < ApplicationController
 
   def make_api_request(endpoint, method, request_params, api_key, request_headers)
     api_base_url = ENV["API_BASE_URL"] || "https://api.requiems.xyz"
-    url = "#{api_base_url}#{endpoint}"
+
+    base_uri = URI(api_base_url)
+    uri = base_uri.dup
+    uri.path = endpoint
+    uri.query = nil
 
     # Prepare headers
     headers = {
@@ -95,11 +100,6 @@ class ApiProxyController < ApplicationController
     request_headers.each do |key, value|
       headers[key] = value if allowed_header?(key)
     end
-
-    uri = URI(url)
-
-    expected_host = URI(api_base_url).host
-    raise "Invalid request target" unless uri.host == expected_host
 
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = uri.scheme == "https"
