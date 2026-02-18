@@ -62,7 +62,7 @@ class Dashboard::BillingController < ApplicationController
 
     # LemonSqueezy customer portal URL
     # Format: https://[store-slug].lemonsqueezy.com/billing
-    store_slug = ENV["LEMONSQUEEZY_STORE_SLUG"] || "requiems"
+    store_slug = AppConfig.lemonsqueezy_store_slug
     portal_url = "https://#{store_slug}.lemonsqueezy.com/billing"
 
     redirect_to portal_url, allow_other_host: true
@@ -82,6 +82,8 @@ class Dashboard::BillingController < ApplicationController
   private
 
   def get_plan_info(plan_name)
+    config = AppConfig.instance
+
     plans = {
       "free" => {
         name: "Free",
@@ -102,8 +104,8 @@ class Dashboard::BillingController < ApplicationController
         price_yearly: 300, # $25/month billed yearly
         requests_per_month: 100_000,
         rate_limit_per_minute: 5_000,
-        lemonsqueezy_variant_id_monthly: ENV["LEMONSQUEEZY_DEVELOPER_MONTHLY_VARIANT_ID"],
-        lemonsqueezy_variant_id_yearly: ENV["LEMONSQUEEZY_DEVELOPER_YEARLY_VARIANT_ID"],
+        lemonsqueezy_variant_id_monthly: config.lemonsqueezy_developer_monthly_variant_id,
+        lemonsqueezy_variant_id_yearly: config.lemonsqueezy_developer_yearly_variant_id,
         features: [
           "100,000 requests/month",
           "5,000 requests/minute",
@@ -117,8 +119,8 @@ class Dashboard::BillingController < ApplicationController
         price_yearly: 750, # $62.50/month billed yearly
         requests_per_month: 1_000_000,
         rate_limit_per_minute: 10_000,
-        lemonsqueezy_variant_id_monthly: ENV["LEMONSQUEEZY_BUSINESS_MONTHLY_VARIANT_ID"],
-        lemonsqueezy_variant_id_yearly: ENV["LEMONSQUEEZY_BUSINESS_YEARLY_VARIANT_ID"],
+        lemonsqueezy_variant_id_monthly: config.lemonsqueezy_business_monthly_variant_id,
+        lemonsqueezy_variant_id_yearly: config.lemonsqueezy_business_yearly_variant_id,
         features: [
           "1M requests/month",
           "10,000 requests/minute",
@@ -133,8 +135,8 @@ class Dashboard::BillingController < ApplicationController
         price_yearly: 1500, # $125/month billed yearly
         requests_per_month: 10_000_000,
         rate_limit_per_minute: 50_000,
-        lemonsqueezy_variant_id_monthly: ENV["LEMONSQUEEZY_PROFESSIONAL_MONTHLY_VARIANT_ID"],
-        lemonsqueezy_variant_id_yearly: ENV["LEMONSQUEEZY_PROFESSIONAL_YEARLY_VARIANT_ID"],
+        lemonsqueezy_variant_id_monthly: config.lemonsqueezy_professional_monthly_variant_id,
+        lemonsqueezy_variant_id_yearly: config.lemonsqueezy_professional_yearly_variant_id,
         features: [
           "10M requests/month",
           "50,000 requests/minute",
@@ -166,11 +168,9 @@ class Dashboard::BillingController < ApplicationController
                    plan_info[:lemonsqueezy_variant_id_monthly]
     end
 
-    store_id = ENV["LEMONSQUEEZY_STORE_ID"]
-
     # LemonSqueezy checkout URL format
     # https://[store-slug].lemonsqueezy.com/checkout/buy/[variant-id]?checkout[email]=user@example.com&checkout[custom][user_id]=123
-    store_slug = ENV["LEMONSQUEEZY_STORE_SLUG"] || "requiems"
+    store_slug = AppConfig.lemonsqueezy_store_slug
     checkout_url = "https://#{store_slug}.lemonsqueezy.com/checkout/buy/#{variant_id}"
 
     # Add query parameters

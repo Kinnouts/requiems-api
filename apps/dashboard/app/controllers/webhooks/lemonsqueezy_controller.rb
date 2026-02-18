@@ -44,7 +44,7 @@ class Webhooks::LemonsqueezyController < ApplicationController
       return
     end
 
-    secret = ENV["LEMONSQUEEZY_SIGNING_SECRET"]
+    secret = AppConfig.lemonsqueezy_signing_secret
     payload = request.body.read
 
     expected_signature = OpenSSL::HMAC.hexdigest(
@@ -177,13 +177,14 @@ class Webhooks::LemonsqueezyController < ApplicationController
 
   def determine_plan_name(variant_id)
     variant_id = variant_id.to_s
+    config = AppConfig.instance
 
     case variant_id
-    when ENV["LEMONSQUEEZY_DEVELOPER_MONTHLY_VARIANT_ID"], ENV["LEMONSQUEEZY_DEVELOPER_YEARLY_VARIANT_ID"]
+    when config.lemonsqueezy_developer_monthly_variant_id, config.lemonsqueezy_developer_yearly_variant_id
       "developer"
-    when ENV["LEMONSQUEEZY_BUSINESS_MONTHLY_VARIANT_ID"], ENV["LEMONSQUEEZY_BUSINESS_YEARLY_VARIANT_ID"]
+    when config.lemonsqueezy_business_monthly_variant_id, config.lemonsqueezy_business_yearly_variant_id
       "business"
-    when ENV["LEMONSQUEEZY_PROFESSIONAL_MONTHLY_VARIANT_ID"], ENV["LEMONSQUEEZY_PROFESSIONAL_YEARLY_VARIANT_ID"]
+    when config.lemonsqueezy_professional_monthly_variant_id, config.lemonsqueezy_professional_yearly_variant_id
       "professional"
     else
       Rails.logger.warn "[LemonSqueezy] Unknown variant_id: #{variant_id}"

@@ -8,8 +8,9 @@ module Cloudflare
   # Cloudflare KV (auth validation) and D1 (usage tracking) stay in sync.
   class ApiManagementService
     def initialize
+      config = AppConfig.instance
       @base_url = ENV.fetch("API_MANAGEMENT_URL", "https://api-management.requiems.xyz")
-      @management_key = ENV["API_MANAGEMENT_API_KEY"]
+      @management_key = config.api_management_api_key
     end
 
     # Create a new API key via the api-management worker.

@@ -77,12 +77,12 @@ class ApiProxyController < ApplicationController
     else
       # Use test/demo API key for anonymous users
       # This should be a special key with limited access and rate limits
-      ENV["PLAYGROUND_API_KEY"] || "rq_test_playground_demo_key"
+      AppConfig.playground_api_key
     end
   end
 
   def make_api_request(endpoint, method, request_params, api_key, request_headers)
-    api_base_url = ENV["API_BASE_URL"] || "https://api.requiems.xyz"
+    api_base_url = AppConfig.api_base_url
 
     base_uri = URI(api_base_url)
     uri = base_uri.dup
