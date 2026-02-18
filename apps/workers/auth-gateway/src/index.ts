@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 
-import { validateEnv, type WorkerBindings } from "./shared/env";
+import { validateEnv, type WorkerBindings } from "./env";
 import { errorHandler, jsonResponse, corsMiddleware } from "@requiem/workers-shared";
 
 import { apiKeyAuthMiddleware } from "./middleware/api-key-auth";

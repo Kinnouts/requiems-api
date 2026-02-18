@@ -1,5 +1,5 @@
 import type { RequestCheckResult } from "@requiem/workers-shared";
-import type { WorkerBindings } from "./shared/env";
+import type { WorkerBindings } from "./env";
 
 /**
  * Get current request usage from D1

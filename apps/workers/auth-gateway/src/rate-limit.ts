@@ -1,5 +1,5 @@
 import type { PlanConfig, PlanName, RateLimitResult } from "@requiem/workers-shared";
-import type { WorkerBindings } from "./shared/env";
+import type { WorkerBindings } from "./env";
 
 /**
  * Get request limits description for a plan

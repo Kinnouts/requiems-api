@@ -11,7 +11,7 @@ import {
 
 import { addUsageHeaders, fetchBackend, filterHeaders } from "../http";
 import { recordRequestUsage } from "../requests";
-import type { WorkerBindings } from "../shared/env";
+import type { WorkerBindings } from "../env";
 
 // Extend Hono context to include auth data set by middleware
 type Variables = {

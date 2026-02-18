@@ -12,7 +12,7 @@ import {
 
 import { checkRateLimit, getRequestLimitMessage } from "../rate-limit";
 import { checkRequestUsage } from "../requests";
-import type { WorkerBindings } from "../shared/env";
+import type { WorkerBindings } from "../env";
 
 // Define variables that will be attached to context
 type Variables = {
