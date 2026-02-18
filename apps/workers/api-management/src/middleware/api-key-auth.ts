@@ -1,6 +1,6 @@
 import type { Context, Next } from "hono";
-import { jsonError } from '@requiem/workers-shared';
-import type { WorkerBindings } from '../shared/env';
+import { jsonError } from "@requiem/workers-shared";
+import type { WorkerBindings } from "../shared/env";
 
 /**
  * API Management key authentication middleware

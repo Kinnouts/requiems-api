@@ -1,5 +1,5 @@
 import type { Context, ErrorHandler } from "hono";
-import { jsonResponse } from '@requiem/workers-shared';
+import { jsonResponse } from "@requiem/workers-shared";
 
 /**
  * Global Error Handler for Hono Application

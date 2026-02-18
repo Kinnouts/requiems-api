@@ -10,11 +10,7 @@ import {
 } from "@requiem/workers-shared";
 import { checkRequestUsage, recordRequestUsage } from "./requests";
 import { validateEnv, type WorkerBindings } from "./env";
-import {
-  addUsageHeaders,
-  fetchBackend,
-  filterHeaders,
-} from "./http";
+import { addUsageHeaders, fetchBackend, filterHeaders } from "./http";
 import { checkRateLimit, getRequestLimitMessage } from "./rate-limit";
 
 async function fetch(request: Request, bindings: WorkerBindings): Promise<Response> {

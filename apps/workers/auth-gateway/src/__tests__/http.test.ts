@@ -1,14 +1,6 @@
 import { describe, it, expect } from "vitest";
-import {
-  jsonResponse,
-  jsonError,
-  corsResponse,
-} from "@requiem/workers-shared";
-import {
-  filterHeaders,
-  addUsageHeaders,
-  fetchBackend,
-} from "../http";
+import { jsonResponse, jsonError, corsResponse } from "@requiem/workers-shared";
+import { filterHeaders, addUsageHeaders, fetchBackend } from "../http";
 
 describe("HTTP Utilities", () => {
   describe("jsonResponse", () => {
