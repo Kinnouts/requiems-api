@@ -364,34 +364,6 @@ jobs:
         working-directory: apps/api-management
         run: bunx vitest run
 
-  api-management-deploy:
-    name: Deploy API Management to Cloudflare
-    runs-on: ubuntu-latest
-    needs: [detect-changes, api-management-typecheck, api-management-test]
-    if: |
-      needs.detect-changes.outputs.api-management == 'true' &&
-      github.ref == 'refs/heads/main' &&
-      github.event_name == 'push'
-
-    steps:
-      - uses: actions/checkout@v6
-
-      - name: Setup Bun
-        uses: oven-sh/setup-bun@v2
-        with:
-          bun-version: latest
-
-      - name: Install dependencies
-        working-directory: apps/api-management
-        run: bun install --frozen-lockfile
-
-      - name: Deploy to Cloudflare Workers
-        uses: cloudflare/wrangler-action@v3
-        with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          workingDirectory: apps/api-management
-          command: deploy --env production
-
   ci-success:
     name: CI Success
     runs-on: ubuntu-latest

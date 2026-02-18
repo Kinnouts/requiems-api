@@ -26,7 +26,7 @@ ENVIRONMENT = "development"
 [env.production]
 name = "requiem-api-management-production"
 workers_dev = true
-preview_urls = true
+preview_urls = false
 
 [[env.production.routes]]
 pattern = "api-management.requiems.xyz/*"
