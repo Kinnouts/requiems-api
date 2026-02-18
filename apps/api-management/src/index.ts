@@ -37,26 +37,45 @@ app.notFound((_c) => {
 });
 
 app.onError((err, c) => {
-  console.error("Unhandled error:", {
+  // Log full error details
+  console.error("Unhandled error:", err);
+  console.error("Error details:", {
     message: err.message,
-    stack: err.stack,
     name: err.name,
+    stack: err.stack,
+    toString: err.toString(),
   });
 
+  // In development, return detailed error
   if (c.env?.ENVIRONMENT === "development") {
     return jsonResponse({
       error: "Internal server error",
       details: err.message,
-      stack: err.stack
+      name: err.name,
+      stack: err.stack,
     }, 500);
   }
 
-  return jsonResponse({ error: "Internal server error" }, 500);
+  return jsonResponse({
+    error: "Internal server error",
+    message: err.message
+  }, 500);
 });
 
 export default {
   async fetch(request: Request, env: WorkerBindings): Promise<Response> {
-    validateEnv(env);
+    try {
+      validateEnv(env);
+    } catch (error) {
+      console.error("Environment validation failed:", error);
+      return new Response(JSON.stringify({
+        error: "Configuration error",
+        details: error instanceof Error ? error.message : String(error),
+      }), {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      });
+    }
 
     return app.fetch(request, env);
   },
