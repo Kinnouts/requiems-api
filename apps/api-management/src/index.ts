@@ -18,7 +18,7 @@ const app = new Hono<{ Bindings: WorkerBindings }>();
 
 app.get("/healthz", (_c) => jsonResponse({ status: "ok", service: "api-management" }));
 
-app.use("/docs/*", swaggerAuthMiddleware);
+app.use("/docs*", swaggerAuthMiddleware);
 
 app.get("/docs", swaggerUI({ url: "/openapi.json" }));
 
