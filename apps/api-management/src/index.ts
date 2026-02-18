@@ -37,7 +37,7 @@ app.notFound((_c) => {
 });
 
 app.onError((err, c) => {
-=  console.error("Unhandled error:", {
+  console.error("Unhandled error:", {
     message: err.message,
     stack: err.stack,
     name: err.name,
