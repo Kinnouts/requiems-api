@@ -99,7 +99,15 @@ app.post("/", async (c) => {
 
     return jsonResponse(response, 201);
   } catch (error) {
-    log.error("Failed to create API key", { error });
+    log.error("Failed to create API key", {
+      error,
+      params: { userId: body.userId, plan: body.plan },
+    });
+
+    if (c.env.ENVIRONMENT === "development") {
+      return jsonError(500, `Failed to create API key: ${error instanceof Error ? error.message : String(error)}`);
+    }
+
     return jsonError(500, "Failed to create API key");
   }
 });

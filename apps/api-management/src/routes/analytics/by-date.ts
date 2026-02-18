@@ -64,7 +64,15 @@ app.get("/by-date", async (c) => {
       groupBy,
     });
   } catch (error) {
-    log.error("Error fetching date analytics", { error });
+    log.error("Error fetching date analytics", {
+      error,
+      params: { userId, since, until, groupBy },
+    });
+
+    if (c.env.ENVIRONMENT === "development") {
+      return jsonError(500, `Failed to fetch analytics: ${error instanceof Error ? error.message : String(error)}`);
+    }
+
     return jsonError(500, "Failed to fetch analytics");
   }
 });

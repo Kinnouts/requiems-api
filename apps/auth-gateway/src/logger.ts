@@ -19,8 +19,38 @@ interface LogEntry {
   [key: string]: unknown;
 }
 
+/**
+ * Serialize an error object for logging
+ */
+function serializeError(error: unknown): object {
+  if (error instanceof Error) {
+    return {
+      name: error.name,
+      message: error.message,
+      stack: error.stack,
+      ...(error.cause ? { cause: serializeError(error.cause) } : {}),
+    };
+  }
+
+  if (typeof error === 'object' && error !== null) {
+    return error;
+  }
+
+  return { value: String(error) };
+}
+
 function formatLog(level: string, rayId: string, msg: string, data?: object): string {
-  const entry: LogEntry = { level, rayId, msg, ...data };
+  const processedData = data ? Object.entries(data).reduce((acc, [key, value]) => {
+    // Serialize error objects properly
+    if (key === 'error' || value instanceof Error) {
+      acc[key] = serializeError(value);
+    } else {
+      acc[key] = value;
+    }
+    return acc;
+  }, {} as Record<string, unknown>) : {};
+
+  const entry: LogEntry = { level, rayId, msg, ...processedData };
   return JSON.stringify(entry);
 }
 

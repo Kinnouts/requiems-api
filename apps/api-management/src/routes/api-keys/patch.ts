@@ -113,7 +113,15 @@ app.patch("/:keyPrefix", async (c) => {
       billingCycleStart: updatedData.billingCycleStart,
     });
   } catch (error) {
-    log.error("Failed to update API key", { error, keyPrefix });
+    log.error("Failed to update API key", {
+      error,
+      params: { keyPrefix, updates: body },
+    });
+
+    if (c.env.ENVIRONMENT === "development") {
+      return jsonError(500, `Failed to update API key: ${error instanceof Error ? error.message : String(error)}`);
+    }
+
     return jsonError(500, "Failed to update API key");
   }
 });

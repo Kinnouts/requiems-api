@@ -71,7 +71,15 @@ app.get("/by-endpoint", async (c) => {
       dateRange: { since: sinceDate, until },
     });
   } catch (error) {
-    log.error("Error fetching endpoint analytics", { error });
+    log.error("Error fetching endpoint analytics", {
+      error,
+      params: { userId, since, until, limit },
+    });
+
+    if (c.env.ENVIRONMENT === "development") {
+      return jsonError(500, `Failed to fetch analytics: ${error instanceof Error ? error.message : String(error)}`);
+    }
+
     return jsonError(500, "Failed to fetch analytics");
   }
 });

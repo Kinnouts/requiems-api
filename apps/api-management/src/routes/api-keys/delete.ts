@@ -58,7 +58,15 @@ app.delete("/:keyPrefix", async (c) => {
       keyPrefix,
     });
   } catch (error) {
-    log.error("Failed to revoke API key", { error, keyPrefix });
+    log.error("Failed to revoke API key", {
+      error,
+      params: { keyPrefix },
+    });
+
+    if (c.env.ENVIRONMENT === "development") {
+      return jsonError(500, `Failed to revoke API key: ${error instanceof Error ? error.message : String(error)}`);
+    }
+
     return jsonError(500, "Failed to revoke API key");
   }
 });
