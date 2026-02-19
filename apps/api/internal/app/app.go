@@ -10,9 +10,11 @@ import (
 	"github.com/go-chi/chi/v5"
 
 	"requiems-api/internal/email"
+	"requiems-api/internal/misc"
 	"requiems-api/internal/platform/config"
 	"requiems-api/internal/platform/db"
 	"requiems-api/internal/platform/middleware"
+	platformredis "requiems-api/internal/platform/redis"
 	"requiems-api/internal/text"
 )
 
@@ -27,7 +29,11 @@ func New(ctx context.Context, cfg config.Config) (*App, error) {
 	}
 
 	pool, err := db.Connect(ctx, cfg.DatabaseURL)
+	if err != nil {
+		return nil, err
+	}
 
+	rdb, err := platformredis.Connect(ctx, cfg.RedisURL)
 	if err != nil {
 		return nil, err
 	}
@@ -49,6 +55,10 @@ func New(ctx context.Context, cfg config.Config) (*App, error) {
 		emailRouter := chi.NewRouter()
 		email.RegisterRoutes(emailRouter)
 		protected.Mount("/v1/email", emailRouter)
+
+		miscRouter := chi.NewRouter()
+		misc.RegisterRoutes(ctx, miscRouter, pool, rdb)
+		protected.Mount("/v1/misc", miscRouter)
 	})
 
 	return &App{
