@@ -1,6 +1,7 @@
 package counter
 
 import (
+	"errors"
 	"fmt"
 	"regexp"
 )
@@ -11,11 +12,15 @@ type Counter struct {
 	Value     int64  `json:"value"`
 }
 
-var namespaceRe = regexp.MustCompile(`^[a-zA-Z0-9_\-]{1,64}$`)
+// ErrInvalidNamespace is returned when the namespace fails validation.
+// Handlers use this to distinguish client errors (400) from server errors (500).
+var ErrInvalidNamespace = errors.New("invalid namespace")
+
+var namespaceRe = regexp.MustCompile(`^[a-zA-Z0-9_-]{1,64}$`)
 
 func validateNamespace(ns string) error {
 	if !namespaceRe.MatchString(ns) {
-		return fmt.Errorf("namespace must be 1–64 chars: alphanumeric, hyphen or underscore only")
+		return fmt.Errorf("%w: must be 1–64 chars, alphanumeric, hyphen or underscore only", ErrInvalidNamespace)
 	}
 	return nil
 }

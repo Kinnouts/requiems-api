@@ -2,30 +2,28 @@ package app
 
 import (
 	"context"
-	"fmt"
 	"net/http"
-	"strings"
-	"time"
 
 	"github.com/go-chi/chi/v5"
 
 	"requiems-api/internal/email"
-	"requiems-api/internal/misc"
 	"requiems-api/internal/entertainment"
+	"requiems-api/internal/misc"
+	"requiems-api/internal/text"
+
 	"requiems-api/internal/platform/config"
 	"requiems-api/internal/platform/db"
 	"requiems-api/internal/platform/middleware"
-	platformredis "requiems-api/internal/platform/redis"
-	"requiems-api/internal/text"
+	"requiems-api/internal/platform/reqredis"
 )
 
 type App struct {
-	cfg config.Config
-	h   http.Handler
+	cfg     config.Config
+	handler http.Handler
 }
 
 func New(ctx context.Context, cfg config.Config) (*App, error) {
-	if err := migrateWithRetry(cfg.DatabaseURL, "infra/migrations"); err != nil {
+	if err := db.MigrateWithRetry(cfg.DatabaseURL, "infra/migrations"); err != nil {
 		return nil, err
 	}
 
@@ -34,72 +32,43 @@ func New(ctx context.Context, cfg config.Config) (*App, error) {
 		return nil, err
 	}
 
-	rdb, err := platformredis.Connect(ctx, cfg.RedisURL)
+	rdb, err := reqredis.Connect(ctx, cfg.RedisURL)
 	if err != nil {
 		return nil, err
 	}
 
-	r := chi.NewRouter()
+	router := chi.NewRouter()
 
-	// Public routes (no auth required)
-	r.Get("/healthz", Healthz)
+	router.Get("/healthz", Healthz)
 
-	// Protected routes (require X-Backend-Secret header)
-	r.Group(func(protected chi.Router) {
-		// Apply backend secret authentication middleware
+	router.Group(func(protected chi.Router) {
 		protected.Use(middleware.BackendSecretAuth(cfg.BackendSecret))
 
-		textRouter := chi.NewRouter()
-		text.RegisterRoutes(textRouter, pool)
-		protected.Mount("/v1/text", textRouter)
+		protected.Route("/v1", func(v1 chi.Router) {
+			textRouter := chi.NewRouter()
+			text.RegisterRoutes(textRouter, pool)
+			v1.Mount("/text", textRouter)
 
-		emailRouter := chi.NewRouter()
-		email.RegisterRoutes(emailRouter)
-		protected.Mount("/v1/email", emailRouter)
+			emailRouter := chi.NewRouter()
+			email.RegisterRoutes(emailRouter)
+			v1.Mount("/email", emailRouter)
 
-		entertainmentRouter := chi.NewRouter()
-		entertainment.RegisterRoutes(entertainmentRouter)
-		protected.Mount("/v1/entertainment", entertainmentRouter)
+			entertainmentRouter := chi.NewRouter()
+			entertainment.RegisterRoutes(entertainmentRouter)
+			v1.Mount("/entertainment", entertainmentRouter)
 
-		miscRouter := chi.NewRouter()
-		misc.RegisterRoutes(ctx, miscRouter, pool, rdb)
-		protected.Mount("/v1/misc", miscRouter)
+			miscRouter := chi.NewRouter()
+			misc.RegisterRoutes(ctx, miscRouter, pool, rdb)
+			v1.Mount("/misc", miscRouter)
+		})
 	})
 
 	return &App{
-		cfg: cfg,
-		h:   r,
+		cfg:     cfg,
+		handler: router,
 	}, nil
 }
 
 func (a *App) Handler() http.Handler {
-	return a.h
-}
-
-func migrateWithRetry(dsn, dir string) error {
-	var lastErr error
-
-	for range 10 {
-		if err := db.Migrate(dsn, dir); err != nil {
-			lastErr = err
-
-			msg := err.Error()
-
-			if strings.Contains(msg, "the database system is starting up") ||
-				strings.Contains(msg, "connection refused") {
-				time.Sleep(1 * time.Second)
-				continue
-			}
-
-			return err
-		}
-
-		return nil
-	}
-
-	if lastErr != nil {
-		return fmt.Errorf("migrations failed after retries: %w", lastErr)
-	}
-
-	return fmt.Errorf("migrations failed after retries with unknown error")
+	return a.handler
 }

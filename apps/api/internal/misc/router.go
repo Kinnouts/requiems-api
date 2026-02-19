@@ -14,7 +14,7 @@ import (
 func RegisterRoutes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb *redis.Client) {
 	convertSvc := convert.NewService()
 	convert.RegisterRoutes(r, convertSvc)
-  
+
 	counterRepo := counter.NewRepository(pool)
 	counterSvc := counter.NewService(rdb, counterRepo)
 	go counter.StartSyncWorker(ctx, rdb, counterRepo)

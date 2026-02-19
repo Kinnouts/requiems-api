@@ -14,6 +14,12 @@ const syncInterval = 60 * time.Second
 // StartSyncWorker runs a background goroutine that periodically flushes Redis
 // counter values to PostgreSQL. It stops when ctx is cancelled.
 func StartSyncWorker(ctx context.Context, rdb *redis.Client, repo Repository) {
+	defer func() {
+		if r := recover(); r != nil {
+			log.Printf("counter sync worker panicked: %v — worker has stopped, counters will not be persisted until restart", r)
+		}
+	}()
+
 	ticker := time.NewTicker(syncInterval)
 	defer ticker.Stop()
 

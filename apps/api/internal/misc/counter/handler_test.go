@@ -3,12 +3,15 @@ package counter
 import (
 	"context"
 	"encoding/json"
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
 	"github.com/go-chi/chi/v5"
 )
+
+var errRedisDown = errors.New("connection refused")
 
 // mockService is a test double for Service.
 type mockService struct {
@@ -77,6 +80,23 @@ func TestIncrementHandler(t *testing.T) {
 			t.Fatalf("expected 400, got %d", w.Code)
 		}
 	})
+
+	t.Run("returns 500 for internal server error", func(t *testing.T) {
+		svc := &mockService{
+			incrementFn: func(_ context.Context, ns string) (int64, error) {
+				return 0, errRedisDown
+			},
+		}
+
+		req := httptest.NewRequest(http.MethodPost, "/counter/hits", http.NoBody)
+		w := httptest.NewRecorder()
+
+		newTestRouter(svc).ServeHTTP(w, req)
+
+		if w.Code != http.StatusInternalServerError {
+			t.Fatalf("expected 500, got %d", w.Code)
+		}
+	})
 }
 
 func TestGetHandler(t *testing.T) {
@@ -110,7 +130,7 @@ func TestGetHandler(t *testing.T) {
 		}
 	})
 
-	t.Run("returns 400 on service error", func(t *testing.T) {
+	t.Run("returns 400 on validation error", func(t *testing.T) {
 		svc := &mockService{
 			getFn: func(_ context.Context, ns string) (int64, error) {
 				return 0, validateNamespace("!!!invalid!!!")
@@ -124,6 +144,23 @@ func TestGetHandler(t *testing.T) {
 
 		if w.Code != http.StatusBadRequest {
 			t.Fatalf("expected 400, got %d", w.Code)
+		}
+	})
+
+	t.Run("returns 500 for internal server error", func(t *testing.T) {
+		svc := &mockService{
+			getFn: func(_ context.Context, ns string) (int64, error) {
+				return 0, errRedisDown
+			},
+		}
+
+		req := httptest.NewRequest(http.MethodGet, "/counter/page-views", http.NoBody)
+		w := httptest.NewRecorder()
+
+		newTestRouter(svc).ServeHTTP(w, req)
+
+		if w.Code != http.StatusInternalServerError {
+			t.Fatalf("expected 500, got %d", w.Code)
 		}
 	})
 }

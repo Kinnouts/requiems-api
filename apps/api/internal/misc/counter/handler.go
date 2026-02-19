@@ -1,6 +1,7 @@
 package counter
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -15,13 +16,21 @@ func RegisterRoutes(r chi.Router, svc Service) {
 	r.Get("/counter/{namespace}", getHandler(svc))
 }
 
+func counterError(w http.ResponseWriter, err error) {
+	if errors.Is(err, ErrInvalidNamespace) {
+		httpx.Error(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	httpx.Error(w, http.StatusInternalServerError, "internal server error")
+}
+
 func incrementHandler(svc Service) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ns := chi.URLParam(r, "namespace")
 
 		val, err := svc.Increment(r.Context(), ns)
 		if err != nil {
-			httpx.Error(w, http.StatusBadRequest, err.Error())
+			counterError(w, err)
 			return
 		}
 
@@ -35,7 +44,7 @@ func getHandler(svc Service) http.HandlerFunc {
 
 		val, err := svc.Get(r.Context(), ns)
 		if err != nil {
-			httpx.Error(w, http.StatusBadRequest, err.Error())
+			counterError(w, err)
 			return
 		}
 
