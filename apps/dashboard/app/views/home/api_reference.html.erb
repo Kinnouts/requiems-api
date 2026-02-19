@@ -66,6 +66,21 @@
             </svg>
           </div>
 
+          <!-- Miscellaneous APIs -->
+          <div class="border border-gray-200 rounded-lg p-6">
+            <div class="flex items-center justify-between mb-4">
+              <h3 class="text-xl font-bold text-gray-900">Miscellaneous APIs</h3>
+              <%= render "partials/shared/badge", text: "Live", variant: "success", size: "sm" %>
+            </div>
+            <p class="text-gray-700 mb-4">
+              General-purpose utility endpoints. Convert between units of measurement including length, weight, volume, temperature, area, and speed.
+            </p>
+            <%= link_to "View Miscellaneous API Documentation", apis_path(category: "misc"), class: "text-blue-600 hover:text-blue-700 font-medium inline-flex items-center" %>
+            <svg class="ml-1 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+
           <!-- Coming Soon -->
           <div class="border border-gray-200 rounded-lg p-6 opacity-60">
             <div class="flex items-center justify-between mb-4">
