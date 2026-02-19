@@ -10,6 +10,7 @@ import (
 	"github.com/go-chi/chi/v5"
 
 	"requiems-api/internal/email"
+	"requiems-api/internal/misc"
 	"requiems-api/internal/platform/config"
 	"requiems-api/internal/platform/db"
 	"requiems-api/internal/platform/middleware"
@@ -49,6 +50,10 @@ func New(ctx context.Context, cfg config.Config) (*App, error) {
 		emailRouter := chi.NewRouter()
 		email.RegisterRoutes(emailRouter)
 		protected.Mount("/v1/email", emailRouter)
+
+		miscRouter := chi.NewRouter()
+		misc.RegisterRoutes(miscRouter)
+		protected.Mount("/v1/misc", miscRouter)
 	})
 
 	return &App{

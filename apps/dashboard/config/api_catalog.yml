@@ -52,7 +52,6 @@ categories:
     name: Miscellaneous
     icon: "🔧"
     description: Various utility APIs
-    coming_soon: true
 
   - id: places
     name: Places
@@ -162,3 +161,17 @@ apis:
       - Random
       - Testing
       - Games
+
+  # Miscellaneous APIs
+  - id: unit_conversion
+    name: Unit Conversion
+    category: misc
+    description: Convert between units of measurement — length, weight, volume, temperature, and more
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/unit-conversion
+    tags:
+      - Conversion
+      - Units
+      - Utilities
