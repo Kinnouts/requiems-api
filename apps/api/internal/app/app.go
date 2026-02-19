@@ -6,11 +6,6 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"requiems-api/internal/email"
-	"requiems-api/internal/entertainment"
-	"requiems-api/internal/misc"
-	"requiems-api/internal/text"
-
 	"requiems-api/internal/platform/config"
 	"requiems-api/internal/platform/db"
 	"requiems-api/internal/platform/middleware"
@@ -45,21 +40,7 @@ func New(ctx context.Context, cfg config.Config) (*App, error) {
 		protected.Use(middleware.BackendSecretAuth(cfg.BackendSecret))
 
 		protected.Route("/v1", func(v1 chi.Router) {
-			textRouter := chi.NewRouter()
-			text.RegisterRoutes(textRouter, pool)
-			v1.Mount("/text", textRouter)
-
-			emailRouter := chi.NewRouter()
-			email.RegisterRoutes(emailRouter)
-			v1.Mount("/email", emailRouter)
-
-			entertainmentRouter := chi.NewRouter()
-			entertainment.RegisterRoutes(entertainmentRouter)
-			v1.Mount("/entertainment", entertainmentRouter)
-
-			miscRouter := chi.NewRouter()
-			misc.RegisterRoutes(ctx, miscRouter, pool, rdb)
-			v1.Mount("/misc", miscRouter)
+			registerV1Routes(ctx, v1, pool, rdb)
 		})
 	})
 
