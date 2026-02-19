@@ -2,18 +2,111 @@
 
 ## Status
 
-⏳ **Planned** - Not yet implemented
+✅ **Live** - Available now
 
 ## Overview
 
-Get horoscope readings for zodiac signs. This endpoint will provide astrological
-readings and predictions for different zodiac signs.
+Get daily horoscope readings for any of the 12 zodiac signs. Each reading is
+deterministically generated per sign per day, so the same sign returns the same
+reading throughout the day.
 
-## Planned Endpoints
+## Endpoints
 
-### Get Horoscope
+### Get Daily Horoscope
 
-**Planned Endpoint:** `GET /v1/entertainment/horoscope` **Expected Credit
-Cost:** 1 credit
+**Endpoint:** `GET /v1/entertainment/horoscope/:sign`
 
-Get horoscope reading for a specific zodiac sign.
+**Credit Cost:** 1 credit
+
+Returns a daily horoscope reading for the given zodiac sign.
+
+#### Path Parameters
+
+| Parameter | Type   | Required | Description                                                 |
+| --------- | ------ | -------- | ----------------------------------------------------------- |
+| `sign`    | string | Yes      | Zodiac sign (case-insensitive). One of the 12 signs below.  |
+
+#### Supported Signs
+
+`aries`, `taurus`, `gemini`, `cancer`, `leo`, `virgo`, `libra`, `scorpio`,
+`sagittarius`, `capricorn`, `aquarius`, `pisces`
+
+#### Response
+
+```json
+{
+  "sign": "aries",
+  "date": "2024-12-15",
+  "horoscope": "Today is a great day for new beginnings. Trust your instincts and take that first step toward your goals.",
+  "lucky_number": 7,
+  "mood": "energetic"
+}
+```
+
+#### Response Fields
+
+| Field          | Type    | Description                                    |
+| -------------- | ------- | ---------------------------------------------- |
+| `sign`         | string  | Normalized zodiac sign (lowercase)             |
+| `date`         | string  | Today's date in `YYYY-MM-DD` format (UTC)      |
+| `horoscope`    | string  | Daily horoscope reading                        |
+| `lucky_number` | integer | Lucky number for the day (1–99)                |
+| `mood`         | string  | Suggested mood for the day                     |
+
+#### Error Responses
+
+| Status | Description                       |
+| ------ | --------------------------------- |
+| `400`  | Invalid zodiac sign provided      |
+| `401`  | Missing `requiems-api-key` header |
+| `403`  | Invalid API key                   |
+
+## Code Examples
+
+### cURL
+
+```bash
+curl https://api.requiems.xyz/v1/entertainment/horoscope/aries \
+  -H "requiems-api-key: YOUR_API_KEY"
+```
+
+### Python
+
+```python
+import requests
+
+url = "https://api.requiems.xyz/v1/entertainment/horoscope/aries"
+headers = {"requiems-api-key": "YOUR_API_KEY"}
+
+response = requests.get(url, headers=headers)
+print(response.json())
+```
+
+### JavaScript
+
+```javascript
+const response = await fetch(
+  'https://api.requiems.xyz/v1/entertainment/horoscope/aries',
+  { headers: { 'requiems-api-key': 'YOUR_API_KEY' } }
+);
+const data = await response.json();
+console.log(data.horoscope);
+```
+
+### Ruby
+
+```ruby
+require 'net/http'
+require 'json'
+
+uri = URI('https://api.requiems.xyz/v1/entertainment/horoscope/aries')
+request = Net::HTTP::Get.new(uri)
+request['requiems-api-key'] = 'YOUR_API_KEY'
+
+response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+  http.request(request)
+end
+
+data = JSON.parse(response.body)
+puts data['horoscope']
+```

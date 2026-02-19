@@ -95,13 +95,13 @@ Get information about stars and constellations
 - **Planned Endpoint:** `GET /v1/miscellaneous/stars`
 - **Expected Credit Cost:** 1
 
-### [Unit Conversion](./unit-conversion.md) - ⏳ Planned
+### [Unit Conversion](./unit-conversion.md) - ✅ Live
 
 Convert between different units of measurement
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/miscellaneous/unit-conversion`
-- **Expected Credit Cost:** 1
+- **Status:** live
+- **Endpoint:** `GET /v1/misc/convert`
+- **Credit Cost:** 1
 
 ### [University](./university.md) - ⏳ Planned
 
