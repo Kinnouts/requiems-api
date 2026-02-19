@@ -1,18 +1,16 @@
 package misc
 
 import (
-	"context"
-
 	"github.com/go-chi/chi/v5"
-	"github.com/jackc/pgx/v5/pgxpool"
+ 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/redis/go-redis/v9"
 
-  "requiems-api/internal/misc/convert"
-	"requiems-api/internal/misc/counter"
+	"requiems-api/internal/misc/convert"
+  "requiems-api/internal/misc/counter"
 )
 
 func RegisterRoutes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb *redis.Client) {
-  convertSvc := convert.NewService()
+	convertSvc := convert.NewService()
 	convert.RegisterRoutes(r, convertSvc)
   
 	counterRepo := counter.NewRepository(pool)
