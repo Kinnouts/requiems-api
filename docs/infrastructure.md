@@ -140,13 +140,14 @@ cat backup.sql | docker compose exec -T db psql -U requiem requiem
 ## Redis
 
 **Version:** 7 (Alpine) **Port:** 6379 **Purpose:** Background job queue for
-Sidekiq
+Sidekiq and real-time counter storage for the Go API
 
 ### Usage
 
+- **Go API** — Atomic counter increments (`INCR counter:{namespace}`); counter
+  values are synced to PostgreSQL every 60 seconds by the background sync worker
 - Rails background jobs (email sending, usage sync, cleanup)
 - Future: Caching layer for API responses
-- Future: Rate limiting counters
 
 ## Caddy Reverse Proxy
 
