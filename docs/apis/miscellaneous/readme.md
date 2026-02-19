@@ -15,13 +15,13 @@ Get baby name ideas and suggestions
 - **Planned Endpoint:** `GET /v1/miscellaneous/baby-names`
 - **Expected Credit Cost:** 1
 
-### [Counter](./counter.md) - ⏳ Planned
+### [Counter](./counter.md) - ✅ Live
 
-Manage and track counters
+Atomic, namespace-isolated hit counter
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/miscellaneous/counter`
-- **Expected Credit Cost:** 1
+- **Status:** live
+- **Endpoints:** `POST /v1/misc/counter/{namespace}`, `GET /v1/misc/counter/{namespace}`
+- **Credit Cost:** 1
 
 ### [Historical Events](./historical-events.md) - ⏳ Planned
 
@@ -114,5 +114,5 @@ Get university information
 ## Category Statistics
 
 - Total Endpoints: 13
-- Live: 0
-- Planned: 13
+- Live: 1
+- Planned: 12
