@@ -105,7 +105,7 @@ func TestConvert_HTTP(t *testing.T) {
 			t.Fatalf("expected 200, got %d", w.Code)
 		}
 
-		var resp ConvertResponse
+		var resp Response
 		if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 			t.Fatalf("decode response: %v", err)
 		}

@@ -1,7 +1,7 @@
 package convert
 
-// ConvertResponse is the response payload for a unit conversion request.
-type ConvertResponse struct {
+// Response is the response payload for a unit conversion request.
+type Response struct {
 	From    string  `json:"from"`
 	To      string  `json:"to"`
 	Input   float64 `json:"input"`
