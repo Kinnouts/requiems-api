@@ -40,7 +40,6 @@ categories:
     name: Entertainment
     icon: "🎬"
     description: Movies, music, and entertainment data
-    coming_soon: true
 
   - id: health
     name: Health/Wellness
@@ -162,3 +161,17 @@ apis:
       - Random
       - Testing
       - Games
+
+  # Entertainment APIs
+  - id: horoscope
+    name: Horoscope
+    category: entertainment
+    description: Get daily horoscope readings for all 12 zodiac signs
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/horoscope
+    tags:
+      - Astrology
+      - Daily
+      - Entertainment
