@@ -11,6 +11,7 @@ import (
 
 	"requiems-api/internal/email"
 	"requiems-api/internal/misc"
+	"requiems-api/internal/entertainment"
 	"requiems-api/internal/platform/config"
 	"requiems-api/internal/platform/db"
 	"requiems-api/internal/platform/middleware"
@@ -54,6 +55,10 @@ func New(ctx context.Context, cfg config.Config) (*App, error) {
 		miscRouter := chi.NewRouter()
 		misc.RegisterRoutes(miscRouter)
 		protected.Mount("/v1/misc", miscRouter)
+    
+		entertainmentRouter := chi.NewRouter()
+		entertainment.RegisterRoutes(entertainmentRouter)
+		protected.Mount("/v1/entertainment", entertainmentRouter)
 	})
 
 	return &App{
