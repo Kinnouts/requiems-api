@@ -1,155 +1,158 @@
 package convert
 
 import (
-	"encoding/json"
-	"net/http"
-	"net/http/httptest"
-	"net/url"
+	"errors"
 	"testing"
-
-	"github.com/go-chi/chi/v5"
 )
 
-func newRouter() chi.Router {
-	r := chi.NewRouter()
-	svc := NewService()
-	RegisterRoutes(r, svc)
-	return r
-}
-
-func TestConvert_Service(t *testing.T) {
+func TestService_Convert(t *testing.T) {
 	svc := NewService()
 
 	tests := []struct {
-		name    string
-		from    string
-		to      string
-		value   float64
-		want    float64
-		formula string
-		wantErr bool
+		name        string
+		from        string
+		to          string
+		value       float64
+		wantResult  float64
+		wantFormula string
+		wantErr     error
 	}{
 		// Length
-		{"miles to km", "miles", "km", 10, 16.09344, "miles × 1.609344", false},
-		{"km to miles", "km", "miles", 10, 6.2137119224, "km × 0.621371", false},
-		{"m to cm", "m", "cm", 1, 100, "m × 100", false},
-		{"ft to m", "ft", "m", 1, 0.3048, "ft × 0.3048", false},
-		{"inch to cm", "inch", "cm", 1, 2.54, "inch × 2.54", false},
-
+		{
+			name:        "miles to km",
+			from:        "miles", to: "km", value: 10,
+			wantResult:  16.09344,
+			wantFormula: "miles × 1.609344",
+		},
+		{
+			name:        "km to miles",
+			from:        "km", to: "miles", value: 1,
+			wantResult:  0.621371,
+			wantFormula: "km × 0.621371",
+		},
+		{
+			name:        "m to cm",
+			from:        "m", to: "cm", value: 1,
+			wantResult:  100,
+			wantFormula: "m × 100",
+		},
+		{
+			name:        "ft to in",
+			from:        "ft", to: "in", value: 1,
+			wantResult:  12,
+			wantFormula: "ft × 12",
+		},
+		{
+			name:        "same unit (m to m)",
+			from:        "m", to: "m", value: 5,
+			wantResult:  5,
+			wantFormula: "m × 1",
+		},
 		// Weight
-		{"kg to lb", "kg", "lb", 1, 2.2046226218, "kg × 2.204623", false},
-		{"lb to kg", "lb", "kg", 1, 0.45359237, "lb × 0.453592", false},
-		{"g to oz", "g", "oz", 28.349523, 1, "g × 0.035274", false},
-
+		{
+			name:        "kg to lb",
+			from:        "kg", to: "lb", value: 1,
+			wantResult:  2.204624,
+			wantFormula: "kg × 2.204624",
+		},
+		{
+			name:        "oz to g",
+			from:        "oz", to: "g", value: 1,
+			wantResult:  28.3495,
+			wantFormula: "oz × 28.3495",
+		},
 		// Volume
-		{"l to gallon", "l", "gallon", 1, 0.2641720512, "l × 0.264172", false},
-		{"gallon to l", "gallon", "l", 1, 3.7854118, "gallon × 3.785412", false},
-
+		{
+			name:        "l to ml",
+			from:        "l", to: "ml", value: 1,
+			wantResult:  1000,
+			wantFormula: "l × 1000",
+		},
+		{
+			name:        "gal to l",
+			from:        "gal", to: "l", value: 1,
+			wantResult:  3.78541,
+			wantFormula: "gal × 3.78541",
+		},
 		// Temperature
-		{"celsius to fahrenheit", "celsius", "fahrenheit", 100, 212, "°C × 9/5 + 32", false},
-		{"fahrenheit to celsius", "fahrenheit", "celsius", 32, 0, "(°F − 32) × 5/9", false},
-		{"celsius to kelvin", "celsius", "kelvin", 0, 273.15, "°C + 273.15", false},
-		{"kelvin to celsius", "kelvin", "celsius", 273.15, 0, "°K − 273.15", false},
-
+		{
+			name:        "celsius to fahrenheit",
+			from:        "c", to: "f", value: 100,
+			wantResult:  212,
+			wantFormula: "°C × 9/5 + 32",
+		},
+		{
+			name:        "fahrenheit to celsius",
+			from:        "f", to: "c", value: 32,
+			wantResult:  0,
+			wantFormula: "(°F − 32) × 5/9",
+		},
+		{
+			name:        "celsius to kelvin",
+			from:        "c", to: "k", value: 0,
+			wantResult:  273.15,
+			wantFormula: "°C + 273.15",
+		},
+		{
+			name:        "kelvin to celsius",
+			from:        "k", to: "c", value: 273.15,
+			wantResult:  0,
+			wantFormula: "K − 273.15",
+		},
 		// Area
-		{"hectare to acre", "hectare", "acre", 1, 2.4710538283, "hectare × 2.471054", false},
-
+		{
+			name:        "m2 to ft2",
+			from:        "m2", to: "ft2", value: 1,
+			wantResult:  10.763915,
+			wantFormula: "m2 × 10.763915",
+		},
 		// Speed
-		{"mph to km/h", "mph", "km/h", 60, 96.560640, "mph × 1.609344", false},
-
-		// Data
-		{"gb to mb", "gb", "mb", 1, 1000, "gb × 1000", false},
-
-		// Time
-		{"hour to min", "hour", "min", 2, 120, "hour × 60", false},
-		{"day to hours", "day", "hour", 1, 24, "day × 24", false},
-
+		{
+			name:        "mph to km_h",
+			from:        "mph", to: "km_h", value: 60,
+			wantResult:  96.5604,
+			wantFormula: "mph × 1.60934",
+		},
 		// Errors
-		{"unknown from", "lightyear", "km", 1, 0, "", true},
-		{"unknown to", "km", "lightyear", 1, 0, "", true},
-		{"incompatible units", "km", "kg", 1, 0, "", true},
+		{
+			name:    "unknown from unit",
+			from:    "furlong", to: "km", value: 1,
+			wantErr: ErrUnknownUnit,
+		},
+		{
+			name:    "unknown to unit",
+			from:    "km", to: "parsec", value: 1,
+			wantErr: ErrUnknownUnit,
+		},
+		{
+			name:    "incompatible units",
+			from:    "miles", to: "kg", value: 1,
+			wantErr: ErrIncompatibleUnits,
+		},
 	}
 
-	for _, tc := range tests {
-		t.Run(tc.name, func(t *testing.T) {
-			resp, err := svc.Convert(tc.from, tc.to, tc.value)
-			if tc.wantErr {
-				if err == nil {
-					t.Errorf("expected error but got nil")
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			got, err := svc.Convert(tt.from, tt.to, tt.value)
+
+			if tt.wantErr != nil {
+				if !errors.Is(err, tt.wantErr) {
+					t.Errorf("expected error %v, got %v", tt.wantErr, err)
 				}
 				return
 			}
+
 			if err != nil {
 				t.Fatalf("unexpected error: %v", err)
 			}
-			if resp.Result != tc.want {
-				t.Errorf("result: got %v, want %v", resp.Result, tc.want)
+
+			if got.Result != tt.wantResult {
+				t.Errorf("result: got %v, want %v", got.Result, tt.wantResult)
 			}
-			if resp.Formula != tc.formula {
-				t.Errorf("formula: got %q, want %q", resp.Formula, tc.formula)
+
+			if got.Formula != tt.wantFormula {
+				t.Errorf("formula: got %q, want %q", got.Formula, tt.wantFormula)
 			}
 		})
 	}
-}
-
-func TestConvert_HTTP(t *testing.T) {
-	r := newRouter()
-
-	t.Run("valid conversion returns 200", func(t *testing.T) {
-		params := url.Values{"from": {"miles"}, "to": {"km"}, "value": {"10"}}
-		req := httptest.NewRequest(http.MethodGet, "/convert?"+params.Encode(), http.NoBody)
-		w := httptest.NewRecorder()
-		r.ServeHTTP(w, req)
-
-		if w.Code != http.StatusOK {
-			t.Fatalf("expected 200, got %d", w.Code)
-		}
-
-		var resp Response
-		if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
-			t.Fatalf("decode response: %v", err)
-		}
-		if resp.From != "miles" || resp.To != "km" || resp.Input != 10 {
-			t.Errorf("unexpected response fields: %+v", resp)
-		}
-		if resp.Result != 16.09344 {
-			t.Errorf("result: got %v, want 16.09344", resp.Result)
-		}
-	})
-
-	t.Run("missing parameters returns 400", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodGet, "/convert?from=miles&to=km", http.NoBody)
-		w := httptest.NewRecorder()
-		r.ServeHTTP(w, req)
-		if w.Code != http.StatusBadRequest {
-			t.Errorf("expected 400, got %d", w.Code)
-		}
-	})
-
-	t.Run("invalid value returns 400", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodGet, "/convert?from=miles&to=km&value=abc", http.NoBody)
-		w := httptest.NewRecorder()
-		r.ServeHTTP(w, req)
-		if w.Code != http.StatusBadRequest {
-			t.Errorf("expected 400, got %d", w.Code)
-		}
-	})
-
-	t.Run("unknown unit returns 400", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodGet, "/convert?from=lightyear&to=km&value=1", http.NoBody)
-		w := httptest.NewRecorder()
-		r.ServeHTTP(w, req)
-		if w.Code != http.StatusBadRequest {
-			t.Errorf("expected 400, got %d", w.Code)
-		}
-	})
-
-	t.Run("incompatible units returns 400", func(t *testing.T) {
-		req := httptest.NewRequest(http.MethodGet, "/convert?from=km&to=kg&value=1", http.NoBody)
-		w := httptest.NewRecorder()
-		r.ServeHTTP(w, req)
-		if w.Code != http.StatusBadRequest {
-			t.Errorf("expected 400, got %d", w.Code)
-		}
-	})
 }

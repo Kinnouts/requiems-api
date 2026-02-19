@@ -2,38 +2,36 @@
 
 ## Status
 
-✅ **Live**
+✅ **Live** - Available now
 
 ## Overview
 
 Convert between different units of measurement. Supports length, weight,
-volume, temperature, area, speed, data, and time.
+volume, temperature, area, and speed conversions.
 
 ## Endpoint
 
 ### Convert Units
 
-**Endpoint:** `GET /v1/misc/convert`
+**Endpoint:** `GET /v1/misc/convert` **Credit Cost:** 1 credit
 
-**Credit Cost:** 1 credit
+Convert a value from one unit to another.
 
-Convert between any two compatible units of measurement.
+#### Query Parameters
 
-### Query Parameters
+| Parameter | Type   | Required | Description                   |
+| --------- | ------ | -------- | ----------------------------- |
+| `from`    | string | Yes      | Source unit (e.g. `miles`)    |
+| `to`      | string | Yes      | Target unit (e.g. `km`)       |
+| `value`   | number | Yes      | Numeric value to convert      |
 
-| Parameter | Type   | Required | Description                     |
-|-----------|--------|----------|---------------------------------|
-| `from`    | string | Yes      | Source unit (e.g. `miles`)      |
-| `to`      | string | Yes      | Target unit (e.g. `km`)         |
-| `value`   | number | Yes      | Numeric value to convert        |
-
-### Example Request
+#### Example Request
 
 ```
 GET /v1/misc/convert?from=miles&to=km&value=10
 ```
 
-### Example Response
+#### Example Response
 
 ```json
 {
@@ -45,42 +43,95 @@ GET /v1/misc/convert?from=miles&to=km&value=10
 }
 ```
 
-### Error Responses
+#### Response Fields
 
-| Status | Description                                    |
-|--------|------------------------------------------------|
-| 400    | Missing or invalid query parameters            |
-| 400    | Unknown unit name                              |
-| 400    | Incompatible unit types (e.g. length vs weight)|
+| Field     | Type   | Description                            |
+| --------- | ------ | -------------------------------------- |
+| `from`    | string | Source unit                            |
+| `to`      | string | Target unit                            |
+| `input`   | number | Original value                         |
+| `result`  | number | Converted value (rounded to 6 places)  |
+| `formula` | string | Human-readable conversion formula      |
 
 ## Supported Units
 
 ### Length
-`mm`, `cm`, `m`, `km`, `inch`/`inches`, `ft`/`foot`/`feet`, `yard`/`yards`,
-`mile`/`miles`, `nmi` (nautical mile)
+
+| Unit    | Key      |
+| ------- | -------- |
+| Millimeter | `mm` |
+| Centimeter | `cm` |
+| Meter   | `m`      |
+| Kilometer | `km`   |
+| Inch    | `in`     |
+| Foot    | `ft`     |
+| Yard    | `yd`     |
+| Mile    | `miles`  |
+| Nautical Mile | `nmi` |
 
 ### Weight
-`mg`, `g`, `kg`, `tonne`, `lb`/`lbs`/`pound`/`pounds`, `oz`/`ounce`/`ounces`,
-`stone`/`stones`
+
+| Unit         | Key     |
+| ------------ | ------- |
+| Milligram    | `mg`    |
+| Gram         | `g`     |
+| Kilogram     | `kg`    |
+| Metric Ton   | `t`     |
+| Ounce        | `oz`    |
+| Pound        | `lb`    |
+| Stone        | `stone` |
 
 ### Volume
-`ml`, `l`/`liter`/`litre`, `fl_oz`, `cup`/`cups`, `pint`/`pints`,
-`quart`/`quarts`, `gallon`/`gallons`
+
+| Unit         | Key      |
+| ------------ | -------- |
+| Milliliter   | `ml`     |
+| Liter        | `l`      |
+| Teaspoon     | `tsp`    |
+| Tablespoon   | `tbsp`   |
+| Fluid Ounce  | `fl_oz`  |
+| Cup          | `cup`    |
+| Pint         | `pt`     |
+| Quart        | `qt`     |
+| Gallon       | `gal`    |
 
 ### Temperature
-`celsius`/`c`/`°c`, `fahrenheit`/`f`/`°f`, `kelvin`/`k`
+
+| Unit        | Key |
+| ----------- | --- |
+| Celsius     | `c` |
+| Fahrenheit  | `f` |
+| Kelvin      | `k` |
 
 ### Area
-`mm2`, `cm2`, `m2`, `km2`, `sqft`, `acre`/`acres`, `hectare`/`hectares`/`ha`,
-`sqmi`
+
+| Unit          | Key    |
+| ------------- | ------ |
+| Square Millimeter | `mm2` |
+| Square Centimeter | `cm2` |
+| Square Meter  | `m2`   |
+| Square Kilometer | `km2` |
+| Square Inch   | `in2`  |
+| Square Foot   | `ft2`  |
+| Square Yard   | `yd2`  |
+| Acre          | `acre` |
+| Hectare       | `ha`   |
 
 ### Speed
-`m/s`, `km/h`/`kph`, `mph`, `knot`/`knots`, `ft/s`
 
-### Data
-`bit`/`bits`, `byte`/`bytes`, `kb`, `mb`, `gb`, `tb`
+| Unit              | Key     |
+| ----------------- | ------- |
+| Meters per Second | `m_s`   |
+| Kilometers per Hour | `km_h` |
+| Miles per Hour    | `mph`   |
+| Knots             | `knots` |
 
-### Time
-`ms`, `s`/`second`/`seconds`, `min`/`minute`/`minutes`,
-`hr`/`hour`/`hours`, `day`/`days`, `week`/`weeks`
+## Error Responses
+
+| HTTP Status | Reason                                             |
+| ----------- | -------------------------------------------------- |
+| 400         | Missing required parameters                        |
+| 400         | `value` is not a valid number                      |
+| 400         | Unknown unit key                                   |
+| 400         | `from` and `to` belong to different unit categories |
 

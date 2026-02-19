@@ -1,238 +1,122 @@
 package convert
 
 import (
+	"errors"
 	"fmt"
 	"math"
-	"strings"
 )
 
-// category groups units that can be converted between each other.
-type category int
-
-const (
-	categoryLength category = iota
-	categoryWeight
-	categoryVolume
-	categoryTemperature
-	categoryArea
-	categorySpeed
-	categoryData
-	categoryTime
-)
-
-// unitInfo holds the SI base-unit multiplier and the category for a unit name.
-// Temperature units are handled separately via explicit conversion functions.
-type unitInfo struct {
-	factor   float64
-	category category
+// unit represents a single unit with its conversion factor relative to the base unit.
+// For temperature, the factor field is unused; conversions are handled separately.
+type unit struct {
+	category string
+	// toBase converts a value in this unit to the base unit.
+	toBase func(v float64) float64
+	// fromBase converts a value from the base unit to this unit.
+	fromBase func(v float64) float64
+	// factor is toBase(1) – the number of base units in one of this unit.
+	// Used only for building the human-readable formula for linear units.
+	factor float64
 }
 
-// units maps lowercase unit names/aliases to their info.
-var units = map[string]unitInfo{
-	// Length — base: metre
-	"mm":             {0.001, categoryLength},
-	"millimeter":     {0.001, categoryLength},
-	"millimeters":    {0.001, categoryLength},
-	"millimetre":     {0.001, categoryLength},
-	"millimetres":    {0.001, categoryLength},
-	"cm":             {0.01, categoryLength},
-	"centimeter":     {0.01, categoryLength},
-	"centimeters":    {0.01, categoryLength},
-	"centimetre":     {0.01, categoryLength},
-	"centimetres":    {0.01, categoryLength},
-	"m":              {1, categoryLength},
-	"meter":          {1, categoryLength},
-	"meters":         {1, categoryLength},
-	"metre":          {1, categoryLength},
-	"metres":         {1, categoryLength},
-	"km":             {1000, categoryLength},
-	"kilometer":      {1000, categoryLength},
-	"kilometers":     {1000, categoryLength},
-	"kilometre":      {1000, categoryLength},
-	"kilometres":     {1000, categoryLength},
-	"in":             {0.0254, categoryLength},
-	"inch":           {0.0254, categoryLength},
-	"inches":         {0.0254, categoryLength},
-	"ft":             {0.3048, categoryLength},
-	"foot":           {0.3048, categoryLength},
-	"feet":           {0.3048, categoryLength},
-	"yd":             {0.9144, categoryLength},
-	"yard":           {0.9144, categoryLength},
-	"yards":          {0.9144, categoryLength},
-	"mile":           {1609.344, categoryLength},
-	"miles":          {1609.344, categoryLength},
-	"mi":             {1609.344, categoryLength},
-	"nautical mile":  {1852, categoryLength},
-	"nautical miles": {1852, categoryLength},
-	"nmi":            {1852, categoryLength},
+var units = map[string]unit{
+	// Length (base: meters)
+	"mm":    {category: "length", factor: 0.001, toBase: mul(0.001), fromBase: mul(1 / 0.001)},
+	"cm":    {category: "length", factor: 0.01, toBase: mul(0.01), fromBase: mul(1 / 0.01)},
+	"m":     {category: "length", factor: 1, toBase: mul(1), fromBase: mul(1)},
+	"km":    {category: "length", factor: 1000, toBase: mul(1000), fromBase: mul(1 / 1000.0)},
+	"in":    {category: "length", factor: 0.0254, toBase: mul(0.0254), fromBase: mul(1 / 0.0254)},
+	"ft":    {category: "length", factor: 0.3048, toBase: mul(0.3048), fromBase: mul(1 / 0.3048)},
+	"yd":    {category: "length", factor: 0.9144, toBase: mul(0.9144), fromBase: mul(1 / 0.9144)},
+	"miles": {category: "length", factor: 1609.344, toBase: mul(1609.344), fromBase: mul(1 / 1609.344)},
+	"nmi":   {category: "length", factor: 1852, toBase: mul(1852), fromBase: mul(1 / 1852.0)},
 
-	// Weight — base: gram
-	"mg":          {0.001, categoryWeight},
-	"milligram":   {0.001, categoryWeight},
-	"milligrams":  {0.001, categoryWeight},
-	"g":           {1, categoryWeight},
-	"gram":        {1, categoryWeight},
-	"grams":       {1, categoryWeight},
-	"kg":          {1000, categoryWeight},
-	"kilogram":    {1000, categoryWeight},
-	"kilograms":   {1000, categoryWeight},
-	"tonne":       {1e6, categoryWeight},
-	"tonnes":      {1e6, categoryWeight},
-	"metric ton":  {1e6, categoryWeight},
-	"metric tons": {1e6, categoryWeight},
-	"lb":          {453.59237, categoryWeight},
-	"lbs":         {453.59237, categoryWeight},
-	"pound":       {453.59237, categoryWeight},
-	"pounds":      {453.59237, categoryWeight},
-	"oz":          {28.349523, categoryWeight},
-	"ounce":       {28.349523, categoryWeight},
-	"ounces":      {28.349523, categoryWeight},
-	"stone":       {6350.2932, categoryWeight},
-	"stones":      {6350.2932, categoryWeight},
-	"st":          {6350.2932, categoryWeight},
+	// Weight (base: grams)
+	"mg":    {category: "weight", factor: 0.001, toBase: mul(0.001), fromBase: mul(1 / 0.001)},
+	"g":     {category: "weight", factor: 1, toBase: mul(1), fromBase: mul(1)},
+	"kg":    {category: "weight", factor: 1000, toBase: mul(1000), fromBase: mul(1 / 1000.0)},
+	"t":     {category: "weight", factor: 1e6, toBase: mul(1e6), fromBase: mul(1 / 1e6)},
+	"oz":    {category: "weight", factor: 28.3495, toBase: mul(28.3495), fromBase: mul(1 / 28.3495)},
+	"lb":    {category: "weight", factor: 453.592, toBase: mul(453.592), fromBase: mul(1 / 453.592)},
+	"stone": {category: "weight", factor: 6350.29, toBase: mul(6350.29), fromBase: mul(1 / 6350.29)},
 
-	// Volume — base: litre
-	"ml":           {0.001, categoryVolume},
-	"milliliter":   {0.001, categoryVolume},
-	"milliliters":  {0.001, categoryVolume},
-	"millilitre":   {0.001, categoryVolume},
-	"millilitres":  {0.001, categoryVolume},
-	"l":            {1, categoryVolume},
-	"liter":        {1, categoryVolume},
-	"liters":       {1, categoryVolume},
-	"litre":        {1, categoryVolume},
-	"litres":       {1, categoryVolume},
-	"fl oz":        {0.0295735, categoryVolume},
-	"fl_oz":        {0.0295735, categoryVolume},
-	"fluid ounce":  {0.0295735, categoryVolume},
-	"fluid ounces": {0.0295735, categoryVolume},
-	"cup":          {0.2365882, categoryVolume},
-	"cups":         {0.2365882, categoryVolume},
-	"pint":         {0.4731765, categoryVolume},
-	"pints":        {0.4731765, categoryVolume},
-	"pt":           {0.4731765, categoryVolume},
-	"quart":        {0.9463529, categoryVolume},
-	"quarts":       {0.9463529, categoryVolume},
-	"qt":           {0.9463529, categoryVolume},
-	"gallon":       {3.7854118, categoryVolume},
-	"gallons":      {3.7854118, categoryVolume},
-	"gal":          {3.7854118, categoryVolume},
+	// Volume (base: milliliters)
+	"ml":    {category: "volume", factor: 1, toBase: mul(1), fromBase: mul(1)},
+	"l":     {category: "volume", factor: 1000, toBase: mul(1000), fromBase: mul(1 / 1000.0)},
+	"tsp":   {category: "volume", factor: 4.92892, toBase: mul(4.92892), fromBase: mul(1 / 4.92892)},
+	"tbsp":  {category: "volume", factor: 14.7868, toBase: mul(14.7868), fromBase: mul(1 / 14.7868)},
+	"fl_oz": {category: "volume", factor: 29.5735, toBase: mul(29.5735), fromBase: mul(1 / 29.5735)},
+	"cup":   {category: "volume", factor: 236.588, toBase: mul(236.588), fromBase: mul(1 / 236.588)},
+	"pt":    {category: "volume", factor: 473.176, toBase: mul(473.176), fromBase: mul(1 / 473.176)},
+	"qt":    {category: "volume", factor: 946.353, toBase: mul(946.353), fromBase: mul(1 / 946.353)},
+	"gal":   {category: "volume", factor: 3785.41, toBase: mul(3785.41), fromBase: mul(1 / 3785.41)},
 
-	// Temperature — factors unused; handled by explicit functions
-	"c":          {0, categoryTemperature},
-	"celsius":    {0, categoryTemperature},
-	"°c":         {0, categoryTemperature},
-	"f":          {0, categoryTemperature},
-	"fahrenheit": {0, categoryTemperature},
-	"°f":         {0, categoryTemperature},
-	"k":          {0, categoryTemperature},
-	"kelvin":     {0, categoryTemperature},
+	// Temperature (base: celsius; special handling)
+	"c": {category: "temperature"},
+	"f": {category: "temperature"},
+	"k": {category: "temperature"},
 
-	// Area — base: square metre
-	"mm2":          {1e-6, categoryArea},
-	"cm2":          {1e-4, categoryArea},
-	"m2":           {1, categoryArea},
-	"km2":          {1e6, categoryArea},
-	"sqft":         {0.09290304, categoryArea},
-	"sq ft":        {0.09290304, categoryArea},
-	"square foot":  {0.09290304, categoryArea},
-	"square feet":  {0.09290304, categoryArea},
-	"sqmi":         {2589988.11, categoryArea},
-	"sq mi":        {2589988.11, categoryArea},
-	"square mile":  {2589988.11, categoryArea},
-	"square miles": {2589988.11, categoryArea},
-	"acre":         {4046.8564, categoryArea},
-	"acres":        {4046.8564, categoryArea},
-	"hectare":      {10000, categoryArea},
-	"hectares":     {10000, categoryArea},
-	"ha":           {10000, categoryArea},
+	// Area (base: square meters)
+	"mm2":  {category: "area", factor: 1e-6, toBase: mul(1e-6), fromBase: mul(1 / 1e-6)},
+	"cm2":  {category: "area", factor: 1e-4, toBase: mul(1e-4), fromBase: mul(1 / 1e-4)},
+	"m2":   {category: "area", factor: 1, toBase: mul(1), fromBase: mul(1)},
+	"km2":  {category: "area", factor: 1e6, toBase: mul(1e6), fromBase: mul(1 / 1e6)},
+	"in2":  {category: "area", factor: 6.4516e-4, toBase: mul(6.4516e-4), fromBase: mul(1 / 6.4516e-4)},
+	"ft2":  {category: "area", factor: 0.092903, toBase: mul(0.092903), fromBase: mul(1 / 0.092903)},
+	"yd2":  {category: "area", factor: 0.836127, toBase: mul(0.836127), fromBase: mul(1 / 0.836127)},
+	"acre": {category: "area", factor: 4046.86, toBase: mul(4046.86), fromBase: mul(1 / 4046.86)},
+	"ha":   {category: "area", factor: 10000, toBase: mul(10000), fromBase: mul(1 / 10000.0)},
 
-	// Speed — base: metres per second
-	"m/s":   {1, categorySpeed},
-	"mps":   {1, categorySpeed},
-	"km/h":  {1.0 / 3.6, categorySpeed},
-	"kph":   {1.0 / 3.6, categorySpeed},
-	"mph":   {0.44704, categorySpeed},
-	"knot":  {0.514444, categorySpeed},
-	"knots": {0.514444, categorySpeed},
-	"ft/s":  {0.3048, categorySpeed},
-
-	// Data — base: bit
-	"bit":       {1, categoryData},
-	"bits":      {1, categoryData},
-	"byte":      {8, categoryData},
-	"bytes":     {8, categoryData},
-	"kb":        {8e3, categoryData},
-	"kilobyte":  {8e3, categoryData},
-	"kilobytes": {8e3, categoryData},
-	"mb":        {8e6, categoryData},
-	"megabyte":  {8e6, categoryData},
-	"megabytes": {8e6, categoryData},
-	"gb":        {8e9, categoryData},
-	"gigabyte":  {8e9, categoryData},
-	"gigabytes": {8e9, categoryData},
-	"tb":        {8e12, categoryData},
-	"terabyte":  {8e12, categoryData},
-	"terabytes": {8e12, categoryData},
-
-	// Time — base: second
-	"ms":           {0.001, categoryTime},
-	"millisecond":  {0.001, categoryTime},
-	"milliseconds": {0.001, categoryTime},
-	"s":            {1, categoryTime},
-	"second":       {1, categoryTime},
-	"seconds":      {1, categoryTime},
-	"min":          {60, categoryTime},
-	"minute":       {60, categoryTime},
-	"minutes":      {60, categoryTime},
-	"hr":           {3600, categoryTime},
-	"hour":         {3600, categoryTime},
-	"hours":        {3600, categoryTime},
-	"day":          {86400, categoryTime},
-	"days":         {86400, categoryTime},
-	"week":         {604800, categoryTime},
-	"weeks":        {604800, categoryTime},
+	// Speed (base: km/h)
+	"m_s":   {category: "speed", factor: 3.6, toBase: mul(3.6), fromBase: mul(1 / 3.6)},
+	"km_h":  {category: "speed", factor: 1, toBase: mul(1), fromBase: mul(1)},
+	"mph":   {category: "speed", factor: 1.60934, toBase: mul(1.60934), fromBase: mul(1 / 1.60934)},
+	"knots": {category: "speed", factor: 1.852, toBase: mul(1.852), fromBase: mul(1 / 1.852)},
 }
 
-// Service holds unit-conversion business logic.
+func mul(f float64) func(float64) float64 {
+	return func(v float64) float64 { return v * f }
+}
+
+// ErrUnknownUnit is returned when a unit is not recognised.
+var ErrUnknownUnit = errors.New("unknown unit")
+
+// ErrIncompatibleUnits is returned when from and to belong to different categories.
+var ErrIncompatibleUnits = errors.New("incompatible units: cannot convert between different measurement types")
+
 type Service struct{}
 
-// NewService creates a new conversion Service.
 func NewService() *Service {
 	return &Service{}
 }
 
-// Convert converts value from one unit to another and returns a Response.
-func (s *Service) Convert(from, to string, value float64) (Response, error) {
-	fromKey := strings.ToLower(strings.TrimSpace(from))
-	toKey := strings.ToLower(strings.TrimSpace(to))
-
-	fromInfo, ok := units[fromKey]
+func (s *Service) Convert(from, to string, value float64) (Result, error) {
+	fromUnit, ok := units[from]
 	if !ok {
-		return Response{}, fmt.Errorf("unknown unit: %s", from)
+		return Result{}, fmt.Errorf("%w: %q", ErrUnknownUnit, from)
 	}
 
-	toInfo, ok := units[toKey]
+	toUnit, ok := units[to]
 	if !ok {
-		return Response{}, fmt.Errorf("unknown unit: %s", to)
+		return Result{}, fmt.Errorf("%w: %q", ErrUnknownUnit, to)
 	}
 
-	if fromInfo.category != toInfo.category {
-		return Response{}, fmt.Errorf("cannot convert %s to %s: incompatible unit types", from, to)
+	if fromUnit.category != toUnit.category {
+		return Result{}, ErrIncompatibleUnits
 	}
 
 	var result float64
 	var formula string
 
-	if fromInfo.category == categoryTemperature {
-		result, formula = convertTemperature(fromKey, toKey, value)
+	if fromUnit.category == "temperature" {
+		result, formula = convertTemperature(from, to, value)
 	} else {
-		factor := fromInfo.factor / toInfo.factor
-		result = roundTo(value * factor)
+		factor := fromUnit.factor / toUnit.factor
+		result = roundTo(value*factor, 6)
 		formula = fmt.Sprintf("%s × %s", from, formatFactor(factor))
 	}
 
-	return Response{
+	return Result{
 		From:    from,
 		To:      to,
 		Input:   value,
@@ -241,54 +125,78 @@ func (s *Service) Convert(from, to string, value float64) (Response, error) {
 	}, nil
 }
 
-// convertTemperature handles temperature conversions and returns the result and
-// a human-readable formula string.
-func convertTemperature(from, to string, value float64) (result float64, formula string) {
-	// Normalise aliases to canonical names
-	from = tempCanonical(from)
-	to = tempCanonical(to)
-
+func convertTemperature(from, to string, value float64) (float64, string) {
 	if from == to {
-		return value, fmt.Sprintf("%s (no conversion needed)", from)
+		return roundTo(value, 6), fmt.Sprintf("%s (no conversion needed)", from)
 	}
 
-	switch from + "→" + to {
-	case "celsius→fahrenheit":
-		return roundTo(value*9.0/5.0 + 32), "°C × 9/5 + 32"
-	case "fahrenheit→celsius":
-		return roundTo((value - 32) * 5.0 / 9.0), "(°F − 32) × 5/9"
-	case "celsius→kelvin":
-		return roundTo(value + 273.15), "°C + 273.15"
-	case "kelvin→celsius":
-		return roundTo(value - 273.15), "°K − 273.15"
-	case "fahrenheit→kelvin":
-		return roundTo((value-32)*5.0/9.0 + 273.15), "(°F − 32) × 5/9 + 273.15"
-	case "kelvin→fahrenheit":
-		return roundTo(value*9.0/5.0 - 459.67), "°K × 9/5 − 459.67"
+	var celsius float64
+
+	switch from {
+	case "c":
+		celsius = value
+	case "f":
+		celsius = (value - 32) * 5 / 9
+	case "k":
+		celsius = value - 273.15
 	}
 
-	return value, ""
+	var result float64
+	var formula string
+
+	switch to {
+	case "c":
+		result = celsius
+	case "f":
+		result = celsius*9/5 + 32
+	case "k":
+		result = celsius + 273.15
+	}
+
+	result = roundTo(result, 6)
+
+	switch {
+	case from == "c" && to == "f":
+		formula = "°C × 9/5 + 32"
+	case from == "f" && to == "c":
+		formula = "(°F − 32) × 5/9"
+	case from == "c" && to == "k":
+		formula = "°C + 273.15"
+	case from == "k" && to == "c":
+		formula = "K − 273.15"
+	case from == "f" && to == "k":
+		formula = "(°F − 32) × 5/9 + 273.15"
+	case from == "k" && to == "f":
+		formula = "(K − 273.15) × 9/5 + 32"
+	}
+
+	return result, formula
 }
 
-func tempCanonical(s string) string {
-	switch s {
-	case "c", "celsius", "°c":
-		return "celsius"
-	case "f", "fahrenheit", "°f":
-		return "fahrenheit"
-	default:
-		return "kelvin"
-	}
+func roundTo(v float64, decimals int) float64 {
+	p := math.Pow(10, float64(decimals))
+	return math.Round(v*p) / p
 }
 
-// formatFactor formats a multiplier for the formula field, showing up to 6
-// significant figures and stripping unnecessary trailing zeros.
 func formatFactor(f float64) string {
-	return strings.TrimRight(strings.TrimRight(fmt.Sprintf("%.6f", f), "0"), ".")
-}
+	// Round to 6 decimal places first to avoid floating-point artefacts.
+	r := roundTo(f, 6)
 
-// roundTo rounds v to at most 10 decimal places.
-func roundTo(v float64) float64 {
-	const pow = 1e10
-	return math.Round(v*pow) / pow
+	if r == math.Trunc(r) {
+		return fmt.Sprintf("%.0f", r)
+	}
+
+	s := fmt.Sprintf("%.6f", r)
+
+	// Trim trailing zeros but keep at least one decimal place.
+	i := len(s) - 1
+	for i > 0 && s[i] == '0' {
+		i--
+	}
+
+	if s[i] == '.' {
+		i++
+	}
+
+	return s[:i+1]
 }

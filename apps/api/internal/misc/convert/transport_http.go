@@ -9,16 +9,14 @@ import (
 	"requiems-api/internal/platform/httpx"
 )
 
-// RegisterRoutes mounts the unit-conversion handler on the given router.
 func RegisterRoutes(r chi.Router, svc *Service) {
-	// GET /convert?from=miles&to=km&value=10
 	r.Get("/convert", func(w http.ResponseWriter, r *http.Request) {
 		from := r.URL.Query().Get("from")
 		to := r.URL.Query().Get("to")
 		valueStr := r.URL.Query().Get("value")
 
 		if from == "" || to == "" || valueStr == "" {
-			httpx.Error(w, http.StatusBadRequest, "from, to, and value query parameters are required")
+			httpx.Error(w, http.StatusBadRequest, "from, to, and value parameters are required")
 			return
 		}
 
