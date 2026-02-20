@@ -18,7 +18,7 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 		}
 
 		// Calculate working days
-		workingDays := svc.GetWorkingDays(req.From, req.To, req.Country)
+		workingDays := svc.GetWorkingDays(req.From, req.To, req.Country, req.Subdivision)
 
 		// Build response
 		response := WorkingDays{
@@ -26,6 +26,7 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 			From:        req.From.Format("2006-01-02"),
 			To:          req.To.Format("2006-01-02"),
 			Country:     req.Country,
+			Subdivision: req.Subdivision,
 		}
 
 		httpx.JSON(w, http.StatusOK, response)

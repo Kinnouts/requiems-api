@@ -13,7 +13,15 @@ func NewService() *Service {
 }
 
 // GetWorkingDays calculates the number of working days between two dates
-// The country parameter is currently ignored (stub for future implementation)
-func (s *Service) GetWorkingDays(from, to time.Time, country string) int {
-	return businessdayscalculator.CalculateBusinessDays(from, to)
+// It considers weekends and public holidays based on the provided country and subdivision
+func (s *Service) GetWorkingDays(from, to time.Time, country string, subdivision string) int {
+	if country == "" {
+		return businessdayscalculator.CountBusinessDays(from, to)
+	}
+
+	opts := businessdayscalculator.HolidayOptions{
+		CountryCode: country,
+		Subdivision: subdivision,
+	}
+	return businessdayscalculator.CountBusinessDaysWithHolidays(from, to, opts)
 }
