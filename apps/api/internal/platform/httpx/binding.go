@@ -95,7 +95,7 @@ func setFieldValue(fv reflect.Value, kind reflect.Kind, raw, tag string) error {
 
 	case reflect.Struct:
 		if fv.Type() == reflect.TypeFor[time.Time]() {
-			t, err := time.Parse("2006-01-02", raw)
+			t, err := time.ParseInLocation("2006-01-02", raw, time.UTC)
 			if err != nil {
 				return fmt.Errorf("invalid value for %q: must be a date in YYYY-MM-DD format", tag)
 			}
