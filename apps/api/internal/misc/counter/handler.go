@@ -18,10 +18,10 @@ func RegisterRoutes(r chi.Router, svc Service) {
 
 func counterError(w http.ResponseWriter, err error) {
 	if errors.Is(err, ErrInvalidNamespace) {
-		httpx.Error(w, http.StatusBadRequest, err.Error())
+		httpx.Error(w, http.StatusBadRequest, "bad_request", err.Error())
 		return
 	}
-	httpx.Error(w, http.StatusInternalServerError, "internal server error")
+	httpx.Error(w, http.StatusInternalServerError, "internal_error", "internal server error")
 }
 
 func incrementHandler(svc Service) http.HandlerFunc {

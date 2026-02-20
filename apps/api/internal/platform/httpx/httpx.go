@@ -24,12 +24,16 @@ type Response[T Data] struct {
 	Metadata Metadata `json:"metadata"`
 }
 
-// ErrorResponse is the standard error envelope: {"error": ..., "metadata": ...}
+// ErrorResponse is the standard error envelope.
+// Fields is populated only for validation errors (error: "validation_failed").
 type ErrorResponse struct {
-	Error    string   `json:"error"`
-	Metadata Metadata `json:"metadata"`
+	Error    string       `json:"error"`
+	Message  string       `json:"message,omitempty"`
+	Fields   []FieldError `json:"fields,omitempty"`
+	Metadata Metadata     `json:"metadata"`
 }
 
+// JSON writes a 200-class success response wrapped in {"data": ..., "metadata": ...}.
 func JSON[T Data](w http.ResponseWriter, status int, v T) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
@@ -39,12 +43,28 @@ func JSON[T Data](w http.ResponseWriter, status int, v T) {
 	})
 }
 
-func Error(w http.ResponseWriter, status int, msg string) {
+// Error writes a JSON error response with a machine-readable code and a
+// human-readable message.
+//
+//	httpx.Error(w, http.StatusBadRequest, "bad_request", "invalid email format")
+func Error(w http.ResponseWriter, status int, code string, message string) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	
 	_ = json.NewEncoder(w).Encode(ErrorResponse{
-		Error:    msg,
+		Error:    code,
+		Message:  message,
+		Metadata: Metadata{Timestamp: time.Now().UTC().Format(time.RFC3339)},
+	})
+}
+
+// writeValidationError writes a 422 Unprocessable Entity with a structured
+// list of field-level constraint violations.
+func writeValidationError(w http.ResponseWriter, fields []FieldError) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(http.StatusUnprocessableEntity)
+	_ = json.NewEncoder(w).Encode(ErrorResponse{
+		Error:    "validation_failed",
+		Fields:   fields,
 		Metadata: Metadata{Timestamp: time.Now().UTC().Format(time.RFC3339)},
 	})
 }

@@ -125,14 +125,14 @@ func (s *Service) Convert(from, to string, value float64) (Result, error) {
 	}, nil
 }
 
-func convertTemperature(from, to string, value float64) (float64, string) {
+func convertTemperature(from, to string, value float64) (result float64, formula string) {
 	if from == to {
 		return roundTo(value), fmt.Sprintf("%s (no conversion needed)", from)
 	}
 
 	celsius := toCelsius(from, value)
-	result := fromCelsius(to, celsius)
-	formula := getTemperatureFormula(from, to)
+	result = fromCelsius(to, celsius)
+	formula = getTemperatureFormula(from, to)
 
 	return roundTo(result), formula
 }

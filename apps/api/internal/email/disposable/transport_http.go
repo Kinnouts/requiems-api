@@ -1,7 +1,7 @@
 package disposable
 
 import (
-	"encoding/json"
+	"context"
 	"net/http"
 	"strconv"
 
@@ -11,59 +11,33 @@ import (
 )
 
 func RegisterRoutes(router chi.Router, svc *Service) {
-	// POST /disposable/check - Check single email
-	router.Post("/disposable/check", func(w http.ResponseWriter, r *http.Request) {
-		var req CheckEmailRequest
-		
-		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-			httpx.Error(w, http.StatusBadRequest, "invalid request body")
-			return
-		}
+	// POST /disposable/check — single email check
+	router.Post("/disposable/check", httpx.Handle(
+		func(_ context.Context, req CheckEmailRequest) (CheckEmailResponse, error) {
+			return svc.CheckEmail(req.Email), nil
+		},
+	))
 
-		if req.Email == "" {
-			httpx.Error(w, http.StatusBadRequest, "email is required")
-			return
-		}
+	// POST /disposable/check-batch — batch email check (max 100)
+	router.Post("/disposable/check-batch", httpx.Handle(
+		func(_ context.Context, req BatchCheckRequest) (BatchCheckResponse, error) {
+			return svc.CheckBatch(req.Emails), nil
+		},
+	))
 
-		result := svc.CheckEmail(req.Email)
-		httpx.JSON(w, http.StatusOK, result)
-	})
-
-	// POST /disposable/check-batch - Check multiple emails
-	router.Post("/disposable/check-batch", func(w http.ResponseWriter, r *http.Request) {
-		var req BatchCheckRequest
-		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
-			httpx.Error(w, http.StatusBadRequest, "invalid request body")
-			return
-		}
-
-		if len(req.Emails) == 0 {
-			httpx.Error(w, http.StatusBadRequest, "emails array is required and cannot be empty")
-			return
-		}
-
-		if len(req.Emails) > 100 {
-			httpx.Error(w, http.StatusBadRequest, "maximum 100 emails allowed per batch request")
-			return
-		}
-
-		result := svc.CheckBatch(req.Emails)
-		httpx.JSON(w, http.StatusOK, result)
-	})
-
-	// GET /disposable/domain/{domain} - Check if a specific domain is disposable
+	// GET /disposable/domain/{domain} — check a specific domain
 	router.Get("/disposable/domain/{domain}", func(w http.ResponseWriter, r *http.Request) {
 		domain := chi.URLParam(r, "domain")
+		
 		if domain == "" {
-			httpx.Error(w, http.StatusBadRequest, "domain is required")
+			httpx.Error(w, http.StatusBadRequest, "bad_request", "domain is required")
 			return
 		}
 
-		result := svc.CheckDomain(domain)
-		httpx.JSON(w, http.StatusOK, result)
+		httpx.JSON(w, http.StatusOK, svc.CheckDomain(domain))
 	})
 
-	// GET /disposable/domains - Get paginated list of all disposable domains
+	// GET /disposable/domains — paginated list of all disposable domains
 	router.Get("/disposable/domains", func(w http.ResponseWriter, r *http.Request) {
 		page := 1
 		perPage := 100
@@ -80,13 +54,11 @@ func RegisterRoutes(router chi.Router, svc *Service) {
 			}
 		}
 
-		result := svc.GetDomains(page, perPage)
-		httpx.JSON(w, http.StatusOK, result)
+		httpx.JSON(w, http.StatusOK, svc.GetDomains(page, perPage))
 	})
 
-	// GET /disposable/stats - Get statistics
+	// GET /disposable/stats — blocklist statistics
 	router.Get("/disposable/stats", func(w http.ResponseWriter, r *http.Request) {
-		result := svc.GetStats()
-		httpx.JSON(w, http.StatusOK, result)
+		httpx.JSON(w, http.StatusOK, svc.GetStats())
 	})
 }

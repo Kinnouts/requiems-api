@@ -6,7 +6,8 @@ import (
 	"requiems-api/internal/platform/httpx"
 )
 
-// Validates the X-Backend-Secret header
+// BackendSecretAuth validates the X-Backend-Secret header, ensuring only the
+// Cloudflare Worker gateway can reach protected routes.
 func BackendSecretAuth(expectedSecret string) func(http.Handler) http.Handler {
 	if expectedSecret == "" {
 		panic("BACKEND_SECRET environment variable is required but not set")
@@ -21,12 +22,12 @@ func BackendSecretAuth(expectedSecret string) func(http.Handler) http.Handler {
 			providedSecret := r.Header.Get("X-Backend-Secret")
 
 			if providedSecret == "" {
-				httpx.Error(w, http.StatusUnauthorized, "Missing X-Backend-Secret header")
+				httpx.Error(w, http.StatusUnauthorized, "unauthorized", "Missing X-Backend-Secret header")
 				return
 			}
 
 			if providedSecret != expectedSecret {
-				httpx.Error(w, http.StatusForbidden, "Invalid X-Backend-Secret")
+				httpx.Error(w, http.StatusForbidden, "forbidden", "Invalid X-Backend-Secret")
 				return
 			}
 

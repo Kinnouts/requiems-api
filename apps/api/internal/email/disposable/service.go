@@ -101,7 +101,7 @@ func (s *Service) GetStats() StatsResponse {
 // extractDomain extracts the domain from an email address
 func extractDomain(email string) string {
 	parts := strings.Split(email, "@")
-	
+
 	if len(parts) != 2 {
 		return ""
 	}
