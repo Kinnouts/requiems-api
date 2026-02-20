@@ -19,11 +19,13 @@ export default class extends Controller {
   static values = {
     method: String,
     url: String,
-    index: Number
+    index: Number,
+    modalId: String
   }
 
   connect() {
     this.startTime = null
+    this.hasResponse = false
   }
 
   async sendRequest(event) {
@@ -125,14 +127,24 @@ export default class extends Controller {
   }
 
   async handleResponse(response, clientDuration) {
-    // Show response container
-    this.hideError()
-    this.responseContainerTarget.classList.remove("hidden")
-
     const proxyResult = await response.json()
 
     // Use the actual API status code from the proxy envelope
     const actualStatus = proxyResult.status_code || response.status
+
+    // On 429, keep the last successful response visible and open the signup popup
+    if (actualStatus === 429 && this.modalIdValue) {
+      if (this.hasResponse) {
+        this.responseContainerTarget.classList.remove("hidden")
+      }
+      this.openRateLimitModal()
+      return
+    }
+
+    // Show response container
+    this.hideError()
+    this.responseContainerTarget.classList.remove("hidden")
+
     const statusOk = actualStatus >= 200 && actualStatus < 300
 
     // Update status badge
@@ -147,6 +159,24 @@ export default class extends Controller {
     // Display the actual API response body (unwrap proxy envelope)
     const body = proxyResult.data ?? proxyResult.error ?? proxyResult
     this.responseBodyTarget.textContent = JSON.stringify(body, null, 2)
+
+    this.hasResponse = true
+  }
+
+  openRateLimitModal() {
+    const modal = document.getElementById(this.modalIdValue)
+    if (!modal) return
+
+    modal.style.display = "flex"
+    document.body.classList.add("overflow-hidden")
+
+    const closeModal = () => {
+      modal.style.display = "none"
+      document.body.classList.remove("overflow-hidden")
+      document.removeEventListener("keydown", escHandler)
+    }
+    const escHandler = (e) => { if (e.key === "Escape") closeModal() }
+    document.addEventListener("keydown", escHandler)
   }
 
   showLoading() {

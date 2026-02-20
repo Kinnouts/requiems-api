@@ -6,12 +6,14 @@
   playground_method = playground_endpoint["method"]
   playground_parameters = playground_endpoint["parameters"] || []
   playground_request_example = playground_endpoint["request_example"]
+  playground_modal_id = "rate-limit-modal-#{playground_index}"
 %>
 
 <div data-controller="api-playground"
      data-api-playground-method-value="<%= playground_method %>"
      data-api-playground-url-value="<%= playground_path %>"
-     data-api-playground-index-value="<%= playground_index %>">
+     data-api-playground-index-value="<%= playground_index %>"
+     data-api-playground-modal-id-value="<%= user_signed_in? ? '' : playground_modal_id %>">
 
   <!-- Request Section -->
   <div class="bg-white rounded-lg p-4">
@@ -124,7 +126,7 @@
         class="absolute top-2 right-2 p-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded transition-colors"
         title="Copy response">
         <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
         </svg>
       </button>
     </div>
@@ -145,3 +147,56 @@
     </div>
   </div>
 </div>
+
+<% unless user_signed_in? %>
+  <%# Rate limit popup — style="display:none" avoids Tailwind hidden class / CSS rebuild issues %>
+  <div id="<%= playground_modal_id %>"
+       style="display: none"
+       class="fixed inset-0 z-50 flex items-center justify-center p-4"
+       role="dialog"
+       aria-modal="true"
+       aria-labelledby="rate-limit-title-<%= playground_index %>">
+
+    <%# Backdrop %>
+    <div class="absolute inset-0 bg-gray-900 opacity-50"
+         onclick="document.getElementById('<%= playground_modal_id %>').style.display='none'; document.body.classList.remove('overflow-hidden')"></div>
+
+    <%# Dialog card %>
+    <div class="relative z-10 bg-white shadow-xl w-full max-w-sm p-5" style="border-radius: 1.5rem">
+
+      <%# Close button %>
+      <button type="button"
+              onclick="document.getElementById('<%= playground_modal_id %>').style.display='none'; document.body.classList.remove('overflow-hidden')"
+              class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+              aria-label="Dismiss">
+        <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+
+      <%# Icon %>
+      <div class="flex h-12 w-12 items-center justify-center rounded-full bg-amber-50 mx-auto mb-4">
+        <svg class="h-6 w-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+      </div>
+
+      <%# Content %>
+      <div class="text-center">
+        <h3 id="rate-limit-title-<%= playground_index %>" class="text-lg font-bold text-gray-900">Testing too fast!</h3>
+        <p class="mt-2 text-sm text-gray-500">
+          The demo allows <strong class="text-gray-700">1 request per minute</strong> for anonymous users.
+          Sign up for free and get <strong class="text-gray-700">4&times; more requests</strong> &mdash; you can keep testing right away.
+        </p>
+      </div>
+
+      <%# CTAs %>
+      <div class="mt-6 flex flex-col gap-3">
+        <%= link_to "Create free account", new_user_registration_path,
+              class: "w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors" %>
+        <%= link_to "Sign in", new_user_session_path,
+              class: "w-full inline-flex items-center justify-center px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors" %>
+      </div>
+    </div>
+  </div>
+<% end %>
