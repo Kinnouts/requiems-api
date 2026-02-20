@@ -13,6 +13,8 @@ type Word struct {
 	PartOfSpeech string `json:"part_of_speech,omitempty"`
 }
 
+func (Word) IsData() {}
+
 type Service struct {
 	db *pgxpool.Pool
 }

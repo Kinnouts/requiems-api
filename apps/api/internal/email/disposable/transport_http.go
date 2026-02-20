@@ -10,12 +10,11 @@ import (
 	"requiems-api/internal/platform/httpx"
 )
 
-// RegisterRoutes mounts disposable email handlers on the given router.
-// Paths are relative to the parent mount point.
-func RegisterRoutes(r chi.Router, svc *Service) {
+func RegisterRoutes(router chi.Router, svc *Service) {
 	// POST /disposable/check - Check single email
-	r.Post("/disposable/check", func(w http.ResponseWriter, r *http.Request) {
+	router.Post("/disposable/check", func(w http.ResponseWriter, r *http.Request) {
 		var req CheckEmailRequest
+		
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 			httpx.Error(w, http.StatusBadRequest, "invalid request body")
 			return
@@ -31,7 +30,7 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 	})
 
 	// POST /disposable/check-batch - Check multiple emails
-	r.Post("/disposable/check-batch", func(w http.ResponseWriter, r *http.Request) {
+	router.Post("/disposable/check-batch", func(w http.ResponseWriter, r *http.Request) {
 		var req BatchCheckRequest
 		if err := json.NewDecoder(r.Body).Decode(&req); err != nil {
 			httpx.Error(w, http.StatusBadRequest, "invalid request body")
@@ -53,7 +52,7 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 	})
 
 	// GET /disposable/domain/{domain} - Check if a specific domain is disposable
-	r.Get("/disposable/domain/{domain}", func(w http.ResponseWriter, r *http.Request) {
+	router.Get("/disposable/domain/{domain}", func(w http.ResponseWriter, r *http.Request) {
 		domain := chi.URLParam(r, "domain")
 		if domain == "" {
 			httpx.Error(w, http.StatusBadRequest, "domain is required")
@@ -65,7 +64,7 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 	})
 
 	// GET /disposable/domains - Get paginated list of all disposable domains
-	r.Get("/disposable/domains", func(w http.ResponseWriter, r *http.Request) {
+	router.Get("/disposable/domains", func(w http.ResponseWriter, r *http.Request) {
 		page := 1
 		perPage := 100
 
@@ -86,7 +85,7 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 	})
 
 	// GET /disposable/stats - Get statistics
-	r.Get("/disposable/stats", func(w http.ResponseWriter, r *http.Request) {
+	router.Get("/disposable/stats", func(w http.ResponseWriter, r *http.Request) {
 		result := svc.GetStats()
 		httpx.JSON(w, http.StatusOK, result)
 	})

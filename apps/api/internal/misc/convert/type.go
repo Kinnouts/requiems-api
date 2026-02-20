@@ -7,3 +7,5 @@ type Result struct {
 	Result  float64 `json:"result"`
 	Formula string  `json:"formula"`
 }
+
+func (Result) IsData() {}

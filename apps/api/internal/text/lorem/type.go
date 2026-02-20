@@ -5,3 +5,5 @@ type Lorem struct {
 	Paragraphs int    `json:"paragraphs"`
 	WordCount  int    `json:"wordCount"`
 }
+
+func (Lorem) IsData() {}

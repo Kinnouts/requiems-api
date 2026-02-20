@@ -42,3 +42,9 @@ type DomainsListResponse struct {
 type StatsResponse struct {
 	TotalDomains int `json:"total_domains"`
 }
+
+func (CheckEmailResponse) IsData()  {}
+func (BatchCheckResponse) IsData()  {}
+func (DomainCheckResponse) IsData() {}
+func (DomainsListResponse) IsData() {}
+func (StatsResponse) IsData()       {}
