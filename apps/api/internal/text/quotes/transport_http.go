@@ -13,7 +13,7 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 		q, err := svc.Random(r.Context())
 
 		if err != nil {
-			httpx.Error(w, http.StatusServiceUnavailable, "no quotes available")
+			httpx.Error(w, http.StatusServiceUnavailable, "service_unavailable", "no quotes available")
 			return
 		}
 

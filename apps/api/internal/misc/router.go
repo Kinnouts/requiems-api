@@ -1,3 +1,4 @@
+//nolint:revive // misc is an acceptable package name for miscellaneous utilities
 package misc
 
 import (

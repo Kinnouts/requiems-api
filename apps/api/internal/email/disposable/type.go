@@ -1,8 +1,8 @@
 package disposable
 
-// CheckEmailRequest represents a request to check if a single email is disposable
+// CheckEmailRequest is the body for a single-email disposable check.
 type CheckEmailRequest struct {
-	Email string `json:"email"`
+	Email string `json:"email" validate:"required,email"`
 }
 
 // CheckEmailResponse represents the response for a single email check
@@ -12,9 +12,9 @@ type CheckEmailResponse struct {
 	Domain       string `json:"domain,omitempty"`
 }
 
-// BatchCheckRequest represents a request to check multiple emails
+// BatchCheckRequest is the body for checking multiple emails at once.
 type BatchCheckRequest struct {
-	Emails []string `json:"emails"`
+	Emails []string `json:"emails" validate:"required,min=1,max=100,dive,email"`
 }
 
 // BatchCheckResponse represents the response for a batch email check
@@ -42,3 +42,9 @@ type DomainsListResponse struct {
 type StatsResponse struct {
 	TotalDomains int `json:"total_domains"`
 }
+
+func (CheckEmailResponse) IsData()  {}
+func (BatchCheckResponse) IsData()  {}
+func (DomainCheckResponse) IsData() {}
+func (DomainsListResponse) IsData() {}
+func (StatsResponse) IsData()       {}

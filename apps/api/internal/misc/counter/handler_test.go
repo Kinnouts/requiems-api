@@ -9,6 +9,8 @@ import (
 	"testing"
 
 	"github.com/go-chi/chi/v5"
+
+	"requiems-api/internal/platform/httpx"
 )
 
 var errRedisDown = errors.New("connection refused")
@@ -50,10 +52,11 @@ func TestIncrementHandler(t *testing.T) {
 			t.Fatalf("expected 200, got %d", w.Code)
 		}
 
-		var got Counter
-		if err := json.NewDecoder(w.Body).Decode(&got); err != nil {
+		var resp httpx.Response[Counter]
+		if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 			t.Fatalf("decode response: %v", err)
 		}
+		got := resp.Data
 
 		if got.Namespace != "hits" {
 			t.Errorf("namespace: want %q got %q", "hits", got.Namespace)
@@ -116,10 +119,11 @@ func TestGetHandler(t *testing.T) {
 			t.Fatalf("expected 200, got %d", w.Code)
 		}
 
-		var got Counter
-		if err := json.NewDecoder(w.Body).Decode(&got); err != nil {
+		var resp httpx.Response[Counter]
+		if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 			t.Fatalf("decode response: %v", err)
 		}
+		got := resp.Data
 
 		if got.Namespace != "page-views" {
 			t.Errorf("namespace: want %q got %q", "page-views", got.Namespace)

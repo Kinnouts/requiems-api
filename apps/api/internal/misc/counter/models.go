@@ -12,6 +12,8 @@ type Counter struct {
 	Value     int64  `json:"value"`
 }
 
+func (Counter) IsData() {}
+
 // ErrInvalidNamespace is returned when the namespace fails validation.
 // Handlers use this to distinguish client errors (400) from server errors (500).
 var ErrInvalidNamespace = errors.New("invalid namespace")

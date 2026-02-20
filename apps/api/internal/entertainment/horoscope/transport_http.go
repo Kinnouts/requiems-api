@@ -15,13 +15,13 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 	r.Get("/horoscope/{sign}", func(w http.ResponseWriter, r *http.Request) {
 		sign := strings.ToLower(chi.URLParam(r, "sign"))
 		if !IsValidSign(sign) {
-			httpx.Error(w, http.StatusBadRequest, "invalid zodiac sign")
+			httpx.Error(w, http.StatusBadRequest, "bad_request", "invalid zodiac sign")
 			return
 		}
 
 		h, err := svc.Daily(sign)
 		if err != nil {
-			httpx.Error(w, http.StatusInternalServerError, "failed to generate horoscope")
+			httpx.Error(w, http.StatusInternalServerError, "internal_error", "failed to generate horoscope")
 			return
 		}
 

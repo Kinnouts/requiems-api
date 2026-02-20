@@ -6,6 +6,12 @@ import (
 	"requiems-api/internal/platform/httpx"
 )
 
+type healthzResponse struct {
+	Status string `json:"status"`
+}
+
+func (healthzResponse) IsData() {}
+
 func Healthz(w http.ResponseWriter, r *http.Request) {
-	httpx.JSON(w, http.StatusOK, map[string]string{"status": "ok"})
+	httpx.JSON(w, http.StatusOK, healthzResponse{Status: "ok"})
 }

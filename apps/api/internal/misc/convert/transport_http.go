@@ -16,19 +16,19 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 		valueStr := r.URL.Query().Get("value")
 
 		if from == "" || to == "" || valueStr == "" {
-			httpx.Error(w, http.StatusBadRequest, "from, to, and value parameters are required")
+			httpx.Error(w, http.StatusBadRequest, "bad_request", "from, to, and value parameters are required")
 			return
 		}
 
 		value, err := strconv.ParseFloat(valueStr, 64)
 		if err != nil {
-			httpx.Error(w, http.StatusBadRequest, "value must be a valid number")
+			httpx.Error(w, http.StatusBadRequest, "bad_request", "value must be a valid number")
 			return
 		}
 
 		result, err := svc.Convert(from, to, value)
 		if err != nil {
-			httpx.Error(w, http.StatusBadRequest, err.Error())
+			httpx.Error(w, http.StatusBadRequest, "bad_request", err.Error())
 			return
 		}
 

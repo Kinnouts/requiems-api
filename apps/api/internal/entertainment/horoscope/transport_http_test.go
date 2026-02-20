@@ -8,6 +8,8 @@ import (
 	"time"
 
 	"github.com/go-chi/chi/v5"
+
+	"requiems-api/internal/platform/httpx"
 )
 
 func setupRouter() chi.Router {
@@ -28,10 +30,11 @@ func TestHoroscope_ValidSign(t *testing.T) {
 		t.Errorf("expected status 200, got %d", w.Code)
 	}
 
-	var h Horoscope
-	if err := json.NewDecoder(w.Body).Decode(&h); err != nil {
+	var resp httpx.Response[Horoscope]
+	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
+	h := resp.Data
 
 	if h.Sign != "aries" {
 		t.Errorf("expected sign 'aries', got %q", h.Sign)
@@ -98,13 +101,13 @@ func TestHoroscope_CaseInsensitive(t *testing.T) {
 		t.Errorf("expected status 200 for uppercase sign, got %d", w.Code)
 	}
 
-	var h Horoscope
-	if err := json.NewDecoder(w.Body).Decode(&h); err != nil {
+	var resp2 httpx.Response[Horoscope]
+	if err := json.NewDecoder(w.Body).Decode(&resp2); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
 
-	if h.Sign != "aries" {
-		t.Errorf("expected sign normalized to 'aries', got %q", h.Sign)
+	if resp2.Data.Sign != "aries" {
+		t.Errorf("expected sign normalized to 'aries', got %q", resp2.Data.Sign)
 	}
 }
 

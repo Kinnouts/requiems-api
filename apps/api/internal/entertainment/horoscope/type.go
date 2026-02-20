@@ -7,3 +7,5 @@ type Horoscope struct {
 	LuckyNumber int    `json:"lucky_number"`
 	Mood        string `json:"mood"`
 }
+
+func (Horoscope) IsData() {}

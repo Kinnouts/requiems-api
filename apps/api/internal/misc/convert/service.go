@@ -112,7 +112,7 @@ func (s *Service) Convert(from, to string, value float64) (Result, error) {
 		result, formula = convertTemperature(from, to, value)
 	} else {
 		factor := fromUnit.factor / toUnit.factor
-		result = roundTo(value*factor, 6)
+		result = roundTo(value * factor)
 		formula = fmt.Sprintf("%s × %s", from, formatFactor(factor))
 	}
 
@@ -125,62 +125,65 @@ func (s *Service) Convert(from, to string, value float64) (Result, error) {
 	}, nil
 }
 
-func convertTemperature(from, to string, value float64) (float64, string) {
+func convertTemperature(from, to string, value float64) (result float64, formula string) {
 	if from == to {
-		return roundTo(value, 6), fmt.Sprintf("%s (no conversion needed)", from)
+		return roundTo(value), fmt.Sprintf("%s (no conversion needed)", from)
 	}
 
-	var celsius float64
+	celsius := toCelsius(from, value)
+	result = fromCelsius(to, celsius)
+	formula = getTemperatureFormula(from, to)
 
-	switch from {
-	case "c":
-		celsius = value
-	case "f":
-		celsius = (value - 32) * 5 / 9
-	case "k":
-		celsius = value - 273.15
-	}
-
-	var result float64
-	var formula string
-
-	switch to {
-	case "c":
-		result = celsius
-	case "f":
-		result = celsius*9/5 + 32
-	case "k":
-		result = celsius + 273.15
-	}
-
-	result = roundTo(result, 6)
-
-	switch {
-	case from == "c" && to == "f":
-		formula = "°C × 9/5 + 32"
-	case from == "f" && to == "c":
-		formula = "(°F − 32) × 5/9"
-	case from == "c" && to == "k":
-		formula = "°C + 273.15"
-	case from == "k" && to == "c":
-		formula = "K − 273.15"
-	case from == "f" && to == "k":
-		formula = "(°F − 32) × 5/9 + 273.15"
-	case from == "k" && to == "f":
-		formula = "(K − 273.15) × 9/5 + 32"
-	}
-
-	return result, formula
+	return roundTo(result), formula
 }
 
-func roundTo(v float64, decimals int) float64 {
+func toCelsius(from string, value float64) float64 {
+	switch from {
+	case "c":
+		return value
+	case "f":
+		return (value - 32) * 5 / 9
+	case "k":
+		return value - 273.15
+	default:
+		return value
+	}
+}
+
+func fromCelsius(to string, celsius float64) float64 {
+	switch to {
+	case "c":
+		return celsius
+	case "f":
+		return celsius*9/5 + 32
+	case "k":
+		return celsius + 273.15
+	default:
+		return celsius
+	}
+}
+
+func getTemperatureFormula(from, to string) string {
+	formulas := map[string]string{
+		"c-f": "°C × 9/5 + 32",
+		"f-c": "(°F − 32) × 5/9",
+		"c-k": "°C + 273.15",
+		"k-c": "K − 273.15",
+		"f-k": "(°F − 32) × 5/9 + 273.15",
+		"k-f": "(K − 273.15) × 9/5 + 32",
+	}
+	return formulas[from+"-"+to]
+}
+
+func roundTo(v float64) float64 {
+	const decimals = 6
 	p := math.Pow(10, float64(decimals))
 	return math.Round(v*p) / p
 }
 
 func formatFactor(f float64) string {
 	// Round to 6 decimal places first to avoid floating-point artefacts.
-	r := roundTo(f, 6)
+	r := roundTo(f)
 
 	if r == math.Trunc(r) {
 		return fmt.Sprintf("%.0f", r)
