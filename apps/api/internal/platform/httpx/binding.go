@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"reflect"
 	"strconv"
+	"time"
 
 	"github.com/go-playground/validator/v10"
 )
@@ -91,6 +92,16 @@ func setFieldValue(fv reflect.Value, kind reflect.Kind, raw, tag string) error {
 			return fmt.Errorf("invalid value for %q: must be true or false", tag)
 		}
 		fv.SetBool(b)
+
+	case reflect.Struct:
+		if fv.Type() == reflect.TypeFor[time.Time]() {
+			t, err := time.Parse("2006-01-02", raw)
+			if err != nil {
+				return fmt.Errorf("invalid value for %q: must be a date in YYYY-MM-DD format", tag)
+			}
+			fv.Set(reflect.ValueOf(t))
+			return nil
+		}
 	}
 
 	return nil

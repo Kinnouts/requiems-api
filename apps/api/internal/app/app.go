@@ -6,10 +6,6 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"requiems-api/internal/email"
-	"requiems-api/internal/places"
-  
-  
 	"requiems-api/internal/platform/config"
 	"requiems-api/internal/platform/db"
 	"requiems-api/internal/platform/middleware"

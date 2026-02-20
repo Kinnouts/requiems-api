@@ -2,7 +2,6 @@ package workingdays
 
 import (
 	"net/http"
-	"time"
 
 	"github.com/go-chi/chi/v5"
 
@@ -11,50 +10,22 @@ import (
 
 func RegisterRoutes(r chi.Router, svc *Service) {
 	r.Get("/working-days", func(w http.ResponseWriter, r *http.Request) {
-		// Get query parameters
-		fromStr := r.URL.Query().Get("from")
-		toStr := r.URL.Query().Get("to")
-		country := r.URL.Query().Get("country")
+		req := WorkingDaysRequest{}
 
-		// Validate required parameters
-		if fromStr == "" {
-			httpx.Error(w, http.StatusBadRequest, "from parameter is required (format: YYYY-MM-DD)")
-			return
-		}
-
-		if toStr == "" {
-			httpx.Error(w, http.StatusBadRequest, "to parameter is required (format: YYYY-MM-DD)")
-			return
-		}
-
-		// Parse dates
-		from, err := time.Parse("2006-01-02", fromStr)
-		if err != nil {
-			httpx.Error(w, http.StatusBadRequest, "invalid from date format, expected YYYY-MM-DD")
-			return
-		}
-
-		to, err := time.Parse("2006-01-02", toStr)
-		if err != nil {
-			httpx.Error(w, http.StatusBadRequest, "invalid to date format, expected YYYY-MM-DD")
-			return
-		}
-
-		// Validate date range
-		if to.Before(from) {
-			httpx.Error(w, http.StatusBadRequest, "to date must be on or after from date")
+		if err := httpx.BindQuery(r, &req); err != nil {
+			httpx.Error(w, http.StatusBadRequest, "bad_request", err.Error())
 			return
 		}
 
 		// Calculate working days
-		workingDays := svc.GetWorkingDays(from, to, country)
+		workingDays := svc.GetWorkingDays(req.From, req.To, req.Country)
 
 		// Build response
 		response := WorkingDays{
 			WorkingDays: workingDays,
-			From:        fromStr,
-			To:          toStr,
-			Country:     country,
+			From:        req.From.Format("2006-01-02"),
+			To:          req.To.Format("2006-01-02"),
+			Country:     req.Country,
 		}
 
 		httpx.JSON(w, http.StatusOK, response)
