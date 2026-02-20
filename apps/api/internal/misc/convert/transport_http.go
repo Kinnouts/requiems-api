@@ -10,6 +10,10 @@ import (
 )
 
 func RegisterRoutes(r chi.Router, svc *Service) {
+	r.Get("/convert/units", func(w http.ResponseWriter, r *http.Request) {
+		httpx.JSON(w, http.StatusOK, svc.Units())
+	})
+
 	r.Get("/convert", func(w http.ResponseWriter, r *http.Request) {
 		from := r.URL.Query().Get("from")
 		to := r.URL.Query().Get("to")

@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"sort"
 )
 
 // unit represents a single unit with its conversion factor relative to the base unit.
@@ -88,6 +89,35 @@ type Service struct{}
 
 func NewService() *Service {
 	return &Service{}
+}
+
+// Units returns all supported unit keys grouped by measurement category,
+// sorted alphabetically within each group.
+func (s *Service) Units() UnitsResult {
+	var result UnitsResult
+	for key, u := range units {
+		switch u.category {
+		case "length":
+			result.Length = append(result.Length, key)
+		case "weight":
+			result.Weight = append(result.Weight, key)
+		case "volume":
+			result.Volume = append(result.Volume, key)
+		case "temperature":
+			result.Temperature = append(result.Temperature, key)
+		case "area":
+			result.Area = append(result.Area, key)
+		case "speed":
+			result.Speed = append(result.Speed, key)
+		}
+	}
+	sort.Strings(result.Length)
+	sort.Strings(result.Weight)
+	sort.Strings(result.Volume)
+	sort.Strings(result.Temperature)
+	sort.Strings(result.Area)
+	sort.Strings(result.Speed)
+	return result
 }
 
 func (s *Service) Convert(from, to string, value float64) (Result, error) {
