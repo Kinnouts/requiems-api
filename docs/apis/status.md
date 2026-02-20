@@ -98,7 +98,7 @@ All 15 endpoints are currently planned. This category includes:
 - Population, Postal Code, Reverse Geocoding, Timezone, Weather, Working Days,
   World Time, Zip Code
 
-**Progress:** 0 live, 15 planned
+**Progress:** 1 live, 14 planned
 
 ### [Text](./text/readme.md) - 8 endpoints
 

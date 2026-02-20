@@ -2,18 +2,17 @@
 
 ## Status
 
-⏳ **Planned** - Not yet implemented
+✅ **MVP** - Basic implementation live, production-ready
 
 ## Overview
 
 Get working days and business hours. This endpoint will provide business day
 information.
 
-## Planned Endpoints
+## Live Endpoints
 
 ### Get Working Days
 
-**Planned Endpoint:** `GET /v1/places/working-days` **Expected Credit Cost:** 1
-credit
+**Endpoint:** `GET /v1/places/working-days` **Credit Cost:** 1 credit
 
 Get working days and business hours information.

@@ -2,6 +2,12 @@ github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 h1:L/gRVlceqvL25
 github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161/go.mod h1:xomTg63KZ2rFqZQzSB4Vz2SUXa1BpHTVz9L5PTmPC4E=
 github.com/Microsoft/go-winio v0.6.1 h1:9/kr64B9VUZrLm5YYwbGtUJnMgqWVOdUAXu6Migciow=
 github.com/Microsoft/go-winio v0.6.1/go.mod h1:LRdKpFKfdobln8UmuiYcKPot9D2v6svN5+sAH+4kjUM=
+github.com/bobadilla-tech/business-days-calculator v1.0.0 h1:Vyf1E4WremYSCeFRF9JZ1Ci6fFwuJrdZfQPZhjmeRKc=
+github.com/bobadilla-tech/business-days-calculator v1.0.0/go.mod h1:uajXzi+6jJ40eBLLyU+G29RICvGGnL5pnP1NNFmJlOk=
+github.com/bobadilla-tech/business-days-calculator v1.1.0 h1:l0m28ko/oItgjjBlB+JqxGcE612FWx1tapqTNHCWn6c=
+github.com/bobadilla-tech/business-days-calculator v1.1.0/go.mod h1:Xayj9noAcTPZjwqDEwWRu96uDraHfObnj7TdZylXi9A=
+github.com/bobadilla-tech/holidays-per-country v1.0.1 h1:AFH9uxSkyMCLcZ/F2fbzmwdoix5Pbq+q3Vfye8uYoQw=
+github.com/bobadilla-tech/holidays-per-country v1.0.1/go.mod h1:uZq0qDg1zJ1bccuGOOAkaGsnwCDs6iQyAeAeT94ige4=
 github.com/bobadilla-tech/is-email-disposable v1.0.1 h1:low7YuSmZJL8kXfIEwO1C3KvnDHIJGTWOZroBu1fBmg=
 github.com/bobadilla-tech/is-email-disposable v1.0.1/go.mod h1:LbrCYPScVuAZoePtpPeYOIi0PMGbCPvCpW8daBKNAi0=
 github.com/bobadilla-tech/lorelai v1.3.3 h1:59SqSzL+ICSW6MCA2OTzj6r+EJ7Nv7FXtbXd/uEhwVk=

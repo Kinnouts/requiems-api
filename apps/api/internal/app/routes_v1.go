@@ -10,6 +10,7 @@ import (
 	"requiems-api/internal/email"
 	"requiems-api/internal/entertainment"
 	"requiems-api/internal/misc"
+	"requiems-api/internal/places"
 	"requiems-api/internal/text"
 )
 
@@ -29,4 +30,8 @@ func registerV1Routes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb
 	miscRouter := chi.NewRouter()
 	misc.RegisterRoutes(ctx, miscRouter, pool, rdb)
 	r.Mount("/misc", miscRouter)
+
+	placesRouter := chi.NewRouter()
+	places.RegisterRoutes(placesRouter)
+	r.Mount("/places", placesRouter)
 }
