@@ -23,7 +23,7 @@ func Connect(ctx context.Context, url string) (*redis.Client, error) {
 
 	if err := client.Ping(pingCtx).Err(); err != nil {
 		client.Close()
-		
+
 		return nil, fmt.Errorf("ping redis: %w", err)
 	}
 
