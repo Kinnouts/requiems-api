@@ -108,8 +108,8 @@ Get weather information for locations
 Get working days and business hours
 
 - **Status:** MVP
-- **Planned Endpoint:** `GET /v1/places/working-days`
-- **Expected Credit Cost:** 1
+- **Endpoint:** `GET /v1/places/working-days`
+- **Credit Cost:** 1
 
 ### [World Time](./world-time.md) - ⏳ Planned
 
