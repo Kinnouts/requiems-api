@@ -121,7 +121,8 @@ Version:** 16-alpine **Files to Update:**
 
 ### Redis 7
 
-**What:** Cache and background job queue for Rails **Current Version:** 7-alpine
+**What:** Background job queue for Rails and real-time counter storage for the
+Go API **Current Version:** 7-alpine
 **Files to Update:**
 
 - `infra/docker/docker-compose.dev.yml` - Dev Redis (line 23:

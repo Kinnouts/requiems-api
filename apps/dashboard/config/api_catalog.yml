@@ -40,7 +40,6 @@ categories:
     name: Entertainment
     icon: "🎬"
     description: Movies, music, and entertainment data
-    coming_soon: true
 
   - id: health
     name: Health/Wellness
@@ -52,7 +51,6 @@ categories:
     name: Miscellaneous
     icon: "🔧"
     description: Various utility APIs
-    coming_soon: true
 
   - id: places
     name: Places
@@ -162,3 +160,44 @@ apis:
       - Random
       - Testing
       - Games
+
+  # Misc APIs
+  - id: unit-conversion
+    name: Unit Conversion
+    category: misc
+    description: Convert between units of measurement — length, weight, volume, temperature, area, and speed
+    endpoints_count: 1
+    status: live
+    popular: true
+    documentation_url: /apis/unit-conversion
+    tags:
+      - Conversion
+      - Utilities
+      - Measurement
+  # Entertainment APIs
+  - id: horoscope
+    name: Horoscope
+    category: entertainment
+    description: Get daily horoscope readings for all 12 zodiac signs
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/horoscope
+    tags:
+      - Astrology
+      - Daily
+      - Entertainment
+
+  # Miscellaneous APIs
+  - id: counter
+    name: Counter
+    category: misc
+    description: Atomic, namespace-isolated hit counter backed by Redis with durable PostgreSQL persistence
+    endpoints_count: 2
+    status: live
+    popular: false
+    documentation_url: /apis/counter
+    tags:
+      - Counter
+      - Analytics
+      - Tracking

@@ -23,7 +23,7 @@ func main() {
 
 	addr := ":" + cfg.Port
 
-	log.Printf("API server listening on %s\n", addr)
+	log.Println("API server listening on", addr)
 
 	server := &http.Server{
 		Addr:              addr,
