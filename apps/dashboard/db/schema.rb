@@ -59,6 +59,11 @@ ActiveRecord::Schema[8.1].define(version: 2026_02_10_230500) do
     t.index ["user_id"], name: "index_audit_logs_on_user_id"
   end
 
+  create_table "counters", primary_key: "namespace", id: :text, force: :cascade do |t|
+    t.bigint "total", default: 0, null: false
+    t.datetime "updated_at", precision: nil, null: false
+  end
+
   create_table "credit_adjustments", force: :cascade do |t|
     t.string "adjustment_type"
     t.integer "admin_user_id"

@@ -1,6 +1,6 @@
 <%
   playground_endpoint = local_assigns.fetch(:endpoint, {})
-  playground_full_url = local_assigns.fetch(:full_url, "")
+  playground_path = local_assigns.fetch(:endpoint_path, "")
   playground_index = local_assigns.fetch(:index, 0)
 
   playground_method = playground_endpoint["method"]
@@ -10,7 +10,7 @@
 
 <div data-controller="api-playground"
      data-api-playground-method-value="<%= playground_method %>"
-     data-api-playground-url-value="<%= playground_full_url %>"
+     data-api-playground-url-value="<%= playground_path %>"
      data-api-playground-index-value="<%= playground_index %>">
 
   <!-- Request Section -->
@@ -112,14 +112,6 @@
         <span data-api-playground-target="responseTime">--</span>
       </div>
     </div>
-
-    <!-- Response Headers (collapsible) -->
-    <details class="mb-3">
-      <summary class="cursor-pointer text-sm font-medium text-gray-700 hover:text-gray-900 mb-2">
-        Response Headers
-      </summary>
-      <pre class="bg-gray-50 rounded-lg p-3 text-xs overflow-x-auto" data-api-playground-target="responseHeaders">--</pre>
-    </details>
 
     <!-- Response Body -->
     <div class="relative">

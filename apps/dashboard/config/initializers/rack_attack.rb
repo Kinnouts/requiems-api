@@ -11,13 +11,19 @@ class Rack::Attack
 
   ### Throttle Configuration ###
 
-  # Throttle API playground requests for anonymous users
-  # Allow 10 requests per minute per IP
-  throttle("api_proxy/ip", limit: 10, period: 1.minute) do |req|
+  # Throttle API playground requests for anonymous users: 1 req/min
+  throttle("api_proxy/ip", limit: 1, period: 1.minute) do |req|
     if req.path == "/api/proxy" && req.post?
-      # Return IP to throttle by IP address
-      # Don't throttle authenticated users
+      # Only throttle anonymous users — authenticated users have a separate throttle
       req.ip unless req.env["warden"]&.user
+    end
+  end
+
+  # Throttle API playground requests for authenticated users: 4 req/min
+  throttle("api_proxy/user", limit: 4, period: 1.minute) do |req|
+    if req.path == "/api/proxy" && req.post?
+      user = req.env["warden"]&.user
+      "user:#{user.id}" if user
     end
   end
 
@@ -42,19 +48,27 @@ class Rack::Attack
   # Customize the response when throttled
   self.throttled_responder = lambda do |request|
     match_data = request.env["rack.attack.match_data"]
+    match_name = request.env["rack.attack.matched"]
     now = match_data[:epoch_time]
+    retry_after = match_data[:period] - (now % match_data[:period])
 
     headers = {
       "RateLimit-Limit" => match_data[:limit].to_s,
       "RateLimit-Remaining" => "0",
-      "RateLimit-Reset" => (now + (match_data[:period] - (now % match_data[:period]))).to_s,
+      "RateLimit-Reset" => (now + retry_after).to_s,
       "Content-Type" => "application/json"
     }
 
+    message = if match_name == "api_proxy/ip"
+      "You're testing too fast. Create a free account to get a higher limit."
+    else
+      "Too many requests. Please slow down and try again shortly."
+    end
+
     body = {
       error: "Rate limit exceeded",
-      message: "Too many requests. Please try again later.",
-      retry_after: match_data[:period] - (now % match_data[:period])
+      message: message,
+      retry_after: retry_after
     }.to_json
 
     [ 429, headers, [ body ] ]

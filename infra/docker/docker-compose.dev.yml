@@ -75,6 +75,9 @@ services:
       - DATABASE_URL=postgres://requiem:requiem@db:5432/requiem?sslmode=disable
       - REDIS_URL=redis://redis:6379
       - SECRET_KEY_BASE=development_secret_key_base_change_in_production
+      # Internal API (direct Go backend — used for docs playground proxy)
+      - INTERNAL_API_URL=http://api:8080
+      - BACKEND_SECRET=${BACKEND_SECRET:-dev_secret_min_32_chars_long_for_development_only}
       # API Management Configuration
       - API_MANAGEMENT_API_KEY=${API_MANAGEMENT_API_KEY}
       - API_MANAGEMENT_URL=${API_MANAGEMENT_URL:-https://api-management.requiems.xyz}

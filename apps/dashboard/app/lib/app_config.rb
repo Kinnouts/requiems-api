@@ -26,7 +26,9 @@ class AppConfig
 
   # API Configuration
   attr_reader :api_base_url,
-              :playground_api_key
+              :playground_api_key,
+              :internal_api_url,
+              :backend_secret
 
   # SMTP Configuration (production only)
   attr_reader :smtp_address,
@@ -100,6 +102,8 @@ class AppConfig
     # API Configuration
     @api_base_url = optional_env("API_BASE_URL", default: "https://api.requiems.xyz")
     @playground_api_key = optional_env("PLAYGROUND_API_KEY", default: "rq_test_playground_demo_key")
+    @internal_api_url = optional_env("INTERNAL_API_URL", default: "http://localhost:8080")
+    @backend_secret = optional_env("BACKEND_SECRET", default: "dev_backend_secret")
 
     # SMTP (optional - only needed in production)
     @smtp_address = optional_env("SMTP_ADDRESS")
@@ -159,7 +163,8 @@ class AppConfig
       "LEMONSQUEEZY_BUSINESS_MONTHLY_VARIANT_ID" => "123458",
       "LEMONSQUEEZY_BUSINESS_YEARLY_VARIANT_ID" => "123459",
       "LEMONSQUEEZY_PROFESSIONAL_MONTHLY_VARIANT_ID" => "123460",
-      "LEMONSQUEEZY_PROFESSIONAL_YEARLY_VARIANT_ID" => "123461"
+      "LEMONSQUEEZY_PROFESSIONAL_YEARLY_VARIANT_ID" => "123461",
+      "BACKEND_SECRET" => "test_backend_secret"
     }
   end
 

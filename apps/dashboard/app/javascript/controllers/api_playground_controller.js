@@ -1,6 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 
-// Interactive API playground for testing endpoints
+// Interactive API playground for testing endpoints — routes through /api/proxy
 export default class extends Controller {
   static targets = [
     "param",
@@ -11,7 +11,6 @@ export default class extends Controller {
     "responseStatus",
     "statusBadge",
     "responseTime",
-    "responseHeaders",
     "responseBody",
     "errorContainer",
     "errorMessage"
@@ -48,9 +47,9 @@ export default class extends Controller {
       const response = await this.makeRequest(requestData)
 
       const endTime = performance.now()
-      const duration = Math.round(endTime - this.startTime)
+      const clientDuration = Math.round(endTime - this.startTime)
 
-      await this.handleResponse(response, duration)
+      await this.handleResponse(response, clientDuration)
     } catch (error) {
       this.showError(error.message || "Request failed. Please try again.")
     } finally {
@@ -109,64 +108,45 @@ export default class extends Controller {
   }
 
   async makeRequest(data) {
-    const options = {
-      method: this.methodValue,
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
+
+    return fetch('/api/proxy', {
+      method: 'POST',
       headers: {
-        "Content-Type": "application/json"
-      }
-    }
-
-    // Add request body for POST/PUT/PATCH
-    if (["POST", "PUT", "PATCH"].includes(this.methodValue)) {
-      options.body = JSON.stringify(data)
-    }
-
-    // For GET requests with query parameters, append to URL
-    if (this.methodValue === "GET" && Object.keys(data).length > 0) {
-      const params = new URLSearchParams(data)
-      const url = `${this.urlValue}?${params.toString()}`
-      return fetch(url, options)
-    }
-
-    return fetch(this.urlValue, options)
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csrfToken
+      },
+      body: JSON.stringify({
+        endpoint: this.urlValue,
+        method: this.methodValue,
+        params: data
+      })
+    })
   }
 
-  async handleResponse(response, duration) {
+  async handleResponse(response, clientDuration) {
     // Show response container
     this.hideError()
     this.responseContainerTarget.classList.remove("hidden")
 
+    const proxyResult = await response.json()
+
+    // Use the actual API status code from the proxy envelope
+    const actualStatus = proxyResult.status_code || response.status
+    const statusOk = actualStatus >= 200 && actualStatus < 300
+
     // Update status badge
-    const statusClass = response.ok ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
+    const statusClass = statusOk ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
     this.statusBadgeTarget.className = `inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium ${statusClass}`
-    this.statusBadgeTarget.textContent = `${response.status} ${response.statusText}`
+    this.statusBadgeTarget.textContent = actualStatus.toString()
 
-    // Update response time
-    this.responseTimeTarget.textContent = `${duration}ms`
+    // Update response time (prefer server-measured, fall back to client)
+    const displayTime = proxyResult.response_time_ms || clientDuration
+    this.responseTimeTarget.textContent = `${displayTime}ms`
 
-    // Update response headers
-    const headers = {}
-    response.headers.forEach((value, key) => {
-      headers[key] = value
-    })
-    this.responseHeadersTarget.textContent = JSON.stringify(headers, null, 2)
-
-    // Update response body
-    try {
-      const contentType = response.headers.get("content-type")
-      let body
-
-      if (contentType && contentType.includes("application/json")) {
-        body = await response.json()
-        this.responseBodyTarget.textContent = JSON.stringify(body, null, 2)
-      } else {
-        body = await response.text()
-        this.responseBodyTarget.textContent = body
-      }
-    } catch (error) {
-      this.responseBodyTarget.textContent = "Error parsing response"
-      console.error("Response parsing error:", error)
-    }
+    // Display the actual API response body (unwrap proxy envelope)
+    const body = proxyResult.data ?? proxyResult.error ?? proxyResult
+    this.responseBodyTarget.textContent = JSON.stringify(body, null, 2)
   }
 
   showLoading() {

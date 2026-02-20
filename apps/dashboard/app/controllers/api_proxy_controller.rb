@@ -1,17 +1,13 @@
 # frozen_string_literal: true
 
 class ApiProxyController < ApplicationController
-  # Rate limiting handled by Rack::Attack for anonymous users
-  # No rate limit for authenticated users (handled by API gateway)
+  # Rate limiting handled by Rack::Attack (anonymous: 10/min, authenticated: 30/min)
 
   def create
-    # Extract request parameters
     endpoint = params[:endpoint]
-    method = params[:method]&.upcase || "POST"
+    method = params[:method]&.upcase || "GET"
     request_params = params[:params] || {}
-    request_headers = params[:headers] || {}
 
-    # Validate endpoint
     unless valid_endpoint?(endpoint)
       return render json: {
         error: "Invalid endpoint",
@@ -19,35 +15,16 @@ class ApiProxyController < ApplicationController
       }, status: :bad_request
     end
 
-    # Get API key
-    api_key = get_api_key
-
-    unless api_key
-      return render json: {
-        error: "Authentication required",
-        message: "Please sign in or use the test playground key"
-      }, status: :unauthorized
-    end
-
-    # Make the API request
     start_time = Time.current
-    response = make_api_request(endpoint, method, request_params, api_key, request_headers)
+    result = make_api_request(endpoint, method, request_params)
     response_time = ((Time.current - start_time) * 1000).round
 
-    # Return the response with metadata
     render json: {
-      success: response[:success],
-      status_code: response[:status_code],
+      status_code: result[:status_code],
       response_time_ms: response_time,
-      data: response[:data],
-      error: response[:error],
-      request: {
-        endpoint: endpoint,
-        method: method,
-        params: request_params,
-        headers: sanitize_headers(request_headers)
-      }
-    }, status: response[:status_code]
+      data: result[:data],
+      error: result[:error]
+    }, status: result[:status_code]
   rescue StandardError => e
     Rails.logger.error("API Proxy Error: #{e.message}")
     Rails.logger.error(e.backtrace.join("\n"))
@@ -70,85 +47,59 @@ class ApiProxyController < ApplicationController
     true
   end
 
-  def get_api_key
-    if user_signed_in?
-      # Use user's first active API key
-      current_user.api_keys.active_keys.first&.full_key
-    else
-      # Use test/demo API key for anonymous users
-      # This should be a special key with limited access and rate limits
-      AppConfig.playground_api_key
-    end
-  end
+  def make_api_request(endpoint, method, request_params)
+    # Convert ActionController::Parameters to a plain hash
+    request_params = request_params.to_unsafe_h if request_params.respond_to?(:to_unsafe_h)
 
-  def make_api_request(endpoint, method, request_params, api_key, request_headers)
-    api_base_url = AppConfig.api_base_url
+    internal_url = ::AppConfig.internal_api_url
+    Rails.logger.debug("Playground proxy: #{method} #{internal_url}#{endpoint} params=#{request_params.inspect}")
 
-    base_uri = URI(api_base_url)
-    uri = base_uri.dup
+    uri = URI(internal_url)
     uri.path = endpoint
     uri.query = nil
 
-    # Prepare headers
     headers = {
-      "Authorization" => "Bearer #{api_key}",
+      "X-Backend-Secret" => ::AppConfig.backend_secret,
       "Content-Type" => "application/json",
       "User-Agent" => "Requiems-Playground/1.0"
     }
-
-    # Add custom headers (sanitized)
-    request_headers.each do |key, value|
-      headers[key] = value if allowed_header?(key)
-    end
 
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = uri.scheme == "https"
     http.open_timeout = 10
     http.read_timeout = 30
 
-    # Create request based on method
     request = case method
     when "GET"
-                # For GET, add params to query string
                 uri.query = URI.encode_www_form(request_params) if request_params.any?
                 Net::HTTP::Get.new(uri)
     when "POST"
                 req = Net::HTTP::Post.new(uri)
                 req.body = request_params.to_json
                 req
-    when "PUT"
-                req = Net::HTTP::Put.new(uri)
-                req.body = request_params.to_json
-                req
-    when "DELETE"
-                Net::HTTP::Delete.new(uri)
     else
                 raise "Unsupported HTTP method: #{method}"
     end
 
-    # Set headers
     headers.each { |key, value| request[key] = value }
 
-    # Execute request
     response = http.request(request)
 
-    # Parse response
     {
-      success: response.is_a?(Net::HTTPSuccess),
       status_code: response.code.to_i,
       data: parse_response_body(response.body),
       error: response.is_a?(Net::HTTPSuccess) ? nil : response.message
     }
   rescue Net::OpenTimeout, Net::ReadTimeout => e
     {
-      success: false,
       status_code: 504,
       data: nil,
       error: "Request timeout: #{e.message}"
     }
   rescue StandardError => e
+    Rails.logger.error("Playground proxy error: #{e.class}: #{e.message}")
+    Rails.logger.error(e.backtrace.first(3).join("\n"))
     {
-      success: false,
       status_code: 500,
       data: nil,
       error: "Request failed: #{e.message}"
@@ -160,24 +111,6 @@ class ApiProxyController < ApplicationController
 
     JSON.parse(body)
   rescue JSON::ParserError
-    # Return raw body if not JSON
     body
-  end
-
-  def allowed_header?(header_name)
-    # Only allow safe headers
-    safe_headers = %w[
-      Content-Type
-      Accept
-      Accept-Language
-      X-Request-ID
-    ]
-
-    safe_headers.any? { |h| h.casecmp(header_name).zero? }
-  end
-
-  def sanitize_headers(headers)
-    # Remove sensitive headers from response
-    headers.except("Authorization", "Cookie", "X-Api-Key")
   end
 end
