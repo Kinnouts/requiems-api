@@ -28,7 +28,7 @@ func RegisterRoutes(router chi.Router, svc *Service) {
 	// GET /disposable/domain/{domain} — check a specific domain
 	router.Get("/disposable/domain/{domain}", func(w http.ResponseWriter, r *http.Request) {
 		domain := chi.URLParam(r, "domain")
-		
+
 		if domain == "" {
 			httpx.Error(w, http.StatusBadRequest, "bad_request", "domain is required")
 			return

@@ -2,9 +2,9 @@ package workingdays
 
 import "time"
 
-// WorkingDaysRequest holds the query parameters for the working days endpoint.
+// Request holds the query parameters for the working days endpoint.
 // Defaults should be set before calling httpx.BindQuery.
-type WorkingDaysRequest struct {
+type Request struct {
 	From        time.Time `query:"from" validate:"required"`
 	To          time.Time `query:"to" validate:"required,gtfield=From"`
 	Country     string    `query:"country" validate:"omitempty,iso3166_1_alpha2"`

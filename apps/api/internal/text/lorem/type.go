@@ -1,8 +1,8 @@
 package lorem
 
-// LoremRequest holds the optional query parameters for the lorem endpoint.
+// Request holds the optional query parameters for the lorem endpoint.
 // Defaults should be set before calling httpx.BindQuery.
-type LoremRequest struct {
+type Request struct {
 	Paragraphs int `query:"paragraphs" validate:"min=1,max=20"`
 	Sentences  int `query:"sentences"  validate:"min=1,max=20"`
 }

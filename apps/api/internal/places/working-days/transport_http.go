@@ -10,7 +10,7 @@ import (
 
 func RegisterRoutes(r chi.Router, svc *Service) {
 	r.Get("/working-days", func(w http.ResponseWriter, r *http.Request) {
-		req := WorkingDaysRequest{}
+		req := Request{}
 
 		if err := httpx.BindQuery(r, &req); err != nil {
 			httpx.Error(w, http.StatusBadRequest, "bad_request", err.Error())

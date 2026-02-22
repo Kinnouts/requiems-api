@@ -47,7 +47,7 @@ func JSON[T Data](w http.ResponseWriter, status int, v T) {
 // human-readable message.
 //
 //	httpx.Error(w, http.StatusBadRequest, "bad_request", "invalid email format")
-func Error(w http.ResponseWriter, status int, code string, message string) {
+func Error(w http.ResponseWriter, status int, code, message string) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
 	_ = json.NewEncoder(w).Encode(ErrorResponse{
