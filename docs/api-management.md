@@ -1,11 +1,11 @@
 # API Management Service
 
-Internal Cloudflare Worker service for managing API keys, exporting usage data, and providing analytics.
+Internal Cloudflare Worker service for managing API keys, exporting usage data,
+and providing analytics.
 
-**URL:** https://api-management.requiems.xyz
-**Local:** http://localhost:6001
-**Framework:** Hono (TypeScript)
-**Runtime:** Cloudflare Workers (Bun for local dev)
+**URL:** https://api-management.requiems.xyz **Local:** http://localhost:6001
+**Framework:** Hono (TypeScript) **Runtime:** Cloudflare Workers (Bun for local
+dev)
 
 ## Overview
 
@@ -15,11 +15,13 @@ The API Management service is an internal-only service that handles:
 - **Usage Export** - Export usage data from D1 for Rails PostgreSQL sync
 - **Analytics** - Query usage statistics by endpoint, date, and user
 
-This service is separate from the public-facing Auth Gateway, allowing independent scaling and clearer security boundaries.
+This service is separate from the public-facing Auth Gateway, allowing
+independent scaling and clearer security boundaries.
 
 ## Authentication
 
-All endpoints require the `X-API-Management-Key` header. Only the Rails dashboard has this key.
+All endpoints require the `X-API-Management-Key` header. Only the Rails
+dashboard has this key.
 
 ```bash
 curl https://api-management.requiems.xyz/healthz \
@@ -27,9 +29,12 @@ curl https://api-management.requiems.xyz/healthz \
 ```
 
 **Security Notes:**
-- This key is different from `X-Backend-Secret` (used by auth-gateway → Go backend)
+
+- This key is different from `X-Backend-Secret` (used by auth-gateway → Go
+  backend)
 - Store the key in environment variables (`API_MANAGEMENT_API_KEY`)
-- Rotate the key if compromised using `wrangler secret put API_MANAGEMENT_API_KEY`
+- Rotate the key if compromised using
+  `wrangler secret put API_MANAGEMENT_API_KEY`
 
 ## Endpoints
 
@@ -44,6 +49,7 @@ curl http://localhost:6001/healthz
 ```
 
 Response:
+
 ```json
 {
   "status": "ok",
@@ -62,10 +68,12 @@ Response:
 Generate a new API key. The key is generated on the server and returned once.
 
 **Headers:**
+
 - `X-API-Management-Key` (required)
 - `Content-Type: application/json`
 
 **Request Body:**
+
 ```json
 {
   "userId": "user-uuid",
@@ -76,6 +84,7 @@ Generate a new API key. The key is generated on the server and returned once.
 ```
 
 **Example:**
+
 ```bash
 curl -X POST http://localhost:6001/api-keys \
   -H "X-API-Management-Key: $API_MANAGEMENT_API_KEY" \
@@ -89,6 +98,7 @@ curl -X POST http://localhost:6001/api-keys \
 ```
 
 **Response (201 Created):**
+
 ```json
 {
   "apiKey": "requiem_abc123xyz789...",
@@ -100,6 +110,7 @@ curl -X POST http://localhost:6001/api-keys \
 ```
 
 **Error Responses:**
+
 - `400` - Missing required fields
 - `401` - Invalid or missing API management key
 - `409` - Key collision (retry request)
@@ -113,18 +124,22 @@ curl -X POST http://localhost:6001/api-keys \
 Revoke an API key by its prefix. Deletes from KV and marks as revoked in D1.
 
 **Headers:**
+
 - `X-API-Management-Key` (required)
 
 **URL Parameters:**
+
 - `keyPrefix` - First 12 characters of the API key (e.g., `rq_live_abc1`)
 
 **Example:**
+
 ```bash
 curl -X DELETE http://localhost:6001/api-keys/rq_live_abc1 \
   -H "X-API-Management-Key: $API_MANAGEMENT_API_KEY"
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -134,6 +149,7 @@ curl -X DELETE http://localhost:6001/api-keys/rq_live_abc1 \
 ```
 
 **Error Responses:**
+
 - `401` - Invalid or missing API management key
 - `404` - API key not found
 
@@ -146,13 +162,16 @@ curl -X DELETE http://localhost:6001/api-keys/rq_live_abc1 \
 Update an API key's plan or billing cycle.
 
 **Headers:**
+
 - `X-API-Management-Key` (required)
 - `Content-Type: application/json`
 
 **URL Parameters:**
+
 - `keyPrefix` - First 12 characters of the API key (e.g., `rq_live_abc1`)
 
 **Request Body:**
+
 ```json
 {
   "plan": "business", // Optional
@@ -161,6 +180,7 @@ Update an API key's plan or billing cycle.
 ```
 
 **Example:**
+
 ```bash
 curl -X PATCH http://localhost:6001/api-keys/rq_live_abc1 \
   -H "X-API-Management-Key: $API_MANAGEMENT_API_KEY" \
@@ -172,6 +192,7 @@ curl -X PATCH http://localhost:6001/api-keys/rq_live_abc1 \
 ```
 
 **Response:**
+
 ```json
 {
   "success": true,
@@ -183,6 +204,7 @@ curl -X PATCH http://localhost:6001/api-keys/rq_live_abc1 \
 ```
 
 **Error Responses:**
+
 - `400` - No fields provided for update
 - `401` - Invalid or missing API management key
 - `404` - API key not found
@@ -196,20 +218,24 @@ curl -X PATCH http://localhost:6001/api-keys/rq_live_abc1 \
 Export usage data from D1 for syncing to Rails PostgreSQL. Supports pagination.
 
 **Headers:**
+
 - `X-API-Management-Key` (required)
 
 **Query Parameters:**
+
 - `since` (required) - ISO 8601 timestamp, get records after this time
 - `limit` (optional) - Max records to return (default: 1000, max: 5000)
 - `cursor` (optional) - Pagination cursor (offset)
 
 **Example:**
+
 ```bash
 curl "http://localhost:6001/usage/export?since=2025-02-01T00:00:00Z&limit=1000" \
   -H "X-API-Management-Key: $API_MANAGEMENT_API_KEY"
 ```
 
 **Response:**
+
 ```json
 {
   "usage": [
@@ -226,8 +252,8 @@ curl "http://localhost:6001/usage/export?since=2025-02-01T00:00:00Z&limit=1000" 
 }
 ```
 
-**Pagination:**
-To get the next page, use the `nextCursor` value:
+**Pagination:** To get the next page, use the `nextCursor` value:
+
 ```bash
 curl "http://localhost:6001/usage/export?since=2025-02-01T00:00:00Z&limit=1000&cursor=1000" \
   -H "X-API-Management-Key: $API_MANAGEMENT_API_KEY"
@@ -242,21 +268,25 @@ curl "http://localhost:6001/usage/export?since=2025-02-01T00:00:00Z&limit=1000&c
 Get usage breakdown by endpoint for a user.
 
 **Headers:**
+
 - `X-API-Management-Key` (required)
 
 **Query Parameters:**
+
 - `userId` (required) - User ID
 - `since` (optional) - ISO 8601 timestamp (defaults to billing cycle start)
 - `until` (optional) - ISO 8601 timestamp (defaults to now)
 - `limit` (optional) - Max top endpoints to return (default: 10, max: 100)
 
 **Example:**
+
 ```bash
 curl "http://localhost:6001/analytics/by-endpoint?userId=user-123&limit=5" \
   -H "X-API-Management-Key: $API_MANAGEMENT_API_KEY"
 ```
 
 **Response:**
+
 ```json
 {
   "endpoints": [
@@ -287,21 +317,25 @@ curl "http://localhost:6001/analytics/by-endpoint?userId=user-123&limit=5" \
 Get usage trends over time for a user.
 
 **Headers:**
+
 - `X-API-Management-Key` (required)
 
 **Query Parameters:**
+
 - `userId` (required) - User ID
 - `since` (optional) - ISO 8601 timestamp (defaults to 30 days ago)
 - `until` (optional) - ISO 8601 timestamp (defaults to now)
 - `groupBy` (optional) - Grouping: "day" or "hour" (default: "day")
 
 **Example:**
+
 ```bash
 curl "http://localhost:6001/analytics/by-date?userId=user-123&groupBy=day" \
   -H "X-API-Management-Key: $API_MANAGEMENT_API_KEY"
 ```
 
 **Response:**
+
 ```json
 {
   "timeSeries": [
@@ -333,20 +367,24 @@ curl "http://localhost:6001/analytics/by-date?userId=user-123&groupBy=day" \
 Get overall usage summary for a user with top endpoints.
 
 **Headers:**
+
 - `X-API-Management-Key` (required)
 
 **Query Parameters:**
+
 - `userId` (required) - User ID
 - `since` (optional) - ISO 8601 timestamp (defaults to billing cycle start)
 - `until` (optional) - ISO 8601 timestamp (defaults to now)
 
 **Example:**
+
 ```bash
 curl "http://localhost:6001/analytics/summary?userId=user-123" \
   -H "X-API-Management-Key: $API_MANAGEMENT_API_KEY"
 ```
 
 **Response:**
+
 ```json
 {
   "userId": "user-123",
@@ -380,11 +418,13 @@ curl "http://localhost:6001/analytics/summary?userId=user-123" \
 Interactive API documentation using Swagger UI.
 
 **Authentication (Production):**
+
 - Protected with HTTP Basic Auth in production
 - Credentials: `SWAGGER_USERNAME` and `SWAGGER_PASSWORD` (from secrets)
 - No auth required in development
 
 **Access:**
+
 ```bash
 # Local development
 open http://localhost:6001/docs
@@ -394,6 +434,7 @@ open https://api-management.requiems.xyz/docs
 ```
 
 **OpenAPI Spec:**
+
 ```bash
 curl http://localhost:6001/openapi.json
 ```
@@ -405,12 +446,14 @@ curl http://localhost:6001/openapi.json
 ### Setup
 
 1. Install dependencies:
+
 ```bash
 cd apps/api-management
 bun install
 ```
 
 2. Set environment variables:
+
 ```bash
 # Create .env file
 echo "API_MANAGEMENT_API_KEY=your-local-dev-key-min-32-chars" > .env
@@ -418,6 +461,7 @@ echo "ENVIRONMENT=development" >> .env
 ```
 
 3. Start dev server:
+
 ```bash
 bun dev
 ```
@@ -427,26 +471,31 @@ Server runs at http://localhost:6001
 ### Testing
 
 Run tests:
+
 ```bash
 bun run test
 ```
 
 Run tests with coverage:
+
 ```bash
 bun run test:coverage
 ```
 
 Watch mode:
+
 ```bash
 bun run test:watch
 ```
 
 TypeScript check:
+
 ```bash
 bun run typecheck
 ```
 
 Linting:
+
 ```bash
 bun run lint
 bun run lint:fix  # Auto-fix
@@ -497,6 +546,7 @@ curl https://api-management.requiems.xyz/healthz \
 ### Monitor
 
 View logs:
+
 ```bash
 wrangler tail requiem-api-management-production
 ```
@@ -505,14 +555,15 @@ wrangler tail requiem-api-management-production
 
 ## Environment Variables
 
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `API_MANAGEMENT_API_KEY` | Yes | Secret key for API authentication (min 32 chars) |
-| `SWAGGER_USERNAME` | No | Basic auth username for /docs (production only) |
-| `SWAGGER_PASSWORD` | No | Basic auth password for /docs (production only) |
-| `ENVIRONMENT` | No | Environment name (development/staging/production) |
+| Variable                 | Required | Description                                       |
+| ------------------------ | -------- | ------------------------------------------------- |
+| `API_MANAGEMENT_API_KEY` | Yes      | Secret key for API authentication (min 32 chars)  |
+| `SWAGGER_USERNAME`       | No       | Basic auth username for /docs (production only)   |
+| `SWAGGER_PASSWORD`       | No       | Basic auth password for /docs (production only)   |
+| `ENVIRONMENT`            | No       | Environment name (development/staging/production) |
 
 **Binding Variables (wrangler.toml):**
+
 - `KV` - Cloudflare KV namespace (shared with auth-gateway)
 - `DB` - Cloudflare D1 database (shared with auth-gateway)
 
@@ -547,15 +598,19 @@ API Management
 ### Shared Resources
 
 Both auth-gateway and api-management share:
+
 - **Same KV namespace** - For API key storage
 - **Same D1 database** - For usage tracking and audit
 
 **KV Schema:**
+
 - `key:{api_key}` → `{userId, plan, createdAt, billingCycleStart}`
 - `rl:m:{api_key}:{minute}` → request count (managed by auth-gateway)
 
 **D1 Schema:**
-- `credit_usage` - Usage records (written by auth-gateway, read by api-management)
+
+- `credit_usage` - Usage records (written by auth-gateway, read by
+  api-management)
 - `api_keys` - API key metadata (written by api-management)
 
 ---
@@ -567,6 +622,7 @@ Both auth-gateway and api-management share:
 **Problem:** API returns 401 Unauthorized
 
 **Solutions:**
+
 1. Check header: `X-API-Management-Key` (not `X-Backend-Secret`)
 2. Verify key value matches secret: `wrangler secret list`
 3. Check key length (must be 32+ characters)
@@ -576,8 +632,10 @@ Both auth-gateway and api-management share:
 **Problem:** `/usage/export` returns empty array
 
 **Solutions:**
+
 1. Check `since` parameter is not in the future
-2. Verify D1 database has data: `wrangler d1 execute requiem-usage --command "SELECT COUNT(*) FROM credit_usage"`
+2. Verify D1 database has data:
+   `wrangler d1 execute requiem-usage --command "SELECT COUNT(*) FROM credit_usage"`
 3. Check auth-gateway is recording usage
 
 ### Swagger Docs Show 401
@@ -585,6 +643,7 @@ Both auth-gateway and api-management share:
 **Problem:** `/docs` prompts for auth in development
 
 **Solutions:**
+
 1. Check `ENVIRONMENT` is set to "development" in .env
 2. Basic auth only applies when all three are true:
    - `ENVIRONMENT === "production"`

@@ -22,9 +22,9 @@ Returns a daily horoscope reading for the given zodiac sign.
 
 #### Path Parameters
 
-| Parameter | Type   | Required | Description                                                 |
-| --------- | ------ | -------- | ----------------------------------------------------------- |
-| `sign`    | string | Yes      | Zodiac sign (case-insensitive). One of the 12 signs below.  |
+| Parameter | Type   | Required | Description                                                |
+| --------- | ------ | -------- | ---------------------------------------------------------- |
+| `sign`    | string | Yes      | Zodiac sign (case-insensitive). One of the 12 signs below. |
 
 #### Supported Signs
 
@@ -35,23 +35,28 @@ Returns a daily horoscope reading for the given zodiac sign.
 
 ```json
 {
-  "sign": "aries",
-  "date": "2024-12-15",
-  "horoscope": "Today is a great day for new beginnings. Trust your instincts and take that first step toward your goals.",
-  "lucky_number": 7,
-  "mood": "energetic"
+  "data": {
+    "sign": "aries",
+    "date": "2024-12-15",
+    "horoscope": "Today is a great day for new beginnings. Trust your instincts and take that first step toward your goals.",
+    "lucky_number": 7,
+    "mood": "energetic"
+  },
+  "metadata": {
+    "timestamp": "2026-01-01T00:00:00Z"
+  }
 }
 ```
 
 #### Response Fields
 
-| Field          | Type    | Description                                    |
-| -------------- | ------- | ---------------------------------------------- |
-| `sign`         | string  | Normalized zodiac sign (lowercase)             |
-| `date`         | string  | Today's date in `YYYY-MM-DD` format (UTC)      |
-| `horoscope`    | string  | Daily horoscope reading                        |
-| `lucky_number` | integer | Lucky number for the day (1–99)                |
-| `mood`         | string  | Suggested mood for the day                     |
+| Field          | Type    | Description                               |
+| -------------- | ------- | ----------------------------------------- |
+| `sign`         | string  | Normalized zodiac sign (lowercase)        |
+| `date`         | string  | Today's date in `YYYY-MM-DD` format (UTC) |
+| `horoscope`    | string  | Daily horoscope reading                   |
+| `lucky_number` | integer | Lucky number for the day (1–99)           |
+| `mood`         | string  | Suggested mood for the day                |
 
 #### Error Responses
 
@@ -79,18 +84,21 @@ url = "https://api.requiems.xyz/v1/entertainment/horoscope/aries"
 headers = {"requiems-api-key": "YOUR_API_KEY"}
 
 response = requests.get(url, headers=headers)
-print(response.json())
+result = response.json()['data']
+print(f"{result['sign']}: {result['horoscope']}")
+print(f"Lucky number: {result['lucky_number']}, Mood: {result['mood']}")
 ```
 
 ### JavaScript
 
 ```javascript
 const response = await fetch(
-  'https://api.requiems.xyz/v1/entertainment/horoscope/aries',
-  { headers: { 'requiems-api-key': 'YOUR_API_KEY' } }
+  "https://api.requiems.xyz/v1/entertainment/horoscope/aries",
+  { headers: { "requiems-api-key": "YOUR_API_KEY" } },
 );
-const data = await response.json();
-console.log(data.horoscope);
+const { data } = await response.json();
+console.log(`${data.sign}: ${data.horoscope}`);
+console.log(`Lucky number: ${data.lucky_number}, Mood: ${data.mood}`);
 ```
 
 ### Ruby
@@ -107,6 +115,7 @@ response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
   http.request(request)
 end
 
-data = JSON.parse(response.body)
-puts data['horoscope']
+result = JSON.parse(response.body)['data']
+puts "#{result['sign']}: #{result['horoscope']}"
+puts "Lucky number: #{result['lucky_number']}, Mood: #{result['mood']}"
 ```

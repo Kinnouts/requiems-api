@@ -14,7 +14,8 @@ Update:**
 - `apps/api/go.mod` - Go module definition (line 3: `go 1.24`)
 - `infra/docker/docker-compose.dev.yml` - Dev container (line 31:
   `image: golang:1.24-alpine`)
-- `infra/docker/api.Dockerfile` - Production build (line 1: `FROM golang:1.24-alpine AS build`)
+- `infra/docker/api.Dockerfile` - Production build (line 1:
+  `FROM golang:1.24-alpine AS build`)
 - `apps/api/.golangci.yml` - Linter configuration (line 6: `go: "1.24"`)
 
 **Verification:**
@@ -122,8 +123,7 @@ Version:** 16-alpine **Files to Update:**
 ### Redis 7
 
 **What:** Background job queue for Rails and real-time counter storage for the
-Go API **Current Version:** 7-alpine
-**Files to Update:**
+Go API **Current Version:** 7-alpine **Files to Update:**
 
 - `infra/docker/docker-compose.dev.yml` - Dev Redis (line 23:
   `image: redis:7-alpine`)
@@ -157,10 +157,12 @@ Update:**
 
 ### golangci-lint 2.10.1
 
-**What:** Go meta-linter **Current Version:** v2.10.1 (built with Go 1.24) **Files to Update:**
+**What:** Go meta-linter **Current Version:** v2.10.1 (built with Go 1.24)
+**Files to Update:**
 
 - `.github/workflows/ci.yml` - CI linter (line 110: `version: v2.10.1`)
-- `apps/api/.golangci.yml` - Linter v2 configuration (use `golangci-lint migrate` to upgrade from v1)
+- `apps/api/.golangci.yml` - Linter v2 configuration (use
+  `golangci-lint migrate` to upgrade from v1)
 
 **Verification:**
 

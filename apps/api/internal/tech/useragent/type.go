@@ -1,5 +1,10 @@
 package useragent
 
+// ParseRequest holds the query parameters for the user agent parse endpoint.
+type ParseRequest struct {
+	UA string `query:"ua" validate:"required"`
+}
+
 // Result holds parsed user agent information.
 type Result struct {
 	Browser        string `json:"browser"`

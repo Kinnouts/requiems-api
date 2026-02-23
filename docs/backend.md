@@ -41,8 +41,7 @@
     PostgreSQL fallback.
   - `sync_worker.go` – Background goroutine; `SCAN counter:*` → pipeline GET →
     batch PostgreSQL upsert every 60 seconds.
-  - `handler.go` – HTTP handlers for `POST` and `GET` on
-    `/counter/{namespace}`.
+  - `handler.go` – HTTP handlers for `POST` and `GET` on `/counter/{namespace}`.
 
 ### Adding a new API feature (pattern)
 

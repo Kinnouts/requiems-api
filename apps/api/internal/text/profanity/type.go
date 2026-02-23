@@ -7,9 +7,9 @@ type Request struct {
 
 // Result is the response payload for the profanity check endpoint.
 type Result struct {
-	HasProfanity bool     `json:"hasProfanity"`
+	HasProfanity bool     `json:"has_profanity"`
 	Censored     string   `json:"censored"`
-	FlaggedWords []string `json:"flaggedWords"`
+	FlaggedWords []string `json:"flagged_words"`
 }
 
 func (Result) IsData() {}
