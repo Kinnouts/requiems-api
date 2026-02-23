@@ -78,7 +78,6 @@ categories:
     name: Validation APIs
     icon: "✓"
     description: Validate various data formats
-    coming_soon: true
 
   - id: conversion
     name: Conversion APIs
@@ -159,6 +158,19 @@ apis:
       - Testing
       - Games
 
+  - id: profanity
+    name: Profanity Filter
+    category: text
+    description: Detect and censor profanity in text for content moderation
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/profanity
+    tags:
+      - Content Moderation
+      - Text Analysis
+      - Safety
+
   # Misc APIs
   - id: unit-conversion
     name: Unit Conversion
@@ -227,3 +239,15 @@ apis:
       - User Agent
       - Browser Detection
       - Device Detection
+  - id: phone-validation
+    name: Phone Validation
+    category: technology
+    description: Validate phone numbers, detect country and number type, and get international format
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/phone-validation
+    tags:
+      - Phone
+      - Validation
+      - Telecommunications

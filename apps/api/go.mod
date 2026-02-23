@@ -27,13 +27,16 @@ require (
 	github.com/tidwall/rtree v1.10.0 // indirect
 	github.com/twpayne/go-polyline v1.1.1 // indirect
 	go.mongodb.org/mongo-driver v1.11.4 // indirect
+	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394 // indirect
 	golang.org/x/sys v0.39.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 )
 
 require (
+	github.com/TwiN/go-away v1.8.1
 	github.com/bobadilla-tech/business-days-calculator v1.1.0
 	github.com/medama-io/go-useragent v1.2.3
+	github.com/nyaruka/phonenumbers v1.6.10
 	github.com/ringsaturn/tzf v1.0.3
 )
 
