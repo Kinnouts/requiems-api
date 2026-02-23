@@ -2,27 +2,6 @@
   <!-- Header -->
   <div class="bg-white border-b border-gray-200">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <!-- Breadcrumb -->
-      <nav class="flex mb-4" aria-label="Breadcrumb">
-        <ol class="flex items-center space-x-2 text-sm">
-          <li>
-            <%= link_to "Home", root_path, class: "text-gray-500 hover:text-gray-700" %>
-          </li>
-          <li class="flex items-center">
-            <svg class="h-4 w-4 text-gray-400 mx-2" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-            </svg>
-            <%= link_to "APIs", apis_path, class: "text-gray-500 hover:text-gray-700" %>
-          </li>
-          <li class="flex items-center">
-            <svg class="h-4 w-4 text-gray-400 mx-2" fill="currentColor" viewBox="0 0 20 20">
-              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-            </svg>
-            <span class="text-gray-900 font-medium"><%= @documentation["api_name"] %></span>
-          </li>
-        </ol>
-      </nav>
-
       <!-- API Header -->
       <div class="flex items-start justify-between">
         <div class="flex-1">
@@ -35,22 +14,6 @@
           <p class="text-lg text-gray-600 max-w-3xl">
             <%= @documentation["description"] %>
           </p>
-
-          <!-- Quick stats -->
-          <div class="mt-4 flex items-center space-x-6 text-sm text-gray-500">
-            <div class="flex items-center">
-              <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-              </svg>
-              <span><%= @documentation["endpoints"]&.count || 0 %> endpoints</span>
-            </div>
-            <div class="flex items-center">
-              <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-              </svg>
-              <span class="text-green-600 font-medium">Online</span>
-            </div>
-          </div>
         </div>
 
         <div>
@@ -81,7 +44,6 @@
                 <%= endpoint["method"] %> <%= endpoint["name"] %>
               </a>
             <% end %>
-            <a href="#pricing" class="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">Pricing</a>
             <% if @documentation["faq"].present? %>
               <a href="#faq" class="block px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-lg">FAQ</a>
             <% end %>
@@ -137,50 +99,6 @@
               <%= render "partials/apis_show/endpoint_documentation", endpoint: endpoint, index: index, base_url: @documentation["base_url"] %>
             <% end %>
           </div>
-
-          <!-- Pricing Section -->
-          <% if @documentation["pricing"].present? %>
-            <div id="pricing" class="p-8 border-t border-gray-200">
-              <h2 class="text-2xl font-bold text-gray-900 mb-6">Pricing & Rate Limits</h2>
-
-              <% if @documentation.dig("pricing", "free_tier").present? %>
-                <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                  <p class="text-blue-800">
-                    <strong>Free Tier:</strong> <%= @documentation.dig("pricing", "free_tier") %>
-                  </p>
-                </div>
-              <% end %>
-
-              <% if @documentation.dig("pricing", "rate_limits").present? %>
-                <div class="overflow-x-auto">
-                  <table class="min-w-full divide-y divide-gray-200">
-                    <thead class="bg-gray-50">
-                      <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Plan</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rate Limit</th>
-                      </tr>
-                    </thead>
-                    <tbody class="bg-white divide-y divide-gray-200">
-                      <% @documentation.dig("pricing", "rate_limits").each do |rate_limit| %>
-                        <tr>
-                          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                            <%= rate_limit["plan"] %>
-                          </td>
-                          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
-                            <%= rate_limit["limit"] %>
-                          </td>
-                        </tr>
-                      <% end %>
-                    </tbody>
-                  </table>
-                </div>
-
-                <div class="mt-6">
-                  <%= link_to "View Full Pricing", pricing_path, class: "inline-flex items-center text-blue-600 hover:text-blue-700 font-medium" %>
-                </div>
-              <% end %>
-            </div>
-          <% end %>
 
           <!-- FAQ Section -->
           <% if @documentation["faq"].present? %>
