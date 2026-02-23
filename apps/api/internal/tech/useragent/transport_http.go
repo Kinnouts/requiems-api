@@ -10,12 +10,13 @@ import (
 
 func RegisterRoutes(r chi.Router, svc *Service) {
 	r.Get("/useragent", func(w http.ResponseWriter, r *http.Request) {
-		ua := r.URL.Query().Get("ua")
-		if ua == "" {
-			httpx.Error(w, http.StatusBadRequest, "bad_request", "ua parameter is required")
+		var req ParseRequest
+
+		if err := httpx.BindQuery(r, &req); err != nil {
+			httpx.Error(w, http.StatusBadRequest, "bad_request", err.Error())
 			return
 		}
 
-		httpx.JSON(w, http.StatusOK, svc.Parse(ua))
+		httpx.JSON(w, http.StatusOK, svc.Parse(req.UA))
 	})
 }

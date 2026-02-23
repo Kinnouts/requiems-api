@@ -109,6 +109,11 @@ Create four files in this order (each builds on the previous).
 
 Every response struct **must** implement the `IsData()` marker interface — `httpx.JSON` requires it.
 
+> **Rule: always use `snake_case` for JSON field names.**
+> Every `json:"..."` tag in this codebase uses lower_snake_case. Never use camelCase or PascalCase.
+> ✅ `json:"has_profanity"` `json:"flagged_words"` `json:"browser_version"`
+> ❌ `json:"hasProfanity"` `json:"flaggedWords"` `json:"browserVersion"`
+
 ```go
 package riddle
 
@@ -147,6 +152,26 @@ func (RiddleList) IsData() {}
 | `min=1,max=100` | Numeric range (or string/slice length) |
 | `dive,email` | Validate each element of a slice |
 | `url` | Must be a valid URL |
+
+> **Rule: always declare validation in struct tags — never write it by hand in handlers.**
+> `validate` tags work on both `json` (POST body via `httpx.Handle`) and `query` (GET params via `httpx.BindQuery`) structs.
+> The framework enforces them automatically and returns consistent error responses.
+>
+> ✅ Correct — validation declared in the struct:
+> ```go
+> type ParseRequest struct {
+>     UA string `query:"ua" validate:"required"`
+> }
+> ```
+>
+> ❌ Wrong — manual inline check that bypasses the validation pipeline:
+> ```go
+> ua := r.URL.Query().Get("ua")
+> if ua == "" {
+>     httpx.Error(w, http.StatusBadRequest, "bad_request", "ua parameter is required")
+>     return
+> }
+> ```
 
 ### 1b. `service.go` — Business Logic
 
@@ -234,7 +259,7 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 
 #### Pattern B: `httpx.BindQuery` — GET with query parameters
 
-Use this when input comes from query string parameters. Set defaults **before** calling `BindQuery`.
+Use this when input comes from query string parameters. Set defaults **before** calling `BindQuery`. Always declare required fields and constraints using `validate` tags on the struct — do not add manual checks in the handler body.
 
 ```go
 func RegisterRoutes(r chi.Router, svc *Service) {
