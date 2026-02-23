@@ -189,7 +189,7 @@ apis:
     name: Unit Conversion
     category: misc
     description: Convert between units of measurement — length, weight, volume, temperature, area, and speed
-    endpoints_count: 1
+    endpoints_count: 2
     status: live
     popular: true
     documentation_url: /apis/unit-conversion
@@ -197,19 +197,6 @@ apis:
       - Conversion
       - Utilities
       - Measurement
-
-  - id: convert-units-list
-    name: Available Units List
-    category: misc
-    description: Get a list of all available units for conversion across different measurement types
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/convert-units-list
-    tags:
-      - Conversion
-      - Reference
-      - Utilities
 
   # Entertainment APIs
   - id: horoscope
