@@ -44,11 +44,16 @@ endpoints:
 
     response_example: |
       {
-        "from": "miles",
-        "to": "km",
-        "input": 10,
-        "result": 16.09344,
-        "formula": "miles × 1.609344"
+        "data": {
+          "from": "miles",
+          "to": "km",
+          "input": 10,
+          "result": 16.09344,
+          "formula": "miles × 1.609344"
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
       }
 
     response_fields:
@@ -92,7 +97,7 @@ endpoints:
         });
 
         const data = await response.json();
-        console.log(data.result); // 16.09344
+        console.log(data.data.result); // 16.09344
 
       ruby: |
         require 'net/http'
@@ -108,7 +113,7 @@ endpoints:
         end
 
         data = JSON.parse(response.body)
-        puts data['result'] # 16.09344
+        puts data['data']['result'] # 16.09344
 
 supported_units:
   length:

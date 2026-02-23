@@ -38,9 +38,9 @@ endpoints:
     response_example: |
       {
         "data": {
-          "hasProfanity": false,
+          "has_profanity": false,
           "censored": "Some text to check",
-          "flaggedWords": []
+          "flagged_words": []
         },
         "metadata": {
           "timestamp": "2026-01-01T00:00:00Z"
@@ -48,13 +48,13 @@ endpoints:
       }
 
     response_fields:
-      - name: hasProfanity
+      - name: has_profanity
         type: boolean
         description: Whether any profanity was detected in the text
       - name: censored
         type: string
         description: The input text with profane words replaced by asterisks
-      - name: flaggedWords
+      - name: flagged_words
         type: array of strings
         description: Deduplicated list of profane words found (lowercase)
 
@@ -100,7 +100,7 @@ endpoints:
         });
 
         const data = await response.json();
-        console.log(data.data.hasProfanity);
+        console.log(data.data.has_profanity);
         console.log(data.data.censored);
 
       ruby: |
@@ -118,7 +118,7 @@ endpoints:
         end
 
         data = JSON.parse(response.body)
-        puts data['data']['hasProfanity']
+        puts data['data']['has_profanity']
         puts data['data']['censored']
 
 pricing:
