@@ -31,6 +31,7 @@ require (
 )
 
 require (
+	github.com/TwiN/go-away v1.8.1
 	github.com/bobadilla-tech/business-days-calculator v1.1.0
 	github.com/ringsaturn/tzf v1.0.3
 )

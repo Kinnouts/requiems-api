@@ -1,49 +1,13 @@
 package profanity
 
 import (
-	"regexp"
 	"strings"
+
+	goaway "github.com/TwiN/go-away"
 )
 
-// wordRe matches sequences of alphabetic characters (words).
-var wordRe = regexp.MustCompile(`[a-zA-Z]+`)
-
-// profanitySet is the curated list of flagged words (all lowercase).
-// Words are matched case-insensitively against the input text.
-var profanitySet = map[string]struct{}{
-	"ass":          {},
-	"asshole":      {},
-	"bastard":      {},
-	"bitch":        {},
-	"bullshit":     {},
-	"cock":         {},
-	"crap":         {},
-	"cunt":         {},
-	"damn":         {},
-	"dick":         {},
-	"douche":       {},
-	"douchebag":    {},
-	"dumbass":      {},
-	"fag":          {},
-	"faggot":       {},
-	"fuck":         {},
-	"fucker":       {},
-	"fucking":      {},
-	"goddamn":      {},
-	"jackass":      {},
-	"jerk":         {},
-	"moron":        {},
-	"motherfucker": {},
-	"piss":         {},
-	"prick":        {},
-	"pussy":        {},
-	"shit":         {},
-	"shithead":     {},
-	"slut":         {},
-	"twat":         {},
-	"whore":        {},
-	"wanker":       {},
-}
+// detector is the default profanity detector shared across all requests.
+var detector = goaway.NewProfanityDetector()
 
 // Service performs profanity detection and censoring.
 type Service struct{}
@@ -54,27 +18,43 @@ func NewService() *Service { return &Service{} }
 // Check inspects text for profanity, returning a censored copy of the text
 // and the deduplicated list of flagged words found.
 func (s *Service) Check(text string) Result {
+	censored := detector.Censor(text)
+	hasProfanity := detector.IsProfane(text)
+
 	flaggedSet := map[string]bool{}
 	var flaggedWords []string
 
-	censored := wordRe.ReplaceAllStringFunc(text, func(word string) string {
-		lower := strings.ToLower(word)
-		if _, ok := profanitySet[lower]; ok {
-			if !flaggedSet[lower] {
-				flaggedSet[lower] = true
-				flaggedWords = append(flaggedWords, lower)
+	if hasProfanity {
+		remaining := text
+		for {
+			word := goaway.ExtractProfanity(remaining)
+			if word == "" {
+				break
 			}
-			return strings.Repeat("*", len(word))
+			if !flaggedSet[word] {
+				flaggedSet[word] = true
+				flaggedWords = append(flaggedWords, word)
+			}
+			// Advance past the first occurrence of the canonical word so
+			// subsequent iterations can find additional distinct words.
+			// go-away sanitises the text before matching, so the word may
+			// appear as a substring (e.g. "shit" inside "bullshit").
+			idx := strings.Index(strings.ToLower(remaining), word)
+			if idx == -1 {
+				// Leet-speak or special-char obfuscation: the canonical word
+				// doesn't appear literally — stop to avoid an infinite loop.
+				break
+			}
+			remaining = remaining[idx+len(word):]
 		}
-		return word
-	})
+	}
 
 	if flaggedWords == nil {
 		flaggedWords = []string{}
 	}
 
 	return Result{
-		HasProfanity: len(flaggedWords) > 0,
+		HasProfanity: hasProfanity,
 		Censored:     censored,
 		FlaggedWords: flaggedWords,
 	}

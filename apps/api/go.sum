@@ -2,6 +2,8 @@ github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161 h1:L/gRVlceqvL25
 github.com/Azure/go-ansiterm v0.0.0-20230124172434-306776ec8161/go.mod h1:xomTg63KZ2rFqZQzSB4Vz2SUXa1BpHTVz9L5PTmPC4E=
 github.com/Microsoft/go-winio v0.6.1 h1:9/kr64B9VUZrLm5YYwbGtUJnMgqWVOdUAXu6Migciow=
 github.com/Microsoft/go-winio v0.6.1/go.mod h1:LRdKpFKfdobln8UmuiYcKPot9D2v6svN5+sAH+4kjUM=
+github.com/TwiN/go-away v1.8.1 h1:zbbr0ISBkDSbnUFHrnRUhbCR/7+9ONMWtIi1BiQWX8Y=
+github.com/TwiN/go-away v1.8.1/go.mod h1:nSQEvd/FYBNmnC27RGJdPi91LXYMG8SrRc1o1w+VmKY=
 github.com/bobadilla-tech/business-days-calculator v1.1.0 h1:l0m28ko/oItgjjBlB+JqxGcE612FWx1tapqTNHCWn6c=
 github.com/bobadilla-tech/business-days-calculator v1.1.0/go.mod h1:Xayj9noAcTPZjwqDEwWRu96uDraHfObnj7TdZylXi9A=
 github.com/bobadilla-tech/holidays-per-country v1.0.1 h1:AFH9uxSkyMCLcZ/F2fbzmwdoix5Pbq+q3Vfye8uYoQw=
