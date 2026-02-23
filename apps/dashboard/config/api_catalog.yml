@@ -56,7 +56,6 @@ categories:
     name: Places
     icon: "📍"
     description: Location, places, and geography data
-    coming_soon: true
 
   - id: transportation
     name: Transportation
@@ -187,6 +186,20 @@ apis:
       - Astrology
       - Daily
       - Entertainment
+
+  # Places APIs
+  - id: timezone
+    name: Timezone
+    category: places
+    description: Get timezone information for any location by coordinates or city name
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/timezone
+    tags:
+      - Timezone
+      - Location
+      - Geography
 
   # Miscellaneous APIs
   - id: counter
