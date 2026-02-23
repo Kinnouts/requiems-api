@@ -20,7 +20,8 @@ Get baby name ideas and suggestions
 Atomic, namespace-isolated hit counter
 
 - **Status:** live
-- **Endpoints:** `POST /v1/misc/counter/{namespace}`, `GET /v1/misc/counter/{namespace}`
+- **Endpoints:** `POST /v1/misc/counter/{namespace}`,
+  `GET /v1/misc/counter/{namespace}`
 - **Credit Cost:** 1
 
 ### [Historical Events](./historical-events.md) - ⏳ Planned

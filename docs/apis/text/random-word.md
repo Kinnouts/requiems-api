@@ -1,6 +1,7 @@
 # Random Word API
 
-Get random words with definitions and parts of speech for vocabulary builders, educational apps, and word games.
+Get random words with definitions and parts of speech for vocabulary builders,
+educational apps, and word games.
 
 ## Status
 
@@ -30,17 +31,17 @@ None required.
 }
 ```
 
-| Field          | Type    | Description                                                       |
-|----------------|---------|-------------------------------------------------------------------|
-| id             | integer | Unique identifier for the word                                    |
-| word           | string  | The random word                                                   |
-| definition     | string  | Dictionary definition of the word                                 |
+| Field          | Type    | Description                                                      |
+| -------------- | ------- | ---------------------------------------------------------------- |
+| id             | integer | Unique identifier for the word                                   |
+| word           | string  | The random word                                                  |
+| definition     | string  | Dictionary definition of the word                                |
 | part_of_speech | string  | Grammatical classification (e.g., noun, verb, adjective, adverb) |
 
 ## Error Codes
 
 | Code                  | Status | When                           |
-|-----------------------|--------|--------------------------------|
+| --------------------- | ------ | ------------------------------ |
 | `service_unavailable` | 503    | No words available in database |
 
 ## Code Examples
@@ -69,10 +70,10 @@ print(f"Definition: {word_data['definition']}")
 ### JavaScript
 
 ```javascript
-const response = await fetch('https://api.requiems.xyz/v1/text/words/random', {
+const response = await fetch("https://api.requiems.xyz/v1/text/words/random", {
   headers: {
-    'requiems-api-key': 'YOUR_API_KEY'
-  }
+    "requiems-api-key": "YOUR_API_KEY",
+  },
 });
 
 const { data } = await response.json();
@@ -109,14 +110,18 @@ puts "Definition: #{word['definition']}"
 
 ## FAQ
 
-**What parts of speech are included?**
-The API includes all major parts of speech including nouns, verbs, adjectives, adverbs, prepositions, conjunctions, and more.
+**What parts of speech are included?** The API includes all major parts of
+speech including nouns, verbs, adjectives, adverbs, prepositions, conjunctions,
+and more.
 
-**Can I filter by part of speech or difficulty level?**
-Currently, the API returns completely random words. Filtering by part of speech or difficulty level is planned for a future update.
+**Can I filter by part of speech or difficulty level?** Currently, the API
+returns completely random words. Filtering by part of speech or difficulty level
+is planned for a future update.
 
-**How many words are in the database?**
-Our collection contains thousands of carefully curated English words with accurate definitions, covering a wide range of vocabulary levels.
+**How many words are in the database?** Our collection contains thousands of
+carefully curated English words with accurate definitions, covering a wide range
+of vocabulary levels.
 
-**Are the definitions from a specific dictionary?**
-The definitions are curated from reputable dictionary sources to provide clear, concise explanations suitable for general use.
+**Are the definitions from a specific dictionary?** The definitions are curated
+from reputable dictionary sources to provide clear, concise explanations
+suitable for general use.

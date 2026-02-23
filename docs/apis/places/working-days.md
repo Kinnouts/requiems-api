@@ -1,6 +1,7 @@
 # Working Days Calculator API
 
-Calculate the number of working days (business days) between two dates, with optional support for country-specific holidays.
+Calculate the number of working days (business days) between two dates, with
+optional support for country-specific holidays.
 
 ## Status
 
@@ -12,11 +13,11 @@ Calculate the number of working days (business days) between two dates, with opt
 
 ## Query Parameters
 
-| Parameter   | Type   | Required | Description                                                                     |
-|-------------|--------|----------|---------------------------------------------------------------------------------|
-| from        | string | Yes      | Start date in YYYY-MM-DD format (ISO 8601)                                      |
-| to          | string | Yes      | End date in YYYY-MM-DD format (ISO 8601). Must be >= from date.                |
-| country     | string | No       | ISO 3166-1 alpha-2 country code (e.g., "US", "GB", "FR"). Excludes holidays.   |
+| Parameter   | Type   | Required | Description                                                                        |
+| ----------- | ------ | -------- | ---------------------------------------------------------------------------------- |
+| from        | string | Yes      | Start date in YYYY-MM-DD format (ISO 8601)                                         |
+| to          | string | Yes      | End date in YYYY-MM-DD format (ISO 8601). Must be >= from date.                    |
+| country     | string | No       | ISO 3166-1 alpha-2 country code (e.g., "US", "GB", "FR"). Excludes holidays.       |
 | subdivision | string | No       | ISO 3166-2 subdivision code for state/region (e.g., "NY", "CA"). Requires country. |
 
 ## Response
@@ -36,18 +37,18 @@ Calculate the number of working days (business days) between two dates, with opt
 }
 ```
 
-| Field        | Type    | Description                                                            |
-|--------------|---------|------------------------------------------------------------------------|
-| working_days | integer | Number of working days (excluding weekends and optionally holidays)    |
-| from         | string  | Start date (echoed from request)                                       |
-| to           | string  | End date (echoed from request)                                         |
-| country      | string  | Country code (echoed from request, empty string if not provided)       |
-| subdivision  | string  | Subdivision code (echoed from request, empty string if not provided)   |
+| Field        | Type    | Description                                                          |
+| ------------ | ------- | -------------------------------------------------------------------- |
+| working_days | integer | Number of working days (excluding weekends and optionally holidays)  |
+| from         | string  | Start date (echoed from request)                                     |
+| to           | string  | End date (echoed from request)                                       |
+| country      | string  | Country code (echoed from request, empty string if not provided)     |
+| subdivision  | string  | Subdivision code (echoed from request, empty string if not provided) |
 
 ## Error Codes
 
-| Code          | Status | When                                                    |
-|---------------|--------|---------------------------------------------------------|
+| Code          | Status | When                                                           |
+| ------------- | ------ | -------------------------------------------------------------- |
 | `bad_request` | 400    | Required parameters missing, invalid date format, or to < from |
 
 ## Code Examples
@@ -91,23 +92,25 @@ print(f"{result['working_days']} working days between {result['from']} and {resu
 
 ```javascript
 const params = new URLSearchParams({
-  from: '2024-02-23',
-  to: '2024-02-28',
-  country: 'US',
-  subdivision: 'NY'
+  from: "2024-02-23",
+  to: "2024-02-28",
+  country: "US",
+  subdivision: "NY",
 });
 
 const response = await fetch(
   `https://api.requiems.xyz/v1/places/working-days?${params}`,
   {
     headers: {
-      'requiems-api-key': 'YOUR_API_KEY'
-    }
-  }
+      "requiems-api-key": "YOUR_API_KEY",
+    },
+  },
 );
 
 const { data } = await response.json();
-console.log(`${data.working_days} working days between ${data.from} and ${data.to}`);
+console.log(
+  `${data.working_days} working days between ${data.from} and ${data.to}`,
+);
 ```
 
 ### Ruby
@@ -145,17 +148,23 @@ puts "#{result['working_days']} working days between #{result['from']} and #{res
 
 ## FAQ
 
-**What defines a working day?**
-By default, working days are Monday through Friday, excluding weekends (Saturday and Sunday). When a country is specified, public holidays for that country are also excluded.
+**What defines a working day?** By default, working days are Monday through
+Friday, excluding weekends (Saturday and Sunday). When a country is specified,
+public holidays for that country are also excluded.
 
-**Which countries are supported for holiday calculations?**
-The API supports holiday calendars for most countries worldwide using ISO 3166-1 alpha-2 country codes. If a country is not recognized, the API returns only weekend-excluding calculations.
+**Which countries are supported for holiday calculations?** The API supports
+holiday calendars for most countries worldwide using ISO 3166-1 alpha-2 country
+codes. If a country is not recognized, the API returns only weekend-excluding
+calculations.
 
-**How are holidays determined?**
-The API uses the business-days-calculator library which includes comprehensive holiday calendars for each country, including federal/national holidays and optional state/regional holidays when a subdivision is specified.
+**How are holidays determined?** The API uses the business-days-calculator
+library which includes comprehensive holiday calendars for each country,
+including federal/national holidays and optional state/regional holidays when a
+subdivision is specified.
 
-**What if the to date is before the from date?**
-The API will return a 400 Bad Request error. The to date must be greater than or equal to the from date.
+**What if the to date is before the from date?** The API will return a 400 Bad
+Request error. The to date must be greater than or equal to the from date.
 
-**Are partial days counted?**
-No. The calculation counts full calendar days between the from and to dates (inclusive), then excludes weekends and holidays as appropriate.
+**Are partial days counted?** No. The calculation counts full calendar days
+between the from and to dates (inclusive), then excludes weekends and holidays
+as appropriate.

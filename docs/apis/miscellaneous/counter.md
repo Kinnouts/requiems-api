@@ -76,12 +76,12 @@ curl https://api.requiems.xyz/v1/misc/counter/page-views \
 
 ## Namespace Rules
 
-| Rule | Detail |
-|------|--------|
-| Min length | 1 character |
-| Max length | 64 characters |
-| Allowed characters | `a-z`, `A-Z`, `0-9`, `-`, `_` |
-| Examples | `hits`, `page-views`, `my_counter` |
+| Rule               | Detail                             |
+| ------------------ | ---------------------------------- |
+| Min length         | 1 character                        |
+| Max length         | 64 characters                      |
+| Allowed characters | `a-z`, `A-Z`, `0-9`, `-`, `_`      |
+| Examples           | `hits`, `page-views`, `my_counter` |
 
 Invalid namespaces return `400 Bad Request`.
 
@@ -95,8 +95,8 @@ Invalid namespaces return `400 Bad Request`.
 }
 ```
 
-| Code | Reason |
-|------|--------|
+| Code              | Reason                   |
+| ----------------- | ------------------------ |
 | `400 Bad Request` | Invalid namespace format |
 
 ---
@@ -162,4 +162,3 @@ track_event("checkout-completed")
 - Increment: O(1) Redis `INCR` — no database write in the request path
 - Read: O(1) Redis `GET`; O(1) PostgreSQL index lookup on cache miss
 - Background sync: batched pipeline writes every 60 seconds
-

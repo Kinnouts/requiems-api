@@ -19,9 +19,9 @@ system, device type, and bot detection.
 
 ### Query Parameters
 
-| Parameter | Required | Description |
-|---|---|---|
-| `ua` | Yes | URL-encoded user agent string |
+| Parameter | Required | Description                   |
+| --------- | -------- | ----------------------------- |
+| `ua`      | Yes      | URL-encoded user agent string |
 
 ### Response
 
@@ -43,30 +43,30 @@ system, device type, and bot detection.
 
 ### Device Values
 
-| Value | Description |
-|---|---|
-| `desktop` | Desktop browser on Windows, macOS, or Linux |
-| `mobile` | Mobile browser (iPhone, Android Mobile) |
-| `tablet` | Tablet browser (iPad, Android without Mobile) |
-| `bot` | Known bot or crawler |
-| `unknown` | Empty user agent string |
+| Value     | Description                                   |
+| --------- | --------------------------------------------- |
+| `desktop` | Desktop browser on Windows, macOS, or Linux   |
+| `mobile`  | Mobile browser (iPhone, Android Mobile)       |
+| `tablet`  | Tablet browser (iPad, Android without Mobile) |
+| `bot`     | Known bot or crawler                          |
+| `unknown` | Empty user agent string                       |
 
 ### Response Fields
 
-| Field           | Type    | Description |
-|-----------------|---------|-------------|
+| Field           | Type    | Description                                                                                  |
+| --------------- | ------- | -------------------------------------------------------------------------------------------- |
 | browser         | string  | Detected browser name (e.g., Chrome, Firefox, Safari, Edge, Opera, Internet Explorer, Other) |
-| browser_version | string  | Browser version in "major.minor" format (e.g., "120.0"), empty if not detected |
-| os              | string  | Detected operating system (e.g., Windows, macOS, Linux, Android, iOS, ChromeOS, Other) |
-| os_version      | string  | OS version (format varies by platform) |
-| device          | string  | Device type: desktop, mobile, tablet, bot, or unknown |
-| is_bot          | boolean | True when the user agent matches a known bot or crawler pattern |
+| browser_version | string  | Browser version in "major.minor" format (e.g., "120.0"), empty if not detected               |
+| os              | string  | Detected operating system (e.g., Windows, macOS, Linux, Android, iOS, ChromeOS, Other)       |
+| os_version      | string  | OS version (format varies by platform)                                                       |
+| device          | string  | Device type: desktop, mobile, tablet, bot, or unknown                                        |
+| is_bot          | boolean | True when the user agent matches a known bot or crawler pattern                              |
 
 ### Error Codes
 
-| Code | Status | When |
-|---|---|---|
-| `bad_request` | 400 | `ua` query parameter is missing |
+| Code          | Status | When                            |
+| ------------- | ------ | ------------------------------- |
+| `bad_request` | 400    | `ua` query parameter is missing |
 
 ## Code Examples
 
@@ -98,10 +98,12 @@ print(f"Device: {result['device']}")
 
 ```javascript
 const ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0";
-const url = `https://api.requiems.xyz/v1/tech/useragent?ua=${encodeURIComponent(ua)}`;
+const url = `https://api.requiems.xyz/v1/tech/useragent?ua=${
+  encodeURIComponent(ua)
+}`;
 
 const response = await fetch(url, {
-  headers: { 'requiems-api-key': 'YOUR_API_KEY' }
+  headers: { "requiems-api-key": "YOUR_API_KEY" },
 });
 
 const { data } = await response.json();
@@ -134,17 +136,20 @@ puts "Device: #{data['device']}"
 ## Use Cases
 
 - **Analytics Dashboards** - Track browser and device usage patterns
-- **Serving Device-Specific Content** - Deliver optimized experiences based on device type
+- **Serving Device-Specific Content** - Deliver optimized experiences based on
+  device type
 - **Bot Filtering** - Identify and filter bot traffic from analytics
-- **Browser Compatibility Reporting** - Understand which browsers your users are on
+- **Browser Compatibility Reporting** - Understand which browsers your users are
+  on
 
 ## FAQ
 
-**Which browsers are detected?**
-Chrome, Firefox, Safari, Edge, Opera, and Internet Explorer. Anything else returns "Other".
+**Which browsers are detected?** Chrome, Firefox, Safari, Edge, Opera, and
+Internet Explorer. Anything else returns "Other".
 
-**How is bot detection handled?**
-The API checks for known bot/crawler keywords in the user agent string, including Googlebot, Bingbot, curl, wget, python-requests, and many others.
+**How is bot detection handled?** The API checks for known bot/crawler keywords
+in the user agent string, including Googlebot, Bingbot, curl, wget,
+python-requests, and many others.
 
-**What device types are returned?**
-desktop, mobile, tablet, bot, or unknown. Tablets are identified by iPad or Android without 'Mobile' in the UA.
+**What device types are returned?** desktop, mobile, tablet, bot, or unknown.
+Tablets are identified by iPad or Android without 'Mobile' in the UA.

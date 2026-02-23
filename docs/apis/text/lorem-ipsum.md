@@ -1,6 +1,7 @@
 # Lorem Ipsum Generator API
 
-Generate classic Lorem Ipsum placeholder text for design mockups, prototypes, and testing.
+Generate classic Lorem Ipsum placeholder text for design mockups, prototypes,
+and testing.
 
 ## Status
 
@@ -12,10 +13,10 @@ Generate classic Lorem Ipsum placeholder text for design mockups, prototypes, an
 
 ## Query Parameters
 
-| Parameter  | Type    | Required | Default | Range | Description                          |
-|------------|---------|----------|---------|-------|--------------------------------------|
-| paragraphs | integer | No       | 1       | 1-20  | Number of paragraphs to generate     |
-| sentences  | integer | No       | 5       | 1-20  | Number of sentences per paragraph    |
+| Parameter  | Type    | Required | Default | Range | Description                       |
+| ---------- | ------- | -------- | ------- | ----- | --------------------------------- |
+| paragraphs | integer | No       | 1       | 1-20  | Number of paragraphs to generate  |
+| sentences  | integer | No       | 5       | 1-20  | Number of sentences per paragraph |
 
 ## Response
 
@@ -32,18 +33,18 @@ Generate classic Lorem Ipsum placeholder text for design mockups, prototypes, an
 }
 ```
 
-| Field      | Type    | Description                          |
-|------------|---------|--------------------------------------|
-| text       | string  | Generated Lorem Ipsum text           |
-| paragraphs | integer | Number of paragraphs generated       |
-| wordCount  | integer | Total number of words in the text    |
+| Field      | Type    | Description                       |
+| ---------- | ------- | --------------------------------- |
+| text       | string  | Generated Lorem Ipsum text        |
+| paragraphs | integer | Number of paragraphs generated    |
+| wordCount  | integer | Total number of words in the text |
 
 ## Error Codes
 
-| Code          | Status | When                                    |
-|---------------|--------|-----------------------------------------|
-| `bad_request` | 400    | paragraphs must be between 1 and 20     |
-| `bad_request` | 400    | sentences must be between 1 and 20      |
+| Code          | Status | When                                |
+| ------------- | ------ | ----------------------------------- |
+| `bad_request` | 400    | paragraphs must be between 1 and 20 |
+| `bad_request` | 400    | sentences must be between 1 and 20  |
 
 ## Code Examples
 
@@ -82,9 +83,9 @@ const response = await fetch(
   `https://api.requiems.xyz/v1/text/lorem?${params}`,
   {
     headers: {
-      'requiems-api-key': 'YOUR_API_KEY'
-    }
-  }
+      "requiems-api-key": "YOUR_API_KEY",
+    },
+  },
 );
 
 const { data } = await response.json();
@@ -115,21 +116,29 @@ puts "Word count: #{data['wordCount']}"
 
 ## Use Cases
 
-- **Web Design Mockups** - Fill content areas in design prototypes and wireframes
-- **Development Testing** - Generate realistic-looking text for testing layouts and typography
-- **Content Placeholders** - Create temporary content while waiting for final copy
-- **Typography Demos** - Showcase fonts and text styling with varied content lengths
+- **Web Design Mockups** - Fill content areas in design prototypes and
+  wireframes
+- **Development Testing** - Generate realistic-looking text for testing layouts
+  and typography
+- **Content Placeholders** - Create temporary content while waiting for final
+  copy
+- **Typography Demos** - Showcase fonts and text styling with varied content
+  lengths
 
 ## FAQ
 
-**What is Lorem Ipsum?**
-Lorem Ipsum is dummy text used in the printing and typesetting industry since the 1500s. It's a scrambled version of Latin text that creates natural-looking placeholder content.
+**What is Lorem Ipsum?** Lorem Ipsum is dummy text used in the printing and
+typesetting industry since the 1500s. It's a scrambled version of Latin text
+that creates natural-looking placeholder content.
 
-**Why use Lorem Ipsum instead of 'Test test test'?**
-Lorem Ipsum has a more natural distribution of letters and word lengths, making it better for testing typography and layout. It also looks more professional in mockups.
+**Why use Lorem Ipsum instead of 'Test test test'?** Lorem Ipsum has a more
+natural distribution of letters and word lengths, making it better for testing
+typography and layout. It also looks more professional in mockups.
 
-**Can I control both paragraphs and sentences?**
-Yes! Use the `paragraphs` parameter to set how many paragraphs you want (1-20), and the `sentences` parameter to set how many sentences per paragraph (1-20).
+**Can I control both paragraphs and sentences?** Yes! Use the `paragraphs`
+parameter to set how many paragraphs you want (1-20), and the `sentences`
+parameter to set how many sentences per paragraph (1-20).
 
-**Is the generated text always the same?**
-The text is generated using the Lorelai library, which creates varied Lorem Ipsum content based on the classic Lorem Ipsum corpus.
+**Is the generated text always the same?** The text is generated using the
+Lorelai library, which creates varied Lorem Ipsum content based on the classic
+Lorem Ipsum corpus.

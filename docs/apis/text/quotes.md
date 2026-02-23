@@ -29,16 +29,16 @@ None required.
 }
 ```
 
-| Field  | Type    | Description                    |
-|--------|---------|--------------------------------|
-| id     | integer | Unique identifier for the quote |
-| text   | string  | The quote text                 |
+| Field  | Type    | Description                                    |
+| ------ | ------- | ---------------------------------------------- |
+| id     | integer | Unique identifier for the quote                |
+| text   | string  | The quote text                                 |
 | author | string  | Name of the person who said or wrote the quote |
 
 ## Error Codes
 
 | Code                  | Status | When                            |
-|-----------------------|--------|---------------------------------|
+| --------------------- | ------ | ------------------------------- |
 | `service_unavailable` | 503    | No quotes available in database |
 
 ## Code Examples
@@ -66,10 +66,10 @@ print(f'"{quote["text"]}" - {quote["author"]}')
 ### JavaScript
 
 ```javascript
-const response = await fetch('https://api.requiems.xyz/v1/text/quotes/random', {
+const response = await fetch("https://api.requiems.xyz/v1/text/quotes/random", {
   headers: {
-    'requiems-api-key': 'YOUR_API_KEY'
-  }
+    "requiems-api-key": "YOUR_API_KEY",
+  },
 });
 
 const { data } = await response.json();
@@ -103,11 +103,14 @@ puts "\"#{quote['text']}\" - #{quote['author']}"
 
 ## FAQ
 
-**Can I request quotes from a specific author?**
-Currently, the API returns random quotes from our entire collection. Author filtering is planned for a future update.
+**Can I request quotes from a specific author?** Currently, the API returns
+random quotes from our entire collection. Author filtering is planned for a
+future update.
 
-**How many quotes are in the database?**
-Our collection contains hundreds of curated inspirational quotes from famous thinkers, leaders, and innovators, and we're constantly adding more.
+**How many quotes are in the database?** Our collection contains hundreds of
+curated inspirational quotes from famous thinkers, leaders, and innovators, and
+we're constantly adding more.
 
-**Will I get the same quote if I call the endpoint multiple times?**
-No, quotes are selected randomly on each request, so consecutive calls will typically return different quotes.
+**Will I get the same quote if I call the endpoint multiple times?** No, quotes
+are selected randomly on each request, so consecutive calls will typically
+return different quotes.

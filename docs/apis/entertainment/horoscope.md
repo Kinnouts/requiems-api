@@ -22,9 +22,9 @@ Returns a daily horoscope reading for the given zodiac sign.
 
 #### Path Parameters
 
-| Parameter | Type   | Required | Description                                                 |
-| --------- | ------ | -------- | ----------------------------------------------------------- |
-| `sign`    | string | Yes      | Zodiac sign (case-insensitive). One of the 12 signs below.  |
+| Parameter | Type   | Required | Description                                                |
+| --------- | ------ | -------- | ---------------------------------------------------------- |
+| `sign`    | string | Yes      | Zodiac sign (case-insensitive). One of the 12 signs below. |
 
 #### Supported Signs
 
@@ -50,13 +50,13 @@ Returns a daily horoscope reading for the given zodiac sign.
 
 #### Response Fields
 
-| Field          | Type    | Description                                    |
-| -------------- | ------- | ---------------------------------------------- |
-| `sign`         | string  | Normalized zodiac sign (lowercase)             |
-| `date`         | string  | Today's date in `YYYY-MM-DD` format (UTC)      |
-| `horoscope`    | string  | Daily horoscope reading                        |
-| `lucky_number` | integer | Lucky number for the day (1–99)                |
-| `mood`         | string  | Suggested mood for the day                     |
+| Field          | Type    | Description                               |
+| -------------- | ------- | ----------------------------------------- |
+| `sign`         | string  | Normalized zodiac sign (lowercase)        |
+| `date`         | string  | Today's date in `YYYY-MM-DD` format (UTC) |
+| `horoscope`    | string  | Daily horoscope reading                   |
+| `lucky_number` | integer | Lucky number for the day (1–99)           |
+| `mood`         | string  | Suggested mood for the day                |
 
 #### Error Responses
 
@@ -93,8 +93,8 @@ print(f"Lucky number: {result['lucky_number']}, Mood: {result['mood']}")
 
 ```javascript
 const response = await fetch(
-  'https://api.requiems.xyz/v1/entertainment/horoscope/aries',
-  { headers: { 'requiems-api-key': 'YOUR_API_KEY' } }
+  "https://api.requiems.xyz/v1/entertainment/horoscope/aries",
+  { headers: { "requiems-api-key": "YOUR_API_KEY" } },
 );
 const { data } = await response.json();
 console.log(`${data.sign}: ${data.horoscope}`);

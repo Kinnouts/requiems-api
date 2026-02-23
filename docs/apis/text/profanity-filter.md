@@ -14,9 +14,9 @@ Detect and censor profanity in text for content moderation.
 }
 ```
 
-| Field | Type   | Required | Description             |
-|-------|--------|----------|-------------------------|
-| text  | string | Yes      | The text to check       |
+| Field | Type   | Required | Description       |
+| ----- | ------ | -------- | ----------------- |
+| text  | string | Yes      | The text to check |
 
 ## Response
 
@@ -33,18 +33,21 @@ Detect and censor profanity in text for content moderation.
 }
 ```
 
-| Field         | Type             | Description                                               |
-|---------------|------------------|-----------------------------------------------------------|
-| has_profanity | boolean          | Whether any profanity was detected                        |
+| Field         | Type             | Description                                              |
+| ------------- | ---------------- | -------------------------------------------------------- |
+| has_profanity | boolean          | Whether any profanity was detected                       |
 | censored      | string           | Input text with profane words replaced by `*` characters |
-| flagged_words | array of strings | Deduplicated list of detected profane words (lowercase)   |
+| flagged_words | array of strings | Deduplicated list of detected profane words (lowercase)  |
 
 ## Behaviour
 
-- Detection is **case-insensitive** — `BULLSHIT`, `Bullshit`, and `bullshit` all match.
-- Censoring replaces each character of a flagged word with `*`, preserving word length.
+- Detection is **case-insensitive** — `BULLSHIT`, `Bullshit`, and `bullshit` all
+  match.
+- Censoring replaces each character of a flagged word with `*`, preserving word
+  length.
 - Surrounding punctuation and whitespace are left unchanged.
-- `flagged_words` contains each word only once, even if it appears multiple times in the input.
+- `flagged_words` contains each word only once, even if it appears multiple
+  times in the input.
 
 ## Code Examples
 
@@ -78,13 +81,13 @@ print(f"Censored: {result['censored']}")
 ### JavaScript
 
 ```javascript
-const response = await fetch('https://api.requiems.xyz/v1/text/profanity', {
-  method: 'POST',
+const response = await fetch("https://api.requiems.xyz/v1/text/profanity", {
+  method: "POST",
   headers: {
-    'requiems-api-key': 'YOUR_API_KEY',
-    'Content-Type': 'application/json'
+    "requiems-api-key": "YOUR_API_KEY",
+    "Content-Type": "application/json",
   },
-  body: JSON.stringify({ text: 'Some text to check' })
+  body: JSON.stringify({ text: "Some text to check" }),
 });
 
 const { data } = await response.json();
@@ -115,9 +118,8 @@ puts "Censored: #{data['censored']}"
 
 ## Error Codes
 
-| Code               | Status | When                                    |
-|--------------------|--------|-----------------------------------------|
-| `validation_failed` | 422   | The `text` field is missing or empty    |
-| `bad_request`       | 400   | The request body is missing or malformed |
-| `internal_error`    | 500   | Unexpected server error                 |
-
+| Code                | Status | When                                     |
+| ------------------- | ------ | ---------------------------------------- |
+| `validation_failed` | 422    | The `text` field is missing or empty     |
+| `bad_request`       | 400    | The request body is missing or malformed |
+| `internal_error`    | 500    | Unexpected server error                  |

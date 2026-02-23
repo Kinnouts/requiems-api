@@ -114,7 +114,8 @@ Go API
 **Used for:**
 
 - Go API atomic counter increments (`INCR counter:{namespace}`)
-- Counter persistence: background sync worker flushes Redis values to PostgreSQL every 60 seconds
+- Counter persistence: background sync worker flushes Redis values to PostgreSQL
+  every 60 seconds
 - Sidekiq background jobs
 - Usage sync from Cloudflare D1
 - Email sending

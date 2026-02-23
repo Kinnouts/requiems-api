@@ -19,11 +19,11 @@ Get timezone information for a location by coordinates or city name.
 
 #### Query Parameters
 
-| Parameter | Type   | Required | Description                                          |
-|-----------|--------|----------|------------------------------------------------------|
-| `lat`     | float  | *        | Latitude (-90 to 90). Required when using coordinates. |
+| Parameter | Type   | Required | Description                                               |
+| --------- | ------ | -------- | --------------------------------------------------------- |
+| `lat`     | float  | *        | Latitude (-90 to 90). Required when using coordinates.    |
 | `lon`     | float  | *        | Longitude (-180 to 180). Required when using coordinates. |
-| `city`    | string | *        | City name. Required when not using coordinates.      |
+| `city`    | string | *        | City name. Required when not using coordinates.           |
 
 \* Either `city` **or** both `lat` + `lon` must be provided.
 
@@ -52,10 +52,9 @@ GET /v1/places/timezone?city=Tokyo
 
 #### Response Fields
 
-| Field          | Type    | Description                                             |
-|----------------|---------|---------------------------------------------------------|
-| `timezone`     | string  | IANA timezone identifier (e.g. `"Europe/London"`)       |
-| `offset`       | string  | UTC offset in `+HH:MM` / `-HH:MM` format               |
-| `current_time` | string  | Current UTC time in RFC 3339 format                     |
-| `is_dst`       | boolean | Whether the location is currently observing DST         |
-
+| Field          | Type    | Description                                       |
+| -------------- | ------- | ------------------------------------------------- |
+| `timezone`     | string  | IANA timezone identifier (e.g. `"Europe/London"`) |
+| `offset`       | string  | UTC offset in `+HH:MM` / `-HH:MM` format          |
+| `current_time` | string  | Current UTC time in RFC 3339 format               |
+| `is_dst`       | boolean | Whether the location is currently observing DST   |

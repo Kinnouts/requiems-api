@@ -12,12 +12,12 @@ Generate cryptographically secure random passwords with customizable complexity.
 
 ## Query Parameters
 
-| Parameter | Type    | Required | Default | Range  | Description                                      |
-|-----------|---------|----------|---------|--------|--------------------------------------------------|
-| length    | integer | No       | 16      | 8-128  | Password length                                  |
-| uppercase | boolean | No       | false   | -      | Include uppercase letters (A-Z)                  |
-| numbers   | boolean | No       | false   | -      | Include numbers (0-9)                            |
-| symbols   | boolean | No       | false   | -      | Include special characters (!@#$%^&*()-_=+etc.) |
+| Parameter | Type    | Required | Default | Range | Description                                     |
+| --------- | ------- | -------- | ------- | ----- | ----------------------------------------------- |
+| length    | integer | No       | 16      | 8-128 | Password length                                 |
+| uppercase | boolean | No       | false   | -     | Include uppercase letters (A-Z)                 |
+| numbers   | boolean | No       | false   | -     | Include numbers (0-9)                           |
+| symbols   | boolean | No       | false   | -     | Include special characters (!@#$%^&*()-_=+etc.) |
 
 ## Response
 
@@ -34,15 +34,16 @@ Generate cryptographically secure random passwords with customizable complexity.
 }
 ```
 
-| Field    | Type    | Description                                   |
-|----------|---------|-----------------------------------------------|
-| password | string  | The generated password                        |
-| length   | integer | Length of the generated password              |
+| Field    | Type    | Description                                         |
+| -------- | ------- | --------------------------------------------------- |
+| password | string  | The generated password                              |
+| length   | integer | Length of the generated password                    |
 | strength | string  | Password strength assessment (weak, medium, strong) |
 
 ## Password Strength
 
 Strength is calculated based on length and character set diversity:
+
 - **Weak** (≤1 point) - Short with limited character sets
 - **Medium** (2-3 points) - Reasonable length with some variety
 - **Strong** (≥4 points) - 16+ characters with multiple character sets
@@ -51,10 +52,10 @@ Scoring: 1 point for length ≥ 8, +1 for length ≥ 16, +1 per enabled charset
 
 ## Error Codes
 
-| Code            | Status | When                               |
-|-----------------|--------|------------------------------------|
-| `bad_request`   | 400    | length must be between 8 and 128   |
-| `internal_error`| 500    | Failed to generate password (rare) |
+| Code             | Status | When                               |
+| ---------------- | ------ | ---------------------------------- |
+| `bad_request`    | 400    | length must be between 8 and 128   |
+| `internal_error` | 500    | Failed to generate password (rare) |
 
 ## Code Examples
 
@@ -101,16 +102,16 @@ const params = new URLSearchParams({
   length: 16,
   uppercase: true,
   numbers: true,
-  symbols: true
+  symbols: true,
 });
 
 const response = await fetch(
   `https://api.requiems.xyz/v1/tech/password?${params}`,
   {
     headers: {
-      'requiems-api-key': 'YOUR_API_KEY'
-    }
-  }
+      "requiems-api-key": "YOUR_API_KEY",
+    },
+  },
 );
 
 const { data } = await response.json();
@@ -154,17 +155,23 @@ puts "Strength: #{result['strength']}"
 
 ## FAQ
 
-**Are the passwords truly random?**
-Yes. The API uses Go's crypto/rand package which provides cryptographically secure random number generation suitable for security-sensitive applications.
+**Are the passwords truly random?** Yes. The API uses Go's crypto/rand package
+which provides cryptographically secure random number generation suitable for
+security-sensitive applications.
 
-**Can I generate passwords with only specific character sets?**
-Yes. By default, lowercase letters are always included. You can add uppercase, numbers, and/or symbols by setting the respective parameters to true.
+**Can I generate passwords with only specific character sets?** Yes. By default,
+lowercase letters are always included. You can add uppercase, numbers, and/or
+symbols by setting the respective parameters to true.
 
-**Is there a minimum length requirement?**
-Yes, passwords must be at least 8 characters long. The maximum length is 128 characters.
+**Is there a minimum length requirement?** Yes, passwords must be at least 8
+characters long. The maximum length is 128 characters.
 
-**Does the API guarantee character distribution?**
-Yes. When you enable a character set (uppercase, numbers, symbols), the algorithm guarantees at least one character from each enabled set will be included. Characters are then shuffled using Fisher-Yates algorithm for randomness.
+**Does the API guarantee character distribution?** Yes. When you enable a
+character set (uppercase, numbers, symbols), the algorithm guarantees at least
+one character from each enabled set will be included. Characters are then
+shuffled using Fisher-Yates algorithm for randomness.
 
-**How is password strength calculated?**
-Strength is based on length and character set diversity. Weak (≤1 point) - short with limited character sets. Medium (2-3 points) - reasonable length with some variety. Strong (≥4 points) - 16+ characters with multiple character sets.
+**How is password strength calculated?** Strength is based on length and
+character set diversity. Weak (≤1 point) - short with limited character sets.
+Medium (2-3 points) - reasonable length with some variety. Strong (≥4 points) -
+16+ characters with multiple character sets.

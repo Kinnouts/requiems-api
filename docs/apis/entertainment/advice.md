@@ -1,6 +1,7 @@
 # Random Advice API
 
-Get random pieces of advice and wisdom for inspiration, daily motivation, or content generation.
+Get random pieces of advice and wisdom for inspiration, daily motivation, or
+content generation.
 
 ## Status
 
@@ -29,15 +30,15 @@ None required.
 ```
 
 | Field  | Type    | Description                      |
-|--------|---------|----------------------------------|
+| ------ | ------- | -------------------------------- |
 | id     | integer | Unique identifier for the advice |
 | advice | string  | A random piece of advice         |
 
 ## Error Codes
 
-| Code                  | Status | When                              |
-|-----------------------|--------|-----------------------------------|
-| `service_unavailable` | 503    | No advice available in database   |
+| Code                  | Status | When                            |
+| --------------------- | ------ | ------------------------------- |
+| `service_unavailable` | 503    | No advice available in database |
 
 ## Code Examples
 
@@ -64,10 +65,10 @@ print(f"Advice #{advice['id']}: {advice['advice']}")
 ### JavaScript
 
 ```javascript
-const response = await fetch('https://api.requiems.xyz/v1/text/advice', {
+const response = await fetch("https://api.requiems.xyz/v1/text/advice", {
   headers: {
-    'requiems-api-key': 'YOUR_API_KEY'
-  }
+    "requiems-api-key": "YOUR_API_KEY",
+  },
 });
 
 const { data } = await response.json();
@@ -108,11 +109,13 @@ puts "Advice ##{data['id']}: #{data['advice']}"
 
 ## FAQ
 
-**Can I request specific types of advice?**
-Currently, the API returns random advice from our curated collection. Category filtering is planned for a future update.
+**Can I request specific types of advice?** Currently, the API returns random
+advice from our curated collection. Category filtering is planned for a future
+update.
 
-**How many pieces of advice are in the database?**
-Our collection contains over 200 pieces of curated advice and wisdom, and we're constantly adding more.
+**How many pieces of advice are in the database?** Our collection contains over
+200 pieces of curated advice and wisdom, and we're constantly adding more.
 
-**Will I get the same advice on consecutive calls?**
-No, advice is selected randomly on each request, so consecutive calls will typically return different advice.
+**Will I get the same advice on consecutive calls?** No, advice is selected
+randomly on each request, so consecutive calls will typically return different
+advice.
