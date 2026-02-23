@@ -22,7 +22,6 @@ categories:
     name: Internet/Technology
     icon: "💻"
     description: Technology and internet utilities
-    coming_soon: true
 
   - id: ai_vision
     name: AI/Computer Vision
@@ -79,7 +78,6 @@ categories:
     name: Validation APIs
     icon: "✓"
     description: Validate various data formats
-    coming_soon: true
 
   - id: conversion
     name: Conversion APIs
@@ -214,3 +212,17 @@ apis:
       - Counter
       - Analytics
       - Tracking
+
+  # Technology APIs
+  - id: phone-validation
+    name: Phone Validation
+    category: technology
+    description: Validate phone numbers, detect country and number type, and get international format
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/phone-validation
+    tags:
+      - Phone
+      - Validation
+      - Telecommunications
