@@ -39,7 +39,7 @@ export default {
     } catch (error) {
       console.error("Environment validation failed:", error);
 
-      return  jsonResponse({ error: "Configuration error" },500);
+      return jsonResponse({ error: "Configuration error" }, 500);
     }
 
     return app.fetch(request, env);
