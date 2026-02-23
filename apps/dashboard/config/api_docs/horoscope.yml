@@ -99,16 +99,6 @@ endpoints:
         data = JSON.parse(response.body)
         puts data['data']['horoscope']
 
-pricing:
-  free_tier: Included in all plans
-  rate_limits:
-    - plan: Free
-      limit: 30 requests/minute
-    - plan: Developer
-      limit: 5,000 requests/minute
-    - plan: Business
-      limit: 10,000 requests/minute
-
 faq:
   - question: Are horoscope readings the same for all users on the same day?
     answer: Yes. Readings are deterministic per sign per day, so every user requesting the same sign on the same day receives the same horoscope.

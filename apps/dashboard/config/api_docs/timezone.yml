@@ -123,16 +123,6 @@ endpoints:
         data = JSON.parse(response.body)
         puts data['data']['timezone']
 
-pricing:
-  free_tier: Included in all plans
-  rate_limits:
-    - plan: Free
-      limit: 30 requests/minute
-    - plan: Developer
-      limit: 5,000 requests/minute
-    - plan: Business
-      limit: 10,000 requests/minute
-
 faq:
   - question: Which lookup method should I use — coordinates or city name?
     answer: Use coordinates (lat/lon) for precise lookups anywhere in the world. Use the city name for a quick lookup when you have a well-known city name. Coordinate-based lookup works for any point on Earth, while city-based lookup is limited to the ~150+ cities in our database.

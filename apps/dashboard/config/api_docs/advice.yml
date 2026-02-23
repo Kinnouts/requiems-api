@@ -84,16 +84,6 @@ endpoints:
         data = JSON.parse(response.body)
         puts data['data']['advice']
 
-pricing:
-  free_tier: Included in all plans
-  rate_limits:
-    - plan: Free
-      limit: 30 requests/minute
-    - plan: Developer
-      limit: 5,000 requests/minute
-    - plan: Business
-      limit: 10,000 requests/minute
-
 faq:
   - question: Can I request specific types of advice?
     answer: Currently, the API returns random advice from our curated collection. Category filtering is planned for a future update.

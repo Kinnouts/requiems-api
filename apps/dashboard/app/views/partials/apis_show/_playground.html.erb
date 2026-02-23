@@ -23,9 +23,8 @@
       <div class="space-y-3 mb-4">
         <% playground_parameters.each do |param| %>
           <% param_location = param["location"] || "body" %>
-          <% next if param_location == "path" %> <%# Path params are handled in URL %>
 
-          <div>
+          <div data-param-location="<%= param_location %>">
             <label class="block text-sm font-medium text-gray-700 mb-1">
               <%= param["name"] %>
               <% if param["required"] %>

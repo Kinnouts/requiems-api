@@ -123,18 +123,6 @@ endpoints:
         data = JSON.parse(response.body)
         puts data['data']['text']
 
-pricing:
-  free_tier: Included in all plans
-  rate_limits:
-    - plan: Free
-      limit: 30 requests/minute
-    - plan: Developer
-      limit: 5,000 requests/minute
-    - plan: Business
-      limit: 10,000 requests/minute
-    - plan: Professional
-      limit: 50,000 requests/minute
-
 faq:
   - question: What is Lorem Ipsum?
     answer: Lorem Ipsum is dummy text used in the printing and typesetting industry since the 1500s. It's a scrambled version of Latin text that creates natural-looking placeholder content.

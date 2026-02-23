@@ -60,11 +60,16 @@ export default class extends Controller {
   }
 
   collectParameters() {
-    const data = {}
+    const data = {
+      body: {},
+      path: {},
+      query: {}
+    }
 
     this.paramTargets.forEach((input) => {
       const name = input.dataset.paramName
       const type = input.dataset.paramType
+      const location = input.closest('[data-param-location]')?.dataset.paramLocation || 'body'
       let value = input.value.trim()
 
       if (!value) return
@@ -86,7 +91,8 @@ export default class extends Controller {
         value = value === "true"
       }
 
-      data[name] = value
+      // Store in appropriate location
+      data[location][name] = value
     })
 
     return data
@@ -112,6 +118,15 @@ export default class extends Controller {
   async makeRequest(data) {
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
 
+    // Replace path parameters in the URL
+    let endpoint = this.urlValue
+    Object.entries(data.path || {}).forEach(([key, value]) => {
+      endpoint = endpoint.replace(`{${key}}`, encodeURIComponent(value))
+    })
+
+    // Combine body and query params for the proxy
+    const params = { ...data.body, ...data.query }
+
     return fetch('/api/proxy', {
       method: 'POST',
       headers: {
@@ -119,9 +134,9 @@ export default class extends Controller {
         'X-CSRF-Token': csrfToken
       },
       body: JSON.stringify({
-        endpoint: this.urlValue,
+        endpoint: endpoint,
         method: this.methodValue,
-        params: data
+        params: params
       })
     })
   }

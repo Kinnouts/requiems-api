@@ -205,16 +205,6 @@ supported_units:
     - key: knots
       name: Knots
 
-pricing:
-  free_tier: Included in all plans
-  rate_limits:
-    - plan: Free
-      limit: 30 requests/minute
-    - plan: Developer
-      limit: 5,000 requests/minute
-    - plan: Business
-      limit: 10,000 requests/minute
-
 faq:
   - question: What unit categories are supported?
     answer: Length, weight, volume, temperature, area, and speed. You cannot convert between different categories (e.g. miles to kg will return a 400 error).

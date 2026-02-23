@@ -93,7 +93,7 @@ categories:
 
 apis:
   # Email APIs
-  - id: disposable_email
+  - id: disposable-email
     name: Disposable Email Checker
     category: email
     description: Detect disposable and temporary email addresses to prevent fraud and improve data quality
@@ -119,7 +119,7 @@ apis:
       - Random
       - Inspiration
 
-  - id: lorem_ipsum
+  - id: lorem-ipsum
     name: Lorem Ipsum Generator
     category: text
     description: Generate placeholder text for design mockups and prototypes
@@ -172,6 +172,19 @@ apis:
       - Safety
 
   # Misc APIs
+  - id: counter
+    name: Counter
+    category: misc
+    description: Atomic, namespace-isolated hit counter backed by Redis with durable PostgreSQL persistence
+    endpoints_count: 2
+    status: live
+    popular: false
+    documentation_url: /apis/counter
+    tags:
+      - Counter
+      - Analytics
+      - Tracking
+
   - id: unit-conversion
     name: Unit Conversion
     category: misc
@@ -184,6 +197,20 @@ apis:
       - Conversion
       - Utilities
       - Measurement
+
+  - id: convert-units-list
+    name: Available Units List
+    category: misc
+    description: Get a list of all available units for conversion across different measurement types
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/convert-units-list
+    tags:
+      - Conversion
+      - Reference
+      - Utilities
+
   # Entertainment APIs
   - id: horoscope
     name: Horoscope
@@ -212,21 +239,32 @@ apis:
       - Location
       - Geography
 
-  # Miscellaneous APIs
-  - id: counter
-    name: Counter
-    category: misc
-    description: Atomic, namespace-isolated hit counter backed by Redis with durable PostgreSQL persistence
-    endpoints_count: 2
+  - id: working-days
+    name: Working Days Calculator
+    category: places
+    description: Calculate the number of working days between two dates with optional country-specific holidays
+    endpoints_count: 1
     status: live
     popular: false
-    documentation_url: /apis/counter
+    documentation_url: /apis/working-days
     tags:
-      - Counter
-      - Analytics
-      - Tracking
+      - Business Days
+      - Calendar
+      - Holidays
 
   # Technology APIs
+  - id: password-generator
+    name: Password Generator
+    category: technology
+    description: Generate cryptographically secure random passwords with customizable length and character sets
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/password-generator
+    tags:
+      - Security
+      - Password
+      - Random
   - id: useragent
     name: User Agent Parser
     category: technology

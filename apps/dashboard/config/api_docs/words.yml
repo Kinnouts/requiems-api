@@ -99,18 +99,6 @@ endpoints:
         data = JSON.parse(response.body)['data']
         puts "#{data['word']} (#{data['part_of_speech']}): #{data['definition']}"
 
-pricing:
-  free_tier: Included in all plans
-  rate_limits:
-    - plan: Free
-      limit: 30 requests/minute
-    - plan: Developer
-      limit: 5,000 requests/minute
-    - plan: Business
-      limit: 10,000 requests/minute
-    - plan: Professional
-      limit: 50,000 requests/minute
-
 faq:
   - question: What parts of speech are included?
     answer: The API includes all major parts of speech including nouns, verbs, adjectives, adverbs, prepositions, conjunctions, and more.

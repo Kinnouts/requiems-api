@@ -95,18 +95,6 @@ endpoints:
         data = JSON.parse(response.body)['data']
         puts "#{data['text']} - #{data['author']}"
 
-pricing:
-  free_tier: Included in all plans
-  rate_limits:
-    - plan: Free
-      limit: 30 requests/minute
-    - plan: Developer
-      limit: 5,000 requests/minute
-    - plan: Business
-      limit: 10,000 requests/minute
-    - plan: Professional
-      limit: 50,000 requests/minute
-
 faq:
   - question: Can I request quotes from a specific author?
     answer: Currently, the API returns random quotes from our entire collection. Author filtering is planned for a future update.

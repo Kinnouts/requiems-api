@@ -541,22 +541,29 @@ File: `apps/dashboard/config/api_catalog.yml`
 Add an entry under the appropriate category:
 
 ```yaml
-- id: riddles
+- id: riddles  # MUST use hyphens (not underscores) and match YAML filename
   name: Riddles
   category: text
   description: Generate random riddles across categories like general, science, and history.
-  endpoints: 2
+  endpoints_count: 2  # Note: it's endpoints_count, not endpoints
   status: live # or coming_soon
   popular: false
-  documentation_url: /apis/riddles
+  documentation_url: /apis/riddles  # MUST match the id
   tags:
     - riddles
     - trivia
     - fun
 ```
 
-The `documentation_url` must match the route the Rails app will serve for the
-API detail page.
+**CRITICAL**: The `id` field MUST:
+- Use hyphens (not underscores): `random-word` not `random_word`
+- Match the YAML documentation filename exactly
+- Match the `documentation_url` path (after `/apis/`)
+
+**Example of correct matching:**
+- Catalog: `id: random-word`, `documentation_url: /apis/random-word`
+- YAML file: `apps/dashboard/config/api_docs/random-word.yml`
+- URL: `http://localhost:3000/apis/random-word`
 
 ---
 
@@ -566,6 +573,75 @@ File: `apps/dashboard/config/api_docs/riddles.yml`
 
 This YAML powers the interactive API documentation page in the dashboard. Every
 field is rendered in the UI — do not leave any required section empty.
+
+**CRITICAL RULES FOR YAML DOCUMENTATION:**
+
+1. **File Naming**: Use hyphens (not underscores) and match the catalog ID exactly
+   - ✅ `random-word.yml` matching catalog `id: random-word`
+   - ❌ `random_word.yml` with catalog `id: random-word` (will not load!)
+
+2. **Response Format**: ALL responses MUST include `data` and `metadata` wrappers
+   ```json
+   {
+     "data": {
+       // Your actual response fields here
+     },
+     "metadata": {
+       "timestamp": "2026-01-01T00:00:00Z"
+     }
+   }
+   ```
+   This is enforced by `httpx.JSON` in the Go backend.
+
+3. **Field Naming**: Always use `snake_case`, never `camelCase`
+   - ✅ `is_disposable`, `part_of_speech`, `has_more`
+   - ❌ `isDisposable`, `partOfSpeech`, `hasMore`
+
+4. **Authentication**: Always use `requiems-api-key` header
+   - ✅ `-H "requiems-api-key: YOUR_API_KEY"`
+   - ❌ `-H "Authorization: Bearer YOUR_API_KEY"`
+
+5. **Path Parameters**: For endpoints with URL path parameters (e.g., `/counter/{namespace}`):
+   ```yaml
+   parameters:
+     - name: namespace
+       type: string
+       required: true
+       location: path  # CRITICAL - enables input field in playground
+       description: "Counter namespace identifier"
+       example: page-views
+   ```
+
+6. **Query Parameters**: For GET endpoints with query strings:
+   ```yaml
+   parameters:
+     - name: page
+       type: integer
+       required: false
+       location: query
+       description: "Page number (default: 1)"
+       example: 1
+   ```
+
+7. **Body Parameters**: For POST/PUT JSON body parameters:
+   ```yaml
+   parameters:
+     - name: email
+       type: string
+       required: true
+       location: body  # Can be omitted, defaults to body
+       description: The email address to check
+       example: test@example.com
+   ```
+
+8. **YAML Quoting**: Always quote strings containing colons to avoid parse errors
+   - ✅ `description: "Page number (default: 1)"`
+   - ❌ `description: Page number (default: 1)` (will cause YAML syntax error!)
+
+9. **No Pricing Section**: Do NOT include pricing information (it's global, not per-API)
+   - Pricing is displayed site-wide, not in individual API docs
+
+10. **Hot Reload**: The development environment auto-reloads YAML changes - just refresh your browser
 
 ```yaml
 api_id: riddles
@@ -689,18 +765,6 @@ endpoints:
         data = JSON.parse(response.body)
         puts data['data']['question']
 
-pricing:
-  free_tier: Included in all plans
-  rate_limits:
-    - plan: Free
-      limit: 30 requests/minute
-    - plan: Developer
-      limit: 5,000 requests/minute
-    - plan: Business
-      limit: 10,000 requests/minute
-    - plan: Professional
-      limit: 50,000 requests/minute
-
 faq:
   - question: Can I request riddles from multiple categories at once?
     answer: Not currently — each request returns one riddle from one category. Batch support is planned.
@@ -775,6 +839,80 @@ multiplier before deducting credits. If no entry exists, it defaults to `1`.
 
 ---
 
+## Step 9 — Validate Documentation
+
+Before testing, validate the YAML syntax to catch errors early:
+
+```bash
+# Validate YAML syntax
+docker exec requiem-dev-dashboard-1 ruby -ryaml -e "YAML.load_file('config/api_docs/riddles.yml'); puts '✅ YAML is valid'"
+
+# Check if all catalog IDs have matching YAML files
+cd apps/dashboard
+for id in $(grep "documentation_url:" config/api_catalog.yml | awk '{print $2}' | sed 's|/apis/||'); do
+  if [ -f "config/api_docs/$id.yml" ]; then
+    echo "✅ $id.yml exists"
+  else
+    echo "❌ $id.yml MISSING"
+  fi
+done
+```
+
+---
+
+## Common Errors & Troubleshooting
+
+### "API not found" when clicking the API in the dashboard
+
+**Cause**: Mismatch between catalog `id` and the YAML filename or `documentation_url`
+
+**Fix**:
+1. Check that catalog has `id: random-word` (with hyphens)
+2. Check that YAML file is named `random-word.yml` (matching the id)
+3. Check that `documentation_url: /apis/random-word` matches the id
+4. Refresh the page (hot reload should pick up changes)
+
+### "Documentation not available for this API yet"
+
+**Cause**: YAML file is missing or has a syntax error
+
+**Fix**:
+1. Run the YAML validation command above
+2. Check for common YAML errors:
+   - Unquoted strings containing colons: `description: "Use quotes (like: this)"`
+   - Incorrect indentation (use spaces, not tabs)
+   - Missing required sections
+
+### "Request failed: bad component(expected absolute path component)"
+
+**Cause**: Path parameters are not filled in or `location: path` is not set
+
+**Fix**:
+1. Ensure path parameters have `location: path` in the YAML
+2. Fill in all required path parameters before clicking "Send Request"
+3. Example: For `/counter/{namespace}`, the user must input a namespace value
+
+### "Mapping values are not allowed in this context" (YAML parse error)
+
+**Cause**: Unquoted string containing a colon or other special characters
+
+**Fix**: Quote any description or value containing `:`, `{`, `}`, or `#`
+```yaml
+# ❌ Wrong
+description: Page number (default: 1)
+
+# ✅ Correct
+description: "Page number (default: 1)"
+```
+
+### Pricing section still appears
+
+**Cause**: Pricing section was not removed from the YAML file
+
+**Fix**: Remove the entire `pricing:` section from your YAML file. Pricing is global, not per-API.
+
+---
+
 ## Docker Considerations
 
 **No Docker changes are needed** for adding Go endpoints. The dev container
@@ -811,12 +949,52 @@ Database (if applicable)
 
 Documentation
   [ ] apps/dashboard/config/api_docs/{name}.yml created with all sections
+  [ ] YAML filename uses hyphens (not underscores)
+  [ ] Catalog id matches YAML filename exactly
+  [ ] All responses include data/metadata wrappers
+  [ ] All fields use snake_case (not camelCase)
+  [ ] All code examples use requiems-api-key header
+  [ ] Path parameters have location: path set
+  [ ] Strings with colons are quoted
+  [ ] NO pricing section included (pricing is global)
+  [ ] YAML validation passes: docker exec requiem-dev-dashboard-1 ruby -ryaml -e "YAML.load_file('config/api_docs/{name}.yml'); puts 'Valid'"
   [ ] apps/dashboard/config/api_catalog.yml updated (new API only)
   [ ] docs/apis/{category}/{name}.md created
+  [ ] Tested in playground at http://localhost:3000/apis/{name}
 
 Workers
   [ ] apps/workers/shared/src/config.ts updated if credit cost != 1
   [ ] bun run typecheck passes in apps/workers/shared/ (if config.ts was touched)
+```
+
+---
+
+## Quick Reference: Documentation Parameter Types
+
+When defining parameters in your YAML documentation:
+
+**Parameter Locations:**
+- `location: path` - Part of the URL path (e.g., `/counter/{namespace}`)
+- `location: query` - Query string parameter (e.g., `?page=1&per_page=20`)
+- `location: body` - JSON request body parameter (default, can be omitted)
+
+**Parameter Types:**
+- `string` - Text values
+- `integer` - Whole numbers
+- `number` - Decimal numbers
+- `boolean` - true/false values
+- `array` - JSON arrays (users input as JSON: `["item1", "item2"]`)
+- `object` - JSON objects (users input as JSON: `{"key": "value"}`)
+
+**Required Fields for Each Parameter:**
+```yaml
+parameters:
+  - name: param_name        # Parameter identifier
+    type: string            # One of the types above
+    required: true          # true or false
+    location: query         # path, query, or body
+    description: "What it does"  # Quote if contains colons
+    example: example-value  # Shown as placeholder in playground
 ```
 
 ---

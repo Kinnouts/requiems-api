@@ -29,9 +29,14 @@ Check if a single email address is disposable.
 
 ```json
 {
-  "email": "user@tempmail.com",
-  "is_disposable": true,
-  "domain": "tempmail.com"
+  "data": {
+    "email": "user@tempmail.com",
+    "is_disposable": true,
+    "domain": "tempmail.com"
+  },
+  "metadata": {
+    "timestamp": "2026-01-01T00:00:00Z"
+  }
 }
 ```
 
@@ -66,24 +71,29 @@ batch.
 
 ```json
 {
-  "results": [
-    {
-      "email": "user1@tempmail.com",
-      "is_disposable": true,
-      "domain": "tempmail.com"
-    },
-    {
-      "email": "user2@gmail.com",
-      "is_disposable": false,
-      "domain": "gmail.com"
-    },
-    {
-      "email": "user3@10minutemail.com",
-      "is_disposable": true,
-      "domain": "10minutemail.com"
-    }
-  ],
-  "total": 3
+  "data": {
+    "results": [
+      {
+        "email": "user1@tempmail.com",
+        "is_disposable": true,
+        "domain": "tempmail.com"
+      },
+      {
+        "email": "user2@gmail.com",
+        "is_disposable": false,
+        "domain": "gmail.com"
+      },
+      {
+        "email": "user3@10minutemail.com",
+        "is_disposable": true,
+        "domain": "10minutemail.com"
+      }
+    ],
+    "total": 3
+  },
+  "metadata": {
+    "timestamp": "2026-01-01T00:00:00Z"
+  }
 }
 ```
 
@@ -124,8 +134,13 @@ Check if a specific domain is in the disposable list.
 
 ```json
 {
-  "domain": "tempmail.com",
-  "is_disposable": true
+  "data": {
+    "domain": "tempmail.com",
+    "is_disposable": true
+  },
+  "metadata": {
+    "timestamp": "2026-01-01T00:00:00Z"
+  }
 }
 ```
 
@@ -154,11 +169,16 @@ Get a paginated list of all disposable email domains in the blocklist.
 
 ```json
 {
-  "domains": ["0-mail.com", "0815.ru", "0clickemail.com", "...more domains..."],
-  "total": 15432,
-  "page": 1,
-  "per_page": 100,
-  "has_more": true
+  "data": {
+    "domains": ["0-mail.com", "0815.ru", "0clickemail.com", "...more domains..."],
+    "total": 15432,
+    "page": 1,
+    "per_page": 100,
+    "has_more": true
+  },
+  "metadata": {
+    "timestamp": "2026-01-01T00:00:00Z"
+  }
 }
 ```
 
@@ -192,7 +212,12 @@ Get statistics about the disposable domains blocklist.
 
 ```json
 {
-  "total_domains": 15432
+  "data": {
+    "total_domains": 15432
+  },
+  "metadata": {
+    "timestamp": "2026-01-01T00:00:00Z"
+  }
 }
 ```
 
@@ -243,9 +268,9 @@ const response = await fetch(
   },
 );
 
-const result = await response.json();
+const { data } = await response.json();
 
-if (result.is_disposable) {
+if (data.is_disposable) {
   throw new Error("Please use a permanent email address");
 }
 ```
@@ -271,8 +296,8 @@ const response = await fetch(
   },
 );
 
-const result = await response.json();
-const validEmails = result.results
+const { data } = await response.json();
+const validEmails = data.results
   .filter((r) => !r.is_disposable)
   .map((r) => r.email);
 ```
@@ -289,9 +314,9 @@ const response = await fetch(
     headers: { "requiems-api-key": "YOUR_API_KEY" },
   },
 );
-const result = await response.json();
+const { data } = await response.json();
 
-if (result.is_disposable) {
+if (data.is_disposable) {
   console.log("This domain is on the blocklist");
 }
 ```

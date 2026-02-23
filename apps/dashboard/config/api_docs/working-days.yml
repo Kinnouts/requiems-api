@@ -162,18 +162,6 @@ endpoints:
         data = JSON.parse(response.body)['data']
         puts "#{data['working_days']} working days"
 
-pricing:
-  free_tier: Included in all plans
-  rate_limits:
-    - plan: Free
-      limit: 30 requests/minute
-    - plan: Developer
-      limit: 5,000 requests/minute
-    - plan: Business
-      limit: 10,000 requests/minute
-    - plan: Professional
-      limit: 50,000 requests/minute
-
 faq:
   - question: What defines a working day?
     answer: By default, working days are Monday through Friday, excluding weekends (Saturday and Sunday). When a country is specified, public holidays for that country are also excluded.
