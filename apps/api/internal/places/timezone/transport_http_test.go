@@ -34,7 +34,7 @@ func TestTimezone_ByCoords(t *testing.T) {
 		t.Fatalf("expected status 200, got %d: %s", w.Code, w.Body.String())
 	}
 
-	var resp httpx.Response[TimezoneInfo]
+	var resp httpx.Response[Info]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
@@ -61,7 +61,7 @@ func TestTimezone_ByCity(t *testing.T) {
 		t.Fatalf("expected status 200, got %d: %s", w.Code, w.Body.String())
 	}
 
-	var resp httpx.Response[TimezoneInfo]
+	var resp httpx.Response[Info]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
@@ -143,7 +143,7 @@ func TestTimezone_NewYork(t *testing.T) {
 		t.Fatalf("expected status 200, got %d: %s", w.Code, w.Body.String())
 	}
 
-	var resp httpx.Response[TimezoneInfo]
+	var resp httpx.Response[Info]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}

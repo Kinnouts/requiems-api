@@ -25,7 +25,7 @@ func NewService() (*Service, error) {
 // GetTimezoneByCoords looks up timezone info for the given latitude/longitude.
 // Note: tzf.GetTimezoneName expects (longitude, latitude) — reversed from the
 // conventional (lat, lon) order used by this function's signature.
-func (s *Service) GetTimezoneByCoords(lat, lon float64) (*TimezoneInfo, error) {
+func (s *Service) GetTimezoneByCoords(lat, lon float64) (*Info, error) {
 	name := s.finder.GetTimezoneName(lon, lat)
 	if name == "" {
 		return nil, fmt.Errorf("timezone not found for coordinates %.4f, %.4f", lat, lon)
@@ -34,7 +34,7 @@ func (s *Service) GetTimezoneByCoords(lat, lon float64) (*TimezoneInfo, error) {
 }
 
 // GetTimezoneByCity looks up timezone info for the given city name.
-func (s *Service) GetTimezoneByCity(city string) (*TimezoneInfo, error) {
+func (s *Service) GetTimezoneByCity(city string) (*Info, error) {
 	key := strings.ToLower(strings.TrimSpace(city))
 	name, ok := cityTimezones[key]
 	if !ok {
@@ -44,7 +44,7 @@ func (s *Service) GetTimezoneByCity(city string) (*TimezoneInfo, error) {
 }
 
 // buildTimezoneInfo loads the IANA timezone and computes the current info.
-func buildTimezoneInfo(tzName string) (*TimezoneInfo, error) {
+func buildTimezoneInfo(tzName string) (*Info, error) {
 	loc, err := time.LoadLocation(tzName)
 	if err != nil {
 		return nil, fmt.Errorf("invalid timezone %q: %w", tzName, err)
@@ -53,7 +53,7 @@ func buildTimezoneInfo(tzName string) (*TimezoneInfo, error) {
 	now := time.Now().In(loc)
 	_, offsetSecs := now.Zone()
 
-	return &TimezoneInfo{
+	return &Info{
 		Timezone:    tzName,
 		Offset:      formatOffset(offsetSecs),
 		CurrentTime: now.UTC().Format(time.RFC3339),

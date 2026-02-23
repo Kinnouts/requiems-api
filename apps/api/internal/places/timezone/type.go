@@ -8,12 +8,12 @@ type Request struct {
 	City string  `query:"city"`
 }
 
-// TimezoneInfo represents the timezone response.
-type TimezoneInfo struct {
+// Info represents the timezone response.
+type Info struct {
 	Timezone    string `json:"timezone"`
 	Offset      string `json:"offset"`
 	CurrentTime string `json:"current_time"`
 	IsDST       bool   `json:"is_dst"`
 }
 
-func (TimezoneInfo) IsData() {}
+func (Info) IsData() {}

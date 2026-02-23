@@ -28,7 +28,7 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 		}
 
 		var (
-			info *TimezoneInfo
+			info *Info
 			err  error
 		)
 
