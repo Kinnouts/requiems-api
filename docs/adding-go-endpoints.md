@@ -52,6 +52,55 @@ Existing top-level domains and their `/v1` prefixes:
 
 ---
 
+## Before Writing Any Code — Check for Existing Libraries
+
+**Do not write a service from scratch if a battle-tested library already solves the problem.**
+
+Go has a rich ecosystem and several `bobadilla-tech` packages already in `go.mod` that were purpose-built for this platform. Writing your own implementation of something that already exists adds maintenance burden, reintroduces bugs that libraries have already fixed, and makes the codebase harder to onboard.
+
+### Check in this order
+
+1. **`go.mod` — existing dependencies first**
+   Before anything else, open `apps/api/go.mod` and scan the current dependency list. The problem may already be solved.
+
+   Current domain-specific libraries in use:
+   | Library | What it does |
+   |---|---|
+   | `github.com/bobadilla-tech/is-email-disposable` | Disposable email blocklist (embedded) |
+   | `github.com/bobadilla-tech/lorelai` | Lorem ipsum text generation |
+   | `github.com/bobadilla-tech/business-days-calculator` | Working-days calculations |
+   | `github.com/go-playground/validator/v10` | Struct validation |
+   | `github.com/golang-migrate/migrate/v4` | SQL migration runner |
+
+2. **`bobadilla-tech` org on GitHub**
+   Check whether a new `bobadilla-tech` package exists for the domain you are building. These are first-party libraries designed to slot directly into this platform.
+
+3. **Well-known Go ecosystem packages**
+   For common problems, prefer established packages over custom implementations:
+   - Parsing / tokenising: `golang.org/x/text`, `mvdan.cc/xurls`, etc.
+   - Cryptography: standard library `crypto/*` — never roll your own
+   - Time zones / date math: standard library `time` + `golang.org/x/time`
+   - HTTP client retries: `hashicorp/go-retryablehttp`
+   - UUID generation: `google/uuid`
+
+4. **Only write it yourself if:**
+   - No library exists for the domain
+   - Available libraries are unmaintained, have known CVEs, or have prohibitive licenses
+   - The logic is so simple (< 20 lines, no edge cases) that a dependency would be overkill
+   - You have discussed it with the team and documented the decision
+
+### When you add a new library
+
+```bash
+# Inside the api container
+docker exec requiem-dev-api-1 go get github.com/some/library@latest
+docker exec requiem-dev-api-1 go mod tidy
+```
+
+Commit both `go.mod` and `go.sum`. Never edit them by hand.
+
+---
+
 ## Step 1 — Write the Go Code
 
 Create four files in this order (each builds on the previous).

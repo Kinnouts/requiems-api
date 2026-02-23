@@ -70,9 +70,9 @@ Structured logging for Cloudflare Workers with cf-ray tracing:
 
 API key generation utilities:
 
-- `ApiKeyGenerator.generate()` — Creates keys in format `requiem_<24_random_chars>`
-- `ApiKeyGenerator.extractPrefix(key)` — Gets first 12 characters for storage
-- `ApiKeyGenerator.isValidFormat(key)` — Validates key format
+- `generateApiKey()` — Creates keys in format `requiem_<24_random_chars>`
+- `extractKeyPrefix(key)` — Gets first 12 characters for storage
+- `isValidKeyFormat(key)` — Validates key format
 
 ### `middleware/`
 

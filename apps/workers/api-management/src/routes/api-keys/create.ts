@@ -3,7 +3,8 @@ import {
   jsonError,
   jsonResponse,
   createLogger,
-  ApiKeyGenerator,
+  generateApiKey,
+  extractKeyPrefix,
   type ApiKeyData,
 } from "@requiem/workers-shared";
 import type { WorkerBindings } from "../../env";
@@ -56,8 +57,8 @@ app.post("/", async (c) => {
 
   try {
     // Generate new API key
-    const fullKey = ApiKeyGenerator.generate();
-    const keyPrefix = ApiKeyGenerator.extractPrefix(fullKey);
+    const fullKey = generateApiKey();
+    const keyPrefix = extractKeyPrefix(fullKey);
     const keyName = `key:${fullKey}`;
 
     // Check if key already exists (extremely unlikely with nanoid, but good practice)
