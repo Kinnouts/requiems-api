@@ -3,31 +3,18 @@ package useragent
 import (
 	"regexp"
 	"strings"
+
+	ua "github.com/medama-io/go-useragent"
 )
 
-// botPatterns contains substrings found in bot/crawler user agents (lowercase).
-var botPatterns = []string{
-	"bot", "crawler", "spider", "slurp", "archiver", "fetch",
-	"scraper", "wget", "curl", "python-requests", "python-urllib",
-	"java/", "httpclient", "go-http-client", "libwww", "lwp-",
-	"monitoring", "checker", "validator", "scanner", "probe",
-	"headlesschrome", "phantomjs",
+// osVersionRegexes maps OS names (as returned by the library) to regexes that
+// extract the version string from the raw UA.
+var osVersionRegexes = map[string]*regexp.Regexp{
+	"Windows": regexp.MustCompile(`Windows NT (\d+\.\d+)`),
+	"MacOS":   regexp.MustCompile(`Mac OS X (\d+[._]\d+)`),
+	"Android": regexp.MustCompile(`Android (\d+(?:\.\d+)?)`),
+	"iOS":     regexp.MustCompile(`OS (\d+[._]\d+)`),
 }
-
-// regexes for version extraction.
-var (
-	reChromeVer  = regexp.MustCompile(`(?i)Chrome/(\d+\.\d+)`)
-	reFirefoxVer = regexp.MustCompile(`(?i)Firefox/(\d+\.\d+)`)
-	reSafariVer  = regexp.MustCompile(`(?i)Version/(\d+\.\d+)`)
-	reEdgeVer    = regexp.MustCompile(`(?i)Edg(?:e)?/(\d+\.\d+)`)
-	reOperaVer   = regexp.MustCompile(`(?i)OPR/(\d+\.\d+)`)
-	reIEVer      = regexp.MustCompile(`(?i)(?:MSIE |rv:)(\d+\.\d+)`)
-
-	reWindowsVer = regexp.MustCompile(`Windows NT (\d+\.\d+)`)
-	reMacVer     = regexp.MustCompile(`Mac OS X (\d+[._]\d+)`)
-	reAndroidVer = regexp.MustCompile(`Android (\d+(?:\.\d+)?)`)
-	reiOSVer     = regexp.MustCompile(`OS (\d+[._]\d+)`)
-)
 
 // windowsVersions maps NT version strings to marketing names.
 var windowsVersions = map[string]string{
@@ -40,111 +27,85 @@ var windowsVersions = map[string]string{
 	"5.1":  "XP",
 }
 
-// Service parses user agent strings.
-type Service struct{}
+// Service wraps the go-useragent parser. Initialize once at startup.
+type Service struct {
+	parser *ua.Parser
+}
 
-// NewService constructs a new Service.
-func NewService() *Service { return &Service{} }
+// NewService constructs a new Service. The underlying parser is initialized once.
+func NewService() *Service {
+	return &Service{parser: ua.NewParser()}
+}
 
 // Parse extracts browser, OS, device, and bot information from a UA string.
-func (s *Service) Parse(ua string) Result {
-	if ua == "" {
+func (s *Service) Parse(uaStr string) Result {
+	if uaStr == "" {
 		return Result{Device: "unknown"}
 	}
 
-	isBot := detectBot(ua)
-	browser, browserVersion := detectBrowser(ua)
-	os, osVersion := detectOS(ua)
-	device := detectDevice(ua, isBot)
+	agent := s.parser.Parse(uaStr)
+
+	osName := normalizeOS(string(agent.OS()))
+	device := normalizeDevice(string(agent.Device()))
 
 	return Result{
-		Browser:        browser,
-		BrowserVersion: browserVersion,
-		OS:             os,
-		OSVersion:      osVersion,
+		Browser:        string(agent.Browser()),
+		BrowserVersion: buildBrowserVersion(agent),
+		OS:             osName,
+		OSVersion:      extractOSVersion(uaStr, string(agent.OS())),
 		Device:         device,
-		IsBot:          isBot,
+		IsBot:          agent.IsBot(),
 	}
 }
 
-func detectBot(ua string) bool {
-	lower := strings.ToLower(ua)
-	for _, pattern := range botPatterns {
-		if strings.Contains(lower, pattern) {
-			return true
-		}
+// normalizeOS converts library OS names to the canonical form used in responses.
+// The library uses "MacOS" internally; we return "macOS" to match the casing
+// used by Apple and the endpoint response spec.
+func normalizeOS(os string) string {
+	if os == "MacOS" {
+		return "macOS"
 	}
-	return false
+	return os
 }
 
-func detectBrowser(ua string) (name, version string) {
-	// Order matters: Edge must come before Chrome; Opera before Chrome.
-	switch {
-	case strings.Contains(ua, "Edg/") || strings.Contains(ua, "Edge/"):
-		return "Edge", extractVersion(reEdgeVer, ua)
-	case strings.Contains(ua, "OPR/"):
-		return "Opera", extractVersion(reOperaVer, ua)
-	case strings.Contains(ua, "Firefox/"):
-		return "Firefox", extractVersion(reFirefoxVer, ua)
-	case strings.Contains(ua, "Chrome/"):
-		return "Chrome", extractVersion(reChromeVer, ua)
-	case strings.Contains(ua, "Safari/") && strings.Contains(ua, "Version/"):
-		return "Safari", extractVersion(reSafariVer, ua)
-	case strings.Contains(ua, "Trident/") || strings.Contains(ua, "MSIE "):
-		return "Internet Explorer", extractVersion(reIEVer, ua)
-	default:
-		return "Other", ""
+// normalizeDevice lowercases the title-case device string returned by the library,
+// and falls back to "unknown" when no device was detected.
+func normalizeDevice(device string) string {
+	if device == "" {
+		return "unknown"
 	}
+	return strings.ToLower(device)
 }
 
-func detectOS(ua string) (name, version string) {
-	switch {
-	case strings.Contains(ua, "Android"):
-		return "Android", normalizeVersion(extractVersion(reAndroidVer, ua))
-	case strings.Contains(ua, "iPhone") || strings.Contains(ua, "iPad"):
-		raw := extractVersion(reiOSVer, ua)
-		return "iOS", normalizeVersion(raw)
-	case strings.Contains(ua, "Windows NT"):
-		nt := extractVersion(reWindowsVer, ua)
-		if friendly, ok := windowsVersions[nt]; ok {
-			return "Windows", friendly
-		}
-		return "Windows", nt
-	case strings.Contains(ua, "Mac OS X"):
-		return "macOS", normalizeVersion(extractVersion(reMacVer, ua))
-	case strings.Contains(ua, "Linux"):
-		return "Linux", ""
-	case strings.Contains(ua, "CrOS"):
-		return "ChromeOS", ""
-	default:
-		return "Other", ""
+// buildBrowserVersion returns "major.minor" (e.g. "120.0") or an empty string.
+func buildBrowserVersion(agent ua.UserAgent) string {
+	major := agent.BrowserVersionMajor()
+	if major == "" {
+		return ""
 	}
+	minor := agent.BrowserVersionMinor()
+	if minor == "" {
+		return major
+	}
+	return major + "." + minor
 }
 
-func detectDevice(ua string, isBot bool) string {
-	if isBot {
-		return "bot"
+// extractOSVersion extracts a version string from the raw UA using a lightweight
+// regex, since go-useragent only tracks browser versions.
+func extractOSVersion(uaStr, libOS string) string {
+	re, ok := osVersionRegexes[libOS]
+	if !ok {
+		return ""
 	}
-	lower := strings.ToLower(ua)
-	switch {
-	case strings.Contains(ua, "iPad") || (strings.Contains(ua, "Android") && !strings.Contains(lower, "mobile")):
-		return "tablet"
-	case strings.Contains(lower, "mobile") || strings.Contains(ua, "iPhone"):
-		return "mobile"
-	default:
-		return "desktop"
-	}
-}
-
-func extractVersion(re *regexp.Regexp, ua string) string {
-	m := re.FindStringSubmatch(ua)
+	m := re.FindStringSubmatch(uaStr)
 	if len(m) < 2 {
 		return ""
 	}
-	return m[1]
-}
-
-// normalizeVersion replaces underscores with dots (e.g. iOS "14_0" → "14.0").
-func normalizeVersion(v string) string {
-	return strings.ReplaceAll(v, "_", ".")
+	v := strings.ReplaceAll(m[1], "_", ".")
+	if libOS == "Windows" {
+		if friendly, ok := windowsVersions[v]; ok {
+			return friendly
+		}
+	}
+	return v
 }
