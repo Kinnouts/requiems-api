@@ -19,7 +19,6 @@ require (
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
-	github.com/nyaruka/phonenumbers v1.6.10 // indirect
 	github.com/paulmach/orb v0.12.0 // indirect
 	github.com/ringsaturn/tzf-rel-lite v0.0.2025-c // indirect
 	github.com/tidwall/geoindex v1.7.0 // indirect
@@ -34,6 +33,7 @@ require (
 
 require (
 	github.com/bobadilla-tech/business-days-calculator v1.1.0
+	github.com/nyaruka/phonenumbers v1.6.10
 	github.com/ringsaturn/tzf v1.0.3
 )
 
