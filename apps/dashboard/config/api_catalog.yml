@@ -160,6 +160,19 @@ apis:
       - Testing
       - Games
 
+  - id: profanity
+    name: Profanity Filter
+    category: text
+    description: Detect and censor profanity in text for content moderation
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/profanity
+    tags:
+      - Content Moderation
+      - Text Analysis
+      - Safety
+
   # Misc APIs
   - id: unit-conversion
     name: Unit Conversion
