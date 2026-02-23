@@ -22,7 +22,6 @@ categories:
     name: Internet/Technology
     icon: "💻"
     description: Technology and internet utilities
-    coming_soon: true
 
   - id: ai_vision
     name: AI/Computer Vision
@@ -214,3 +213,17 @@ apis:
       - Counter
       - Analytics
       - Tracking
+
+  # Technology APIs
+  - id: useragent
+    name: User Agent Parser
+    category: technology
+    description: Parse user agent strings to extract browser, OS, device type, and bot detection
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/useragent
+    tags:
+      - User Agent
+      - Browser Detection
+      - Device Detection
