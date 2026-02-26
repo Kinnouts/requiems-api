@@ -44,6 +44,59 @@ swaggerRoute.get("/openapi.json", (c) => {
         },
       },
       "/api-keys": {
+        get: {
+          summary: "List API keys",
+          description:
+            "Returns metadata for all API keys. Never includes full key values. Filter by userId or active status.",
+          parameters: [
+            {
+              name: "userId",
+              in: "query",
+              required: false,
+              schema: { type: "string" },
+              description: "Filter by user ID",
+            },
+            {
+              name: "active",
+              in: "query",
+              required: false,
+              schema: { type: "boolean", default: true },
+              description: "Set to false to include revoked keys",
+            },
+          ],
+          responses: {
+            "200": {
+              description: "List of API key records (no full keys)",
+              content: {
+                "application/json": {
+                  schema: {
+                    type: "object",
+                    properties: {
+                      total: { type: "integer" },
+                      keys: {
+                        type: "array",
+                        items: {
+                          type: "object",
+                          properties: {
+                            keyPrefix: { type: "string", description: "First 12 chars of the key" },
+                            userId: { type: "string" },
+                            plan: { type: "string" },
+                            active: { type: "boolean" },
+                            createdAt: { type: "string", format: "date-time" },
+                            updatedAt: { type: "string", format: "date-time", nullable: true },
+                            revokedAt: { type: "string", format: "date-time", nullable: true },
+                            billingCycleStart: { type: "string", format: "date-time" },
+                          },
+                        },
+                      },
+                    },
+                  },
+                },
+              },
+            },
+            "401": { description: "Unauthorized" },
+          },
+        },
         post: {
           summary: "Create a new API key",
           description:
