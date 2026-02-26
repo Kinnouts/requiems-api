@@ -79,7 +79,8 @@ services:
     working_dir: /workers/auth-gateway
     command: >
       sh -c "
-        npm install &&
+        corepack enable pnpm &&
+        pnpm install --frozen-lockfile &&
         echo BACKEND_URL=$$BACKEND_URL > .dev.vars &&
         echo BACKEND_SECRET=$$BACKEND_SECRET >> .dev.vars &&
         node ./scripts/seed-dev.ts &&
@@ -102,7 +103,8 @@ services:
     working_dir: /workers/api-management
     command: >
       sh -c "
-        npm install &&
+        corepack enable pnpm &&
+        pnpm install --frozen-lockfile &&
         echo API_MANAGEMENT_API_KEY=$$API_MANAGEMENT_API_KEY > .dev.vars &&
         node ./node_modules/.bin/wrangler dev --ip 0.0.0.0 --port 5544
       "
