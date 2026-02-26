@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
@@ -21,7 +22,7 @@ func main() {
 		log.Fatalf("failed to initialise app: %v", err)
 	}
 
-	addr := ":" + cfg.Port
+	addr := fmt.Sprintf(":%s", cfg.Port)
 
 	log.Println("API server listening on", addr)
 
