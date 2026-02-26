@@ -109,7 +109,7 @@ Dev mode:
 
 ```bash
 cd apps/workers/auth-gateway
-bun dev  # Port 6000
+bun dev  # Port 4455
 ```
 
 Type check:
@@ -219,7 +219,7 @@ Rails Dashboard → API Management (api-management.requiems.xyz) → KV + D1
                  API key CRUD, usage exports, analytics
 ```
 
-1. **Auth Gateway** (`apps/workers/auth-gateway/` - Port 6000):
+1. **Auth Gateway** (`apps/workers/auth-gateway/` - Port 4455):
    - **Public-facing** service at api.requiems.xyz
    - Validates API keys from Cloudflare KV
    - Checks per-minute rate limits (KV counters)

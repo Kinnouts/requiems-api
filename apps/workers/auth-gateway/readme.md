@@ -153,7 +153,7 @@ bun run kv:seed
 ## Development
 
 ```bash
-bun dev              # Start local dev server (port 6000)
+bun dev              # Start local dev server (port 4455)
 bunx vitest run      # Run tests
 bunx vitest run --coverage  # Tests with coverage
 bun run typecheck    # TypeScript type check

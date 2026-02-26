@@ -1,18 +1,22 @@
 /**
  * Seeds local wrangler KV and D1 for the full-stack dev environment.
- * Must be run from the auth-gateway working directory (/workers/auth-gateway)
- * so wrangler.toml bindings and schema.sql are resolved correctly.
+ * Run from the auth-gateway working directory so wrangler.toml bindings
+ * and schema.sql resolve correctly.
+ *
+ * Usage: node ./scripts/seed-dev.ts
  */
 
 import { execSync } from "node:child_process";
 
-interface KeyEntry {
+interface DevKey {
   apiKey: string;
   userId: string;
   plan: string;
 }
 
-const DEV_KEYS: KeyEntry[] = [
+const WRANGLER = "./node_modules/.bin/wrangler";
+
+const DEV_KEYS: DevKey[] = [
   { apiKey: "rq_test_0000000000000001", userId: "dev_user_free", plan: "free" },
   { apiKey: "rq_test_0000000000000002", userId: "dev_user_developer", plan: "developer" },
   { apiKey: "rq_test_0000000000000003", userId: "dev_user_business", plan: "business" },
@@ -26,13 +30,13 @@ function run(cmd: string): void {
 }
 
 console.log("Applying D1 schema...");
-run("bunx wrangler d1 execute requiem-usage --local --yes --file=./schema.sql");
+run(`node ${WRANGLER} d1 execute requiem-usage --local --yes --file=./schema.sql`);
 
 console.log("\nSeeding KV with dev test keys...");
 for (const { apiKey, userId, plan } of DEV_KEYS) {
   const kvKey = `key:${apiKey}`;
   const value = JSON.stringify({ userId, plan, createdAt: CREATED_AT });
-  run(`bunx wrangler kv key put '${kvKey}' '${value}' --binding=KV --local`);
+  run(`node ${WRANGLER} kv key put '${kvKey}' '${value}' --binding=KV --local`);
 }
 
 console.log("\nDev test keys seeded (header: requiems-api-key):");
@@ -40,5 +44,5 @@ for (const { apiKey, plan } of DEV_KEYS) {
   console.log(`  ${plan.padEnd(12)} -> ${apiKey}`);
 }
 console.log(
-  `\nExample: curl -H 'requiems-api-key: ${DEV_KEYS[0].apiKey}' http://localhost:6000/v1/text/advice\n`,
+  `\nExample: curl -H 'requiems-api-key: ${DEV_KEYS[0].apiKey}' http://localhost:4455/v1/text/advice\n`,
 );

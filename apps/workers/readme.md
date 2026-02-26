@@ -8,7 +8,7 @@ analytics — all running at the edge without a traditional server.
 
 | Package                             | Port | Domain                        | Description                                            |
 | ----------------------------------- | ---- | ----------------------------- | ------------------------------------------------------ |
-| [auth-gateway](./auth-gateway/)     | 6000 | `api.requiems.xyz`            | Public-facing gateway: auth, rate limiting, proxying   |
+| [auth-gateway](./auth-gateway/)     | 4455 | `api.requiems.xyz`            | Public-facing gateway: auth, rate limiting, proxying   |
 | [api-management](./api-management/) | 6001 | `api-management.requiems.xyz` | Internal management: API keys, usage export, analytics |
 | [shared](./shared/)                 | —    | —                             | Shared types, utilities, and middleware                |
 
@@ -69,7 +69,7 @@ Start all workers locally (from repo root):
 ```bash
 # Auth Gateway
 cd apps/workers/auth-gateway
-bun dev  # Port 6000
+bun dev  # Port 4455
 
 # API Management
 cd apps/workers/api-management
