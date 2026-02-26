@@ -32,7 +32,8 @@ Core TypeScript interfaces shared across workers:
 - `PlanName` — Union type of all plan names
 - `RateLimitResult` — Result of a rate limit check
 - `RequestCheckResult` — Result of a quota check
-- `ApiKeyManagementRequest/Response` — Types for Rails ↔ API Management communication
+- `ApiKeyManagementRequest/Response` — Types for Rails ↔ API Management
+  communication
 
 ### `config.ts`
 
@@ -44,10 +45,10 @@ Plan definitions and endpoint cost multipliers:
 
 Most endpoints cost 1 credit. Expensive endpoints cost more:
 
-| Endpoint | Credits |
-|---|---|
-| `GET /v1/text/words/define` | 2 |
-| `GET /v1/text/words/synonyms` | 2 |
+| Endpoint                      | Credits |
+| ----------------------------- | ------- |
+| `GET /v1/text/words/define`   | 2       |
+| `GET /v1/text/words/synonyms` | 2       |
 
 ### `http.ts`
 
@@ -62,7 +63,8 @@ HTTP response helpers with CORS headers:
 
 Structured logging for Cloudflare Workers with cf-ray tracing:
 
-- `createLogger(cfRay?)` — Creates a logger instance bound to a request's cf-ray ID
+- `createLogger(cfRay?)` — Creates a logger instance bound to a request's cf-ray
+  ID
 - `maskApiKey(key)` — Masks API keys for safe logging (shows first 8 chars only)
 - Outputs JSON formatted logs compatible with Cloudflare Workers Logs
 
@@ -78,16 +80,19 @@ API key generation utilities:
 
 Reusable Hono middleware:
 
-- `errorHandler` — Global error handler; catches unhandled errors and returns structured JSON
-- `basicAuth(username, password)` — Basic Auth middleware for protecting docs endpoints
+- `errorHandler` — Global error handler; catches unhandled errors and returns
+  structured JSON
+- `basicAuth(username, password)` — Basic Auth middleware for protecting docs
+  endpoints
 - `corsMiddleware` — Handles CORS preflight (OPTIONS) requests
 
 ## Usage
 
-Workers import from this package using the path alias defined in `tsconfig.json`:
+Workers import from this package using the path alias defined in
+`tsconfig.json`:
 
 ```ts
-import { jsonResponse, jsonError } from "@requiem/workers-shared";
+import { jsonError, jsonResponse } from "@requiem/workers-shared";
 import type { ApiKeyData, PlanName } from "@requiem/workers-shared";
 import { getRequestMultiplier } from "@requiem/workers-shared";
 ```

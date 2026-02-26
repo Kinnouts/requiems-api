@@ -1,11 +1,11 @@
 import type { MiddlewareHandler } from "hono";
 import {
-  jsonError,
-  PLANS,
-  createLogger,
-  maskApiKey,
   type ApiKeyData,
+  createLogger,
+  jsonError,
+  maskApiKey,
   type PlanConfig,
+  PLANS,
   type RateLimitResult,
   type RequestCheckResult,
 } from "@requiem/workers-shared";
@@ -67,7 +67,8 @@ export const apiKeyAuthMiddleware: MiddlewareHandler<{
       "X-RateLimit-Limit": plan.ratePerMinute.toString(),
       "X-RateLimit-Remaining": "0",
       "X-RateLimit-Reset": Math.ceil(rateLimit.resetAt / 1000).toString(),
-      "Retry-After": Math.ceil((rateLimit.resetAt - Date.now()) / 1000).toString(),
+      "Retry-After": Math.ceil((rateLimit.resetAt - Date.now()) / 1000)
+        .toString(),
     });
   }
 

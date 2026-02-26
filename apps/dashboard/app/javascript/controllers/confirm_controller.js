@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 // Confirmation dialog controller
 // Usage:
@@ -11,13 +11,13 @@ import { Controller } from "@hotwired/stimulus"
 //   </button>
 export default class extends Controller {
   static values = {
-    message: { type: String, default: "Are you sure?" }
-  }
+    message: { type: String, default: "Are you sure?" },
+  };
 
   confirm(event) {
     if (!window.confirm(this.messageValue)) {
-      event.preventDefault()
-      event.stopImmediatePropagation()
+      event.preventDefault();
+      event.stopImmediatePropagation();
     }
   }
 }

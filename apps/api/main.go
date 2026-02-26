@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"time"
 
-	"requiems-api/internal/app"
-	"requiems-api/internal/platform/config"
+	"requiems-api/app"
+	"requiems-api/platform/config"
 )
 
 func main() {

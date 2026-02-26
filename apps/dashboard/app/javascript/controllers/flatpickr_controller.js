@@ -1,5 +1,5 @@
-import { Controller } from "@hotwired/stimulus"
-import flatpickr from "flatpickr"
+import { Controller } from "@hotwired/stimulus";
+import flatpickr from "flatpickr";
 
 // Connects to data-controller="flatpickr"
 export default class extends Controller {
@@ -9,35 +9,35 @@ export default class extends Controller {
     dateFormat: { type: String, default: "Y-m-d" },
     minDate: String,
     maxDate: String,
-    defaultDate: String
-  }
+    defaultDate: String,
+  };
 
   connect() {
     const options = {
       mode: this.modeValue,
       enableTime: this.enableTimeValue,
-      dateFormat: this.dateFormatValue
-    }
+      dateFormat: this.dateFormatValue,
+    };
 
     if (this.hasMinDateValue) {
-      options.minDate = this.minDateValue
+      options.minDate = this.minDateValue;
     }
 
     if (this.hasMaxDateValue) {
-      options.maxDate = this.maxDateValue
+      options.maxDate = this.maxDateValue;
     }
 
     if (this.hasDefaultDateValue) {
-      options.defaultDate = this.defaultDateValue
+      options.defaultDate = this.defaultDateValue;
     }
 
     // Initialize flatpickr on this element
-    this.picker = flatpickr(this.element, options)
+    this.picker = flatpickr(this.element, options);
   }
 
   disconnect() {
     if (this.picker) {
-      this.picker.destroy()
+      this.picker.destroy();
     }
   }
 }

@@ -1,9 +1,9 @@
 import { Hono } from "hono";
 import {
-  getRequestMultiplier,
-  createLogger,
-  jsonError,
   type ApiKeyData,
+  createLogger,
+  getRequestMultiplier,
+  jsonError,
   type PlanConfig,
   type RateLimitResult,
   type RequestCheckResult,
@@ -87,7 +87,13 @@ app.all("/*", async (c) => {
   }
 
   // Record usage asynchronously (don't await)
-  void recordRequestUsage(c.env, apiKey, keyData.userId, url.pathname, requestMultiplier);
+  void recordRequestUsage(
+    c.env,
+    apiKey,
+    keyData.userId,
+    url.pathname,
+    requestMultiplier,
+  );
 
   // Add usage headers to successful response
   const response = addUsageHeaders(backendResponse, {

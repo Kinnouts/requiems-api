@@ -112,7 +112,7 @@ Version:** 16-alpine **Files to Update:**
   `image: postgres:16-alpine`)
 
 **Note:** Shared database with separate migration systems (Go:
-`infra/migrations/*.sql`, Rails: `apps/dashboard/db/migrate/*.rb`)
+`apps/api/migrations/*.sql`, Rails: `apps/dashboard/db/migrate/*.rb`)
 
 **Credentials (Dev/Test):**
 

@@ -1,4 +1,4 @@
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 
 // Basic smoke test to ensure TypeScript compiles
 describe("api-management setup", () => {

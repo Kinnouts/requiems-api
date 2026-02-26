@@ -170,7 +170,12 @@ Get a paginated list of all disposable email domains in the blocklist.
 ```json
 {
   "data": {
-    "domains": ["0-mail.com", "0815.ru", "0clickemail.com", "...more domains..."],
+    "domains": [
+      "0-mail.com",
+      "0815.ru",
+      "0clickemail.com",
+      "...more domains..."
+    ],
     "total": 15432,
     "page": 1,
     "per_page": 100,

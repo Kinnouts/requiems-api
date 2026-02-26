@@ -28,32 +28,34 @@ receives requests with a valid `X-Backend-Secret` header already attached.
 Every feature lives inside a domain:
 
 ```
-apps/api/internal/
+apps/api/
 ├── app/
 │   ├── app.go            # Bootstrap: DB, Redis, middleware, router
 │   └── routes_v1.go      # Mounts all /v1 domain routers
-├── {domain}/
-│   ├── router.go         # Wires services → chi.Router for this domain
-│   └── {feature}/
-│       ├── type.go           # Request + response types
-│       ├── service.go        # Business logic
-│       └── transport_http.go # HTTP handlers
 ├── platform/
 │   ├── httpx/            # JSON, Error, Handle, BindQuery helpers
 │   ├── config/           # Env config
 │   ├── db/               # PostgreSQL connection + migrations
 │   └── middleware/       # BackendSecretAuth
+└── services/
+    └── {domain}/
+        ├── router.go         # Wires services → chi.Router for this domain
+        └── {feature}/
+            ├── type.go           # Request + response types
+            ├── service.go        # Business logic
+            └── transport_http.go # HTTP handlers
 ```
 
 Existing top-level domains and their `/v1` prefixes:
 
-| Domain folder    | URL prefix          |
-| ---------------- | ------------------- |
-| `text/`          | `/v1/text`          |
-| `email/`         | `/v1/email`         |
-| `entertainment/` | `/v1/entertainment` |
-| `misc/`          | `/v1/misc`          |
-| `places/`        | `/v1/places`        |
+| Domain folder             | URL prefix          |
+| ------------------------- | ------------------- |
+| `services/text/`          | `/v1/text`          |
+| `services/email/`         | `/v1/email`         |
+| `services/entertainment/` | `/v1/entertainment` |
+| `services/misc/`          | `/v1/misc`          |
+| `services/places/`        | `/v1/places`        |
+| `services/tech/`          | `/v1/tech`          |
 
 ---
 
@@ -257,7 +259,7 @@ import (
     "net/http"
 
     "github.com/go-chi/chi/v5"
-    "your-module/internal/platform/httpx"
+    "requiems-api/platform/httpx"
 )
 
 func RegisterRoutes(r chi.Router, svc *Service) {
@@ -357,7 +359,7 @@ package text  // parent domain package
 import (
     "github.com/go-chi/chi/v5"
     "github.com/jackc/pgx/v5/pgxpool"
-    "your-module/internal/text/riddle"
+    "requiems-api/services/text/riddle"
 )
 
 func RegisterRoutes(r chi.Router, pool *pgxpool.Pool) {
@@ -375,7 +377,7 @@ func RegisterRoutes(r chi.Router, pool *pgxpool.Pool) {
 existing `router.go` for that domain. No other files need changing.
 
 **Creating a brand-new top-level domain**: add two lines to
-`apps/api/internal/app/routes_v1.go`:
+`apps/api/app/routes_v1.go`:
 
 ```go
 func registerV1Routes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb *redis.Client) {
@@ -394,7 +396,7 @@ func registerV1Routes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb
 If the feature needs new tables or columns, create a SQL migration file:
 
 ```
-infra/migrations/YYYYMMDDHHMMSS_add_riddles_table.up.sql
+migrations/YYYYMMDDHHMMSS_add_riddles_table.up.sql
 ```
 
 Example:
@@ -467,7 +469,7 @@ import (
     "testing"
 
     "github.com/go-chi/chi/v5"
-    "your-module/internal/platform/httpx"
+    "requiems-api/platform/httpx"
 )
 
 func setupRouter() chi.Router {
@@ -520,7 +522,7 @@ func TestRiddle_Generate_MissingCategory(t *testing.T) {
 
 ```bash
 # Domain-scoped (fast feedback during development)
-docker exec requiem-dev-api-1 go test ./internal/text/riddle/...
+docker exec requiem-dev-api-1 go test ./services/text/riddle/...
 
 # Full suite (required before pushing)
 docker exec requiem-dev-api-1 go test ./...
@@ -541,14 +543,14 @@ File: `apps/dashboard/config/api_catalog.yml`
 Add an entry under the appropriate category:
 
 ```yaml
-- id: riddles  # MUST use hyphens (not underscores) and match YAML filename
+- id: riddles # MUST use hyphens (not underscores) and match YAML filename
   name: Riddles
   category: text
   description: Generate random riddles across categories like general, science, and history.
-  endpoints_count: 2  # Note: it's endpoints_count, not endpoints
+  endpoints_count: 2 # Note: it's endpoints_count, not endpoints
   status: live # or coming_soon
   popular: false
-  documentation_url: /apis/riddles  # MUST match the id
+  documentation_url: /apis/riddles # MUST match the id
   tags:
     - riddles
     - trivia
@@ -556,11 +558,13 @@ Add an entry under the appropriate category:
 ```
 
 **CRITICAL**: The `id` field MUST:
+
 - Use hyphens (not underscores): `random-word` not `random_word`
 - Match the YAML documentation filename exactly
 - Match the `documentation_url` path (after `/apis/`)
 
 **Example of correct matching:**
+
 - Catalog: `id: random-word`, `documentation_url: /apis/random-word`
 - YAML file: `apps/dashboard/config/api_docs/random-word.yml`
 - URL: `http://localhost:3000/apis/random-word`
@@ -576,11 +580,13 @@ field is rendered in the UI — do not leave any required section empty.
 
 **CRITICAL RULES FOR YAML DOCUMENTATION:**
 
-1. **File Naming**: Use hyphens (not underscores) and match the catalog ID exactly
+1. **File Naming**: Use hyphens (not underscores) and match the catalog ID
+   exactly
    - ✅ `random-word.yml` matching catalog `id: random-word`
    - ❌ `random_word.yml` with catalog `id: random-word` (will not load!)
 
-2. **Response Format**: ALL responses MUST include `data` and `metadata` wrappers
+2. **Response Format**: ALL responses MUST include `data` and `metadata`
+   wrappers
    ```json
    {
      "data": {
@@ -601,13 +607,14 @@ field is rendered in the UI — do not leave any required section empty.
    - ✅ `-H "requiems-api-key: YOUR_API_KEY"`
    - ❌ `-H "Authorization: Bearer YOUR_API_KEY"`
 
-5. **Path Parameters**: For endpoints with URL path parameters (e.g., `/counter/{namespace}`):
+5. **Path Parameters**: For endpoints with URL path parameters (e.g.,
+   `/counter/{namespace}`):
    ```yaml
    parameters:
      - name: namespace
        type: string
        required: true
-       location: path  # CRITICAL - enables input field in playground
+       location: path # CRITICAL - enables input field in playground
        description: "Counter namespace identifier"
        example: page-views
    ```
@@ -629,19 +636,22 @@ field is rendered in the UI — do not leave any required section empty.
      - name: email
        type: string
        required: true
-       location: body  # Can be omitted, defaults to body
+       location: body # Can be omitted, defaults to body
        description: The email address to check
        example: test@example.com
    ```
 
-8. **YAML Quoting**: Always quote strings containing colons to avoid parse errors
+8. **YAML Quoting**: Always quote strings containing colons to avoid parse
+   errors
    - ✅ `description: "Page number (default: 1)"`
    - ❌ `description: Page number (default: 1)` (will cause YAML syntax error!)
 
-9. **No Pricing Section**: Do NOT include pricing information (it's global, not per-API)
+9. **No Pricing Section**: Do NOT include pricing information (it's global, not
+   per-API)
    - Pricing is displayed site-wide, not in individual API docs
 
-10. **Hot Reload**: The development environment auto-reloads YAML changes - just refresh your browser
+10. **Hot Reload**: The development environment auto-reloads YAML changes - just
+    refresh your browser
 
 ```yaml
 api_id: riddles
@@ -864,9 +874,11 @@ done
 
 ### "API not found" when clicking the API in the dashboard
 
-**Cause**: Mismatch between catalog `id` and the YAML filename or `documentation_url`
+**Cause**: Mismatch between catalog `id` and the YAML filename or
+`documentation_url`
 
 **Fix**:
+
 1. Check that catalog has `id: random-word` (with hyphens)
 2. Check that YAML file is named `random-word.yml` (matching the id)
 3. Check that `documentation_url: /apis/random-word` matches the id
@@ -877,9 +889,11 @@ done
 **Cause**: YAML file is missing or has a syntax error
 
 **Fix**:
+
 1. Run the YAML validation command above
 2. Check for common YAML errors:
-   - Unquoted strings containing colons: `description: "Use quotes (like: this)"`
+   - Unquoted strings containing colons:
+     `description: "Use quotes (like: this)"`
    - Incorrect indentation (use spaces, not tabs)
    - Missing required sections
 
@@ -888,6 +902,7 @@ done
 **Cause**: Path parameters are not filled in or `location: path` is not set
 
 **Fix**:
+
 1. Ensure path parameters have `location: path` in the YAML
 2. Fill in all required path parameters before clicking "Send Request"
 3. Example: For `/counter/{namespace}`, the user must input a namespace value
@@ -897,19 +912,21 @@ done
 **Cause**: Unquoted string containing a colon or other special characters
 
 **Fix**: Quote any description or value containing `:`, `{`, `}`, or `#`
+
 ```yaml
 # ❌ Wrong
 description: Page number (default: 1)
 
-# ✅ Correct
-description: "Page number (default: 1)"
+  # ✅ Correct
+  description: "Page number (default: 1)"
 ```
 
 ### Pricing section still appears
 
 **Cause**: Pricing section was not removed from the YAML file
 
-**Fix**: Remove the entire `pricing:` section from your YAML file. Pricing is global, not per-API.
+**Fix**: Remove the entire `pricing:` section from your YAML file. Pricing is
+global, not per-API.
 
 ---
 
@@ -974,11 +991,13 @@ Workers
 When defining parameters in your YAML documentation:
 
 **Parameter Locations:**
+
 - `location: path` - Part of the URL path (e.g., `/counter/{namespace}`)
 - `location: query` - Query string parameter (e.g., `?page=1&per_page=20`)
 - `location: body` - JSON request body parameter (default, can be omitted)
 
 **Parameter Types:**
+
 - `string` - Text values
 - `integer` - Whole numbers
 - `number` - Decimal numbers
@@ -987,14 +1006,15 @@ When defining parameters in your YAML documentation:
 - `object` - JSON objects (users input as JSON: `{"key": "value"}`)
 
 **Required Fields for Each Parameter:**
+
 ```yaml
 parameters:
-  - name: param_name        # Parameter identifier
-    type: string            # One of the types above
-    required: true          # true or false
-    location: query         # path, query, or body
-    description: "What it does"  # Quote if contains colons
-    example: example-value  # Shown as placeholder in playground
+  - name: param_name # Parameter identifier
+    type: string # One of the types above
+    required: true # true or false
+    location: query # path, query, or body
+    description: "What it does" # Quote if contains colons
+    example: example-value # Shown as placeholder in playground
 ```
 
 ---
@@ -1004,7 +1024,7 @@ parameters:
 Below is a complete minimal implementation for a riddle endpoint backed by an
 in-memory list (no database).
 
-**`apps/api/internal/text/riddle/type.go`**
+**`apps/api/services/text/riddle/type.go`**
 
 ```go
 package riddle
@@ -1017,7 +1037,7 @@ type Riddle struct {
 func (Riddle) IsData() {}
 ```
 
-**`apps/api/internal/text/riddle/service.go`**
+**`apps/api/services/text/riddle/service.go`**
 
 ```go
 package riddle
@@ -1038,7 +1058,7 @@ func (s *Service) Random() Riddle {
 }
 ```
 
-**`apps/api/internal/text/riddle/transport_http.go`**
+**`apps/api/services/text/riddle/transport_http.go`**
 
 ```go
 package riddle
@@ -1047,7 +1067,7 @@ import (
     "net/http"
 
     "github.com/go-chi/chi/v5"
-    "your-module/internal/platform/httpx"
+    "requiems-api/platform/httpx"
 )
 
 func RegisterRoutes(r chi.Router, svc *Service) {
@@ -1057,7 +1077,7 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 }
 ```
 
-**`apps/api/internal/text/riddle/transport_http_test.go`**
+**`apps/api/services/text/riddle/transport_http_test.go`**
 
 ```go
 package riddle
@@ -1069,7 +1089,7 @@ import (
     "testing"
 
     "github.com/go-chi/chi/v5"
-    "your-module/internal/platform/httpx"
+    "requiems-api/platform/httpx"
 )
 
 func setupRouter() chi.Router {
@@ -1101,7 +1121,7 @@ func TestRiddle_Random(t *testing.T) {
 }
 ```
 
-**Add to `apps/api/internal/text/router.go`:**
+**Add to `apps/api/services/text/router.go`:**
 
 ```go
 svc := riddle.NewService()

@@ -7,10 +7,10 @@ as a multi-language monorepo with:
 - **Go API** (apps/api) - Internal business logic backend
 - **Rails Dashboard** (apps/dashboard) - Public web UI, user management, admin
   panel
-- **Auth Gateway** (apps/workers/auth-gateway) - Public edge gateway for auth, rate
-  limiting, and request proxying
-- **API Management** (apps/workers/api-management) - Internal service for API key
-  management, usage exports, and analytics
+- **Auth Gateway** (apps/workers/auth-gateway) - Public edge gateway for auth,
+  rate limiting, and request proxying
+- **API Management** (apps/workers/api-management) - Internal service for API
+  key management, usage exports, and analytics
 
 ## Development Commands
 
@@ -48,12 +48,13 @@ docker exec requiem-dev-api-1 go test -race -coverprofile=coverage.out ./...
 Run specific test:
 
 ```bash
-docker exec requiem-dev-api-1 go test ./internal/text/advice -v -run TestGetAdvice
+docker exec requiem-dev-api-1 go test ./services/text/advice -v -run TestGetAdvice
 ```
 
 ### Rails Dashboard (apps/dashboard)
 
-**Note:** Commands assume containers are running. Container: `requiem-dev-dashboard-1`
+**Note:** Commands assume containers are running. Container:
+`requiem-dev-dashboard-1`
 
 Rails console:
 
@@ -167,10 +168,10 @@ bunx vitest run --coverage   # With coverage report
 
 Run these commands locally to catch issues before CI.
 
-**Note:** Containers must be running. Use `docker compose -f docker-compose.dev.yml up` in `infra/docker` first.
+**Note:** Containers must be running. Use
+`docker compose -f docker-compose.dev.yml up` in `infra/docker` first.
 
 ```bash
-
 # Go Backend
 docker exec requiem-dev-api-1 go test ./...                    # Tests (must pass)
 docker exec requiem-dev-api-1 golangci-lint run                # Linting (advisory)
@@ -253,23 +254,27 @@ Rails Dashboard → API Management (api-management.requiems.xyz) → KV + D1
 
 ### Code Organization
 
-#### Go API (apps/api/internal/)
+#### Go API (apps/api/)
 
 Domain-driven design with feature modules:
 
 - `app/` - Application initialization, routing
-- `email/` - Email-related endpoints (disposable checking, etc.)
-  - `disposable/service.go` - Business logic
-  - `disposable/transport_http.go` - HTTP handlers
-  - `disposable/type.go` - Types
-  - `router.go` - Routes for `/v1/email/*`
-- `text/` - Text utility endpoints (advice, lorem, quotes, words)
-  - Each subdomain follows same pattern: service, transport_http, type
-  - `router.go` - Routes for `/v1/text/*`
 - `platform/` - Shared infrastructure
   - `config/` - Environment configuration
   - `db/` - PostgreSQL connection, migrations
   - `httpx/` - HTTP utilities
+  - `middleware/` - Auth middleware
+  - `reqredis/` - Redis connection
+- `services/` - Self-contained business domain modules
+  - `email/` - Email-related endpoints (disposable checking, etc.)
+    - `disposable/service.go` - Business logic
+    - `disposable/transport_http.go` - HTTP handlers
+    - `disposable/type.go` - Types
+    - `router.go` - Routes for `/v1/email/*`
+  - `text/` - Text utility endpoints (advice, lorem, quotes, words)
+    - Each subdomain follows same pattern: service, transport_http, type
+    - `router.go` - Routes for `/v1/text/*`
+  - `tech/`, `places/`, `entertainment/`, `misc/` - Other service domains
 
 **Pattern**: Each feature has `service.go` (business logic), `transport_http.go`
 (HTTP handlers), `type.go` (data types), and parent `router.go` (routes).
@@ -359,7 +364,7 @@ app/views/
 
 Single database with two migration systems:
 
-- **Go migrations**: `infra/migrations/*.sql` (business data tables: advice,
+- **Go migrations**: `apps/api/migrations/*.sql` (business data tables: advice,
   quotes, words)
 - **Rails migrations**: `apps/dashboard/db/migrate/*.rb` (user tables: users,
   api_keys, subscriptions, usage_logs)
@@ -409,17 +414,17 @@ Usage tracking:
 
 ### Adding New Go Endpoints
 
-1. Create feature directory in `apps/api/internal/{domain}/{feature}/`
+1. Create feature directory in `apps/api/services/{domain}/{feature}/`
 2. Add `service.go` (business logic)
 3. Add `transport_http.go` (HTTP handler)
 4. Add `type.go` (request/response types)
 5. Register routes in parent `router.go`
-6. Mount router in `apps/api/internal/app/app.go`
+6. Mount router in `apps/api/app/routes_v1.go`
 
 Example structure:
 
 ```
-internal/
+services/
   text/
     advice/
       service.go
@@ -442,8 +447,8 @@ The Go backend trusts the Cloudflare Worker gateway completely:
 **Go migrations** (business data):
 
 ```bash
-# Add new migration in infra/migrations/
-# Named: YYYYMMDDHHMMSS_description.up.sql
+# Add new migration in apps/api/migrations/
+# Named: NNNN_description.up.sql
 # Runs automatically on app startup via app/app.go:migrateWithRetry()
 ```
 
@@ -465,7 +470,8 @@ docker exec requiem-dev-dashboard-1 bin/rails db:migrate
 
 ## Common Development Tasks
 
-**Note:** These commands manage the Docker containers. Run from `infra/docker` directory.
+**Note:** These commands manage the Docker containers. Run from `infra/docker`
+directory.
 
 View service logs:
 

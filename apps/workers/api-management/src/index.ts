@@ -2,15 +2,27 @@ import { Hono } from "hono";
 import { swaggerUI } from "@hono/swagger-ui";
 
 import { validateEnv, type WorkerBindings } from "./env";
-import { basicAuthMiddleware, errorHandler, jsonResponse } from "@requiem/workers-shared";
+import {
+  basicAuthMiddleware,
+  errorHandler,
+  jsonResponse,
+} from "@requiem/workers-shared";
 
 import { apiKeyAuthMiddleware } from "./middleware/";
 
-import { apiKeysRoute, usageRoute, analyticsRoute, swaggerRoute } from "./routes";
+import {
+  analyticsRoute,
+  apiKeysRoute,
+  swaggerRoute,
+  usageRoute,
+} from "./routes";
 
 const app = new Hono<{ Bindings: WorkerBindings }>();
 
-app.get("/healthz", (_c) => jsonResponse({ status: "ok", service: "api-management" }));
+app.get(
+  "/healthz",
+  (_c) => jsonResponse({ status: "ok", service: "api-management" }),
+);
 
 app.use("/docs", basicAuthMiddleware);
 

@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 // Tabs controller
 // Usage:
@@ -11,41 +11,41 @@ import { Controller } from "@hotwired/stimulus"
 //     <div data-tabs-target="panel" class="hidden">Content 2</div>
 //   </div>
 export default class extends Controller {
-  static targets = ["panel", "tab"]
-  static values = { index: { type: Number, default: 0 } }
+  static targets = ["panel", "tab"];
+  static values = { index: { type: Number, default: 0 } };
 
   connect() {
-    this.showTab(this.indexValue)
+    this.showTab(this.indexValue);
   }
 
   select(event) {
-    event.preventDefault()
-    const index = parseInt(event.currentTarget.dataset.tabsIndexParam)
-    this.indexValue = index
-    this.showTab(index)
+    event.preventDefault();
+    const index = parseInt(event.currentTarget.dataset.tabsIndexParam);
+    this.indexValue = index;
+    this.showTab(index);
   }
 
   showTab(index) {
     // Hide all panels
     this.panelTargets.forEach((panel, i) => {
       if (i === index) {
-        panel.classList.remove("hidden")
+        panel.classList.remove("hidden");
       } else {
-        panel.classList.add("hidden")
+        panel.classList.add("hidden");
       }
-    })
+    });
 
     // Update tab styles
     if (this.hasTabTarget) {
       this.tabTargets.forEach((tab, i) => {
         if (i === index) {
-          tab.classList.add("border-blue-500", "text-blue-600")
-          tab.classList.remove("border-transparent", "text-gray-500")
+          tab.classList.add("border-blue-500", "text-blue-600");
+          tab.classList.remove("border-transparent", "text-gray-500");
         } else {
-          tab.classList.remove("border-blue-500", "text-blue-600")
-          tab.classList.add("border-transparent", "text-gray-500")
+          tab.classList.remove("border-blue-500", "text-blue-600");
+          tab.classList.add("border-transparent", "text-gray-500");
         }
-      })
+      });
     }
   }
 }
