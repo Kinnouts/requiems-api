@@ -14,7 +14,7 @@ interface DevKey {
   plan: string;
 }
 
-const WRANGLER = "./node_modules/.bin/wrangler";
+const WRANGLER = "pnpm exec wrangler";
 
 const DEV_KEYS: DevKey[] = [
   { apiKey: "rq_test_0000000000000001", userId: "dev_user_free", plan: "free" },
@@ -30,13 +30,13 @@ function run(cmd: string): void {
 }
 
 console.log("Applying D1 schema...");
-run(`node ${WRANGLER} d1 execute requiem-usage --local --yes --file=./schema.sql`);
+run(`${WRANGLER} d1 execute requiem-usage --local --yes --file=./schema.sql`);
 
 console.log("\nSeeding KV with dev test keys...");
 for (const { apiKey, userId, plan } of DEV_KEYS) {
   const kvKey = `key:${apiKey}`;
   const value = JSON.stringify({ userId, plan, createdAt: CREATED_AT });
-  run(`node ${WRANGLER} kv key put '${kvKey}' '${value}' --binding=KV --local`);
+  run(`${WRANGLER} kv key put '${kvKey}' '${value}' --binding=KV --local`);
 }
 
 console.log("\nDev test keys seeded (header: requiems-api-key):");

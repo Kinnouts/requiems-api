@@ -100,8 +100,8 @@ import { getRequestMultiplier } from "@requiem/workers-shared";
 ## Development
 
 ```bash
-bun run typecheck   # Type check
-bun run lint        # Lint code
-bun run lint:fix    # Auto-fix lint issues
-bun run format      # Auto-format code
+pnpm run typecheck   # Type check
+pnpm run lint        # Lint code
+pnpm run lint:fix    # Auto-fix lint issues
+pnpm run format      # Auto-format code
 ```

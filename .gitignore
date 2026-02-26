@@ -22,3 +22,5 @@ Thumbs.db
 node_modules
 .wrangler
 .playwright-mcp/
+.pnpm-store/
+apps/workers/shared/package-lock.json

@@ -981,7 +981,7 @@ Documentation
 
 Workers
   [ ] apps/workers/shared/src/config.ts updated if credit cost != 1
-  [ ] bun run typecheck passes in apps/workers/shared/ (if config.ts was touched)
+  [ ] pnpm run typecheck passes in apps/workers/shared/ (if config.ts was touched)
 ```
 
 ---

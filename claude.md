@@ -26,6 +26,8 @@ Services:
 
 - Go API: <http://localhost:8080/healthz> (Air hot reload)
 - Rails Dashboard: <http://localhost:3000> (Rails hot reload)
+- Auth Gateway: <http://localhost:4455/healthz> (public API entry point)
+- API Management: <http://localhost:5544/healthz> (internal management service)
 - PostgreSQL: localhost:5432 (user: `requiem`, password: `requiem`)
 - Redis: localhost:6379
 
@@ -105,63 +107,50 @@ docker exec requiem-dev-dashboard-1 bin/rails generate migration AddFieldToTable
 
 Public-facing edge gateway for request authentication and proxying.
 
-Dev mode:
-
-```bash
-cd apps/workers/auth-gateway
-bun dev  # Port 4455
-```
+**Note:** Commands assume containers are running. Container:
+`requiem-dev-auth-gateway-1`
 
 Type check:
 
 ```bash
-cd apps/workers/auth-gateway
-bun run typecheck
+docker exec requiem-dev-auth-gateway-1 pnpm run typecheck
 ```
 
 Run tests:
 
 ```bash
-cd apps/workers/auth-gateway
-bunx vitest run              # Run all tests (71 tests)
-bunx vitest run --coverage   # With coverage report
-bun run test:watch           # Watch mode
+docker exec requiem-dev-auth-gateway-1 pnpm exec vitest run              # Run all tests
+docker exec requiem-dev-auth-gateway-1 pnpm exec vitest run --coverage   # With coverage report
 ```
 
-Run linting and formatting:
+Run lint/format locally (not in Docker):
 
 ```bash
 cd apps/workers/auth-gateway
-bun run lint                 # Lint code
-bun run lint:fix             # Auto-fix lint issues
-bun run format:check         # Check formatting
-bun run format               # Auto-format code
+pnpm run lint          # Lint code
+pnpm run lint:fix      # Auto-fix lint issues
+pnpm run format:check  # Check formatting
+pnpm run format        # Auto-format code
 ```
 
 ### API Management (apps/workers/api-management)
 
 Internal service for API key management, usage exports, and analytics.
 
-Dev mode:
-
-```bash
-cd apps/workers/api-management
-bun dev  # Port 6001
-```
+**Note:** Commands assume containers are running. Container:
+`requiem-dev-api-management-1`
 
 Type check:
 
 ```bash
-cd apps/workers/api-management
-bun run typecheck
+docker exec requiem-dev-api-management-1 pnpm run typecheck
 ```
 
 Run tests:
 
 ```bash
-cd apps/workers/api-management
-bunx vitest run              # Run all tests
-bunx vitest run --coverage   # With coverage report
+docker exec requiem-dev-api-management-1 pnpm exec vitest run              # Run all tests
+docker exec requiem-dev-api-management-1 pnpm exec vitest run --coverage   # With coverage report
 ```
 
 ### Local Testing Before Push
@@ -182,24 +171,21 @@ docker exec requiem-dev-dashboard-1 bundle exec brakeman --no-pager  # Security 
 docker exec requiem-dev-dashboard-1 bundle exec bundler-audit  # Dependency audit (must pass)
 docker exec requiem-dev-dashboard-1 bin/importmap audit        # JS audit (must pass)
 docker exec requiem-dev-dashboard-1 bundle exec rubocop        # Linting (advisory)
+
+# Auth Gateway
+docker exec requiem-dev-auth-gateway-1 pnpm exec vitest run       # Tests (must pass - 71 tests)
+docker exec requiem-dev-auth-gateway-1 pnpm run typecheck          # TypeScript (must pass)
 ```
 
-For Cloudflare Workers (run locally, not in Docker):
+Run lint/format locally for workers:
 
 ```bash
-# Auth Gateway
-cd apps/workers/auth-gateway
-bunx vitest run                  # Tests (must pass - 71 tests)
-bun run typecheck                # TypeScript (must pass)
-bun run lint                     # Linting (advisory)
-bun run format:check             # Formatting (advisory)
+cd apps/workers/auth-gateway && pnpm run lint && pnpm run format:check  # Auth Gateway (advisory)
+cd apps/workers/api-management && pnpm run lint && pnpm run format:check # API Management (advisory)
 
-# API Management
-cd apps/workers/api-management
-bunx vitest run                  # Tests (must pass)
-bun run typecheck                # TypeScript (must pass)
-bun run lint                     # Linting (advisory)
-bun run format:check             # Formatting (advisory)
+# API Management tests (must pass)
+docker exec requiem-dev-api-management-1 pnpm exec vitest run
+docker exec requiem-dev-api-management-1 pnpm run typecheck
 ```
 
 ## Architecture Overview
@@ -229,7 +215,7 @@ Rails Dashboard → API Management (api-management.requiems.xyz) → KV + D1
    - Adds usage headers to responses
    - **Authentication:** `requiems-api-key` header from end users
 
-2. **API Management** (`apps/workers/api-management/` - Port 6001):
+2. **API Management** (`apps/workers/api-management/` - Port 5544):
    - **Internal-only** service at api-management.requiems.xyz
    - API key management (create, revoke, update in KV + D1)
    - Usage data export for Rails sync (D1 → PostgreSQL)
@@ -466,7 +452,7 @@ docker exec requiem-dev-dashboard-1 bin/rails db:migrate
    - `BACKEND_URL`
    - `BACKEND_SECRET`
 3. KV/D1 bindings configured in `wrangler.toml`
-4. Seed KV with: `bun run scripts/seed-kv.ts`
+4. Seed KV with: `pnpm run kv:seed`
 
 ## Common Development Tasks
 

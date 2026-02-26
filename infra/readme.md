@@ -40,10 +40,10 @@ Once the stack is up:
 cd apps/edge-auth
 
 # Install dependencies
-bun install
+pnpm install
 
 # Start local dev server
-bun run dev
+pnpm dev
 # Worker runs on http://localhost:8787
 ```
 

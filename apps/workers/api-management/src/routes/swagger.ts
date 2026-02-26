@@ -18,7 +18,7 @@ swaggerRoute.get("/openapi.json", (c) => {
     },
     servers: [
       { url: "https://api-management.requiems.xyz", description: "Production" },
-      { url: "http://localhost:6001", description: "Local development" },
+      { url: "http://localhost:5544", description: "Local development" },
     ],
     components: {
       securitySchemes: {

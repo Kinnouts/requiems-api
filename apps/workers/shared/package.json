@@ -2,6 +2,7 @@
   "name": "@requiem/workers-shared",
   "version": "1.0.0",
   "type": "module",
+  "packageManager": "pnpm@10.26.0",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "scripts": {

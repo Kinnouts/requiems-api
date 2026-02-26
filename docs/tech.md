@@ -60,24 +60,21 @@ Update:**
 **Verification:**
 
 ```bash
-cd apps/edge-auth && bun run typecheck  # Should pass
+cd apps/edge-auth && pnpm run typecheck  # Should pass
 ```
 
-### Bun (Latest)
+### pnpm (10.x)
 
-**What:** JavaScript runtime for Cloudflare Worker development **Current
-Version:** Latest (not pinned) **Files to Update:**
+**What:** Package manager for Cloudflare Worker development **Current
+Version:** 10.x (pinned via `packageManager` field) **Files to Update:**
 
-- `.github/workflows/ci.yml` - CI setup (line 261, 282, 316:
-  `bun-version: latest`)
-- `apps/edge-auth/package.json` - Lock file only (no version specified)
-
-**Note:** Intentionally unpinned. Uses latest stable from oven-sh/setup-bun.
+- `.github/workflows/ci.yml` - CI setup (`pnpm/action-setup@v4`)
+- `apps/workers/*/package.json` - `packageManager` field
 
 **Verification:**
 
 ```bash
-bun --version
+pnpm --version
 ```
 
 ## Frameworks
@@ -181,7 +178,7 @@ cd apps/api && golangci-lint --version
 **Verification:**
 
 ```bash
-cd apps/edge-auth && bun test
+cd apps/edge-auth && pnpm exec vitest run
 ```
 
 ### Biome 1.5.3
@@ -196,7 +193,7 @@ Prettier) **Current Version:** ^1.5.3 **Files to Update:**
 **Verification:**
 
 ```bash
-cd apps/edge-auth && bun run lint && bun run format:check
+cd apps/edge-auth && pnpm run lint && pnpm run format:check
 ```
 
 ### RuboCop (via rails-omakase)
@@ -231,7 +228,7 @@ When updating a core technology:
   stability
 - **Rails/Gems:** Use `~>` for patch updates (e.g., `~> 8.1.2` allows 8.1.x)
 - **Node packages:** Use `^` for minor updates (e.g., `^1.2.0` allows 1.x.x)
-- **Bun:** Use `latest` (fast-moving tool, not in production)
+- **pnpm:** Pin major version via `packageManager` field in package.json
 - **PostgreSQL/Redis:** Pin major version only (e.g., `16-alpine`, `7-alpine`)
 
 ## Testing Matrix (CI)
@@ -240,7 +237,7 @@ Current CI runs:
 
 - **Go 1.24** + PostgreSQL 16 + Redis 7
 - **Ruby 3.4.8** + Rails 8.1 + PostgreSQL 16 + Redis 7
-- **Bun latest** + TypeScript 5.3.3 + Vitest 1.2.0
+- **Node.js 22** + pnpm 10.x + TypeScript 5.3.3 + Vitest 1.2.0
 
 See `.github/workflows/ci.yml` for full test configuration.
 
@@ -251,13 +248,13 @@ See `.github/workflows/ci.yml` for full test configuration.
 go version                    # Go 1.24.x
 ruby -v                       # Ruby 3.4.8
 cd apps/dashboard && bin/rails -v  # Rails 8.1.2.x
-cd apps/edge-auth && bun --version # Latest
-cd apps/edge-auth && bun run typecheck # TypeScript 5.3.3
+pnpm --version                              # pnpm 10.x
+cd apps/edge-auth && pnpm run typecheck     # TypeScript 5.3.3
 
 # Run all tests
 cd apps/api && go test ./...
 cd apps/dashboard && bin/rails test
-cd apps/edge-auth && bun test
+cd apps/edge-auth && pnpm exec vitest run
 ```
 
 ## External Service Versions

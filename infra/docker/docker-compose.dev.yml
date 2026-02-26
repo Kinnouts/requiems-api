@@ -84,7 +84,7 @@ services:
         echo BACKEND_URL=$$BACKEND_URL > .dev.vars &&
         echo BACKEND_SECRET=$$BACKEND_SECRET >> .dev.vars &&
         node ./scripts/seed-dev.ts &&
-        node ./node_modules/.bin/wrangler dev --ip 0.0.0.0 --port 4455
+        pnpm exec wrangler dev --ip 0.0.0.0 --port 4455
       "
     env_file: .env.example
     volumes:
@@ -105,14 +105,18 @@ services:
       sh -c "
         corepack enable pnpm &&
         pnpm install --frozen-lockfile &&
+        pnpm install --frozen-lockfile --dir /workers/shared &&
         echo API_MANAGEMENT_API_KEY=$$API_MANAGEMENT_API_KEY > .dev.vars &&
-        node ./node_modules/.bin/wrangler dev --ip 0.0.0.0 --port 5544
+        echo SWAGGER_USERNAME=$$SWAGGER_USERNAME >> .dev.vars &&
+        echo SWAGGER_PASSWORD=$$SWAGGER_PASSWORD >> .dev.vars &&
+        pnpm exec wrangler dev --ip 0.0.0.0 --port 5544
       "
     env_file: .env.example
     volumes:
       - ../../apps/workers/api-management:/workers/api-management
       - ../../apps/workers/shared:/workers/shared
       - api_management_modules:/workers/api-management/node_modules
+      - shared_modules:/workers/shared/node_modules
       - wrangler_state:/workers/api-management/.wrangler
     ports:
       - "5544:5544"
@@ -147,4 +151,5 @@ volumes:
   bundle_cache:
   auth_gateway_modules:
   api_management_modules:
+  shared_modules:
   wrangler_state:

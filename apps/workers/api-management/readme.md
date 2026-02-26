@@ -130,19 +130,19 @@ Set via `wrangler secret put`:
 ## Development
 
 ```bash
-bun dev              # Start local dev server (port 6001)
-bunx vitest run      # Run tests
-bunx vitest run --coverage  # Tests with coverage
-bun run typecheck    # TypeScript type check
-bun run lint         # Lint code
-bun run lint:fix     # Auto-fix lint issues
-bun run format       # Format code
-bun run format:check # Check formatting
+pnpm dev                        # Start local dev server (port 6001)
+pnpm exec vitest run            # Run tests
+pnpm exec vitest run --coverage # Tests with coverage
+pnpm run typecheck              # TypeScript type check
+pnpm run lint                   # Lint code
+pnpm run lint:fix               # Auto-fix lint issues
+pnpm run format                 # Format code
+pnpm run format:check           # Check formatting
 ```
 
 ## Deployment
 
 ```bash
-bun run deploy       # Deploy to staging
-bun run deploy:prod  # Deploy to production
+pnpm run deploy       # Deploy to staging
+pnpm run deploy:prod  # Deploy to production
 ```
