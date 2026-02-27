@@ -2,6 +2,10 @@
 
 Detect and censor profanity in text for content moderation.
 
+## Status
+
+✅ **Live** — Available at `POST /v1/text/profanity`
+
 ## Endpoint
 
 `POST /v1/text/profanity`

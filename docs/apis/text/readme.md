@@ -15,29 +15,29 @@ Get word definitions and meanings
 - **Planned Endpoint:** `GET /v1/text/dictionary`
 - **Expected Credit Cost:** 1
 
-### [Lorem Ipsum](./lorem-ipsum.md) - ⏳ Planned
+### [Lorem Ipsum](./lorem-ipsum.md) - ✅ MVP
 
 Generate placeholder text
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/text/lorem-ipsum`
-- **Expected Credit Cost:** 1
+- **Status:** mvp
+- **Endpoint:** `GET /v1/text/lorem`
+- **Credit Cost:** 1
 
-### [Profanity Filter](./profanity-filter.md) - ⏳ Planned
+### [Profanity Filter](./profanity-filter.md) - ✅ MVP
 
 Filter and detect profanity in text
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/text/profanity-filter`
-- **Expected Credit Cost:** 1
+- **Status:** mvp
+- **Endpoint:** `POST /v1/text/profanity`
+- **Credit Cost:** 1
 
 ### [Random Word](./random-word.md) - ✅ MVP
 
 Get random words
 
 - **Status:** mvp
-- **Planned Endpoint:** `GET /v1/text/random-word`
-- **Expected Credit Cost:** 1
+- **Endpoint:** `GET /v1/text/words/random`
+- **Credit Cost:** 1
 
 ### [Rhyme](./rhyme.md) - ⏳ Planned
 
@@ -74,5 +74,5 @@ Find synonyms and related words
 ## Category Statistics
 
 - Total Endpoints: 8
-- Live: 1
-- Planned: 7
+- Live: 3
+- Planned: 5

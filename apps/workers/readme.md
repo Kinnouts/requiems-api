@@ -54,39 +54,11 @@ Internal Management (Rails only)
 
 ## Plan Limits
 
-| Plan         | Requests/Month | Rate/Minute |
-| ------------ | -------------- | ----------- |
-| Free         | 500            | 30          |
-| Developer    | 100,000        | 5,000       |
-| Business     | 1,000,000      | 10,000      |
-| Professional | 10,000,000     | 50,000      |
-| Enterprise   | Unlimited      | Unlimited   |
+Refer to [docs/business.md](../../docs/business.md) for detailed plan limits.
 
 ## Development
 
-Start all workers locally (from repo root):
-
-```bash
-# Auth Gateway
-cd apps/workers/auth-gateway
-pnpm dev  # Port 4455
-
-# API Management
-cd apps/workers/api-management
-pnpm dev  # Port 6001
-```
-
-Run all tests:
-
-```bash
-# Auth Gateway
-cd apps/workers/auth-gateway
-pnpm exec vitest run
-
-# API Management
-cd apps/workers/api-management
-pnpm exec vitest run
-```
+Refer to [docs/getting-starter.md](../../docs/getting-started.md) for Docker Compose setup and development workflow instructions. The workers are included in the `docker-compose.dev.yml` configuration and will be built and run alongside the Go API, Rails Dashboard, PostgreSQL, and Redis services.
 
 ## Tech Stack
 

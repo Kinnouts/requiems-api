@@ -55,13 +55,13 @@ Perform MX record lookups
 - **Planned Endpoint:** `GET /v1/internet-technology/mx-lookup`
 - **Expected Credit Cost:** 1
 
-### [Password Generator](./password-generator.md) - ⏳ Planned
+### [Password Generator](./password-generator.md) - ✅ MVP
 
 Generate secure passwords
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/internet-technology/password-generator`
-- **Expected Credit Cost:** 1
+- **Status:** mvp
+- **Endpoint:** `GET /v1/tech/password`
+- **Credit Cost:** 1
 
 ### [QR Code](./qr-code.md) - ⏳ Planned
 
@@ -79,21 +79,21 @@ Get information about URLs
 - **Planned Endpoint:** `GET /v1/internet-technology/url-lookup`
 - **Expected Credit Cost:** 1
 
-### [User Agent](./user-agent.md) - ⏳ Planned
+### [User Agent](./user-agent.md) - ✅ MVP
 
 Parse and analyze user agent strings
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/internet-technology/user-agent`
-- **Expected Credit Cost:** 1
+- **Status:** mvp
+- **Endpoint:** `GET /v1/tech/useragent`
+- **Credit Cost:** 1
 
-### [Validate Phone](./validate-phone.md) - ⏳ Planned
+### [Validate Phone](./validate-phone.md) - ✅ MVP
 
 Validate phone numbers
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/internet-technology/validate-phone`
-- **Expected Credit Cost:** 1
+- **Status:** mvp
+- **Endpoint:** `GET /v1/tech/validate/phone`
+- **Credit Cost:** 1
 
 ### [Validate Email](./validate-email.md) - ⏳ Planned
 
@@ -130,5 +130,5 @@ Get WHOIS information for domains
 ## Category Statistics
 
 - Total Endpoints: 15
-- Live: 0
-- Planned: 15
+- Live: 3
+- Planned: 12

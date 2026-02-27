@@ -13,6 +13,6 @@ motivational and thought-provoking quotes from various authors and sources.
 
 ### Get Random Quote
 
-**Endpoint:** `GET /v1/entertainment/quotes` **Credit Cost:** 1 credit
+**Endpoint:** `GET /v1/text/quotes/random` **Credit Cost:** 1 credit
 
 Get a random inspirational quote.

@@ -87,13 +87,13 @@ Convert coordinates to addresses
 - **Planned Endpoint:** `GET /v1/places/reverse-geocoding`
 - **Expected Credit Cost:** 1
 
-### [Timezone](./timezone.md) - ⏳ Planned
+### [Timezone](./timezone.md) - ✅ MVP
 
 Get timezone information
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/places/timezone`
-- **Expected Credit Cost:** 1
+- **Status:** mvp
+- **Endpoint:** `GET /v1/places/timezone`
+- **Credit Cost:** 1
 
 ### [Weather](./weather.md) - ⏳ Planned
 
@@ -130,5 +130,5 @@ Get zip code information
 ## Category Statistics
 
 - Total Endpoints: 15
-- Live: 0
-- Planned: 15
+- Live: 2
+- Planned: 13

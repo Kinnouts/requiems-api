@@ -115,5 +115,5 @@ Get university information
 ## Category Statistics
 
 - Total Endpoints: 13
-- Live: 1
-- Planned: 12
+- Live: 2
+- Planned: 11

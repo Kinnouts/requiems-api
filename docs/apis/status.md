@@ -15,6 +15,7 @@
 
 - [Advice](./entertainment/advice.md) - ✅ mvp
 - [Quotes](./entertainment/quotes.md) - ✅ mvp
+- [Horoscope](./entertainment/horoscope.md) - ✅ mvp
 - [Bucket List](./entertainment/bucket-list.md) - ⏳ planned
 - [Celebrity](./entertainment/celebrity.md) - ⏳ planned
 - [Chuck Norris](./entertainment/chuck-norris.md) - ⏳ planned
@@ -23,13 +24,12 @@
 - [Emoji](./entertainment/emoji.md) - ⏳ planned
 - [Facts](./entertainment/facts.md) - ⏳ planned
 - [Hobbies](./entertainment/hobbies.md) - ⏳ planned
-- [Horoscope](./entertainment/horoscope.md) - ⏳ planned
 - [Jokes](./entertainment/jokes.md) - ⏳ planned
 - [Riddles](./entertainment/riddles.md) - ⏳ planned
 - [Sudoku](./entertainment/sudoku.md) - ⏳ planned
 - [Trivia](./entertainment/trivia.md) - ⏳ planned
 
-**Progress:** 2 live, 13 planned
+**Progress:** 3 live, 12 planned
 
 ### [Finance](./finance/readme.md) - 36 endpoints
 
@@ -47,13 +47,23 @@ All 36 endpoints are currently planned. This category includes:
 
 ### [Internet / Technology](./internet-technology/readme.md) - 15 endpoints
 
-All 15 endpoints are currently planned. This category includes:
+- [Password Generator](./internet-technology/password-generator.md) - ✅ mvp
+- [User Agent](./internet-technology/user-agent.md) - ✅ mvp
+- [Validate Phone](./internet-technology/validate-phone.md) - ✅ mvp
+- [Barcode](./internet-technology/barcode.md) - ⏳ planned
+- [Disposable Email Checker](./internet-technology/disposable-email-checker.md) - ⏳ planned
+- [DNS Lookup](./internet-technology/dns-lookup.md) - ⏳ planned
+- [Domain](./internet-technology/domain.md) - ⏳ planned
+- [IP Lookup](./internet-technology/ip-lookup.md) - ⏳ planned
+- [MX Lookup](./internet-technology/mx-lookup.md) - ⏳ planned
+- [QR Code](./internet-technology/qr-code.md) - ⏳ planned
+- [URL Lookup](./internet-technology/url-lookup.md) - ⏳ planned
+- [Validate Email](./internet-technology/validate-email.md) - ⏳ planned
+- [Webpage](./internet-technology/webpage.md) - ⏳ planned
+- [Web Scraper](./internet-technology/web-scraper.md) - ⏳ planned
+- [Whois](./internet-technology/whois.md) - ⏳ planned
 
-- Barcode, Disposable Email Checker, DNS Lookup, Domain, IP Lookup
-- MX Lookup, Password Generator, QR Code, URL Lookup, User Agent
-- Validate Phone, Validate Email, Webpage, Web Scraper, Whois
-
-**Progress:** 0 live, 15 planned
+**Progress:** 3 live, 12 planned
 
 ### [AI / Computer Vision](./ai-computer-vision/readme.md) - 6 endpoints
 
@@ -82,36 +92,54 @@ All 7 endpoints are currently planned. This category includes:
 
 ### [Miscellaneous](./miscellaneous/readme.md) - 13 endpoints
 
-All 13 endpoints are currently planned. This category includes:
+- [Counter](./miscellaneous/counter.md) - ✅ mvp
+- [Unit Conversion](./miscellaneous/unit-conversion.md) - ✅ mvp
+- [Baby Names](./miscellaneous/baby-names.md) - ⏳ planned
+- [Historical Events](./miscellaneous/historical-events.md) - ⏳ planned
+- [Historical Figures](./miscellaneous/historical-figures.md) - ⏳ planned
+- [Holidays](./miscellaneous/holidays.md) - ⏳ planned
+- [Logo](./miscellaneous/logo.md) - ⏳ planned
+- [Planets](./miscellaneous/planets.md) - ⏳ planned
+- [Public Holidays](./miscellaneous/public-holidays.md) - ⏳ planned
+- [Random Image](./miscellaneous/random-image.md) - ⏳ planned
+- [Random User](./miscellaneous/random-user.md) - ⏳ planned
+- [Stars](./miscellaneous/stars.md) - ⏳ planned
+- [University](./miscellaneous/university.md) - ⏳ planned
 
-- Baby Names, Counter, Historical Events, Historical Figures, Holidays
-- Logo, Planets, Public Holidays, Random Image, Random User, Stars, Unit
-  Conversion, University
-
-**Progress:** 0 live, 13 planned
+**Progress:** 2 live, 11 planned
 
 ### [Places](./places/readme.md) - 15 endpoints
 
-All 15 endpoints are currently planned. This category includes:
+- [Timezone](./places/timezone.md) - ✅ mvp
+- [Working Days](./places/working-days.md) - ✅ mvp
+- [Air Quality](./places/air-quality.md) - ⏳ planned
+- [City](./places/city.md) - ⏳ planned
+- [Country](./places/country.md) - ⏳ planned
+- [Country Flag](./places/country-flag.md) - ⏳ planned
+- [County](./places/county.md) - ⏳ planned
+- [GDP](./places/gdp.md) - ⏳ planned
+- [Geocoding](./places/geocoding.md) - ⏳ planned
+- [Population](./places/population.md) - ⏳ planned
+- [Postal Code](./places/postal-code.md) - ⏳ planned
+- [Reverse Geocoding](./places/reverse-geocoding.md) - ⏳ planned
+- [Weather](./places/weather.md) - ⏳ planned
+- [World Time](./places/world-time.md) - ⏳ planned
+- [Zip Code](./places/zip-code.md) - ⏳ planned
 
-- Air Quality, City, Country, Country Flag, County, GDP, Geocoding
-- Population, Postal Code, Reverse Geocoding, Timezone, Weather, Working Days,
-  World Time, Zip Code
-
-**Progress:** 1 live, 14 planned
+**Progress:** 2 live, 13 planned
 
 ### [Text](./text/readme.md) - 8 endpoints
 
-- [Dictionary](./text/dictionary.md) - ⏳ planned
-- [Lorem Ipsum](./text/lorem-ipsum.md) - ⏳ planned
-- [Profanity Filter](./text/profanity-filter.md) - ⏳ planned
+- [Lorem Ipsum](./text/lorem-ipsum.md) - ✅ mvp
+- [Profanity Filter](./text/profanity-filter.md) - ✅ mvp
 - [Random Word](./text/random-word.md) - ✅ mvp
+- [Dictionary](./text/dictionary.md) - ⏳ planned
 - [Rhyme](./text/rhyme.md) - ⏳ planned
 - [Spell Check](./text/spell-check.md) - ⏳ planned
 - [Text Language](./text/text-language.md) - ⏳ planned
 - [Thesaurus](./text/thesaurus.md) - ⏳ planned
 
-**Progress:** 1 live, 7 planned
+**Progress:** 3 live, 5 planned
 
 ### [Transportation](./transportation/readme.md) - 9 endpoints
 
@@ -124,11 +152,9 @@ All 9 endpoints are currently planned. This category includes:
 
 ### [Email](./email/readme.md) - 1 endpoint
 
-1 endpoint is currently planned:
+- [Disposable Email](./email/disposable.md) - ✅ mvp
 
-- Disposable Email
-
-**Progress:** 0 live, 1 planned
+**Progress:** 1 live, 0 planned
 
 ### [Weather](./weather/readme.md) - 1 endpoint
 
@@ -142,28 +168,32 @@ All 9 endpoints are currently planned. This category includes:
 
 | Category              | Total   | Live  | Planned |
 | --------------------- | ------- | ----- | ------- |
-| Entertainment         | 15      | 2     | 13      |
+| Entertainment         | 15      | 3     | 12      |
 | Finance               | 36      | 0     | 36      |
-| Internet / Technology | 15      | 0     | 15      |
+| Internet / Technology | 15      | 3     | 12      |
 | AI / Computer Vision  | 6       | 0     | 6       |
 | Animals               | 3       | 0     | 3       |
 | Health / Wellness     | 7       | 0     | 7       |
-| Miscellaneous         | 13      | 0     | 13      |
-| Places                | 15      | 0     | 15      |
-| Text                  | 8       | 1     | 7       |
+| Miscellaneous         | 13      | 2     | 11      |
+| Places                | 15      | 2     | 13      |
+| Text                  | 8       | 3     | 5       |
 | Transportation        | 9       | 0     | 9       |
-| Email                 | 1       | 0     | 1       |
+| Email                 | 1       | 1     | 0       |
 | Weather               | 1       | 0     | 1       |
-| **TOTAL**             | **129** | **3** | **126** |
+| **TOTAL**             | **129** | **14** | **115** |
 
 ## Live APIs
 
 Currently live and production-ready:
 
-- Entertainment: Advice, Quotes
-- Text: Random Word
+- Entertainment: Advice, Quotes, Horoscope
+- Internet / Technology: Password Generator, User Agent, Validate Phone
+- Miscellaneous: Counter, Unit Conversion
+- Places: Timezone, Working Days
+- Text: Lorem Ipsum, Profanity Filter, Random Word
+- Email: Disposable Email Detection
 
 ## Next Steps
 
-The remaining 126 endpoints are on the roadmap and will be implemented based on
+The remaining 115 endpoints are on the roadmap and will be implemented based on
 priority and resource availability.

@@ -12,16 +12,16 @@ trivia, and other entertaining content.
 Get random advice for various life situations
 
 - **Status:** mvp
-- **Planned Endpoint:** `GET /v1/entertainment/advice`
-- **Expected Credit Cost:** 1
+- **Endpoint:** `GET /v1/text/advice`
+- **Credit Cost:** 1
 
 ### [Quotes](./quotes.md) - ✅ MVP
 
 Get random quotes and inspirational messages
 
 - **Status:** mvp
-- **Planned Endpoint:** `GET /v1/entertainment/quotes`
-- **Expected Credit Cost:** 1
+- **Endpoint:** `GET /v1/text/quotes/random`
+- **Credit Cost:** 1
 
 ### [Bucket List](./bucket-list.md) - ⏳ Planned
 
@@ -87,13 +87,13 @@ Get hobby suggestions and recommendations
 - **Planned Endpoint:** `GET /v1/entertainment/hobbies`
 - **Expected Credit Cost:** 1
 
-### [Horoscope](./horoscope.md) - ⏳ Planned
+### [Horoscope](./horoscope.md) - ✅ MVP
 
 Get horoscope readings for zodiac signs
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/entertainment/horoscope`
-- **Expected Credit Cost:** 1
+- **Status:** mvp
+- **Endpoint:** `GET /v1/entertainment/horoscope/{sign}`
+- **Credit Cost:** 1
 
 ### [Jokes](./jokes.md) - ⏳ Planned
 
@@ -130,5 +130,5 @@ Get trivia questions and answers
 ## Category Statistics
 
 - Total Endpoints: 15
-- Live: 2
-- Planned: 13
+- Live: 3
+- Planned: 12
