@@ -3,7 +3,10 @@ name: requiem-dev
 services:
   db:
     image: postgres:16-alpine
-    env_file: .env.example
+    env_file:
+      - .env.example
+      - path: .env
+        required: false
     volumes:
       - db_data:/var/lib/postgresql/data
     ports:
@@ -36,7 +39,10 @@ services:
         go install github.com/cosmtrek/air@v1.52.0 &&
         air
       "
-    env_file: .env.example
+    env_file:
+      - .env.example
+      - path: .env
+        required: false
     volumes:
       - ../../apps/api:/app
     ports:
@@ -60,7 +66,10 @@ services:
         rm -f tmp/pids/server.pid &&
         bundle exec rails server -b 0.0.0.0 -p 3000
       "
-    env_file: .env.example
+    env_file:
+      - .env.example
+      - path: .env
+        required: false
     volumes:
       - ../../apps/dashboard:/app
       - bundle_cache:/usr/local/bundle
@@ -86,7 +95,10 @@ services:
         node ./scripts/seed-dev.ts &&
         pnpm exec wrangler dev --ip 0.0.0.0 --port 4455
       "
-    env_file: .env.example
+    env_file:
+      - .env.example
+      - path: .env
+        required: false
     volumes:
       - ../../apps/workers/auth-gateway:/workers/auth-gateway
       - ../../apps/workers/shared:/workers/shared
@@ -111,7 +123,10 @@ services:
         echo SWAGGER_PASSWORD=$$SWAGGER_PASSWORD >> .dev.vars &&
         pnpm exec wrangler dev --ip 0.0.0.0 --port 5544
       "
-    env_file: .env.example
+    env_file:
+      - .env.example
+      - path: .env
+        required: false
     volumes:
       - ../../apps/workers/api-management:/workers/api-management
       - ../../apps/workers/shared:/workers/shared
@@ -135,7 +150,10 @@ services:
         bundle install &&
         bundle exec sidekiq
       "
-    env_file: .env.example
+    env_file:
+      - .env.example
+      - path: .env
+        required: false
     volumes:
       - ../../apps/dashboard:/app
       - bundle_cache:/usr/local/bundle
