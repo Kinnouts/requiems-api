@@ -14,30 +14,7 @@ analytics — all running at the edge without a traditional server.
 
 ## Architecture
 
-```
-Public API Request
-        ↓
-  Auth Gateway (api.requiems.xyz)
-  ├── Validate API key (KV lookup)
-  ├── Check per-minute rate limit (KV counter)
-  ├── Check monthly quota (D1 query)
-  └── Proxy to Go backend (X-Backend-Secret)
-        ↓
-  Go Backend (internal)
-        ↓
-  Auth Gateway
-  ├── Record usage async (D1 insert)
-  └── Add usage headers to response
-        ↓
-  User receives response
-
-Internal Management (Rails only)
-        ↓
-  API Management (api-management.requiems.xyz)
-  ├── Create / revoke / update API keys (KV + D1)
-  ├── Export usage data to PostgreSQL (D1 → PostgreSQL)
-  └── Query analytics (D1 aggregations)
-```
+Refer to [docs/architecture.md](../../docs/architecture.md) for the overall system architecture and how the workers fit into the ecosystem.
 
 ## Data Storage
 
