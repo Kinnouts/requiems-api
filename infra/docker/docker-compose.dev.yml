@@ -5,7 +5,7 @@ services:
     image: postgres:16-alpine
     env_file:
       - .env.example
-      - path: .env
+      - path: .env.local
         required: false
     volumes:
       - db_data:/var/lib/postgresql/data
@@ -41,7 +41,7 @@ services:
       "
     env_file:
       - .env.example
-      - path: .env
+      - path: .env.local
         required: false
     volumes:
       - ../../apps/api:/app
@@ -68,7 +68,7 @@ services:
       "
     env_file:
       - .env.example
-      - path: .env
+      - path: .env.local
         required: false
     volumes:
       - ../../apps/dashboard:/app
@@ -97,7 +97,7 @@ services:
       "
     env_file:
       - .env.example
-      - path: .env
+      - path: .env.local
         required: false
     volumes:
       - ../../apps/workers/auth-gateway:/workers/auth-gateway
@@ -125,7 +125,7 @@ services:
       "
     env_file:
       - .env.example
-      - path: .env
+      - path: .env.local
         required: false
     volumes:
       - ../../apps/workers/api-management:/workers/api-management
@@ -152,7 +152,7 @@ services:
       "
     env_file:
       - .env.example
-      - path: .env
+      - path: .env.local
         required: false
     volumes:
       - ../../apps/dashboard:/app
