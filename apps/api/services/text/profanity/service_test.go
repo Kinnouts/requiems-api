@@ -98,4 +98,3 @@ func TestService_Check_LeetSpeak(t *testing.T) {
 		t.Error("expected at least one flagged word for leet-speak input")
 	}
 }
-

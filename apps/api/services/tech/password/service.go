@@ -83,7 +83,7 @@ func (s *Service) Generate(length int, useUppercase, useNumbers, useSymbols bool
 
 	// Shuffle using Fisher-Yates with crypto/rand so guaranteed chars are not
 	// always at predictable positions.
-	if err = shuffle(buf); err != nil {
+	if err := shuffle(buf); err != nil {
 		return Password{}, err
 	}
 

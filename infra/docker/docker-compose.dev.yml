@@ -75,7 +75,7 @@ services:
     tty: true
 
   auth-gateway:
-    image: node:24-slim
+    image: node:22-slim
     working_dir: /workers/auth-gateway
     command: >
       sh -c "
@@ -99,7 +99,7 @@ services:
         condition: service_started
 
   api-management:
-    image: node:24-slim
+    image: node:22-slim
     working_dir: /workers/api-management
     command: >
       sh -c "

@@ -87,13 +87,7 @@ app.all("/*", async (c) => {
   }
 
   // Record usage asynchronously (don't await)
-  void recordRequestUsage(
-    c.env,
-    apiKey,
-    keyData.userId,
-    url.pathname,
-    requestMultiplier,
-  );
+  void recordRequestUsage(c.env, apiKey, keyData.userId, url.pathname, requestMultiplier);
 
   // Add usage headers to successful response
   const response = addUsageHeaders(backendResponse, {
