@@ -103,9 +103,9 @@ Users can:
 - Delete keys
 - Set key permissions (future feature)
 
-When a key is created, updated, or deleted, it's automatically synced to
-Cloudflare KV via
-[CloudflareKvSyncService](../apps/dashboard/app/services/cloudflare/kv_sync_service.rb).
+When a key is created, updated, or deleted, it's managed through the API
+Management worker via
+[CloudflareApiManagementService](../apps/dashboard/app/services/cloudflare/api_management_service.rb).
 
 ### Usage Analytics
 
@@ -115,25 +115,17 @@ Cloudflare KV via
 - Top endpoints by usage
 - Monthly/daily aggregations
 
-### Background Jobs (Sidekiq)
+### Background Jobs (Solid Queue)
 
-**Usage Sync Job:**
+**[SyncD1UsageJob](../apps/dashboard/app/jobs/sync_d1_usage_job.rb)**
 
-- Pulls usage data from Cloudflare D1
-- Aggregates into PostgreSQL for reporting
-- Runs every hour
+- Pulls usage data from Cloudflare D1 into PostgreSQL
+- Runs every 5 minutes via Solid Queue recurring tasks
 
-**Cleanup Job:**
+**[AggregateDailyUsageJob](../apps/dashboard/app/jobs/aggregate_daily_usage_job.rb)**
 
-- Archives old usage logs
-- Removes stale sessions
-- Runs daily
-
-**Email Jobs:**
-
-- Welcome emails
-- Usage alerts (80%, 90%, 100% of credits)
-- Billing notifications
+- Builds daily usage summaries for analytics/reporting
+- Runs once per day at 00:05 UTC via Solid Queue recurring tasks
 
 ## Development
 
@@ -230,26 +222,15 @@ cd infra/docker
 docker compose up -d --build
 ```
 
-### With Kamal (Alternative)
-
-See [config/deploy.yml](../apps/dashboard/config/deploy.yml) for Kamal
-deployment configuration.
 
 ## Cloudflare Integration
 
-### KV Sync Service
+### API Management Service
 
-Automatically syncs API keys to Cloudflare KV:
-
-```ruby
-# After creating a new API key
-CloudflareKvSyncService.sync_key(api_key)
-
-# After deleting a key
-CloudflareKvSyncService.delete_key(api_key)
-```
-
-This ensures the Worker always has up-to-date authentication data.
+API key operations (create, update, revoke) are sent to the API Management
+worker via
+[CloudflareApiManagementService](../apps/dashboard/app/services/cloudflare/api_management_service.rb),
+which keeps KV in sync. Rails never writes to KV directly.
 
 ### Usage Data Flow
 

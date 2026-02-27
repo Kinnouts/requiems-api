@@ -20,7 +20,7 @@ User → Cloudflare Worker (Edge) → Hetzner VPS (Backend)
 
 **Components to Deploy:**
 
-1. Cloudflare Worker (apps/edge-auth)
+1. Cloudflare Worker (apps/workers/auth-gateway)
 2. VPS Backend (Go API + Rails Dashboard + PostgreSQL + Redis)
 3. DNS and domain configuration
 
@@ -324,7 +324,7 @@ npm install -g wrangler
 wrangler login
 
 # Navigate to worker directory
-cd apps/edge-auth
+cd apps/workers/auth-gateway
 ```
 
 ### 5.2 Create KV Namespace
@@ -660,7 +660,7 @@ docker compose up -d --build dashboard
 ### Update Worker
 
 ```bash
-cd apps/edge-auth
+cd apps/workers/auth-gateway
 wrangler deploy --env production
 ```
 

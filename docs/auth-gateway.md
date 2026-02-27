@@ -6,7 +6,7 @@ The Auth Gateway is a Cloudflare Worker that sits at the edge of the Requiem API
 architecture, handling authentication, rate limiting, and credit tracking before
 requests reach the backend.
 
-**Location:** [apps/edge-auth/](../apps/edge-auth/) **Technology:** TypeScript
+**Location:** [apps/workers/auth-gateway/](../apps/workers/auth-gateway/) **Technology:** TypeScript
 on Cloudflare Workers **Runtime:** V8 isolates running globally across
 Cloudflare's network
 
@@ -70,39 +70,42 @@ Add Usage Headers & Return Response
 
 ### Core Logic
 
-- [src/index.ts](../apps/edge-auth/src/index.ts) - Main worker entry point
-- [src/config.ts](../apps/edge-auth/src/config.ts) - Plan limits and endpoint
-  costs
-- [src/credits.ts](../apps/edge-auth/src/credits.ts) - Credit tracking logic
-- [src/rate-limit.ts](../apps/edge-auth/src/rate-limit.ts) - Rate limiting logic
-- [src/http.ts](../apps/edge-auth/src/http.ts) - HTTP helpers and header
-  filtering
+- [src/index.ts](../apps/workers/auth-gateway/src/index.ts) - Main worker entry point
+- [src/env.ts](../apps/workers/auth-gateway/src/env.ts) - Worker environment bindings
+- [src/requests.ts](../apps/workers/auth-gateway/src/requests.ts) - Usage tracking (D1 queries and recording)
+- [src/rate-limit.ts](../apps/workers/auth-gateway/src/rate-limit.ts) - Rate limiting logic
+- [src/http.ts](../apps/workers/auth-gateway/src/http.ts) - HTTP helpers and header filtering
+
+Plan limits and endpoint costs live in the shared package:
+[apps/workers/shared/src/config.ts](../apps/workers/shared/src/config.ts)
 
 ### Configuration
 
-- [wrangler.toml](../apps/edge-auth/wrangler.toml) - Worker configuration
-- [schema.sql](../apps/edge-auth/schema.sql) - D1 database schema
+- [wrangler.toml](../apps/workers/auth-gateway/wrangler.toml) - Worker configuration
+- [schema.sql](../apps/workers/auth-gateway/schema.sql) - D1 database schema
 
 ### Development
 
-- [scripts/seed-kv.ts](../apps/edge-auth/scripts/seed-kv.ts) - Test data seeding
+- [scripts/seed-dev.ts](../apps/workers/auth-gateway/scripts/seed-dev.ts) - Seeds KV and D1 with dev API keys
 
 ## Development
 
 ### Local Development
 
+The worker runs inside Docker via the dev compose stack — no manual setup needed:
+
 ```bash
-cd apps/edge-auth
+cd infra/docker
+docker compose -f docker-compose.dev.yml up
+# Auth Gateway available at http://localhost:4455
+```
 
-# Install dependencies
-pnpm install
+For standalone type checking or linting outside Docker:
 
-# Run type checking
+```bash
+cd apps/workers/auth-gateway
 pnpm run typecheck
-
-# Start local dev server
-pnpm dev
-# Worker runs on http://localhost:8787
+pnpm run lint
 ```
 
 ### Environment Variables
@@ -137,12 +140,10 @@ wrangler d1 execute requiem-usage --file=schema.sql
 
 ### Testing Locally
 
-```bash
-# Seed test API keys
-pnpm run kv:seed
+Dev API keys are seeded automatically when the stack starts. Use them directly:
 
-# Test request
-curl -H "requiems-api-key: rq_test_xxxxx" http://localhost:8787/v1/text/advice
+```bash
+curl -H "requiems-api-key: rq_free_000001" http://localhost:4455/v1/text/advice
 ```
 
 ## Response Headers
@@ -170,14 +171,9 @@ X-RateLimit-Remaining: 4999
 
 ## Endpoint Costs
 
-Most endpoints cost **1 credit** per request (default).
+Some endpoints requestes costs as multiple request.
 
-Expensive endpoints (require more resources):
-
-- Dictionary operations: 2 credits
-- Future AI/ML endpoints: 3-5 credits
-
-See [src/config.ts](../apps/edge-auth/src/config.ts) for the full list.
+See [apps/workers/shared/src/config.ts](../apps/workers/shared/src/config.ts) for the full list.
 
 ## Deployment
 
@@ -191,14 +187,14 @@ pnpm run deploy:prod
 
 ## Integration with Rails Dashboard
 
-The Rails dashboard syncs API keys to Cloudflare KV automatically:
+The Rails dashboard manages API keys through the API Management worker, which
+keeps KV in sync automatically:
 
-- New API key created → synced to KV via
-  [CloudflareKvSyncService](../apps/dashboard/app/services/cloudflare/kv_sync_service.rb)
-- API key updated → KV updated
-- API key deleted → KV entry removed
+- New API key created/updated/revoked → goes through
+  [CloudflareApiManagementService](../apps/dashboard/app/services/cloudflare/api_management_service.rb)
+- Rails never writes to KV directly — all changes go through the API Management worker
 
-This ensures the Worker always has up-to-date key information.
+This ensures the Auth Gateway always has up-to-date key data.
 
 ## Performance
 

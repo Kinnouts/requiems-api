@@ -107,7 +107,7 @@ After a successful webhook, check that the API key was synced to Cloudflare KV:
 
 ```bash
 # Using Wrangler CLI
-cd apps/edge-auth
+cd apps/workers/auth-gateway
 npx wrangler kv:key get "key:YOUR_API_KEY" --namespace-id=7cc847da3f3143b2ba8f7c531f416b35
 ```
 

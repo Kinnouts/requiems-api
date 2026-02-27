@@ -51,7 +51,7 @@ cd apps/dashboard && ruby -v  # Should show ruby 3.4.8
 **What:** Cloudflare Worker language **Current Version:** 5.3.3 **Files to
 Update:**
 
-- `apps/edge-auth/package.json` - TypeScript compiler (line 32:
+- `apps/workers/auth-gateway/package.json` - TypeScript compiler (line 32:
   `"typescript": "^5.3.3"`)
 
 **Note:** Caret `^` allows patch updates (5.3.x). For major updates, also check
@@ -60,7 +60,7 @@ Update:**
 **Verification:**
 
 ```bash
-cd apps/edge-auth && pnpm run typecheck  # Should pass
+cd apps/workers/auth-gateway && pnpm run typecheck  # Should pass
 ```
 
 ### pnpm (10.x)
@@ -131,8 +131,8 @@ Go API **Current Version:** 7-alpine **Files to Update:**
 **What:** Edge execution environment for authentication gateway **Version:**
 Managed by Cloudflare (automatically updated) **Files to Update:**
 
-- `apps/edge-auth/wrangler.toml` - Compatibility date (controls available APIs)
-- `apps/edge-auth/package.json` - `@cloudflare/workers-types` for TypeScript
+- `apps/workers/auth-gateway/wrangler.toml` - Compatibility date (controls available APIs)
+- `apps/workers/auth-gateway/package.json` - `@cloudflare/workers-types` for TypeScript
   types (line 28)
 
 **Note:** Set `compatibility_date` in wrangler.toml to opt into runtime updates.
@@ -172,13 +172,13 @@ cd apps/api && golangci-lint --version
 **What:** Test framework for Cloudflare Worker **Current Version:** ^1.2.0
 **Files to Update:**
 
-- `apps/edge-auth/package.json` - Test runner (line 33: `"vitest": "^1.2.0"`)
-- `apps/edge-auth/vitest.config.ts` - Configuration
+- `apps/workers/auth-gateway/package.json` - Test runner (line 33: `"vitest": "^1.2.0"`)
+- `apps/workers/auth-gateway/vitest.config.ts` - Configuration
 
 **Verification:**
 
 ```bash
-cd apps/edge-auth && pnpm exec vitest run
+cd apps/workers/auth-gateway && pnpm exec vitest run
 ```
 
 ### Biome 1.5.3
@@ -186,14 +186,14 @@ cd apps/edge-auth && pnpm exec vitest run
 **What:** Linter and formatter for Cloudflare Worker (replaces ESLint +
 Prettier) **Current Version:** ^1.5.3 **Files to Update:**
 
-- `apps/edge-auth/package.json` - Tool version (line 27:
+- `apps/workers/auth-gateway/package.json` - Tool version (line 27:
   `"@biomejs/biome": "^1.5.3"`)
-- `apps/edge-auth/biome.json` - Configuration
+- `apps/workers/auth-gateway/biome.json` - Configuration
 
 **Verification:**
 
 ```bash
-cd apps/edge-auth && pnpm run lint && pnpm run format:check
+cd apps/workers/auth-gateway && pnpm run lint && pnpm run format:check
 ```
 
 ### RuboCop (via rails-omakase)
@@ -249,12 +249,12 @@ go version                    # Go 1.24.x
 ruby -v                       # Ruby 3.4.8
 cd apps/dashboard && bin/rails -v  # Rails 8.1.2.x
 pnpm --version                              # pnpm 10.x
-cd apps/edge-auth && pnpm run typecheck     # TypeScript 5.3.3
+cd apps/workers/auth-gateway && pnpm run typecheck     # TypeScript 5.3.3
 
 # Run all tests
 cd apps/api && go test ./...
 cd apps/dashboard && bin/rails test
-cd apps/edge-auth && pnpm exec vitest run
+cd apps/workers/auth-gateway && pnpm exec vitest run
 ```
 
 ## External Service Versions
