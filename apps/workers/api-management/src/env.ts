@@ -11,9 +11,7 @@ const envSchema = z.object({
   API_MANAGEMENT_API_KEY: z.string().min(32),
   SWAGGER_USERNAME: z.string().optional(),
   SWAGGER_PASSWORD: z.string().optional(),
-  ENVIRONMENT: z.enum(["development", "staging", "production"]).default(
-    "production",
-  ),
+  ENVIRONMENT: z.enum(["development", "staging", "production"]).default("production"),
 });
 
 export function validateEnv(env: WorkerBindings): WorkerBindings {

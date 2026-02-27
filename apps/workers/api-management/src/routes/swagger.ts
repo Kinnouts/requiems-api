@@ -130,13 +130,7 @@ swaggerRoute.get("/openapi.json", (c) => {
                     userId: { type: "string" },
                     plan: {
                       type: "string",
-                      enum: [
-                        "free",
-                        "developer",
-                        "business",
-                        "professional",
-                        "enterprise",
-                      ],
+                      enum: ["free", "developer", "business", "professional", "enterprise"],
                     },
                     name: {
                       type: "string",
@@ -217,13 +211,7 @@ swaggerRoute.get("/openapi.json", (c) => {
                   properties: {
                     plan: {
                       type: "string",
-                      enum: [
-                        "free",
-                        "developer",
-                        "business",
-                        "professional",
-                        "enterprise",
-                      ],
+                      enum: ["free", "developer", "business", "professional", "enterprise"],
                     },
                     billingCycleStart: { type: "string", format: "date-time" },
                   },
@@ -259,12 +247,14 @@ swaggerRoute.get("/openapi.json", (c) => {
       "/analytics/by-endpoint": {
         get: {
           summary: "Usage breakdown by endpoint",
-          parameters: [{
-            name: "userId",
-            in: "query",
-            required: true,
-            schema: { type: "string" },
-          }],
+          parameters: [
+            {
+              name: "userId",
+              in: "query",
+              required: true,
+              schema: { type: "string" },
+            },
+          ],
           responses: {
             "200": { description: "Endpoint usage statistics" },
           },
@@ -273,12 +263,14 @@ swaggerRoute.get("/openapi.json", (c) => {
       "/analytics/by-date": {
         get: {
           summary: "Usage trends over time",
-          parameters: [{
-            name: "userId",
-            in: "query",
-            required: true,
-            schema: { type: "string" },
-          }],
+          parameters: [
+            {
+              name: "userId",
+              in: "query",
+              required: true,
+              schema: { type: "string" },
+            },
+          ],
           responses: {
             "200": { description: "Time series usage data" },
           },
@@ -287,12 +279,14 @@ swaggerRoute.get("/openapi.json", (c) => {
       "/analytics/summary": {
         get: {
           summary: "Overall usage summary",
-          parameters: [{
-            name: "userId",
-            in: "query",
-            required: true,
-            schema: { type: "string" },
-          }],
+          parameters: [
+            {
+              name: "userId",
+              in: "query",
+              required: true,
+              schema: { type: "string" },
+            },
+          ],
           responses: {
             "200": { description: "Usage summary" },
           },

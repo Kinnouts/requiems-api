@@ -79,9 +79,7 @@ app.get("/", async (c) => {
     if (c.env.ENVIRONMENT === "development") {
       return jsonError(
         500,
-        `Failed to list API keys: ${
-          error instanceof Error ? error.message : String(error)
-        }`,
+        `Failed to list API keys: ${error instanceof Error ? error.message : String(error)}`,
       );
     }
 

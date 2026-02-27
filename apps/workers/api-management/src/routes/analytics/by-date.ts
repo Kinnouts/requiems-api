@@ -21,8 +21,8 @@ app.get("/by-date", async (c) => {
 
   const userId = c.req.query("userId");
   const until = c.req.query("until") || new Date().toISOString();
-  const since = c.req.query("since") ||
-    new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+  const since =
+    c.req.query("since") || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
   const groupBy = c.req.query("groupBy") || "day";
 
   if (!userId) {
@@ -72,9 +72,7 @@ app.get("/by-date", async (c) => {
     if (c.env.ENVIRONMENT === "development") {
       return jsonError(
         500,
-        `Failed to fetch analytics: ${
-          error instanceof Error ? error.message : String(error)
-        }`,
+        `Failed to fetch analytics: ${error instanceof Error ? error.message : String(error)}`,
       );
     }
 
