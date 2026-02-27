@@ -42,7 +42,7 @@
       <button
         data-controller="date-range"
         data-action="click->date-range#toggle"
-        class="px-4 py-2 rounded-lg text-sm font-medium transition-colors #{params[:range] == 'custom' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}">
+        class="px-4 py-2 rounded-lg text-sm font-medium transition-colors <%= params[:range] == 'custom' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' %>">
         Custom Range
       </button>
     </div>
