@@ -1,25 +1,43 @@
 import { Hono } from "hono";
+import { SwaggerUI } from "@hono/swagger-ui";
 import type { WorkerBindings } from "../env";
 
 const swaggerRoute = new Hono<{ Bindings: WorkerBindings }>();
+
+function getOpenApiMeta(isDev: boolean) {
+  const servers = isDev
+    ? [
+        { url: "http://localhost:5544", description: "Local development" },
+        { url: "https://api-management.requiems.xyz", description: "Production" },
+      ]
+    : [
+        { url: "https://api-management.requiems.xyz", description: "Production" },
+        { url: "http://localhost:5544", description: "Local development" },
+      ];
+
+  const description = isDev
+    ? "Internal API for managing API keys, usage data, and analytics. Only accessible by Rails dashboard.\n\n**Local dev key:** `dev_api_mgmt_key_for_local_dev_only`"
+    : "Internal API for managing API keys, usage data, and analytics. Only accessible by Rails dashboard.";
+
+  return { servers, description };
+}
 
 /**
  * OpenAPI specification endpoint
  * Provides machine-readable API documentation
  */
 swaggerRoute.get("/openapi.json", (c) => {
+  const isDev = c.env.ENVIRONMENT !== "production";
+  const { servers, description } = getOpenApiMeta(isDev);
+
   return c.json({
     openapi: "3.0.0",
     info: {
       title: "Requiems API Management",
       version: "1.0.0",
-      description:
-        "Internal API for managing API keys, usage data, and analytics. Only accessible by Rails dashboard.",
+      description,
     },
-    servers: [
-      { url: "https://api-management.requiems.xyz", description: "Production" },
-      { url: "http://localhost:5544", description: "Local development" },
-    ],
+    servers,
     components: {
       securitySchemes: {
         ApiManagementKey: {
@@ -282,6 +300,24 @@ swaggerRoute.get("/openapi.json", (c) => {
       },
     },
   });
+});
+
+swaggerRoute.get("/docs", (c) => {
+  const isDev = c.env.ENVIRONMENT !== "production";
+  const onComplete = isDev
+    ? `() => { window.ui.preauthorizeApiKey('ApiManagementKey', '${c.env.API_MANAGEMENT_API_KEY}') }`
+    : undefined;
+  return c.html(`<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>API Management</title>
+  </head>
+  <body>
+    ${SwaggerUI({ url: "/openapi.json", persistAuthorization: true, onComplete })}
+  </body>
+</html>`);
 });
 
 export { swaggerRoute };

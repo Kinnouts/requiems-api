@@ -27,6 +27,7 @@ interface BasicAuthBindings {
  * control and works reliably in production.
  */
 export const basicAuthMiddleware = async (c: Context, next: Next) => {
+
   const authHeader = c.req.header("Authorization");
 
   if (!authHeader || !authHeader.startsWith("Basic ")) {
