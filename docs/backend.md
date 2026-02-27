@@ -50,7 +50,8 @@ Domains: `email`, `text`, `tech`, `places`, `entertainment`, `misc`, etc...
    feature.RegisterRoutes(r, svc)
    ```
 
-4. **New top-level domain** — create the domain router and mount it in `app/routes_v1.go`:
+4. **New top-level domain** — create the domain router and mount it in
+   `app/routes_v1.go`:
    ```go
    r.Mount("/v1/newdomain", newdomain.NewRouter(pool))
    ```

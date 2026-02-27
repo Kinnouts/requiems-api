@@ -65,8 +65,8 @@ cd apps/workers/auth-gateway && pnpm run typecheck  # Should pass
 
 ### pnpm (10.x)
 
-**What:** Package manager for Cloudflare Worker development **Current
-Version:** 10.x (pinned via `packageManager` field) **Files to Update:**
+**What:** Package manager for Cloudflare Worker development **Current Version:**
+10.x (pinned via `packageManager` field) **Files to Update:**
 
 - `.github/workflows/ci.yml` - CI setup (`pnpm/action-setup@v4`)
 - `apps/workers/*/package.json` - `packageManager` field
@@ -131,9 +131,10 @@ Go API **Current Version:** 7-alpine **Files to Update:**
 **What:** Edge execution environment for authentication gateway **Version:**
 Managed by Cloudflare (automatically updated) **Files to Update:**
 
-- `apps/workers/auth-gateway/wrangler.toml` - Compatibility date (controls available APIs)
-- `apps/workers/auth-gateway/package.json` - `@cloudflare/workers-types` for TypeScript
-  types (line 28)
+- `apps/workers/auth-gateway/wrangler.toml` - Compatibility date (controls
+  available APIs)
+- `apps/workers/auth-gateway/package.json` - `@cloudflare/workers-types` for
+  TypeScript types (line 28)
 
 **Note:** Set `compatibility_date` in wrangler.toml to opt into runtime updates.
 See:
@@ -172,7 +173,8 @@ cd apps/api && golangci-lint --version
 **What:** Test framework for Cloudflare Worker **Current Version:** ^1.2.0
 **Files to Update:**
 
-- `apps/workers/auth-gateway/package.json` - Test runner (line 33: `"vitest": "^1.2.0"`)
+- `apps/workers/auth-gateway/package.json` - Test runner (line 33:
+  `"vitest": "^1.2.0"`)
 - `apps/workers/auth-gateway/vitest.config.ts` - Configuration
 
 **Verification:**
