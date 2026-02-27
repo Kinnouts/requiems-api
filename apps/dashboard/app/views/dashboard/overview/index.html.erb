@@ -228,14 +228,14 @@
 
         <div class="space-y-3">
           <div>
-            <p class="text-sm text-gray-600">Current Plan</p>
-            <p class="text-lg font-semibold text-gray-900"><%= @current_plan.titleize %></p>
+            <p class="text-sm text-gray-600 dark:text-gray-300">Current Plan</p>
+            <p class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= @current_plan.titleize %></p>
           </div>
 
           <% if @next_billing_date %>
             <div>
-              <p class="text-sm text-gray-600">Next Billing Date</p>
-              <p class="text-sm font-medium text-gray-900"><%= @next_billing_date.strftime("%B %d, %Y") %></p>
+              <p class="text-sm text-gray-600 dark:text-gray-300">Next Billing Date</p>
+              <p class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= @next_billing_date.strftime("%B %d, %Y") %></p>
             </div>
           <% end %>
         </div>

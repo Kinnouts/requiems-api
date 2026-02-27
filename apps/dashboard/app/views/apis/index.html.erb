@@ -1,8 +1,8 @@
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900">
   <!-- Main Content with Sidebar -->
   <div class="flex">
     <!-- Sidebar (fixed width, not overlapping) -->
-    <aside class="hidden lg:block w-52 bg-white border-r border-gray-200 flex-shrink-0">
+    <aside class="hidden lg:block w-52 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex-shrink-0">
       <div class="sticky top-16 max-h-[calc(100vh-4rem)] overflow-y-auto">
         <%= render 'partials/apis_index/sidebar', categories: @categories_with_apis %>
       </div>
