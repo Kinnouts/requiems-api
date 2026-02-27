@@ -16,6 +16,9 @@ as a multi-language monorepo with:
 
 ### Full Stack Development
 
+See [docs/getting-started.md](docs/getting-started.md) for environment setup
+and local development configuration.
+
 Start all services with hot reload:
 
 ```bash

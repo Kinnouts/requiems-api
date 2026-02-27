@@ -138,13 +138,14 @@ class AppConfig
   end
 
   def require_env(key)
-    ENV.fetch(key) do
-      # In test environment, provide safe defaults instead of failing
-      if Rails.env.test?
-        test_defaults[key]
-      else
-        raise MissingConfigError, "Missing required environment variable: #{key}"
-      end
+    value = ENV.fetch(key, nil)
+    return value if value.present?
+
+    # Key absent or empty string — fall back to test defaults or raise
+    if Rails.env.test?
+      test_defaults[key]
+    else
+      raise MissingConfigError, "Missing required environment variable: #{key}"
     end
   end
 
