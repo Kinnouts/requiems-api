@@ -18,7 +18,7 @@
 │  │        │  │  D1    │      │  │  │ Page   │  │ & Admin │     │
 │  └────────┘  └────────┘      │  │  └────────┘  └─────────┘     │
 │                              │  │                              │
-│  requiems-api-key validation        │  │  User management             │
+│  requiems-api-key validation │  │  User management             │
 │  Rate limiting               │  │  API key creation            │
 │  Credit tracking             │  │  Usage stats                 │
 └──────────────────────────────┘  └──────────────────────────────┘

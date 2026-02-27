@@ -12,6 +12,22 @@ as a multi-language monorepo with:
 - **API Management** (apps/workers/api-management) - Internal service for API
   key management, usage exports, and analytics
 
+## Before Implementing — Read the Relevant Doc First
+
+Before writing any code, read the doc for the area you are working in:
+
+| Task                                            | Read first                                      |
+| ----------------------------------------------- | ----------------------------------------------- |
+| Add a Go endpoint (new feature, new domain)     | `docs/adding-go-endpoints.md`                   |
+| Work on the Go backend (architecture, patterns) | `docs/backend.md`                               |
+| Work on the Auth Gateway worker                 | `docs/auth-gateway.md`                          |
+| Work on the API Management worker               | `docs/api-management.md`                        |
+| Work on the Rails dashboard                     | `docs/rails-app.md`                             |
+| Infrastructure / deployment                     | `docs/infrastructure.md` / `docs/deployment.md` |
+| Dev environment setup                           | `docs/getting-started.md`                       |
+
+All docs are in `docs/` — see `docs/readme.md` for the full index.
+
 ## Development Commands
 
 ### Full Stack Development
@@ -403,24 +419,8 @@ Usage tracking:
 
 ### Adding New Go Endpoints
 
-1. Create feature directory in `apps/api/services/{domain}/{feature}/`
-2. Add `service.go` (business logic)
-3. Add `transport_http.go` (HTTP handler)
-4. Add `type.go` (request/response types)
-5. Register routes in parent `router.go`
-6. Mount router in `apps/api/app/routes_v1.go`
-
-Example structure:
-
-```
-services/
-  text/
-    advice/
-      service.go
-      transport_http.go
-      type.go
-    router.go  # Mounts all text/* routes
-```
+See `docs/adding-go-endpoints.md` for the full step-by-step guide including
+code patterns, testing, documentation YAML, and the pre-merge checklist.
 
 ### Go Backend Security
 

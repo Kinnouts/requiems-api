@@ -19,10 +19,6 @@ User → Auth Gateway (api.requiems.xyz)
        PostgreSQL
 ```
 
-The Go backend **trusts the gateway completely**. It does not perform API key
-validation or rate limiting — that is the gateway's job. The backend only
-receives requests with a valid `X-Backend-Secret` header already attached.
-
 ### Domain Directory Layout
 
 Every feature lives inside a domain:
@@ -76,15 +72,6 @@ harder to onboard.
    `apps/api/go.mod` and scan the current dependency list. The problem may
    already be solved.
 
-   Current domain-specific libraries in use:
-   | Library                                              | What it does                          |
-   | ---------------------------------------------------- | ------------------------------------- |
-   | `github.com/bobadilla-tech/is-email-disposable`      | Disposable email blocklist (embedded) |
-   | `github.com/bobadilla-tech/lorelai`                  | Lorem ipsum text generation           |
-   | `github.com/bobadilla-tech/business-days-calculator` | Working-days calculations             |
-   | `github.com/go-playground/validator/v10`             | Struct validation                     |
-   | `github.com/golang-migrate/migrate/v4`               | SQL migration runner                  |
-
 2. **`bobadilla-tech` org on GitHub** Check whether a new `bobadilla-tech`
    package exists for the domain you are building. These are first-party
    libraries designed to slot directly into this platform.
@@ -108,7 +95,6 @@ harder to onboard.
 ### When you add a new library
 
 ```bash
-# Inside the api container
 docker exec requiem-dev-api-1 go get github.com/some/library@latest
 docker exec requiem-dev-api-1 go mod tidy
 ```
@@ -396,25 +382,29 @@ func registerV1Routes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb
 If the feature needs new tables or columns, create a SQL migration file:
 
 ```
-migrations/YYYYMMDDHHMMSS_add_riddles_table.up.sql
+apps/api/migrations/0005_add_riddles_table.up.sql
+apps/api/migrations/0005_add_riddles_table.down.sql
 ```
+
+Use the next sequential 4-digit number after the last existing migration.
 
 Example:
 
 ```sql
+-- 0005_add_riddles_table.up.sql
 CREATE TABLE riddles (
     id       SERIAL PRIMARY KEY,
     question TEXT NOT NULL,
     answer   TEXT NOT NULL,
     category VARCHAR(50) NOT NULL DEFAULT 'general'
 );
+
+-- 0005_add_riddles_table.down.sql
+DROP TABLE riddles;
 ```
 
 **No Go registration is needed.** The app calls `db.MigrateWithRetry()` on
 startup and discovers all `*.up.sql` files in that directory automatically.
-
-Do **not** create a `.down.sql` file unless you have a tested rollback procedure
-— partial rollbacks are worse than no rollback.
 
 ---
 
@@ -587,6 +577,7 @@ field is rendered in the UI — do not leave any required section empty.
 
 2. **Response Format**: ALL responses MUST include `data` and `metadata`
    wrappers
+
    ```json
    {
      "data": {
@@ -597,6 +588,7 @@ field is rendered in the UI — do not leave any required section empty.
      }
    }
    ```
+
    This is enforced by `httpx.JSON` in the Go backend.
 
 3. **Field Naming**: Always use `snake_case`, never `camelCase`
@@ -609,6 +601,7 @@ field is rendered in the UI — do not leave any required section empty.
 
 5. **Path Parameters**: For endpoints with URL path parameters (e.g.,
    `/counter/{namespace}`):
+
    ```yaml
    parameters:
      - name: namespace
@@ -620,6 +613,7 @@ field is rendered in the UI — do not leave any required section empty.
    ```
 
 6. **Query Parameters**: For GET endpoints with query strings:
+
    ```yaml
    parameters:
      - name: page
@@ -631,6 +625,7 @@ field is rendered in the UI — do not leave any required section empty.
    ```
 
 7. **Body Parameters**: For POST/PUT JSON body parameters:
+
    ```yaml
    parameters:
      - name: email
@@ -921,13 +916,6 @@ description: Page number (default: 1)
   description: "Page number (default: 1)"
 ```
 
-### Pricing section still appears
-
-**Cause**: Pricing section was not removed from the YAML file
-
-**Fix**: Remove the entire `pricing:` section from your YAML file. Pricing is
-global, not per-API.
-
 ---
 
 ## Docker Considerations
@@ -961,7 +949,7 @@ Manual smoke test
   [ ] Invalid input returns correct 4xx with descriptive error
 
 Database (if applicable)
-  [ ] Migration file follows naming convention: YYYYMMDDHHMMSS_description.up.sql
+  [ ] Migration file follows naming convention: 000X_description.up.sql + matching .down.sql
   [ ] App starts cleanly after migration (no startup errors in docker logs api)
 
 Documentation
