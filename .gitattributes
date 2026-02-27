@@ -6,9 +6,9 @@
 *.sh linguist-detectable=false
 
 # Mark Rails asset files as vendored
-apps/dashboard/app/assets/* linguist-vendored
-apps/dashboard/public/* linguist-vendored
-apps/dashboard/vendor/* linguist-vendored
+apps/dashboard/app/assets/** linguist-vendored
+apps/dashboard/public/** linguist-vendored
+apps/dashboard/vendor/** linguist-vendored
 
 # Mark Rails/Kamal deployment scripts as vendored
 apps/dashboard/bin/dev linguist-vendored
