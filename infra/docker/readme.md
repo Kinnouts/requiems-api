@@ -31,6 +31,19 @@ docker compose -f docker-compose.dev.yml up
 
 - For Sidekiq background jobs
 
+✅ **Auth Gateway** (Cloudflare Worker via Wrangler) on port **4455**
+
+- Public-facing API entry point
+- Validates API keys, enforces rate limits, proxies to Go backend
+- Seeded with dev API keys automatically on start
+- Access: http://localhost:4455/healthz
+
+✅ **API Management** (Cloudflare Worker via Wrangler) on port **5544**
+
+- Internal service for API key CRUD, usage exports, analytics
+- Swagger docs at http://localhost:5544/docs (user: `local`, pass: `password`)
+- Access: http://localhost:5544/healthz
+
 ✅ **Sidekiq** background worker
 
 - Processes Rails jobs automatically
@@ -67,8 +80,10 @@ docker compose -f docker-compose.dev.yml down -v
 
 | Service         | URL                   | Notes                                |
 | --------------- | --------------------- | ------------------------------------ |
+| Auth Gateway    | http://localhost:4455 | Public API entry point               |
+| API Management  | http://localhost:5544 | Internal management service          |
 | Rails Dashboard | http://localhost:3000 | Sign up, sign in, dashboard          |
-| Go API          | http://localhost:8080 | Internal API endpoints               |
+| Go API          | http://localhost:8080 | Internal API (gateway → backend)     |
 | PostgreSQL      | localhost:5432        | User: `requiem`, Password: `requiem` |
 | Redis           | localhost:6379        | For Sidekiq                          |
 
@@ -169,14 +184,45 @@ This uses optimized Dockerfiles with:
 - Multi-stage builds
 - Compiled binaries
 - No development dependencies
-- Caddy reverse proxy (optional, prod profile)
+- Caddy as reverse proxy (handles TLS automatically)
+
+### Environment Variables
+
+All services load environment variables from a `.env` file in this directory.
+Copy the example and fill in real values before starting:
+
+```bash
+cp .env.example .env
+# edit .env with production values
+```
+
+All variables must be set — there are no runtime defaults. See `.env.example`
+for the full list with descriptions.
 
 ### Production Differences:
 
 - Go: Compiled to static binary (no Air)
 - Rails: Uses Thruster + Puma in production mode
 - All code baked into images (no volume mounts)
-- Requires `SECRET_KEY_BASE` and other env vars
+- `RAILS_ENV=production` and `RAILS_LOG_LEVEL=warn` are hardcoded in compose
+
+### Cloudflare Workers
+
+The Auth Gateway and API Management workers run on Cloudflare, not in Docker.
+Deploy them separately via Wrangler from their respective directories:
+
+```bash
+# Auth Gateway
+cd apps/workers/auth-gateway
+pnpm run deploy
+
+# API Management
+cd apps/workers/api-management
+pnpm run deploy
+```
+
+Worker secrets (`BACKEND_URL`, `BACKEND_SECRET`, `API_MANAGEMENT_API_KEY`) must
+be set via `wrangler secret put` — they are not read from `.env`.
 
 ---
 
