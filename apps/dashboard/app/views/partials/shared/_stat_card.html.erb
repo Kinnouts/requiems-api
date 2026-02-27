@@ -16,21 +16,21 @@
     "down" => "text-red-600"
   }
 
-  stat_trend_class = stat_trend_colors[stat_trend] || "text-gray-600"
+  stat_trend_class = stat_trend_colors[stat_trend] || "text-gray-600 dark:text-gray-400"
 %>
 
-<div class="bg-white rounded-lg shadow p-6 <%= stat_extra_classes %>">
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 <%= stat_extra_classes %>">
   <div class="flex items-center justify-between">
     <div class="flex-1">
-      <p class="text-sm font-medium text-gray-600 uppercase tracking-wide">
+      <p class="text-sm font-medium text-gray-600 dark:text-gray-400 uppercase tracking-wide">
         <%= stat_title %>
       </p>
-      <p class="mt-2 text-3xl font-bold text-gray-900">
+      <p class="mt-2 text-3xl font-bold text-gray-900 dark:text-gray-100">
         <%= stat_value %>
       </p>
 
       <% if stat_subtitle.present? %>
-        <p class="mt-1 text-sm text-gray-500">
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
           <%= stat_subtitle %>
         </p>
       <% end %>
@@ -49,7 +49,7 @@
 
     <% if stat_icon.present? %>
       <div class="flex-shrink-0">
-        <div class="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center">
+        <div class="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
           <%= stat_icon %>
         </div>
       </div>

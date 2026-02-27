@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <script>
+      (function() {
+        var theme = localStorage.getItem('theme');
+        if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
     <title><%= content_for(:title) || "Dashboard" %> - Requiems API</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <meta name="turbo-visit-control" content="reload">
@@ -14,7 +22,7 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-gray-50">
+  <body class="bg-gray-50 dark:bg-gray-900">
     <!-- Top Navbar -->
     <%= render "layouts/navbar" %>
 

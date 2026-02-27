@@ -10,7 +10,7 @@
   card_header_action = local_assigns.fetch(:header_action, nil)
 
   # Base styles
-  card_base = "bg-white rounded-lg shadow"
+  card_base = "bg-white dark:bg-gray-800 rounded-lg shadow"
   card_base += " hover:shadow-lg transition-shadow" if card_hover
 
   # Card wrapper class
@@ -22,13 +22,13 @@
 
 <div class="<%= card_wrapper_class %>">
   <% if card_title.present? || card_subtitle.present? || card_header_action.present? %>
-    <div class="border-b border-gray-200 px-6 py-4 flex items-center justify-between">
+    <div class="border-b border-gray-200 dark:border-gray-700 px-6 py-4 flex items-center justify-between">
       <div>
         <% if card_title.present? %>
-          <h3 class="text-lg font-semibold text-gray-900"><%= card_title %></h3>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= card_title %></h3>
         <% end %>
         <% if card_subtitle.present? %>
-          <p class="mt-1 text-sm text-gray-500"><%= card_subtitle %></p>
+          <p class="mt-1 text-sm text-gray-500 dark:text-gray-400"><%= card_subtitle %></p>
         <% end %>
       </div>
       <% if card_header_action.present? %>
