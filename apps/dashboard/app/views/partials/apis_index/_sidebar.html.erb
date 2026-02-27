@@ -9,7 +9,7 @@
 
   <nav class="space-y-0.5">
     <!-- Most Popular -->
-    <a href="<%= apis_path %>#most-popular" class="flex items-center px-2 py-2 text-sm font-medium rounded transition-colors text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
+    <a href="<%= apis_path %>" class="flex items-center px-2 py-2 text-sm font-medium rounded transition-colors text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
       <span class="mr-2 text-base">⭐</span>
       <span class="flex-1">Most Popular</span>
     </a>
@@ -24,11 +24,10 @@
 
     <!-- Coming Soon Categories -->
     <% api_categories.select { |c| c["coming_soon"] }.each do |category| %>
-      <div class="flex items-center px-2 py-2 text-sm text-gray-400 dark:text-gray-500 cursor-not-allowed">
+      <%= link_to category_path(category["id"]), class: "flex items-center px-2 py-2 text-sm font-medium rounded transition-colors text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700" do %>
         <span class="mr-2 text-base"><%= category["icon"] %></span>
-        <span class="flex-1 text-xs"><%= category["name"] %></span>
-        <span class="ml-auto text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 px-1.5 py-0.5 rounded">Soon</span>
-      </div>
+        <span class="flex-1"><%= category["name"] %></span>
+      <% end %>
     <% end %>
   </nav>
 </div>

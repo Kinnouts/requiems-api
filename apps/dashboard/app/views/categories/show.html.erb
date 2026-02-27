@@ -30,7 +30,13 @@
         </div>
       <% else %>
         <div class="text-center py-16">
-          <p class="text-gray-500 dark:text-gray-400">No APIs available in this category yet.</p>
+          <% if @category["coming_soon"] %>
+            <div class="text-5xl mb-4">🚧</div>
+            <h2 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">Coming Soon</h2>
+            <p class="text-gray-500 dark:text-gray-400">We're working on bringing APIs to this category. Check back soon!</p>
+          <% else %>
+            <p class="text-gray-500 dark:text-gray-400">No APIs available in this category yet.</p>
+          <% end %>
         </div>
       <% end %>
     </div>

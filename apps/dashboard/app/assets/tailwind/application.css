@@ -1,3 +1,16 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
+
+/* Logo dark mode: white circle backdrop */
+.logo-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dark .logo-circle {
+  background-color: white;
+  border-radius: 9999px;
+  padding: 0.25rem;
+}

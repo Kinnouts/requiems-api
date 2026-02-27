@@ -5,7 +5,9 @@
       <!-- Left: Logo -->
       <div class="flex-shrink-0 pl-2 sm:pl-4">
         <%= link_to root_path, class: "flex items-center space-x-2" do %>
-          <%= image_tag "logo.png", alt: "Requiems API Logo", class: "h-8 w-auto" %>
+          <span class="logo-circle">
+            <%= image_tag "logo.png", alt: "Requiems API Logo", class: "h-6 w-auto" %>
+          </span>
           <span class="text-2xl font-bold text-blue-600">Requiems</span>
           <span class="text-sm font-medium text-gray-500 dark:text-gray-400">API</span>
         <% end %>

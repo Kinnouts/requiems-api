@@ -27,22 +27,14 @@
     </div>
 
     <div class="flex flex-wrap gap-2">
-      <%= link_to "Last 7 Days",
-        dashboard_usage_path(range: "7d"),
-        class: "px-4 py-2 rounded-lg text-sm font-medium transition-colors #{params[:range] == '7d' || (params[:range].blank? && @range_label == 'Last 7 Days') ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}" %>
-
-      <%= link_to "Last 30 Days",
-        dashboard_usage_path(range: "30d"),
-        class: "px-4 py-2 rounded-lg text-sm font-medium transition-colors #{params[:range] == '30d' || (params[:range].blank? && @range_label == 'Last 30 Days') ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}" %>
-
-      <%= link_to "Last 90 Days",
-        dashboard_usage_path(range: "90d"),
-        class: "px-4 py-2 rounded-lg text-sm font-medium transition-colors #{params[:range] == '90d' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'}" %>
+      <%= link_to "Last 7 Days",  dashboard_usage_path(range: "7d"),  class: range_button_classes("7d") %>
+      <%= link_to "Last 30 Days", dashboard_usage_path(range: "30d"), class: range_button_classes("30d") %>
+      <%= link_to "Last 90 Days", dashboard_usage_path(range: "90d"), class: range_button_classes("90d") %>
 
       <button
         data-controller="date-range"
         data-action="click->date-range#toggle"
-        class="px-4 py-2 rounded-lg text-sm font-medium transition-colors <%= params[:range] == 'custom' ? 'bg-blue-600 text-white' : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600' %>">
+        class="<%= range_button_classes("custom") %>">
         Custom Range
       </button>
     </div>
