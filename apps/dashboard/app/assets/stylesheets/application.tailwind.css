@@ -1,4 +1,18 @@
 @import "tailwindcss";
+@variant dark (&:is(.dark, .dark *));
+
+/* Logo dark mode: white circle backdrop */
+.dark .logo-circle {
+  background-color: white;
+  border-radius: 9999px;
+  padding: 0.25rem;
+}
+
+/* APIs index main content padding */
+.apis-content {
+  padding-left: 3.5rem;
+  padding-right: 3.5rem;
+}
 
 /* Syntax Highlighting */
 @import "https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css";

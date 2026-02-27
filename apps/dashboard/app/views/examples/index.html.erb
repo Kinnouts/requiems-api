@@ -1,24 +1,24 @@
-<div class="min-h-screen bg-gray-50">
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900">
   <!-- Header -->
-  <div class="bg-white border-b border-gray-200">
+  <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
       <div class="text-center">
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">
+        <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
           Example Projects & Tutorials
         </h1>
-        <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+        <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
           Learn how to integrate Requiems APIs into your projects with these practical examples and step-by-step tutorials.
         </p>
       </div>
 
       <!-- Category Filter -->
       <div class="mt-8 flex flex-wrap justify-center gap-3">
-        <%= link_to examples_path, class: "px-4 py-2 rounded-lg text-sm font-medium transition-colors #{@selected_category.nil? ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'}" do %>
+        <%= link_to examples_path, class: "px-4 py-2 rounded-lg text-sm font-medium transition-colors #{@selected_category.nil? ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600'}" do %>
           All Examples
         <% end %>
 
         <% @categories.each do |category| %>
-          <%= link_to examples_path(category: category["name"]), class: "px-4 py-2 rounded-lg text-sm font-medium transition-colors #{@selected_category == category['name'] ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 hover:bg-gray-50 border border-gray-200'}" do %>
+          <%= link_to examples_path(category: category["name"]), class: "px-4 py-2 rounded-lg text-sm font-medium transition-colors #{@selected_category == category['name'] ? 'bg-blue-600 text-white' : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 border border-gray-200 dark:border-gray-600'}" do %>
             <%= category["icon"] %> <%= category["name"] %>
           <% end %>
         <% end %>
@@ -36,11 +36,11 @@
       </div>
     <% else %>
       <div class="text-center py-12">
-        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
-        <h3 class="mt-2 text-sm font-medium text-gray-900">No examples found</h3>
-        <p class="mt-1 text-sm text-gray-500">Try selecting a different category.</p>
+        <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">No examples found</h3>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Try selecting a different category.</p>
       </div>
     <% end %>
 

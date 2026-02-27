@@ -115,13 +115,14 @@ Rails.application.routes.draw do
   get "faq", to: "home#faq"
 
   # Form pages
-  get "suggest_api", to: "suggestions#new"
-  post "suggest_api", to: "suggestions#create"
-  get "talk_to_sales", to: "sales_inquiries#new"
-  post "talk_to_sales", to: "sales_inquiries#create"
+  get "suggest-an-api", to: "suggestions#new", as: "suggest_api"
+  post "suggest-an-api", to: "suggestions#create"
+  get "talk-to-sales", to: "sales_inquiries#new", as: "talk_to_sales"
+  post "talk-to-sales", to: "sales_inquiries#create"
 
   get "examples", to: "examples#index"
   resources :apis, only: [ :index, :show ]
+  resources :categories, only: [ :show ]
   resources :examples, only: [ :show ]
 
   # API Playground Proxy

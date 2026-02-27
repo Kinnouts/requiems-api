@@ -16,8 +16,8 @@
      data-api-playground-modal-id-value="<%= user_signed_in? ? '' : playground_modal_id %>">
 
   <!-- Request Section -->
-  <div class="bg-white rounded-lg p-4">
-    <h5 class="text-sm font-semibold text-gray-900 mb-3">Request</h5>
+  <div class="bg-white dark:bg-gray-800 rounded-lg p-4">
+    <h5 class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Request</h5>
 
     <% if playground_parameters.any? %>
       <div class="space-y-3 mb-4">
@@ -25,12 +25,12 @@
           <% param_location = param["location"] || "body" %>
 
           <div data-param-location="<%= param_location %>">
-            <label class="block text-sm font-medium text-gray-700 mb-1">
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
               <%= param["name"] %>
               <% if param["required"] %>
                 <span class="text-red-500">*</span>
               <% end %>
-              <span class="text-gray-500 font-normal">(<%= param["type"] %>)</span>
+              <span class="text-gray-500 dark:text-gray-400 font-normal">(<%= param["type"] %>)</span>
             </label>
 
             <% if param["type"] == "array" %>
@@ -41,9 +41,9 @@
                 data-param-required="<%= param["required"] %>"
                 placeholder='<%= param["example"] || "[]" %>'
                 rows="3"
-                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm font-mono"
+                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-blue-500 focus:border-blue-500 sm:text-sm font-mono"
               ></textarea>
-              <p class="mt-1 text-xs text-gray-500">Enter JSON array, e.g., <%= param["example"] || '["item1", "item2"]' %></p>
+              <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Enter JSON array, e.g., <%= param["example"] || '["item1", "item2"]' %></p>
             <% elsif param["type"] == "object" %>
               <textarea
                 data-api-playground-target="param"
@@ -52,9 +52,9 @@
                 data-param-required="<%= param["required"] %>"
                 placeholder='<%= param["example"] || "{}" %>'
                 rows="3"
-                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm font-mono"
+                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-blue-500 focus:border-blue-500 sm:text-sm font-mono"
               ></textarea>
-              <p class="mt-1 text-xs text-gray-500">Enter JSON object</p>
+              <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Enter JSON object</p>
             <% else %>
               <input
                 type="text"
@@ -63,12 +63,12 @@
                 data-param-type="<%= param["type"] %>"
                 data-param-required="<%= param["required"] %>"
                 placeholder="<%= param["example"] || param["description"] %>"
-                class="block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+                class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
               />
             <% end %>
 
             <% if param["description"] %>
-              <p class="mt-1 text-xs text-gray-500"><%= param["description"] %></p>
+              <p class="mt-1 text-xs text-gray-500 dark:text-gray-400"><%= param["description"] %></p>
             <% end %>
           </div>
         <% end %>
@@ -88,7 +88,7 @@
     </button>
 
     <!-- Loading indicator (hidden by default) -->
-    <div class="hidden mt-4 flex items-center justify-center text-sm text-gray-600" data-api-playground-target="loading">
+    <div class="hidden mt-4 flex items-center justify-center text-sm text-gray-600 dark:text-gray-400" data-api-playground-target="loading">
       <svg class="animate-spin h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24">
         <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
         <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
@@ -99,17 +99,17 @@
 
   <!-- Response Section -->
   <div class="mt-4 hidden" data-api-playground-target="responseContainer">
-    <h5 class="text-sm font-semibold text-gray-900 mb-3">Response</h5>
+    <h5 class="text-sm font-semibold text-gray-900 dark:text-gray-100 mb-3">Response</h5>
 
     <!-- Response Status -->
-    <div class="flex items-center justify-between mb-3 p-3 bg-gray-50 rounded-lg" data-api-playground-target="responseStatus">
+    <div class="flex items-center justify-between mb-3 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg" data-api-playground-target="responseStatus">
       <div class="flex items-center space-x-2">
-        <span class="text-sm font-medium text-gray-700">Status:</span>
+        <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Status:</span>
         <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium" data-api-playground-target="statusBadge">
           --
         </span>
       </div>
-      <div class="text-sm text-gray-600">
+      <div class="text-sm text-gray-600 dark:text-gray-400">
         <span data-api-playground-target="responseTime">--</span>
       </div>
     </div>
@@ -133,14 +133,14 @@
 
   <!-- Error Section -->
   <div class="mt-4 hidden" data-api-playground-target="errorContainer">
-    <div class="bg-red-50 border border-red-200 rounded-lg p-4">
+    <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
       <div class="flex">
         <svg class="h-5 w-5 text-red-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
           <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
         </svg>
         <div>
-          <h6 class="text-sm font-medium text-red-900">Error</h6>
-          <p class="text-sm text-red-700 mt-1" data-api-playground-target="errorMessage">--</p>
+          <h6 class="text-sm font-medium text-red-900 dark:text-red-200">Error</h6>
+          <p class="text-sm text-red-700 dark:text-red-300 mt-1" data-api-playground-target="errorMessage">--</p>
         </div>
       </div>
     </div>
@@ -161,12 +161,12 @@
          onclick="document.getElementById('<%= playground_modal_id %>').style.display='none'; document.body.classList.remove('overflow-hidden')"></div>
 
     <%# Dialog card %>
-    <div class="relative z-10 bg-white shadow-xl w-full max-w-sm p-5" style="border-radius: 1.5rem">
+    <div class="relative z-10 bg-white dark:bg-gray-800 shadow-xl w-full max-w-sm p-5 rounded-3xl">
 
       <%# Close button %>
       <button type="button"
               onclick="document.getElementById('<%= playground_modal_id %>').style.display='none'; document.body.classList.remove('overflow-hidden')"
-              class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+              class="absolute top-4 right-4 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
               aria-label="Dismiss">
         <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
@@ -182,10 +182,10 @@
 
       <%# Content %>
       <div class="text-center">
-        <h3 id="rate-limit-title-<%= playground_index %>" class="text-lg font-bold text-gray-900">Testing too fast!</h3>
-        <p class="mt-2 text-sm text-gray-500">
-          The demo allows <strong class="text-gray-700">1 request per minute</strong> for anonymous users.
-          Sign up for free and get <strong class="text-gray-700">4&times; more requests</strong> &mdash; you can keep testing right away.
+        <h3 id="rate-limit-title-<%= playground_index %>" class="text-lg font-bold text-gray-900 dark:text-gray-100">Testing too fast!</h3>
+        <p class="mt-2 text-sm text-gray-500 dark:text-gray-400">
+          The demo allows <strong class="text-gray-700 dark:text-gray-300">1 request per minute</strong> for anonymous users.
+          Sign up for free and get <strong class="text-gray-700 dark:text-gray-300">4&times; more requests</strong> &mdash; you can keep testing right away.
         </p>
       </div>
 
@@ -194,7 +194,7 @@
         <%= link_to "Create free account", new_user_registration_path,
               class: "w-full inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors" %>
         <%= link_to "Sign in", new_user_session_path,
-              class: "w-full inline-flex items-center justify-center px-4 py-2 bg-gray-100 text-gray-700 text-sm font-medium rounded-lg hover:bg-gray-200 transition-colors" %>
+              class: "w-full inline-flex items-center justify-center px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors" %>
       </div>
     </div>
   </div>

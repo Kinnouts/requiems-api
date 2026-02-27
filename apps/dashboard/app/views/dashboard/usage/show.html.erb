@@ -3,13 +3,13 @@
 <!-- Header -->
 <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between mb-8">
   <div>
-    <h1 class="text-3xl font-bold text-gray-900">Usage & Analytics</h1>
-    <p class="mt-2 text-sm text-gray-600">Track your API usage and performance metrics</p>
+    <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Usage & Analytics</h1>
+    <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Track your API usage and performance metrics</p>
   </div>
 
   <!-- Export Button -->
   <%= link_to export_dashboard_usage_path(range: params[:range], start_date: params[:start_date], end_date: params[:end_date]),
-    class: "mt-4 lg:mt-0 inline-flex items-center px-4 py-2 bg-white border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors",
+    class: "mt-4 lg:mt-0 inline-flex items-center px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors",
     data: { turbo: false } do %>
     <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
@@ -19,30 +19,22 @@
 </div>
 
 <!-- Date Range Filter -->
-<div class="bg-white rounded-lg shadow p-6 mb-8">
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8">
   <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
     <div class="mb-4 lg:mb-0">
-      <h3 class="text-sm font-medium text-gray-700">Date Range</h3>
-      <p class="text-lg font-semibold text-gray-900 mt-1"><%= @range_label %></p>
+      <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300">Date Range</h3>
+      <p class="text-lg font-semibold text-gray-900 dark:text-gray-100 mt-1"><%= @range_label %></p>
     </div>
 
     <div class="flex flex-wrap gap-2">
-      <%= link_to "Last 7 Days",
-        dashboard_usage_path(range: "7d"),
-        class: "px-4 py-2 rounded-lg text-sm font-medium transition-colors #{params[:range] == '7d' || (params[:range].blank? && @range_label == 'Last 7 Days') ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}" %>
-
-      <%= link_to "Last 30 Days",
-        dashboard_usage_path(range: "30d"),
-        class: "px-4 py-2 rounded-lg text-sm font-medium transition-colors #{params[:range] == '30d' || (params[:range].blank? && @range_label == 'Last 30 Days') ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}" %>
-
-      <%= link_to "Last 90 Days",
-        dashboard_usage_path(range: "90d"),
-        class: "px-4 py-2 rounded-lg text-sm font-medium transition-colors #{params[:range] == '90d' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}" %>
+      <%= link_to "Last 7 Days",  dashboard_usage_path(range: "7d"),  class: range_button_classes("7d") %>
+      <%= link_to "Last 30 Days", dashboard_usage_path(range: "30d"), class: range_button_classes("30d") %>
+      <%= link_to "Last 90 Days", dashboard_usage_path(range: "90d"), class: range_button_classes("90d") %>
 
       <button
         data-controller="date-range"
         data-action="click->date-range#toggle"
-        class="px-4 py-2 rounded-lg text-sm font-medium transition-colors #{params[:range] == 'custom' ? 'bg-blue-600 text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}">
+        class="<%= range_button_classes("custom") %>">
         Custom Range
       </button>
     </div>
@@ -54,17 +46,17 @@
       <%= f.hidden_field :range, value: "custom" %>
 
       <div class="flex-1">
-        <%= f.label :start_date, "Start Date", class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= f.label :start_date, "Start Date", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
         <%= f.date_field :start_date,
           value: params[:start_date] || 30.days.ago.to_date,
-          class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+          class: "w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
       </div>
 
       <div class="flex-1">
-        <%= f.label :end_date, "End Date", class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= f.label :end_date, "End Date", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
         <%= f.date_field :end_date,
           value: params[:end_date] || Date.today,
-          class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+          class: "w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
       </div>
 
       <div>
@@ -78,69 +70,69 @@
 <!-- Summary Cards -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
   <!-- Total Requests -->
-  <div class="bg-white rounded-lg shadow p-6">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-sm font-medium text-gray-500">Total Requests</h3>
-      <div class="p-2 bg-blue-100 rounded-lg">
+      <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Requests</h3>
+      <div class="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
         <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
         </svg>
       </div>
     </div>
-    <p class="text-3xl font-bold text-gray-900"><%= number_with_delimiter(@total_requests) %></p>
-    <p class="text-sm text-gray-600 mt-1">API calls in period</p>
+    <p class="text-3xl font-bold text-gray-900 dark:text-gray-100"><%= number_with_delimiter(@total_requests) %></p>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">API calls in period</p>
   </div>
 
   <!-- Total Credits Used -->
-  <div class="bg-white rounded-lg shadow p-6">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-sm font-medium text-gray-500">Credits Used</h3>
-      <div class="p-2 bg-purple-100 rounded-lg">
+      <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Credits Used</h3>
+      <div class="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
         <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
       </div>
     </div>
-    <p class="text-3xl font-bold text-gray-900"><%= number_with_delimiter(@total_credits_used) %></p>
-    <p class="text-sm text-gray-600 mt-1">Deducted from quota</p>
+    <p class="text-3xl font-bold text-gray-900 dark:text-gray-100"><%= number_with_delimiter(@total_credits_used) %></p>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Deducted from quota</p>
   </div>
 
   <!-- Average Response Time -->
-  <div class="bg-white rounded-lg shadow p-6">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-sm font-medium text-gray-500">Avg Response Time</h3>
-      <div class="p-2 bg-green-100 rounded-lg">
+      <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Avg Response Time</h3>
+      <div class="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
         <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
         </svg>
       </div>
     </div>
-    <p class="text-3xl font-bold text-gray-900"><%= @avg_response_time %>ms</p>
-    <p class="text-sm text-gray-600 mt-1">Average latency</p>
+    <p class="text-3xl font-bold text-gray-900 dark:text-gray-100"><%= @avg_response_time %>ms</p>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Average latency</p>
   </div>
 
   <!-- Error Rate -->
-  <div class="bg-white rounded-lg shadow p-6">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-sm font-medium text-gray-500">Error Rate</h3>
-      <div class="p-2 <%= @error_rate > 5 ? 'bg-red-100' : 'bg-gray-100' %> rounded-lg">
-        <svg class="h-6 w-6 <%= @error_rate > 5 ? 'text-red-600' : 'text-gray-600' %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Error Rate</h3>
+      <div class="p-2 <%= @error_rate > 5 ? 'bg-red-100 dark:bg-red-900' : 'bg-gray-100 dark:bg-gray-700' %> rounded-lg">
+        <svg class="h-6 w-6 <%= @error_rate > 5 ? 'text-red-600 dark:text-red-400' : 'text-gray-600 dark:text-gray-400' %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
       </div>
     </div>
-    <p class="text-3xl font-bold text-gray-900"><%= @error_rate %>%</p>
-    <p class="text-sm text-gray-600 mt-1">Failed requests</p>
+    <p class="text-3xl font-bold text-gray-900 dark:text-gray-100"><%= @error_rate %>%</p>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Failed requests</p>
   </div>
 </div>
 
 <!-- Charts Row -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
   <!-- Usage Over Time Chart -->
-  <div class="bg-white rounded-lg shadow">
-    <div class="px-6 py-4 border-b border-gray-200">
-      <h2 class="text-lg font-semibold text-gray-900">Usage Over Time</h2>
-      <p class="text-sm text-gray-600 mt-1">Daily request volume and errors</p>
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Usage Over Time</h2>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Daily request volume and errors</p>
     </div>
     <div class="p-6">
       <div id="usage-over-time-chart" style="height: 300px;">
@@ -150,7 +142,7 @@
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            <p class="text-sm text-gray-500">Loading chart...</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Loading chart...</p>
           </div>
         </div>
       </div>
@@ -158,10 +150,10 @@
   </div>
 
   <!-- Usage by Endpoint Chart -->
-  <div class="bg-white rounded-lg shadow">
-    <div class="px-6 py-4 border-b border-gray-200">
-      <h2 class="text-lg font-semibold text-gray-900">Usage by Endpoint</h2>
-      <p class="text-sm text-gray-600 mt-1">Top endpoints by request count</p>
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Usage by Endpoint</h2>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Top endpoints by request count</p>
     </div>
     <div class="p-6">
       <div id="usage-by-endpoint-chart" style="height: 300px;">
@@ -171,7 +163,7 @@
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
               <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
             </svg>
-            <p class="text-sm text-gray-500">Loading chart...</p>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Loading chart...</p>
           </div>
         </div>
       </div>
@@ -180,34 +172,34 @@
 </div>
 
 <!-- Recent Requests Table -->
-<div class="bg-white rounded-lg shadow">
-  <div class="px-6 py-4 border-b border-gray-200">
-    <h2 class="text-lg font-semibold text-gray-900">Recent Requests</h2>
-    <p class="text-sm text-gray-600 mt-1">Latest API calls in selected date range</p>
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow">
+  <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+    <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Recent Requests</h2>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Latest API calls in selected date range</p>
   </div>
 
   <% if @recent_requests.any? %>
     <div class="overflow-x-auto">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
+      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <thead class="bg-gray-50 dark:bg-gray-700">
           <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Endpoint</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Method</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Response Time</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Credits</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">API Key</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Time</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Endpoint</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Method</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Response Time</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Credits</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">API Key</th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
+        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
           <% @recent_requests.each do |log| %>
-            <tr class="hover:bg-gray-50">
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                 <%= time_ago_in_words(log.used_at) %> ago
               </td>
               <td class="px-6 py-4 text-sm">
-                <code class="text-xs bg-gray-100 px-2 py-1 rounded"><%= log.endpoint %></code>
+                <code class="text-xs bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded"><%= log.endpoint %></code>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm">
                 <%= render "partials/shared/badge", text: log.method || "POST", variant: "default", size: "xs" %>
@@ -224,13 +216,13 @@
                 %>
                 <%= render "partials/shared/badge", text: log.status_code.to_s, variant: status_variant, size: "xs" %>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                 <%= log.response_time_ms || "—" %>ms
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                 <%= log.credits_used || 1 %>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                 <%= log.api_key&.name || "Unknown" %>
               </td>
             </tr>
@@ -240,11 +232,11 @@
     </div>
   <% else %>
     <div class="px-6 py-12 text-center">
-      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
       </svg>
-      <h3 class="mt-2 text-sm font-medium text-gray-900">No usage data</h3>
-      <p class="mt-1 text-sm text-gray-500">No API calls found in the selected date range.</p>
+      <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">No usage data</h3>
+      <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">No API calls found in the selected date range.</p>
     </div>
   <% end %>
 </div>

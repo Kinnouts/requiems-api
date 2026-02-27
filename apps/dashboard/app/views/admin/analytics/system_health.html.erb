@@ -12,7 +12,7 @@
 
     <!-- Time Range Selector -->
     <div class="flex items-center space-x-2">
-      <%= form_with url: system_health_admin_analytics_index_path, method: :get, local: true, class: "flex items-center space-x-2" do |f| %>
+      <%= form_with url: admin_analytics_system_health_path, method: :get, local: true, class: "flex items-center space-x-2" do |f| %>
         <%= f.select :time_range,
           options_for_select(
             [

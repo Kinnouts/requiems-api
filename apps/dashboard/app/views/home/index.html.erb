@@ -68,13 +68,13 @@
 </div>
 
 <!-- Documentation Quality Section -->
-<div class="bg-gray-50 py-20">
+<div class="bg-gray-50 dark:bg-gray-900 py-20">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
-      <h2 class="text-4xl font-bold text-gray-900">
+      <h2 class="text-4xl font-bold text-gray-900 dark:text-gray-100">
         Built for Developer Experience
       </h2>
-      <p class="mt-4 text-xl text-gray-600">
+      <p class="mt-4 text-xl text-gray-600 dark:text-gray-400">
         Everything you need to integrate and ship fast
       </p>
     </div>
@@ -83,14 +83,14 @@
       <!-- Feature 1: Live Demos -->
       <%= render "partials/shared/card", padding: true, hover: true do %>
         <div class="text-center">
-          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 text-blue-600 mb-4">
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 mb-4">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h3 class="text-xl font-bold text-gray-900 mb-2">Live API Playground</h3>
-          <p class="text-gray-600">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Live API Playground</h3>
+          <p class="text-gray-600 dark:text-gray-400">
             Test every endpoint directly in the docs. See real responses instantly without writing code.
           </p>
         </div>
@@ -99,13 +99,13 @@
       <!-- Feature 2: Code Examples -->
       <%= render "partials/shared/card", padding: true, hover: true do %>
         <div class="text-center">
-          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 text-green-600 mb-4">
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-green-100 dark:bg-green-900 text-green-600 dark:text-green-300 mb-4">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
             </svg>
           </div>
-          <h3 class="text-xl font-bold text-gray-900 mb-2">Code Examples</h3>
-          <p class="text-gray-600">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Code Examples</h3>
+          <p class="text-gray-600 dark:text-gray-400">
             Copy-paste examples in cURL, Python, JavaScript, Ruby, Go, and more. Start in seconds.
           </p>
         </div>
@@ -114,13 +114,13 @@
       <!-- Feature 3: Precise Docs -->
       <%= render "partials/shared/card", padding: true, hover: true do %>
         <div class="text-center">
-          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-purple-100 text-purple-600 mb-4">
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-purple-100 dark:bg-purple-900 text-purple-600 dark:text-purple-300 mb-4">
             <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <h3 class="text-xl font-bold text-gray-900 mb-2">Precise Documentation</h3>
-          <p class="text-gray-600">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Precise Documentation</h3>
+          <p class="text-gray-600 dark:text-gray-400">
             Every parameter, response field, and error code documented. No guessing required.
           </p>
         </div>
@@ -130,13 +130,13 @@
 </div>
 
 <!-- API Categories Grid -->
-<div class="bg-white py-20" id="api-docs">
+<div class="bg-white dark:bg-gray-800 py-20" id="api-docs">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-12">
-      <h2 class="text-4xl font-bold text-gray-900">
+      <h2 class="text-4xl font-bold text-gray-900 dark:text-gray-100">
         API Categories
       </h2>
-      <p class="mt-4 text-lg text-gray-600">
+      <p class="mt-4 text-lg text-gray-600 dark:text-gray-400">
         Explore our comprehensive collection of APIs organized by category to find exactly what you need.
       </p>
     </div>
@@ -144,9 +144,9 @@
     <div class="grid gap-3 mb-16 grid-cols-2 md:grid-cols-8">
       <% @categories.first(16).each_with_index do |category, index| %>
         <%= link_to apis_path(category: category["id"]),
-            class: "group bg-gray-50 rounded-lg p-4 text-center transition-all duration-200 hover:bg-blue-50 #{index >= 8 ? 'hidden md:block' : ''}" do %>
+            class: "group bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center transition-all duration-200 hover:bg-blue-50 dark:hover:bg-gray-600 #{index >= 8 ? 'hidden md:block' : ''}" do %>
           <div class="text-3xl mb-2"><%= category["icon"] %></div>
-          <h3 class="text-xs font-semibold text-gray-900 group-hover:text-blue-600 leading-tight">
+          <h3 class="text-xs font-semibold text-gray-900 dark:text-gray-100 group-hover:text-blue-600 leading-tight">
             <%= category["name"] %>
           </h3>
         <% end %>
@@ -162,13 +162,13 @@
 </div>
 
 <!-- Metrics Section -->
-<div class="bg-gradient-to-br from-gray-50 to-gray-100 py-20">
+<div class="bg-gray-50 dark:bg-gray-900 py-20">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
-      <h2 class="text-4xl font-bold text-gray-900">
+      <h2 class="text-4xl font-bold text-gray-900 dark:text-gray-100">
         Performance You Can Count On
       </h2>
-      <p class="mt-4 text-xl text-gray-600">
+      <p class="mt-4 text-xl text-gray-600 dark:text-gray-400">
         Enterprise-grade infrastructure without the enterprise complexity
       </p>
     </div>
@@ -183,13 +183,13 @@
 </div>
 
 <!-- Security & Compliance Section -->
-<div class="bg-white py-20">
+<div class="bg-white dark:bg-gray-800 py-20">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
-      <h2 class="text-4xl font-bold text-gray-900">
+      <h2 class="text-4xl font-bold text-gray-900 dark:text-gray-100">
         Security & Compliance First
       </h2>
-      <p class="mt-4 text-xl text-gray-600">
+      <p class="mt-4 text-xl text-gray-600 dark:text-gray-400">
         Enterprise-grade security for teams of all sizes
       </p>
     </div>
@@ -205,9 +205,9 @@
           </div>
         </div>
         <div class="ml-4">
-          <h3 class="text-lg font-semibold text-gray-900">SOC 2 Certification</h3>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">SOC 2 Certification</h3>
           <%= render "partials/shared/badge", text: "In Progress", variant: "info", size: "sm", class_names: "mt-1" %>
-          <p class="mt-2 text-gray-600">
+          <p class="mt-2 text-gray-600 dark:text-gray-400">
             In progress.
           </p>
         </div>
@@ -223,9 +223,9 @@
           </div>
         </div>
         <div class="ml-4">
-          <h3 class="text-lg font-semibold text-gray-900">Data Encryption</h3>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Data Encryption</h3>
           <%= render "partials/shared/badge", text: "Active", variant: "success", size: "sm", class_names: "mt-1" %>
-          <p class="mt-2 text-gray-600">
+          <p class="mt-2 text-gray-600 dark:text-gray-400">
             TLS 1.3 in transit, AES-256 at rest. Zero data storage policy for API inputs/outputs.
           </p>
         </div>
@@ -241,9 +241,9 @@
           </div>
         </div>
         <div class="ml-4">
-          <h3 class="text-lg font-semibold text-gray-900">EU Infrastructure</h3>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">EU Infrastructure</h3>
           <%= render "partials/shared/badge", text: "EU", variant: "primary", size: "sm", class_names: "mt-1" %>
-          <p class="mt-2 text-gray-600">
+          <p class="mt-2 text-gray-600 dark:text-gray-400">
             All data centers located in the European Union. GDPR compliant.
           </p>
         </div>
@@ -259,9 +259,9 @@
           </div>
         </div>
         <div class="ml-4">
-          <h3 class="text-lg font-semibold text-gray-900">Secure Payments</h3>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Secure Payments</h3>
           <%= render "partials/shared/badge", text: "Stripe", variant: "success", size: "sm", class_names: "mt-1" %>
-          <p class="mt-2 text-gray-600">
+          <p class="mt-2 text-gray-600 dark:text-gray-400">
             All payments processed through Stripe. We never see or store your payment details.
           </p>
         </div>
@@ -277,9 +277,9 @@
           </div>
         </div>
         <div class="ml-4">
-          <h3 class="text-lg font-semibold text-gray-900">GDPR / CCPA Compliant</h3>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">GDPR / CCPA Compliant</h3>
           <%= render "partials/shared/badge", text: "Compliant", variant: "success", size: "sm", class_names: "mt-1" %>
-          <p class="mt-2 text-gray-600">
+          <p class="mt-2 text-gray-600 dark:text-gray-400">
             Full compliance with GDPR, CCPA, and international privacy regulations.
           </p>
         </div>
@@ -295,9 +295,9 @@
           </div>
         </div>
         <div class="ml-4">
-          <h3 class="text-lg font-semibold text-gray-900">API Security</h3>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">API Security</h3>
           <%= render "partials/shared/badge", text: "Rate Limited", variant: "success", size: "sm", class_names: "mt-1" %>
-          <p class="mt-2 text-gray-600">
+          <p class="mt-2 text-gray-600 dark:text-gray-400">
             Built-in rate limiting, DDoS protection, and abuse prevention at the edge.
           </p>
         </div>
@@ -307,13 +307,13 @@
 </div>
 
 <!-- FAQ Accordion Section -->
-<div class="bg-white py-20">
+<div class="bg-gray-50 dark:bg-gray-900 py-20">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
-      <h2 class="text-4xl font-bold text-gray-900">
+      <h2 class="text-4xl font-bold text-gray-900 dark:text-gray-100">
         Frequently Asked Questions
       </h2>
-      <p class="mt-4 text-xl text-gray-600">
+      <p class="mt-4 text-xl text-gray-600 dark:text-gray-400">
         Everything you need to know about Requiems API
       </p>
     </div>
@@ -322,12 +322,12 @@
       <!-- FAQ 1 -->
       <%= render "partials/shared/card", padding: true do %>
         <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="0">
-          <span class="text-lg font-semibold text-gray-900">Is Requiems API really free to start?</span>
-          <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">Is Requiems API really free to start?</span>
+          <svg class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
-        <div class="mt-4 text-gray-600 hidden" data-tabs-target="panel">
+        <div class="mt-4 text-gray-600 dark:text-gray-400 hidden" data-tabs-target="panel">
           Yes! You get 500 requests per month completely free with no credit card required. Perfect for testing, side projects, and small applications. Upgrade to paid plans only when you need more capacity.
         </div>
       <% end %>
@@ -335,12 +335,12 @@
       <!-- FAQ 2 -->
       <%= render "partials/shared/card", padding: true do %>
         <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="1">
-          <span class="text-lg font-semibold text-gray-900">Can I use this for commercial projects?</span>
-          <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">Can I use this for commercial projects?</span>
+          <svg class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
-        <div class="mt-4 text-gray-600 hidden" data-tabs-target="panel">
+        <div class="mt-4 text-gray-600 dark:text-gray-400 hidden" data-tabs-target="panel">
           Yes! All plans, including the free tier, can be used for commercial projects within the usage limits. Our managed service is designed for production use by businesses of all sizes.
         </div>
       <% end %>
@@ -348,12 +348,12 @@
       <!-- FAQ 3 -->
       <%= render "partials/shared/card", padding: true do %>
         <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="2">
-          <span class="text-lg font-semibold text-gray-900">Where are your servers located?</span>
-          <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">Where are your servers located?</span>
+          <svg class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
-        <div class="mt-4 text-gray-600 hidden" data-tabs-target="panel">
+        <div class="mt-4 text-gray-600 dark:text-gray-400 hidden" data-tabs-target="panel">
           All our data centers are located in the European Union, powered by Cloudflare's global edge network for GDPR compliance.
         </div>
       <% end %>
@@ -361,19 +361,19 @@
       <!-- FAQ 4 -->
       <%= render "partials/shared/card", padding: true do %>
         <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="3">
-          <span class="text-lg font-semibold text-gray-900">What payment methods do you accept?</span>
-          <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">What payment methods do you accept?</span>
+          <svg class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
-        <div class="mt-4 text-gray-600 hidden" data-tabs-target="panel">
+        <div class="mt-4 text-gray-600 dark:text-gray-400 hidden" data-tabs-target="panel">
           We accept all major credit cards (Visa, Mastercard, American Express) and debit cards through Stripe. All payments are processed securely and we never see or store your payment details.
         </div>
       <% end %>
     </div>
 
     <div class="mt-12 text-center">
-      <p class="text-gray-600 mb-4">Still have questions?</p>
+      <p class="text-gray-600 dark:text-gray-400 mb-4">Still have questions?</p>
       <%= link_to contact_path, class: "inline-flex items-center text-blue-600 hover:text-blue-700 font-medium" do %>
         Contact our support team
         <svg class="ml-1 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">

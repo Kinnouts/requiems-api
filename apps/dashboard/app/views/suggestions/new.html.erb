@@ -1,26 +1,26 @@
 <% content_for :title, "Suggest an API - Requiems API" %>
 
-<div class="min-h-screen bg-gray-50 py-16">
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
   <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="bg-white rounded-lg shadow-lg p-8 md:p-12">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 md:p-12">
       <div class="text-center mb-8">
         <div class="text-5xl mb-4">💡</div>
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">Suggest an API</h1>
-        <p class="text-xl text-gray-600">
+        <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">Suggest an API</h1>
+        <p class="text-xl text-gray-600 dark:text-gray-400">
           Help us build what you need. We value your input and review every suggestion.
         </p>
       </div>
 
       <!-- GitHub Notice -->
-      <div class="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+      <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-8">
         <div class="flex items-start">
           <svg class="h-6 w-6 text-blue-500 mr-3 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
             <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
           </svg>
-          <div class="text-sm text-blue-800">
+          <div class="text-sm text-blue-800 dark:text-blue-300">
             <p class="font-semibold mb-2">More of a technical person?</p>
             <p>You can also open an issue or start a discussion on our GitHub repository:
-              <a href="https://github.com/bobadilla-tech/requiems-api/issues" target="_blank" rel="noopener noreferrer" class="text-blue-700 hover:text-blue-900 underline font-medium">
+              <a href="https://github.com/bobadilla-tech/requiems-api/issues" target="_blank" rel="noopener noreferrer" class="text-blue-700 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-200 underline font-medium">
                 github.com/bobadilla-tech/requiems-api
               </a>
             </p>
@@ -30,12 +30,12 @@
 
       <!-- Flash Messages -->
       <% if flash[:alert] %>
-        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+        <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
           <div class="flex items-start">
             <svg class="h-5 w-5 text-red-500 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-            <p class="text-sm text-red-800"><%= flash[:alert] %></p>
+            <p class="text-sm text-red-800 dark:text-red-300"><%= flash[:alert] %></p>
           </div>
         </div>
       <% end %>
@@ -44,59 +44,59 @@
       <%= form_with url: suggest_api_path, method: :post, local: true, data: { turbo: false } do |f| %>
         <!-- API Name -->
         <div class="mb-6">
-          <%= label_tag "suggestion[api_name]", "API Name", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= label_tag "suggestion[api_name]", "API Name", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
           <%= text_field_tag "suggestion[api_name]", params.dig(:suggestion, :api_name),
             placeholder: "e.g., Weather Forecast API, Stock Market Data API",
-            class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent",
+            class: "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent",
             required: true,
             autofocus: true %>
-          <p class="mt-1 text-xs text-gray-500">What would you like to call this API?</p>
+          <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">What would you like to call this API?</p>
         </div>
 
         <!-- Description -->
         <div class="mb-6">
-          <%= label_tag "suggestion[description]", "Description", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= label_tag "suggestion[description]", "Description", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
           <%= text_area_tag "suggestion[description]", params.dig(:suggestion, :description),
             placeholder: "Describe what this API should do...",
             rows: 4,
-            class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none",
+            class: "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none",
             required: true %>
-          <p class="mt-1 text-xs text-gray-500">What functionality should this API provide?</p>
+          <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">What functionality should this API provide?</p>
         </div>
 
         <!-- Use Case -->
         <div class="mb-6">
-          <%= label_tag "suggestion[use_case]", "Use Case", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= label_tag "suggestion[use_case]", "Use Case", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
           <%= text_area_tag "suggestion[use_case]", params.dig(:suggestion, :use_case),
             placeholder: "How would you use this API in your application?",
             rows: 4,
-            class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none",
+            class: "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none",
             required: true %>
-          <p class="mt-1 text-xs text-gray-500">Tell us about your specific use case or project.</p>
+          <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Tell us about your specific use case or project.</p>
         </div>
 
         <!-- Email (Optional) -->
         <div class="mb-8">
-          <%= label_tag "suggestion[email]", "Your Email (Optional)", class: "block text-sm font-medium text-gray-700 mb-2" %>
+          <%= label_tag "suggestion[email]", "Your Email (Optional)", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
           <%= email_field_tag "suggestion[email]", params.dig(:suggestion, :email),
             placeholder: "your@email.com",
-            class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
-          <p class="mt-1 text-xs text-gray-500">If you'd like us to follow up with you about this suggestion.</p>
+            class: "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+          <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">If you'd like us to follow up with you about this suggestion.</p>
         </div>
 
         <!-- Response Time Notice -->
-        <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-6">
+        <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-4 mb-6">
           <div class="flex items-start">
             <svg class="h-5 w-5 text-green-500 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
-            <p class="text-sm text-green-800">We usually reply within 24 hours.</p>
+            <p class="text-sm text-green-800 dark:text-green-300">We usually reply within 24 hours.</p>
           </div>
         </div>
 
         <!-- Actions -->
         <div class="flex items-center justify-between">
-          <%= link_to "Cancel", root_path, class: "px-6 py-3 text-gray-700 font-medium hover:text-gray-900 transition-colors" %>
+          <%= link_to "Cancel", root_path, class: "px-6 py-3 text-gray-700 dark:text-gray-300 font-medium hover:text-gray-900 dark:hover:text-gray-100 transition-colors" %>
           <%= submit_tag "Submit Suggestion",
             class: "px-8 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors shadow-sm hover:shadow-md",
             data: { disable_with: "Submitting..." } %>

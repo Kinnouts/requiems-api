@@ -3,92 +3,107 @@
 
 categories:
   - id: email
-    name: Email APIs
+    name: Email
     icon: "📧"
-    description: Validate, verify, and analyze email addresses
+    short_description: Validate and verify email addresses — detect disposable addresses, check deliverability, and keep your user data clean.
+    description: Validate, verify, and analyze email addresses with precision. From detecting disposable and temporary addresses to checking deliverability and extracting domain metadata, our Email APIs help you maintain clean user databases, reduce spam signups, and improve the performance of your email campaigns.
 
   - id: text
-    name: Text APIs
+    name: Text
     icon: "📝"
-    description: Generate and manipulate text content
+    short_description: Lorem ipsum, random quotes, random words, and profanity detection — text utilities for every project.
+    description: Generate, manipulate, and analyze text content at scale. Whether you need placeholder text for design mockups, inspirational quotes for your app, profanity detection for content moderation, or random words for games and testing — our Text APIs cover every text-related use case your project demands.
 
   - id: finance
     name: Finance
     icon: "💰"
-    description: Financial data and calculations
+    short_description: Real-time stock prices, exchange rates, crypto values, and economic indicators for fintech apps.
+    description: Access real-time and historical financial data including stock prices, exchange rates, cryptocurrency values, interest rates, and economic indicators. Built for fintech apps, trading platforms, and business intelligence systems that require accurate, up-to-date financial information at scale.
     coming_soon: true
 
   - id: technology
     name: Internet/Technology
     icon: "💻"
-    description: Technology and internet utilities
+    short_description: User agent parsing, password generation, phone validation, and bot detection for modern web apps.
+    description: Essential utilities for modern web and app development. Parse user agent strings for device detection, generate cryptographically secure passwords, validate phone numbers, detect bots, and access a suite of internet tools that power millions of applications worldwide.
 
   - id: ai_vision
     name: AI/Computer Vision
     icon: "🤖"
-    description: AI-powered image analysis and computer vision
+    short_description: Analyze images, detect objects, recognize faces, and extract text with computer vision models.
+    description: Harness the power of artificial intelligence to analyze images, detect objects, recognize faces, extract text from documents, and classify visual content. Our computer vision APIs bring state-of-the-art machine learning models to your fingertips through a simple, unified REST interface.
     coming_soon: true
 
   - id: animals
     name: Animals
     icon: "🐾"
-    description: Animal facts, data, and information
+    short_description: Species facts, habitat data, and behavioral traits for educational and wildlife applications.
+    description: Explore the animal kingdom with rich datasets covering species facts, habitat information, behavioral traits, and high-quality imagery. Ideal for educational platforms, wildlife apps, trivia games, and any project that brings the natural world to life for your users.
     coming_soon: true
 
   - id: entertainment
     name: Entertainment
     icon: "🎬"
-    description: Movies, music, and entertainment data
+    short_description: Horoscopes, movie info, music metadata, and pop culture content to keep your users engaged.
+    description: Bring fun and engagement to your applications with entertainment data. Fetch daily horoscope readings, pull movie and TV show information, access music metadata, and tap into pop culture content that keeps users coming back — all through one simple API key.
 
   - id: health
     name: Health/Wellness
     icon: "🏥"
-    description: Health, fitness, and wellness APIs
+    short_description: Nutrition data, fitness metrics, and wellness insights for healthcare platforms and fitness apps.
+    description: Power health and wellness applications with reliable data on nutrition, fitness metrics, medical information, and wellness insights. Designed for healthcare platforms, fitness trackers, diet apps, and any product that helps people make informed decisions about their health.
     coming_soon: true
 
   - id: misc
     name: Miscellaneous
     icon: "🔧"
-    description: Various utility APIs
+    short_description: Hit counters, unit conversion, and everyday utility tools that solve common development problems.
+    description: A versatile collection of utility APIs for the everyday challenges that don't fit neatly into one category. From atomic hit counters and unit conversion to general-purpose tools, these APIs solve common problems across all kinds of projects — simple, reliable, and ready to integrate in minutes.
 
   - id: places
     name: Places
     icon: "📍"
-    description: Location, places, and geography data
+    short_description: Timezone lookups, working day calculations, and location data for global applications.
+    description: Work with location and geography data across the globe. Look up timezone information by coordinates or city name, calculate working days with country-specific holiday support, and build location-aware features for apps that need to operate seamlessly across multiple regions and time zones.
 
   - id: transportation
     name: Transportation
     icon: "🚗"
-    description: Transportation and logistics data
+    short_description: Flight status, route info, carrier lookups, and tracking data for travel and logistics apps.
+    description: Access transportation and logistics data including flight status, route information, carrier lookups, and tracking details. Designed for travel applications, e-commerce platforms, and logistics management systems that depend on accurate, real-time movement data.
     coming_soon: true
 
   - id: tax
     name: Tax
     icon: "📋"
-    description: Tax calculations and data
+    short_description: VAT, sales tax, GST, and income tax calculations for e-commerce and invoicing systems.
+    description: Simplify tax calculations with accurate, jurisdiction-aware APIs for VAT, sales tax, GST, and income tax. Integrate seamlessly into e-commerce checkouts, invoicing systems, and financial applications that operate across multiple countries and complex tax regimes.
     coming_soon: true
 
   - id: data
     name: Data APIs
     icon: "📊"
-    description: Access structured data and utilities
+    short_description: Curated structured datasets — country info, public records, and reference tables ready to integrate.
+    description: Access curated, structured datasets across dozens of domains. From country information and public records to reference data and lookup tables, these APIs save you the time of building and maintaining your own data pipelines — so you can focus on what matters.
     coming_soon: true
 
   - id: validation
     name: Validation APIs
     icon: "✓"
-    description: Validate various data formats
+    short_description: Validate phone numbers, postal codes, IBANs, and credit card formats at the point of entry.
+    description: Ensure data quality at the point of entry with validation APIs for phone numbers, postal codes, IBANs, credit card formats, and more. Catch errors before they reach your database and improve user experience with fast, reliable, real-time validation feedback.
 
   - id: conversion
     name: Conversion APIs
     icon: "🔄"
-    description: Convert between formats and units
-    coming_soon: true
+    short_description: Convert currencies, units, and data formats with ease for any application.
+    description: Convert between currencies, units, formats, and data types with ease. Our Conversion APIs handle everything from unit measurement and currency exchange to data format transformation, giving your application the flexibility to handle information in any shape it arrives.
 
   - id: security
     name: Security APIs
     icon: "🔒"
-    description: Security and encryption utilities
+    short_description: Password analysis, breach detection, IP reputation, and encryption tools for safer apps.
+    description: Strengthen your application's defenses with security-focused APIs for password strength analysis, data breach detection, IP reputation checks, and encryption utilities. Build safer products by integrating threat intelligence and security validation directly into your workflows.
     coming_soon: true
 
 apis:
@@ -187,7 +202,7 @@ apis:
 
   - id: unit-conversion
     name: Unit Conversion
-    category: misc
+    category: conversion
     description: Convert between units of measurement — length, weight, volume, temperature, area, and speed
     endpoints_count: 2
     status: live
@@ -266,7 +281,7 @@ apis:
       - Device Detection
   - id: phone-validation
     name: Phone Validation
-    category: technology
+    category: validation
     description: Validate phone numbers, detect country and number type, and get international format
     endpoints_count: 1
     status: live

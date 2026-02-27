@@ -2,24 +2,24 @@
 
 <!-- Header with Back Link -->
 <div class="mb-8">
-  <%= link_to dashboard_api_keys_path, class: "inline-flex items-center text-sm text-gray-600 hover:text-gray-900 mb-4" do %>
+  <%= link_to dashboard_api_keys_path, class: "inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 mb-4" do %>
     <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
     </svg>
     Back to API Keys
   <% end %>
-  <h1 class="text-3xl font-bold text-gray-900">Create New API Key</h1>
-  <p class="mt-2 text-sm text-gray-600">Generate a new API key to access our services</p>
+  <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Create New API Key</h1>
+  <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Generate a new API key to access our services</p>
 </div>
 
 <div class="max-w-2xl">
   <!-- Security Notice -->
-  <div class="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+  <div class="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4 mb-6">
     <div class="flex items-start">
       <svg class="h-5 w-5 text-yellow-500 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
       </svg>
-      <div class="text-sm text-yellow-800">
+      <div class="text-sm text-yellow-800 dark:text-yellow-300">
         <p class="font-medium mb-1">Important Security Information</p>
         <p>Your API key will only be shown once after creation. Make sure to copy and store it securely. We cannot recover lost keys.</p>
       </div>
@@ -27,20 +27,20 @@
   </div>
 
   <!-- Form (data-turbo="false" ensures full page navigation so the key is displayed) -->
-  <div class="bg-white rounded-lg shadow p-6">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
     <%= form_with model: @api_key, url: dashboard_api_keys_path, data: { turbo: false } do |f| %>
       <!-- Error Messages -->
       <% if @api_key.errors.any? %>
-        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6">
+        <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-6">
           <div class="flex items-start">
             <svg class="h-5 w-5 text-red-500 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
             <div>
-              <h3 class="text-sm font-medium text-red-800 mb-1">
+              <h3 class="text-sm font-medium text-red-800 dark:text-red-300 mb-1">
                 <%= pluralize(@api_key.errors.count, "error") %> prohibited this API key from being created:
               </h3>
-              <ul class="list-disc list-inside text-sm text-red-700 space-y-1">
+              <ul class="list-disc list-inside text-sm text-red-700 dark:text-red-400 space-y-1">
                 <% @api_key.errors.full_messages.each do |message| %>
                   <li><%= message %></li>
                 <% end %>
@@ -52,24 +52,24 @@
 
       <!-- Key Name -->
       <div class="mb-6">
-        <%= f.label :name, "Key Name", class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= f.label :name, "Key Name", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
         <%= f.text_field :name,
           placeholder: "e.g., Production Server, Mobile App, CI/CD Pipeline",
-          class: "w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent",
+          class: "w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent",
           required: true,
           autofocus: true %>
-        <p class="mt-1 text-xs text-gray-500">A descriptive name to help you identify where this key is used.</p>
+        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">A descriptive name to help you identify where this key is used.</p>
       </div>
 
       <%= f.hidden_field :environment, value: "live" %>
 
       <!-- Shared Quota Notice -->
-      <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+      <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-6">
         <div class="flex items-start">
           <svg class="h-5 w-5 text-blue-500 mr-3 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
           </svg>
-          <div class="text-sm text-blue-800">
+          <div class="text-sm text-blue-800 dark:text-blue-300">
             <p class="font-medium mb-1">Shared Quota</p>
             <p>All your API keys share the same monthly request quota based on your subscription plan. Creating multiple keys doesn't increase your limit.</p>
           </div>
@@ -78,7 +78,7 @@
 
       <!-- Actions -->
       <div class="flex items-center justify-end space-x-4">
-        <%= link_to "Cancel", dashboard_api_keys_path, class: "px-6 py-2 text-gray-700 font-medium hover:text-gray-900 transition-colors" %>
+        <%= link_to "Cancel", dashboard_api_keys_path, class: "px-6 py-2 text-gray-700 dark:text-gray-300 font-medium hover:text-gray-900 dark:hover:text-gray-100 transition-colors" %>
         <%= f.submit "Generate API Key",
           class: "px-6 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors",
           data: { disable_with: "Generating..." } %>

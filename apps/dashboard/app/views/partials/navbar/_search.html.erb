@@ -17,8 +17,8 @@
            data-navbar-search-target="input"
            data-action="input->navbar-search#search keydown->navbar-search#handleKeydown"
            placeholder="APIs, examples, docs..."
-           class="block w-full pl-9 pr-9 py-2 border border-gray-300 rounded-lg text-sm
-                  leading-5 bg-white placeholder-gray-400
+           class="block w-full pl-9 pr-9 py-2 border border-gray-300 dark:border-gray-600 rounded-lg text-sm
+                  leading-5 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500
                   focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
                   transition-colors"
            autocomplete="off"
@@ -27,7 +27,7 @@
     <!-- Clear Button -->
     <button type="button"
             data-action="click->navbar-search#clear"
-            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 transition-colors">
+            class="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors">
       <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
       </svg>
@@ -36,8 +36,8 @@
 
   <!-- Dropdown Results -->
   <div data-navbar-search-target="dropdown"
-       class="hidden absolute top-full left-0 right-0 mt-2 bg-white rounded-lg shadow-xl
-              border border-gray-200 overflow-hidden z-50 max-h-96 overflow-y-auto min-w-[400px]">
+       class="hidden absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 rounded-lg shadow-xl
+              border border-gray-200 dark:border-gray-700 overflow-hidden z-50 max-h-96 overflow-y-auto min-w-[400px]">
 
     <!-- Results Container -->
     <div data-navbar-search-target="results">
@@ -46,12 +46,12 @@
 
     <!-- Empty State -->
     <div data-navbar-search-target="empty" class="hidden px-4 py-8 text-center">
-      <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
               d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
       </svg>
-      <h3 class="mt-2 text-sm font-medium text-gray-900">No results found</h3>
-      <p class="mt-1 text-sm text-gray-500">Try different keywords or browse all content</p>
+      <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">No results found</h3>
+      <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Try different keywords or browse all content</p>
       <div class="mt-4 flex items-center justify-center space-x-3">
         <%= link_to apis_path, class: "inline-flex items-center text-sm text-blue-600 hover:text-blue-700 font-medium" do %>
           Browse APIs →

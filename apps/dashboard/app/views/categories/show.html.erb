@@ -1,0 +1,43 @@
+<% content_for :title, "#{@category["name"]} - API Directory" %>
+
+<div class="min-h-screen flex bg-gray-50 dark:bg-gray-900">
+    <!-- Sidebar -->
+    <aside class="hidden lg:block w-52 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 flex-shrink-0">
+      <div class="sticky top-16 max-h-[calc(100vh-4rem)] overflow-y-auto">
+        <%= render 'partials/apis_index/sidebar', categories: @categories_with_apis %>
+      </div>
+    </aside>
+
+    <!-- Main Content Area -->
+    <div class="flex-1 px-8 py-10">
+      <!-- Category Header -->
+      <div class="text-center mb-10 max-w-3xl mx-auto">
+        <div class="text-5xl mb-4"><%= @category["icon"] %></div>
+        <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3">
+          <%= @category["name"] %>
+        </h1>
+        <p class="text-base text-gray-600 dark:text-gray-400 leading-relaxed">
+          <%= @category["description"] %>
+        </p>
+      </div>
+
+      <!-- API Cards Grid -->
+      <% if @apis.any? %>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
+          <% @apis.each do |api| %>
+            <%= render 'partials/apis_index/api_card', api: api %>
+          <% end %>
+        </div>
+      <% else %>
+        <div class="text-center py-16">
+          <% if @category["coming_soon"] %>
+            <div class="text-5xl mb-4">🚧</div>
+            <h2 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">Coming Soon</h2>
+            <p class="text-gray-500 dark:text-gray-400">We're working on bringing APIs to this category. Check back soon!</p>
+          <% else %>
+            <p class="text-gray-500 dark:text-gray-400">No APIs available in this category yet.</p>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+</div>

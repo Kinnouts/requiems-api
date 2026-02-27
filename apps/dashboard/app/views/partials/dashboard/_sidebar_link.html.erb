@@ -5,9 +5,9 @@
   link_active = local_assigns.fetch(:active, false)
 
   link_classes = if link_active
-    "flex items-center px-3 py-2 text-sm font-medium rounded-lg bg-blue-50 text-blue-700 transition-colors"
+    "flex items-center px-3 py-2 text-sm font-medium rounded-lg bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 transition-colors"
   else
-    "flex items-center px-3 py-2 text-sm font-medium rounded-lg text-gray-700 hover:bg-gray-50 transition-colors"
+    "flex items-center px-3 py-2 text-sm font-medium rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
   end
 
   # Icon paths for different icons
@@ -24,7 +24,7 @@
 
 <li>
   <%= link_to link_path, class: link_classes do %>
-    <svg class="h-5 w-5 mr-3 <%= link_active ? 'text-blue-700' : 'text-gray-400' %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <svg class="h-5 w-5 mr-3 <%= link_active ? 'text-blue-700 dark:text-blue-300' : 'text-gray-400 dark:text-gray-500' %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="<%= icon_path %>"/>
     </svg>
     <%= link_text %>
