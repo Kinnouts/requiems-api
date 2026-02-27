@@ -1,0 +1,76 @@
+<div class="bg-gray-50 dark:bg-gray-900 py-20">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2 class="text-4xl font-bold text-gray-900 dark:text-gray-100">
+        Frequently Asked Questions
+      </h2>
+      <p class="mt-4 text-xl text-gray-600 dark:text-gray-400">
+        Everything you need to know about Requiems API
+      </p>
+    </div>
+
+    <div class="space-y-4" data-controller="tabs">
+      <!-- FAQ 1 -->
+      <%= render "partials/shared/card", padding: true do %>
+        <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="0">
+          <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">Is Requiems API really free to start?</span>
+          <svg class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="mt-4 text-gray-600 dark:text-gray-400 hidden" data-tabs-target="panel">
+          Yes! You get 500 requests per month completely free with no credit card required. Perfect for testing, side projects, and small applications. Upgrade to paid plans only when you need more capacity.
+        </div>
+      <% end %>
+
+      <!-- FAQ 2 -->
+      <%= render "partials/shared/card", padding: true do %>
+        <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="1">
+          <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">Can I use this for commercial projects?</span>
+          <svg class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="mt-4 text-gray-600 dark:text-gray-400 hidden" data-tabs-target="panel">
+          Yes! All plans, including the free tier, can be used for commercial projects within the usage limits. Our managed service is designed for production use by businesses of all sizes.
+        </div>
+      <% end %>
+
+      <!-- FAQ 3 -->
+      <%= render "partials/shared/card", padding: true do %>
+        <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="2">
+          <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">Where are your servers located?</span>
+          <svg class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="mt-4 text-gray-600 dark:text-gray-400 hidden" data-tabs-target="panel">
+          All our data centers are located in the European Union, powered by Cloudflare's global edge network for GDPR compliance.
+        </div>
+      <% end %>
+
+      <!-- FAQ 4 -->
+      <%= render "partials/shared/card", padding: true do %>
+        <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="3">
+          <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">What payment methods do you accept?</span>
+          <svg class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+        <div class="mt-4 text-gray-600 dark:text-gray-400 hidden" data-tabs-target="panel">
+          We accept all major credit cards (Visa, Mastercard, American Express) and debit cards through Stripe. All payments are processed securely and we never see or store your payment details.
+        </div>
+      <% end %>
+    </div>
+
+    <div class="mt-12 text-center">
+      <p class="text-gray-600 dark:text-gray-400 mb-4">Still have questions?</p>
+      <%= link_to contact_path, class: "inline-flex items-center text-blue-600 hover:text-blue-700 font-medium" do %>
+        Contact our support team
+        <svg class="ml-1 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+        </svg>
+      <% end %>
+    </div>
+  </div>
+</div>
