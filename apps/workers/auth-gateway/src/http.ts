@@ -7,10 +7,7 @@
  * Filter headers before forwarding to backend
  * Removes Cloudflare headers and sensitive data
  */
-export function filterHeaders(
-  headers: Headers,
-  backendSecret: string,
-): Headers {
+export function filterHeaders(headers: Headers, backendSecret: string): Headers {
   const filtered = new Headers();
 
   for (const [key, value] of headers.entries()) {
@@ -51,36 +48,26 @@ export function addUsageHeaders(
 
   newResponse.headers.set("Access-Control-Allow-Origin", "*");
   newResponse.headers.set("X-Requests-Used", headers.requestsUsed.toString());
-  newResponse.headers.set(
-    "X-Requests-Remaining",
-    headers.requestsRemaining.toString(),
-  );
+  newResponse.headers.set("X-Requests-Remaining", headers.requestsRemaining.toString());
   newResponse.headers.set("X-Requests-Reset", headers.requestsReset);
   newResponse.headers.set("X-Plan", headers.plan);
-  newResponse.headers.set(
-    "X-RateLimit-Limit",
-    headers.rateLimitLimit.toString(),
-  );
-  newResponse.headers.set(
-    "X-RateLimit-Remaining",
-    headers.rateLimitRemaining.toString(),
-  );
+  newResponse.headers.set("X-RateLimit-Limit", headers.rateLimitLimit.toString());
+  newResponse.headers.set("X-RateLimit-Remaining", headers.rateLimitRemaining.toString());
 
   return newResponse;
 }
 
-export type BackendResult = { ok: true; response: Response } | {
-  ok: false;
-  error: string;
-};
+export type BackendResult =
+  | { ok: true; response: Response }
+  | {
+      ok: false;
+      error: string;
+    };
 
 /**
  * Fetch from backend with error handling
  */
-export async function fetchBackend(
-  url: string | URL,
-  init: RequestInit,
-): Promise<BackendResult> {
+export async function fetchBackend(url: string | URL, init: RequestInit): Promise<BackendResult> {
   try {
     const response = await fetch(url, init);
     return { ok: true, response };

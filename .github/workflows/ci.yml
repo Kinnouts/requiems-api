@@ -69,10 +69,13 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: "1.26"
           cache-dependency-path: apps/api/go.sum
+
+      - name: Load env defaults
+        run: grep -v '^#' infra/docker/.env.example | grep -v '^$' >> $GITHUB_ENV
 
       - name: Download dependencies
         working-directory: apps/api
@@ -86,7 +89,7 @@ jobs:
         run: go test -v -race -coverprofile=coverage.out ./...
 
       - name: Upload coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: go-coverage
           path: apps/api/coverage.out
@@ -102,7 +105,7 @@ jobs:
       - uses: actions/checkout@v6
 
       - name: Set up Go
-        uses: actions/setup-go@v5
+        uses: actions/setup-go@v6
         with:
           go-version: "1.26"
           cache-dependency-path: apps/api/go.sum
@@ -154,6 +157,9 @@ jobs:
           bundler-cache: true
           working-directory: apps/dashboard
 
+      - name: Load env defaults
+        run: grep -v '^#' infra/docker/.env.example | grep -v '^$' >> $GITHUB_ENV
+
       - name: Setup test database
         working-directory: apps/dashboard
         env:
@@ -194,7 +200,7 @@ jobs:
         run: bundle exec brakeman --no-pager --format json --output brakeman.json || true
 
       - name: Upload Brakeman results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         if: always()
         with:
           name: brakeman-results
@@ -255,9 +261,9 @@ jobs:
           version: latest
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: "22"
+          node-version: "24"
           cache: "pnpm"
           cache-dependency-path: apps/workers/auth-gateway/pnpm-lock.yaml
 
@@ -288,9 +294,9 @@ jobs:
           version: latest
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: "22"
+          node-version: "24"
           cache: "pnpm"
           cache-dependency-path: apps/workers/auth-gateway/pnpm-lock.yaml
 
@@ -311,7 +317,7 @@ jobs:
         run: pnpm exec vitest run --coverage.enabled --coverage.reporter=text
 
       - name: Upload coverage
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: worker-coverage
           path: apps/workers/auth-gateway/coverage/
@@ -332,9 +338,9 @@ jobs:
           version: latest
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: "22"
+          node-version: "24"
           cache: "pnpm"
           cache-dependency-path: apps/workers/auth-gateway/pnpm-lock.yaml
 
@@ -369,9 +375,9 @@ jobs:
           version: latest
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: "22"
+          node-version: "24"
           cache: "pnpm"
           cache-dependency-path: apps/workers/api-management/pnpm-lock.yaml
 
@@ -402,9 +408,9 @@ jobs:
           version: latest
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: "22"
+          node-version: "24"
           cache: "pnpm"
           cache-dependency-path: apps/workers/api-management/pnpm-lock.yaml
 

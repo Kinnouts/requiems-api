@@ -1,10 +1,5 @@
 import { Hono } from "hono";
-import {
-  type ApiKeyData,
-  createLogger,
-  jsonError,
-  jsonResponse,
-} from "@requiem/workers-shared";
+import { type ApiKeyData, createLogger, jsonError, jsonResponse } from "@requiem/workers-shared";
 import type { WorkerBindings } from "../../env";
 
 const app = new Hono<{ Bindings: WorkerBindings }>();
@@ -41,10 +36,7 @@ app.patch("/:keyPrefix", async (c) => {
 
   // Validate at least one field to update
   if (!body.plan && !body.billingCycleStart) {
-    return jsonError(
-      400,
-      "Must provide at least one field to update: plan, billingCycleStart",
-    );
+    return jsonError(400, "Must provide at least one field to update: plan, billingCycleStart");
   }
 
   try {
@@ -77,8 +69,7 @@ app.patch("/:keyPrefix", async (c) => {
     const updatedData: ApiKeyData = {
       ...existingData,
       ...(body.plan && { plan: body.plan }),
-      ...(body.billingCycleStart &&
-        { billingCycleStart: body.billingCycleStart }),
+      ...(body.billingCycleStart && { billingCycleStart: body.billingCycleStart }),
     };
 
     // Write updated data to KV
@@ -129,9 +120,7 @@ app.patch("/:keyPrefix", async (c) => {
     if (c.env.ENVIRONMENT === "development") {
       return jsonError(
         500,
-        `Failed to update API key: ${
-          error instanceof Error ? error.message : String(error)
-        }`,
+        `Failed to update API key: ${error instanceof Error ? error.message : String(error)}`,
       );
     }
 

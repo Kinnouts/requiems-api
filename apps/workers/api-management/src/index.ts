@@ -1,21 +1,11 @@
 import { Hono } from "hono";
 
 import { validateEnv, type WorkerBindings } from "./env";
-import {
-  createWorkerFetch,
-  errorHandler,
-  notFoundHandler,
-} from "@requiem/workers-shared";
+import { createWorkerFetch, errorHandler, notFoundHandler } from "@requiem/workers-shared";
 
 import { apiKeyAuthMiddleware, docsMiddleware } from "./middleware/";
 
-import {
-  analyticsRoute,
-  apiKeysRoute,
-  healthzRoute,
-  swaggerRoute,
-  usageRoute,
-} from "./routes";
+import { analyticsRoute, apiKeysRoute, healthzRoute, swaggerRoute, usageRoute } from "./routes";
 
 const app = new Hono<{ Bindings: WorkerBindings }>();
 

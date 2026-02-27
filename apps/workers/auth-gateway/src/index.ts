@@ -15,10 +15,7 @@ import proxyRoute from "./routes/proxy";
 
 const app = new Hono<{ Bindings: WorkerBindings }>();
 
-app.get(
-  "/healthz",
-  (_c) => jsonResponse({ status: "ok", service: "auth-gateway" }),
-);
+app.get("/healthz", (_c) => jsonResponse({ status: "ok", service: "auth-gateway" }));
 
 app.use("*", corsMiddleware);
 

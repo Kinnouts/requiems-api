@@ -22,10 +22,7 @@ app.get("/by-endpoint", async (c) => {
   const userId = c.req.query("userId");
   const since = c.req.query("since");
   const until = c.req.query("until") || new Date().toISOString();
-  const limit = Math.min(
-    Number.parseInt(c.req.query("limit") || "10", 10),
-    100,
-  );
+  const limit = Math.min(Number.parseInt(c.req.query("limit") || "10", 10), 100);
 
   if (!userId) {
     return jsonError(400, "Missing required parameter: userId");
@@ -43,8 +40,8 @@ app.get("/by-endpoint", async (c) => {
         .bind(userId)
         .first<{ earliest: string }>();
 
-      sinceDate = billingResult?.earliest ||
-        new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+      sinceDate =
+        billingResult?.earliest || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
     }
 
     // Query usage by endpoint
@@ -82,9 +79,7 @@ app.get("/by-endpoint", async (c) => {
     if (c.env.ENVIRONMENT === "development") {
       return jsonError(
         500,
-        `Failed to fetch analytics: ${
-          error instanceof Error ? error.message : String(error)
-        }`,
+        `Failed to fetch analytics: ${error instanceof Error ? error.message : String(error)}`,
       );
     }
 

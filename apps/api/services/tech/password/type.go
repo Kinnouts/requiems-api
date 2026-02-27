@@ -11,7 +11,7 @@ type Request struct {
 
 // Password is the response payload for the password generator.
 type Password struct {
-	Password string `json:"password"`
+	Password string `json:"password"` //nolint:gosec // intentional: this is the generated password value, not a secret
 	Length   int    `json:"length"`
 	Strength string `json:"strength"`
 }
