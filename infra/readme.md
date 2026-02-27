@@ -25,15 +25,15 @@ configuration needed on a fresh clone.
 
 This starts all services:
 
-| Service          | URL                              | Description                        |
-| ---------------- | -------------------------------- | ---------------------------------- |
-| `api`            | `http://localhost:8080/healthz`  | Go backend (Air hot reload)        |
-| `dashboard`      | `http://localhost:3000`          | Rails UI (hot reload)              |
-| `auth-gateway`   | `http://localhost:4455`          | Edge gateway (Cloudflare Worker)   |
-| `api-management` | `http://localhost:5544/docs`     | API key management + Swagger UI    |
-| `db`             | `localhost:5432`                 | PostgreSQL (`requiem/requiem/requiem`) |
-| `redis`          | `localhost:6379`                 | Redis (queues/cache)               |
-| `sidekiq`        | —                                | Background jobs                    |
+| Service          | URL                             | Description                            |
+| ---------------- | ------------------------------- | -------------------------------------- |
+| `api`            | `http://localhost:8080/healthz` | Go backend (Air hot reload)            |
+| `dashboard`      | `http://localhost:3000`         | Rails UI (hot reload)                  |
+| `auth-gateway`   | `http://localhost:4455`         | Edge gateway (Cloudflare Worker)       |
+| `api-management` | `http://localhost:5544/docs`    | API key management + Swagger UI        |
+| `db`             | `localhost:5432`                | PostgreSQL (`requiem/requiem/requiem`) |
+| `redis`          | `localhost:6379`                | Redis (queues/cache)                   |
+| `sidekiq`        | —                               | Background jobs                        |
 
 #### Swagger UI credentials (local)
 
@@ -42,12 +42,12 @@ This starts all services:
 
 #### Dev API keys (seeded automatically)
 
-| Plan           | Key               | Header              |
-| -------------- | ----------------- | ------------------- |
-| `free`         | `rq_free_000001`  | `requiems-api-key`  |
-| `developer`    | `rq_devl_000001`  | `requiems-api-key`  |
-| `business`     | `rq_bizz_000001`  | `requiems-api-key`  |
-| `professional` | `rq_prof_000001`  | `requiems-api-key`  |
+| Plan           | Key              | Header             |
+| -------------- | ---------------- | ------------------ |
+| `free`         | `rq_free_000001` | `requiems-api-key` |
+| `developer`    | `rq_devl_000001` | `requiems-api-key` |
+| `business`     | `rq_bizz_000001` | `requiems-api-key` |
+| `professional` | `rq_prof_000001` | `requiems-api-key` |
 
 ```bash
 curl -H 'requiems-api-key: rq_free_000001' http://localhost:4455/v1/text/advice
