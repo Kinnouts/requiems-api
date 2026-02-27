@@ -19,10 +19,10 @@ globally.
 │  │  - Credit tracking                                 │      │
 │  └────────────────────────────────────────────────────┘      │
 │                                                              │
-│  ┌───────────────┐    ┌───────────────────────────────┐     │
-│  │  KV (Keys)    │    │  D1 (Usage Tracking)          │     │
-│  │  ~10ms global │    │  SQLite at the edge           │     │
-│  └───────────────┘    └───────────────────────────────┘     │
+│  ┌───────────────┐    ┌───────────────────────────────┐      │
+│  │  KV (Keys)    │    │  D1 (Usage Tracking)          │      │
+│  │  ~10ms global │    │  SQLite at the edge           │      │
+│  └───────────────┘    └───────────────────────────────┘      │
 └──────────────────────────────────────────────────────────────┘
                               ↓
                   X-Backend-Secret header
@@ -36,10 +36,10 @@ globally.
 │  │  - Ports 80/443                                    │      │
 │  └────────────────────────────────────────────────────┘      │
 │                              ↓                               │
-│  ┌────────────────┐    ┌─────────────────┐                  │
-│  │  Go API        │    │  Rails Dashboard│                  │
-│  │  Port 8080     │    │  Port 3000      │                  │
-│  └────────────────┘    └─────────────────┘                  │
+│  ┌────────────────┐    ┌─────────────────┐                   │
+│  │  Go API        │    │  Rails Dashboard│                   │
+│  │  Port 8080     │    │  Port 3000      │                   │
+│  └────────────────┘    └─────────────────┘                   │
 │                              ↓                               │
 │  ┌────────────────────────────────────────────────────┐      │
 │  │  PostgreSQL 16                                     │      │
@@ -71,6 +71,8 @@ All backend services run in Docker containers managed by Docker Compose.
 - `db` - PostgreSQL 16
 - `redis` - Redis 7
 - `sidekiq` - Background job processor
+- `auth-gateway` - Cloudflare Worker (Wrangler) — public API entry point
+- `api-management` - Cloudflare Worker (Wrangler) — internal API key management
 
 **Features:**
 
@@ -162,29 +164,12 @@ Sidekiq and real-time counter storage for the Go API
 - Gzip compression
 - Reverse proxy to backend services
 
-### Caddyfile Example
-
-```caddyfile
-requiems.xyz {
-  encode gzip
-  reverse_proxy dashboard:80
-}
-
-internal.requiems.xyz {
-  encode gzip
-
-  @backend {
-    header X-Backend-Secret {$BACKEND_SECRET}
-  }
-
-  reverse_proxy @backend api:8080
-}
-```
-
 ## Port Mapping
 
 ### Development
 
+- `4455` - Auth Gateway (Cloudflare Worker)
+- `5544` - API Management (Cloudflare Worker)
 - `8080` - Go API
 - `3000` - Rails Dashboard
 - `5432` - PostgreSQL
