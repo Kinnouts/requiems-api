@@ -122,6 +122,7 @@ Rails.application.routes.draw do
 
   get "examples", to: "examples#index"
   resources :apis, only: [ :index, :show ]
+  resources :categories, only: [ :show ]
   resources :examples, only: [ :show ]
 
   # API Playground Proxy

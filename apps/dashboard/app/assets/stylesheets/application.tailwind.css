@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-@variant dark (&:is(.dark, .dark *));
-
 /* Syntax Highlighting */
 @import "https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css";
 
