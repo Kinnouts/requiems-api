@@ -22,7 +22,7 @@ WORKDIR /app
 ENV PORT=8080
 
 COPY --from=build /out/api /app/api
-COPY infra/migrations /app/infra/migrations
+COPY migrations /app/migrations
 
 # Run as non-root
 USER appuser
