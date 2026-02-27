@@ -274,17 +274,3 @@ class="lg:col-span-9 mt-8 lg:mt-0"
 /* Desktop: Inline, auto width */
 class="flex flex-col sm:flex-row gap-4"
 ```
-
-## Future Enhancements
-
-- [ ] Add PWA manifest for mobile app-like experience
-- [ ] Implement touch gestures for table navigation
-- [ ] Add dark mode support
-- [ ] Optimize for foldable devices
-- [ ] Add tablet-specific layouts (768px - 1024px)
-
-## Resources
-
-- [Tailwind CSS Responsive Design](https://tailwindcss.com/docs/responsive-design)
-- [Mobile-First CSS](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Responsive/Mobile_first)
-- [Touch Target Guidelines](https://www.w3.org/WAI/WCAG21/Understanding/target-size.html)
