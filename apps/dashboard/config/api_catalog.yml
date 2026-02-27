@@ -3,12 +3,12 @@
 
 categories:
   - id: email
-    name: Email APIs
+    name: Email
     icon: "📧"
     description: Validate, verify, and analyze email addresses with precision. From detecting disposable and temporary addresses to checking deliverability and extracting domain metadata, our Email APIs help you maintain clean user databases, reduce spam signups, and improve the performance of your email campaigns.
 
   - id: text
-    name: Text APIs
+    name: Text
     icon: "📝"
     description: Generate, manipulate, and analyze text content at scale. Whether you need placeholder text for design mockups, inspirational quotes for your app, profanity detection for content moderation, or random words for games and testing — our Text APIs cover every text-related use case your project demands.
 
