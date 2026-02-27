@@ -241,9 +241,9 @@
           </div>
         </div>
         <div class="ml-4">
-          <h3 class="text-lg font-semibold text-gray-900">EU Infrastructure</h3>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">EU Infrastructure</h3>
           <%= render "partials/shared/badge", text: "EU", variant: "primary", size: "sm", class_names: "mt-1" %>
-          <p class="mt-2 text-gray-600">
+          <p class="mt-2 text-gray-600 dark:text-gray-400">
             All data centers located in the European Union. GDPR compliant.
           </p>
         </div>
@@ -259,9 +259,9 @@
           </div>
         </div>
         <div class="ml-4">
-          <h3 class="text-lg font-semibold text-gray-900">Secure Payments</h3>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Secure Payments</h3>
           <%= render "partials/shared/badge", text: "Stripe", variant: "success", size: "sm", class_names: "mt-1" %>
-          <p class="mt-2 text-gray-600">
+          <p class="mt-2 text-gray-600 dark:text-gray-400">
             All payments processed through Stripe. We never see or store your payment details.
           </p>
         </div>
@@ -277,9 +277,9 @@
           </div>
         </div>
         <div class="ml-4">
-          <h3 class="text-lg font-semibold text-gray-900">GDPR / CCPA Compliant</h3>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">GDPR / CCPA Compliant</h3>
           <%= render "partials/shared/badge", text: "Compliant", variant: "success", size: "sm", class_names: "mt-1" %>
-          <p class="mt-2 text-gray-600">
+          <p class="mt-2 text-gray-600 dark:text-gray-400">
             Full compliance with GDPR, CCPA, and international privacy regulations.
           </p>
         </div>
@@ -295,9 +295,9 @@
           </div>
         </div>
         <div class="ml-4">
-          <h3 class="text-lg font-semibold text-gray-900">API Security</h3>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">API Security</h3>
           <%= render "partials/shared/badge", text: "Rate Limited", variant: "success", size: "sm", class_names: "mt-1" %>
-          <p class="mt-2 text-gray-600">
+          <p class="mt-2 text-gray-600 dark:text-gray-400">
             Built-in rate limiting, DDoS protection, and abuse prevention at the edge.
           </p>
         </div>
@@ -307,13 +307,13 @@
 </div>
 
 <!-- FAQ Accordion Section -->
-<div class="bg-white py-20">
+<div class="bg-white dark:bg-gray-800 py-20">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
-      <h2 class="text-4xl font-bold text-gray-900">
+      <h2 class="text-4xl font-bold text-gray-900 dark:text-gray-100">
         Frequently Asked Questions
       </h2>
-      <p class="mt-4 text-xl text-gray-600">
+      <p class="mt-4 text-xl text-gray-600 dark:text-gray-400">
         Everything you need to know about Requiems API
       </p>
     </div>
@@ -322,12 +322,12 @@
       <!-- FAQ 1 -->
       <%= render "partials/shared/card", padding: true do %>
         <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="0">
-          <span class="text-lg font-semibold text-gray-900">Is Requiems API really free to start?</span>
-          <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">Is Requiems API really free to start?</span>
+          <svg class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
-        <div class="mt-4 text-gray-600 hidden" data-tabs-target="panel">
+        <div class="mt-4 text-gray-600 dark:text-gray-400 hidden" data-tabs-target="panel">
           Yes! You get 500 requests per month completely free with no credit card required. Perfect for testing, side projects, and small applications. Upgrade to paid plans only when you need more capacity.
         </div>
       <% end %>
@@ -335,12 +335,12 @@
       <!-- FAQ 2 -->
       <%= render "partials/shared/card", padding: true do %>
         <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="1">
-          <span class="text-lg font-semibold text-gray-900">Can I use this for commercial projects?</span>
-          <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">Can I use this for commercial projects?</span>
+          <svg class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
-        <div class="mt-4 text-gray-600 hidden" data-tabs-target="panel">
+        <div class="mt-4 text-gray-600 dark:text-gray-400 hidden" data-tabs-target="panel">
           Yes! All plans, including the free tier, can be used for commercial projects within the usage limits. Our managed service is designed for production use by businesses of all sizes.
         </div>
       <% end %>
@@ -348,12 +348,12 @@
       <!-- FAQ 3 -->
       <%= render "partials/shared/card", padding: true do %>
         <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="2">
-          <span class="text-lg font-semibold text-gray-900">Where are your servers located?</span>
-          <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">Where are your servers located?</span>
+          <svg class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
-        <div class="mt-4 text-gray-600 hidden" data-tabs-target="panel">
+        <div class="mt-4 text-gray-600 dark:text-gray-400 hidden" data-tabs-target="panel">
           All our data centers are located in the European Union, powered by Cloudflare's global edge network for GDPR compliance.
         </div>
       <% end %>
@@ -361,8 +361,8 @@
       <!-- FAQ 4 -->
       <%= render "partials/shared/card", padding: true do %>
         <button class="w-full flex justify-between items-center text-left" data-action="click->tabs#select" data-tabs-index-param="3">
-          <span class="text-lg font-semibold text-gray-900">What payment methods do you accept?</span>
-          <svg class="h-5 w-5 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <span class="text-lg font-semibold text-gray-900 dark:text-gray-100">What payment methods do you accept?</span>
+          <svg class="h-5 w-5 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
