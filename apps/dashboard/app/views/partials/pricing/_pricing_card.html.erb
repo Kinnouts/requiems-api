@@ -11,7 +11,7 @@
   card_popular = local_assigns.fetch(:popular, false)
 %>
 
-<div class="bg-white rounded-lg shadow-lg <%= 'ring-2 ring-blue-600 relative' if card_popular %> overflow-hidden">
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg <%= 'ring-2 ring-blue-600 relative' if card_popular %> overflow-hidden">
   <% if card_popular %>
     <div class="absolute top-0 right-0 bg-blue-600 text-white px-4 py-1 text-xs font-semibold uppercase rounded-bl-lg">
       Most Popular
@@ -20,22 +20,22 @@
 
   <div class="p-6">
     <!-- Plan Name -->
-    <h3 class="text-2xl font-bold text-gray-900 mb-2"><%= card_name %></h3>
-    <p class="text-gray-600 text-sm mb-6"><%= card_description %></p>
+    <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2"><%= card_name %></h3>
+    <p class="text-gray-600 dark:text-gray-400 text-sm mb-6"><%= card_description %></p>
 
     <!-- Price -->
     <div class="mb-6">
       <div data-pricing-toggle-target="monthlyPrice">
         <div class="flex items-baseline gap-1">
-          <span class="text-4xl font-bold text-gray-900">$<%= card_monthly_price %></span>
-          <span class="text-gray-600">/month</span>
+          <span class="text-4xl font-bold text-gray-900 dark:text-gray-100">$<%= card_monthly_price %></span>
+          <span class="text-gray-600 dark:text-gray-400">/month</span>
         </div>
       </div>
 
       <div class="hidden" data-pricing-toggle-target="yearlyPrice">
         <div class="flex items-baseline gap-1">
-          <span class="text-4xl font-bold text-gray-900">$<%= card_yearly_price %></span>
-          <span class="text-gray-600">/month</span>
+          <span class="text-4xl font-bold text-gray-900 dark:text-gray-100">$<%= card_yearly_price %></span>
+          <span class="text-gray-600 dark:text-gray-400">/month</span>
         </div>
         <% if card_yearly_price > 0 && card_monthly_price > card_yearly_price %>
           <p class="text-sm text-green-600 mt-1">
@@ -50,21 +50,21 @@
       <%= form_with url: card_cta_url[:url], method: :post, class: "mb-6", data: { turbo: false } do |f| %>
         <%= f.hidden_field :plan, value: card_cta_url[:params][:plan] %>
         <%= f.hidden_field :billing_cycle, value: "monthly", data: { pricing_toggle_target: "billingCycleInput" } %>
-        <%= f.submit card_cta_text, class: "block w-full px-6 py-3 #{card_popular ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-900'} font-medium rounded-lg transition-colors cursor-pointer" %>
+        <%= f.submit card_cta_text, class: "block w-full px-6 py-3 #{card_popular ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100'} font-medium rounded-lg transition-colors cursor-pointer" %>
       <% end %>
     <% else %>
-      <%= link_to card_cta_text, card_cta_url, class: "block w-full text-center px-6 py-3 #{card_popular ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-100 hover:bg-gray-200 text-gray-900'} font-medium rounded-lg transition-colors mb-6" %>
+      <%= link_to card_cta_text, card_cta_url, class: "block w-full text-center px-6 py-3 #{card_popular ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100'} font-medium rounded-lg transition-colors mb-6" %>
     <% end %>
 
     <!-- Features List -->
-    <div class="border-t border-gray-200 pt-6">
+    <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
       <ul class="space-y-3">
         <% card_features.each do |feature| %>
           <li class="flex items-start">
             <svg class="h-5 w-5 text-green-500 mr-2 mt-0.5 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20">
               <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
             </svg>
-            <span class="text-sm text-gray-700"><%= feature %></span>
+            <span class="text-sm text-gray-700 dark:text-gray-300"><%= feature %></span>
           </li>
         <% end %>
       </ul>

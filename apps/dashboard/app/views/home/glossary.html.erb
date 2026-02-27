@@ -1,157 +1,157 @@
 <% content_for :title, "API Glossary - Requiems API" %>
 
-<div class="min-h-screen bg-gray-50 py-16">
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="bg-white rounded-lg shadow-lg p-8 md:p-12">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4">API Glossary</h1>
-      <p class="text-xl text-gray-600 mb-12">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 md:p-12">
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">API Glossary</h1>
+      <p class="text-xl text-gray-600 dark:text-gray-400 mb-12">
         Essential API terminology every developer should know
       </p>
 
       <div class="space-y-6">
         <!-- API -->
-        <div class="border border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-colors">
-          <h3 class="text-xl font-bold text-gray-900 mb-2">API (Application Programming Interface)</h3>
-          <p class="text-gray-700 mb-2">
+        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-blue-300 dark:hover:border-blue-600 transition-colors">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">API (Application Programming Interface)</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-2">
             A set of definitions and protocols that allows different software applications to communicate with each other. APIs define the methods and data formats that applications can use to request and exchange information.
           </p>
-          <p class="text-sm text-gray-600 italic">
+          <p class="text-sm text-gray-600 dark:text-gray-400 italic">
             Example: Requiems API provides a REST API for validating email addresses programmatically.
           </p>
         </div>
 
         <!-- Endpoint -->
-        <div class="border border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-colors">
-          <h3 class="text-xl font-bold text-gray-900 mb-2">Endpoint</h3>
-          <p class="text-gray-700 mb-2">
+        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-blue-300 dark:hover:border-blue-600 transition-colors">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Endpoint</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-2">
             A specific URL where an API can access the resources it needs. Each endpoint corresponds to a specific function or resource in the API.
           </p>
-          <p class="text-sm text-gray-600 italic">
-            Example: <code class="bg-gray-100 px-2 py-1 rounded">POST /v1/email/disposable/check</code>
+          <p class="text-sm text-gray-600 dark:text-gray-400 italic">
+            Example: <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">POST /v1/email/disposable/check</code>
           </p>
         </div>
 
         <!-- Authentication -->
-        <div class="border border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-colors">
-          <h3 class="text-xl font-bold text-gray-900 mb-2">Authentication</h3>
-          <p class="text-gray-700 mb-2">
+        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-blue-300 dark:hover:border-blue-600 transition-colors">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Authentication</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-2">
             The process of verifying the identity of a user or application. APIs typically require authentication to ensure only authorized users can access the service.
           </p>
-          <p class="text-sm text-gray-600 italic">
-            Example: Including your API key in the Authorization header: <code class="bg-gray-100 px-2 py-1 rounded">Authorization: Bearer YOUR_API_KEY</code>
+          <p class="text-sm text-gray-600 dark:text-gray-400 italic">
+            Example: Including your API key in the Authorization header: <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">Authorization: Bearer YOUR_API_KEY</code>
           </p>
         </div>
 
         <!-- API Key -->
-        <div class="border border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-colors">
-          <h3 class="text-xl font-bold text-gray-900 mb-2">API Key</h3>
-          <p class="text-gray-700 mb-2">
+        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-blue-300 dark:hover:border-blue-600 transition-colors">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">API Key</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-2">
             A unique identifier used to authenticate requests to an API. API keys act as both an identifier and a secret token for authentication.
           </p>
-          <p class="text-sm text-gray-600 italic">
-            Example: <code class="bg-gray-100 px-2 py-1 rounded">req_live_1234567890abcdef</code>
+          <p class="text-sm text-gray-600 dark:text-gray-400 italic">
+            Example: <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">req_live_1234567890abcdef</code>
           </p>
         </div>
 
         <!-- Rate Limiting -->
-        <div class="border border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-colors">
-          <h3 class="text-xl font-bold text-gray-900 mb-2">Rate Limiting</h3>
-          <p class="text-gray-700 mb-2">
+        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-blue-300 dark:hover:border-blue-600 transition-colors">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Rate Limiting</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-2">
             A technique used to control the number of requests a user can make to an API within a given time period. This helps prevent abuse and ensures fair usage.
           </p>
-          <p class="text-sm text-gray-600 italic">
+          <p class="text-sm text-gray-600 dark:text-gray-400 italic">
             Example: Free plan allows 100 requests per minute
           </p>
         </div>
 
         <!-- Credits -->
-        <div class="border border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-colors">
-          <h3 class="text-xl font-bold text-gray-900 mb-2">Credits</h3>
-          <p class="text-gray-700 mb-2">
+        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-blue-300 dark:hover:border-blue-600 transition-colors">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Credits</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-2">
             A unit of measurement for API usage. Different endpoints may consume different amounts of credits based on their computational complexity.
           </p>
-          <p class="text-sm text-gray-600 italic">
+          <p class="text-sm text-gray-600 dark:text-gray-400 italic">
             Example: A simple email check costs 1 credit, while a batch check costs 1 credit per email
           </p>
         </div>
 
         <!-- REST (Representational State Transfer) -->
-        <div class="border border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-colors">
-          <h3 class="text-xl font-bold text-gray-900 mb-2">REST (Representational State Transfer)</h3>
-          <p class="text-gray-700 mb-2">
+        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-blue-300 dark:hover:border-blue-600 transition-colors">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">REST (Representational State Transfer)</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-2">
             An architectural style for designing networked applications. REST APIs use HTTP requests to perform CRUD (Create, Read, Update, Delete) operations on resources.
           </p>
-          <p class="text-sm text-gray-600 italic">
+          <p class="text-sm text-gray-600 dark:text-gray-400 italic">
             Example: Using GET to retrieve data, POST to create, PUT to update, DELETE to remove
           </p>
         </div>
 
         <!-- JSON (JavaScript Object Notation) -->
-        <div class="border border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-colors">
-          <h3 class="text-xl font-bold text-gray-900 mb-2">JSON (JavaScript Object Notation)</h3>
-          <p class="text-gray-700 mb-2">
+        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-blue-300 dark:hover:border-blue-600 transition-colors">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">JSON (JavaScript Object Notation)</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-2">
             A lightweight data interchange format that's easy for humans to read and write, and easy for machines to parse and generate. Most modern APIs use JSON for request and response bodies.
           </p>
-          <p class="text-sm text-gray-600 italic">
-            Example: <code class="bg-gray-100 px-2 py-1 rounded">{"email": "test@example.com", "is_disposable": false}</code>
+          <p class="text-sm text-gray-600 dark:text-gray-400 italic">
+            Example: <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">{"email": "test@example.com", "is_disposable": false}</code>
           </p>
         </div>
 
         <!-- HTTP Status Codes -->
-        <div class="border border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-colors">
-          <h3 class="text-xl font-bold text-gray-900 mb-2">HTTP Status Codes</h3>
-          <p class="text-gray-700 mb-2">
+        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-blue-300 dark:hover:border-blue-600 transition-colors">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">HTTP Status Codes</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-2">
             Three-digit codes returned by web servers to indicate the result of an HTTP request. Common codes include 200 (success), 404 (not found), and 500 (server error).
           </p>
-          <p class="text-sm text-gray-600 italic">
+          <p class="text-sm text-gray-600 dark:text-gray-400 italic">
             Learn more: <%= link_to "Error Codes Reference", error_codes_path, class: "text-blue-600 hover:text-blue-700" %>
           </p>
         </div>
 
         <!-- Webhook -->
-        <div class="border border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-colors">
-          <h3 class="text-xl font-bold text-gray-900 mb-2">Webhook</h3>
-          <p class="text-gray-700 mb-2">
+        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-blue-300 dark:hover:border-blue-600 transition-colors">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Webhook</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-2">
             A method for an application to provide real-time information to other applications. Instead of you making repeated API requests, the server sends data to your specified URL when an event occurs.
           </p>
-          <p class="text-sm text-gray-600 italic">
+          <p class="text-sm text-gray-600 dark:text-gray-400 italic">
             Example: Receive a notification when your credit balance drops below a threshold
           </p>
         </div>
 
         <!-- Query Parameters -->
-        <div class="border border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-colors">
-          <h3 class="text-xl font-bold text-gray-900 mb-2">Query Parameters</h3>
-          <p class="text-gray-700 mb-2">
+        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-blue-300 dark:hover:border-blue-600 transition-colors">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Query Parameters</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-2">
             Key-value pairs appended to a URL to filter, sort, or modify the API response. They appear after a question mark (?) in the URL.
           </p>
-          <p class="text-sm text-gray-600 italic">
-            Example: <code class="bg-gray-100 px-2 py-1 rounded">/v1/words?limit=10&min_length=5</code>
+          <p class="text-sm text-gray-600 dark:text-gray-400 italic">
+            Example: <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">/v1/words?limit=10&min_length=5</code>
           </p>
         </div>
 
         <!-- Headers -->
-        <div class="border border-gray-200 rounded-lg p-6 hover:border-blue-300 transition-colors">
-          <h3 class="text-xl font-bold text-gray-900 mb-2">Headers</h3>
-          <p class="text-gray-700 mb-2">
+        <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-blue-300 dark:hover:border-blue-600 transition-colors">
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Headers</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-2">
             Additional information sent with HTTP requests and responses. Headers can contain authentication tokens, content types, custom metadata, and more.
           </p>
-          <p class="text-sm text-gray-600 italic">
-            Example: <code class="bg-gray-100 px-2 py-1 rounded">Content-Type: application/json</code>
+          <p class="text-sm text-gray-600 dark:text-gray-400 italic">
+            Example: <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">Content-Type: application/json</code>
           </p>
         </div>
       </div>
 
-      <div class="mt-12 bg-blue-50 border border-blue-200 rounded-lg p-6">
-        <h2 class="text-lg font-semibold text-blue-900 mb-2">Need More Help?</h2>
-        <p class="text-blue-800 mb-4">
+      <div class="mt-12 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+        <h2 class="text-lg font-semibold text-blue-900 dark:text-blue-300 mb-2">Need More Help?</h2>
+        <p class="text-blue-800 dark:text-blue-300 mb-4">
           Check out our comprehensive documentation or contact our support team
         </p>
         <div class="flex flex-col sm:flex-row gap-4">
           <%= link_to docs_path, class: "inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors" do %>
             Browse Documentation
           <% end %>
-          <%= link_to contact_path, class: "inline-flex items-center justify-center px-4 py-2 border border-blue-300 text-sm font-medium rounded-md text-blue-700 bg-white hover:bg-blue-50 transition-colors" do %>
+          <%= link_to contact_path, class: "inline-flex items-center justify-center px-4 py-2 border border-blue-300 dark:border-blue-700 text-sm font-medium rounded-md text-blue-700 dark:text-blue-400 bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" do %>
             Contact Support
           <% end %>
         </div>

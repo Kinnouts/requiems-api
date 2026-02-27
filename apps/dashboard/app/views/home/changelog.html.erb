@@ -1,14 +1,14 @@
 <% content_for :title, "Changelog - Requiems API" %>
 
-<div class="min-h-screen bg-gray-50 py-16">
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="bg-white rounded-lg shadow-lg p-8 md:p-12">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 md:p-12">
       <div class="flex items-center justify-between mb-6">
-        <h1 class="text-4xl font-bold text-gray-900">Changelog</h1>
+        <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100">Changelog</h1>
         <%= render "partials/shared/badge", text: "v0.1.0", variant: "info", size: "md" %>
       </div>
 
-      <p class="text-xl text-gray-600 mb-12">
+      <p class="text-xl text-gray-600 dark:text-gray-400 mb-12">
         Track updates, new features, and improvements to Requiems API.
       </p>
 
@@ -16,13 +16,13 @@
         <!-- v0.1.0 - CI Pipeline -->
         <div class="border-l-4 border-blue-600 pl-6">
           <div class="flex items-center mb-2">
-            <h2 class="text-2xl font-bold text-gray-900">v0.1.0</h2>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">v0.1.0</h2>
             <%= render "partials/shared/badge", text: "Latest", variant: "success", size: "sm", class_names: "ml-3" %>
           </div>
-          <p class="text-sm text-gray-600 mb-4">February 17, 2026</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">February 17, 2026</p>
 
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">✅ Continuous Integration</h3>
-          <ul class="list-disc pl-6 text-gray-700 space-y-2 mb-4">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">✅ Continuous Integration</h3>
+          <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-4">
             <li>Established comprehensive CI pipeline with automated testing across all applications</li>
             <li>Go API: Tests with race detection, golangci-lint (21 linters), code coverage</li>
             <li>Rails Dashboard: Full test suite (60 tests, 207 assertions), security scans</li>
@@ -31,8 +31,8 @@
             <li>Security scans as blocking requirements (Brakeman, bundler-audit)</li>
           </ul>
 
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">🐛 Bug Fixes</h3>
-          <ul class="list-disc pl-6 text-gray-700 space-y-2 mb-4">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">🐛 Bug Fixes</h3>
+          <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-4">
             <li>Fixed API key generation callback execution order</li>
             <li>Resolved Devise mapping initialization in test environment</li>
             <li>Corrected user status field handling for suspended/banned states</li>
@@ -40,8 +40,8 @@
             <li>Fixed code formatting across all applications</li>
           </ul>
 
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">📊 Test Coverage</h3>
-          <ul class="list-disc pl-6 text-gray-700 space-y-2">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">📊 Test Coverage</h3>
+          <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2">
             <li>Rails Dashboard: 100% test pass rate (60 tests)</li>
             <li>Cloudflare Worker: 71 passing tests with 29% coverage</li>
             <li>Go API: Comprehensive test suite with race detection</li>
@@ -51,12 +51,12 @@
         <!-- v0.0.2 - Initial Deployment -->
         <div class="border-l-4 border-green-600 pl-6">
           <div class="flex items-center mb-2">
-            <h2 class="text-2xl font-bold text-gray-900">v0.0.2</h2>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">v0.0.2</h2>
           </div>
-          <p class="text-sm text-gray-600 mb-4">February 8, 2026</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">February 8, 2026</p>
 
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">🚀 Production Deployment</h3>
-          <ul class="list-disc pl-6 text-gray-700 space-y-2 mb-4">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">🚀 Production Deployment</h3>
+          <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-4">
             <li>Go Backend API deployed with PostgreSQL database</li>
             <li>Rails 8 Dashboard application with user authentication</li>
             <li>API key management and usage tracking system</li>
@@ -64,8 +64,8 @@
             <li>Docker Compose development environment</li>
           </ul>
 
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">✨ Features</h3>
-          <ul class="list-disc pl-6 text-gray-700 space-y-2">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">✨ Features</h3>
+          <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2">
             <li>Email validation endpoints (disposable email detection)</li>
             <li>Text utility APIs (advice, lorem ipsum, quotes, random words)</li>
             <li>User registration and authentication (Devise)</li>
@@ -78,20 +78,20 @@
         <!-- v0.0.1 - Project Kickoff -->
         <div class="border-l-4 border-purple-600 pl-6">
           <div class="flex items-center mb-2">
-            <h2 class="text-2xl font-bold text-gray-900">v0.0.1</h2>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">v0.0.1</h2>
           </div>
-          <p class="text-sm text-gray-600 mb-4">December 15, 2025</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">December 15, 2025</p>
 
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">🎯 Project Initialization</h3>
-          <ul class="list-disc pl-6 text-gray-700 space-y-2 mb-4">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">🎯 Project Initialization</h3>
+          <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-4">
             <li>Multi-language monorepo architecture established</li>
             <li>Technology stack selection (Go, Rails 8, Cloudflare Workers)</li>
             <li>Three-tier architecture design: Edge Gateway → Backend API → Database</li>
             <li>Database schema and API endpoint planning</li>
           </ul>
 
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">⚡ Cloudflare Worker Gateway</h3>
-          <ul class="list-disc pl-6 text-gray-700 space-y-2">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">⚡ Cloudflare Worker Gateway</h3>
+          <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2">
             <li>API key validation using Cloudflare KV</li>
             <li>Rate limiting with KV counters</li>
             <li>Credit usage tracking with D1 SQLite</li>
@@ -101,15 +101,15 @@
         </div>
 
         <!-- Upcoming -->
-        <div class="border-l-4 border-gray-300 pl-6 opacity-75">
+        <div class="border-l-4 border-gray-300 dark:border-gray-600 pl-6 opacity-75">
           <div class="flex items-center mb-2">
-            <h2 class="text-2xl font-bold text-gray-900">v0.2.0</h2>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">v0.2.0</h2>
             <%= render "partials/shared/badge", text: "Coming Soon", variant: "warning", size: "sm", class_names: "ml-3" %>
           </div>
-          <p class="text-sm text-gray-600 mb-4">Planned Release: Q1 2026</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">Planned Release: Q1 2026</p>
 
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">🚀 Planned Features</h3>
-          <ul class="list-disc pl-6 text-gray-700 space-y-2 mb-4">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">🚀 Planned Features</h3>
+          <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-4">
             <li>Enhanced API documentation with interactive playground</li>
             <li>Usage webhooks for real-time notifications</li>
             <li>Advanced rate limiting controls per API key</li>
@@ -118,8 +118,8 @@
             <li>Additional validation APIs (phone numbers, credit cards)</li>
           </ul>
 
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">🔮 Future Roadmap (v1.0.0+)</h3>
-          <ul class="list-disc pl-6 text-gray-700 space-y-2">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">🔮 Future Roadmap (v1.0.0+)</h3>
+          <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2">
             <li>Data APIs (IP geolocation, currency conversion)</li>
             <li>Finance APIs (stock quotes, crypto prices)</li>
             <li>Image APIs (optimization, placeholders, QR codes)</li>
@@ -130,13 +130,13 @@
         </div>
 
         <!-- Newsletter Signup -->
-        <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
-          <h3 class="text-lg font-semibold text-gray-900 mb-2">Stay Updated</h3>
-          <p class="text-gray-700 mb-4">
+        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Stay Updated</h3>
+          <p class="text-gray-700 dark:text-gray-300 mb-4">
             Want to be notified about new releases and features?
           </p>
           <% if user_signed_in? %>
-            <p class="text-sm text-gray-600">
+            <p class="text-sm text-gray-600 dark:text-gray-400">
               We'll send update notifications to your registered email:
               <strong><%= current_user.email %></strong>
             </p>

@@ -1,10 +1,10 @@
 <% content_for :title, "Error Codes Reference - Requiems API" %>
 
-<div class="min-h-screen bg-gray-50 py-16">
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
   <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="bg-white rounded-lg shadow-lg p-8 md:p-12">
-      <h1 class="text-4xl font-bold text-gray-900 mb-4">Error Codes Reference</h1>
-      <p class="text-xl text-gray-600 mb-12">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 md:p-12">
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">Error Codes Reference</h1>
+      <p class="text-xl text-gray-600 dark:text-gray-400 mb-12">
         Understanding HTTP status codes and how to handle them
       </p>
 
@@ -20,22 +20,22 @@
         </h2>
 
         <div class="space-y-4">
-          <div class="border-l-4 border-green-500 bg-green-50 p-4 rounded-r-lg">
+          <div class="border-l-4 border-green-500 bg-green-50 dark:bg-green-900/20 p-4 rounded-r-lg">
             <div class="flex items-baseline mb-2">
-              <span class="text-lg font-bold text-green-900 mr-3">200</span>
-              <span class="text-lg font-semibold text-green-900">OK</span>
+              <span class="text-lg font-bold text-green-900 dark:text-green-300 mr-3">200</span>
+              <span class="text-lg font-semibold text-green-900 dark:text-green-300">OK</span>
             </div>
-            <p class="text-gray-700 mb-1">The request was successful and the response contains the requested data.</p>
-            <p class="text-sm text-gray-600 italic">Common with: GET, POST, PUT requests</p>
+            <p class="text-gray-700 dark:text-gray-300 mb-1">The request was successful and the response contains the requested data.</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 italic">Common with: GET, POST, PUT requests</p>
           </div>
 
-          <div class="border-l-4 border-green-500 bg-green-50 p-4 rounded-r-lg">
+          <div class="border-l-4 border-green-500 bg-green-50 dark:bg-green-900/20 p-4 rounded-r-lg">
             <div class="flex items-baseline mb-2">
-              <span class="text-lg font-bold text-green-900 mr-3">201</span>
-              <span class="text-lg font-semibold text-green-900">Created</span>
+              <span class="text-lg font-bold text-green-900 dark:text-green-300 mr-3">201</span>
+              <span class="text-lg font-semibold text-green-900 dark:text-green-300">Created</span>
             </div>
-            <p class="text-gray-700 mb-1">A new resource was successfully created.</p>
-            <p class="text-sm text-gray-600 italic">Common with: POST requests for creating resources</p>
+            <p class="text-gray-700 dark:text-gray-300 mb-1">A new resource was successfully created.</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 italic">Common with: POST requests for creating resources</p>
           </div>
         </div>
       </div>
@@ -52,58 +52,58 @@
         </h2>
 
         <div class="space-y-4">
-          <div class="border-l-4 border-amber-500 bg-amber-50 p-4 rounded-r-lg">
+          <div class="border-l-4 border-amber-500 bg-amber-50 dark:bg-yellow-900/20 p-4 rounded-r-lg">
             <div class="flex items-baseline mb-2">
-              <span class="text-lg font-bold text-amber-900 mr-3">400</span>
-              <span class="text-lg font-semibold text-amber-900">Bad Request</span>
+              <span class="text-lg font-bold text-amber-900 dark:text-yellow-300 mr-3">400</span>
+              <span class="text-lg font-semibold text-amber-900 dark:text-yellow-300">Bad Request</span>
             </div>
-            <p class="text-gray-700 mb-1">The request was malformed or contains invalid parameters.</p>
-            <p class="text-sm text-gray-600 italic">Common causes: Missing required fields, invalid JSON, incorrect data types</p>
+            <p class="text-gray-700 dark:text-gray-300 mb-1">The request was malformed or contains invalid parameters.</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 italic">Common causes: Missing required fields, invalid JSON, incorrect data types</p>
           </div>
 
-          <div class="border-l-4 border-amber-500 bg-amber-50 p-4 rounded-r-lg">
+          <div class="border-l-4 border-amber-500 bg-amber-50 dark:bg-yellow-900/20 p-4 rounded-r-lg">
             <div class="flex items-baseline mb-2">
-              <span class="text-lg font-bold text-amber-900 mr-3">401</span>
-              <span class="text-lg font-semibold text-amber-900">Unauthorized</span>
+              <span class="text-lg font-bold text-amber-900 dark:text-yellow-300 mr-3">401</span>
+              <span class="text-lg font-semibold text-amber-900 dark:text-yellow-300">Unauthorized</span>
             </div>
-            <p class="text-gray-700 mb-1">Authentication is required or has failed. Your API key may be missing or invalid.</p>
-            <p class="text-sm text-gray-600 italic">Common causes: Missing API key, invalid API key, expired key</p>
+            <p class="text-gray-700 dark:text-gray-300 mb-1">Authentication is required or has failed. Your API key may be missing or invalid.</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 italic">Common causes: Missing API key, invalid API key, expired key</p>
           </div>
 
-          <div class="border-l-4 border-amber-500 bg-amber-50 p-4 rounded-r-lg">
+          <div class="border-l-4 border-amber-500 bg-amber-50 dark:bg-yellow-900/20 p-4 rounded-r-lg">
             <div class="flex items-baseline mb-2">
-              <span class="text-lg font-bold text-amber-900 mr-3">403</span>
-              <span class="text-lg font-semibold text-amber-900">Forbidden</span>
+              <span class="text-lg font-bold text-amber-900 dark:text-yellow-300 mr-3">403</span>
+              <span class="text-lg font-semibold text-amber-900 dark:text-yellow-300">Forbidden</span>
             </div>
-            <p class="text-gray-700 mb-1">You don't have permission to access this resource. Your API key may lack the required permissions.</p>
-            <p class="text-sm text-gray-600 italic">Common causes: Insufficient permissions, suspended account, accessing test endpoint with live key</p>
+            <p class="text-gray-700 dark:text-gray-300 mb-1">You don't have permission to access this resource. Your API key may lack the required permissions.</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 italic">Common causes: Insufficient permissions, suspended account, accessing test endpoint with live key</p>
           </div>
 
-          <div class="border-l-4 border-amber-500 bg-amber-50 p-4 rounded-r-lg">
+          <div class="border-l-4 border-amber-500 bg-amber-50 dark:bg-yellow-900/20 p-4 rounded-r-lg">
             <div class="flex items-baseline mb-2">
-              <span class="text-lg font-bold text-amber-900 mr-3">404</span>
-              <span class="text-lg font-semibold text-amber-900">Not Found</span>
+              <span class="text-lg font-bold text-amber-900 dark:text-yellow-300 mr-3">404</span>
+              <span class="text-lg font-semibold text-amber-900 dark:text-yellow-300">Not Found</span>
             </div>
-            <p class="text-gray-700 mb-1">The requested resource doesn't exist. Check your endpoint URL.</p>
-            <p class="text-sm text-gray-600 italic">Common causes: Incorrect URL, typo in endpoint path, resource was deleted</p>
+            <p class="text-gray-700 dark:text-gray-300 mb-1">The requested resource doesn't exist. Check your endpoint URL.</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 italic">Common causes: Incorrect URL, typo in endpoint path, resource was deleted</p>
           </div>
 
-          <div class="border-l-4 border-amber-500 bg-amber-50 p-4 rounded-r-lg">
+          <div class="border-l-4 border-amber-500 bg-amber-50 dark:bg-yellow-900/20 p-4 rounded-r-lg">
             <div class="flex items-baseline mb-2">
-              <span class="text-lg font-bold text-amber-900 mr-3">422</span>
-              <span class="text-lg font-semibold text-amber-900">Unprocessable Entity</span>
+              <span class="text-lg font-bold text-amber-900 dark:text-yellow-300 mr-3">422</span>
+              <span class="text-lg font-semibold text-amber-900 dark:text-yellow-300">Unprocessable Entity</span>
             </div>
-            <p class="text-gray-700 mb-1">The request was well-formed but contains semantic errors or validation failures.</p>
-            <p class="text-sm text-gray-600 italic">Common causes: Invalid email format, out-of-range values, business logic validation failures</p>
+            <p class="text-gray-700 dark:text-gray-300 mb-1">The request was well-formed but contains semantic errors or validation failures.</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 italic">Common causes: Invalid email format, out-of-range values, business logic validation failures</p>
           </div>
 
-          <div class="border-l-4 border-amber-500 bg-amber-50 p-4 rounded-r-lg">
+          <div class="border-l-4 border-amber-500 bg-amber-50 dark:bg-yellow-900/20 p-4 rounded-r-lg">
             <div class="flex items-baseline mb-2">
-              <span class="text-lg font-bold text-amber-900 mr-3">429</span>
-              <span class="text-lg font-semibold text-amber-900">Too Many Requests</span>
+              <span class="text-lg font-bold text-amber-900 dark:text-yellow-300 mr-3">429</span>
+              <span class="text-lg font-semibold text-amber-900 dark:text-yellow-300">Too Many Requests</span>
             </div>
-            <p class="text-gray-700 mb-1">You've exceeded your rate limit. Wait before making more requests or upgrade your plan.</p>
-            <p class="text-sm text-gray-600 italic">Common causes: Too many requests per minute, exceeded daily quota</p>
+            <p class="text-gray-700 dark:text-gray-300 mb-1">You've exceeded your rate limit. Wait before making more requests or upgrade your plan.</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 italic">Common causes: Too many requests per minute, exceeded daily quota</p>
           </div>
         </div>
       </div>
@@ -120,48 +120,48 @@
         </h2>
 
         <div class="space-y-4">
-          <div class="border-l-4 border-red-500 bg-red-50 p-4 rounded-r-lg">
+          <div class="border-l-4 border-red-500 bg-red-50 dark:bg-red-900/20 p-4 rounded-r-lg">
             <div class="flex items-baseline mb-2">
-              <span class="text-lg font-bold text-red-900 mr-3">500</span>
-              <span class="text-lg font-semibold text-red-900">Internal Server Error</span>
+              <span class="text-lg font-bold text-red-900 dark:text-red-300 mr-3">500</span>
+              <span class="text-lg font-semibold text-red-900 dark:text-red-300">Internal Server Error</span>
             </div>
-            <p class="text-gray-700 mb-1">An unexpected error occurred on our servers. This is a temporary issue.</p>
-            <p class="text-sm text-gray-600 italic">Action: Retry the request. If the issue persists, contact support.</p>
+            <p class="text-gray-700 dark:text-gray-300 mb-1">An unexpected error occurred on our servers. This is a temporary issue.</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 italic">Action: Retry the request. If the issue persists, contact support.</p>
           </div>
 
-          <div class="border-l-4 border-red-500 bg-red-50 p-4 rounded-r-lg">
+          <div class="border-l-4 border-red-500 bg-red-50 dark:bg-red-900/20 p-4 rounded-r-lg">
             <div class="flex items-baseline mb-2">
-              <span class="text-lg font-bold text-red-900 mr-3">502</span>
-              <span class="text-lg font-semibold text-red-900">Bad Gateway</span>
+              <span class="text-lg font-bold text-red-900 dark:text-red-300 mr-3">502</span>
+              <span class="text-lg font-semibold text-red-900 dark:text-red-300">Bad Gateway</span>
             </div>
-            <p class="text-gray-700 mb-1">The gateway received an invalid response from the backend server.</p>
-            <p class="text-sm text-gray-600 italic">Action: Retry the request after a brief delay.</p>
+            <p class="text-gray-700 dark:text-gray-300 mb-1">The gateway received an invalid response from the backend server.</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 italic">Action: Retry the request after a brief delay.</p>
           </div>
 
-          <div class="border-l-4 border-red-500 bg-red-50 p-4 rounded-r-lg">
+          <div class="border-l-4 border-red-500 bg-red-50 dark:bg-red-900/20 p-4 rounded-r-lg">
             <div class="flex items-baseline mb-2">
-              <span class="text-lg font-bold text-red-900 mr-3">503</span>
-              <span class="text-lg font-semibold text-red-900">Service Unavailable</span>
+              <span class="text-lg font-bold text-red-900 dark:text-red-300 mr-3">503</span>
+              <span class="text-lg font-semibold text-red-900 dark:text-red-300">Service Unavailable</span>
             </div>
-            <p class="text-gray-700 mb-1">The service is temporarily unavailable, usually due to maintenance or overload.</p>
-            <p class="text-sm text-gray-600 italic">Action: Check our status page and retry after a delay.</p>
+            <p class="text-gray-700 dark:text-gray-300 mb-1">The service is temporarily unavailable, usually due to maintenance or overload.</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 italic">Action: Check our status page and retry after a delay.</p>
           </div>
 
-          <div class="border-l-4 border-red-500 bg-red-50 p-4 rounded-r-lg">
+          <div class="border-l-4 border-red-500 bg-red-50 dark:bg-red-900/20 p-4 rounded-r-lg">
             <div class="flex items-baseline mb-2">
-              <span class="text-lg font-bold text-red-900 mr-3">504</span>
-              <span class="text-lg font-semibold text-red-900">Gateway Timeout</span>
+              <span class="text-lg font-bold text-red-900 dark:text-red-300 mr-3">504</span>
+              <span class="text-lg font-semibold text-red-900 dark:text-red-300">Gateway Timeout</span>
             </div>
-            <p class="text-gray-700 mb-1">The gateway didn't receive a response from the backend server in time.</p>
-            <p class="text-sm text-gray-600 italic">Action: Retry the request. Consider implementing exponential backoff.</p>
+            <p class="text-gray-700 dark:text-gray-300 mb-1">The gateway didn't receive a response from the backend server in time.</p>
+            <p class="text-sm text-gray-600 dark:text-gray-400 italic">Action: Retry the request. Consider implementing exponential backoff.</p>
           </div>
         </div>
       </div>
 
       <!-- Best Practices -->
-      <div class="bg-blue-50 border border-blue-200 rounded-lg p-6">
-        <h2 class="text-lg font-semibold text-blue-900 mb-4">Best Practices for Error Handling</h2>
-        <ul class="text-blue-800 space-y-2">
+      <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+        <h2 class="text-lg font-semibold text-blue-900 dark:text-blue-300 mb-4">Best Practices for Error Handling</h2>
+        <ul class="text-blue-800 dark:text-blue-300 space-y-2">
           <li class="flex items-start">
             <span class="mr-2">✓</span>
             <span>Always check the status code before processing the response</span>
@@ -184,16 +184,16 @@
           </li>
         </ul>
 
-        <div class="mt-6 pt-6 border-t border-blue-200">
-          <p class="text-blue-900 font-medium mb-3">Need help troubleshooting?</p>
+        <div class="mt-6 pt-6 border-t border-blue-200 dark:border-blue-800">
+          <p class="text-blue-900 dark:text-blue-300 font-medium mb-3">Need help troubleshooting?</p>
           <div class="flex flex-col sm:flex-row gap-3">
             <%= link_to docs_path, class: "inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors" do %>
               View Documentation
             <% end %>
-            <%= link_to contact_path, class: "inline-flex items-center justify-center px-4 py-2 border border-blue-300 text-sm font-medium rounded-md text-blue-700 bg-white hover:bg-blue-50 transition-colors" do %>
+            <%= link_to contact_path, class: "inline-flex items-center justify-center px-4 py-2 border border-blue-300 dark:border-blue-700 text-sm font-medium rounded-md text-blue-700 dark:text-blue-400 bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" do %>
               Contact Support
             <% end %>
-            <%= link_to status_path, class: "inline-flex items-center justify-center px-4 py-2 border border-blue-300 text-sm font-medium rounded-md text-blue-700 bg-white hover:bg-blue-50 transition-colors" do %>
+            <%= link_to status_path, class: "inline-flex items-center justify-center px-4 py-2 border border-blue-300 dark:border-blue-700 text-sm font-medium rounded-md text-blue-700 dark:text-blue-400 bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" do %>
               Check API Status
             <% end %>
           </div>

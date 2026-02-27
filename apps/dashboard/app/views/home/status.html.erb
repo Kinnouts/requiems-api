@@ -1,89 +1,89 @@
 <% content_for :title, "API Status - Requiems API" %>
 
-<div class="min-h-screen bg-gray-50 py-16">
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="bg-white rounded-lg shadow-lg p-8 md:p-12">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 md:p-12">
       <div class="text-center mb-12">
-        <div class="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-6">
-          <svg class="w-12 h-12 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <div class="inline-flex items-center justify-center w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full mb-6">
+          <svg class="w-12 h-12 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
           </svg>
         </div>
-        <h1 class="text-4xl font-bold text-gray-900 mb-4">All Systems Operational</h1>
-        <p class="text-xl text-gray-600">
+        <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">All Systems Operational</h1>
+        <p class="text-xl text-gray-600 dark:text-gray-400">
           All Requiems API services are running smoothly
         </p>
       </div>
 
       <div class="grid md:grid-cols-2 gap-4 mb-12">
         <!-- API Gateway -->
-        <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+        <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6">
           <div class="flex items-center justify-between mb-2">
-            <h3 class="text-lg font-semibold text-gray-900">API Gateway</h3>
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">API Gateway</h3>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300">
               Operational
             </span>
           </div>
-          <p class="text-gray-600 text-sm">Edge authentication and routing</p>
+          <p class="text-gray-600 dark:text-gray-400 text-sm">Edge authentication and routing</p>
         </div>
 
         <!-- Backend Services -->
-        <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+        <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6">
           <div class="flex items-center justify-between mb-2">
-            <h3 class="text-lg font-semibold text-gray-900">Backend Services</h3>
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Backend Services</h3>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300">
               Operational
             </span>
           </div>
-          <p class="text-gray-600 text-sm">API processing and business logic</p>
+          <p class="text-gray-600 dark:text-gray-400 text-sm">API processing and business logic</p>
         </div>
 
         <!-- Database -->
-        <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+        <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6">
           <div class="flex items-center justify-between mb-2">
-            <h3 class="text-lg font-semibold text-gray-900">Database</h3>
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Database</h3>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300">
               Operational
             </span>
           </div>
-          <p class="text-gray-600 text-sm">Data storage and retrieval</p>
+          <p class="text-gray-600 dark:text-gray-400 text-sm">Data storage and retrieval</p>
         </div>
 
         <!-- Authentication -->
-        <div class="bg-green-50 border border-green-200 rounded-lg p-6">
+        <div class="bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-lg p-6">
           <div class="flex items-center justify-between mb-2">
-            <h3 class="text-lg font-semibold text-gray-900">Authentication</h3>
-            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Authentication</h3>
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300">
               Operational
             </span>
           </div>
-          <p class="text-gray-600 text-sm">API key validation and security</p>
+          <p class="text-gray-600 dark:text-gray-400 text-sm">API key validation and security</p>
         </div>
       </div>
 
-      <div class="bg-gray-50 rounded-lg p-6 mb-8">
-        <h2 class="text-lg font-semibold text-gray-900 mb-4">Performance Metrics</h2>
+      <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6 mb-8">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-4">Performance Metrics</h2>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
           <div class="text-center">
             <div class="text-3xl font-bold text-blue-600 mb-1">99.99%</div>
-            <div class="text-sm text-gray-600">Uptime</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">Uptime</div>
           </div>
           <div class="text-center">
             <div class="text-3xl font-bold text-blue-600 mb-1">243ms</div>
-            <div class="text-sm text-gray-600">Avg Latency</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">Avg Latency</div>
           </div>
           <div class="text-center">
             <div class="text-3xl font-bold text-blue-600 mb-1">200M+</div>
-            <div class="text-sm text-gray-600">Monthly Requests</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">Monthly Requests</div>
           </div>
           <div class="text-center">
             <div class="text-3xl font-bold text-blue-600 mb-1">EU</div>
-            <div class="text-sm text-gray-600">Data Centers</div>
+            <div class="text-sm text-gray-600 dark:text-gray-400">Data Centers</div>
           </div>
         </div>
       </div>
 
-      <div class="text-center text-gray-600">
+      <div class="text-center text-gray-600 dark:text-gray-400">
         <p class="mb-2">Last updated: <%= Time.current.strftime("%B %d, %Y at %I:%M %p %Z") %></p>
         <p class="text-sm">
           Having issues? <%= link_to "Contact support", contact_path, class: "text-blue-600 hover:text-blue-700" %>
