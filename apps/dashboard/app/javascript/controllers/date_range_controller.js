@@ -1,14 +1,14 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 // Connects to data-controller="date-range"
 export default class extends Controller {
-  static targets = ["form"]
+  static targets = ["form"];
 
   toggle(event) {
-    event.preventDefault()
+    event.preventDefault();
 
     if (this.hasFormTarget) {
-      this.formTarget.classList.toggle("hidden")
+      this.formTarget.classList.toggle("hidden");
     }
   }
 }

@@ -1,20 +1,27 @@
 import { Hono } from "hono";
-import { swaggerUI } from "@hono/swagger-ui";
 
 import { validateEnv, type WorkerBindings } from "./env";
-import { basicAuthMiddleware, errorHandler, jsonResponse } from "@requiem/workers-shared";
+import {
+  createWorkerFetch,
+  errorHandler,
+  notFoundHandler,
+} from "@requiem/workers-shared";
 
-import { apiKeyAuthMiddleware } from "./middleware/";
+import { apiKeyAuthMiddleware, docsMiddleware } from "./middleware/";
 
-import { apiKeysRoute, usageRoute, analyticsRoute, swaggerRoute } from "./routes";
+import {
+  analyticsRoute,
+  apiKeysRoute,
+  healthzRoute,
+  swaggerRoute,
+  usageRoute,
+} from "./routes";
 
 const app = new Hono<{ Bindings: WorkerBindings }>();
 
-app.get("/healthz", (_c) => jsonResponse({ status: "ok", service: "api-management" }));
+app.route("/", healthzRoute);
 
-app.use("/docs", basicAuthMiddleware);
-
-app.get("/docs", swaggerUI({ url: "/openapi.json" }));
+app.use("/docs", docsMiddleware);
 
 app.route("/", swaggerRoute);
 
@@ -26,22 +33,7 @@ app.route("/api-keys", apiKeysRoute);
 app.route("/usage", usageRoute);
 app.route("/analytics", analyticsRoute);
 
-app.notFound((_c) => {
-  return jsonResponse({ error: "Not found" }, 404);
-});
-
+app.notFound(notFoundHandler);
 app.onError(errorHandler);
 
-export default {
-  async fetch(request: Request, env: WorkerBindings): Promise<Response> {
-    try {
-      validateEnv(env);
-    } catch (error) {
-      console.error("Environment validation failed:", error);
-
-      return jsonResponse({ error: "Configuration error" }, 500);
-    }
-
-    return app.fetch(request, env);
-  },
-};
+export default createWorkerFetch(app, validateEnv);

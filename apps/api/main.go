@@ -2,12 +2,13 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"time"
 
-	"requiems-api/internal/app"
-	"requiems-api/internal/platform/config"
+	"requiems-api/app"
+	"requiems-api/platform/config"
 )
 
 func main() {
@@ -21,7 +22,7 @@ func main() {
 		log.Fatalf("failed to initialise app: %v", err)
 	}
 
-	addr := ":" + cfg.Port
+	addr := fmt.Sprintf(":%s", cfg.Port)
 
 	log.Println("API server listening on", addr)
 

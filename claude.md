@@ -7,10 +7,10 @@ as a multi-language monorepo with:
 - **Go API** (apps/api) - Internal business logic backend
 - **Rails Dashboard** (apps/dashboard) - Public web UI, user management, admin
   panel
-- **Auth Gateway** (apps/workers/auth-gateway) - Public edge gateway for auth, rate
-  limiting, and request proxying
-- **API Management** (apps/workers/api-management) - Internal service for API key
-  management, usage exports, and analytics
+- **Auth Gateway** (apps/workers/auth-gateway) - Public edge gateway for auth,
+  rate limiting, and request proxying
+- **API Management** (apps/workers/api-management) - Internal service for API
+  key management, usage exports, and analytics
 
 ## Development Commands
 
@@ -26,6 +26,8 @@ Services:
 
 - Go API: <http://localhost:8080/healthz> (Air hot reload)
 - Rails Dashboard: <http://localhost:3000> (Rails hot reload)
+- Auth Gateway: <http://localhost:4455/healthz> (public API entry point)
+- API Management: <http://localhost:5544/healthz> (internal management service)
 - PostgreSQL: localhost:5432 (user: `requiem`, password: `requiem`)
 - Redis: localhost:6379
 
@@ -48,12 +50,13 @@ docker exec requiem-dev-api-1 go test -race -coverprofile=coverage.out ./...
 Run specific test:
 
 ```bash
-docker exec requiem-dev-api-1 go test ./internal/text/advice -v -run TestGetAdvice
+docker exec requiem-dev-api-1 go test ./services/text/advice -v -run TestGetAdvice
 ```
 
 ### Rails Dashboard (apps/dashboard)
 
-**Note:** Commands assume containers are running. Container: `requiem-dev-dashboard-1`
+**Note:** Commands assume containers are running. Container:
+`requiem-dev-dashboard-1`
 
 Rails console:
 
@@ -104,73 +107,60 @@ docker exec requiem-dev-dashboard-1 bin/rails generate migration AddFieldToTable
 
 Public-facing edge gateway for request authentication and proxying.
 
-Dev mode:
-
-```bash
-cd apps/workers/auth-gateway
-bun dev  # Port 6000
-```
+**Note:** Commands assume containers are running. Container:
+`requiem-dev-auth-gateway-1`
 
 Type check:
 
 ```bash
-cd apps/workers/auth-gateway
-bun run typecheck
+docker exec requiem-dev-auth-gateway-1 pnpm run typecheck
 ```
 
 Run tests:
 
 ```bash
-cd apps/workers/auth-gateway
-bunx vitest run              # Run all tests (71 tests)
-bunx vitest run --coverage   # With coverage report
-bun run test:watch           # Watch mode
+docker exec requiem-dev-auth-gateway-1 pnpm exec vitest run              # Run all tests
+docker exec requiem-dev-auth-gateway-1 pnpm exec vitest run --coverage   # With coverage report
 ```
 
-Run linting and formatting:
+Run lint/format locally (not in Docker):
 
 ```bash
 cd apps/workers/auth-gateway
-bun run lint                 # Lint code
-bun run lint:fix             # Auto-fix lint issues
-bun run format:check         # Check formatting
-bun run format               # Auto-format code
+pnpm run lint          # Lint code
+pnpm run lint:fix      # Auto-fix lint issues
+pnpm run format:check  # Check formatting
+pnpm run format        # Auto-format code
 ```
 
 ### API Management (apps/workers/api-management)
 
 Internal service for API key management, usage exports, and analytics.
 
-Dev mode:
-
-```bash
-cd apps/workers/api-management
-bun dev  # Port 6001
-```
+**Note:** Commands assume containers are running. Container:
+`requiem-dev-api-management-1`
 
 Type check:
 
 ```bash
-cd apps/workers/api-management
-bun run typecheck
+docker exec requiem-dev-api-management-1 pnpm run typecheck
 ```
 
 Run tests:
 
 ```bash
-cd apps/workers/api-management
-bunx vitest run              # Run all tests
-bunx vitest run --coverage   # With coverage report
+docker exec requiem-dev-api-management-1 pnpm exec vitest run              # Run all tests
+docker exec requiem-dev-api-management-1 pnpm exec vitest run --coverage   # With coverage report
 ```
 
 ### Local Testing Before Push
 
 Run these commands locally to catch issues before CI.
 
-**Note:** Containers must be running. Use `docker compose -f docker-compose.dev.yml up` in `infra/docker` first.
+**Note:** Containers must be running. Use
+`docker compose -f docker-compose.dev.yml up` in `infra/docker` first.
 
 ```bash
-
 # Go Backend
 docker exec requiem-dev-api-1 go test ./...                    # Tests (must pass)
 docker exec requiem-dev-api-1 golangci-lint run                # Linting (advisory)
@@ -181,24 +171,21 @@ docker exec requiem-dev-dashboard-1 bundle exec brakeman --no-pager  # Security 
 docker exec requiem-dev-dashboard-1 bundle exec bundler-audit  # Dependency audit (must pass)
 docker exec requiem-dev-dashboard-1 bin/importmap audit        # JS audit (must pass)
 docker exec requiem-dev-dashboard-1 bundle exec rubocop        # Linting (advisory)
+
+# Auth Gateway
+docker exec requiem-dev-auth-gateway-1 pnpm exec vitest run       # Tests (must pass - 71 tests)
+docker exec requiem-dev-auth-gateway-1 pnpm run typecheck          # TypeScript (must pass)
 ```
 
-For Cloudflare Workers (run locally, not in Docker):
+Run lint/format locally for workers:
 
 ```bash
-# Auth Gateway
-cd apps/workers/auth-gateway
-bunx vitest run                  # Tests (must pass - 71 tests)
-bun run typecheck                # TypeScript (must pass)
-bun run lint                     # Linting (advisory)
-bun run format:check             # Formatting (advisory)
+cd apps/workers/auth-gateway && pnpm run lint && pnpm run format:check  # Auth Gateway (advisory)
+cd apps/workers/api-management && pnpm run lint && pnpm run format:check # API Management (advisory)
 
-# API Management
-cd apps/workers/api-management
-bunx vitest run                  # Tests (must pass)
-bun run typecheck                # TypeScript (must pass)
-bun run lint                     # Linting (advisory)
-bun run format:check             # Formatting (advisory)
+# API Management tests (must pass)
+docker exec requiem-dev-api-management-1 pnpm exec vitest run
+docker exec requiem-dev-api-management-1 pnpm run typecheck
 ```
 
 ## Architecture Overview
@@ -218,7 +205,7 @@ Rails Dashboard → API Management (api-management.requiems.xyz) → KV + D1
                  API key CRUD, usage exports, analytics
 ```
 
-1. **Auth Gateway** (`apps/workers/auth-gateway/` - Port 6000):
+1. **Auth Gateway** (`apps/workers/auth-gateway/` - Port 4455):
    - **Public-facing** service at api.requiems.xyz
    - Validates API keys from Cloudflare KV
    - Checks per-minute rate limits (KV counters)
@@ -228,7 +215,7 @@ Rails Dashboard → API Management (api-management.requiems.xyz) → KV + D1
    - Adds usage headers to responses
    - **Authentication:** `requiems-api-key` header from end users
 
-2. **API Management** (`apps/workers/api-management/` - Port 6001):
+2. **API Management** (`apps/workers/api-management/` - Port 5544):
    - **Internal-only** service at api-management.requiems.xyz
    - API key management (create, revoke, update in KV + D1)
    - Usage data export for Rails sync (D1 → PostgreSQL)
@@ -253,23 +240,27 @@ Rails Dashboard → API Management (api-management.requiems.xyz) → KV + D1
 
 ### Code Organization
 
-#### Go API (apps/api/internal/)
+#### Go API (apps/api/)
 
 Domain-driven design with feature modules:
 
 - `app/` - Application initialization, routing
-- `email/` - Email-related endpoints (disposable checking, etc.)
-  - `disposable/service.go` - Business logic
-  - `disposable/transport_http.go` - HTTP handlers
-  - `disposable/type.go` - Types
-  - `router.go` - Routes for `/v1/email/*`
-- `text/` - Text utility endpoints (advice, lorem, quotes, words)
-  - Each subdomain follows same pattern: service, transport_http, type
-  - `router.go` - Routes for `/v1/text/*`
 - `platform/` - Shared infrastructure
   - `config/` - Environment configuration
   - `db/` - PostgreSQL connection, migrations
   - `httpx/` - HTTP utilities
+  - `middleware/` - Auth middleware
+  - `reqredis/` - Redis connection
+- `services/` - Self-contained business domain modules
+  - `email/` - Email-related endpoints (disposable checking, etc.)
+    - `disposable/service.go` - Business logic
+    - `disposable/transport_http.go` - HTTP handlers
+    - `disposable/type.go` - Types
+    - `router.go` - Routes for `/v1/email/*`
+  - `text/` - Text utility endpoints (advice, lorem, quotes, words)
+    - Each subdomain follows same pattern: service, transport_http, type
+    - `router.go` - Routes for `/v1/text/*`
+  - `tech/`, `places/`, `entertainment/`, `misc/` - Other service domains
 
 **Pattern**: Each feature has `service.go` (business logic), `transport_http.go`
 (HTTP handlers), `type.go` (data types), and parent `router.go` (routes).
@@ -359,7 +350,7 @@ app/views/
 
 Single database with two migration systems:
 
-- **Go migrations**: `infra/migrations/*.sql` (business data tables: advice,
+- **Go migrations**: `apps/api/migrations/*.sql` (business data tables: advice,
   quotes, words)
 - **Rails migrations**: `apps/dashboard/db/migrate/*.rb` (user tables: users,
   api_keys, subscriptions, usage_logs)
@@ -409,17 +400,17 @@ Usage tracking:
 
 ### Adding New Go Endpoints
 
-1. Create feature directory in `apps/api/internal/{domain}/{feature}/`
+1. Create feature directory in `apps/api/services/{domain}/{feature}/`
 2. Add `service.go` (business logic)
 3. Add `transport_http.go` (HTTP handler)
 4. Add `type.go` (request/response types)
 5. Register routes in parent `router.go`
-6. Mount router in `apps/api/internal/app/app.go`
+6. Mount router in `apps/api/app/routes_v1.go`
 
 Example structure:
 
 ```
-internal/
+services/
   text/
     advice/
       service.go
@@ -442,8 +433,8 @@ The Go backend trusts the Cloudflare Worker gateway completely:
 **Go migrations** (business data):
 
 ```bash
-# Add new migration in infra/migrations/
-# Named: YYYYMMDDHHMMSS_description.up.sql
+# Add new migration in apps/api/migrations/
+# Named: NNNN_description.up.sql
 # Runs automatically on app startup via app/app.go:migrateWithRetry()
 ```
 
@@ -461,11 +452,12 @@ docker exec requiem-dev-dashboard-1 bin/rails db:migrate
    - `BACKEND_URL`
    - `BACKEND_SECRET`
 3. KV/D1 bindings configured in `wrangler.toml`
-4. Seed KV with: `bun run scripts/seed-kv.ts`
+4. Seed KV with: `pnpm run kv:seed`
 
 ## Common Development Tasks
 
-**Note:** These commands manage the Docker containers. Run from `infra/docker` directory.
+**Note:** These commands manage the Docker containers. Run from `infra/docker`
+directory.
 
 View service logs:
 

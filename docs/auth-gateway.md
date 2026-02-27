@@ -95,13 +95,13 @@ Add Usage Headers & Return Response
 cd apps/edge-auth
 
 # Install dependencies
-bun install
+pnpm install
 
 # Run type checking
-bun run typecheck
+pnpm run typecheck
 
 # Start local dev server
-bun run dev
+pnpm dev
 # Worker runs on http://localhost:8787
 ```
 
@@ -139,7 +139,7 @@ wrangler d1 execute requiem-usage --file=schema.sql
 
 ```bash
 # Seed test API keys
-bun run kv:seed
+pnpm run kv:seed
 
 # Test request
 curl -H "requiems-api-key: rq_test_xxxxx" http://localhost:8787/v1/text/advice
@@ -183,10 +183,10 @@ See [src/config.ts](../apps/edge-auth/src/config.ts) for the full list.
 
 ```bash
 # Deploy to production
-bun run deploy
+pnpm run deploy
 
 # Or deploy to specific environment
-bun run deploy:prod
+pnpm run deploy:prod
 ```
 
 ## Integration with Rails Dashboard

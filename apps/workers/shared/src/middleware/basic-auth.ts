@@ -3,8 +3,8 @@ import { jsonResponse } from "../http";
 
 // Generic bindings interface for basic auth
 interface BasicAuthBindings {
-	SWAGGER_USERNAME?: string;
-	SWAGGER_PASSWORD?: string;
+  SWAGGER_USERNAME?: string;
+  SWAGGER_PASSWORD?: string;
 }
 
 /**
@@ -27,49 +27,50 @@ interface BasicAuthBindings {
  * control and works reliably in production.
  */
 export const basicAuthMiddleware = async (c: Context, next: Next) => {
-	const authHeader = c.req.header("Authorization");
 
-	if (!authHeader || !authHeader.startsWith("Basic ")) {
-		return new Response("Unauthorized", {
-			status: 401,
-			headers: {
-				"WWW-Authenticate": 'Basic realm="API Management Documentation"',
-			},
-		});
-	}
+  const authHeader = c.req.header("Authorization");
 
-	try {
-		const base64Credentials = authHeader.substring(6);
-		const credentials = atob(base64Credentials);
-		const [username, password] = credentials.split(":");
+  if (!authHeader || !authHeader.startsWith("Basic ")) {
+    return new Response("Unauthorized", {
+      status: 401,
+      headers: {
+        "WWW-Authenticate": 'Basic realm="API Management Documentation"',
+      },
+    });
+  }
 
-		const env = c.env as BasicAuthBindings;
-		const validUsername = env.SWAGGER_USERNAME;
-		const validPassword = env.SWAGGER_PASSWORD;
+  try {
+    const base64Credentials = authHeader.substring(6);
+    const credentials = atob(base64Credentials);
+    const [username, password] = credentials.split(":");
 
-		if (!validUsername || !validPassword) {
-			console.error("SWAGGER credentials not configured");
-			return jsonResponse({ error: "Service unavailable" }, 503);
-		}
+    const env = c.env as BasicAuthBindings;
+    const validUsername = env.SWAGGER_USERNAME;
+    const validPassword = env.SWAGGER_PASSWORD;
 
-		if (username === validUsername && password === validPassword) {
-			await next();
-			return;
-		}
+    if (!validUsername || !validPassword) {
+      console.error("SWAGGER credentials not configured");
+      return jsonResponse({ error: "Service unavailable" }, 503);
+    }
 
-		return new Response("Unauthorized", {
-			status: 401,
-			headers: {
-				"WWW-Authenticate": 'Basic realm="API Management Documentation"',
-			},
-		});
-	} catch (error) {
-		console.error("Basic auth error:", error);
-		return new Response("Unauthorized", {
-			status: 401,
-			headers: {
-				"WWW-Authenticate": 'Basic realm="API Management Documentation"',
-			},
-		});
-	}
+    if (username === validUsername && password === validPassword) {
+      await next();
+      return;
+    }
+
+    return new Response("Unauthorized", {
+      status: 401,
+      headers: {
+        "WWW-Authenticate": 'Basic realm="API Management Documentation"',
+      },
+    });
+  } catch (error) {
+    console.error("Basic auth error:", error);
+    return new Response("Unauthorized", {
+      status: 401,
+      headers: {
+        "WWW-Authenticate": 'Basic realm="API Management Documentation"',
+      },
+    });
+  }
 };

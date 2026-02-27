@@ -6,7 +6,7 @@ import { customAlphabet } from "nanoid";
  */
 
 const ALPHABET =
-	"0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const KEY_LENGTH = 24;
 const nanoid = customAlphabet(ALPHABET, KEY_LENGTH);
 
@@ -15,9 +15,9 @@ const nanoid = customAlphabet(ALPHABET, KEY_LENGTH);
  * @returns Full API key (e.g., "requiem_abc123...")
  */
 export function generateApiKey(): string {
-	const prefix = "requiem";
-	const randomPart = nanoid();
-	return `${prefix}_${randomPart}`;
+  const prefix = "requiem";
+  const randomPart = nanoid();
+  return `${prefix}_${randomPart}`;
 }
 
 /**
@@ -26,7 +26,7 @@ export function generateApiKey(): string {
  * @returns Key prefix (e.g., "requiem_abc1")
  */
 export function extractKeyPrefix(fullKey: string): string {
-	return fullKey.substring(0, 12);
+  return fullKey.substring(0, 12);
 }
 
 /**
@@ -35,7 +35,7 @@ export function extractKeyPrefix(fullKey: string): string {
  * @returns true if valid format
  */
 export function isValidKeyFormat(key: string): boolean {
-	// Must be requiem_ followed by 24 characters
-	const pattern = /^requiem_[0-9a-zA-Z]{24}$/;
-	return pattern.test(key);
+  // Must be requiem_ followed by 24 characters
+  const pattern = /^requiem_[0-9a-zA-Z]{24}$/;
+  return pattern.test(key);
 }

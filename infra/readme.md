@@ -9,48 +9,57 @@ deploy it to a single VPS.
 
 ### 1.1 Requirements
 
-- Docker and Docker Compose (required for the main stack)
-- Bun or Node.js 18+ (only for edge-auth development)
+- Docker and Docker Compose
 
-### 1.2 Run everything with Docker (RECOMMENDED)
+That's it. No other tools needed locally.
 
-From the project root:
+### 1.2 Start the full stack
 
 ```bash
 cd infra/docker
-docker compose up --build
+docker compose -f docker-compose.dev.yml up
 ```
 
-This starts:
+`infra/docker/.env.example` is committed with safe dev defaults — no
+configuration needed on a fresh clone.
 
-- `api` – Go backend on internal port `8080` (exposed as `localhost:8080`)
-- `db` – PostgreSQL (`requiem` / `requiem` / `requiem`, exposed as
-  `localhost:5432`)
-- `redis` – Redis for queues/cache
+This starts all services:
 
-Once the stack is up:
+| Service          | URL                              | Description                        |
+| ---------------- | -------------------------------- | ---------------------------------- |
+| `api`            | `http://localhost:8080/healthz`  | Go backend (Air hot reload)        |
+| `dashboard`      | `http://localhost:3000`          | Rails UI (hot reload)              |
+| `auth-gateway`   | `http://localhost:4455`          | Edge gateway (Cloudflare Worker)   |
+| `api-management` | `http://localhost:5544/docs`     | API key management + Swagger UI    |
+| `db`             | `localhost:5432`                 | PostgreSQL (`requiem/requiem/requiem`) |
+| `redis`          | `localhost:6379`                 | Redis (queues/cache)               |
+| `sidekiq`        | —                                | Background jobs                    |
 
-- Health check: `http://localhost:8080/healthz`
+#### Swagger UI credentials (local)
 
-### 1.3 Edge Auth (Cloudflare Worker) - Local Development
+- **Username:** `local`
+- **Password:** `password`
 
-**Note:** The Worker cannot run in Docker. Use wrangler for local development.
+#### Dev API keys (seeded automatically)
+
+| Plan           | Key               | Header              |
+| -------------- | ----------------- | ------------------- |
+| `free`         | `rq_free_000001`  | `requiems-api-key`  |
+| `developer`    | `rq_devl_000001`  | `requiems-api-key`  |
+| `business`     | `rq_bizz_000001`  | `requiems-api-key`  |
+| `professional` | `rq_prof_000001`  | `requiems-api-key`  |
 
 ```bash
-cd apps/edge-auth
-
-# Install dependencies
-bun install
-
-# Start local dev server
-bun run dev
-# Worker runs on http://localhost:8787
+curl -H 'requiems-api-key: rq_free_000001' http://localhost:4455/v1/text/advice
 ```
 
-Set environment variables in `wrangler.toml` or as secrets:
+#### API Management key (local)
 
-- `BACKEND_URL` – e.g., `http://localhost:8080`
-- `BACKEND_SECRET` – shared secret for backend authentication
+```
+dev_api_mgmt_key_for_local_dev_only
+```
+
+Pass as `X-API-Management-Key` header to `http://localhost:5544`.
 
 ## 2. VPS Deployment Guide
 

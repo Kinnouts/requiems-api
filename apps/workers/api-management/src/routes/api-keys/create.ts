@@ -1,11 +1,11 @@
 import { Hono } from "hono";
 import {
+  type ApiKeyData,
+  createLogger,
+  extractKeyPrefix,
+  generateApiKey,
   jsonError,
   jsonResponse,
-  createLogger,
-  generateApiKey,
-  extractKeyPrefix,
-  type ApiKeyData,
 } from "@requiem/workers-shared";
 import type { WorkerBindings } from "../../env";
 
@@ -112,7 +112,9 @@ app.post("/", async (c) => {
     if (c.env.ENVIRONMENT === "development") {
       return jsonError(
         500,
-        `Failed to create API key: ${error instanceof Error ? error.message : String(error)}`,
+        `Failed to create API key: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
       );
     }
 

@@ -20,7 +20,7 @@ enabled = true
 invocation_logs = true
 
 [dev]
-port = 6000
+port = 4455
 local_protocol = "http"
 
 [vars]

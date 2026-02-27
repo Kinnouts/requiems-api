@@ -13,7 +13,6 @@
     "resolveJsonModule": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
-    "baseUrl": ".",
     "paths": {
       "@requiem/workers-shared": ["../shared/src"],
       "@requiem/workers-shared/*": ["../shared/src/*"]

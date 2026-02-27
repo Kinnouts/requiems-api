@@ -1,60 +1,64 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 // Client-side API search and filtering
 export default class extends Controller {
-  static targets = ["input", "card", "section", "empty"]
+  static targets = ["input", "card", "section", "empty"];
 
   connect() {
-    this.totalCount = this.cardTargets.length
+    this.totalCount = this.cardTargets.length;
 
     // Auto-filter if input has value (from URL param)
-    if (this.inputTarget.value.trim() !== '') {
-      this.filter()
+    if (this.inputTarget.value.trim() !== "") {
+      this.filter();
     }
   }
 
   filter() {
-    const query = this.inputTarget.value.toLowerCase().trim()
-    let visibleCount = 0
+    const query = this.inputTarget.value.toLowerCase().trim();
+    let visibleCount = 0;
 
     // Filter individual cards
     this.cardTargets.forEach((card) => {
-      const name = card.dataset.apiName || ""
-      const description = card.dataset.apiDescription || ""
-      const tags = card.dataset.apiTags || ""
+      const name = card.dataset.apiName || "";
+      const description = card.dataset.apiDescription || "";
+      const tags = card.dataset.apiTags || "";
 
       const matches = name.includes(query) ||
-                     description.includes(query) ||
-                     tags.includes(query)
+        description.includes(query) ||
+        tags.includes(query);
 
       if (query === "" || matches) {
-        card.classList.remove("hidden")
-        visibleCount++
+        card.classList.remove("hidden");
+        visibleCount++;
       } else {
-        card.classList.add("hidden")
+        card.classList.add("hidden");
       }
-    })
+    });
 
     // Hide/show sections based on visible cards
     if (this.hasSectionTarget) {
       this.sectionTargets.forEach((section) => {
-        const sectionCards = section.querySelectorAll('[data-api-search-target="card"]')
-        const visibleInSection = Array.from(sectionCards).some(card => !card.classList.contains("hidden"))
+        const sectionCards = section.querySelectorAll(
+          '[data-api-search-target="card"]',
+        );
+        const visibleInSection = Array.from(sectionCards).some((card) =>
+          !card.classList.contains("hidden")
+        );
 
         if (visibleInSection) {
-          section.classList.remove("hidden")
+          section.classList.remove("hidden");
         } else {
-          section.classList.add("hidden")
+          section.classList.add("hidden");
         }
-      })
+      });
     }
 
     // Show/hide empty state
     if (this.hasEmptyTarget) {
       if (visibleCount === 0 && query !== "") {
-        this.emptyTarget.classList.remove("hidden")
+        this.emptyTarget.classList.remove("hidden");
       } else {
-        this.emptyTarget.classList.add("hidden")
+        this.emptyTarget.classList.add("hidden");
       }
     }
   }

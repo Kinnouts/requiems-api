@@ -8,7 +8,7 @@ analytics — all running at the edge without a traditional server.
 
 | Package                             | Port | Domain                        | Description                                            |
 | ----------------------------------- | ---- | ----------------------------- | ------------------------------------------------------ |
-| [auth-gateway](./auth-gateway/)     | 6000 | `api.requiems.xyz`            | Public-facing gateway: auth, rate limiting, proxying   |
+| [auth-gateway](./auth-gateway/)     | 4455 | `api.requiems.xyz`            | Public-facing gateway: auth, rate limiting, proxying   |
 | [api-management](./api-management/) | 6001 | `api-management.requiems.xyz` | Internal management: API keys, usage export, analytics |
 | [shared](./shared/)                 | —    | —                             | Shared types, utilities, and middleware                |
 
@@ -69,11 +69,11 @@ Start all workers locally (from repo root):
 ```bash
 # Auth Gateway
 cd apps/workers/auth-gateway
-bun dev  # Port 6000
+pnpm dev  # Port 4455
 
 # API Management
 cd apps/workers/api-management
-bun dev  # Port 6001
+pnpm dev  # Port 6001
 ```
 
 Run all tests:
@@ -81,11 +81,11 @@ Run all tests:
 ```bash
 # Auth Gateway
 cd apps/workers/auth-gateway
-bunx vitest run
+pnpm exec vitest run
 
 # API Management
 cd apps/workers/api-management
-bunx vitest run
+pnpm exec vitest run
 ```
 
 ## Tech Stack
@@ -97,4 +97,4 @@ bunx vitest run
 - **Validation:** [Zod](https://zod.dev/)
 - **Testing:** [Vitest](https://vitest.dev/) + `@cloudflare/vitest-pool-workers`
 - **Linting/Formatting:** [Biome](https://biomejs.dev/)
-- **Package Manager:** [Bun](https://bun.sh/)
+- **Package Manager:** [pnpm](https://pnpm.io/)

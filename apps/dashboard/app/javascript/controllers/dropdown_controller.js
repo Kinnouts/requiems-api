@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 // Dropdown menu controller
 // Usage:
@@ -9,25 +9,25 @@ import { Controller } from "@hotwired/stimulus"
 //     </div>
 //   </div>
 export default class extends Controller {
-  static targets = ["menu"]
+  static targets = ["menu"];
 
   toggle(event) {
-    event.stopPropagation()
-    this.menuTarget.classList.toggle("hidden")
+    event.stopPropagation();
+    this.menuTarget.classList.toggle("hidden");
   }
 
   hide(event) {
     if (!this.element.contains(event.target)) {
-      this.menuTarget.classList.add("hidden")
+      this.menuTarget.classList.add("hidden");
     }
   }
 
   connect() {
     // Close dropdown when clicking outside
-    document.addEventListener("click", this.hide.bind(this))
+    document.addEventListener("click", this.hide.bind(this));
   }
 
   disconnect() {
-    document.removeEventListener("click", this.hide.bind(this))
+    document.removeEventListener("click", this.hide.bind(this));
   }
 }

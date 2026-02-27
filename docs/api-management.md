@@ -449,7 +449,7 @@ curl http://localhost:6001/openapi.json
 
 ```bash
 cd apps/api-management
-bun install
+pnpm install
 ```
 
 2. Set environment variables:
@@ -463,7 +463,7 @@ echo "ENVIRONMENT=development" >> .env
 3. Start dev server:
 
 ```bash
-bun dev
+pnpm dev
 ```
 
 Server runs at http://localhost:6001
@@ -473,32 +473,32 @@ Server runs at http://localhost:6001
 Run tests:
 
 ```bash
-bun run test
+pnpm run test
 ```
 
 Run tests with coverage:
 
 ```bash
-bun run test:coverage
+pnpm run test:coverage
 ```
 
 Watch mode:
 
 ```bash
-bun run test:watch
+pnpm run test:watch
 ```
 
 TypeScript check:
 
 ```bash
-bun run typecheck
+pnpm run typecheck
 ```
 
 Linting:
 
 ```bash
-bun run lint
-bun run lint:fix  # Auto-fix
+pnpm run lint
+pnpm run lint:fix  # Auto-fix
 ```
 
 ---
@@ -507,7 +507,7 @@ bun run lint:fix  # Auto-fix
 
 ### Prerequisites
 
-- Wrangler CLI installed: `bun install -g wrangler`
+- Wrangler CLI installed: `pnpm install -g wrangler`
 - Cloudflare account with Workers enabled
 - KV namespace and D1 database created (shared with auth-gateway)
 
@@ -527,7 +527,7 @@ wrangler secret put SWAGGER_PASSWORD
 ### Deploy to Production
 
 ```bash
-bun run deploy:prod
+pnpm run deploy:prod
 ```
 
 This deploys to `requiem-api-management-production` worker.

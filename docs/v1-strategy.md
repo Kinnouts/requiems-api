@@ -1,8 +1,8 @@
 # V1
 
-Currently there is NO clear "killer" value proposition.
-Useful utilities spread across too many weak domains.
-Developers don't pay for lorem ipsum or horoscopes.
+Currently there is NO clear "killer" value proposition. Useful utilities spread
+across too many weak domains. Developers don't pay for lorem ipsum or
+horoscopes.
 
 ---
 
@@ -59,7 +59,7 @@ What we need to build:
 Use cases: fraud detection, geo-gating content, personalizing UX by country,
 blocking VPN abuse, analytics enrichment.
 
-**Backend path:** `internal/tech/ip/` → `/v1/tech/ip/*`
+**Backend path:** `services/tech/ip/` → `/v1/tech/ip/*`
 
 ---
 
@@ -92,14 +92,14 @@ What we need to build:
 Use cases: checkout flows, payment form autofill, crypto dashboards, trading
 tools, personal finance apps, commodity tracking.
 
-**Backend path:** `internal/finance/` (new) → `/v1/finance/*`
+**Backend path:** `services/finance/` (new) → `/v1/finance/*`
 
 ---
 
 ## Weekly Iteration Plan
 
-Each week one engineer ships 2–3 endpoints from their track. No blocking
-between tracks.
+Each week one engineer ships 2–3 endpoints from their track. No blocking between
+tracks.
 
 | Team A — Validation   | Team B — Finance            |
 | --------------------- | --------------------------- |

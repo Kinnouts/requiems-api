@@ -15,7 +15,9 @@ export async function getRequestUsage(
   period: "daily" | "monthly",
   billingCycleStart?: string,
 ): Promise<number> {
-  const startDate = period === "daily" ? getTodayStart() : billingCycleStart || getMonthStart();
+  const startDate = period === "daily"
+    ? getTodayStart()
+    : billingCycleStart || getMonthStart();
 
   const result = await bindings.DB.prepare(`
     SELECT COALESCE(SUM(credits_used), 0) as total
@@ -56,7 +58,12 @@ export async function checkRequestUsage(
   limit: number,
   billingCycleStart?: string,
 ): Promise<RequestCheckResult> {
-  const usage = await getRequestUsage(bindings, userId, period, billingCycleStart);
+  const usage = await getRequestUsage(
+    bindings,
+    userId,
+    period,
+    billingCycleStart,
+  );
   const remaining = Math.max(0, limit - usage);
   const resetAt = getResetTime(period, billingCycleStart);
 
@@ -92,7 +99,10 @@ export function getMonthStart(): string {
 /**
  * Get when request quota will reset
  */
-export function getResetTime(period: "daily" | "monthly", billingCycleStart?: string): string {
+export function getResetTime(
+  period: "daily" | "monthly",
+  billingCycleStart?: string,
+): string {
   const now = new Date();
 
   if (period === "daily") {

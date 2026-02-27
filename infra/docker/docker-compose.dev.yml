@@ -1,13 +1,9 @@
 name: requiem-dev
 
 services:
-  # PostgreSQL Database
   db:
     image: postgres:16-alpine
-    environment:
-      - POSTGRES_USER=requiem
-      - POSTGRES_PASSWORD=requiem
-      - POSTGRES_DB=requiem
+    env_file: .env.example
     volumes:
       - db_data:/var/lib/postgresql/data
     ports:
@@ -18,7 +14,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # Redis
   redis:
     image: redis:7-alpine
     volumes:
@@ -31,7 +26,6 @@ services:
       timeout: 5s
       retries: 5
 
-  # Go API with hot reloading using Air
   api:
     image: golang:1.26-alpine
     working_dir: /app
@@ -42,11 +36,7 @@ services:
         go install github.com/cosmtrek/air@v1.52.0 &&
         air
       "
-    environment:
-      - PORT=8080
-      - DATABASE_URL=postgres://requiem:requiem@db:5432/requiem?sslmode=disable
-      - REDIS_URL=redis://redis:6379
-      - BACKEND_SECRET=${BACKEND_SECRET:-dev_secret_min_32_chars_long_for_development_only}
+    env_file: .env.example
     volumes:
       - ../../apps/api:/app
     ports:
@@ -57,7 +47,6 @@ services:
       redis:
         condition: service_healthy
 
-  # Rails Dashboard with hot reloading
   dashboard:
     image: ruby:3.4-alpine
     working_dir: /app
@@ -71,39 +60,7 @@ services:
         rm -f tmp/pids/server.pid &&
         bundle exec rails server -b 0.0.0.0 -p 3000
       "
-    environment:
-      - RAILS_ENV=development
-      - DATABASE_URL=postgres://requiem:requiem@db:5432/requiem?sslmode=disable
-      - REDIS_URL=redis://redis:6379
-      - SECRET_KEY_BASE=development_secret_key_base_change_in_production
-      # Internal API (direct Go backend — used for docs playground proxy)
-      - INTERNAL_API_URL=http://api:8080
-      - BACKEND_SECRET=${BACKEND_SECRET:-dev_secret_min_32_chars_long_for_development_only}
-      # API Management Configuration
-      - API_MANAGEMENT_API_KEY=${API_MANAGEMENT_API_KEY}
-      - API_MANAGEMENT_URL=${API_MANAGEMENT_URL:-https://api-management.requiems.xyz}
-      # LemonSqueezy Configuration
-      - LEMONSQUEEZY_STORE_SLUG=${LEMONSQUEEZY_STORE_SLUG}
-      - LEMONSQUEEZY_STORE_ID=${LEMONSQUEEZY_STORE_ID}
-      - LEMONSQUEEZY_API_KEY=${LEMONSQUEEZY_API_KEY}
-      - LEMONSQUEEZY_SIGNING_SECRET=${LEMONSQUEEZY_SIGNING_SECRET}
-      - LEMONSQUEEZY_DEVELOPER_MONTHLY_VARIANT_ID=${LEMONSQUEEZY_DEVELOPER_MONTHLY_VARIANT_ID}
-      - LEMONSQUEEZY_DEVELOPER_YEARLY_VARIANT_ID=${LEMONSQUEEZY_DEVELOPER_YEARLY_VARIANT_ID}
-      - LEMONSQUEEZY_BUSINESS_MONTHLY_VARIANT_ID=${LEMONSQUEEZY_BUSINESS_MONTHLY_VARIANT_ID}
-      - LEMONSQUEEZY_BUSINESS_YEARLY_VARIANT_ID=${LEMONSQUEEZY_BUSINESS_YEARLY_VARIANT_ID}
-      - LEMONSQUEEZY_PROFESSIONAL_MONTHLY_VARIANT_ID=${LEMONSQUEEZY_PROFESSIONAL_MONTHLY_VARIANT_ID}
-      - LEMONSQUEEZY_PROFESSIONAL_YEARLY_VARIANT_ID=${LEMONSQUEEZY_PROFESSIONAL_YEARLY_VARIANT_ID}
-      # SMTP Configuration
-      - SMTP_ADDRESS=${SMTP_ADDRESS}
-      - SMTP_PORT=${SMTP_PORT}
-      - SMTP_DOMAIN=${SMTP_DOMAIN}
-      - SMTP_USERNAME=${SMTP_USERNAME}
-      - SMTP_PASSWORD=${SMTP_PASSWORD}
-      - SMTP_FROM_EMAIL=${SMTP_FROM_EMAIL}
-      - MAILER_HOST=${MAILER_HOST}
-      # Form Notifications
-      - OBSERVER_EMAILS=${OBSERVER_EMAILS:-eliaz@bobadilla.tech}
-      - MAILER_FROM=${MAILER_FROM:-noreply@requiems.xyz}
+    env_file: .env.example
     volumes:
       - ../../apps/dashboard:/app
       - bundle_cache:/usr/local/bundle
@@ -112,8 +69,60 @@ services:
     depends_on:
       db:
         condition: service_healthy
+      api-management:
+        condition: service_started
     stdin_open: true
     tty: true
+
+  auth-gateway:
+    image: node:24-slim
+    working_dir: /workers/auth-gateway
+    command: >
+      sh -c "
+        corepack enable pnpm &&
+        pnpm install --frozen-lockfile &&
+        echo BACKEND_URL=$$BACKEND_URL > .dev.vars &&
+        echo BACKEND_SECRET=$$BACKEND_SECRET >> .dev.vars &&
+        node ./scripts/seed-dev.ts &&
+        pnpm exec wrangler dev --ip 0.0.0.0 --port 4455
+      "
+    env_file: .env.example
+    volumes:
+      - ../../apps/workers/auth-gateway:/workers/auth-gateway
+      - ../../apps/workers/shared:/workers/shared
+      - auth_gateway_modules:/workers/auth-gateway/node_modules
+      - wrangler_state:/workers/auth-gateway/.wrangler
+    ports:
+      - "4455:4455"
+    depends_on:
+      api:
+        condition: service_started
+
+  api-management:
+    image: node:24-slim
+    working_dir: /workers/api-management
+    command: >
+      sh -c "
+        corepack enable pnpm &&
+        pnpm install --frozen-lockfile &&
+        pnpm install --frozen-lockfile --dir /workers/shared &&
+        echo API_MANAGEMENT_API_KEY=$$API_MANAGEMENT_API_KEY > .dev.vars &&
+        echo SWAGGER_USERNAME=$$SWAGGER_USERNAME >> .dev.vars &&
+        echo SWAGGER_PASSWORD=$$SWAGGER_PASSWORD >> .dev.vars &&
+        pnpm exec wrangler dev --ip 0.0.0.0 --port 5544
+      "
+    env_file: .env.example
+    volumes:
+      - ../../apps/workers/api-management:/workers/api-management
+      - ../../apps/workers/shared:/workers/shared
+      - api_management_modules:/workers/api-management/node_modules
+      - shared_modules:/workers/shared/node_modules
+      - wrangler_state:/workers/api-management/.wrangler
+    ports:
+      - "5544:5544"
+    depends_on:
+      auth-gateway:
+        condition: service_started
 
   # Sidekiq for background jobs
   sidekiq:
@@ -126,13 +135,7 @@ services:
         bundle install &&
         bundle exec sidekiq
       "
-    environment:
-      - RAILS_ENV=development
-      - DATABASE_URL=postgres://requiem:requiem@db:5432/requiem?sslmode=disable
-      - REDIS_URL=redis://redis:6379
-      # API Management Configuration
-      - API_MANAGEMENT_API_KEY=${API_MANAGEMENT_API_KEY}
-      - API_MANAGEMENT_URL=${API_MANAGEMENT_URL:-https://api-management.requiems.xyz}
+    env_file: .env.example
     volumes:
       - ../../apps/dashboard:/app
       - bundle_cache:/usr/local/bundle
@@ -140,8 +143,13 @@ services:
       - db
       - redis
       - dashboard
+      - api-management
 
 volumes:
   db_data:
   redis_data:
   bundle_cache:
+  auth_gateway_modules:
+  api_management_modules:
+  shared_modules:
+  wrangler_state:

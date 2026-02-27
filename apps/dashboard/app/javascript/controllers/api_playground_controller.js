@@ -1,4 +1,4 @@
-import { Controller } from "@hotwired/stimulus"
+import { Controller } from "@hotwired/stimulus";
 
 // Interactive API playground for testing endpoints — routes through /api/proxy
 export default class extends Controller {
@@ -13,49 +13,49 @@ export default class extends Controller {
     "responseTime",
     "responseBody",
     "errorContainer",
-    "errorMessage"
-  ]
+    "errorMessage",
+  ];
 
   static values = {
     method: String,
     url: String,
     index: Number,
-    modalId: String
-  }
+    modalId: String,
+  };
 
   connect() {
-    this.startTime = null
-    this.hasResponse = false
+    this.startTime = null;
+    this.hasResponse = false;
   }
 
   async sendRequest(event) {
-    event.preventDefault()
+    event.preventDefault();
 
     // Collect parameters
-    const requestData = this.collectParameters()
+    const requestData = this.collectParameters();
 
     // Validate required parameters
     if (!this.validateParameters()) {
-      this.showError("Please fill in all required fields")
-      return
+      this.showError("Please fill in all required fields");
+      return;
     }
 
     // Show loading state
-    this.showLoading()
+    this.showLoading();
 
     try {
-      this.startTime = performance.now()
+      this.startTime = performance.now();
 
-      const response = await this.makeRequest(requestData)
+      const response = await this.makeRequest(requestData);
 
-      const endTime = performance.now()
-      const clientDuration = Math.round(endTime - this.startTime)
+      const endTime = performance.now();
+      const clientDuration = Math.round(endTime - this.startTime);
 
-      await this.handleResponse(response, clientDuration)
+      await this.handleResponse(response, clientDuration);
     } catch (error) {
-      this.showError(error.message || "Request failed. Please try again.")
+      this.showError(error.message || "Request failed. Please try again.");
     } finally {
-      this.hideLoading()
+      this.hideLoading();
     }
   }
 
@@ -63,158 +63,165 @@ export default class extends Controller {
     const data = {
       body: {},
       path: {},
-      query: {}
-    }
+      query: {},
+    };
 
     this.paramTargets.forEach((input) => {
-      const name = input.dataset.paramName
-      const type = input.dataset.paramType
-      const location = input.closest('[data-param-location]')?.dataset.paramLocation || 'body'
-      let value = input.value.trim()
+      const name = input.dataset.paramName;
+      const type = input.dataset.paramType;
+      const location =
+        input.closest("[data-param-location]")?.dataset.paramLocation || "body";
+      let value = input.value.trim();
 
-      if (!value) return
+      if (!value) return;
 
       // Parse arrays and objects
       if (type === "array" || type === "object") {
         try {
-          value = JSON.parse(value)
+          value = JSON.parse(value);
         } catch (e) {
-          console.error(`Failed to parse ${type} for ${name}:`, e)
-          return
+          console.error(`Failed to parse ${type} for ${name}:`, e);
+          return;
         }
       }
 
       // Convert numbers and booleans
       if (type === "integer" || type === "number") {
-        value = Number(value)
+        value = Number(value);
       } else if (type === "boolean") {
-        value = value === "true"
+        value = value === "true";
       }
 
       // Store in appropriate location
-      data[location][name] = value
-    })
+      data[location][name] = value;
+    });
 
-    return data
+    return data;
   }
 
   validateParameters() {
     const requiredParams = this.paramTargets.filter(
-      (input) => input.dataset.paramRequired === "true"
-    )
+      (input) => input.dataset.paramRequired === "true",
+    );
 
     for (const param of requiredParams) {
       if (!param.value.trim()) {
-        param.classList.add("border-red-500")
-        return false
+        param.classList.add("border-red-500");
+        return false;
       } else {
-        param.classList.remove("border-red-500")
+        param.classList.remove("border-red-500");
       }
     }
 
-    return true
+    return true;
   }
 
   async makeRequest(data) {
-    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')
+      ?.content;
 
     // Replace path parameters in the URL
-    let endpoint = this.urlValue
+    let endpoint = this.urlValue;
     Object.entries(data.path || {}).forEach(([key, value]) => {
-      endpoint = endpoint.replace(`{${key}}`, encodeURIComponent(value))
-    })
+      endpoint = endpoint.replace(`{${key}}`, encodeURIComponent(value));
+    });
 
     // Combine body and query params for the proxy
-    const params = { ...data.body, ...data.query }
+    const params = { ...data.body, ...data.query };
 
-    return fetch('/api/proxy', {
-      method: 'POST',
+    return fetch("/api/proxy", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
-        'X-CSRF-Token': csrfToken
+        "Content-Type": "application/json",
+        "X-CSRF-Token": csrfToken,
       },
       body: JSON.stringify({
         endpoint: endpoint,
         method: this.methodValue,
-        params: params
-      })
-    })
+        params: params,
+      }),
+    });
   }
 
   async handleResponse(response, clientDuration) {
-    const proxyResult = await response.json()
+    const proxyResult = await response.json();
 
     // Use the actual API status code from the proxy envelope
-    const actualStatus = proxyResult.status_code || response.status
+    const actualStatus = proxyResult.status_code || response.status;
 
     // On 429, keep the last successful response visible and open the signup popup
     if (actualStatus === 429 && this.modalIdValue) {
       if (this.hasResponse) {
-        this.responseContainerTarget.classList.remove("hidden")
+        this.responseContainerTarget.classList.remove("hidden");
       }
-      this.openRateLimitModal()
-      return
+      this.openRateLimitModal();
+      return;
     }
 
     // Show response container
-    this.hideError()
-    this.responseContainerTarget.classList.remove("hidden")
+    this.hideError();
+    this.responseContainerTarget.classList.remove("hidden");
 
-    const statusOk = actualStatus >= 200 && actualStatus < 300
+    const statusOk = actualStatus >= 200 && actualStatus < 300;
 
     // Update status badge
-    const statusClass = statusOk ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
-    this.statusBadgeTarget.className = `inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium ${statusClass}`
-    this.statusBadgeTarget.textContent = actualStatus.toString()
+    const statusClass = statusOk
+      ? "bg-green-100 text-green-800"
+      : "bg-red-100 text-red-800";
+    this.statusBadgeTarget.className =
+      `inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium ${statusClass}`;
+    this.statusBadgeTarget.textContent = actualStatus.toString();
 
     // Update response time (prefer server-measured, fall back to client)
-    const displayTime = proxyResult.response_time_ms || clientDuration
-    this.responseTimeTarget.textContent = `${displayTime}ms`
+    const displayTime = proxyResult.response_time_ms || clientDuration;
+    this.responseTimeTarget.textContent = `${displayTime}ms`;
 
     // Display the actual API response body (unwrap proxy envelope)
-    const body = proxyResult.data ?? proxyResult.error ?? proxyResult
-    this.responseBodyTarget.textContent = JSON.stringify(body, null, 2)
+    const body = proxyResult.data ?? proxyResult.error ?? proxyResult;
+    this.responseBodyTarget.textContent = JSON.stringify(body, null, 2);
 
-    this.hasResponse = true
+    this.hasResponse = true;
   }
 
   openRateLimitModal() {
-    const modal = document.getElementById(this.modalIdValue)
-    if (!modal) return
+    const modal = document.getElementById(this.modalIdValue);
+    if (!modal) return;
 
-    modal.style.display = "flex"
-    document.body.classList.add("overflow-hidden")
+    modal.style.display = "flex";
+    document.body.classList.add("overflow-hidden");
 
     const closeModal = () => {
-      modal.style.display = "none"
-      document.body.classList.remove("overflow-hidden")
-      document.removeEventListener("keydown", escHandler)
-    }
-    const escHandler = (e) => { if (e.key === "Escape") closeModal() }
-    document.addEventListener("keydown", escHandler)
+      modal.style.display = "none";
+      document.body.classList.remove("overflow-hidden");
+      document.removeEventListener("keydown", escHandler);
+    };
+    const escHandler = (e) => {
+      if (e.key === "Escape") closeModal();
+    };
+    document.addEventListener("keydown", escHandler);
   }
 
   showLoading() {
-    this.submitButtonTarget.disabled = true
-    this.submitTextTarget.textContent = "Sending..."
-    this.loadingTarget.classList.remove("hidden")
-    this.hideError()
-    this.responseContainerTarget.classList.add("hidden")
+    this.submitButtonTarget.disabled = true;
+    this.submitTextTarget.textContent = "Sending...";
+    this.loadingTarget.classList.remove("hidden");
+    this.hideError();
+    this.responseContainerTarget.classList.add("hidden");
   }
 
   hideLoading() {
-    this.submitButtonTarget.disabled = false
-    this.submitTextTarget.textContent = "Send Request"
-    this.loadingTarget.classList.add("hidden")
+    this.submitButtonTarget.disabled = false;
+    this.submitTextTarget.textContent = "Send Request";
+    this.loadingTarget.classList.add("hidden");
   }
 
   showError(message) {
-    this.errorMessageTarget.textContent = message
-    this.errorContainerTarget.classList.remove("hidden")
-    this.responseContainerTarget.classList.add("hidden")
+    this.errorMessageTarget.textContent = message;
+    this.errorContainerTarget.classList.remove("hidden");
+    this.responseContainerTarget.classList.add("hidden");
   }
 
   hideError() {
-    this.errorContainerTarget.classList.add("hidden")
+    this.errorContainerTarget.classList.add("hidden");
   }
 }

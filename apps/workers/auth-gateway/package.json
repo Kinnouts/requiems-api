@@ -3,11 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
+  "packageManager": "pnpm@10.26.0",
   "scripts": {
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "deploy:prod": "wrangler deploy --env production",
-    "typecheck": "cd ../shared && bun install --frozen-lockfile && cd - && tsc --noEmit",
+    "typecheck": "cd ../shared && pnpm install --frozen-lockfile && cd - && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage",
@@ -17,7 +18,7 @@
     "format:check": "biome format ./src",
     "db:migrate": "wrangler d1 execute requiem-usage --file=schema.sql",
     "db:migrate:prod": "wrangler d1 execute requiem-usage --file=schema.sql --env production",
-    "kv:seed": "bun run scripts/seed-kv.ts"
+    "kv:seed": "node scripts/seed-kv.ts"
   },
   "dependencies": {
     "@t3-oss/env-core": "^0.11.1",

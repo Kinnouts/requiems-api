@@ -367,7 +367,7 @@ wrangler secret put BACKEND_SECRET --env production
 
 ```bash
 # Deploy to production
-bun run deploy:prod
+pnpm run deploy:prod
 
 # Or manually
 wrangler deploy --env production

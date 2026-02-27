@@ -38,8 +38,8 @@ app.get("/summary", async (c) => {
         .bind(userId)
         .first<{ earliest: string }>();
 
-      sinceDate =
-        billingResult?.earliest || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+      sinceDate = billingResult?.earliest ||
+        new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
     }
 
     // Get total requests and credits
@@ -95,7 +95,9 @@ app.get("/summary", async (c) => {
     if (c.env.ENVIRONMENT === "development") {
       return jsonError(
         500,
-        `Failed to fetch analytics: ${error instanceof Error ? error.message : String(error)}`,
+        `Failed to fetch analytics: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
       );
     }
 
