@@ -5,11 +5,9 @@ services:
     build:
       context: ../../apps/api
       dockerfile: ../../infra/docker/api.Dockerfile
+    env_file: .env
     environment:
       - PORT=8080
-      - DATABASE_URL=${DATABASE_URL}
-      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
-      - BACKEND_SECRET=${BACKEND_SECRET}
     ports:
       - "8080:8080"
     depends_on:
@@ -20,16 +18,13 @@ services:
 
   db:
     image: postgres:16-alpine
-    environment:
-      - POSTGRES_USER=${POSTGRES_USER:-requiem}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-requiem}
-      - POSTGRES_DB=${POSTGRES_DB:-requiem}
+    env_file: .env
     volumes:
       - db_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-requiem}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
       interval: 5s
       timeout: 5s
       retries: 5
@@ -48,39 +43,10 @@ services:
     build:
       context: ../../apps/dashboard
       dockerfile: ../../infra/docker/dashboard.Dockerfile
+    env_file: .env
     environment:
       - RAILS_ENV=production
       - RAILS_LOG_LEVEL=warn
-      - DATABASE_URL=${DATABASE_URL}
-      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
-      - SECRET_KEY_BASE=${SECRET_KEY_BASE:-changeme}
-      - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
-      - BACKEND_SECRET=${BACKEND_SECRET}
-      # Internal API (direct Go backend — used for docs playground proxy)
-      - INTERNAL_API_URL=${INTERNAL_API_URL:-http://api:8080}
-      - API_MANAGEMENT_API_KEY=${API_MANAGEMENT_API_KEY}
-      - CLOUDFLARE_ACCOUNT_ID=${CLOUDFLARE_ACCOUNT_ID}
-      - CLOUDFLARE_KV_NAMESPACE_ID=${CLOUDFLARE_KV_NAMESPACE_ID}
-      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
-      - LEMONSQUEEZY_STORE_SLUG=${LEMONSQUEEZY_STORE_SLUG}
-      - LEMONSQUEEZY_STORE_ID=${LEMONSQUEEZY_STORE_ID}
-      - LEMONSQUEEZY_API_KEY=${LEMONSQUEEZY_API_KEY}
-      - LEMONSQUEEZY_SIGNING_SECRET=${LEMONSQUEEZY_SIGNING_SECRET}
-      - LEMONSQUEEZY_DEVELOPER_MONTHLY_VARIANT_ID=${LEMONSQUEEZY_DEVELOPER_MONTHLY_VARIANT_ID}
-      - LEMONSQUEEZY_DEVELOPER_YEARLY_VARIANT_ID=${LEMONSQUEEZY_DEVELOPER_YEARLY_VARIANT_ID}
-      - LEMONSQUEEZY_BUSINESS_MONTHLY_VARIANT_ID=${LEMONSQUEEZY_BUSINESS_MONTHLY_VARIANT_ID}
-      - LEMONSQUEEZY_BUSINESS_YEARLY_VARIANT_ID=${LEMONSQUEEZY_BUSINESS_YEARLY_VARIANT_ID}
-      - LEMONSQUEEZY_PROFESSIONAL_MONTHLY_VARIANT_ID=${LEMONSQUEEZY_PROFESSIONAL_MONTHLY_VARIANT_ID}
-      - LEMONSQUEEZY_PROFESSIONAL_YEARLY_VARIANT_ID=${LEMONSQUEEZY_PROFESSIONAL_YEARLY_VARIANT_ID}
-      - SMTP_ADDRESS=${SMTP_ADDRESS}
-      - SMTP_PORT=${SMTP_PORT:-587}
-      - SMTP_DOMAIN=${SMTP_DOMAIN}
-      - SMTP_USERNAME=${SMTP_USERNAME}
-      - SMTP_PASSWORD=${SMTP_PASSWORD}
-      - SMTP_FROM_EMAIL=${SMTP_FROM_EMAIL}
-      - MAILER_HOST=${MAILER_HOST}
-      - OBSERVER_EMAILS=${OBSERVER_EMAILS:-eliaz@bobadilla.tech}
-      - MAILER_FROM=${MAILER_FROM:-noreply@requiems.xyz}
     ports:
       - "3000:80"
     depends_on:
@@ -94,37 +60,10 @@ services:
     build:
       context: ../../apps/dashboard
       dockerfile: ../../infra/docker/dashboard.Dockerfile
+    env_file: .env
     environment:
       - RAILS_ENV=production
       - RAILS_LOG_LEVEL=warn
-      - DATABASE_URL=${DATABASE_URL}
-      - REDIS_URL=${REDIS_URL:-redis://redis:6379}
-      - SECRET_KEY_BASE=${SECRET_KEY_BASE:-changeme}
-      - RAILS_MASTER_KEY=${RAILS_MASTER_KEY}
-      - BACKEND_SECRET=${BACKEND_SECRET}
-      - API_MANAGEMENT_API_KEY=${API_MANAGEMENT_API_KEY}
-      - CLOUDFLARE_ACCOUNT_ID=${CLOUDFLARE_ACCOUNT_ID}
-      - CLOUDFLARE_KV_NAMESPACE_ID=${CLOUDFLARE_KV_NAMESPACE_ID}
-      - CLOUDFLARE_API_TOKEN=${CLOUDFLARE_API_TOKEN}
-      - LEMONSQUEEZY_STORE_SLUG=${LEMONSQUEEZY_STORE_SLUG}
-      - LEMONSQUEEZY_STORE_ID=${LEMONSQUEEZY_STORE_ID}
-      - LEMONSQUEEZY_API_KEY=${LEMONSQUEEZY_API_KEY}
-      - LEMONSQUEEZY_SIGNING_SECRET=${LEMONSQUEEZY_SIGNING_SECRET}
-      - LEMONSQUEEZY_DEVELOPER_MONTHLY_VARIANT_ID=${LEMONSQUEEZY_DEVELOPER_MONTHLY_VARIANT_ID}
-      - LEMONSQUEEZY_DEVELOPER_YEARLY_VARIANT_ID=${LEMONSQUEEZY_DEVELOPER_YEARLY_VARIANT_ID}
-      - LEMONSQUEEZY_BUSINESS_MONTHLY_VARIANT_ID=${LEMONSQUEEZY_BUSINESS_MONTHLY_VARIANT_ID}
-      - LEMONSQUEEZY_BUSINESS_YEARLY_VARIANT_ID=${LEMONSQUEEZY_BUSINESS_YEARLY_VARIANT_ID}
-      - LEMONSQUEEZY_PROFESSIONAL_MONTHLY_VARIANT_ID=${LEMONSQUEEZY_PROFESSIONAL_MONTHLY_VARIANT_ID}
-      - LEMONSQUEEZY_PROFESSIONAL_YEARLY_VARIANT_ID=${LEMONSQUEEZY_PROFESSIONAL_YEARLY_VARIANT_ID}
-      - SMTP_ADDRESS=${SMTP_ADDRESS}
-      - SMTP_PORT=${SMTP_PORT:-587}
-      - SMTP_DOMAIN=${SMTP_DOMAIN}
-      - SMTP_USERNAME=${SMTP_USERNAME}
-      - SMTP_PASSWORD=${SMTP_PASSWORD}
-      - SMTP_FROM_EMAIL=${SMTP_FROM_EMAIL}
-      - MAILER_HOST=${MAILER_HOST}
-      - OBSERVER_EMAILS=${OBSERVER_EMAILS:-eliaz@bobadilla.tech}
-      - MAILER_FROM=${MAILER_FROM:-noreply@requiems.xyz}
     depends_on:
       - db
       - redis
@@ -132,8 +71,7 @@ services:
 
   caddy:
     image: caddy:2-alpine
-    environment:
-      - BACKEND_SECRET=${BACKEND_SECRET}
+    env_file: .env
     depends_on:
       - api
       - dashboard
