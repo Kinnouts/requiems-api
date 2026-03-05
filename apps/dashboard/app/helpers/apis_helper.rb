@@ -89,4 +89,101 @@ module ApisHelper
       !category["coming_soon"] && apis_by_category(category["id"]).any?
     end
   end
+
+  def api_documentation_as_text(doc)
+    lines = []
+    lines << doc["api_name"]
+    lines << "=" * doc["api_name"].length
+    lines << ""
+    lines << doc["description"]
+    lines << ""
+    lines << "Base URL: #{doc["base_url"]}"
+    lines << ""
+
+    doc["endpoints"]&.each do |ep|
+      lines << "#{ep["method"]} #{ep["path"]}"
+      lines << "-" * "#{ep["method"]} #{ep["path"]}".length
+      lines << ep["description"] if ep["description"].present?
+      lines << ""
+
+      if ep["parameters"].present?
+        lines << "Parameters:"
+        ep["parameters"].each do |p|
+          req = p["required"] ? " (required)" : " (optional)"
+          lines << "  #{p["name"]} [#{p["type"]}]#{req} - #{p["description"]}"
+        end
+        lines << ""
+      end
+
+      if ep["response_example"].present?
+        lines << "Response example:"
+        lines << ep["response_example"].strip
+        lines << ""
+      end
+    end
+
+    lines.join("\n")
+  end
+
+  def api_documentation_as_markdown(doc)
+    lines = []
+    lines << "# #{doc["api_name"]}"
+    lines << ""
+    lines << doc["description"]
+    lines << ""
+    lines << "**Base URL:** `#{doc["base_url"]}`"
+    lines << ""
+
+    doc["endpoints"]&.each do |ep|
+      lines << "## `#{ep["method"]} #{ep["path"]}`"
+      lines << ""
+      lines << ep["description"] if ep["description"].present?
+      lines << ""
+
+      if ep["parameters"].present?
+        lines << "### Parameters"
+        lines << ""
+        lines << "| Name | Type | Required | Description |"
+        lines << "|------|------|----------|-------------|"
+        ep["parameters"].each do |p|
+          req = p["required"] ? "Yes" : "No"
+          lines << "| `#{p["name"]}` | #{p["type"]} | #{req} | #{p["description"]} |"
+        end
+        lines << ""
+      end
+
+      if ep["request_example"].present?
+        lines << "### Request"
+        lines << ""
+        lines << "```json"
+        lines << ep["request_example"].strip
+        lines << "```"
+        lines << ""
+      end
+
+      if ep["response_example"].present?
+        lines << "### Response"
+        lines << ""
+        lines << "```json"
+        lines << ep["response_example"].strip
+        lines << "```"
+        lines << ""
+      end
+
+      next unless ep["code_examples"].present?
+
+      lines << "### Code Examples"
+      lines << ""
+      ep["code_examples"].each do |lang, code|
+        lines << "**#{lang.capitalize}**"
+        lines << ""
+        lines << "```#{lang}"
+        lines << code.strip
+        lines << "```"
+        lines << ""
+      end
+    end
+
+    lines.join("\n")
+  end
 end
