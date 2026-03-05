@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class AddIndexesToUsageTables < ActiveRecord::Migration[8.1]
   def change
     # Usage logs indexes for analytics queries

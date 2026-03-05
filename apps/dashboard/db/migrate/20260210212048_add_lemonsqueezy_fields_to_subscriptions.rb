@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class AddLemonsqueezyFieldsToSubscriptions < ActiveRecord::Migration[8.1]
   def change
     add_column :subscriptions, :lemonsqueezy_subscription_id, :string

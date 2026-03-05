@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class CreateDailyUsageSummaries < ActiveRecord::Migration[8.1]
   def change
     create_table :daily_usage_summaries do |t|

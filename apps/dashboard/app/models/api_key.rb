@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class ApiKey < ApplicationRecord
   belongs_to :user
   has_many :usage_logs, dependent: :destroy
