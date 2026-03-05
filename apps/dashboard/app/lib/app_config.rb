@@ -19,6 +19,13 @@ class AppConfig
               :lemonsqueezy_professional_monthly_variant_id,
               :lemonsqueezy_professional_yearly_variant_id
 
+  attr_reader :lemonsqueezy_developer_monthly_checkout_uuid,
+              :lemonsqueezy_developer_yearly_checkout_uuid,
+              :lemonsqueezy_business_monthly_checkout_uuid,
+              :lemonsqueezy_business_yearly_checkout_uuid,
+              :lemonsqueezy_professional_monthly_checkout_uuid,
+              :lemonsqueezy_professional_yearly_checkout_uuid
+
   attr_reader :api_base_url,
               :playground_api_key,
               :internal_api_url,
@@ -40,9 +47,9 @@ class AppConfig
     @instance ||= new
   end
 
-  def self.method_missing(method_name, *args, &block)
+  def self.method_missing(method_name, *args, **kwargs, &block)
     if instance.respond_to?(method_name)
-      instance.public_send(method_name, *args, &block)
+      instance.public_send(method_name, *args, **kwargs, &block)
     else
       super
     end
@@ -60,6 +67,19 @@ class AppConfig
       billing_cycle == "monthly" ? lemonsqueezy_business_monthly_variant_id : lemonsqueezy_business_yearly_variant_id
     when "professional"
       billing_cycle == "monthly" ? lemonsqueezy_professional_monthly_variant_id : lemonsqueezy_professional_yearly_variant_id
+    else
+      raise InvalidConfigError, "Unknown plan: #{plan}"
+    end
+  end
+
+  def checkout_uuid_for(plan:, billing_cycle:)
+    case plan.to_s.downcase
+    when "developer"
+      billing_cycle == "monthly" ? lemonsqueezy_developer_monthly_checkout_uuid : lemonsqueezy_developer_yearly_checkout_uuid
+    when "business"
+      billing_cycle == "monthly" ? lemonsqueezy_business_monthly_checkout_uuid : lemonsqueezy_business_yearly_checkout_uuid
+    when "professional"
+      billing_cycle == "monthly" ? lemonsqueezy_professional_monthly_checkout_uuid : lemonsqueezy_professional_yearly_checkout_uuid
     else
       raise InvalidConfigError, "Unknown plan: #{plan}"
     end
@@ -84,6 +104,13 @@ class AppConfig
     @lemonsqueezy_business_yearly_variant_id = require_env("LEMONSQUEEZY_BUSINESS_YEARLY_VARIANT_ID")
     @lemonsqueezy_professional_monthly_variant_id = require_env("LEMONSQUEEZY_PROFESSIONAL_MONTHLY_VARIANT_ID")
     @lemonsqueezy_professional_yearly_variant_id = require_env("LEMONSQUEEZY_PROFESSIONAL_YEARLY_VARIANT_ID")
+
+    @lemonsqueezy_developer_monthly_checkout_uuid = require_env("LEMONSQUEEZY_DEVELOPER_MONTHLY_CHECKOUT_UUID")
+    @lemonsqueezy_developer_yearly_checkout_uuid = require_env("LEMONSQUEEZY_DEVELOPER_YEARLY_CHECKOUT_UUID")
+    @lemonsqueezy_business_monthly_checkout_uuid = require_env("LEMONSQUEEZY_BUSINESS_MONTHLY_CHECKOUT_UUID")
+    @lemonsqueezy_business_yearly_checkout_uuid = require_env("LEMONSQUEEZY_BUSINESS_YEARLY_CHECKOUT_UUID")
+    @lemonsqueezy_professional_monthly_checkout_uuid = require_env("LEMONSQUEEZY_PROFESSIONAL_MONTHLY_CHECKOUT_UUID")
+    @lemonsqueezy_professional_yearly_checkout_uuid = require_env("LEMONSQUEEZY_PROFESSIONAL_YEARLY_CHECKOUT_UUID")
 
     @api_base_url = optional_env("API_BASE_URL", default: "https://api.requiems.xyz")
     @playground_api_key = optional_env("PLAYGROUND_API_KEY", default: "rq_test_playground_demo_key")
@@ -144,6 +171,12 @@ class AppConfig
       "LEMONSQUEEZY_BUSINESS_YEARLY_VARIANT_ID" => "123459",
       "LEMONSQUEEZY_PROFESSIONAL_MONTHLY_VARIANT_ID" => "123460",
       "LEMONSQUEEZY_PROFESSIONAL_YEARLY_VARIANT_ID" => "123461",
+      "LEMONSQUEEZY_DEVELOPER_MONTHLY_CHECKOUT_UUID" => "00000000-0000-0000-0000-000000000001",
+      "LEMONSQUEEZY_DEVELOPER_YEARLY_CHECKOUT_UUID" => "00000000-0000-0000-0000-000000000002",
+      "LEMONSQUEEZY_BUSINESS_MONTHLY_CHECKOUT_UUID" => "00000000-0000-0000-0000-000000000003",
+      "LEMONSQUEEZY_BUSINESS_YEARLY_CHECKOUT_UUID" => "00000000-0000-0000-0000-000000000004",
+      "LEMONSQUEEZY_PROFESSIONAL_MONTHLY_CHECKOUT_UUID" => "00000000-0000-0000-0000-000000000005",
+      "LEMONSQUEEZY_PROFESSIONAL_YEARLY_CHECKOUT_UUID" => "00000000-0000-0000-0000-000000000006",
       "BACKEND_SECRET" => "test_backend_secret"
     }
   end
