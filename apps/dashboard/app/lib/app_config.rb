@@ -1,22 +1,17 @@
 # frozen_string_literal: true
 
-# Central configuration service for environment variables
-# Validates required variables at startup and provides typed access
 class AppConfig
   class MissingConfigError < StandardError; end
   class InvalidConfigError < StandardError; end
 
   include Singleton
 
-  # API Management
   attr_reader :api_management_api_key
 
-  # LemonSqueezy Configuration
   attr_reader :lemonsqueezy_store_id,
               :lemonsqueezy_store_slug,
               :lemonsqueezy_signing_secret
 
-  # LemonSqueezy Variant IDs
   attr_reader :lemonsqueezy_developer_monthly_variant_id,
               :lemonsqueezy_developer_yearly_variant_id,
               :lemonsqueezy_business_monthly_variant_id,
@@ -24,13 +19,11 @@ class AppConfig
               :lemonsqueezy_professional_monthly_variant_id,
               :lemonsqueezy_professional_yearly_variant_id
 
-  # API Configuration
   attr_reader :api_base_url,
               :playground_api_key,
               :internal_api_url,
               :backend_secret
 
-  # SMTP Configuration (production only)
   attr_reader :smtp_address,
               :smtp_port,
               :smtp_domain,
@@ -40,15 +33,13 @@ class AppConfig
 
   def initialize
     load_config
-    validate_config
+    validate_config unless ENV["SECRET_KEY_BASE_DUMMY"].present?
   end
 
-  # Convenience method for accessing the singleton
   def self.instance
     @instance ||= new
   end
 
-  # Quick accessor methods for common patterns
   def self.method_missing(method_name, *args, &block)
     if instance.respond_to?(method_name)
       instance.public_send(method_name, *args, &block)
@@ -61,7 +52,6 @@ class AppConfig
     instance.respond_to?(method_name) || super
   end
 
-  # Get variant ID for a specific plan and billing cycle
   def variant_id_for(plan:, billing_cycle:)
     case plan.to_s.downcase
     when "developer"
@@ -75,7 +65,6 @@ class AppConfig
     end
   end
 
-  # Check if SMTP is configured (for production)
   def smtp_configured?
     smtp_address.present? && smtp_username.present? && smtp_password.present?
   end
@@ -115,15 +104,12 @@ class AppConfig
   end
 
   def validate_config
-    # Validate URL format
     validate_url(@api_base_url, "API_BASE_URL")
 
-    # Validate LemonSqueezy store ID format
     unless @lemonsqueezy_store_id.match?(/^\d+$/)
       raise InvalidConfigError, "LEMONSQUEEZY_STORE_ID must be numeric"
     end
 
-    # Validate all variant IDs are present and numeric
     validate_variant_id(@lemonsqueezy_developer_monthly_variant_id, "LEMONSQUEEZY_DEVELOPER_MONTHLY_VARIANT_ID")
     validate_variant_id(@lemonsqueezy_developer_yearly_variant_id, "LEMONSQUEEZY_DEVELOPER_YEARLY_VARIANT_ID")
     validate_variant_id(@lemonsqueezy_business_monthly_variant_id, "LEMONSQUEEZY_BUSINESS_MONTHLY_VARIANT_ID")
@@ -131,7 +117,6 @@ class AppConfig
     validate_variant_id(@lemonsqueezy_professional_monthly_variant_id, "LEMONSQUEEZY_PROFESSIONAL_MONTHLY_VARIANT_ID")
     validate_variant_id(@lemonsqueezy_professional_yearly_variant_id, "LEMONSQUEEZY_PROFESSIONAL_YEARLY_VARIANT_ID")
 
-    # Validate SMTP if in production
     if Rails.env.production? && !smtp_configured?
       Rails.logger.warn("SMTP not fully configured in production environment")
     end
@@ -140,10 +125,10 @@ class AppConfig
   def require_env(key)
     value = ENV.fetch(key, nil)
     return value if value.present?
-
-    # Key absent or empty string — fall back to test defaults or raise
     if Rails.env.test?
       test_defaults[key]
+    elsif ENV["SECRET_KEY_BASE_DUMMY"].present?
+      "dummy"
     else
       raise MissingConfigError, "Missing required environment variable: #{key}"
     end
@@ -153,7 +138,6 @@ class AppConfig
     ENV.fetch(key, default)
   end
 
-  # Safe test defaults for required environment variables
   def test_defaults
     {
       "API_MANAGEMENT_API_KEY" => "test_api_management_key",
@@ -171,9 +155,11 @@ class AppConfig
 
   def validate_url(url, key)
     uri = URI.parse(url)
+
     unless uri.is_a?(URI::HTTP) || uri.is_a?(URI::HTTPS)
       raise InvalidConfigError, "#{key} must be a valid HTTP/HTTPS URL"
     end
+
   rescue URI::InvalidURIError
     raise InvalidConfigError, "#{key} is not a valid URL: #{url}"
   end
