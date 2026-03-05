@@ -2,7 +2,7 @@
 
 api_id: counter
 api_name: Counter
-description: Atomic, namespace-isolated hit counter backed by Redis with durable PostgreSQL persistence. Perfect for tracking page views, downloads, or any event that needs counting.
+description: Atomic, namespace-isolated hit counter. Perfect for tracking page views, downloads, or any event that needs counting.
 base_url: https://api.requiems.xyz
 
 overview:

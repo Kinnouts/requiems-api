@@ -1,6 +1,3 @@
-# API Catalog Configuration
-# Defines all APIs available in the Requiems API platform
-
 categories:
   - id: email
     name: Email
@@ -190,7 +187,7 @@ apis:
   - id: counter
     name: Counter
     category: misc
-    description: Atomic, namespace-isolated hit counter backed by Redis with durable PostgreSQL persistence
+    description: Atomic, namespace-isolated hit counter
     endpoints_count: 2
     status: live
     popular: false
