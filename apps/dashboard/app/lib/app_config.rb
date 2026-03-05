@@ -72,15 +72,12 @@ class AppConfig
   private
 
   def load_config
-    # API Management
     @api_management_api_key = require_env("API_MANAGEMENT_API_KEY")
 
-    # LemonSqueezy Store
     @lemonsqueezy_store_id = require_env("LEMONSQUEEZY_STORE_ID")
     @lemonsqueezy_store_slug = optional_env("LEMONSQUEEZY_STORE_SLUG", default: "requiems")
     @lemonsqueezy_signing_secret = require_env("LEMONSQUEEZY_SIGNING_SECRET")
 
-    # LemonSqueezy Variants
     @lemonsqueezy_developer_monthly_variant_id = require_env("LEMONSQUEEZY_DEVELOPER_MONTHLY_VARIANT_ID")
     @lemonsqueezy_developer_yearly_variant_id = require_env("LEMONSQUEEZY_DEVELOPER_YEARLY_VARIANT_ID")
     @lemonsqueezy_business_monthly_variant_id = require_env("LEMONSQUEEZY_BUSINESS_MONTHLY_VARIANT_ID")
@@ -88,13 +85,11 @@ class AppConfig
     @lemonsqueezy_professional_monthly_variant_id = require_env("LEMONSQUEEZY_PROFESSIONAL_MONTHLY_VARIANT_ID")
     @lemonsqueezy_professional_yearly_variant_id = require_env("LEMONSQUEEZY_PROFESSIONAL_YEARLY_VARIANT_ID")
 
-    # API Configuration
     @api_base_url = optional_env("API_BASE_URL", default: "https://api.requiems.xyz")
     @playground_api_key = optional_env("PLAYGROUND_API_KEY", default: "rq_test_playground_demo_key")
     @internal_api_url = optional_env("INTERNAL_API_URL", default: "http://localhost:8080")
     @backend_secret = optional_env("BACKEND_SECRET", default: "dev_backend_secret")
 
-    # SMTP (optional - only needed in production)
     @smtp_address = optional_env("SMTP_ADDRESS")
     @smtp_port = optional_env("SMTP_PORT", default: "587").to_i
     @smtp_domain = optional_env("SMTP_DOMAIN")
