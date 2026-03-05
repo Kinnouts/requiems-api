@@ -1,0 +1,25 @@
+# Requiems API
+
+> Requiems is a unified API platform providing instant access to production-ready APIs for text utilities, email validation, entertainment data, geographic information, and more. All APIs are accessible with a single API key.
+
+## APIs
+<% @apis.each do |api| %>
+- [<%= api["name"] %>](https://requiems.xyz/apis/<%= api["id"] %>): <%= api["description"] %>
+<% end %>
+
+## Documentation
+
+- [API Reference](https://requiems.xyz/api_reference): Full API reference with authentication, rate limits, and error codes
+- [All APIs](https://requiems.xyz/apis): Browse the complete API catalog
+- [Pricing](https://requiems.xyz/pricing): Plans and credit pricing
+- [FAQ](https://requiems.xyz/faq): Frequently asked questions
+- [Error Codes](https://requiems.xyz/error_codes): HTTP status codes and error handling
+- [Changelog](https://requiems.xyz/changelog): Release history and updates
+
+## Authentication
+
+All API requests require a `requiems-api-key` header. Get your key at https://requiems.xyz/users/sign_up
+
+## Base URL
+
+https://api.requiems.xyz

@@ -1,14 +1,17 @@
 Rails.application.routes.draw do
-  # Note: Devise deprecation warnings about hash arguments are from Devise internals (v4.9.x)
-  # Tracked in: https://github.com/heartcombo/devise/issues/5735
-  # Fix is merged in main branch but not yet released. These warnings don't affect functionality.
-  # Will be resolved in the next Devise release.
-
   # Devise authentication
   devise_for :users, controllers: {
     registrations: "users/registrations",
-    sessions: "users/sessions"
+    sessions: "users/sessions",
+    confirmations: "users/confirmations"
   }
+
+  if Rails.env.development?
+    mount LetterOpenerWeb::Engine, at: "/letter_opener"
+  end
+
+  get "sitemap.xml", to: "sitemap#sitemap", defaults: { format: :xml }
+  get "llms.txt",    to: "sitemap#llms",    defaults: { format: :text }
 
   # Landing page
   root "home#index"
