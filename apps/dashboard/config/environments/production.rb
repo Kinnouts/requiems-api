@@ -19,14 +19,13 @@ Rails.application.configure do
   config.solid_cache.connects_to = { database: { writing: :cache } }
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_caching = false
+  config.action_mailer.delivery_method = :smtp
 
-  # Only configure mailer if AppConfig is available (skipped during asset precompilation)
-  if defined?(AppConfig)
+  config.after_initialize do
     config.action_mailer.default_url_options = {
       host: AppConfig.mailer_host,
       protocol: "https"
     }
-    config.action_mailer.delivery_method = :smtp
     config.action_mailer.smtp_settings = {
       address: AppConfig.smtp_address,
       port: AppConfig.smtp_port,
