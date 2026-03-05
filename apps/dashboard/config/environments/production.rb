@@ -26,14 +26,12 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
 
-  unless ENV["SECRET_KEY_BASE_DUMMY"].present?
-    config.action_mailer.default_url_options = {
+  config.after_initialize do
+    ActionMailer::Base.default_url_options = {
       host: AppConfig.mailer_host,
       protocol: "https"
     }
-  end
 
-  config.after_initialize do
     config.action_mailer.smtp_settings = {
       address: AppConfig.smtp_address,
       port: AppConfig.smtp_port,
