@@ -160,18 +160,10 @@ class Dashboard::BillingController < ApplicationController
   end
 
   def create_lemonsqueezy_checkout_url(plan, billing_cycle)
-    plan_info = get_plan_info(plan)
+    checkout_uuid = AppConfig.checkout_uuid_for(plan: plan, billing_cycle: billing_cycle)
 
-    variant_id = if billing_cycle == "yearly"
-                   plan_info[:lemonsqueezy_variant_id_yearly]
-    else
-                   plan_info[:lemonsqueezy_variant_id_monthly]
-    end
-
-    # LemonSqueezy checkout URL format
-    # https://[store-slug].lemonsqueezy.com/checkout/buy/[variant-id]?checkout[email]=user@example.com&checkout[custom][user_id]=123
     store_slug = AppConfig.lemonsqueezy_store_slug
-    checkout_url = "https://#{store_slug}.lemonsqueezy.com/checkout/buy/#{variant_id}"
+    checkout_url = "https://#{store_slug}.lemonsqueezy.com/checkout/buy/#{checkout_uuid}"
 
     # Add query parameters
     params = {
