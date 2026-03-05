@@ -32,7 +32,7 @@ Rails.application.configure do
       protocol: "https"
     }
 
-    config.action_mailer.smtp_settings = {
+    ActionMailer::Base.smtp_settings = {
       address: AppConfig.smtp_address,
       port: AppConfig.smtp_port,
       domain: AppConfig.smtp_domain,
