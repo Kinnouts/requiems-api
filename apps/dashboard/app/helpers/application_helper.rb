@@ -13,6 +13,11 @@ module ApplicationHelper
     }
   end
 
+  def gravatar_url(email, size: 80)
+    hash = Digest::MD5.hexdigest(email.to_s.downcase.strip)
+    "https://www.gravatar.com/avatar/#{hash}?s=#{size}&d=mp"
+  end
+
   private
 
   def searchable_apis
