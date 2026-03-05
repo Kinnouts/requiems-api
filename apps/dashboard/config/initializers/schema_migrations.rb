@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Use a separate migration tracking table to avoid conflicts with Go backend
 # Go backend uses 'schema_migrations' with golang-migrate
 # Rails will use 'rails_schema_migrations' instead

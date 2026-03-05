@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 class CreateSolidCacheEntries < ActiveRecord::Migration[7.2]
   def change
     create_table :solid_cache_entries, if_not_exists: true do |t|

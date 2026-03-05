@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 module Dashboard::UsageHelper
   RANGE_DEFAULTS = { "7d" => "Last 7 Days", "30d" => "Last 30 Days" }.freeze
 
