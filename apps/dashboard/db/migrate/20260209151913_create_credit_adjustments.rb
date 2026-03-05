@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateCreditAdjustments < ActiveRecord::Migration[8.1]
   def change
     create_table :credit_adjustments do |t|

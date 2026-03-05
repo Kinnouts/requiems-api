@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class HomeController < ApplicationController
   def index
     categories = YAML.load_file(Rails.root.join("config", "api_catalog.yml"))["categories"]

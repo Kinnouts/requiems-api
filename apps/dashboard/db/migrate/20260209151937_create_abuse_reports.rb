@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class CreateAbuseReports < ActiveRecord::Migration[8.1]
   def change
     create_table :abuse_reports do |t|

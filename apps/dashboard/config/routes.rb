@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 Rails.application.routes.draw do
   # Devise authentication
   devise_for :users, controllers: {
