@@ -25,10 +25,13 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   config.action_mailer.delivery_method = :smtp
-  config.action_mailer.default_url_options = {
-    host: AppConfig.mailer_host,
-    protocol: "https"
-  }
+
+  unless ENV["SECRET_KEY_BASE_DUMMY"].present?
+    config.action_mailer.default_url_options = {
+      host: AppConfig.mailer_host,
+      protocol: "https"
+    }
+  end
 
   config.after_initialize do
     config.action_mailer.smtp_settings = {
