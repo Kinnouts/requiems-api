@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_06_232808) do
+ActiveRecord::Schema[8.1].define(version: 2026_03_06_233712) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -165,6 +165,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_06_232808) do
     t.string "deletion_token"
     t.datetime "deletion_token_sent_at"
     t.string "email", default: "", null: false
+    t.boolean "email_notifications", default: true, null: false
     t.string "encrypted_password", default: "", null: false
     t.datetime "last_sign_in_at"
     t.string "last_sign_in_ip"
@@ -177,6 +178,8 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_06_232808) do
     t.string "status", default: "active", null: false
     t.string "unconfirmed_email"
     t.datetime "updated_at", null: false
+    t.boolean "usage_alerts", default: true, null: false
+    t.boolean "weekly_reports", default: false, null: false
     t.index ["admin"], name: "index_users_on_admin"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["deletion_token"], name: "index_users_on_deletion_token", unique: true
