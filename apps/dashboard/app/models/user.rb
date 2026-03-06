@@ -40,7 +40,7 @@ class User < ApplicationRecord
   end
 
   def current_plan
-    subscription&.plan || "free"
+    subscription&.plan_name || "free"
   end
 
   def credit_limit
@@ -76,5 +76,25 @@ class User < ApplicationRecord
   def unsuspend!(admin_user:)
     update!(status: "active", active: true)
     AuditLog.create!(user: self, admin_user: admin_user, action: "unsuspend_user")
+  end
+
+  # Account deletion request methods
+  def request_account_deletion!(reason)
+    update!(
+      deletion_token: SecureRandom.urlsafe_base64(32),
+      deletion_token_sent_at: Time.current,
+      deletion_reason: reason
+    )
+  end
+
+  def deletion_token_valid?(token)
+    deletion_token.present? &&
+      deletion_token_sent_at.present? &&
+      deletion_token_sent_at > 1.hour.ago &&
+      ActiveSupport::SecurityUtils.secure_compare(deletion_token, token)
+  end
+
+  def clear_deletion_token!
+    update_columns(deletion_token: nil, deletion_token_sent_at: nil, deletion_reason: nil)
   end
 end
