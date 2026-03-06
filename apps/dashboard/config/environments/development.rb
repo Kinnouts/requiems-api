@@ -32,4 +32,6 @@ Rails.application.configure do
   config.action_view.annotate_rendered_view_with_filenames = true
   config.action_controller.raise_on_missing_callback_actions = true
   config.generators.apply_rubocop_autocorrect_after_generate!
+
+  config.hosts << "goblin-mature-annually.ngrok-free.app"
 end

@@ -65,7 +65,7 @@ class Webhooks::LemonsqueezyController < ApplicationController
 
   def handle_subscription_created
     data = params[:data][:attributes]
-    custom_data = data[:custom_data] || {}
+    custom_data = params[:meta][:custom_data] || {}
 
     user = User.find_by(id: custom_data[:user_id])
     unless user
@@ -77,7 +77,7 @@ class Webhooks::LemonsqueezyController < ApplicationController
 
     subscription = user.subscription || user.build_subscription
     subscription.update!(
-      lemonsqueezy_subscription_id: data[:id],
+      lemonsqueezy_subscription_id: params[:data][:id],
       lemonsqueezy_customer_id: data[:customer_id],
       plan_name: plan_name,
       status: data[:status],

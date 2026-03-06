@@ -10,7 +10,8 @@ class AppConfig
 
   attr_reader :lemonsqueezy_store_id,
               :lemonsqueezy_store_slug,
-              :lemonsqueezy_signing_secret
+              :lemonsqueezy_signing_secret,
+              :lemonsqueezy_test_mode
 
   attr_reader :lemonsqueezy_developer_monthly_variant_id,
               :lemonsqueezy_developer_yearly_variant_id,
@@ -96,21 +97,24 @@ class AppConfig
 
     @lemonsqueezy_store_id = require_env("LEMONSQUEEZY_STORE_ID")
     @lemonsqueezy_store_slug = optional_env("LEMONSQUEEZY_STORE_SLUG", default: "requiems")
-    @lemonsqueezy_signing_secret = require_env("LEMONSQUEEZY_SIGNING_SECRET")
+    @lemonsqueezy_test_mode = optional_env("LEMONSQUEEZY_TEST_MODE", default: "false") == "true"
+    suffix = @lemonsqueezy_test_mode ? "_TEST" : ""
 
-    @lemonsqueezy_developer_monthly_variant_id = require_env("LEMONSQUEEZY_DEVELOPER_MONTHLY_VARIANT_ID")
-    @lemonsqueezy_developer_yearly_variant_id = require_env("LEMONSQUEEZY_DEVELOPER_YEARLY_VARIANT_ID")
-    @lemonsqueezy_business_monthly_variant_id = require_env("LEMONSQUEEZY_BUSINESS_MONTHLY_VARIANT_ID")
-    @lemonsqueezy_business_yearly_variant_id = require_env("LEMONSQUEEZY_BUSINESS_YEARLY_VARIANT_ID")
-    @lemonsqueezy_professional_monthly_variant_id = require_env("LEMONSQUEEZY_PROFESSIONAL_MONTHLY_VARIANT_ID")
-    @lemonsqueezy_professional_yearly_variant_id = require_env("LEMONSQUEEZY_PROFESSIONAL_YEARLY_VARIANT_ID")
+    @lemonsqueezy_signing_secret = require_env("LEMONSQUEEZY_SIGNING_SECRET#{suffix}")
 
-    @lemonsqueezy_developer_monthly_checkout_uuid = require_env("LEMONSQUEEZY_DEVELOPER_MONTHLY_CHECKOUT_UUID")
-    @lemonsqueezy_developer_yearly_checkout_uuid = require_env("LEMONSQUEEZY_DEVELOPER_YEARLY_CHECKOUT_UUID")
-    @lemonsqueezy_business_monthly_checkout_uuid = require_env("LEMONSQUEEZY_BUSINESS_MONTHLY_CHECKOUT_UUID")
-    @lemonsqueezy_business_yearly_checkout_uuid = require_env("LEMONSQUEEZY_BUSINESS_YEARLY_CHECKOUT_UUID")
-    @lemonsqueezy_professional_monthly_checkout_uuid = require_env("LEMONSQUEEZY_PROFESSIONAL_MONTHLY_CHECKOUT_UUID")
-    @lemonsqueezy_professional_yearly_checkout_uuid = require_env("LEMONSQUEEZY_PROFESSIONAL_YEARLY_CHECKOUT_UUID")
+    @lemonsqueezy_developer_monthly_variant_id = require_env("LEMONSQUEEZY_DEVELOPER_MONTHLY_VARIANT_ID#{suffix}")
+    @lemonsqueezy_developer_yearly_variant_id = require_env("LEMONSQUEEZY_DEVELOPER_YEARLY_VARIANT_ID#{suffix}")
+    @lemonsqueezy_business_monthly_variant_id = require_env("LEMONSQUEEZY_BUSINESS_MONTHLY_VARIANT_ID#{suffix}")
+    @lemonsqueezy_business_yearly_variant_id = require_env("LEMONSQUEEZY_BUSINESS_YEARLY_VARIANT_ID#{suffix}")
+    @lemonsqueezy_professional_monthly_variant_id = require_env("LEMONSQUEEZY_PROFESSIONAL_MONTHLY_VARIANT_ID#{suffix}")
+    @lemonsqueezy_professional_yearly_variant_id = require_env("LEMONSQUEEZY_PROFESSIONAL_YEARLY_VARIANT_ID#{suffix}")
+
+    @lemonsqueezy_developer_monthly_checkout_uuid = require_env("LEMONSQUEEZY_DEVELOPER_MONTHLY_CHECKOUT_UUID#{suffix}")
+    @lemonsqueezy_developer_yearly_checkout_uuid = require_env("LEMONSQUEEZY_DEVELOPER_YEARLY_CHECKOUT_UUID#{suffix}")
+    @lemonsqueezy_business_monthly_checkout_uuid = require_env("LEMONSQUEEZY_BUSINESS_MONTHLY_CHECKOUT_UUID#{suffix}")
+    @lemonsqueezy_business_yearly_checkout_uuid = require_env("LEMONSQUEEZY_BUSINESS_YEARLY_CHECKOUT_UUID#{suffix}")
+    @lemonsqueezy_professional_monthly_checkout_uuid = require_env("LEMONSQUEEZY_PROFESSIONAL_MONTHLY_CHECKOUT_UUID#{suffix}")
+    @lemonsqueezy_professional_yearly_checkout_uuid = require_env("LEMONSQUEEZY_PROFESSIONAL_YEARLY_CHECKOUT_UUID#{suffix}")
 
     @api_base_url = optional_env("API_BASE_URL", default: "https://api.requiems.xyz")
     @playground_api_key = optional_env("PLAYGROUND_API_KEY", default: "rq_test_playground_demo_key")
@@ -177,7 +181,20 @@ class AppConfig
       "LEMONSQUEEZY_BUSINESS_YEARLY_CHECKOUT_UUID" => "00000000-0000-0000-0000-000000000004",
       "LEMONSQUEEZY_PROFESSIONAL_MONTHLY_CHECKOUT_UUID" => "00000000-0000-0000-0000-000000000005",
       "LEMONSQUEEZY_PROFESSIONAL_YEARLY_CHECKOUT_UUID" => "00000000-0000-0000-0000-000000000006",
-      "BACKEND_SECRET" => "test_backend_secret"
+      "BACKEND_SECRET" => "test_backend_secret",
+      "LEMONSQUEEZY_SIGNING_SECRET_TEST" => "test_signing_secret_test",
+      "LEMONSQUEEZY_DEVELOPER_MONTHLY_VARIANT_ID_TEST" => "223456",
+      "LEMONSQUEEZY_DEVELOPER_YEARLY_VARIANT_ID_TEST" => "223457",
+      "LEMONSQUEEZY_BUSINESS_MONTHLY_VARIANT_ID_TEST" => "223458",
+      "LEMONSQUEEZY_BUSINESS_YEARLY_VARIANT_ID_TEST" => "223459",
+      "LEMONSQUEEZY_PROFESSIONAL_MONTHLY_VARIANT_ID_TEST" => "223460",
+      "LEMONSQUEEZY_PROFESSIONAL_YEARLY_VARIANT_ID_TEST" => "223461",
+      "LEMONSQUEEZY_DEVELOPER_MONTHLY_CHECKOUT_UUID_TEST" => "00000000-0000-0000-0000-000000000011",
+      "LEMONSQUEEZY_DEVELOPER_YEARLY_CHECKOUT_UUID_TEST" => "00000000-0000-0000-0000-000000000012",
+      "LEMONSQUEEZY_BUSINESS_MONTHLY_CHECKOUT_UUID_TEST" => "00000000-0000-0000-0000-000000000013",
+      "LEMONSQUEEZY_BUSINESS_YEARLY_CHECKOUT_UUID_TEST" => "00000000-0000-0000-0000-000000000014",
+      "LEMONSQUEEZY_PROFESSIONAL_MONTHLY_CHECKOUT_UUID_TEST" => "00000000-0000-0000-0000-000000000015",
+      "LEMONSQUEEZY_PROFESSIONAL_YEARLY_CHECKOUT_UUID_TEST" => "00000000-0000-0000-0000-000000000016"
     }
   end
 
