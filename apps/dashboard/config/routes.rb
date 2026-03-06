@@ -49,7 +49,9 @@ Rails.application.routes.draw do
 
     resource :settings, only: [ :show, :update ] do
       member do
-        delete :account # Delete account
+        post   :request_deletion  # Submit reason + send confirmation email
+        get    :confirm_deletion  # Landing page from email link
+        delete :execute_deletion  # Final account deletion
       end
     end
   end

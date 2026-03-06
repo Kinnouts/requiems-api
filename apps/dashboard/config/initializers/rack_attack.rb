@@ -19,11 +19,12 @@ class Rack::Attack
     end
   end
 
-  # Throttle API playground requests for authenticated users: 4 req/min
+  # Throttle API playground requests for free authenticated users: 4 req/min
+  # Paying users (any plan other than free) are not rate limited in the playground
   throttle("api_proxy/user", limit: 4, period: 1.minute) do |req|
     if req.path == "/api/proxy" && req.post?
       user = req.env["warden"]&.user
-      "user:#{user.id}" if user
+      "user:#{user.id}" if user && user.current_plan == "free"
     end
   end
 

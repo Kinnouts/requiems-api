@@ -10,7 +10,7 @@ pin_all_from "app/javascript/controllers", under: "controllers"
 
 # Chartkick for charts
 pin "chartkick", to: "https://ga.jspm.io/npm:chartkick@5.0.1/dist/chartkick.esm.js"
-pin "Chart.bundle", to: "https://ga.jspm.io/npm:chart.js@4.4.1/dist/chart.umd.js"
+pin "Chart.bundle", to: "https://cdn.jsdelivr.net/npm/chart.js@4.4.1/+esm"
 
 # Syntax highlighting
 pin "highlight.js", to: "https://ga.jspm.io/npm:highlight.js@11.9.0/es/index.js"

@@ -25,32 +25,58 @@ class Dashboard::SettingsController < ApplicationController
     end
   end
 
-  def account
-    # Delete account action
-    if params[:confirm_email] == current_user.email
-      # Revoke all API keys
-      current_user.api_keys.each do |key|
-        key.revoke!(reason: "Account deleted by user")
-      end
+  def request_deletion
+    reason = params[:deletion_reason].to_s.strip
 
-      # Cancel subscription if exists
-      if current_user.subscription
-        current_user.subscription.update(
-          cancel_at_period_end: true,
-          canceled_at: Time.current
-        )
-      end
-
-      # Mark user as deleted (soft delete or hard delete based on preference)
-      current_user.destroy
-
-      # Sign out
-      sign_out current_user
-
-      redirect_to root_path, notice: "Your account has been successfully deleted. We're sorry to see you go!"
-    else
-      redirect_to dashboard_settings_path, alert: "Email confirmation did not match. Account was not deleted."
+    if reason.length < 10
+      redirect_to dashboard_settings_path, alert: "Please provide a reason (at least 10 characters)."
+      return
     end
+
+    current_user.request_account_deletion!(reason)
+    AccountDeletionMailer.confirmation(current_user).deliver_later
+
+    redirect_to dashboard_settings_path,
+      notice: "Check your email — we sent a confirmation link. It expires in 1 hour."
+  end
+
+  def confirm_deletion
+    token = params[:token].to_s
+
+    unless current_user.deletion_token_valid?(token)
+      redirect_to dashboard_settings_path, alert: "This link is invalid or has expired. Please request a new one."
+      return
+    end
+
+    @token = token
+    @reason = current_user.deletion_reason
+  end
+
+  def execute_deletion
+    token = params[:token].to_s
+
+    unless current_user.deletion_token_valid?(token)
+      redirect_to dashboard_settings_path, alert: "This link is invalid or has expired. Please request a new one."
+      return
+    end
+
+    # Revoke all API keys
+    current_user.api_keys.each do |key|
+      key.revoke!(reason: "Account deleted by user")
+    end
+
+    # Cancel subscription if exists
+    if current_user.subscription
+      current_user.subscription.update(
+        cancel_at_period_end: true,
+        canceled_at: Time.current
+      )
+    end
+
+    current_user.destroy
+    sign_out current_user
+
+    redirect_to root_path, notice: "Your account has been permanently deleted. We're sorry to see you go."
   end
 
   private

@@ -1,0 +1,33 @@
+Account Deletion Requested — Requiems API
+==========================================
+
+Hi <%= @user.email %>,
+
+We received a request to permanently delete your Requiems API account.
+
+YOUR REASON
+-----------
+<%= @reason %>
+
+CONFIRM DELETION
+----------------
+Click this link to permanently delete your account:
+
+<%= @confirm_url %>
+
+This link expires at <%= @expires_at.strftime("%B %d, %Y at %I:%M %p %Z") %>.
+
+WHAT HAPPENS WHEN YOU DELETE YOUR ACCOUNT
+------------------------------------------
+- All your API keys will be revoked immediately
+- Your active subscription will be canceled
+- All usage data and history will be permanently deleted
+
+This action cannot be undone.
+
+---
+
+If you didn't request this, you can safely ignore this email.
+Your account will not be deleted.
+
+Questions? Contact us at support@requiems.xyz
