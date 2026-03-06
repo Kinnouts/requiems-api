@@ -96,7 +96,7 @@ class Webhooks::LemonsqueezyController < ApplicationController
   def handle_subscription_updated
     data = params[:data][:attributes]
 
-    subscription = Subscription.find_by(lemonsqueezy_subscription_id: data[:id])
+    subscription = Subscription.find_by(lemonsqueezy_subscription_id: params[:data][:id])
     unless subscription
       Rails.logger.error "[LemonSqueezy] Subscription not found: #{data[:id]}"
       return
@@ -120,7 +120,7 @@ class Webhooks::LemonsqueezyController < ApplicationController
   def handle_subscription_cancelled
     data = params[:data][:attributes]
 
-    subscription = Subscription.find_by(lemonsqueezy_subscription_id: data[:id])
+    subscription = Subscription.find_by(lemonsqueezy_subscription_id: params[:data][:id])
     unless subscription
       Rails.logger.error "[LemonSqueezy] Subscription not found: #{data[:id]}"
       return
@@ -141,7 +141,7 @@ class Webhooks::LemonsqueezyController < ApplicationController
   def handle_subscription_resumed
     data = params[:data][:attributes]
 
-    subscription = Subscription.find_by(lemonsqueezy_subscription_id: data[:id])
+    subscription = Subscription.find_by(lemonsqueezy_subscription_id: params[:data][:id])
     unless subscription
       Rails.logger.error "[LemonSqueezy] Subscription not found: #{data[:id]}"
       return
