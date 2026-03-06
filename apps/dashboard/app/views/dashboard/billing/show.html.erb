@@ -78,7 +78,7 @@
               Upgrade Plan
             <% end %>
           <% else %>
-            <%= link_to dashboard_portal_billing_path, method: :post, class: "inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors" do %>
+            <%= button_to dashboard_portal_billing_path, method: :post, data: { turbo: false }, class: "inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors" do %>
               <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
@@ -163,7 +163,11 @@
 
     <div class="p-6">
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        <% @available_plans.reject { |p| p[:id] == "free" || p[:id] == @current_plan }.each do |plan| %>
+        <%
+          plan_order = { "free" => 0, "developer" => 1, "business" => 2, "professional" => 3 }
+          current_tier = plan_order[@current_plan] || 0
+        %>
+        <% @available_plans.select { |p| (plan_order[p[:id]] || 0) > current_tier }.each do |plan| %>
           <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-blue-500 transition-colors <%= plan[:id] == 'business' ? 'ring-2 ring-blue-500' : '' %>">
             <% if plan[:id] == "business" %>
               <div class="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-semibold rounded-full mb-4">
@@ -231,7 +235,7 @@
           </div>
         </div>
 
-        <%= link_to dashboard_portal_billing_path,
+        <%= button_to dashboard_portal_billing_path,
           method: :post,
           class: "block w-full text-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" do %>
           Update Payment Method
@@ -256,16 +260,32 @@
 
     <div class="p-6">
       <% if @subscription && @current_plan != "free" %>
-        <div class="text-center py-8">
-          <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-          </svg>
-          <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">View your invoices and receipts</p>
-          <%= link_to dashboard_portal_billing_path,
-            method: :post,
-            class: "inline-flex items-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors" do %>
-            View Billing History
+        <div class="divide-y divide-gray-100 dark:divide-gray-700">
+          <div class="flex items-center justify-between py-3">
+            <span class="text-sm text-gray-600 dark:text-gray-400">Plan</span>
+            <span class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= @plan_info[:name] %></span>
+          </div>
+          <div class="flex items-center justify-between py-3">
+            <span class="text-sm text-gray-600 dark:text-gray-400">Status</span>
+            <span class="text-sm font-medium <%= @subscription.status == 'active' ? 'text-green-600 dark:text-green-400' : 'text-yellow-600 dark:text-yellow-400' %>">
+              <%= @subscription.status&.titleize %>
+            </span>
+          </div>
+          <% if @subscription.current_period_start %>
+            <div class="flex items-center justify-between py-3">
+              <span class="text-sm text-gray-600 dark:text-gray-400">Period started</span>
+              <span class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= @subscription.current_period_start.strftime("%b %d, %Y") %></span>
+            </div>
           <% end %>
+          <% if @subscription.current_period_end %>
+            <div class="flex items-center justify-between py-3">
+              <span class="text-sm text-gray-600 dark:text-gray-400"><%= @subscription.cancel_at_period_end? ? "Cancels on" : "Renews on" %></span>
+              <span class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= @subscription.current_period_end.strftime("%b %d, %Y") %></span>
+            </div>
+          <% end %>
+          <div class="pt-4">
+            <p class="text-xs text-gray-500 dark:text-gray-400">Full invoice history available in the LemonSqueezy customer portal via Manage Subscription.</p>
+          </div>
         </div>
       <% else %>
         <div class="text-center py-8">
