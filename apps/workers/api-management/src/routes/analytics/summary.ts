@@ -10,7 +10,7 @@ const app = new Hono<{ Bindings: WorkerBindings }>();
 const summaryQuerySchema = z.object({
   userId: z.string().min(1, "Missing required parameter: userId"),
   since: z.string().optional(),
-  until: z.string().optional(),
+  until: z.string().optional().default(() => new Date().toISOString()),
 });
 
 /**
@@ -31,9 +31,7 @@ app.get(
   }),
   async (c) => {
     const log = createLogger(c.req.raw);
-    const { userId } = c.req.valid("query");
-    const since = c.req.valid("query").since;
-    const until = c.req.valid("query").until ?? new Date().toISOString();
+    const { userId, since, until } = c.req.valid("query");
 
     try {
       // If no "since" provided, get the earliest billing cycle start

@@ -2,15 +2,18 @@ import { Hono } from "hono";
 import { sValidator } from "@hono/standard-validator";
 import * as z from "zod";
 import { jsonError, jsonResponse, createLogger } from "@requiem/workers-shared";
+
 import type { WorkerBindings } from "../../env";
 import type { DateStats } from "./types";
 
 const app = new Hono<{ Bindings: WorkerBindings }>();
 
+const THIRTY_DAYS_AGO_MS = 30 * 24 * 60 * 60 * 1000;
+
 const byDateQuerySchema = z.object({
   userId: z.string().min(1, "Missing required parameter: userId"),
-  since: z.string().optional(),
-  until: z.string().optional(),
+  since: z.string().optional().default(() => new Date(Date.now() - THIRTY_DAYS_AGO_MS).toISOString()),
+  until: z.string().optional().default(() => new Date().toISOString()),
   groupBy: z.enum(["day", "hour"]).default("day"),
 });
 
@@ -33,13 +36,10 @@ app.get(
   }),
   async (c) => {
     const log = createLogger(c.req.raw);
-    const { userId, groupBy } = c.req.valid("query");
-    const since =
-      c.req.valid("query").since ?? new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
-    const until = c.req.valid("query").until ?? new Date().toISOString();
 
+    const { userId, groupBy, since, until } = c.req.valid("query");
+  
     try {
-      // SQLite date formatting: strftime for day or hour grouping
       const dateFormat = groupBy === "day" ? "%Y-%m-%d" : "%Y-%m-%d %H:00:00";
 
       const result = await c.env.DB.prepare(`
@@ -64,7 +64,7 @@ app.get(
       });
 
       return jsonResponse({
-        timeSeries: result.results || [],
+        timeSeries: result.results,
         dateRange: { since, until },
         groupBy,
       });

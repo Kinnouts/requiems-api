@@ -79,7 +79,6 @@ app.get(
         params: { since, limit, afterId },
       });
 
-      // Return more detailed error in development
       if (c.env.ENVIRONMENT === "development") {
         return jsonError(
           500,
