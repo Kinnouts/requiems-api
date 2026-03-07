@@ -9,9 +9,8 @@
             <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">
               <%= @documentation["api_name"] %>
             </h1>
-            <%= render "partials/shared/badge", text: api_status_text(@api["status"]), variant: api_status_variant(@api["status"]) %>
           </div>
-          <p class="text-lg text-gray-600 dark:text-gray-400 max-w-3xl">
+          <p class="text-base sm:text-lg text-gray-600 dark:text-gray-400 max-w-3xl">
             <%= @documentation["description"] %>
           </p>
         </div>
@@ -25,7 +24,7 @@
               </svg>
             <% end %>
           <% end %>
-          <div class="flex gap-2">
+          <div class="hidden sm:flex gap-2">
             <button type="button"
                     data-controller="copy"
                     data-copy-text-value="<%= html_escape(api_documentation_as_text(@documentation)) %>"
