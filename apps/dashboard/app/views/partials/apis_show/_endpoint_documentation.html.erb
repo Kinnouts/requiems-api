@@ -38,7 +38,9 @@
   <!-- Method and URL -->
   <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6 flex items-center space-x-3">
     <%= render "partials/shared/badge", text: endpoint_method, variant: endpoint_method_variant, size: "md" %>
-    <code class="text-sm font-mono text-gray-800 dark:text-gray-200 flex-1"><%= endpoint_full_url %></code>
+    <div class="flex-1 min-w-0 overflow-x-auto">
+      <code class="text-sm font-mono text-gray-800 dark:text-gray-200 whitespace-nowrap"><%= endpoint_full_url %></code>
+    </div>
     <button type="button"
             data-controller="copy"
             data-copy-text-value="<%= endpoint_full_url %>"
