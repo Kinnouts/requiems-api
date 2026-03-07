@@ -22,7 +22,7 @@
     <% if playground_parameters.any? %>
       <div class="space-y-3 mb-4">
         <% playground_parameters.each do |param| %>
-          <% param_location = param["location"] || "body" %>
+          <% param_location = param["in"] || param["location"] || "body" %>
 
           <div data-param-location="<%= param_location %>">
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">

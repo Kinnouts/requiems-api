@@ -26,7 +26,7 @@ endpoints:
 
     parameters:
       - name: timezone
-        in: path
+        location: path
         type: string
         required: true
         description: "IANA timezone identifier (e.g. 'America/New_York', 'Europe/London', 'Asia/Kolkata')"

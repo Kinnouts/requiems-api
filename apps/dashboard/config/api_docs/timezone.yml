@@ -27,17 +27,17 @@ endpoints:
 
     parameters:
       - name: lat
-        in: query
+        location: query
         type: float
         required: false
         description: "Latitude of the location (-90 to 90). Required when using coordinate-based lookup."
       - name: lon
-        in: query
+        location: query
         type: float
         required: false
         description: "Longitude of the location (-180 to 180). Required when using coordinate-based lookup."
       - name: city
-        in: query
+        location: query
         type: string
         required: false
         description: "City name for city-based lookup (e.g. 'Tokyo', 'London'). Required when not using coordinates."

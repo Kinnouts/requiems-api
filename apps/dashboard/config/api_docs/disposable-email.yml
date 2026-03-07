@@ -29,6 +29,7 @@ endpoints:
       - name: email
         type: string
         required: true
+        location: body
         description: The email address to check
         example: test@example.com
 
@@ -126,6 +127,7 @@ endpoints:
       - name: emails
         type: array
         required: true
+        location: body
         description: Array of email addresses to check (max 100)
         example: ["user1@example.com", "user2@tempmail.com"]
 

@@ -123,7 +123,7 @@ export default class extends Controller {
     // Replace path parameters in the URL
     let endpoint = this.urlValue;
     Object.entries(data.path || {}).forEach(([key, value]) => {
-      endpoint = endpoint.replace(`{${key}}`, encodeURIComponent(value));
+      endpoint = endpoint.replace(`{${key}}`, value.split("/").map(encodeURIComponent).join("/"));
     });
 
     // Combine body and query params for the proxy
@@ -178,7 +178,11 @@ export default class extends Controller {
 
     // Display the actual API response body (unwrap proxy envelope)
     const body = proxyResult.data ?? proxyResult.error ?? proxyResult;
-    this.responseBodyTarget.textContent = JSON.stringify(body, null, 2);
+    if (body && body.type === "image" && body.base64) {
+      this.responseBodyTarget.innerHTML = `<img src="data:${body.content_type};base64,${body.base64}" class="max-w-full rounded" alt="Generated image" />`;
+    } else {
+      this.responseBodyTarget.textContent = JSON.stringify(body, null, 2);
+    }
 
     this.hasResponse = true;
   }

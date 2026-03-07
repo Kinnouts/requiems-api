@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "base64"
+
 class ApiProxyController < ApplicationController
   # Rate limiting handled by Rack::Attack (anonymous: 10/min, authenticated: 30/min)
 
@@ -87,7 +89,7 @@ class ApiProxyController < ApplicationController
 
     {
       status_code: response.code.to_i,
-      data: parse_response_body(response.body),
+      data: parse_response_body(response),
       error: response.is_a?(Net::HTTPSuccess) ? nil : response.message
     }
   rescue Net::OpenTimeout, Net::ReadTimeout => e
@@ -106,11 +108,18 @@ class ApiProxyController < ApplicationController
     }
   end
 
-  def parse_response_body(body)
+  def parse_response_body(response)
+    content_type = response["Content-Type"].to_s
+    body = response.body
+
     return nil if body.blank?
+
+    if content_type.start_with?("image/", "application/octet-stream")
+      return { "type" => "image", "content_type" => content_type, "base64" => Base64.strict_encode64(body) }
+    end
 
     JSON.parse(body)
   rescue JSON::ParserError
-    body
+    body.encode("UTF-8", invalid: :replace, undef: :replace)
   end
 end

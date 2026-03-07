@@ -5,7 +5,7 @@
 Rails.application.config.to_prepare do
   # Skip config validation for rake tasks that don't need the full app
   # (db:create, db:migrate, assets:precompile, etc.)
-  next if defined?(Rake) && Rake.application.top_level_tasks.any? { |task|
+  next if defined?(Rake) && Rake.respond_to?(:application) && Rake.application.top_level_tasks.any? { |task|
     task.start_with?("db:", "assets:", "tmp:", "log:", "about")
   }
 
