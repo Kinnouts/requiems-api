@@ -33,6 +33,11 @@ func (s *Service) GetTimezoneByCoords(lat, lon float64) (*Info, error) {
 	return buildTimezoneInfo(name)
 }
 
+// GetCurrentTime returns the current time information for the given IANA timezone name.
+func (s *Service) GetCurrentTime(tzName string) (*Info, error) {
+	return buildTimezoneInfo(tzName)
+}
+
 // GetTimezoneByCity looks up timezone info for the given city name.
 func (s *Service) GetTimezoneByCity(city string) (*Info, error) {
 	key := strings.ToLower(strings.TrimSpace(city))

@@ -9,6 +9,22 @@ import (
 )
 
 func RegisterRoutes(r chi.Router, svc *Service) {
+	r.Get("/time/*", func(w http.ResponseWriter, r *http.Request) {
+		tzName := chi.URLParam(r, "*")
+		if tzName == "" {
+			httpx.Error(w, http.StatusBadRequest, "bad_request", "timezone is required")
+			return
+		}
+
+		info, err := svc.GetCurrentTime(tzName)
+		if err != nil {
+			httpx.Error(w, http.StatusNotFound, "not_found", err.Error())
+			return
+		}
+
+		httpx.JSON(w, http.StatusOK, *info)
+	})
+
 	r.Get("/timezone", func(w http.ResponseWriter, r *http.Request) {
 		req := Request{}
 
