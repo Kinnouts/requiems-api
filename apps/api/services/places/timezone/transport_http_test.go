@@ -169,6 +169,93 @@ func TestTimezone_CityLookup_CaseInsensitive(t *testing.T) {
 	}
 }
 
+func TestWorldTime_ValidTimezone(t *testing.T) {
+	r := setupRouter(t)
+
+	req := httptest.NewRequest(http.MethodGet, "/time/America/New_York", http.NoBody)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected status 200, got %d: %s", w.Code, w.Body.String())
+	}
+
+	var resp httpx.Response[Info]
+	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
+
+	if resp.Data.Timezone != "America/New_York" {
+		t.Errorf("expected timezone 'America/New_York', got %q", resp.Data.Timezone)
+	}
+	if resp.Data.CurrentTime == "" {
+		t.Error("expected non-empty current_time")
+	}
+	if resp.Data.Offset == "" {
+		t.Error("expected non-empty offset")
+	}
+}
+
+func TestWorldTime_UTCTimezone(t *testing.T) {
+	r := setupRouter(t)
+
+	req := httptest.NewRequest(http.MethodGet, "/time/UTC", http.NoBody)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected status 200, got %d: %s", w.Code, w.Body.String())
+	}
+
+	var resp httpx.Response[Info]
+	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
+
+	if resp.Data.Timezone != "UTC" {
+		t.Errorf("expected timezone 'UTC', got %q", resp.Data.Timezone)
+	}
+	if resp.Data.Offset != "+00:00" {
+		t.Errorf("expected offset '+00:00', got %q", resp.Data.Offset)
+	}
+}
+
+func TestWorldTime_InvalidTimezone(t *testing.T) {
+	r := setupRouter(t)
+
+	req := httptest.NewRequest(http.MethodGet, "/time/Fake/Timezone", http.NoBody)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusNotFound {
+		t.Errorf("expected status 404, got %d", w.Code)
+	}
+}
+
+func TestWorldTime_AsiaKolkata(t *testing.T) {
+	r := setupRouter(t)
+
+	req := httptest.NewRequest(http.MethodGet, "/time/Asia/Kolkata", http.NoBody)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected status 200, got %d: %s", w.Code, w.Body.String())
+	}
+
+	var resp httpx.Response[Info]
+	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
+
+	if resp.Data.Timezone != "Asia/Kolkata" {
+		t.Errorf("expected timezone 'Asia/Kolkata', got %q", resp.Data.Timezone)
+	}
+	if resp.Data.Offset != "+05:30" {
+		t.Errorf("expected offset '+05:30', got %q", resp.Data.Offset)
+	}
+}
+
 func TestTimezone_OffsetFormat(t *testing.T) {
 	tests := []struct {
 		offsetSecs int

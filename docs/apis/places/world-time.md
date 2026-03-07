@@ -2,18 +2,52 @@
 
 ## Status
 
-⏳ **Planned** - Not yet implemented
+✅ **Live**
 
 ## Overview
 
-Get current time in different locations. This endpoint will provide time
-information worldwide.
+Get the current time for any location in the world by specifying an IANA
+timezone identifier. Returns the timezone name, UTC offset, current time,
+and DST status.
 
-## Planned Endpoints
+## Live Endpoints
 
-### Get World Time
+### Get Current Time by Timezone
 
-**Planned Endpoint:** `GET /v1/places/world-time` **Expected Credit Cost:** 1
-credit
+**Endpoint:** `GET /v1/places/time/{timezone}` **Credit Cost:** 1 credit
 
-Get current time in different locations.
+Returns the current time for the given IANA timezone identifier.
+
+#### Path Parameters
+
+| Parameter  | Type   | Required | Description                                                     |
+| ---------- | ------ | -------- | --------------------------------------------------------------- |
+| `timezone` | string | Yes      | IANA timezone identifier (e.g. `America/New_York`, `Asia/Tokyo`) |
+
+#### Example Request
+
+```bash
+curl "https://api.requiems.xyz/v1/places/time/America/New_York" \
+  -H "requiems-api-key: YOUR_API_KEY"
+```
+
+#### Example Response
+
+```json
+{
+  "timezone": "America/New_York",
+  "offset": "-05:00",
+  "current_time": "2024-12-15T14:30:00Z",
+  "is_dst": false
+}
+```
+
+#### Response Fields
+
+| Field          | Type    | Description                                              |
+| -------------- | ------- | -------------------------------------------------------- |
+| `timezone`     | string  | IANA timezone identifier                                 |
+| `offset`       | string  | UTC offset in `+HH:MM` or `-HH:MM` format               |
+| `current_time` | string  | Current UTC time in RFC 3339 format                      |
+| `is_dst`       | boolean | Whether the timezone is observing daylight saving time   |
+

@@ -111,13 +111,13 @@ Get working days and business hours
 - **Endpoint:** `GET /v1/places/working-days`
 - **Credit Cost:** 1
 
-### [World Time](./world-time.md) - ⏳ Planned
+### [World Time](./world-time.md) - ✅ MVP
 
-Get current time in different locations
+Get current time for any IANA timezone
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/places/world-time`
-- **Expected Credit Cost:** 1
+- **Status:** mvp
+- **Endpoint:** `GET /v1/places/time/{timezone}`
+- **Credit Cost:** 1
 
 ### [Zip Code](./zip-code.md) - ⏳ Planned
 
@@ -130,5 +130,5 @@ Get zip code information
 ## Category Statistics
 
 - Total Endpoints: 15
-- Live: 2
-- Planned: 13
+- Live: 3
+- Planned: 12

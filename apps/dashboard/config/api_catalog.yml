@@ -264,6 +264,19 @@ apis:
       - Calendar
       - Holidays
 
+  - id: world-time
+    name: World Time
+    category: places
+    description: Get the current time for any IANA timezone by name
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/world-time
+    tags:
+      - Time
+      - Timezone
+      - World Clock
+
   # Technology APIs
   - id: password-generator
     name: Password Generator
