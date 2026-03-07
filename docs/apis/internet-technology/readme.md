@@ -63,13 +63,13 @@ Generate secure passwords
 - **Endpoint:** `GET /v1/tech/password`
 - **Credit Cost:** 1
 
-### [QR Code](./qr-code.md) - ⏳ Planned
+### [QR Code](./qr-code.md) - ✅ MVP
 
 Generate QR codes
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/internet-technology/qr-code`
-- **Expected Credit Cost:** 1
+- **Status:** mvp
+- **Endpoint:** `GET /v1/tech/qr`
+- **Credit Cost:** 1
 
 ### [URL Lookup](./url-lookup.md) - ⏳ Planned
 
@@ -130,5 +130,5 @@ Get WHOIS information for domains
 ## Category Statistics
 
 - Total Endpoints: 15
-- Live: 3
-- Planned: 12
+- Live: 4
+- Planned: 11
