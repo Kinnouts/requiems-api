@@ -12,8 +12,24 @@ func NewService() *Service {
 	return &Service{}
 }
 
+// recoveryLevel maps the user-supplied string to a qrcode.RecoveryLevel.
+// An empty string (or any unrecognised value) falls back to Medium.
+func recoveryLevel(s string) qrcode.RecoveryLevel {
+	switch s {
+	case "low":
+		return qrcode.Low
+	case "high":
+		return qrcode.High
+	case "highest":
+		return qrcode.Highest
+	default:
+		return qrcode.Medium
+	}
+}
+
 // Generate returns the raw PNG bytes for a QR code encoding data at the
-// given pixel size.
-func (s *Service) Generate(data string, size int) ([]byte, error) {
-	return qrcode.Encode(data, qrcode.Medium, size)
+// given pixel size and error-correction level.
+// Accepted recovery values: "low", "medium", "high", "highest" (default: "medium").
+func (s *Service) Generate(data string, size int, recovery string) ([]byte, error) {
+	return qrcode.Encode(data, recoveryLevel(recovery), size)
 }

@@ -19,6 +19,8 @@ func setupRouter() chi.Router {
 	return r
 }
 
+// ── GET /qr (PNG) ──────────────────────────────────────────────────────────
+
 func TestQR_PNG_DefaultSize(t *testing.T) {
 	r := setupRouter()
 
@@ -56,10 +58,75 @@ func TestQR_PNG_CustomSize(t *testing.T) {
 	}
 }
 
-func TestQR_Base64Format(t *testing.T) {
+func TestQR_PNG_RecoveryLevels(t *testing.T) {
 	r := setupRouter()
 
-	req := httptest.NewRequest(http.MethodGet, "/qr?data=https://example.com&format=base64", http.NoBody)
+	levels := []string{"low", "medium", "high", "highest"}
+	for _, level := range levels {
+		req := httptest.NewRequest(http.MethodGet, "/qr?data=test&recovery="+level, http.NoBody)
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		if w.Code != http.StatusOK {
+			t.Errorf("recovery=%q: expected status 200, got %d", level, w.Code)
+		}
+	}
+}
+
+func TestQR_PNG_MissingData(t *testing.T) {
+	r := setupRouter()
+
+	req := httptest.NewRequest(http.MethodGet, "/qr", http.NoBody)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400, got %d", w.Code)
+	}
+}
+
+func TestQR_PNG_SizeTooSmall(t *testing.T) {
+	r := setupRouter()
+
+	req := httptest.NewRequest(http.MethodGet, "/qr?data=test&size=10", http.NoBody)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400, got %d", w.Code)
+	}
+}
+
+func TestQR_PNG_SizeTooLarge(t *testing.T) {
+	r := setupRouter()
+
+	req := httptest.NewRequest(http.MethodGet, "/qr?data=test&size=2000", http.NoBody)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400, got %d", w.Code)
+	}
+}
+
+func TestQR_PNG_InvalidRecovery(t *testing.T) {
+	r := setupRouter()
+
+	req := httptest.NewRequest(http.MethodGet, "/qr?data=test&recovery=ultra", http.NoBody)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Errorf("expected status 400 for invalid recovery level, got %d", w.Code)
+	}
+}
+
+// ── GET /qr/base64 (JSON) ──────────────────────────────────────────────────
+
+func TestQR_Base64_DefaultSize(t *testing.T) {
+	r := setupRouter()
+
+	req := httptest.NewRequest(http.MethodGet, "/qr/base64?data=https://example.com", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -88,7 +155,7 @@ func TestQR_Base64Format(t *testing.T) {
 		t.Errorf("expected height %d, got %d", defaultSize, resp.Data.Height)
 	}
 
-	// Verify the base64 string decodes to valid PNG bytes
+	// Verify the base64 string decodes to valid PNG bytes.
 	decoded, err := base64.StdEncoding.DecodeString(resp.Data.Image)
 	if err != nil {
 		t.Fatalf("failed to decode base64 image: %v", err)
@@ -99,10 +166,10 @@ func TestQR_Base64Format(t *testing.T) {
 	}
 }
 
-func TestQR_Base64Format_CustomSize(t *testing.T) {
+func TestQR_Base64_CustomSize(t *testing.T) {
 	r := setupRouter()
 
-	req := httptest.NewRequest(http.MethodGet, "/qr?data=hello&size=300&format=base64", http.NoBody)
+	req := httptest.NewRequest(http.MethodGet, "/qr/base64?data=hello&size=300", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -124,10 +191,25 @@ func TestQR_Base64Format_CustomSize(t *testing.T) {
 	}
 }
 
-func TestQR_MissingData(t *testing.T) {
+func TestQR_Base64_RecoveryLevels(t *testing.T) {
 	r := setupRouter()
 
-	req := httptest.NewRequest(http.MethodGet, "/qr", http.NoBody)
+	levels := []string{"low", "medium", "high", "highest"}
+	for _, level := range levels {
+		req := httptest.NewRequest(http.MethodGet, "/qr/base64?data=test&recovery="+level, http.NoBody)
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		if w.Code != http.StatusOK {
+			t.Errorf("recovery=%q: expected status 200, got %d", level, w.Code)
+		}
+	}
+}
+
+func TestQR_Base64_MissingData(t *testing.T) {
+	r := setupRouter()
+
+	req := httptest.NewRequest(http.MethodGet, "/qr/base64", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -136,38 +218,14 @@ func TestQR_MissingData(t *testing.T) {
 	}
 }
 
-func TestQR_SizeTooSmall(t *testing.T) {
+func TestQR_Base64_InvalidRecovery(t *testing.T) {
 	r := setupRouter()
 
-	req := httptest.NewRequest(http.MethodGet, "/qr?data=test&size=10", http.NoBody)
+	req := httptest.NewRequest(http.MethodGet, "/qr/base64?data=test&recovery=ultra", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
 	if w.Code != http.StatusBadRequest {
-		t.Errorf("expected status 400, got %d", w.Code)
-	}
-}
-
-func TestQR_SizeTooLarge(t *testing.T) {
-	r := setupRouter()
-
-	req := httptest.NewRequest(http.MethodGet, "/qr?data=test&size=2000", http.NoBody)
-	w := httptest.NewRecorder()
-	r.ServeHTTP(w, req)
-
-	if w.Code != http.StatusBadRequest {
-		t.Errorf("expected status 400, got %d", w.Code)
-	}
-}
-
-func TestQR_InvalidFormat(t *testing.T) {
-	r := setupRouter()
-
-	req := httptest.NewRequest(http.MethodGet, "/qr?data=test&format=svg", http.NoBody)
-	w := httptest.NewRecorder()
-	r.ServeHTTP(w, req)
-
-	if w.Code != http.StatusBadRequest {
-		t.Errorf("expected status 400, got %d", w.Code)
+		t.Errorf("expected status 400 for invalid recovery level, got %d", w.Code)
 	}
 }

@@ -280,7 +280,7 @@ apis:
     name: QR Code Generator
     category: technology
     description: Generate QR codes from any text or URL, returned as a PNG image or base64-encoded JSON
-    endpoints_count: 1
+    endpoints_count: 2
     status: live
     popular: false
     documentation_url: /apis/qr-code
