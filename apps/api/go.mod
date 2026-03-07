@@ -35,6 +35,7 @@ require (
 require (
 	github.com/TwiN/go-away v1.8.1
 	github.com/bobadilla-tech/business-days-calculator v1.1.0
+	github.com/jaswdr/faker/v2 v2.9.1
 	github.com/medama-io/go-useragent v1.2.3
 	github.com/nyaruka/phonenumbers v1.6.10
 	github.com/ringsaturn/tzf v1.0.3

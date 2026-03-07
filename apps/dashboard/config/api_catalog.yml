@@ -197,6 +197,19 @@ apis:
       - Analytics
       - Tracking
 
+  - id: random-user
+    name: Random User
+    category: misc
+    description: Generate random fake user profiles for testing and prototyping — names, emails, phone numbers, addresses, and avatars
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/random-user
+    tags:
+      - Random
+      - Testing
+      - Fake Data
+
   - id: unit-conversion
     name: Unit Conversion
     category: conversion

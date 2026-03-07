@@ -80,13 +80,13 @@ Get random images
 - **Planned Endpoint:** `GET /v1/miscellaneous/random-image`
 - **Expected Credit Cost:** 1
 
-### [Random User](./random-user.md) - ⏳ Planned
+### [Random User](./random-user.md) - ✅ Live
 
 Get random user profiles
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/miscellaneous/random-user`
-- **Expected Credit Cost:** 1
+- **Status:** live
+- **Endpoint:** `GET /v1/misc/random-user`
+- **Credit Cost:** 1
 
 ### [Stars](./stars.md) - ⏳ Planned
 
@@ -115,5 +115,5 @@ Get university information
 ## Category Statistics
 
 - Total Endpoints: 13
-- Live: 2
-- Planned: 11
+- Live: 3
+- Planned: 10
