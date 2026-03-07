@@ -19,29 +19,14 @@ app.delete("/:keyPrefix", async (c) => {
   }
 
   try {
-    // Find the full key in KV by searching with prefix pattern
-    const keys = await c.env.KV.list({ prefix: "key:" });
-
-    let fullKey: string | null = null;
-    for (const key of keys.keys) {
-      if (key.name.substring(4, 16) === keyPrefix) {
-        // "key:" is 4 chars, then 12 char prefix
-        fullKey = key.name.substring(4); // Remove "key:" prefix
-        break;
-      }
-    }
+    const fullKey = await c.env.KV.get(`prefix:${keyPrefix}`);
 
     if (!fullKey) {
       log.warn("API key not found for revocation", { keyPrefix });
       return jsonError(404, "API key not found");
     }
 
-    const keyName = `key:${fullKey}`;
-
-    // Delete from KV (revokes access immediately)
-    await c.env.KV.delete(keyName);
-
-    // Mark as revoked in D1
+    // Update D1 first — audit trail is preserved even if KV cleanup fails
     await c.env.DB.prepare(
       `UPDATE api_keys
        SET revoked_at = ?, active = 0
@@ -49,6 +34,10 @@ app.delete("/:keyPrefix", async (c) => {
     )
       .bind(new Date().toISOString(), keyPrefix)
       .run();
+
+    // Delete auth key and reverse-lookup index from KV
+    await c.env.KV.delete(`key:${fullKey}`);
+    await c.env.KV.delete(`prefix:${keyPrefix}`);
 
     log.info("API key revoked successfully", { keyPrefix });
 

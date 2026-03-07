@@ -15,7 +15,9 @@
     "lint": "biome lint ./src",
     "lint:fix": "biome lint --write ./src",
     "format": "biome format --write ./src",
-    "format:check": "biome format ./src"
+    "format:check": "biome format ./src",
+    "db:migrate": "wrangler d1 execute requiem-usage --local --yes --file=../auth-gateway/schema.sql",
+    "db:migrate:prod": "wrangler d1 execute requiem-usage --env production --remote --file=../auth-gateway/schema.sql"
   },
   "dependencies": {
     "@hono/swagger-ui": "^0.5.3",

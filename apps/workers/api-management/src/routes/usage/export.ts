@@ -13,7 +13,7 @@ const app = new Hono<{ Bindings: WorkerBindings }>();
  * Query parameters:
  * - since: ISO timestamp - get records after this time (required)
  * - limit: number - max records to return (default: 1000, max: 5000)
- * - cursor: string - pagination cursor (offset)
+ * - cursor: string - pagination cursor (last seen record id)
  *
  * Auth: X-API-Management-Key header (only Rails dashboard has this)
  */
@@ -45,52 +45,45 @@ app.get("/export", async (c) => {
     return jsonError(400, "Invalid limit parameter");
   }
 
-  // Parse cursor (offset)
-  const offset = Number.parseInt(cursorParam || "0", 10);
-  if (Number.isNaN(offset) || offset < 0) {
+  // Parse cursor (last seen id — 0 means start from beginning)
+  const afterId = Number.parseInt(cursorParam || "0", 10);
+  
+  if (Number.isNaN(afterId) || afterId < 0) {
     return jsonError(400, "Invalid cursor parameter");
   }
 
   try {
-    // Get total count for hasMore calculation
-    const countResult = await c.env.DB.prepare(`
-      SELECT COUNT(*) as total
-      FROM credit_usage
-      WHERE used_at >= ?
-    `)
-      .bind(since)
-      .first<{ total: number }>();
-
-    const total = countResult?.total || 0;
-
-    // Fetch usage records with pagination
+    // Fetch usage records using keyset pagination on the autoincrement id.
+    // This is stable under concurrent inserts (unlike OFFSET which can skip rows).
     const result = await c.env.DB.prepare(`
       SELECT
+        id,
         api_key,
         endpoint,
         credits_used,
         used_at
       FROM credit_usage
-      WHERE used_at >= ?
-      ORDER BY used_at ASC
-      LIMIT ? OFFSET ?
+      WHERE used_at >= ? AND id > ?
+      ORDER BY id ASC
+      LIMIT ?
     `)
-      .bind(since, limit, offset)
+      .bind(since, afterId, limit)
       .all<UsageRecord>();
 
-    const usage = result.results || [];
-    const hasMore = offset + usage.length < total;
-    const nextCursor = hasMore ? (offset + usage.length).toString() : undefined;
+    const records = result.results || [];
+    const hasMore = records.length === limit;
+    const nextCursor = hasMore ? records[records.length - 1].id.toString() : undefined;
 
     log.info("Usage export successful", {
-      total,
-      returned: usage.length,
+      returned: records.length,
       hasMore,
     });
 
+    // Strip internal id field before returning to callers
+    const usage = records.map(({ id: _id, ...rest }) => rest);
+
     const response: UsageExportResponse = {
       usage,
-      total,
       hasMore,
       nextCursor,
     };
@@ -99,7 +92,7 @@ app.get("/export", async (c) => {
   } catch (error) {
     log.error("Error exporting usage data", {
       error,
-      params: { since, limit, offset },
+      params: { since, limit, afterId },
     });
 
     // Return more detailed error in development

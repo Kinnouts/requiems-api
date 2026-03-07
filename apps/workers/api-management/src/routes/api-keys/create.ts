@@ -77,16 +77,20 @@ app.post("/", async (c) => {
       billingCycleStart: body.billingCycleStart || now,
     };
 
-    // Write to KV
-    await c.env.KV.put(keyName, JSON.stringify(keyData));
-
-    // Write metadata to D1 for audit trail
+    // Write metadata to D1 first — if this fails we haven't touched KV yet, clean failure
     await c.env.DB.prepare(
       `INSERT INTO api_keys (key_prefix, user_id, plan, created_at, billing_cycle_start, active)
        VALUES (?, ?, ?, ?, ?, 1)`,
     )
       .bind(keyPrefix, body.userId, body.plan, now, keyData.billingCycleStart)
       .run();
+
+    // Write auth key to KV
+    await c.env.KV.put(keyName, JSON.stringify(keyData));
+
+    // Write reverse-lookup index: prefix:{keyPrefix} → fullKey
+    // Used by delete/patch for O(1) lookup instead of KV.list() scan
+    await c.env.KV.put(`prefix:${keyPrefix}`, fullKey);
 
     log.info("API key created successfully", {
       userId: body.userId,

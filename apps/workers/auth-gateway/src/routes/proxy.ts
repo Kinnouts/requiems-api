@@ -13,7 +13,6 @@ import { addUsageHeaders, fetchBackend, filterHeaders } from "../http";
 import { recordRequestUsage } from "../requests";
 import type { WorkerBindings } from "../env";
 
-// Extend Hono context to include auth data set by middleware
 type Variables = {
   apiKey: string;
   keyData: ApiKeyData;
@@ -86,8 +85,10 @@ app.all("/*", async (c) => {
     return response;
   }
 
-  // Record usage asynchronously (don't await)
-  void recordRequestUsage(c.env, apiKey, keyData.userId, url.pathname, requestMultiplier);
+  // Record usage after response is sent — waitUntil keeps the worker alive for the write
+  c.executionCtx.waitUntil(
+    recordRequestUsage(c.env, apiKey, keyData.userId, url.pathname, requestMultiplier, keyData.billingCycleStart),
+  );
 
   // Add usage headers to successful response
   const response = addUsageHeaders(backendResponse, {

@@ -34,6 +34,9 @@ function run(cmd: string): void {
 console.log("Applying D1 schema...");
 run(`${WRANGLER} d1 execute requiem-usage --local --yes --file=./schema.sql`);
 
+console.log("Applying D1 migrations...");
+run(`${WRANGLER} d1 execute requiem-usage --local --yes --file=./migrations/001_remove_credit_usage_unique_constraint.sql`);
+
 console.log("\nSeeding KV with dev test keys...");
 for (const { apiKey, userId, plan } of DEV_KEYS) {
   const kvKey = `key:${apiKey}`;

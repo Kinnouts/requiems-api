@@ -59,11 +59,20 @@ class D1SyncService
   def bulk_insert(records)
     return 0 if records.empty?
 
-    # Map D1 records to UsageLog format
-    values = records.map do |record|
+    # Batch-load all needed API keys in a single query (fresh from DB, no stale cache).
+    # Using instance variables here would persist stale IDs across pages if a key is
+    # revoked mid-sync, so we preload per bulk_insert call instead.
+    prefixes = records.map { |r| r[:api_key][0...12] }.uniq
+    key_rows = ApiKey.where(key_prefix: prefixes).pluck(:key_prefix, :id, :user_id)
+    key_cache = key_rows.each_with_object({}) { |(prefix, id, uid), h| h[prefix] = { id: id, user_id: uid } }
+
+    values = records.filter_map do |record|
+      key_info = key_cache[record[:api_key][0...12]]
+      next unless key_info # skip records for unknown or revoked keys
+
       {
-        api_key_id: resolve_api_key_id(record[:api_key]),
-        user_id: resolve_user_id(record[:api_key]),
+        api_key_id: key_info[:id],
+        user_id: key_info[:user_id],
         endpoint: record[:endpoint],
         credits_used: record[:credits_used],
         status_code: 200, # D1 only records successful requests
@@ -73,9 +82,10 @@ class D1SyncService
         created_at: Time.current,
         updated_at: Time.current
       }
-    end.compact
+    end
 
-    # Bulk insert using ActiveRecord
+    return 0 if values.empty?
+
     UsageLog.insert_all(values, unique_by: [ :api_key_id, :used_at, :endpoint ])
 
     values.size
@@ -141,26 +151,5 @@ class D1SyncService
     else
       raise Error, "HTTP #{response.status}: #{response.body}"
     end
-  end
-
-  # Resolve API key string to database ID
-  # Uses in-memory cache to avoid repeated lookups
-  def resolve_api_key_id(key_string)
-    @api_key_cache ||= {}
-    @api_key_cache[key_string] ||= begin
-      # Extract prefix from full key (first 12 chars)
-      prefix = key_string[0...12]
-      api_key = ApiKey.find_by(key_prefix: prefix)
-      api_key&.id
-    end
-  end
-
-  # Resolve API key to user ID
-  def resolve_user_id(key_string)
-    key_id = resolve_api_key_id(key_string)
-    return nil unless key_id
-
-    @user_id_cache ||= {}
-    @user_id_cache[key_id] ||= ApiKey.find(key_id).user_id
   end
 end

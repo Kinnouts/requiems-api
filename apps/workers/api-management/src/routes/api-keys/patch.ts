@@ -40,16 +40,8 @@ app.patch("/:keyPrefix", async (c) => {
   }
 
   try {
-    // Find the full key in KV
-    const keys = await c.env.KV.list({ prefix: "key:" });
-
-    let fullKey: string | null = null;
-    for (const key of keys.keys) {
-      if (key.name.substring(4, 16) === keyPrefix) {
-        fullKey = key.name.substring(4);
-        break;
-      }
-    }
+    // O(1) reverse-lookup
+    const fullKey = await c.env.KV.get(`prefix:${keyPrefix}`);
 
     if (!fullKey) {
       log.warn("API key not found for update", { keyPrefix });
