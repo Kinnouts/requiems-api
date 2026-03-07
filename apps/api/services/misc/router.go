@@ -10,6 +10,7 @@ import (
 
 	"requiems-api/services/misc/convert"
 	"requiems-api/services/misc/counter"
+	randomuser "requiems-api/services/misc/random_user"
 )
 
 func RegisterRoutes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb *redis.Client) {
@@ -20,4 +21,7 @@ func RegisterRoutes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb *
 	counterSvc := counter.NewService(rdb, counterRepo)
 	go counter.StartSyncWorker(ctx, rdb, counterRepo)
 	counter.RegisterRoutes(r, counterSvc)
+
+	randomUserSvc := randomuser.NewService()
+	randomuser.RegisterRoutes(r, randomUserSvc)
 }
