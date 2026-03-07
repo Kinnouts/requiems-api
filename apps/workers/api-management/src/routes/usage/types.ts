@@ -1,7 +1,9 @@
 /**
- * Usage data record from D1
+ * Usage data record from D1.
+ * id is used internally for cursor-based pagination and is not exposed in API responses.
  */
 export interface UsageRecord {
+  id: number;
   api_key: string;
   endpoint: string;
   credits_used: number;
@@ -9,11 +11,11 @@ export interface UsageRecord {
 }
 
 /**
- * Usage export response with pagination
+ * Usage export response with ID-based cursor pagination.
+ * Pass nextCursor as the `cursor` query param to fetch the next page.
  */
 export interface UsageExportResponse {
-  usage: UsageRecord[];
-  total: number;
+  usage: Omit<UsageRecord, "id">[];
   hasMore: boolean;
   nextCursor?: string;
 }

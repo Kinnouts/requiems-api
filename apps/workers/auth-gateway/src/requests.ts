@@ -2,9 +2,13 @@ import type { RequestCheckResult } from "@requiem/workers-shared";
 import type { WorkerBindings } from "./env";
 
 /**
- * Get current request usage from D1
+ * Get current request usage.
  *
- * IMPORTANT: Queries by user_id because all API keys for a user share the same quota
+ * Checks a 60-second KV cache first to avoid hitting D1 on every request.
+ * On cache miss the result is written back to KV so the next request is served
+ * from cache.
+ *
+ * IMPORTANT: Queries by user_id because all API keys for a user share the same quota.
  *
  * Note: Database tables still use "credit_" naming for historical reasons,
  * but we treat these as request counts in the code.
@@ -16,7 +20,16 @@ export async function getRequestUsage(
   billingCycleStart?: string,
 ): Promise<number> {
   const startDate = period === "daily" ? getTodayStart() : billingCycleStart || getMonthStart();
+  const cacheKey = `quota:${userId}:${startDate}`;
 
+  // KV cache hit — avoids a D1 aggregate query on every request
+  const cached = await bindings.KV.get(cacheKey);
+  
+  if (cached !== null) {
+    return Number(cached);
+  }
+
+  // Cache miss — query D1 and populate cache
   const result = await bindings.DB.prepare(`
     SELECT COALESCE(SUM(credits_used), 0) as total
     FROM credit_usage
@@ -25,11 +38,19 @@ export async function getRequestUsage(
     .bind(userId, startDate)
     .first<{ total: number }>();
 
-  return result?.total || 0;
+  const usage = result?.total || 0;
+
+  // Write to KV with 60-second TTL (best-effort, don't block on failure)
+  bindings.KV.put(cacheKey, usage.toString(), { expirationTtl: 60 }).catch(() => {});
+
+  return usage;
 }
 
 /**
- * Record request usage in D1
+ * Record request usage in D1 and keep the KV quota cache warm.
+ *
+ * @param billingCycleStart - used to derive the quota cache key; optional, falls
+ *   back to the current month start so the key matches what getRequestUsage uses.
  */
 export async function recordRequestUsage(
   bindings: WorkerBindings,
@@ -37,6 +58,7 @@ export async function recordRequestUsage(
   userId: string,
   endpoint: string,
   requests: number,
+  billingCycleStart?: string,
 ): Promise<void> {
   await bindings.DB.prepare(`
     INSERT INTO credit_usage (api_key, user_id, endpoint, credits_used, used_at)
@@ -44,6 +66,18 @@ export async function recordRequestUsage(
   `)
     .bind(apiKey, userId, endpoint, requests)
     .run();
+
+  // Optimistically increment the KV cache so the next quota check stays warm.
+  // Race conditions here are acceptable: the 60-second TTL bounds any skew, and
+  // D1 is always the authoritative source on a cache miss.
+  const startDate = billingCycleStart || getMonthStart();
+  const cacheKey = `quota:${userId}:${startDate}`;
+  const cached = await bindings.KV.get(cacheKey);
+  if (cached !== null) {
+    bindings.KV.put(cacheKey, (Number(cached) + requests).toString(), {
+      expirationTtl: 60,
+    }).catch(() => {});
+  }
 }
 
 /**

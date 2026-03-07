@@ -1,12 +1,12 @@
+-- NOTE: existing production databases must be migrated to drop the old UNIQUE constraint.
+-- See docs/migrations/d1-remove-credit-usage-unique-constraint.sql
 CREATE TABLE IF NOT EXISTS credit_usage (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   api_key TEXT NOT NULL,
   user_id TEXT NOT NULL,
   endpoint TEXT NOT NULL,
   credits_used INTEGER NOT NULL,
-  used_at TEXT NOT NULL DEFAULT (datetime('now')),
-
-  CONSTRAINT idx_api_key_date UNIQUE (api_key, used_at, endpoint)
+  used_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
 CREATE TABLE IF NOT EXISTS api_keys (

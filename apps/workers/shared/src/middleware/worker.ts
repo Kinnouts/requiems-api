@@ -1,5 +1,7 @@
-import type { Hono, NotFoundHandler } from "hono";
 import { jsonResponse } from "../http";
+
+import type { ExecutionContext } from "@cloudflare/workers-types";
+import type { Hono, NotFoundHandler } from "hono";
 
 /**
  * Standard 404 handler for all workers.
@@ -16,14 +18,16 @@ export function createWorkerFetch<TEnv extends object>(
   validateEnv: (env: TEnv) => void,
 ) {
   return {
-    async fetch(request: Request, env: TEnv): Promise<Response> {
+    async fetch(request: Request, env: TEnv, ctx: ExecutionContext): Promise<Response> {
+      
       try {
         validateEnv(env);
       } catch (error) {
         console.error("Environment validation failed:", error);
         return jsonResponse({ error: "Configuration error" }, 500);
       }
-      return app.fetch(request, env);
+
+      return app.fetch(request, env, ctx);
     },
   };
 }

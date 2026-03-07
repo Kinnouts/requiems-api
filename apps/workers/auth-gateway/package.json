@@ -16,8 +16,10 @@
     "lint:fix": "biome lint --write ./src",
     "format": "biome format --write ./src",
     "format:check": "biome format ./src",
-    "db:migrate": "wrangler d1 execute requiem-usage --file=schema.sql",
-    "db:migrate:prod": "wrangler d1 execute requiem-usage --file=schema.sql --env production",
+    "db:migrate": "wrangler d1 execute requiem-usage --local --yes --file=schema.sql",
+    "db:migrate:prod": "wrangler d1 execute requiem-usage --env production --remote --file=schema.sql",
+    "db:migrate:001": "wrangler d1 execute requiem-usage --local --yes --file=./migrations/001_remove_credit_usage_unique_constraint.sql",
+    "db:migrate:001:prod": "wrangler d1 execute requiem-usage --env production --remote --file=./migrations/001_remove_credit_usage_unique_constraint.sql",
     "kv:seed": "node scripts/seed-kv.ts"
   },
   "dependencies": {
