@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { sValidator } from "@hono/standard-validator";
 import * as z from "zod";
-import { jsonError, jsonResponse, createLogger } from "@requiem/workers-shared";
+import { jsonError, jsonResponse, createLogger, internalError, THIRTY_DAYS_AGO_MS } from "@requiem/workers-shared";
 import type { WorkerBindings } from "../../env";
 import type { EndpointStats } from "./types";
 
@@ -48,7 +48,7 @@ app.get(
           .first<{ earliest: string }>();
 
         sinceDate =
-          billingResult?.earliest || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+          billingResult?.earliest || new Date(Date.now() - THIRTY_DAYS_AGO_MS).toISOString();
       }
 
       // Query usage by endpoint
@@ -74,7 +74,7 @@ app.get(
       });
 
       return jsonResponse({
-        endpoints: result.results || [],
+        endpoints: result.results,
         dateRange: { since: sinceDate, until },
       });
     } catch (error) {
@@ -83,14 +83,7 @@ app.get(
         params: { userId, since, until, limit },
       });
 
-      if (c.env.ENVIRONMENT === "development") {
-        return jsonError(
-          500,
-          `Failed to fetch analytics: ${error instanceof Error ? error.message : String(error)}`,
-        );
-      }
-
-      return jsonError(500, "Failed to fetch analytics");
+      return internalError(error, "Failed to fetch analytics", c.env.ENVIRONMENT);
     }
   },
 );

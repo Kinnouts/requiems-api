@@ -6,6 +6,7 @@ import {
   createLogger,
   extractKeyPrefix,
   generateApiKey,
+  internalError,
   jsonError,
   jsonResponse,
 } from "@requiem/workers-shared";
@@ -103,14 +104,7 @@ app.post(
         params: { userId: body.userId, plan: body.plan },
       });
 
-      if (c.env.ENVIRONMENT === "development") {
-        return jsonError(
-          500,
-          `Failed to create API key: ${error instanceof Error ? error.message : String(error)}`,
-        );
-      }
-
-      return jsonError(500, "Failed to create API key");
+      return internalError(error, "Failed to create API key", c.env.ENVIRONMENT);
     }
   },
 );

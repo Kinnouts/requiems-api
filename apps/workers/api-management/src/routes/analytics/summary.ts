@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { sValidator } from "@hono/standard-validator";
 import * as z from "zod";
-import { jsonError, jsonResponse, createLogger } from "@requiem/workers-shared";
+import { jsonError, jsonResponse, createLogger, internalError } from "@requiem/workers-shared";
 import type { WorkerBindings } from "../../env";
 import type { EndpointStats, UsageSummary } from "./types";
 
@@ -99,14 +99,7 @@ app.get(
         params: { userId, since, until },
       });
 
-      if (c.env.ENVIRONMENT === "development") {
-        return jsonError(
-          500,
-          `Failed to fetch analytics: ${error instanceof Error ? error.message : String(error)}`,
-        );
-      }
-
-      return jsonError(500, "Failed to fetch analytics");
+      return internalError(error, "Failed to fetch analytics", c.env.ENVIRONMENT);
     }
   },
 );

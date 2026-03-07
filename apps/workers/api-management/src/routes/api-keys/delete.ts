@@ -1,6 +1,5 @@
 import { Hono } from "hono";
-import { jsonError, jsonResponse } from "@requiem/workers-shared";
-import { createLogger } from "@requiem/workers-shared";
+import { createLogger, internalError, jsonError, jsonResponse } from "@requiem/workers-shared";
 import type { WorkerBindings } from "../../env";
 
 const app = new Hono<{ Bindings: WorkerBindings }>();
@@ -52,14 +51,7 @@ app.delete("/:keyPrefix", async (c) => {
       params: { keyPrefix },
     });
 
-    if (c.env.ENVIRONMENT === "development") {
-      return jsonError(
-        500,
-        `Failed to revoke API key: ${error instanceof Error ? error.message : String(error)}`,
-      );
-    }
-
-    return jsonError(500, "Failed to revoke API key");
+    return internalError(error, "Failed to revoke API key", c.env.ENVIRONMENT);
   }
 });
 

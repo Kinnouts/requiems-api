@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { sValidator } from "@hono/standard-validator";
 import * as z from "zod";
-import { createLogger, jsonError, jsonResponse } from "@requiem/workers-shared";
+import { createLogger, jsonError, jsonResponse, internalError } from "@requiem/workers-shared";
 import type { WorkerBindings } from "../../env";
 
 const app = new Hono<{ Bindings: WorkerBindings }>();
@@ -90,14 +90,7 @@ app.get(
     } catch (error) {
       log.error("Failed to list API keys", { error, params: { userId } });
 
-      if (c.env.ENVIRONMENT === "development") {
-        return jsonError(
-          500,
-          `Failed to list API keys: ${error instanceof Error ? error.message : String(error)}`,
-        );
-      }
-
-      return jsonError(500, "Failed to list API keys");
+      return internalError(error, "Failed to list API keys", c.env.ENVIRONMENT);
     }
   },
 );

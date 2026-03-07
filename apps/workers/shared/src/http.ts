@@ -45,6 +45,24 @@ export function jsonError(
 }
 
 /**
+ * Returns a 500 error response. In development, includes the error message.
+ */
+export function internalError(
+	error: unknown,
+	message: string,
+	environment: string,
+): Response {
+	if (environment === "development") {
+		return jsonError(
+			500,
+			`${message}: ${error instanceof Error ? error.message : String(error)}`,
+		);
+	}
+	
+	return jsonError(500, message);
+}
+
+/**
  * Export CORS headers for reuse in workers
  */
 export { CORS_HEADERS };

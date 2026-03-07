@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { sValidator } from "@hono/standard-validator";
 import * as z from "zod";
-import { type ApiKeyData, createLogger, jsonError, jsonResponse } from "@requiem/workers-shared";
+import { type ApiKeyData, createLogger, internalError, jsonError, jsonResponse } from "@requiem/workers-shared";
 import type { WorkerBindings } from "../../env";
 import { planSchema } from "./schemas";
 
@@ -103,14 +103,7 @@ app.patch(
         params: { keyPrefix, updates: body },
       });
 
-      if (c.env.ENVIRONMENT === "development") {
-        return jsonError(
-          500,
-          `Failed to update API key: ${error instanceof Error ? error.message : String(error)}`,
-        );
-      }
-
-      return jsonError(500, "Failed to update API key");
+      return internalError(error, "Failed to update API key", c.env.ENVIRONMENT);
     }
   },
 );

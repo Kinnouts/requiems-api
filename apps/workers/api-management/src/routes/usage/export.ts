@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { sValidator } from "@hono/standard-validator";
 import * as z from "zod";
-import { jsonError, jsonResponse, createLogger } from "@requiem/workers-shared";
+import { jsonError, jsonResponse, createLogger, internalError } from "@requiem/workers-shared";
 import type { WorkerBindings } from "../../env";
 import type { UsageExportResponse, UsageRecord } from "./types";
 
@@ -79,14 +79,7 @@ app.get(
         params: { since, limit, afterId },
       });
 
-      if (c.env.ENVIRONMENT === "development") {
-        return jsonError(
-          500,
-          `Failed to export usage data: ${error instanceof Error ? error.message : String(error)}`,
-        );
-      }
-
-      return jsonError(500, "Failed to export usage data");
+      return internalError(error, "Failed to export usage data", c.env.ENVIRONMENT);
     }
   },
 );
