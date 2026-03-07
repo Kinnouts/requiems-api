@@ -19,7 +19,12 @@
   end
 %>
 
-<div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
+     data-controller="clickable-card"
+     data-clickable-card-url-value="<%= example_path(example_id) %>"
+     data-action="click->clickable-card#navigate keydown->clickable-card#navigateOnKeydown"
+     role="link" tabindex="0"
+     aria-label="<%= example_title %> - View Tutorial">
   <!-- Thumbnail Placeholder -->
   <div class="bg-gradient-to-br from-blue-500 to-indigo-600 h-48 flex items-center justify-center">
     <div class="text-white text-center p-6">
