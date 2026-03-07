@@ -87,7 +87,14 @@ app.all("/*", async (c) => {
 
   // Record usage after response is sent — waitUntil keeps the worker alive for the write
   c.executionCtx.waitUntil(
-    recordRequestUsage(c.env, apiKey, keyData.userId, url.pathname, requestMultiplier, keyData.billingCycleStart),
+    recordRequestUsage(
+      c.env,
+      apiKey,
+      keyData.userId,
+      url.pathname,
+      requestMultiplier,
+      keyData.billingCycleStart,
+    ),
   );
 
   // Add usage headers to successful response

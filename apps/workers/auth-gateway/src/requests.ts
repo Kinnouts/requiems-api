@@ -24,7 +24,7 @@ export async function getRequestUsage(
 
   // KV cache hit — avoids a D1 aggregate query on every request
   const cached = await bindings.KV.get(cacheKey);
-  
+
   if (cached !== null) {
     return Number(cached);
   }
