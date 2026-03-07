@@ -85,7 +85,8 @@ app.all("/*", async (c) => {
     return response;
   }
 
-  // Record usage after response is sent — waitUntil keeps the worker alive for the write
+  // Record usage after response is sent — waitUntil keeps the worker alive for the write.
+  // recordRequestUsage retries up to 3 times internally; log if all attempts fail.
   c.executionCtx.waitUntil(
     recordRequestUsage(
       c.env,
@@ -94,7 +95,13 @@ app.all("/*", async (c) => {
       url.pathname,
       requestMultiplier,
       keyData.billingCycleStart,
-    ),
+    ).catch((err) => {
+      log.error("Failed to record usage after retries", {
+        error: err,
+        path: url.pathname,
+        userId: keyData.userId,
+      });
+    }),
   );
 
   // Add usage headers to successful response

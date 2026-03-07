@@ -5,6 +5,7 @@
 export interface UsageRecord {
   id: number;
   api_key: string;
+  user_id: string;
   endpoint: string;
   credits_used: number;
   used_at: string;

@@ -11,3 +11,4 @@ export * from "./logger";
 export * from "./http";
 export * from "./api-key-generator";
 export * from "./middleware";
+export * from "./retry";

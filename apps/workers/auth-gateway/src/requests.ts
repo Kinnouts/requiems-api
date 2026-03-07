@@ -1,4 +1,4 @@
-import type { RequestCheckResult } from "@requiem/workers-shared";
+import { type RequestCheckResult, withRetry } from "@requiem/workers-shared";
 import type { WorkerBindings } from "./env";
 
 /**
@@ -60,12 +60,16 @@ export async function recordRequestUsage(
   requests: number,
   billingCycleStart?: string,
 ): Promise<void> {
-  await bindings.DB.prepare(`
-    INSERT INTO credit_usage (api_key, user_id, endpoint, credits_used, used_at)
-    VALUES (?, ?, ?, ?, datetime('now'))
-  `)
-    .bind(apiKey, userId, endpoint, requests)
-    .run();
+  // Retry the D1 write up to 3 times with exponential backoff.
+  // The KV cache update below remains best-effort — D1 is the source of truth.
+  await withRetry(() =>
+    bindings.DB.prepare(`
+      INSERT INTO credit_usage (api_key, user_id, endpoint, credits_used, used_at)
+      VALUES (?, ?, ?, ?, datetime('now'))
+    `)
+      .bind(apiKey, userId, endpoint, requests)
+      .run(),
+  );
 
   // Optimistically increment the KV cache so the next quota check stays warm.
   // Race conditions here are acceptable: the 60-second TTL bounds any skew, and

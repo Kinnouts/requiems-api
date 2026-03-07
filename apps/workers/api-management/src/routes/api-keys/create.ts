@@ -1,4 +1,6 @@
 import { Hono } from "hono";
+import { sValidator } from "@hono/standard-validator";
+import * as z from "zod";
 import {
   type ApiKeyData,
   createLogger,
@@ -8,22 +10,17 @@ import {
   jsonResponse,
 } from "@requiem/workers-shared";
 import type { WorkerBindings } from "../../env";
+import { planSchema } from "./schemas";
 
 const app = new Hono<{ Bindings: WorkerBindings }>();
 
-/**
- * Request body for creating a new API key
- */
-interface CreateApiKeyRequest {
-  userId: string;
-  plan: "free" | "developer" | "business" | "professional" | "enterprise";
-  name: string;
-  billingCycleStart?: string;
-}
+const createApiKeySchema = z.object({
+  userId: z.string().min(1),
+  plan: planSchema,
+  name: z.string().min(1),
+  billingCycleStart: z.string().optional(),
+});
 
-/**
- * Response when creating a new API key
- */
 interface CreateApiKeyResponse {
   apiKey: string; // Full key (only returned once)
   keyPrefix: string;
@@ -37,91 +34,85 @@ interface CreateApiKeyResponse {
  * Create a new API key
  * Auth: X-API-Management-Key header (only Rails dashboard has this)
  */
-app.post("/", async (c) => {
-  const log = createLogger(c.req.raw);
-
-  // Parse request body
-  let body: CreateApiKeyRequest;
-  try {
-    body = await c.req.json();
-  } catch (error) {
-    log.error("Invalid JSON in create API key request", { error });
-    return jsonError(400, "Invalid JSON body");
-  }
-
-  // Validate required fields
-  if (!body.userId || !body.plan || !body.name) {
-    log.error("Missing required fields", { body });
-    return jsonError(400, "Missing required fields: userId, plan, name");
-  }
-
-  try {
-    // Generate new API key
-    const fullKey = generateApiKey();
-    const keyPrefix = extractKeyPrefix(fullKey);
-    const keyName = `key:${fullKey}`;
-
-    // Check if key already exists (extremely unlikely with nanoid, but good practice)
-    const existing = await c.env.KV.get(keyName);
-    if (existing) {
-      log.warn("Generated key already exists (collision)", { keyPrefix });
-      return jsonError(409, "Key collision detected, please retry");
+app.post(
+  "/",
+  sValidator("json", createApiKeySchema, (result, _c) => {
+    if (!result.success) {
+      return jsonError(400, result.error[0]?.message ?? "Validation error");
     }
+  }),
+  async (c) => {
+    const log = createLogger(c.req.raw);
+    const body = c.req.valid("json");
 
-    // Prepare key data for KV
-    const now = new Date().toISOString();
-    const keyData: ApiKeyData = {
-      userId: body.userId,
-      plan: body.plan,
-      createdAt: now,
-      billingCycleStart: body.billingCycleStart || now,
-    };
+    try {
+      // Generate new API key
+      const fullKey = generateApiKey();
+      const keyPrefix = extractKeyPrefix(fullKey);
+      const keyName = `key:${fullKey}`;
 
-    // Write metadata to D1 first — if this fails we haven't touched KV yet, clean failure
-    await c.env.DB.prepare(
-      `INSERT INTO api_keys (key_prefix, user_id, plan, created_at, billing_cycle_start, active)
-       VALUES (?, ?, ?, ?, ?, 1)`,
-    )
-      .bind(keyPrefix, body.userId, body.plan, now, keyData.billingCycleStart)
-      .run();
+      // Check if key already exists (extremely unlikely with nanoid, but good practice)
+      const existing = await c.env.KV.get(keyName);
+      if (existing) {
+        log.warn("Generated key already exists (collision)", { keyPrefix });
+        return jsonError(409, "Key collision detected, please retry");
+      }
 
-    // Write auth key to KV
-    await c.env.KV.put(keyName, JSON.stringify(keyData));
+      // Prepare key data for KV
+      const now = new Date().toISOString();
+      const keyData: ApiKeyData = {
+        userId: body.userId,
+        plan: body.plan,
+        createdAt: now,
+        billingCycleStart: body.billingCycleStart || now,
+      };
 
-    // Write reverse-lookup index: prefix:{keyPrefix} → fullKey
-    // Used by delete/patch for O(1) lookup instead of KV.list() scan
-    await c.env.KV.put(`prefix:${keyPrefix}`, fullKey);
+      // Write metadata to D1 first — if this fails we haven't touched KV yet, clean failure
+      await c.env.DB.prepare(
+        `INSERT INTO api_keys (key_prefix, user_id, plan, created_at, billing_cycle_start, active)
+         VALUES (?, ?, ?, ?, ?, 1)`,
+      )
+        .bind(keyPrefix, body.userId, body.plan, now, keyData.billingCycleStart)
+        .run();
 
-    log.info("API key created successfully", {
-      userId: body.userId,
-      plan: body.plan,
-      keyPrefix,
-    });
+      // Write auth key to KV
+      await c.env.KV.put(keyName, JSON.stringify(keyData));
 
-    const response: CreateApiKeyResponse = {
-      apiKey: fullKey, // Return full key (Rails will store hash)
-      keyPrefix,
-      userId: body.userId,
-      plan: body.plan,
-      createdAt: now,
-    };
+      // Write reverse-lookup index: prefix:{keyPrefix} → fullKey
+      // Used by delete/patch for O(1) lookup instead of KV.list() scan
+      await c.env.KV.put(`prefix:${keyPrefix}`, fullKey);
 
-    return jsonResponse(response, 201);
-  } catch (error) {
-    log.error("Failed to create API key", {
-      error,
-      params: { userId: body.userId, plan: body.plan },
-    });
+      log.info("API key created successfully", {
+        userId: body.userId,
+        plan: body.plan,
+        keyPrefix,
+      });
 
-    if (c.env.ENVIRONMENT === "development") {
-      return jsonError(
-        500,
-        `Failed to create API key: ${error instanceof Error ? error.message : String(error)}`,
-      );
+      const response: CreateApiKeyResponse = {
+        apiKey: fullKey, // Return full key (Rails will store hash)
+        keyPrefix,
+        userId: body.userId,
+        plan: body.plan,
+        createdAt: now,
+      };
+
+      return jsonResponse(response, 201);
+    } catch (error) {
+      log.error("Failed to create API key", {
+        error,
+        params: { userId: body.userId, plan: body.plan },
+      });
+
+      if (c.env.ENVIRONMENT === "development") {
+        return jsonError(
+          500,
+          `Failed to create API key: ${error instanceof Error ? error.message : String(error)}`,
+        );
+      }
+
+      return jsonError(500, "Failed to create API key");
     }
-
-    return jsonError(500, "Failed to create API key");
-  }
-});
+  },
+);
 
 export default app;
