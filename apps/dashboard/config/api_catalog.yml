@@ -276,6 +276,18 @@ apis:
       - User Agent
       - Browser Detection
       - Device Detection
+  - id: qr-code
+    name: QR Code Generator
+    category: technology
+    description: Generate QR codes from any text or URL, returned as a PNG image or base64-encoded JSON
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/qr-code
+    tags:
+      - QR Code
+      - Image
+      - Barcode
   - id: phone-validation
     name: Phone Validation
     category: validation
