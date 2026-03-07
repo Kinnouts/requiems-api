@@ -6,20 +6,22 @@
  * @param delayMs - Initial delay in ms, doubles each retry (default: 100)
  */
 export async function withRetry<T>(
-  fn: () => Promise<T>,
-  attempts = 3,
-  delayMs = 100,
+	fn: () => Promise<T>,
+	attempts = 3,
+	delayMs = 100,
 ): Promise<T> {
-  let lastError: unknown;
-  for (let attempt = 0; attempt < attempts; attempt++) {
-    try {
-      return await fn();
-    } catch (err) {
-      lastError = err;
-      if (attempt < attempts - 1) {
-        await new Promise((resolve) => setTimeout(resolve, delayMs * Math.pow(2, attempt)));
-      }
-    }
-  }
-  throw lastError;
+	let lastError: unknown;
+	for (let attempt = 0; attempt < attempts; attempt++) {
+		try {
+			return await fn();
+		} catch (err) {
+			lastError = err;
+			if (attempt < attempts - 1) {
+				await new Promise((resolve) =>
+					setTimeout(resolve, delayMs * Math.pow(2, attempt)),
+				);
+			}
+		}
+	}
+	throw lastError;
 }
