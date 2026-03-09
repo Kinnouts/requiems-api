@@ -183,6 +183,20 @@ apis:
       - Text Analysis
       - Safety
 
+  - id: thesaurus
+    name: Thesaurus
+    category: text
+    description: Find synonyms and antonyms for any word to enhance vocabulary and writing
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/thesaurus
+    tags:
+      - Synonyms
+      - Antonyms
+      - Vocabulary
+      - Writing
+
   # Misc APIs
   - id: counter
     name: Counter
