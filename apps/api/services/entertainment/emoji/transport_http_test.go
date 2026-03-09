@@ -124,7 +124,7 @@ func TestEmoji_Search_WithResults(t *testing.T) {
 		t.Errorf("expected status 200, got %d", w.Code)
 	}
 
-	var resp httpx.Response[EmojiList]
+	var resp httpx.Response[List]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
@@ -157,7 +157,7 @@ func TestEmoji_Search_ReturnsMatchingEmojis(t *testing.T) {
 		t.Errorf("expected status 200, got %d", w.Code)
 	}
 
-	var resp httpx.Response[EmojiList]
+	var resp httpx.Response[List]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
@@ -184,7 +184,7 @@ func TestEmoji_Search_EmptyResults(t *testing.T) {
 		t.Errorf("expected status 200, got %d", w.Code)
 	}
 
-	var resp httpx.Response[EmojiList]
+	var resp httpx.Response[List]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}

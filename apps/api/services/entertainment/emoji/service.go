@@ -1,7 +1,8 @@
 package emoji
 
 import (
-	"math/rand"
+	"crypto/rand"
+	"math/big"
 	"strings"
 )
 
@@ -11,9 +12,15 @@ type Service struct{}
 // NewService returns a new Service.
 func NewService() *Service { return &Service{} }
 
-// Random returns a randomly selected emoji.
+// Random returns a randomly selected emoji using a cryptographically secure
+// random number generator.
 func (s *Service) Random() Emoji {
-	return emojis[rand.Intn(len(emojis))]
+	n, err := rand.Int(rand.Reader, big.NewInt(int64(len(emojis))))
+	if err != nil {
+		// Fallback to first emoji on the extremely unlikely crypto/rand failure.
+		return emojis[0]
+	}
+	return emojis[n.Int64()]
 }
 
 // GetByName returns the emoji matching the given name (snake_case).
@@ -29,8 +36,8 @@ func (s *Service) GetByName(name string) (Emoji, bool) {
 }
 
 // Search returns all emojis whose name contains the query string
-// (case-insensitive). Returns an EmojiList with matching results.
-func (s *Service) Search(query string) EmojiList {
+// (case-insensitive). Returns a List with matching results.
+func (s *Service) Search(query string) List {
 	query = strings.ToLower(query)
 	var matches []Emoji
 	for _, e := range emojis {
@@ -41,5 +48,5 @@ func (s *Service) Search(query string) EmojiList {
 	if matches == nil {
 		matches = []Emoji{}
 	}
-	return EmojiList{Items: matches, Total: len(matches)}
+	return List{Items: matches, Total: len(matches)}
 }

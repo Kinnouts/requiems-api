@@ -10,13 +10,13 @@ type Emoji struct {
 
 func (Emoji) IsData() {}
 
-// EmojiList represents a collection of emoji search results.
-type EmojiList struct {
+// List represents a collection of emoji search results.
+type List struct {
 	Items []Emoji `json:"items"`
 	Total int     `json:"total"`
 }
 
-func (EmojiList) IsData() {}
+func (List) IsData() {}
 
 // SearchRequest holds the query parameter for emoji search.
 type SearchRequest struct {
