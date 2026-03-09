@@ -40,7 +40,7 @@ func NewService() *Service {
 // Generate returns a new Sudoku puzzle at the requested difficulty level.
 // The default difficulty is "medium".
 func (s *Service) Generate(difficulty string) Puzzle {
-	if difficulty == "" {
+	if _, ok := cellsToRemove[difficulty]; !ok {
 		difficulty = "medium"
 	}
 
