@@ -3,7 +3,7 @@
 <!-- Welcome Banner -->
 <div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg shadow-lg p-8 text-white mb-8">
   <h1 class="text-3xl font-bold mb-2">
-    Welcome back, <%= current_user.email.split('@').first.titleize %>!
+    Welcome back, <%= current_user.display_name %>!
   </h1>
   <p class="text-blue-100">
     Here's your API usage overview for <%= Date.current.strftime("%B %Y") %>
