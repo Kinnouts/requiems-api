@@ -65,6 +65,26 @@
         <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Optional - displayed on invoices</p>
       </div>
 
+      <!-- Profile Picture -->
+      <div class="pt-6 border-t border-gray-200 dark:border-gray-700">
+        <div class="flex items-center justify-between">
+          <div class="flex items-center gap-4">
+            <img src="<%= gravatar_url(current_user.email, size: 48) %>" alt="Profile picture" class="h-12 w-12 rounded-full">
+            <div>
+              <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100">Profile Picture</h3>
+              <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                Your avatar is provided by
+                <%= link_to "Gravatar", "https://gravatar.com", target: "_blank", rel: "noopener noreferrer", class: "text-blue-600 hover:text-blue-700 font-medium" %>,
+                based on your email address. Update it there to change it here.
+              </p>
+            </div>
+          </div>
+          <%= link_to "https://gravatar.com", target: "_blank", rel: "noopener noreferrer", class: "text-sm text-blue-600 hover:text-blue-700 font-medium shrink-0" do %>
+            Update on Gravatar →
+          <% end %>
+        </div>
+      </div>
+
       <!-- Change Password Link -->
       <div class="pt-6 border-t border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between">
