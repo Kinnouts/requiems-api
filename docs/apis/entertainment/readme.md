@@ -63,13 +63,15 @@ Get historical events that happened on a specific day
 - **Planned Endpoint:** `GET /v1/entertainment/day-in-history`
 - **Expected Credit Cost:** 1
 
-### [Emoji](./emoji.md) - ⏳ Planned
+### [Emoji](./emoji.md) - ✅ Live
 
 Get emoji information and random emojis
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/entertainment/emoji`
-- **Expected Credit Cost:** 1
+- **Status:** live
+- **Endpoint:** `GET /v1/entertainment/emoji/random`
+- **Endpoint:** `GET /v1/entertainment/emoji/search?q=happy`
+- **Endpoint:** `GET /v1/entertainment/emoji/:name`
+- **Credit Cost:** 1
 
 ### [Facts](./facts.md) - ⏳ Planned
 
@@ -129,6 +131,6 @@ Get trivia questions and answers
 
 ## Category Statistics
 
-- Total Endpoints: 15
+- Total Endpoints: 17
 - Live: 4
-- Planned: 11
+- Planned: 12

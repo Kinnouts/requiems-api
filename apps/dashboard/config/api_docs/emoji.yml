@@ -1,0 +1,268 @@
+api_id: emoji
+api_name: Emoji
+description: Look up emoji by name, search by keyword, or get a random emoji. Each response includes the rendered glyph, CLDR snake_case name, Unicode category, and code-point.
+base_url: https://api.requiems.xyz
+
+overview:
+  use_cases:
+    - Emoji pickers and reaction features
+    - Chat and messaging applications
+    - Social media tools
+    - Trivia and quiz apps
+    - Educational Unicode references
+
+  features:
+    - Random emoji selection
+    - Full-text search across emoji names and categories
+    - Direct lookup by snake_case emoji name
+    - Unicode code-point and category metadata included
+
+endpoints:
+  - name: Get Random Emoji
+    method: GET
+    path: /v1/entertainment/emoji/random
+    description: Returns a randomly selected emoji with its full metadata.
+
+    response_example: |
+      {
+        "data": {
+          "emoji": "😀",
+          "name": "grinning_face",
+          "category": "Smileys & Emotion",
+          "unicode": "U+1F600"
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: emoji
+        type: string
+        description: The rendered emoji glyph
+      - name: name
+        type: string
+        description: "CLDR short name in snake_case (e.g. grinning_face)"
+      - name: category
+        type: string
+        description: "Unicode category (e.g. Smileys & Emotion, Animals & Nature)"
+      - name: unicode
+        type: string
+        description: "Unicode code-point in U+XXXX notation (e.g. U+1F600)"
+
+    code_examples:
+      curl: |
+        curl https://api.requiems.xyz/v1/entertainment/emoji/random \
+          -H "requiems-api-key: YOUR_API_KEY"
+
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/entertainment/emoji/random"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+
+        response = requests.get(url, headers=headers)
+        print(response.json())
+
+      javascript: |
+        const response = await fetch(
+          'https://api.requiems.xyz/v1/entertainment/emoji/random',
+          { headers: { 'requiems-api-key': 'YOUR_API_KEY' } }
+        );
+        const data = await response.json();
+        console.log(data.data.emoji, data.data.name);
+
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/entertainment/emoji/random')
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        data = JSON.parse(response.body)
+        puts data['data']['emoji']
+
+  - name: Search Emoji
+    method: GET
+    path: /v1/entertainment/emoji/search
+    description: "Search for emojis whose name or category contains the given query string (case-insensitive). Returns a list of all matches."
+
+    parameters:
+      - name: q
+        type: string
+        required: true
+        location: query
+        description: "Search term to match against emoji names and categories (e.g. happy, heart, food)"
+        example: happy
+
+    response_example: |
+      {
+        "data": {
+          "items": [
+            {
+              "emoji": "😄",
+              "name": "grinning_face_with_smiling_eyes",
+              "category": "Smileys & Emotion",
+              "unicode": "U+1F604"
+            }
+          ],
+          "total": 1
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: items
+        type: array
+        description: List of matching emoji objects
+      - name: total
+        type: integer
+        description: Total number of matches
+
+    errors:
+      - code: bad_request
+        status: 400
+        description: "The q query parameter is missing or empty."
+
+    code_examples:
+      curl: |
+        curl "https://api.requiems.xyz/v1/entertainment/emoji/search?q=happy" \
+          -H "requiems-api-key: YOUR_API_KEY"
+
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/entertainment/emoji/search"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+        params = {"q": "happy"}
+
+        response = requests.get(url, headers=headers, params=params)
+        data = response.json()
+        for emoji in data['data']['items']:
+            print(emoji['emoji'], emoji['name'])
+
+      javascript: |
+        const response = await fetch(
+          'https://api.requiems.xyz/v1/entertainment/emoji/search?q=happy',
+          { headers: { 'requiems-api-key': 'YOUR_API_KEY' } }
+        );
+        const data = await response.json();
+        data.data.items.forEach(e => console.log(e.emoji, e.name));
+
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/entertainment/emoji/search')
+        uri.query = URI.encode_www_form(q: 'happy')
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        data = JSON.parse(response.body)
+        data['data']['items'].each { |e| puts "#{e['emoji']} #{e['name']}" }
+
+  - name: Get Emoji by Name
+    method: GET
+    path: /v1/entertainment/emoji/{name}
+    description: Returns a specific emoji by its CLDR snake_case name. The name is case-insensitive.
+
+    parameters:
+      - name: name
+        type: string
+        required: true
+        location: path
+        description: "CLDR snake_case emoji name (e.g. grinning_face, thumbs_up)"
+        example: grinning_face
+
+    response_example: |
+      {
+        "data": {
+          "emoji": "😀",
+          "name": "grinning_face",
+          "category": "Smileys & Emotion",
+          "unicode": "U+1F600"
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: emoji
+        type: string
+        description: The rendered emoji glyph
+      - name: name
+        type: string
+        description: CLDR short name in snake_case
+      - name: category
+        type: string
+        description: Unicode category
+      - name: unicode
+        type: string
+        description: Unicode code-point in U+XXXX notation
+
+    errors:
+      - code: not_found
+        status: 404
+        description: No emoji found with the given name.
+
+    code_examples:
+      curl: |
+        curl https://api.requiems.xyz/v1/entertainment/emoji/grinning_face \
+          -H "requiems-api-key: YOUR_API_KEY"
+
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/entertainment/emoji/grinning_face"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+
+        response = requests.get(url, headers=headers)
+        print(response.json())
+
+      javascript: |
+        const response = await fetch(
+          'https://api.requiems.xyz/v1/entertainment/emoji/grinning_face',
+          { headers: { 'requiems-api-key': 'YOUR_API_KEY' } }
+        );
+        const data = await response.json();
+        console.log(data.data.emoji, data.data.unicode);
+
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/entertainment/emoji/grinning_face')
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        data = JSON.parse(response.body)
+        puts data['data']['emoji']
+
+faq:
+  - question: What emoji names are supported?
+    answer: Names follow the Unicode CLDR short-name format in snake_case (e.g. grinning_face, thumbs_up, red_heart). Use the search endpoint to discover available names.
+
+  - question: Is the name parameter case-sensitive?
+    answer: No. You can pass the name in any case (e.g. Grinning_Face, GRINNING_FACE, or grinning_face) and the API normalises it to lowercase.
+
+  - question: What does the unicode field contain?
+    answer: The unicode field contains the primary code-point for the emoji in U+XXXX notation (e.g. U+1F600). Emoji that are sequences of multiple code-points show the base code-point.
+
+  - question: Can I search by category?
+    answer: "Yes. The search endpoint matches against both the emoji name and its category, so querying 'food', 'travel', or 'animal' will return all emojis in those categories."

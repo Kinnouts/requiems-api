@@ -63,16 +63,16 @@ Detect language of text
 - **Planned Endpoint:** `GET /v1/text/text-language`
 - **Expected Credit Cost:** 1
 
-### [Thesaurus](./thesaurus.md) - ⏳ Planned
+### [Thesaurus](./thesaurus.md) - ✅ MVP
 
-Find synonyms and related words
+Find synonyms and antonyms for words
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/text/thesaurus`
-- **Expected Credit Cost:** 1
+- **Status:** mvp
+- **Endpoint:** `GET /v1/text/thesaurus/{word}`
+- **Credit Cost:** 1
 
 ## Category Statistics
 
 - Total Endpoints: 8
-- Live: 3
-- Planned: 5
+- Live: 4
+- Planned: 4
