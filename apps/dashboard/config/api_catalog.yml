@@ -237,6 +237,19 @@ apis:
       - Daily
       - Entertainment
 
+  - id: sudoku
+    name: Sudoku
+    category: entertainment
+    description: Generate Sudoku puzzles with solutions across multiple difficulty levels
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/sudoku
+    tags:
+      - Puzzle
+      - Game
+      - Entertainment
+
   # Places APIs
   - id: timezone
     name: Timezone
