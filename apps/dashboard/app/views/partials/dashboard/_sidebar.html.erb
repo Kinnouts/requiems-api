@@ -7,7 +7,7 @@
       </div>
       <div class="ml-3 flex-1 min-w-0">
         <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate">
-          <%= current_user.email %>
+          <%= current_user.display_name %>
         </p>
         <% if current_user.subscription %>
           <%= render "partials/shared/badge",
