@@ -140,7 +140,7 @@ class Admin::UsersController < ApplicationController
     {
       total_requests: @user.usage_logs.count,
       requests_this_month: @user.usage_logs.where("used_at >= ?", Time.current.beginning_of_month).count,
-      total_credits_used: @user.usage_logs.sum(:credits_used),
+      total_requests_used: @user.usage_logs.sum(:credits_used),
       avg_response_time: @user.usage_logs.where.not(response_time_ms: nil).average(:response_time_ms)&.round || 0,
       error_rate: calculate_user_error_rate
     }

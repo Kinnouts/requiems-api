@@ -42,7 +42,7 @@ enforce:
 
 - Plan limits
 - Rate limits
-- Credit quotas
+- Request quotas
 
 ## Setup Required
 
@@ -221,7 +221,7 @@ When a subscription changes, **all active API keys** for that user are
 automatically updated in Cloudflare KV. This ensures:
 
 - Existing API keys immediately get new rate limits
-- Credit quotas are updated for the new billing cycle
+- Request quotas are updated for the new billing cycle
 - No need for users to regenerate API keys
 
 ## Support

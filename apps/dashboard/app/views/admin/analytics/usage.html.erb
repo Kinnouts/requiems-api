@@ -128,7 +128,7 @@
           <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rank</th>
           <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
           <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Requests</th>
-          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Credits Used</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Requests</th>
           <th class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
         </tr>
       </thead>
@@ -145,7 +145,7 @@
               <%= number_with_delimiter(user_stat.request_count) %>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
-              <%= number_with_delimiter(user_stat.total_credits) %>
+              <%= number_with_delimiter(user_stat.total_requests) %>
             </td>
             <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
               <%= link_to "View User", admin_user_path(user_stat.id), class: "text-blue-600 hover:text-blue-700" %>

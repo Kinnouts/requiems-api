@@ -16,7 +16,7 @@ globally.
 │  │  Worker (Auth Gateway)                             │      │
 │  │  - API key validation                              │      │
 │  │  - Rate limiting                                   │      │
-│  │  - Credit tracking                                 │      │
+│  │  - Request tracking                                │      │
 │  └────────────────────────────────────────────────────┘      │
 │                                                              │
 │  ┌───────────────┐    ┌───────────────────────────────┐      │

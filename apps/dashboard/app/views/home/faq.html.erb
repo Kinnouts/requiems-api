@@ -51,7 +51,7 @@
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
               <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">What's the difference between test and live API keys?</h3>
               <p class="text-gray-700 dark:text-gray-300">
-                Test keys (starting with <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">req_test_</code>) are for development and testing. They work with all endpoints but don't consume credits. Live keys (<code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">req_live_</code>) are for production use and consume credits from your account.
+                Test keys (starting with <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">req_test_</code>) are for development and testing. They work with all endpoints but don't count against your request quota. Live keys (<code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">req_live_</code>) are for production use and count against your monthly request quota.
               </p>
             </div>
 
@@ -64,19 +64,19 @@
           </div>
         </div>
 
-        <!-- Billing & Credits -->
+        <!-- Billing & Usage -->
         <div>
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 pb-2 border-b border-gray-200 dark:border-gray-700">Billing & Credits</h2>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 pb-2 border-b border-gray-200 dark:border-gray-700">Billing & Usage</h2>
           <div class="space-y-6">
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
               <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">How is billing calculated?</h3>
               <p class="text-gray-700 dark:text-gray-300">
-                We use a credit-based system. Each API endpoint consumes a certain number of credits per request. For example, email validation costs 1 credit per check. Your plan includes a monthly credit allowance that resets at the start of each billing period.
+                Each API call costs 1 request. Your plan includes a monthly request allowance that resets at the start of each billing period. Some endpoints may count as more than 1 request — this is always stated explicitly in that endpoint's documentation.
               </p>
             </div>
 
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">What happens if I exceed my credit limit?</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">What happens if I exceed my request limit?</h3>
               <p class="text-gray-700 dark:text-gray-300">
                 When you hit 75% of your quota, we'll send you an alert. At 90%, you'll get another warning. If you hit 100%, API requests will return a 429 error until you upgrade your plan or wait for your next billing cycle.
               </p>
@@ -90,9 +90,9 @@
             </div>
 
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Do unused credits roll over?</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Do unused requests roll over?</h3>
               <p class="text-gray-700 dark:text-gray-300">
-                No, credits don't roll over to the next month. Your credit allowance resets at the beginning of each billing period. We recommend choosing a plan that matches your typical monthly usage.
+                No, unused requests don't roll over to the next month. Your request allowance resets at the beginning of each billing period. We recommend choosing a plan that matches your typical monthly usage.
               </p>
             </div>
           </div>

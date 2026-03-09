@@ -412,9 +412,9 @@ curl -I -H "requiems-api-key: YOUR_KEY" https://api.requiems.xyz/v1/text/advice
 Should include:
 
 ```
-X-Credits-Used: 1
-X-Credits-Remaining: 49
-X-Credits-Reset: 2026-02-10T00:00:00.000Z
+X-Requests-Used: 1
+X-Requests-Remaining: 49
+X-Requests-Reset: 2026-02-10T00:00:00.000Z
 X-Plan: free
 X-RateLimit-Limit: 30
 X-RateLimit-Remaining: 29

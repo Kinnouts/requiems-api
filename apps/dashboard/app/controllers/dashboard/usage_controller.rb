@@ -9,7 +9,7 @@ class Dashboard::UsageController < ApplicationController
 
     # Summary statistics
     @total_requests = calculate_total_requests
-    @total_credits_used = calculate_total_credits_used
+    @total_requests_used = calculate_total_requests_used
     @avg_response_time = calculate_avg_response_time
     @error_rate = calculate_error_rate
 
@@ -104,7 +104,7 @@ class Dashboard::UsageController < ApplicationController
       .count
   end
 
-  def calculate_total_credits_used
+  def calculate_total_requests_used
     current_user.usage_logs
       .where(used_at: @start_date..@end_date)
       .sum(:credits_used)
@@ -149,7 +149,7 @@ class Dashboard::UsageController < ApplicationController
         "Method",
         "Status Code",
         "Response Time (ms)",
-        "Credits Used",
+        "Requests",
         "API Key",
         "User Agent"
       ]
