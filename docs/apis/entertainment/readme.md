@@ -113,13 +113,13 @@ Get riddles and brain teasers
 - **Planned Endpoint:** `GET /v1/entertainment/riddles`
 - **Expected Credit Cost:** 1
 
-### [Sudoku](./sudoku.md) - ⏳ Planned
+### [Sudoku](./sudoku.md) - ✅ MVP
 
 Get Sudoku puzzles and solutions
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/entertainment/sudoku`
-- **Expected Credit Cost:** 1
+- **Status:** mvp
+- **Endpoint:** `GET /v1/entertainment/sudoku`
+- **Credit Cost:** 1
 
 ### [Trivia](./trivia.md) - ⏳ Planned
 
