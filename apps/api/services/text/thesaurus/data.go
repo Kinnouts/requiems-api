@@ -106,7 +106,7 @@ var thesaurusData = map[string]entry{
 		antonyms: []string{"rich", "wealthy", "affluent", "prosperous", "well-off", "opulent"},
 	},
 	"love": {
-		synonyms: []string{"adore", "cherish", "treasure", "care for", "like", "fondness", "affection"},
+		synonyms: []string{"adore", "cherish", "treasure", "admire", "like", "fondness", "affection"},
 		antonyms: []string{"hate", "detest", "despise", "loathe", "abhor", "dislike"},
 	},
 	"hate": {

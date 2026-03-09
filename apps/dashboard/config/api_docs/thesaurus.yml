@@ -115,7 +115,7 @@ faq:
     answer: The API returns a 404 Not Found response with the error code "not_found" if the word is not in the thesaurus dataset.
 
   - question: How many words are in the dataset?
-    answer: The dataset contains a curated collection of common English words with their synonyms and antonyms, covering the most frequently used vocabulary.
+    answer: The dataset contains over 50 curated common English words with their synonyms and antonyms, covering the most frequently used vocabulary.
 
   - question: Can I get synonyms and antonyms separately?
     answer: The endpoint returns both synonyms and antonyms in a single response for efficiency. Both fields are always present in the response.
