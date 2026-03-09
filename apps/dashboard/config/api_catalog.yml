@@ -376,6 +376,18 @@ apis:
       - QR Code
       - Image
       - Barcode
+  - id: barcode
+    name: Barcode Generator
+    category: technology
+    description: Generate barcodes in multiple formats (Code 128, Code 93, Code 39, EAN-8, EAN-13), returned as a PNG image or base64-encoded JSON
+    endpoints_count: 2
+    status: live
+    popular: false
+    documentation_url: /apis/barcode
+    tags:
+      - Barcode
+      - Image
+      - Code 128
   - id: phone-validation
     name: Phone Validation
     category: validation

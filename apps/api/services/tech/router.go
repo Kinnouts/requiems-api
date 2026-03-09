@@ -3,6 +3,7 @@ package tech
 import (
 	"github.com/go-chi/chi/v5"
 
+	"requiems-api/services/tech/barcode"
 	"requiems-api/services/tech/password"
 	"requiems-api/services/tech/phone"
 	"requiems-api/services/tech/qr"
@@ -21,4 +22,7 @@ func RegisterRoutes(r chi.Router) {
 
 	qrSvc := qr.NewService()
 	qr.RegisterRoutes(r, qrSvc)
+
+	barcodeSvc := barcode.NewService()
+	barcode.RegisterRoutes(r, barcodeSvc)
 }
