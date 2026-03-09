@@ -8,6 +8,7 @@ import (
 	"requiems-api/services/text/lorem"
 	"requiems-api/services/text/profanity"
 	"requiems-api/services/text/quotes"
+	"requiems-api/services/text/spellcheck"
 	"requiems-api/services/text/words"
 )
 
@@ -26,4 +27,7 @@ func RegisterRoutes(r chi.Router, pool *pgxpool.Pool) {
 
 	profanitySvc := profanity.NewService()
 	profanity.RegisterRoutes(r, profanitySvc)
+
+	spellcheckSvc := spellcheck.NewService()
+	spellcheck.RegisterRoutes(r, spellcheckSvc)
 }

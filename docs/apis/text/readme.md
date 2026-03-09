@@ -47,13 +47,13 @@ Find rhyming words
 - **Planned Endpoint:** `GET /v1/text/rhyme`
 - **Expected Credit Cost:** 1
 
-### [Spell Check](./spell-check.md) - ⏳ Planned
+### [Spell Check](./spell-check.md) - ✅ MVP
 
 Check spelling and suggest corrections
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/text/spell-check`
-- **Expected Credit Cost:** 1
+- **Status:** mvp
+- **Endpoint:** `POST /v1/text/spellcheck`
+- **Credit Cost:** 1
 
 ### [Text Language](./text-language.md) - ⏳ Planned
 
@@ -74,5 +74,5 @@ Find synonyms and related words
 ## Category Statistics
 
 - Total Endpoints: 8
-- Live: 3
-- Planned: 5
+- Live: 4
+- Planned: 4

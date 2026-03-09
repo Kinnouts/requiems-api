@@ -183,6 +183,19 @@ apis:
       - Text Analysis
       - Safety
 
+  - id: spell-check
+    name: Spell Check
+    category: text
+    description: Check spelling and get correction suggestions for misspelled words
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/spell-check
+    tags:
+      - Spell Check
+      - Text Analysis
+      - Writing
+
   # Misc APIs
   - id: counter
     name: Counter
