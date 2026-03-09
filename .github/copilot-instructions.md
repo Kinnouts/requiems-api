@@ -4,12 +4,12 @@
 
 Multi-app monorepo with four services:
 
-| App | Path | Language |
-|-----|------|----------|
-| Go API | `apps/api/` | Go 1.26 |
-| Rails Dashboard | `apps/dashboard/` | Ruby 3.4.8 / Rails 8 |
-| Auth Gateway | `apps/workers/auth-gateway/` | TypeScript (Cloudflare Worker) |
-| API Management | `apps/workers/api-management/` | TypeScript (Cloudflare Worker) |
+| App             | Path                           | Language                       |
+| --------------- | ------------------------------ | ------------------------------ |
+| Go API          | `apps/api/`                    | Go 1.26                        |
+| Rails Dashboard | `apps/dashboard/`              | Ruby 3.4.8 / Rails 8           |
+| Auth Gateway    | `apps/workers/auth-gateway/`   | TypeScript (Cloudflare Worker) |
+| API Management  | `apps/workers/api-management/` | TypeScript (Cloudflare Worker) |
 
 Shared worker utilities live in `apps/workers/shared/`.
 
@@ -32,7 +32,8 @@ services/{domain}/{feature}/
 └── transport_http.go  # HTTP handlers, RegisterRoutes(r chi.Router, svc *Service)
 ```
 
-Routes are wired in `services/{domain}/router.go` and mounted in `app/routes_v1.go`.
+Routes are wired in `services/{domain}/router.go` and mounted in
+`app/routes_v1.go`.
 
 Use `httpx.JSON()` for success responses and `httpx.Error()` for errors.
 
@@ -54,6 +55,7 @@ golangci-lint run
 ```
 
 Environment required for tests:
+
 ```
 DATABASE_URL=postgres://requiem:requiem@localhost:5432/requiem_test?sslmode=disable
 BACKEND_SECRET=test_secret_min_32_chars_long_for_testing_only
