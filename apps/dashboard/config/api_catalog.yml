@@ -29,7 +29,6 @@ categories:
     icon: "🤖"
     short_description: Analyze images, detect objects, recognize faces, and extract text with computer vision models.
     description: Harness the power of artificial intelligence to analyze images, detect objects, recognize faces, extract text from documents, and classify visual content. Our computer vision APIs bring state-of-the-art machine learning models to your fingertips through a simple, unified REST interface.
-    coming_soon: true
 
   - id: animals
     name: Animals
@@ -195,6 +194,19 @@ apis:
       - Language Detection
       - NLP
       - AI
+  # AI/Computer Vision APIs
+  - id: text-similarity
+    name: Text Similarity
+    category: ai_vision
+    description: Compare two texts and get a cosine similarity score between 0 and 1
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/text-similarity
+    tags:
+      - Text Analysis
+      - NLP
+      - Similarity
   - id: thesaurus
     name: Thesaurus
     category: text
