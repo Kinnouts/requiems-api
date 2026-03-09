@@ -251,6 +251,19 @@ apis:
       - Daily
       - Entertainment
 
+  - id: emoji
+    name: Emoji
+    category: entertainment
+    description: Look up emoji by name, search by keyword, or get a random emoji with full Unicode metadata.
+    endpoints_count: 3
+    status: live
+    popular: false
+    documentation_url: /apis/emoji
+    tags:
+      - Emoji
+      - Unicode
+      - Entertainment
+
   # Places APIs
   - id: timezone
     name: Timezone
