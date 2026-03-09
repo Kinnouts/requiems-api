@@ -13,7 +13,6 @@ universities.
 
 ### Get University Information
 
-**Planned Endpoint:** `GET /v1/miscellaneous/university` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/miscellaneous/university`
 
 Get university information.

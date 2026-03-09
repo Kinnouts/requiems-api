@@ -3,7 +3,7 @@
 ## Overview
 
 The Auth Gateway is a Cloudflare Worker that sits at the edge of the Requiem API
-architecture, handling authentication, rate limiting, and credit tracking before
+architecture, handling authentication, rate limiting, and request tracking before
 requests reach the backend.
 
 **Location:** [apps/workers/auth-gateway/](../apps/workers/auth-gateway/)
@@ -24,7 +24,7 @@ KV Lookup (API key → user data)
     ↓
 Rate Limit Check (KV counter)
     ↓
-Credit Check (D1 query)
+Usage Check (D1 query)
     ↓
 Forward to Backend (with X-Backend-Secret)
     ↓
@@ -47,11 +47,11 @@ Add Usage Headers & Return Response
 - Stores counters in KV with 60-second TTL
 - Returns 429 when limits exceeded
 
-### 3. Credit Tracking
+### 3. Usage Tracking
 
-- Checks credit usage against plan limits
+- Checks request usage against plan limits
 - Queries Cloudflare D1 (SQLite at the edge)
-- Tracks per-endpoint credit costs
+- Tracks per-endpoint request costs
 - Monthly reset
 
 ### 4. Request Forwarding
@@ -62,8 +62,8 @@ Add Usage Headers & Return Response
 
 ### 5. Usage Recording
 
-- Records credit usage in D1 database
-- Tracks endpoint, timestamp, and credits used
+- Records request usage in D1 database
+- Tracks endpoint, timestamp, and requests used
 - Enables usage analytics and billing
 
 ## Key Files
@@ -159,9 +159,9 @@ curl -H "requiems-api-key: rq_free_000001" http://localhost:4455/v1/text/advice
 Every successful response includes usage information:
 
 ```
-X-Credits-Used: 1
-X-Credits-Remaining: 499
-X-Credits-Reset: 2026-03-01T00:00:00.000Z
+X-Requests-Used: 1
+X-Requests-Remaining: 499
+X-Requests-Reset: 2026-03-01T00:00:00.000Z
 X-Plan: developer
 X-RateLimit-Limit: 5000
 X-RateLimit-Remaining: 4999
@@ -169,7 +169,7 @@ X-RateLimit-Remaining: 4999
 
 ## Plan Tiers
 
-| Plan         | Credit Limit | Period  | Rate Limit | Price      |
+| Plan         | Request Limit | Period  | Rate Limit | Price      |
 | ------------ | ------------ | ------- | ---------- | ---------- |
 | Free         | 500          | Monthly | 30/min     | $0/month   |
 | Developer    | 100,000      | Monthly | 5,000/min  | $29/month  |

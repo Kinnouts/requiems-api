@@ -13,7 +13,6 @@ recommendations and meanings.
 
 ### Get Baby Name Suggestions
 
-**Planned Endpoint:** `GET /v1/miscellaneous/baby-names` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/miscellaneous/baby-names`
 
 Get baby name ideas.

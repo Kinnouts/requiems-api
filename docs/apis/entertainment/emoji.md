@@ -14,14 +14,12 @@ including the rendered glyph, CLDR name, Unicode category, and code-point.
 ### Get Random Emoji
 
 **Endpoint:** `GET /v1/entertainment/emoji/random`
-**Credit Cost:** 1 credit
 
 Returns a randomly selected emoji.
 
 ### Search Emoji
 
 **Endpoint:** `GET /v1/entertainment/emoji/search?q=happy`
-**Credit Cost:** 1 credit
 
 Searches for emojis whose name or category contains the given query string
 (case-insensitive). Returns a list of all matches.
@@ -35,7 +33,6 @@ Searches for emojis whose name or category contains the given query string
 ### Get Emoji by Name
 
 **Endpoint:** `GET /v1/entertainment/emoji/:name`
-**Credit Cost:** 1 credit
 
 Returns a specific emoji by its CLDR snake\_case name.
 

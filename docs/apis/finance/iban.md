@@ -13,6 +13,6 @@ International Bank Account Numbers.
 
 ### Validate IBAN
 
-**Planned Endpoint:** `GET /v1/finance/iban` **Expected Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/finance/iban`
 
 Validate and get information about an IBAN code.

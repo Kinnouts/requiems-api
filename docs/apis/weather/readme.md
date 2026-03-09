@@ -13,7 +13,6 @@ Get weather information for locations
 
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/weather/weather`
-- **Expected Credit Cost:** 1
 
 ## Category Statistics
 

@@ -13,7 +13,6 @@ data and information.
 
 ### Get COVID-19 Data
 
-**Planned Endpoint:** `GET /v1/health-wellness/covid-19` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/health-wellness/covid-19`
 
 Get COVID-19 statistics and information.

@@ -46,7 +46,3 @@ opposite words for the given input.
 | ------------- | ------ | ----------------------------------- |
 | `not_found`   | 404    | Word not found in thesaurus dataset |
 | `bad_request` | 400    | Missing word path parameter         |
-
-## Credit Cost
-
-1 credit per request.

@@ -15,7 +15,6 @@ or base64-encoded JSON response.
 
 `GET /v1/tech/qr`
 
-**Credit Cost:** 1 credit per request
 
 ### Query Parameters
 

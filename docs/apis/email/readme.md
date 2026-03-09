@@ -18,7 +18,6 @@ Check if an email address or domain is from a disposable email service
   - `GET /v1/email/disposable/domain/{domain}` — Check domain
   - `GET /v1/email/disposable/domains` — List all disposable domains (paginated)
   - `GET /v1/email/disposable/stats` — Blocklist statistics
-- **Credit Cost:** 1
 
 ## Category Statistics
 

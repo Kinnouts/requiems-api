@@ -13,7 +13,6 @@ discover exciting activities and experiences to add to your bucket list.
 
 ### Get Bucket List Ideas
 
-**Planned Endpoint:** `GET /v1/entertainment/bucket-list` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/entertainment/bucket-list`
 
 Get random bucket list ideas and adventure suggestions.

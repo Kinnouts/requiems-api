@@ -13,7 +13,6 @@ helicopter types.
 
 ### Get Helicopter Information
 
-**Planned Endpoint:** `GET /v1/transportation/helicopter` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/transportation/helicopter`
 
 Get helicopter information.

@@ -13,7 +13,6 @@ validity.
 
 ### Validate Email Address
 
-**Planned Endpoint:** `GET /v1/internet-technology/validate-email` **Expected
-Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/internet-technology/validate-email`
 
 Validate an email address.

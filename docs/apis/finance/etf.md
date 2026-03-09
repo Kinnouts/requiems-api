@@ -13,6 +13,6 @@ various ETFs.
 
 ### Get ETF Information
 
-**Planned Endpoint:** `GET /v1/finance/etf` **Expected Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/finance/etf`
 
 Get information about a specific ETF.

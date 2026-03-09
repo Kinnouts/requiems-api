@@ -13,7 +13,6 @@ astronomical data about stars.
 
 ### Get Star Information
 
-**Planned Endpoint:** `GET /v1/miscellaneous/stars` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/miscellaneous/stars`
 
 Get information about stars and constellations.

@@ -13,7 +13,6 @@ about web URLs.
 
 ### URL Lookup
 
-**Planned Endpoint:** `GET /v1/internet-technology/url-lookup` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/internet-technology/url-lookup`
 
 Get information about a URL.

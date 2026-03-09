@@ -13,7 +13,6 @@ multiple categories and styles.
 
 ### Get Random Joke
 
-**Planned Endpoint:** `GET /v1/entertainment/jokes` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/entertainment/jokes`
 
 Get a random joke.

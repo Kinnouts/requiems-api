@@ -13,7 +13,6 @@ errors and provide corrections.
 
 ### Check Spelling
 
-**Planned Endpoint:** `GET /v1/text/spell-check` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/text/spell-check`
 
 Check spelling and get corrections.

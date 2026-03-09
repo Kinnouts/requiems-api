@@ -14,13 +14,13 @@
 │   (Cloudflare Worker)        │  │   (Rails Dashboard)          │
 │                              │  │                              │
 │  ┌────────┐  ┌────────┐      │  │  ┌────────┐  ┌─────────┐     │
-│  │Auth KV │  │Credits │      │  │  │Landing │  │Dashboard│     │
+│  │Auth KV │  │Usage   │      │  │  │Landing │  │Dashboard│     │
 │  │        │  │  D1    │      │  │  │ Page   │  │ & Admin │     │
 │  └────────┘  └────────┘      │  │  └────────┘  └─────────┘     │
 │                              │  │                              │
 │  requiems-api-key validation │  │  User management             │
 │  Rate limiting               │  │  API key creation            │
-│  Credit tracking             │  │  Usage stats                 │
+│  Request tracking            │  │  Usage stats                 │
 └──────────────────────────────┘  └──────────────────────────────┘
            │                                │
            │ X-Backend-Secret               │ DB queries
@@ -58,7 +58,7 @@
 
 - API key validation (Cloudflare KV)
 - Rate limiting (KV counters)
-- Credit tracking (D1 SQLite)
+- Request tracking (D1 SQLite)
 - Request forwarding to internal backend
 
 **Technology:** TypeScript on Cloudflare Workers
@@ -159,7 +159,7 @@ We use **3 data stores**, each optimized for its specific use case:
 
 **Used for:**
 
-- **Credit usage tracking** (INSERT on every API call, SUM queries for totals)
+- **Request usage tracking** (INSERT on every API call, SUM queries for totals)
 - **Usage analytics** (which endpoints, when, how much)
 
 **Why D1 (not KV):**
@@ -226,7 +226,7 @@ CREATE TABLE words (id SERIAL, word TEXT, definition TEXT, ...);
 **The Gateway (Worker) handles:**
 
 - Auth + rate limits (KV) - must be ultra-fast
-- Credit tracking (D1) - needs SQL, still at edge
+- Request tracking (D1) - needs SQL, still at edge
 
 **The Backend (Go) handles:**
 
@@ -246,7 +246,7 @@ CREATE TABLE words (id SERIAL, word TEXT, definition TEXT, ...);
    └─ KV.get("rl:m:rq_live_abc123:28377600") → "150"
    └─ Under limit? Continue. Over? Return 429.
 
-4. Check credits
+4. Check usage quota
    └─ D1: SELECT SUM(credits_used) WHERE api_key = ? AND used_at >= ?
    └─ Under limit? Continue. Over? Return 429 (free) or allow (paid).
 
@@ -261,8 +261,8 @@ CREATE TABLE words (id SERIAL, word TEXT, definition TEXT, ...);
    └─ D1: INSERT INTO credit_usage (api_key, endpoint, credits_used, ...)
 
 8. Return response with headers
-   └─ X-Credits-Used: 1
-   └─ X-Credits-Remaining: 29849
+   └─ X-Requests-Used: 1
+   └─ X-Requests-Remaining: 29849
    └─ X-RateLimit-Remaining: 149
 ```
 

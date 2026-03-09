@@ -387,7 +387,7 @@ Key-value store for:
 
 Usage tracking:
 
-- `credit_usage` table: Records every API call with credits used
+- `credit_usage` table: Records every API call (requests used per billing period)
 - SQL queries for billing period aggregations
 
 ## Key Dependencies

@@ -13,7 +13,6 @@ about significant events in history.
 
 ### Get Historical Events
 
-**Planned Endpoint:** `GET /v1/miscellaneous/historical-events` **Expected
-Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/miscellaneous/historical-events`
 
 Get information about historical events.

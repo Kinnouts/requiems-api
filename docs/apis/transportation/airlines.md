@@ -13,7 +13,6 @@ worldwide.
 
 ### Get Airline Information
 
-**Planned Endpoint:** `GET /v1/transportation/airlines` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/transportation/airlines`
 
 Get airline information.

@@ -13,7 +13,6 @@ sentiment of text.
 
 ### Analyze Sentiment
 
-**Planned Endpoint:** `GET /v1/ai-computer-vision/sentiment` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/ai-computer-vision/sentiment`
 
 Analyze sentiment of text.

@@ -13,7 +13,6 @@ registration and ownership details.
 
 ### Get Domain Information
 
-**Planned Endpoint:** `GET /v1/internet-technology/domain` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/internet-technology/domain`
 
 Get information about a domain.

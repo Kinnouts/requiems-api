@@ -13,7 +13,6 @@ and information.
 
 ### Get Holiday Information
 
-**Planned Endpoint:** `GET /v1/miscellaneous/holidays` **Expected Credit Cost:**
-1 credit
+**Planned Endpoint:** `GET /v1/miscellaneous/holidays`
 
 Get holiday information and calendars.

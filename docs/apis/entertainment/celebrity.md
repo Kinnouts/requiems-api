@@ -13,7 +13,6 @@ details about actors, musicians, athletes, and other public figures.
 
 ### Get Celebrity Information
 
-**Planned Endpoint:** `GET /v1/entertainment/celebrity` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/entertainment/celebrity`
 
 Get information about a random or specified celebrity.

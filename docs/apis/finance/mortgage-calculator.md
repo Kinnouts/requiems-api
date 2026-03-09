@@ -13,7 +13,6 @@ payments.
 
 ### Calculate Mortgage Payment
 
-**Planned Endpoint:** `GET /v1/finance/mortgage-calculator` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/finance/mortgage-calculator`
 
 Calculate mortgage payment.

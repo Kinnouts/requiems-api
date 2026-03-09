@@ -13,7 +13,6 @@ information.
 
 ### Get Stock Price
 
-**Planned Endpoint:** `GET /v1/finance/stock-price` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/finance/stock-price`
 
 Get current stock price.

@@ -13,7 +13,6 @@ number information.
 
 ### Get Routing Number
 
-**Planned Endpoint:** `GET /v1/finance/routing-number` **Expected Credit Cost:**
-1 credit
+**Planned Endpoint:** `GET /v1/finance/routing-number`
 
 Validate and get bank routing number information.

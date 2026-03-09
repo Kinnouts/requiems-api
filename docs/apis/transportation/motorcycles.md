@@ -13,7 +13,6 @@ motorcycle models.
 
 ### Get Motorcycle Information
 
-**Planned Endpoint:** `GET /v1/transportation/motorcycles` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/transportation/motorcycles`
 
 Get motorcycle information.

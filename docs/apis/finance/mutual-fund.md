@@ -13,7 +13,6 @@ mutual funds.
 
 ### Get Mutual Fund Information
 
-**Planned Endpoint:** `GET /v1/finance/mutual-fund` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/finance/mutual-fund`
 
 Get information about a mutual fund.

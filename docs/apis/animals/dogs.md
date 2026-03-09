@@ -13,6 +13,6 @@ and breed information.
 
 ### Get Dog Information
 
-**Planned Endpoint:** `GET /v1/animals/dogs` **Expected Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/animals/dogs`
 
 Get dog facts and images.

@@ -13,7 +13,6 @@ text from image files.
 
 ### Extract Text from Image
 
-**Planned Endpoint:** `GET /v1/ai-computer-vision/image-to-text` **Expected
-Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/ai-computer-vision/image-to-text`
 
 Extract text from an image.

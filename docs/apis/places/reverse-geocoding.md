@@ -13,7 +13,6 @@ from latitude and longitude.
 
 ### Reverse Geocode Coordinates
 
-**Planned Endpoint:** `GET /v1/places/reverse-geocoding` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/places/reverse-geocoding`
 
 Convert coordinates to an address.

@@ -13,7 +13,6 @@ for banks.
 
 ### Get SWIFT Code
 
-**Planned Endpoint:** `GET /v1/finance/swift-code` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/finance/swift-code`
 
 Validate and get SWIFT code information.

@@ -15,7 +15,6 @@ system, device type, and bot detection.
 
 `GET /v1/tech/useragent?ua=<encoded-ua-string>`
 
-**Credit Cost:** 1 credit per request
 
 ### Query Parameters
 

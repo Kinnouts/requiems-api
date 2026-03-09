@@ -13,7 +13,6 @@ cryptocurrencies and tokens.
 
 ### Get Crypto Price
 
-**Planned Endpoint:** `GET /v1/finance/crypto-price` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/finance/crypto-price`
 
 Get current prices for various cryptocurrencies.

@@ -13,7 +13,6 @@ images.
 
 ### Detect Faces
 
-**Planned Endpoint:** `GET /v1/ai-computer-vision/face-detect` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/ai-computer-vision/face-detect`
 
 Detect faces in an image.

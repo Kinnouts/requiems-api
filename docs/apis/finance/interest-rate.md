@@ -13,7 +13,6 @@ various financial products.
 
 ### Get Interest Rates
 
-**Planned Endpoint:** `GET /v1/finance/interest-rate` **Expected Credit Cost:**
-1 credit
+**Planned Endpoint:** `GET /v1/finance/interest-rate`
 
 Get current interest rates.

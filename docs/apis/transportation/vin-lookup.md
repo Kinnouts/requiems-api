@@ -13,7 +13,6 @@ from VIN codes.
 
 ### Decode VIN
 
-**Planned Endpoint:** `GET /v1/transportation/vin-lookup` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/transportation/vin-lookup`
 
 Decode a vehicle identification number.

@@ -13,7 +13,6 @@ provide interesting events, births, and deaths that occurred on any given date.
 
 ### Get Day in History
 
-**Planned Endpoint:** `GET /v1/entertainment/day-in-history` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/entertainment/day-in-history`
 
 Get historical events for a specific date.

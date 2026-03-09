@@ -13,7 +13,7 @@ solutions. Each request returns a freshly generated, unique puzzle.
 
 ### Get Sudoku Puzzle
 
-**Endpoint:** `GET /v1/entertainment/sudoku` **Credit Cost:** 1 credit
+**Endpoint:** `GET /v1/entertainment/sudoku`
 
 Generate a random Sudoku puzzle.
 

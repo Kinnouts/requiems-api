@@ -13,7 +13,6 @@ and cooking guidance.
 
 ### Get Recipe
 
-**Planned Endpoint:** `GET /v1/health-wellness/recipe` **Expected Credit Cost:**
-1 credit
+**Planned Endpoint:** `GET /v1/health-wellness/recipe`
 
 Get recipes and cooking instructions.

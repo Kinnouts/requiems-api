@@ -13,7 +13,6 @@ facts.
 
 ### Get Country Information
 
-**Planned Endpoint:** `GET /v1/places/country` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/places/country`
 
 Get country information and details.

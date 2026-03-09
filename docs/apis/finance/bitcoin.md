@@ -13,7 +13,6 @@ historical Bitcoin prices and market data.
 
 ### Get Bitcoin Price
 
-**Planned Endpoint:** `GET /v1/finance/bitcoin` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/finance/bitcoin`
 
 Get current Bitcoin price and market information.

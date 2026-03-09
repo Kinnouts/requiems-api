@@ -14,7 +14,7 @@ word-frequency vectors. Returns a score between 0 (no overlap) and 1
 
 ### Compare Text Similarity
 
-**Endpoint:** `POST /v1/ai/similarity` **Credit Cost:** 1 credit
+**Endpoint:** `POST /v1/ai/similarity`
 
 #### Request
 

@@ -13,7 +13,6 @@ calendars for different countries and regions.
 
 ### Get Public Holidays
 
-**Planned Endpoint:** `GET /v1/miscellaneous/public-holidays` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/miscellaneous/public-holidays`
 
 Get public holiday information by location.

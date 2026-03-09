@@ -13,7 +13,6 @@ transcripts from earnings calls.
 
 ### Get Earnings Call Transcript
 
-**Planned Endpoint:** `GET /v1/finance/earnings-call-transcript` **Expected
-Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/finance/earnings-call-transcript`
 
 Get earnings call transcript for a company.

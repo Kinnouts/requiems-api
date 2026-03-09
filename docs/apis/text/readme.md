@@ -13,7 +13,6 @@ Get word definitions and meanings
 
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/text/dictionary`
-- **Expected Credit Cost:** 1
 
 ### [Lorem Ipsum](./lorem-ipsum.md) - ✅ MVP
 
@@ -21,7 +20,6 @@ Generate placeholder text
 
 - **Status:** mvp
 - **Endpoint:** `GET /v1/text/lorem`
-- **Credit Cost:** 1
 
 ### [Profanity Filter](./profanity-filter.md) - ✅ MVP
 
@@ -29,7 +27,6 @@ Filter and detect profanity in text
 
 - **Status:** mvp
 - **Endpoint:** `POST /v1/text/profanity`
-- **Credit Cost:** 1
 
 ### [Random Word](./random-word.md) - ✅ MVP
 
@@ -37,7 +34,6 @@ Get random words
 
 - **Status:** mvp
 - **Endpoint:** `GET /v1/text/words/random`
-- **Credit Cost:** 1
 
 ### [Rhyme](./rhyme.md) - ⏳ Planned
 
@@ -45,7 +41,6 @@ Find rhyming words
 
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/text/rhyme`
-- **Expected Credit Cost:** 1
 
 ### [Spell Check](./spell-check.md) - ⏳ Planned
 
@@ -53,7 +48,6 @@ Check spelling and suggest corrections
 
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/text/spell-check`
-- **Expected Credit Cost:** 1
 
 ### [Text Language](./text-language.md) - ⏳ Planned
 
@@ -61,7 +55,6 @@ Detect language of text
 
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/text/text-language`
-- **Expected Credit Cost:** 1
 
 ### [Thesaurus](./thesaurus.md) - ✅ MVP
 
@@ -69,7 +62,6 @@ Find synonyms and antonyms for words
 
 - **Status:** mvp
 - **Endpoint:** `GET /v1/text/thesaurus/{word}`
-- **Credit Cost:** 1
 
 ## Category Statistics
 

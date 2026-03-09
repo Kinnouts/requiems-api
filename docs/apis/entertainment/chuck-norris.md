@@ -13,7 +13,6 @@ interesting facts about the famous action star.
 
 ### Get Chuck Norris Joke
 
-**Planned Endpoint:** `GET /v1/entertainment/chuck-norris` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/entertainment/chuck-norris`
 
 Get a random Chuck Norris joke.

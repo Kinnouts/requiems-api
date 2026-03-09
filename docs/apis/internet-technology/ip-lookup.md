@@ -13,7 +13,6 @@ other IP data.
 
 ### IP Lookup
 
-**Planned Endpoint:** `GET /v1/internet-technology/ip-lookup` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/internet-technology/ip-lookup`
 
 Get information about an IP address.

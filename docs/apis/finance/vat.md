@@ -13,6 +13,6 @@ by location.
 
 ### Get VAT Information
 
-**Planned Endpoint:** `GET /v1/finance/vat` **Expected Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/finance/vat`
 
 Get VAT rates and information.

@@ -13,7 +13,6 @@ Get air quality information by location
 
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/places/air-quality`
-- **Expected Credit Cost:** 1
 
 ### [City](./city.md) - ⏳ Planned
 
@@ -21,7 +20,6 @@ Get city information and data
 
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/places/city`
-- **Expected Credit Cost:** 1
 
 ### [Country](./country.md) - ⏳ Planned
 
@@ -29,7 +27,6 @@ Get country information and details
 
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/places/country`
-- **Expected Credit Cost:** 1
 
 ### [Country Flag](./country-flag.md) - ⏳ Planned
 
@@ -37,7 +34,6 @@ Get country flag images
 
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/places/country-flag`
-- **Expected Credit Cost:** 1
 
 ### [County](./county.md) - ⏳ Planned
 
@@ -45,7 +41,6 @@ Get county information
 
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/places/county`
-- **Expected Credit Cost:** 1
 
 ### [GDP](./gdp.md) - ⏳ Planned
 
@@ -53,7 +48,6 @@ Get Gross Domestic Product data
 
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/places/gdp`
-- **Expected Credit Cost:** 1
 
 ### [Geocoding](./geocoding.md) - ⏳ Planned
 
@@ -61,7 +55,6 @@ Convert addresses to coordinates
 
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/places/geocoding`
-- **Expected Credit Cost:** 1
 
 ### [Population](./population.md) - ⏳ Planned
 
@@ -69,7 +62,6 @@ Get population data for locations
 
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/places/population`
-- **Expected Credit Cost:** 1
 
 ### [Postal Code](./postal-code.md) - ⏳ Planned
 
@@ -77,7 +69,6 @@ Get postal code information
 
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/places/postal-code`
-- **Expected Credit Cost:** 1
 
 ### [Reverse Geocoding](./reverse-geocoding.md) - ⏳ Planned
 
@@ -85,7 +76,6 @@ Convert coordinates to addresses
 
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/places/reverse-geocoding`
-- **Expected Credit Cost:** 1
 
 ### [Timezone](./timezone.md) - ✅ MVP
 
@@ -93,7 +83,6 @@ Get timezone information
 
 - **Status:** mvp
 - **Endpoint:** `GET /v1/places/timezone`
-- **Credit Cost:** 1
 
 ### [Weather](./weather.md) - ⏳ Planned
 
@@ -101,7 +90,6 @@ Get weather information for locations
 
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/places/weather`
-- **Expected Credit Cost:** 1
 
 ### [Working Days](./working-days.md) - ✅ MVP
 
@@ -109,7 +97,6 @@ Get working days and business hours
 
 - **Status:** MVP
 - **Endpoint:** `GET /v1/places/working-days`
-- **Credit Cost:** 1
 
 ### [World Time](./world-time.md) - ✅ MVP
 
@@ -117,7 +104,6 @@ Get current time for any IANA timezone
 
 - **Status:** mvp
 - **Endpoint:** `GET /v1/places/time/{timezone}`
-- **Credit Cost:** 1
 
 ### [Zip Code](./zip-code.md) - ⏳ Planned
 
@@ -125,7 +111,6 @@ Get zip code information
 
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/places/zip-code`
-- **Expected Credit Cost:** 1
 
 ## Category Statistics
 

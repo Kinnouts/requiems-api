@@ -12,7 +12,6 @@ Scrape web pages for content. This endpoint will extract content from web pages.
 
 ### Scrape Website
 
-**Planned Endpoint:** `GET /v1/internet-technology/web-scraper` **Expected
-Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/internet-technology/web-scraper`
 
 Scrape content from a web page.

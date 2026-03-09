@@ -13,7 +13,6 @@ expenditure based on activities.
 
 ### Calculate Calories Burned
 
-**Planned Endpoint:** `GET /v1/health-wellness/calories-burned` **Expected
-Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/health-wellness/calories-burned`
 
 Calculate calories burned during exercise.

@@ -13,6 +13,6 @@ regions.
 
 ### Get County Information
 
-**Planned Endpoint:** `GET /v1/places/county` **Expected Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/places/county`
 
 Get county information.

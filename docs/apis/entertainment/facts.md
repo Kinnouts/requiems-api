@@ -13,7 +13,6 @@ educational facts about various topics.
 
 ### Get Random Fact
 
-**Planned Endpoint:** `GET /v1/entertainment/facts` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/entertainment/facts`
 
 Get a random interesting fact.

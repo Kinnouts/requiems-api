@@ -13,7 +13,6 @@ for a purchase amount.
 
 ### Calculate Sales Tax
 
-**Planned Endpoint:** `GET /v1/finance/sales-tax-calculator` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/finance/sales-tax-calculator`
 
 Calculate sales tax.

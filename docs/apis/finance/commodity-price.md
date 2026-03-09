@@ -13,7 +13,6 @@ like oil, gold, silver, and other raw materials.
 
 ### Get Commodity Price
 
-**Planned Endpoint:** `GET /v1/finance/commodity-price` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/finance/commodity-price`
 
 Get current prices for various commodities.
