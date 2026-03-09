@@ -21,6 +21,10 @@ func registerV1Routes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb
 	text.RegisterRoutes(textRouter, pool)
 	r.Mount("/text", textRouter)
 
+	aiRouter := chi.NewRouter()
+	ai.RegisterRoutes(aiRouter)
+	r.Mount("/ai", aiRouter)
+
 	emailRouter := chi.NewRouter()
 	email.RegisterRoutes(emailRouter)
 	r.Mount("/email", emailRouter)
