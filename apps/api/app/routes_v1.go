@@ -7,6 +7,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/redis/go-redis/v9"
 
+	"requiems-api/services/ai"
 	"requiems-api/services/email"
 	"requiems-api/services/entertainment"
 	"requiems-api/services/misc"
@@ -19,6 +20,10 @@ func registerV1Routes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb
 	textRouter := chi.NewRouter()
 	text.RegisterRoutes(textRouter, pool)
 	r.Mount("/text", textRouter)
+
+	aiRouter := chi.NewRouter()
+	ai.RegisterRoutes(aiRouter)
+	r.Mount("/ai", aiRouter)
 
 	emailRouter := chi.NewRouter()
 	email.RegisterRoutes(emailRouter)

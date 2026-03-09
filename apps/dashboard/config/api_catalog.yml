@@ -183,6 +183,19 @@ apis:
       - Text Analysis
       - Safety
 
+  - id: detect-language
+    name: Language Detection
+    category: ai_vision
+    description: Detect the language of any text with confidence scoring
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/detect-language
+    tags:
+      - Language Detection
+      - NLP
+      - AI
+
   # Misc APIs
   - id: counter
     name: Counter
