@@ -14,7 +14,7 @@ func RegisterRoutes(r chi.Router) {
 
 	sudokuSvc := sudoku.NewService()
 	sudoku.RegisterRoutes(r, sudokuSvc)
-  
+
 	emojiSvc := emoji.NewService()
 	emoji.RegisterRoutes(r, emojiSvc)
 }

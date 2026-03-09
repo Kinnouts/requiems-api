@@ -1,0 +1,109 @@
+# Copilot Instructions
+
+## Project Overview
+
+Multi-app monorepo with four services:
+
+| App             | Path                           | Language                       |
+| --------------- | ------------------------------ | ------------------------------ |
+| Go API          | `apps/api/`                    | Go 1.26                        |
+| Rails Dashboard | `apps/dashboard/`              | Ruby 3.4.8 / Rails 8           |
+| Auth Gateway    | `apps/workers/auth-gateway/`   | TypeScript (Cloudflare Worker) |
+| API Management  | `apps/workers/api-management/` | TypeScript (Cloudflare Worker) |
+
+Shared worker utilities live in `apps/workers/shared/`.
+
+## Architecture
+
+```
+User → Auth Gateway (port 4455) → Go API (port 8080) → PostgreSQL
+                                         ↓
+Rails Dashboard → API Management (port 5544) → Cloudflare KV/D1
+```
+
+## Go API — Code Patterns
+
+Domain-driven design under `services/`. Each feature follows:
+
+```
+services/{domain}/{feature}/
+├── type.go            # Request/response types
+├── service.go         # Business logic, NewService() constructor
+└── transport_http.go  # HTTP handlers, RegisterRoutes(r chi.Router, svc *Service)
+```
+
+Routes are wired in `services/{domain}/router.go` and mounted in
+`app/routes_v1.go`.
+
+Use `httpx.JSON()` for success responses and `httpx.Error()` for errors.
+
+## Validating Your Work
+
+Your environment has all tools pre-installed. After making changes, run the
+checks for each app you modified.
+
+### Go API (`apps/api/`)
+
+```bash
+cd apps/api
+
+# Must pass
+go test -race ./...
+
+# Advisory (fix if you can, but not a blocker)
+golangci-lint run
+```
+
+Environment required for tests:
+
+```
+DATABASE_URL=postgres://requiem:requiem@localhost:5432/requiem_test?sslmode=disable
+BACKEND_SECRET=test_secret_min_32_chars_long_for_testing_only
+```
+
+### Rails Dashboard (`apps/dashboard/`)
+
+```bash
+cd apps/dashboard
+
+# Must pass
+RAILS_ENV=test DATABASE_URL=postgres://requiem:requiem@localhost:5432/requiem_test?sslmode=disable REDIS_URL=redis://localhost:6379 BACKEND_SECRET=test_secret_min_32_chars_long_for_testing_only bin/rails test
+
+# Must pass
+bundle exec bundler-audit
+bin/importmap audit
+bundle exec brakeman --no-pager
+
+# Advisory
+bundle exec rubocop
+```
+
+### Auth Gateway (`apps/workers/auth-gateway/`)
+
+```bash
+cd apps/workers/auth-gateway
+
+# Must pass
+pnpm exec vitest run
+pnpm run typecheck
+
+# Advisory
+pnpm run lint
+pnpm run format:check
+```
+
+### API Management (`apps/workers/api-management/`)
+
+```bash
+cd apps/workers/api-management
+
+# Must pass
+pnpm exec vitest run
+pnpm run typecheck
+```
+
+## Before Marking a Task Done
+
+1. Run the "must pass" checks for every app you touched.
+2. Fix any failures before finishing — do not leave broken tests.
+3. Advisory checks (lint, rubocop) are nice-to-fix but not required.
