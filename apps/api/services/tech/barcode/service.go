@@ -28,7 +28,7 @@ func NewService() *Service {
 
 // Generate returns raw PNG bytes for a barcode encoding data of the given type.
 // Supported types: code128, code93, code39, ean8, ean13.
-func (s *Service) Generate(data, barcodeType string) ([]byte, int, int, error) {
+func (s *Service) Generate(data, barcodeType string) (imgBytes []byte, width, height int, err error) {
 	bc, err := encode(data, barcodeType)
 	if err != nil {
 		return nil, 0, 0, err

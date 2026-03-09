@@ -50,8 +50,8 @@ func TestBarcode_PNG_AllTypes(t *testing.T) {
 	r := setupRouter()
 
 	tests := []struct {
-		name    string
-		query   string
+		name  string
+		query string
 	}{
 		{"code128", "/barcode?data=HELLO123&type=code128"},
 		{"code93", "/barcode?data=HELLO&type=code93"},
