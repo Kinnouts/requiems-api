@@ -19,7 +19,7 @@
 </div>
 
 <!-- Date Range Filter -->
-<div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8">
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8" data-controller="date-range">
   <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
     <div class="mb-4 lg:mb-0">
       <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300">Date Range</h3>
@@ -32,7 +32,6 @@
       <%= link_to "Last 90 Days", dashboard_usage_path(range: "90d"), class: range_button_classes("90d") %>
 
       <button
-        data-controller="date-range"
         data-action="click->date-range#toggle"
         class="<%= range_button_classes("custom") %>">
         Custom Range
