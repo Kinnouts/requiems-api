@@ -2,9 +2,10 @@ package holidays
 
 import (
 	"net/http"
-	"requiems-api/platform/httpx"
 
 	"github.com/go-chi/chi/v5"
+
+	"requiems-api/platform/httpx"
 )
 
 func RegisterRoutes(r chi.Router, svc *Service) {
