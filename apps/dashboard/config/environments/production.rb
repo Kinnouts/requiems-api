@@ -15,11 +15,10 @@ Rails.application.configure do
   config.silence_healthcheck_path = "/up"
   config.active_support.report_deprecations = false
 
-  config.cache_store = :solid_cache_store
+  config.cache_store = :redis_cache_store, { url: ENV["REDIS_URL"], namespace: "rails_cache" }
   config.active_job.queue_adapter = :solid_queue
 
   config.solid_queue.connects_to = { database: { writing: :queue } }
-  config.solid_cache.connects_to = { database: { writing: :cache } }
 
   config.action_mailer.raise_delivery_errors = true
   config.action_mailer.perform_caching = false

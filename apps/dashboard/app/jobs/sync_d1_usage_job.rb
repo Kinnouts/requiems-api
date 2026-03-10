@@ -46,11 +46,8 @@ class SyncD1UsageJob < ApplicationJob
   private
 
   def get_last_sync_time
-    # Try Redis first (faster)
-    if defined?(Redis) && Rails.cache.respond_to?(:redis)
-      timestamp = Rails.cache.read(LAST_SYNC_KEY)
-      return Time.parse(timestamp) if timestamp
-    end
+    timestamp = Rails.cache.read(LAST_SYNC_KEY)
+    return Time.parse(timestamp) if timestamp
 
     # Fallback: get timestamp of most recent usage log
     last_log = UsageLog.order(used_at: :desc).first
@@ -58,9 +55,7 @@ class SyncD1UsageJob < ApplicationJob
   end
 
   def set_last_sync_time(time)
-    if defined?(Redis) && Rails.cache.respond_to?(:redis)
-      Rails.cache.write(LAST_SYNC_KEY, time.iso8601, expires_in: 7.days)
-    end
+    Rails.cache.write(LAST_SYNC_KEY, time.iso8601, expires_in: 7.days)
   end
 
   def track_sync_metrics(inserted, start_time)

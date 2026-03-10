@@ -27,19 +27,14 @@ gem "jbuilder"
 # Windows and Alpine Linux do not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data"
 
-# Use the database-backed adapters for Rails.cache, Active Job, and Action Cable
-gem "solid_cache"
+# Database-backed job queue
 gem "solid_queue"
-gem "solid_cable"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
 
 # Add HTTP asset caching/compression and X-Sendfile acceleration to Puma [https://github.com/basecamp/thruster/]
 gem "thruster", require: false
-
-# Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-gem "image_processing", "~> 1.2"
 
 # Authentication & Authorization
 gem "devise", "~> 5.0"
@@ -59,7 +54,7 @@ gem "pagy", "~> 6.0"
 # Groupdate for time-series queries
 gem "groupdate", "~> 6.0"
 
-# Redis for Rails cache
+# Redis — cache store + shared with Go backend counter service
 gem "redis", "~> 5.0"
 
 # Rate limiting
