@@ -21,16 +21,16 @@
   },
   "dependencies": {
     "@hono/standard-validator": "^0.2.2",
-    "@hono/swagger-ui": "^0.5.3",
-    "hono": "^4.11.9",
+    "hono": "^4.12.4",
+    "@hono/swagger-ui": "^0.6.0",
     "nanoid": "^5.1.6",
     "zod": "^4.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^1.5.3",
+    "@biomejs/biome": "^2.4.6",
     "@cloudflare/workers-types": "^4.20241127.0",
     "@edge-runtime/vm": "^5.0.0",
-    "@types/node": "^25.0.2",
+    "@types/node": "^25.4.0",
     "@vitest/coverage-v8": "^1.2.0",
     "typescript": "^5.3.3",
     "vitest": "^1.2.0",
