@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 Rails.application.routes.draw do
-  # Devise authentication
   devise_for :users, controllers: {
     registrations: "users/registrations",
     sessions: "users/sessions",
@@ -15,13 +14,10 @@ Rails.application.routes.draw do
   get "sitemap.xml", to: "sitemap#sitemap", defaults: { format: :xml }
   get "llms.txt",    to: "sitemap#llms",    defaults: { format: :text }
 
-  # Landing page
   root "home#index"
 
-  # Health check
   get "up" => "rails/health#show", as: :rails_health_check
 
-  # User dashboard namespace
   namespace :dashboard do
     root "overview#index"
 
@@ -49,18 +45,16 @@ Rails.application.routes.draw do
 
     resource :settings, only: [ :show, :update ] do
       member do
-        post   :request_deletion  # Submit reason + send confirmation email
-        get    :confirm_deletion  # Landing page from email link
-        delete :execute_deletion  # Final account deletion
+        post   :request_deletion
+        get    :confirm_deletion
+        delete :execute_deletion
       end
     end
   end
 
-  # Admin panel (requires admin authentication)
   namespace :admin do
     root "dashboard#index"
 
-    # Only allow authenticated admin users
     authenticate :user, ->(u) { u.admin? } do
       resources :users do
         member do
@@ -87,7 +81,6 @@ Rails.application.routes.draw do
         end
       end
 
-      # Analytics namespace
       namespace :analytics do
         get :usage
         get :revenue
@@ -96,14 +89,10 @@ Rails.application.routes.draw do
     end
   end
 
-  # Webhooks (unprotected, verified by signature)
   namespace :webhooks do
     post "lemonsqueezy", to: "lemonsqueezy#create"
-    post "stripe", to: "stripe#create"
-    post "cloudflare", to: "cloudflare#create" # Usage sync from Worker
   end
 
-  # Public pages
   get "docs", to: "home#docs"
   get "pricing", to: "home#pricing"
   get "about", to: "home#about"
@@ -114,14 +103,12 @@ Rails.application.routes.draw do
   get "api_reference", to: "home#api_reference"
   get "changelog", to: "home#changelog"
 
-  # New static pages
   get "blog", to: "home#blog"
   get "status", to: "home#status"
   get "glossary", to: "home#glossary"
   get "error_codes", to: "home#error_codes"
   get "faq", to: "home#faq"
 
-  # Form pages
   get "suggest-an-api", to: "suggestions#new", as: "suggest_api"
   post "suggest-an-api", to: "suggestions#create"
   get "talk-to-sales", to: "sales_inquiries#new", as: "talk_to_sales"
@@ -132,6 +119,5 @@ Rails.application.routes.draw do
   resources :categories, only: [ :show ]
   resources :examples, only: [ :show ]
 
-  # API Playground Proxy
   post "api/proxy", to: "api_proxy#create"
 end
