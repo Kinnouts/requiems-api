@@ -22,7 +22,7 @@ class ApplicationController < ActionController::Base
   end
 
   def current_user_locale
-    current_user&.locale&.to_sym
+    current_user&.locale&.presence&.to_sym
   end
 
   def default_url_options
