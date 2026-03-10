@@ -30,7 +30,7 @@ func TestHolidays_ValidRequest(t *testing.T) {
 		t.Fatalf("expected status 200, got %d: %s", w.Code, w.Body.String())
 	}
 
-	var resp httpx.Response[Response]
+	var resp httpx.Response[HolidayList]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
@@ -57,7 +57,7 @@ func TestHolidays_UK(t *testing.T) {
 		t.Fatalf("expected status 200, got %d: %s", w.Code, w.Body.String())
 	}
 
-	var resp httpx.Response[Response]
+	var resp httpx.Response[HolidayList]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}

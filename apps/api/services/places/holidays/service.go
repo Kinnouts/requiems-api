@@ -1,6 +1,8 @@
 package holidays
 
 import (
+	"errors"
+
 	h "github.com/bobadilla-tech/holidays-per-country"
 )
 
@@ -10,8 +12,11 @@ func NewService() *Service {
 	return &Service{}
 }
 
-func (s *Service) GetHolidays(req Request) (Response, error) {
-	holidays := h.GetHolidays(req.Country, req.Year)
+func (s *Service) GetHolidays(country string, year int) (HolidayList, error) {
+	holidays := h.GetHolidays(country, year)
+	if len(holidays) == 0 {
+		return HolidayList{}, errors.New("no holidays found for the specified country and year")
+	}
 
 	holidayList := make([]Holiday, len(holidays))
 
@@ -22,9 +27,10 @@ func (s *Service) GetHolidays(req Request) (Response, error) {
 		}
 	}
 
-	return Response{
-		Country:  req.Country,
-		Year:     req.Year,
+	return HolidayList{
+		Country:  country,
+		Year:     year,
 		Holidays: holidayList,
+		Total:    len(holidays),
 	}, nil
 }

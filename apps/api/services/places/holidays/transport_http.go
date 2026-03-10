@@ -16,7 +16,7 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 			return
 		}
 
-		resp, err := svc.GetHolidays(req)
+		resp, err := svc.GetHolidays(req.Country, req.Year)
 		if err != nil {
 			httpx.Error(w, http.StatusNotFound, "not_found", err.Error())
 			return
