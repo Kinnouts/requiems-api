@@ -1,15 +1,46 @@
 categories:
-  - id: email
-    name: Email
-    icon: "📧"
-    short_description: Validate email addresses at scale, reduce bounce rates, block disposable signups, and keep your lists clean.
-    description: Enterprise-grade email validation APIs for teams that care about deliverability. Detect disposable and temporary addresses, reduce bounce rates, block fraudulent signups, and maintain clean user databases — the same capabilities powering NeverBounce, ZeroBounce, and similar services, accessible through one unified API.
+  - id: validation
+    name: Validation APIs
+    icon: "✓"
+    short_description: Stop bad data at the door. Fake emails, bad phone numbers, and toxic content cause real problems downstream.
+    description: Bad data compounds. A fake email means a wasted send. A bad phone number means a failed delivery. Profanity in a user submission means a moderation incident. These APIs let you reject garbage at the point of entry, so it never reaches your database in the first place.
 
   - id: text
     name: Text
     icon: "📝"
-    short_description: Lorem ipsum, random quotes, random words, and profanity detection — text utilities for every project.
-    description: Generate, manipulate, and analyze text content at scale. Whether you need placeholder text for design mockups, inspirational quotes for your app, profanity detection for content moderation, or random words for games and testing — our Text APIs cover every text-related use case your project demands.
+    short_description: Text utilities that cover the full lifecycle, from design scaffolding to production content moderation.
+    description: Some text APIs help you ship faster during development. Placeholder copy, random words for testing, a thesaurus when you're stuck. Others run in production on every user submission. This category covers both sides.
+
+  - id: technology
+    name: Developer Tools
+    icon: "💻"
+    short_description: The boring-but-essential utilities every app eventually needs, already built.
+    description: At some point every app needs a password generator, a way to detect bots, some fake data for tests, or a hit counter for analytics. These are the utilities developers end up reinventing across every project. They're already here.
+
+  - id: media
+    name: Media Generation
+    icon: "🖼️"
+    short_description: Add scannable codes to any product in one API call. No image libraries, no infrastructure.
+    description: QR codes and barcodes seem simple until you're managing dependencies, output formats, and edge cases across multiple platforms. These APIs return a ready-to-use PNG or base64 payload. Drop it wherever you need it.
+
+  - id: ai_vision
+    name: AI/Computer Vision
+    icon: "🤖"
+    short_description: Machine learning capabilities without the model management. Call an endpoint, get an answer.
+    description: Language detection, semantic similarity, image analysis, object recognition. Capabilities that used to require your own ML infrastructure are now available as REST endpoints. No model hosting, no GPU costs, no versioning headaches.
+
+  - id: places
+    name: Places
+    icon: "📍"
+    short_description: Build for a global audience without timezone and holiday edge cases biting you.
+    description: Shipping to users in multiple countries means dealing with timezones, local holidays, and business calendars that vary by region. Getting these wrong means missed deadlines, broken scheduling flows, and confused users. These APIs handle the edge cases so you don't have to.
+
+  - id: entertainment
+    name: Entertainment
+    icon: "🎬"
+    short_description: Fun, low-stakes content that makes your app feel alive without building a content team.
+    description: Not every endpoint needs to be serious. Horoscopes, quotes, puzzles, and emoji add personality to apps and keep users engaged between the moments that matter. These are the APIs that make a product feel human.
+
 
   - id: finance
     name: Finance
@@ -18,49 +49,18 @@ categories:
     description: Access real-time and historical financial data including stock prices, exchange rates, cryptocurrency values, interest rates, and economic indicators. Built for fintech apps, trading platforms, and business intelligence systems that require accurate, up-to-date financial information at scale.
     coming_soon: true
 
-  - id: technology
-    name: Developer Tools
-    icon: "💻"
-    short_description: QR codes, barcodes, password generation, user agent parsing, and essential utilities for modern apps.
-    description: Essential utilities for modern web and app development. Generate QR codes and barcodes, create cryptographically secure passwords, parse user agent strings for device detection, and build with a suite of developer tools that power millions of applications worldwide.
-
-  - id: ai_vision
-    name: AI/Computer Vision
-    icon: "🤖"
-    short_description: Analyze images, detect objects, recognize faces, and extract text with computer vision models.
-    description: Harness the power of artificial intelligence to analyze images, detect objects, recognize faces, extract text from documents, and classify visual content. Our computer vision APIs bring state-of-the-art machine learning models to your fingertips through a simple, unified REST interface.
-
-  - id: animals
-    name: Animals
-    icon: "🐾"
-    short_description: Species facts, habitat data, and behavioral traits for educational and wildlife applications.
-    description: Explore the animal kingdom with rich datasets covering species facts, habitat information, behavioral traits, and high-quality imagery. Ideal for educational platforms, wildlife apps, trivia games, and any project that brings the natural world to life for your users.
+  - id: security
+    name: Security APIs
+    icon: "🔒"
+    short_description: Password analysis, breach detection, IP reputation, and encryption tools for safer apps.
+    description: Strengthen your application's defenses with security-focused APIs for password strength analysis, data breach detection, IP reputation checks, and encryption utilities. Build safer products by integrating threat intelligence and security validation directly into your workflows.
     coming_soon: true
-
-  - id: entertainment
-    name: Entertainment
-    icon: "🎬"
-    short_description: Horoscopes, movie info, music metadata, and pop culture content to keep your users engaged.
-    description: Bring fun and engagement to your applications with entertainment data. Fetch daily horoscope readings, pull movie and TV show information, access music metadata, and tap into pop culture content that keeps users coming back — all through one simple API key.
 
   - id: health
     name: Health/Wellness
     icon: "🏥"
     short_description: Nutrition data, fitness metrics, and wellness insights for healthcare platforms and fitness apps.
     description: Power health and wellness applications with reliable data on nutrition, fitness metrics, medical information, and wellness insights. Designed for healthcare platforms, fitness trackers, diet apps, and any product that helps people make informed decisions about their health.
-    coming_soon: true
-
-  - id: places
-    name: Places
-    icon: "📍"
-    short_description: Timezone lookups, working day calculations, and location data for global applications.
-    description: Work with location and geography data across the globe. Look up timezone information by coordinates or city name, calculate working days with country-specific holiday support, and build location-aware features for apps that need to operate seamlessly across multiple regions and time zones.
-
-  - id: transportation
-    name: Transportation
-    icon: "🚗"
-    short_description: Flight status, route info, carrier lookups, and tracking data for travel and logistics apps.
-    description: Access transportation and logistics data including flight status, route information, carrier lookups, and tracking details. Designed for travel applications, e-commerce platforms, and logistics management systems that depend on accurate, real-time movement data.
     coming_soon: true
 
   - id: tax
@@ -70,6 +70,13 @@ categories:
     description: Simplify tax calculations with accurate, jurisdiction-aware APIs for VAT, sales tax, GST, and income tax. Integrate seamlessly into e-commerce checkouts, invoicing systems, and financial applications that operate across multiple countries and complex tax regimes.
     coming_soon: true
 
+  - id: transportation
+    name: Transportation
+    icon: "🚗"
+    short_description: Flight status, route info, carrier lookups, and tracking data for travel and logistics apps.
+    description: Access transportation and logistics data including flight status, route information, carrier lookups, and tracking details. Designed for travel applications, e-commerce platforms, and logistics management systems that depend on accurate, real-time movement data.
+    coming_soon: true
+
   - id: data
     name: Data APIs
     icon: "📊"
@@ -77,30 +84,18 @@ categories:
     description: Access curated, structured datasets across dozens of domains. From country information and public records to reference data and lookup tables, these APIs save you the time of building and maintaining your own data pipelines — so you can focus on what matters.
     coming_soon: true
 
-  - id: validation
-    name: Validation APIs
-    icon: "✓"
-    short_description: Validate phone numbers, postal codes, IBANs, and credit card formats at the point of entry.
-    description: Ensure data quality at the point of entry with validation APIs for phone numbers, postal codes, IBANs, credit card formats, and more. Catch errors before they reach your database and improve user experience with fast, reliable, real-time validation feedback.
-
-  - id: conversion
-    name: Conversion APIs
-    icon: "🔄"
-    short_description: Convert currencies, units, and data formats with ease for any application.
-    description: Convert between currencies, units, formats, and data types with ease. Our Conversion APIs handle everything from unit measurement and currency exchange to data format transformation, giving your application the flexibility to handle information in any shape it arrives.
-
-  - id: security
-    name: Security APIs
-    icon: "🔒"
-    short_description: Password analysis, breach detection, IP reputation, and encryption tools for safer apps.
-    description: Strengthen your application's defenses with security-focused APIs for password strength analysis, data breach detection, IP reputation checks, and encryption utilities. Build safer products by integrating threat intelligence and security validation directly into your workflows.
+  - id: animals
+    name: Animals
+    icon: "🐾"
+    short_description: Species facts, habitat data, and behavioral traits for educational and wildlife applications.
+    description: Explore the animal kingdom with rich datasets covering species facts, habitat information, behavioral traits, and high-quality imagery. Ideal for educational platforms, wildlife apps, trivia games, and any project that brings the natural world to life for your users.
     coming_soon: true
 
 apis:
+  # Validation APIs
   - id: disposable-email
     name: Email Validation
     categories:
-      - email
       - validation
     description: Validate email addresses at scale, detect disposable and temporary addresses, reduce bounce rates, and keep your lists clean
     endpoints_count: 5
@@ -112,66 +107,26 @@ apis:
       - Fraud Prevention
       - Data Quality
 
-  - id: advice
-    name: Random Advice
+  - id: phone-validation
+    name: Phone Validation
     categories:
-      - text
-    description: Get random pieces of advice and wisdom for inspiration
+      - validation
+      - technology
+    description: Validate phone numbers, detect country and number type, and get international format
     endpoints_count: 1
     status: live
-    popular: false
-    documentation_url: /apis/advice
+    popular: true
+    documentation_url: /apis/phone-validation
     tags:
-      - Random
-      - Inspiration
-
-  - id: lorem-ipsum
-    name: Lorem Ipsum Generator
-    categories:
-      - text
-    description: Generate placeholder text for design mockups and prototypes
-    endpoints_count: 3
-    status: live
-    popular: false
-    documentation_url: /apis/lorem-ipsum
-    tags:
-      - Placeholder
-      - Design
-      - Testing
-
-  - id: quotes
-    name: Random Quotes
-    categories:
-      - text
-    description: Access a database of inspirational and famous quotes
-    endpoints_count: 2
-    status: live
-    popular: false
-    documentation_url: /apis/quotes
-    tags:
-      - Random
-      - Inspiration
-      - Literature
-
-  - id: words
-    name: Random Words
-    categories:
-      - text
-    description: Generate random words for testing, games, and creative projects
-    endpoints_count: 2
-    status: live
-    popular: false
-    documentation_url: /apis/words
-    tags:
-      - Random
-      - Testing
-      - Games
+      - Phone
+      - Validation
+      - Telecommunications
 
   - id: profanity
     name: Profanity Filter
     categories:
-      - text
       - validation
+      - text
     description: Detect and censor profanity in text for content moderation
     endpoints_count: 1
     status: live
@@ -182,6 +137,7 @@ apis:
       - Text Analysis
       - Safety
 
+  # Text APIs
   - id: spell-check
     name: Spell Check
     categories:
@@ -210,64 +166,35 @@ apis:
       - Vocabulary
       - Writing
 
-  - id: detect-language
-    name: Language Detection
+  - id: lorem-ipsum
+    name: Lorem Ipsum Generator
     categories:
-      - ai_vision
       - text
-    description: Detect the language of any text with confidence scoring
-    endpoints_count: 1
+    description: Generate placeholder text for design mockups and prototypes
+    endpoints_count: 3
     status: live
     popular: false
-    documentation_url: /apis/detect-language
+    documentation_url: /apis/lorem-ipsum
     tags:
-      - Language Detection
-      - NLP
-      - AI
+      - Placeholder
+      - Design
+      - Testing
 
-  - id: text-similarity
-    name: Text Similarity
+  - id: words
+    name: Random Words
     categories:
-      - ai_vision
-    description: Compare two texts and get a cosine similarity score between 0 and 1
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/text-similarity
-    tags:
-      - Text Analysis
-      - NLP
-      - Similarity
-
-  # Developer Tools APIs
-  - id: counter
-    name: Counter
-    categories:
-      - technology
-    description: Atomic, namespace-isolated hit counter
+      - text
+    description: Generate random words for testing, games, and creative projects
     endpoints_count: 2
     status: live
     popular: false
-    documentation_url: /apis/counter
-    tags:
-      - Counter
-      - Analytics
-      - Tracking
-
-  - id: random-user
-    name: Random User
-    categories:
-      - technology
-    description: Generate random fake user profiles for testing and prototyping — names, emails, phone numbers, addresses, and avatars
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/random-user
+    documentation_url: /apis/words
     tags:
       - Random
       - Testing
-      - Fake Data
+      - Games
 
+  # Developer Tools APIs
   - id: password-generator
     name: Password Generator
     categories:
@@ -297,10 +224,39 @@ apis:
       - Browser Detection
       - Device Detection
 
+  - id: counter
+    name: Counter
+    categories:
+      - technology
+    description: Atomic, namespace-isolated hit counter
+    endpoints_count: 2
+    status: live
+    popular: false
+    documentation_url: /apis/counter
+    tags:
+      - Counter
+      - Analytics
+      - Tracking
+
+  - id: random-user
+    name: Random User
+    categories:
+      - technology
+    description: Generate random fake user profiles for testing and prototyping — names, emails, phone numbers, addresses, and avatars
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/random-user
+    tags:
+      - Random
+      - Testing
+      - Fake Data
+
+  # Media Generation APIs
   - id: qr-code
     name: QR Code Generator
     categories:
-      - technology
+      - media
     description: Generate QR codes from any text or URL, returned as a PNG image or base64-encoded JSON
     endpoints_count: 2
     status: live
@@ -314,7 +270,7 @@ apis:
   - id: barcode
     name: Barcode Generator
     categories:
-      - technology
+      - media
     description: Generate barcodes in multiple formats (Code 128, Code 93, Code 39, EAN-8, EAN-13), returned as a PNG image or base64-encoded JSON
     endpoints_count: 2
     status: live
@@ -325,62 +281,35 @@ apis:
       - Image
       - Code 128
 
-  # Conversion APIs
-  - id: unit-conversion
-    name: Unit Conversion
+  # AI/Computer Vision APIs
+  - id: detect-language
+    name: Language Detection
     categories:
-      - conversion
-    description: Convert between units of measurement — length, weight, volume, temperature, area, and speed
-    endpoints_count: 2
-    status: live
-    popular: false
-    documentation_url: /apis/unit-conversion
-    tags:
-      - Conversion
-      - Utilities
-      - Measurement
-
-  # Entertainment APIs
-  - id: horoscope
-    name: Horoscope
-    categories:
-      - entertainment
-    description: Get daily horoscope readings for all 12 zodiac signs
+      - ai_vision
+      - text
+    description: Detect the language of any text with confidence scoring
     endpoints_count: 1
     status: live
     popular: false
-    documentation_url: /apis/horoscope
+    documentation_url: /apis/detect-language
     tags:
-      - Astrology
-      - Daily
-      - Entertainment
+      - Language Detection
+      - NLP
+      - AI
 
-  - id: sudoku
-    name: Sudoku
+  - id: text-similarity
+    name: Text Similarity
     categories:
-      - entertainment
-    description: Generate Sudoku puzzles with solutions across multiple difficulty levels
+      - ai_vision
+    description: Compare two texts and get a cosine similarity score between 0 and 1
     endpoints_count: 1
     status: live
     popular: false
-    documentation_url: /apis/sudoku
+    documentation_url: /apis/text-similarity
     tags:
-      - Puzzle
-      - Game
-
-  - id: emoji
-    name: Emoji
-    categories:
-      - entertainment
-    description: Look up emoji by name, search by keyword, or get a random emoji with full Unicode metadata.
-    endpoints_count: 3
-    status: live
-    popular: false
-    documentation_url: /apis/emoji
-    tags:
-      - Emoji
-      - Unicode
-      - Entertainment
+      - Text Analysis
+      - NLP
+      - Similarity
 
   # Places APIs
   - id: timezone
@@ -425,18 +354,85 @@ apis:
       - Timezone
       - World Clock
 
-  # Validation APIs
-  - id: phone-validation
-    name: Phone Validation
+  # Entertainment APIs
+  - id: quotes
+    name: Random Quotes
     categories:
-      - validation
-      - technology
-    description: Validate phone numbers, detect country and number type, and get international format
+      - entertainment
+    description: Access a database of inspirational and famous quotes
+    endpoints_count: 2
+    status: live
+    popular: false
+    documentation_url: /apis/quotes
+    tags:
+      - Random
+      - Inspiration
+      - Literature
+
+  - id: advice
+    name: Random Advice
+    categories:
+      - entertainment
+    description: Get random pieces of advice and wisdom for inspiration
     endpoints_count: 1
     status: live
-    popular: true
-    documentation_url: /apis/phone-validation
+    popular: false
+    documentation_url: /apis/advice
     tags:
-      - Phone
-      - Validation
-      - Telecommunications
+      - Random
+      - Inspiration
+
+  - id: horoscope
+    name: Horoscope
+    categories:
+      - entertainment
+    description: Get daily horoscope readings for all 12 zodiac signs
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/horoscope
+    tags:
+      - Astrology
+      - Daily
+      - Entertainment
+
+  - id: sudoku
+    name: Sudoku
+    categories:
+      - entertainment
+    description: Generate Sudoku puzzles with solutions across multiple difficulty levels
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/sudoku
+    tags:
+      - Puzzle
+      - Game
+
+  - id: emoji
+    name: Emoji
+    categories:
+      - entertainment
+    description: Look up emoji by name, search by keyword, or get a random emoji with full Unicode metadata.
+    endpoints_count: 3
+    status: live
+    popular: false
+    documentation_url: /apis/emoji
+    tags:
+      - Emoji
+      - Unicode
+      - Entertainment
+
+  - id: unit-conversion
+    name: Unit Conversion
+    categories:
+      - technology
+    description: Convert between units of measurement — length, weight, volume, temperature, area, and speed
+    endpoints_count: 2
+    status: live
+    popular: false
+    documentation_url: /apis/unit-conversion
+    tags:
+      - Conversion
+      - Utilities
+      - Measurement
