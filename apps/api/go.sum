@@ -96,8 +96,8 @@ github.com/moby/term v0.5.0/go.mod h1:8FzsFHVUBGZdbDsJw/ot+X+d5HLUbvklYLJ9uGfcI3
 github.com/montanaflynn/stats v0.0.0-20171201202039-1bf9dbcd8cbe/go.mod h1:wL8QJuTMNUDYhXwkmfOly8iTdp5TEcJFWZD2D7SIkUc=
 github.com/morikuni/aec v1.0.0 h1:nP9CBfwrvYnBRgY6qfDQkygYDmYwOilePFkwzv4dU8A=
 github.com/morikuni/aec v1.0.0/go.mod h1:BbKIizmSmc5MMPqRYbxO4ZU0S0+P200+tUnFx7PXmsc=
-github.com/nyaruka/phonenumbers v1.6.10 h1:kGTxTzd320dUamRB/MPeZSIwKNLn4vHlysOt5Cp8uoU=
-github.com/nyaruka/phonenumbers v1.6.10/go.mod h1:IUu45lj2bSeYXQuxDyyuzOrdV10tyRa1YSsfH8EKN5c=
+github.com/nyaruka/phonenumbers v1.6.11 h1:jXMpF1xGgw5z6yxr4KDbiTDPfji91gW8g0d04G7SYb8=
+github.com/nyaruka/phonenumbers v1.6.11/go.mod h1:IUu45lj2bSeYXQuxDyyuzOrdV10tyRa1YSsfH8EKN5c=
 github.com/opencontainers/go-digest v1.0.0 h1:apOUWs51W5PlhuyGyz9FCeeBIOUDA/6nW8Oi/yOhh5U=
 github.com/opencontainers/go-digest v1.0.0/go.mod h1:0JzlMkj0TRzQZfJkVvzbP0HBR3IKzErnv2BNG4W4MAM=
 github.com/opencontainers/image-spec v1.0.2 h1:9yCKha/T5XdGtO0q9Q9a6T5NUCsTn/DrBg0D7ufOcFM=
