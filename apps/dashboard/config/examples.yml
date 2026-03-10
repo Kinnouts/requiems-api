@@ -13,7 +13,7 @@ examples:
       - Tailwind CSS
     apis_used:
       - Disposable Email Checker
-    github_url: https://github.com/bobadilla-tech/requiems-examples/tree/main/email-validator
+    github_url: https://github.com/bobadilla-tech/requiems-api-tutorials/tree/main/email-validator
     demo_url: https://email-validator-demo.requiems.xyz
     thumbnail: /images/examples/email-validator.png
 
@@ -29,7 +29,7 @@ examples:
       - CSS
     apis_used:
       - Random Quotes
-    github_url: https://github.com/bobadilla-tech/requiems-examples/tree/main/quote-generator
+    github_url: https://github.com/bobadilla-tech/requiems-api-tutorials/tree/main/quote-generator
     demo_url: https://quotes-demo.requiems.xyz
     thumbnail: /images/examples/quote-generator.png
 
@@ -45,7 +45,7 @@ examples:
       - Tailwind CSS
     apis_used:
       - Lorem Ipsum Generator
-    github_url: https://github.com/bobadilla-tech/requiems-examples/tree/main/lorem-generator
+    github_url: https://github.com/bobadilla-tech/requiems-api-tutorials/tree/main/lorem-generator
     demo_url: https://lorem-demo.requiems.xyz
     thumbnail: /images/examples/lorem-generator.png
 
@@ -61,7 +61,7 @@ examples:
       - Chalk
     apis_used:
       - All APIs
-    github_url: https://github.com/bobadilla-tech/requiems-examples/tree/main/api-cli
+    github_url: https://github.com/bobadilla-tech/requiems-api-tutorials/tree/main/api-cli
     demo_url: null
     thumbnail: /images/examples/api-cli.png
 
@@ -77,7 +77,7 @@ examples:
       - Cron Jobs
     apis_used:
       - Random Advice
-    github_url: https://github.com/bobadilla-tech/requiems-examples/tree/main/slack-advice-bot
+    github_url: https://github.com/bobadilla-tech/requiems-api-tutorials/tree/main/slack-advice-bot
     demo_url: null
     thumbnail: /images/examples/slack-bot.png
 
@@ -93,7 +93,7 @@ examples:
       - PostgreSQL
     apis_used:
       - Disposable Email Checker
-    github_url: https://github.com/bobadilla-tech/requiems-examples/tree/main/email-service
+    github_url: https://github.com/bobadilla-tech/requiems-api-tutorials/tree/main/email-service
     demo_url: null
     thumbnail: /images/examples/email-service.png
 

@@ -136,7 +136,7 @@
     <div class="mb-6">
       <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">Code Examples</h4>
 
-      <div data-controller="code-tabs">
+      <div data-controller="code-tabs highlight">
         <!-- Tabs -->
         <div class="flex space-x-2 border-b border-gray-200 dark:border-gray-700 mb-4">
           <% endpoint_code_examples.each_with_index do |(language, code), idx| %>
@@ -154,7 +154,7 @@
         <% endpoint_code_examples.each_with_index do |(language, code), idx| %>
           <div class="<%= 'hidden' unless idx == 0 %>" data-code-tabs-target="content">
             <div class="relative">
-              <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code class="language-<%= language %>"><%= code.strip %></code></pre>
+              <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code class="language-<%= language == 'curl' ? 'bash' : language %>"><%= code.strip %></code></pre>
               <button type="button"
                       data-controller="copy"
                       data-copy-text-value="<%= code.strip %>"
