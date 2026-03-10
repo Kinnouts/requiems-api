@@ -3,8 +3,15 @@
 module ApplicationHelper
   include ApisHelper
 
-  # Global search data for navbar search
-  # Returns all searchable content (APIs, Examples, Pages) as a hash
+  LOCALE_NAMES = {
+    en: "English",
+    es: "Español"
+  }.freeze
+
+  def locale_name(locale)
+    LOCALE_NAMES[locale.to_sym] || locale.to_s.upcase
+  end
+
   def global_search_data
     {
       apis: searchable_apis,

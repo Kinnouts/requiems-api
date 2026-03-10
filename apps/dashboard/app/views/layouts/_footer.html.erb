@@ -4,59 +4,59 @@
       <!-- Get Started -->
       <div>
         <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-4">
-          Get Started
+          <%= t("shared.footer.sections.get_started") %>
         </h3>
         <ul class="space-y-3">
-          <li><%= link_to "API Directory", apis_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "API Status", status_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "Blog", blog_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "Example Apps", examples_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "API Glossary", glossary_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "Error Codes", error_codes_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.api_directory"), apis_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.api_status"), status_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.blog"), blog_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.example_apps"), examples_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.api_glossary"), glossary_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.error_codes"), error_codes_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
         </ul>
       </div>
 
       <!-- API Categories -->
       <div>
         <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-4">
-          API Categories
+          <%= t("shared.footer.sections.api_categories") %>
         </h3>
         <ul class="space-y-3">
-          <li><%= link_to "Finance", category_path("finance"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "Internet/Technology", category_path("technology"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "AI/Computer Vision", category_path("ai_vision"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "Animals", category_path("animals"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "Entertainment", category_path("entertainment"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "Health/Wellness", category_path("health"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "Miscellaneous", category_path("misc"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "Places", category_path("places"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "Text", category_path("text"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "Transportation", category_path("transportation"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "Tax", category_path("tax"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.finance"), category_path("finance"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.technology"), category_path("technology"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.ai_vision"), category_path("ai_vision"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.animals"), category_path("animals"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.entertainment"), category_path("entertainment"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.health"), category_path("health"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.miscellaneous"), category_path("misc"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.places"), category_path("places"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.text"), category_path("text"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.transportation"), category_path("transportation"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.tax"), category_path("tax"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
         </ul>
       </div>
 
       <!-- About -->
       <div>
         <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-4">
-          About
+          <%= t("shared.footer.sections.about") %>
         </h3>
         <ul class="space-y-3">
-          <li><%= link_to "Pricing", pricing_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "Our Team", team_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "Suggest an API", suggest_api_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "FAQ", faq_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "Privacy Policy", privacy_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "Terms of Service", terms_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "Contact Us", contact_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "Talk to Sales", talk_to_sales_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.pricing"), pricing_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.our_team"), team_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.suggest_api"), suggest_api_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.faq"), faq_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.privacy_policy"), privacy_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.terms_of_service"), terms_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.contact_us"), contact_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.talk_to_sales"), talk_to_sales_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
         </ul>
       </div>
 
       <!-- Developers -->
       <div>
         <h3 class="text-sm font-semibold text-gray-900 dark:text-gray-100 uppercase tracking-wider mb-4">
-          Developers
+          <%= t("shared.footer.sections.developers") %>
         </h3>
         <ul class="space-y-3">
           <li>
@@ -69,11 +69,11 @@
               <svg class="h-4 w-4 mr-1" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z" clip-rule="evenodd" />
               </svg>
-              GitHub
+              <%= t("shared.footer.links.github") %>
             </a>
           </li>
-          <li><%= link_to "Contributing", ExternalLinks::GITHUB[:contributing], target: "_blank", rel: "noopener noreferrer", class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to "Changelog", changelog_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.contributing"), ExternalLinks::GITHUB[:contributing], target: "_blank", rel: "noopener noreferrer", class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <li><%= link_to t("shared.footer.links.changelog"), changelog_path, class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
         </ul>
       </div>
     </div>
@@ -90,7 +90,7 @@
             <span class="text-xl font-bold text-blue-600">Requiems API</span>
           </div>
           <p class="mt-2 text-sm text-gray-500 dark:text-gray-400 text-center md:text-left">
-            Production-ready APIs for modern developers
+            <%= t("shared.footer.tagline") %>
           </p>
         </div>
 
@@ -111,10 +111,27 @@
         </div>
       </div>
 
-      <!-- Copyright -->
-      <div class="mt-8 text-center">
+      <!-- Language Selector + Copyright -->
+      <div class="mt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <!-- Language Selector -->
+        <div class="flex items-center gap-2">
+          <svg class="h-4 w-4 text-gray-400 dark:text-gray-500 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/>
+          </svg>
+          <span class="text-xs text-gray-400 dark:text-gray-500"><%= t("shared.nav.language") %>:</span>
+          <div class="flex items-center gap-1">
+            <% I18n.available_locales.each do |locale| %>
+              <% locale_url = locale == I18n.default_locale ? url_for(locale: nil) : url_for(locale: locale) %>
+              <% active = I18n.locale == locale %>
+              <%= link_to locale_name(locale), locale_url,
+                class: "text-xs px-2 py-1 rounded transition-colors #{active ? 'bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 font-medium' : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300'}" %>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Copyright -->
         <p class="text-sm text-gray-400 dark:text-gray-500">
-          © <%= Time.current.year %> Bobadilla Tech. All rights reserved.
+          <%= t("shared.footer.copyright", year: Time.current.year) %>
         </p>
       </div>
     </div>

@@ -82,6 +82,6 @@ class Dashboard::SettingsController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:email, :name, :company, :email_notifications, :usage_alerts, :weekly_reports)
+    params.require(:user).permit(:email, :name, :company, :locale, :email_notifications, :usage_alerts, :weekly_reports)
   end
 end
