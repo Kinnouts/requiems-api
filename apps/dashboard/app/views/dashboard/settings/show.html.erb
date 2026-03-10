@@ -107,18 +107,20 @@
       <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Choose your preferred language for the interface</p>
     </div>
     <div class="p-6">
-      <div class="flex flex-wrap gap-3">
+      <div class="flex flex-wrap gap-3" data-controller="locale-selector">
         <% I18n.available_locales.each do |locale| %>
           <% selected = (current_user.locale.present? ? current_user.locale.to_sym : I18n.locale) == locale %>
           <%= f.label :locale, value: locale,
-            class: "flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-colors #{selected ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-500'}" do %>
+            class: "flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-colors #{selected ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-500'}",
+            data: { locale_selector_target: "option", action: "click->locale-selector#select" } do %>
             <%= f.radio_button :locale, locale, checked: selected, class: "sr-only" %>
             <span class="text-sm font-medium"><%= locale_name(locale) %></span>
           <% end %>
         <% end %>
         <% auto_selected = current_user.locale.blank? %>
         <%= f.label :locale, value: "",
-          class: "flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-colors #{auto_selected ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-500'}" do %>
+          class: "flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-colors #{auto_selected ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-500'}",
+          data: { locale_selector_target: "option", action: "click->locale-selector#select" } do %>
           <%= f.radio_button :locale, "", checked: auto_selected, class: "sr-only" %>
           <span class="text-sm font-medium">Auto-detect</span>
         <% end %>
