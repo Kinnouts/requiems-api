@@ -11,6 +11,8 @@ class Dashboard::SettingsController < ApplicationController
   def update
     # Update account settings
     if current_user.update(user_params)
+      I18n.locale = current_user_locale || http_accept_language.compatible_language_from(I18n.available_locales) || I18n.default_locale
+
       # If email was changed and Devise confirmable is enabled, send confirmation
       if user_params[:email].present? && current_user.email != current_user.email_was
         flash[:notice] = "Settings updated. Please check your email to confirm your new address."

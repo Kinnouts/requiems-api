@@ -7,10 +7,10 @@
         </span>
       <% end %>
       <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-gray-100">
-        Create your account
+        <%= t("auth.sign_up.heading") %>
       </h2>
       <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-        Start using Requiem API with a free account
+        <%= t("auth.sign_up.subheading") %>
       </p>
     </div>
 
@@ -19,38 +19,38 @@
 
       <div class="rounded-md shadow-sm space-y-4">
         <div>
-          <%= f.label :name, "Full Name", class: "block text-sm font-medium text-gray-700 dark:text-gray-300" %>
-          <%= f.text_field :name, autofocus: true, autocomplete: "name", class: "mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 dark:bg-gray-700 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "John Doe" %>
+          <%= f.label :name, t("auth.sign_up.name"), class: "block text-sm font-medium text-gray-700 dark:text-gray-300" %>
+          <%= f.text_field :name, autofocus: true, autocomplete: "name", class: "mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 dark:bg-gray-700 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: t("auth.sign_up.name_placeholder") %>
         </div>
 
         <div>
-          <%= f.label :email, "Email address", class: "block text-sm font-medium text-gray-700 dark:text-gray-300" %>
+          <%= f.label :email, t("auth.sign_up.email"), class: "block text-sm font-medium text-gray-700 dark:text-gray-300" %>
           <%= f.email_field :email, autocomplete: "email", class: "mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 dark:bg-gray-700 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "you@example.com" %>
         </div>
 
         <div>
-          <%= f.label :company, "Company (optional)", class: "block text-sm font-medium text-gray-700 dark:text-gray-300" %>
-          <%= f.text_field :company, autocomplete: "organization", class: "mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 dark:bg-gray-700 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "Your Company Inc." %>
+          <%= f.label :company, t("auth.sign_up.company"), class: "block text-sm font-medium text-gray-700 dark:text-gray-300" %>
+          <%= f.text_field :company, autocomplete: "organization", class: "mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 dark:bg-gray-700 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: t("auth.sign_up.company_placeholder") %>
         </div>
 
         <div>
           <%= f.label :password, class: "block text-sm font-medium text-gray-700 dark:text-gray-300" do %>
-            Password
+            <%= t("auth.sign_up.password") %>
             <% if @minimum_password_length %>
-              <span class="text-gray-500 dark:text-gray-400 text-xs">(<%= @minimum_password_length %> characters minimum)</span>
+              <span class="text-gray-500 dark:text-gray-400 text-xs">(<%= t("auth.sign_up.password_min", min: @minimum_password_length) %>)</span>
             <% end %>
           <% end %>
           <%= f.password_field :password, autocomplete: "new-password", class: "mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 dark:bg-gray-700 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "••••••••" %>
         </div>
 
         <div>
-          <%= f.label :password_confirmation, "Confirm Password", class: "block text-sm font-medium text-gray-700 dark:text-gray-300" %>
+          <%= f.label :password_confirmation, t("auth.sign_up.confirm_password"), class: "block text-sm font-medium text-gray-700 dark:text-gray-300" %>
           <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 dark:bg-gray-700 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm", placeholder: "••••••••" %>
         </div>
       </div>
 
       <div>
-        <%= f.submit "Create Account", class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer" %>
+        <%= f.submit t("auth.sign_up.submit"), class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 cursor-pointer" %>
       </div>
 
       <div class="text-center text-sm">
