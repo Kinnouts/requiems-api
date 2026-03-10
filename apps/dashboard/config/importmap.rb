@@ -12,3 +12,4 @@ pin "Chart.bundle", to: "https://cdn.jsdelivr.net/npm/chart.js@4.4.1/+esm"
 pin "highlight.js", to: "https://ga.jspm.io/npm:highlight.js@11.9.0/es/index.js"
 
 pin "flatpickr", to: "https://ga.jspm.io/npm:flatpickr@4.6.13/dist/esm/index.js"
+

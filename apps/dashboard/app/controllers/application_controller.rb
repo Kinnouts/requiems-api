@@ -15,7 +15,9 @@ class ApplicationController < ActionController::Base
   private
 
   def set_locale
-    I18n.locale = params[:locale].presence ||
+    requested = params[:locale].presence
+    validated = requested if I18n.available_locales.map(&:to_s).include?(requested)
+    I18n.locale = validated ||
                   current_user_locale ||
                   http_accept_language.compatible_language_from(I18n.available_locales) ||
                   I18n.default_locale

@@ -47,7 +47,7 @@
           <p><strong>Submitted:</strong> <%= @timestamp.strftime("%B %d, %Y at %I:%M %p %Z") %></p>
           <p style="margin-top: 10px; font-size: 12px;">
             This suggestion was submitted through the Requiems API website.<br>
-            Consider creating an issue or discussion on GitHub: <a href="<%= ExternalLinks::GITHUB[:repository] %>">github.com/bobadilla-tech/requiems-api</a>
+            Consider creating an issue or discussion on GitHub: <a href="<%= ExternalLinks::GITHUB[:repository] %>"><%= ExternalLinks::GITHUB[:repository] %></a>
           </p>
         </div>
       </div>
