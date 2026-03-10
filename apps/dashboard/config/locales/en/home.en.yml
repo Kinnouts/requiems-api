@@ -228,7 +228,7 @@ en:
         q1: "How do I authenticate my requests?"
         a1: "Include your API key in the Authorization header as a Bearer token:"
         q2: "What's the difference between test and live API keys?"
-        a2: "Test keys (starting with req_test_) are for development and testing. They work with all endpoints but don't count against your request quota. Live keys (req_live_) are for production use and count against your monthly request quota."
+        a2_html: "Test keys (starting with <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">req_test_</code>) are for development and testing. They work with all endpoints but don't count against your request quota. Live keys (<code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">req_live_</code>) are for production use and count against your monthly request quota."
         q3: "Can I regenerate my API key?"
         a3: "Yes! Go to your dashboard, click on the API key you want to regenerate, and select \"Regenerate\". Note that the old key will stop working immediately, so update all your applications."
       billing:
@@ -250,7 +250,7 @@ en:
         business: "Business: 1,000 requests/minute"
         professional: "Professional: 5,000 requests/minute"
         q2: "How should I handle rate limit errors?"
-        a2: "When you receive a 429 error, implement exponential backoff. Wait a few seconds and retry. Check the Retry-After header for the recommended wait time. Consider upgrading your plan if you consistently hit rate limits."
+        a2_html: "When you receive a 429 error, implement exponential backoff. Wait a few seconds and retry. Check the <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">Retry-After</code> header for the recommended wait time. Consider upgrading your plan if you consistently hit rate limits."
       support:
         heading: "Support"
         q1: "How can I get help?"
@@ -274,3 +274,28 @@ en:
 
     contact:
       title: "Contact Us - Requiems API"
+      heading: "Contact Us"
+      intro: "Got a question about Requiems API? You can reach us by email or use the form to send us a message. We look forward to hearing from you!"
+      general_questions:
+        heading: "General Questions"
+        text: "For inquiries about our business, subscription plans, policies or partnerships, please email us at"
+      technical_support:
+        heading: "Technical Support"
+        badge: "Premium users only"
+        text: "For technical support, including debugging, API key issues, and data validation, please navigate to the 'Support Desk' tab in your account profile."
+      form:
+        heading: "Let's get in touch"
+        paid_notice: "If you are already a paid subscriber, please submit a request from the Support Desk tab of your account profile to get a faster response."
+        name: "Name"
+        email: "Email"
+        inquiry_type: "Inquiry type"
+        inquiry_existing_api: "Existing API or feature"
+        inquiry_technical: "Technical issue"
+        inquiry_pricing: "Premium plans or pricing"
+        inquiry_partnership: "Partnership/Collaboration"
+        inquiry_other: "Other"
+        message: "How can we help you?"
+        submit: "Send Message"
+      additional:
+        talk_to_sales: "Talk to Sales"
+        suggest_api: "Suggest a New API"

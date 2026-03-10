@@ -228,7 +228,7 @@ es:
         q1: "¿Cómo autentico mis solicitudes?"
         a1: "Incluye tu clave API en el encabezado Authorization como token Bearer:"
         q2: "¿Cuál es la diferencia entre las claves API de prueba y las de producción?"
-        a2: "Las claves de prueba (que comienzan con req_test_) son para desarrollo y pruebas. Funcionan con todos los endpoints pero no cuentan para tu cuota de solicitudes. Las claves de producción (req_live_) son para uso en producción y cuentan para tu cuota mensual de solicitudes."
+        a2_html: "Las claves de prueba (que comienzan con <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">req_test_</code>) son para desarrollo y pruebas. Funcionan con todos los endpoints pero no cuentan para tu cuota de solicitudes. Las claves de producción (<code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">req_live_</code>) son para uso en producción y cuentan para tu cuota mensual de solicitudes."
         q3: "¿Puedo regenerar mi clave API?"
         a3: "¡Sí! Ve a tu panel, haz clic en la clave API que deseas regenerar y selecciona \"Regenerar\". Ten en cuenta que la clave antigua dejará de funcionar de inmediato, así que actualiza todas tus aplicaciones."
       billing:
@@ -250,7 +250,7 @@ es:
         business: "Negocio: 1.000 solicitudes/minuto"
         professional: "Profesional: 5.000 solicitudes/minuto"
         q2: "¿Cómo debo manejar los errores de límite de tasa?"
-        a2: "Cuando recibas un error 429, implementa retroceso exponencial. Espera unos segundos y vuelve a intentarlo. Consulta el encabezado Retry-After para el tiempo de espera recomendado. Considera actualizar tu plan si constantemente alcanzas los límites de tasa."
+        a2_html: "Cuando recibas un error 429, implementa retroceso exponencial. Espera unos segundos y vuelve a intentarlo. Consulta el encabezado <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">Retry-After</code> para el tiempo de espera recomendado. Considera actualizar tu plan si constantemente alcanzas los límites de tasa."
       support:
         heading: "Soporte"
         q1: "¿Cómo puedo obtener ayuda?"
@@ -274,3 +274,28 @@ es:
 
     contact:
       title: "Contáctanos - Requiems API"
+      heading: "Contáctanos"
+      intro: "¿Tienes alguna pregunta sobre Requiems API? Puedes contactarnos por correo o usar el formulario para enviarnos un mensaje. ¡Esperamos saber de ti!"
+      general_questions:
+        heading: "Preguntas generales"
+        text: "Para consultas sobre nuestro negocio, planes de suscripción, políticas o colaboraciones, escríbenos a"
+      technical_support:
+        heading: "Soporte técnico"
+        badge: "Solo usuarios premium"
+        text: "Para soporte técnico, incluyendo depuración, problemas con claves API y validación de datos, ve a la pestaña 'Support Desk' en tu perfil de cuenta."
+      form:
+        heading: "Hablemos"
+        paid_notice: "Si ya eres suscriptor de pago, envía una solicitud desde la pestaña Support Desk de tu perfil de cuenta para obtener una respuesta más rápida."
+        name: "Nombre"
+        email: "Correo electrónico"
+        inquiry_type: "Tipo de consulta"
+        inquiry_existing_api: "API o función existente"
+        inquiry_technical: "Problema técnico"
+        inquiry_pricing: "Planes premium o precios"
+        inquiry_partnership: "Colaboración/Asociación"
+        inquiry_other: "Otro"
+        message: "¿Cómo podemos ayudarte?"
+        submit: "Enviar mensaje"
+      additional:
+        talk_to_sales: "Hablar con ventas"
+        suggest_api: "Sugerir una nueva API"

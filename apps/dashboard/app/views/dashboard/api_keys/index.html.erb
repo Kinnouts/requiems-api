@@ -159,7 +159,7 @@
                       data: { turbo_confirm: t("dashboard.api_keys.confirm_revoke") },
                       class: "text-red-600 hover:text-red-700 font-medium" %>
                   <% else %>
-                    <span class="text-gray-400 dark:text-gray-500">Revoked <%= time_ago_in_words(api_key.revoked_at) %> ago</span>
+                    <span class="text-gray-400 dark:text-gray-500"><%= t("dashboard.api_keys.revoked_ago", time: time_ago_in_words(api_key.revoked_at)) %></span>
                   <% end %>
                 </div>
               </td>
