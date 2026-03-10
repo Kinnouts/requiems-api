@@ -132,7 +132,7 @@ Public-facing edge gateway for request authentication and proxying.
 Type check:
 
 ```bash
-docker exec requiem-dev-auth-gateway-1 pnpm run typecheck
+docker exec -e CI=true requiem-dev-auth-gateway-1 pnpm run typecheck
 ```
 
 Run tests:
@@ -162,7 +162,7 @@ Internal service for API key management, usage exports, and analytics.
 Type check:
 
 ```bash
-docker exec requiem-dev-api-management-1 pnpm run typecheck
+docker exec -e CI=true requiem-dev-api-management-1 pnpm run typecheck
 ```
 
 Run tests:
@@ -193,7 +193,7 @@ docker exec requiem-dev-dashboard-1 bundle exec rubocop        # Linting (adviso
 
 # Auth Gateway
 docker exec requiem-dev-auth-gateway-1 pnpm exec vitest run       # Tests (must pass - 71 tests)
-docker exec requiem-dev-auth-gateway-1 pnpm run typecheck          # TypeScript (must pass)
+docker exec -e CI=true requiem-dev-auth-gateway-1 pnpm run typecheck  # TypeScript (must pass)
 ```
 
 Run lint/format locally for workers:
@@ -204,7 +204,7 @@ cd apps/workers/api-management && pnpm run lint && pnpm run format:check # API M
 
 # API Management tests (must pass)
 docker exec requiem-dev-api-management-1 pnpm exec vitest run
-docker exec requiem-dev-api-management-1 pnpm run typecheck
+docker exec -e CI=true requiem-dev-api-management-1 pnpm run typecheck
 ```
 
 ## Architecture Overview
