@@ -42,12 +42,13 @@ Find rhyming words
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/text/rhyme`
 
-### [Spell Check](./spell-check.md) - ⏳ Planned
+### [Spell Check](./spell-check.md) - ✅ MVP
 
 Check spelling and suggest corrections
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/text/spell-check`
+- **Status:** mvp
+- **Endpoint:** `POST /v1/text/spellcheck`
+- **Credit Cost:** 1
 
 ### [Text Language](./text-language.md) - ⏳ Planned
 

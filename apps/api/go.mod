@@ -42,6 +42,7 @@ require (
 	github.com/nyaruka/phonenumbers v1.6.11
 	github.com/pemistahl/lingua-go v1.4.0
 	github.com/ringsaturn/tzf v1.0.4
+	github.com/sajari/fuzzy v1.0.0
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
 )
 
