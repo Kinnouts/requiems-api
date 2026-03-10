@@ -13,7 +13,6 @@ conversion based on current exchange rates.
 
 ### Convert Currency
 
-**Planned Endpoint:** `GET /v1/finance/convert-currency` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/finance/convert-currency`
 
 Convert an amount from one currency to another.

@@ -13,7 +13,7 @@ for geographic coordinates (latitude/longitude) or city names worldwide.
 
 ### Get Timezone Information
 
-**Endpoint:** `GET /v1/places/timezone` **Credit Cost:** 1 credit
+**Endpoint:** `GET /v1/places/timezone`
 
 Get timezone information for a location by coordinates or city name.
 

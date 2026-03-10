@@ -13,7 +13,6 @@ formats and standards.
 
 ### Generate Barcode
 
-**Planned Endpoint:** `GET /v1/internet-technology/barcode` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/internet-technology/barcode`
 
 Generate or validate a barcode.

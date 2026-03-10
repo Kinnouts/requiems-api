@@ -13,7 +13,6 @@ description, and other metadata.
 
 ### Get Webpage Information
 
-**Planned Endpoint:** `GET /v1/internet-technology/webpage` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/internet-technology/webpage`
 
 Get information about a webpage.

@@ -13,7 +13,6 @@ sources.
 
 ### Get Random Image
 
-**Planned Endpoint:** `GET /v1/miscellaneous/random-image` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/miscellaneous/random-image`
 
 Get random images.

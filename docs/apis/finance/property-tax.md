@@ -13,7 +13,6 @@ information by location.
 
 ### Get Property Tax Information
 
-**Planned Endpoint:** `GET /v1/finance/property-tax` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/finance/property-tax`
 
 Get property tax information.

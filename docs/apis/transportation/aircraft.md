@@ -13,7 +13,6 @@ aircraft types and specifications.
 
 ### Get Aircraft Information
 
-**Planned Endpoint:** `GET /v1/transportation/aircraft` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/transportation/aircraft`
 
 Get aircraft information.

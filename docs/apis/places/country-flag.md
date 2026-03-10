@@ -12,7 +12,6 @@ Get country flag images. This endpoint will provide flag graphics for countries.
 
 ### Get Country Flag
 
-**Planned Endpoint:** `GET /v1/places/country-flag` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/places/country-flag`
 
 Get country flag images.

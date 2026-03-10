@@ -13,7 +13,6 @@ exchange rates.
 
 ### Get Exchange Rate
 
-**Planned Endpoint:** `GET /v1/finance/exchange-rate` **Expected Credit Cost:**
-1 credit
+**Planned Endpoint:** `GET /v1/finance/exchange-rate`
 
 Get exchange rate between two currencies.

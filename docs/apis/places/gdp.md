@@ -13,6 +13,6 @@ countries.
 
 ### Get GDP Data
 
-**Planned Endpoint:** `GET /v1/places/gdp` **Expected Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/places/gdp`
 
 Get GDP information for countries.

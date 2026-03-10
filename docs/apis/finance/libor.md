@@ -12,6 +12,6 @@ Get LIBOR rates. This endpoint will provide London Interbank Offered Rates.
 
 ### Get LIBOR Rates
 
-**Planned Endpoint:** `GET /v1/finance/libor` **Expected Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/finance/libor`
 
 Get LIBOR rates.

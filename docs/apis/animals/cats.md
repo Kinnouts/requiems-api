@@ -13,6 +13,6 @@ and breed information.
 
 ### Get Cat Information
 
-**Planned Endpoint:** `GET /v1/animals/cats` **Expected Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/animals/cats`
 
 Get cat facts and images.

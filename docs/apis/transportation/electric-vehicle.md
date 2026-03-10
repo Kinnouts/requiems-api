@@ -13,7 +13,6 @@ electric vehicles and specifications.
 
 ### Get Electric Vehicle Information
 
-**Planned Endpoint:** `GET /v1/transportation/electric-vehicle` **Expected
-Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/transportation/electric-vehicle`
 
 Get electric vehicle information.

@@ -84,7 +84,7 @@ Rails 8.1, Tailwind CSS, Hotwire (Turbo + Stimulus) **Database:** PostgreSQL
 
 - `usage_logs` - Detailed API usage records
 - `daily_usage_summaries` - Aggregated daily usage
-- `credit_adjustments` - Manual credit additions/deductions
+- `credit_adjustments` - Manual request quota adjustments
 
 ### Administration
 
@@ -98,7 +98,7 @@ Rails 8.1, Tailwind CSS, Hotwire (Turbo + Stimulus) **Database:** PostgreSQL
 Users can:
 
 - Generate new API keys
-- View key statistics (requests, credits used)
+- View key statistics (requests used, requests remaining)
 - Regenerate keys
 - Delete keys
 - Set key permissions (future feature)
@@ -111,7 +111,7 @@ Management worker via
 
 - Real-time usage tracking
 - Historical usage charts
-- Credit consumption breakdown
+- Request consumption breakdown
 - Top endpoints by usage
 - Monthly/daily aggregations
 

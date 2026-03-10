@@ -59,7 +59,7 @@ class Admin::AnalyticsController < ApplicationController
       .where(used_at: @start_date..@end_date)
       .joins(:user)
       .group("users.id", "users.email")
-      .select("users.id, users.email, COUNT(*) as request_count, SUM(credits_used) as total_credits")
+      .select("users.id, users.email, COUNT(*) as request_count, SUM(credits_used) as total_requests")
       .order("request_count DESC")
       .limit(10)
   end

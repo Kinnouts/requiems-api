@@ -13,7 +13,6 @@ astronomical information.
 
 ### Get Planet Information
 
-**Planned Endpoint:** `GET /v1/miscellaneous/planets` **Expected Credit Cost:**
-1 credit
+**Planned Endpoint:** `GET /v1/miscellaneous/planets`
 
 Get information about planets.

@@ -13,7 +13,6 @@ various stock exchanges.
 
 ### Get Stock Exchange Information
 
-**Planned Endpoint:** `GET /v1/finance/stock-exchange` **Expected Credit Cost:**
-1 credit
+**Planned Endpoint:** `GET /v1/finance/stock-exchange`
 
 Get stock exchange information.

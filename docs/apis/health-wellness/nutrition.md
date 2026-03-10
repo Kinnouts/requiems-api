@@ -13,7 +13,6 @@ various foods.
 
 ### Get Food Nutrition Information
 
-**Planned Endpoint:** `GET /v1/health-wellness/nutrition` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/health-wellness/nutrition`
 
 Get nutrition information for foods.

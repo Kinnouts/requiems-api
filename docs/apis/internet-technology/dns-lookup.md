@@ -13,7 +13,6 @@ information.
 
 ### DNS Lookup
 
-**Planned Endpoint:** `GET /v1/internet-technology/dns-lookup` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/internet-technology/dns-lookup`
 
 Perform a DNS lookup for a domain.

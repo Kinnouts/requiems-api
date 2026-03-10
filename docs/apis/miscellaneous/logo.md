@@ -13,7 +13,6 @@ branding assets.
 
 ### Get Company Logo
 
-**Planned Endpoint:** `GET /v1/miscellaneous/logo` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/miscellaneous/logo`
 
 Get company logos and brand images.

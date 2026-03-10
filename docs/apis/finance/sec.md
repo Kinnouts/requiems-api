@@ -13,6 +13,6 @@ Commission filings.
 
 ### Get SEC Filings
 
-**Planned Endpoint:** `GET /v1/finance/sec` **Expected Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/finance/sec`
 
 Get SEC filings.

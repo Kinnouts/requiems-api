@@ -13,7 +13,6 @@ conditions and forecasts.
 
 ### Get Weather Information
 
-**Planned Endpoint:** `GET /v1/weather/weather` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/weather/weather`
 
 Get weather information for a location.

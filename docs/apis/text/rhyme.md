@@ -13,6 +13,6 @@ input.
 
 ### Find Rhyming Words
 
-**Planned Endpoint:** `GET /v1/text/rhyme` **Expected Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/text/rhyme`
 
 Find words that rhyme with a given word.

@@ -8,7 +8,7 @@ class Dashboard::OverviewController < ApplicationController
     @current_plan = current_user.subscription&.plan_name || "free"
     @usage_this_month = calculate_usage_this_month
     @total_requests = calculate_total_requests
-    @credits_remaining = calculate_credits_remaining
+    @requests_remaining = calculate_requests_remaining
     @avg_response_time = calculate_avg_response_time
     @recent_activity = fetch_recent_activity
     @api_keys_count = current_user.api_keys.active_keys.count
@@ -30,7 +30,7 @@ class Dashboard::OverviewController < ApplicationController
     current_user.usage_logs.count
   end
 
-  def calculate_credits_remaining
+  def calculate_requests_remaining
     # Plan limits (should match pricing config)
     plan_limits = {
       "free" => 500,

@@ -13,7 +13,6 @@ information for companies.
 
 ### Get Ticker Information
 
-**Planned Endpoint:** `GET /v1/finance/ticker` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/finance/ticker`
 
 Get stock ticker information.

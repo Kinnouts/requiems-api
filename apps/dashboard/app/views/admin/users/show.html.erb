@@ -147,8 +147,8 @@
         <p class="text-2xl font-bold text-gray-900"><%= number_with_delimiter(@usage_stats[:requests_this_month]) %></p>
       </div>
       <div class="bg-gray-50 rounded-lg p-4">
-        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Credits Used</p>
-        <p class="text-2xl font-bold text-gray-900"><%= number_with_delimiter(@usage_stats[:total_credits_used]) %></p>
+        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Requests Used</p>
+        <p class="text-2xl font-bold text-gray-900"><%= number_with_delimiter(@usage_stats[:total_requests_used]) %></p>
       </div>
       <div class="bg-gray-50 rounded-lg p-4">
         <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Avg Response</p>
@@ -231,7 +231,7 @@
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Method</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Response Time</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Credits</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Requests</th>
           </tr>
         </thead>
         <tbody class="bg-white divide-y divide-gray-200">

@@ -13,7 +13,6 @@ currencies and weights.
 
 ### Get Gold Price
 
-**Planned Endpoint:** `GET /v1/finance/gold-price` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/finance/gold-price`
 
 Get current price of gold.

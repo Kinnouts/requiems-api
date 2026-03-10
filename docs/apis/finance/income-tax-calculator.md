@@ -13,7 +13,6 @@ income tax based on income and location.
 
 ### Calculate Income Tax
 
-**Planned Endpoint:** `GET /v1/finance/income-tax-calculator` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/finance/income-tax-calculator`
 
 Calculate income tax liability.

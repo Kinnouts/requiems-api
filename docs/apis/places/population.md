@@ -13,7 +13,6 @@ information.
 
 ### Get Population Data
 
-**Planned Endpoint:** `GET /v1/places/population` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/places/population`
 
 Get population data for locations.

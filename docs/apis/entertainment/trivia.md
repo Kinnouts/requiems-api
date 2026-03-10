@@ -13,7 +13,6 @@ questions across various categories.
 
 ### Get Trivia Question
 
-**Planned Endpoint:** `GET /v1/entertainment/trivia` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/entertainment/trivia`
 
 Get a random trivia question with multiple choice answers.

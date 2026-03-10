@@ -49,8 +49,8 @@ Every proxied response includes usage information:
 
 | Header                  | Description                               |
 | ----------------------- | ----------------------------------------- |
-| `X-Requests-Used`       | Credits used this billing period          |
-| `X-Requests-Remaining`  | Credits remaining this billing period     |
+| `X-Requests-Used`       | Requests used this billing period         |
+| `X-Requests-Remaining`  | Requests remaining this billing period    |
 | `X-Requests-Reset`      | Billing period reset timestamp (ISO 8601) |
 | `X-Plan`                | User's current plan                       |
 | `X-RateLimit-Limit`     | Per-minute rate limit for the plan        |

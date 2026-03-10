@@ -13,7 +13,6 @@ trades for publicly traded companies.
 
 ### Get Insider Trading Data
 
-**Planned Endpoint:** `GET /v1/finance/insider-trading` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/finance/insider-trading`
 
 Get insider trading information.

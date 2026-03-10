@@ -13,7 +13,6 @@ various car models.
 
 ### Get Car Information
 
-**Planned Endpoint:** `GET /v1/transportation/cars` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/transportation/cars`
 
 Get car information and specifications.

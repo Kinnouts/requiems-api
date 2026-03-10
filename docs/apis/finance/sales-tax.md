@@ -13,7 +13,6 @@ information for different regions.
 
 ### Get Sales Tax Rate
 
-**Planned Endpoint:** `GET /v1/finance/sales-tax` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/finance/sales-tax`
 
 Get sales tax rate for a location.

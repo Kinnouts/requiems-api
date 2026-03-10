@@ -13,7 +13,6 @@ registration details.
 
 ### WHOIS Lookup
 
-**Planned Endpoint:** `GET /v1/internet-technology/whois` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/internet-technology/whois`
 
 Get WHOIS information for a domain.

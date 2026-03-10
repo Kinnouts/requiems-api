@@ -13,7 +13,6 @@ and details about important historical people.
 
 ### Get Historical Figure Information
 
-**Planned Endpoint:** `GET /v1/miscellaneous/historical-figures` **Expected
-Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/miscellaneous/historical-figures`
 
 Get information about historical figures.

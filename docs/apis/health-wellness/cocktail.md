@@ -13,7 +13,6 @@ and bartending tips.
 
 ### Get Cocktail Recipe
 
-**Planned Endpoint:** `GET /v1/health-wellness/cocktail` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/health-wellness/cocktail`
 
 Get cocktail recipes.

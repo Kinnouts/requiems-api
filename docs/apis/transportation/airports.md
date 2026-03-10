@@ -13,7 +13,6 @@ worldwide.
 
 ### Get Airport Information
 
-**Planned Endpoint:** `GET /v1/transportation/airports` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/transportation/airports`
 
 Get airport information.

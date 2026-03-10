@@ -13,7 +13,6 @@ new hobbies and interests based on your preferences.
 
 ### Get Hobby Suggestion
 
-**Planned Endpoint:** `GET /v1/entertainment/hobbies` **Expected Credit Cost:**
-1 credit
+**Planned Endpoint:** `GET /v1/entertainment/hobbies`
 
 Get a random hobby suggestion.

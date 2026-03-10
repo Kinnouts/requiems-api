@@ -1,15 +1,7 @@
 # frozen_string_literal: true
 
 class Rack::Attack
-  ### Configure Cache ###
-
-  # If you don't want to use Rails.cache (Solid Cache), you can set it to Redis
-  # Rack::Attack.cache.store = ActiveSupport::Cache::RedisStore.new
-
-  # Use Rails cache (Solid Cache in Rails 8)
   Rack::Attack.cache.store = Rails.cache
-
-  ### Throttle Configuration ###
 
   # Throttle API playground requests for anonymous users: 1 req/min
   throttle("api_proxy/ip", limit: 1, period: 1.minute) do |req|
@@ -28,7 +20,6 @@ class Rack::Attack
     end
   end
 
-  # Optional: General login throttling
   # Throttle login attempts by IP address
   throttle("logins/ip", limit: 5, period: 20.seconds) do |req|
     if req.path == "/users/sign_in" && req.post?
@@ -75,9 +66,6 @@ class Rack::Attack
     [ 429, headers, [ body ] ]
   end
 
-  ### Logging ###
-
-  # Log blocked requests
   ActiveSupport::Notifications.subscribe("throttle.rack_attack") do |_name, _start, _finish, _request_id, payload|
     req = payload[:request]
     Rails.logger.warn("[Rack::Attack][Throttled] IP: #{req.ip} | Path: #{req.path}")

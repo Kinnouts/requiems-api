@@ -825,12 +825,13 @@ All responses are wrapped in the standard envelope:
 
 ---
 
-## Step 8 — Update the Credit Multiplier (if non-default)
+## Step 8 — Update the Request Multiplier (if non-default)
 
 File: `apps/workers/shared/src/config.ts`
 
-Most endpoints cost **1 credit** per request and do not need a config entry.
-Only add an entry if your endpoint is more expensive to run:
+Most endpoints cost **1 request** and do not need a config entry.
+Only add an entry if your endpoint explicitly counts as more than 1 request
+(rare — document this clearly in the endpoint's API doc):
 
 ```ts
 // In ENDPOINT_MULTIPLIERS map:
@@ -840,7 +841,7 @@ Only add an entry if your endpoint is more expensive to run:
 ```
 
 The gateway uses `getRequestMultiplier(method, pathname)` to look up the
-multiplier before deducting credits. If no entry exists, it defaults to `1`.
+multiplier before tracking requests. If no entry exists, it defaults to `1`.
 
 ---
 
@@ -968,7 +969,7 @@ Documentation
   [ ] Tested in playground at http://localhost:3000/apis/{name}
 
 Workers
-  [ ] apps/workers/shared/src/config.ts updated if credit cost != 1
+  [ ] apps/workers/shared/src/config.ts updated if request multiplier != 1
   [ ] pnpm run typecheck passes in apps/workers/shared/ (if config.ts was touched)
 ```
 

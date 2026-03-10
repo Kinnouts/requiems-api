@@ -13,7 +13,6 @@ earnings dates for companies.
 
 ### Get Earnings Calendar
 
-**Planned Endpoint:** `GET /v1/finance/earnings-calendar` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/finance/earnings-calendar`
 
 Get earnings calendar events.

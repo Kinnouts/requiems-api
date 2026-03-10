@@ -13,7 +13,6 @@ information for companies and assets.
 
 ### Get Market Capitalization
 
-**Planned Endpoint:** `GET /v1/finance/market-cap` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/finance/market-cap`
 
 Get market capitalization data.

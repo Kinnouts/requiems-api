@@ -13,6 +13,6 @@ details about banks and card types based on BIN data.
 
 ### Get BIN Information
 
-**Planned Endpoint:** `GET /v1/finance/bin` **Expected Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/finance/bin`
 
 Get information about a Bank Identification Number.

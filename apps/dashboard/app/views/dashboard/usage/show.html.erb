@@ -19,7 +19,7 @@
 </div>
 
 <!-- Date Range Filter -->
-<div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8">
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-8" data-controller="date-range">
   <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between">
     <div class="mb-4 lg:mb-0">
       <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300">Date Range</h3>
@@ -32,7 +32,6 @@
       <%= link_to "Last 90 Days", dashboard_usage_path(range: "90d"), class: range_button_classes("90d") %>
 
       <button
-        data-controller="date-range"
         data-action="click->date-range#toggle"
         class="<%= range_button_classes("custom") %>">
         Custom Range
@@ -83,18 +82,18 @@
     <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">API calls in period</p>
   </div>
 
-  <!-- Total Credits Used -->
+  <!-- Total Requests Used -->
   <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Credits Used</h3>
+      <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Requests Used</h3>
       <div class="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
         <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
       </div>
     </div>
-    <p class="text-3xl font-bold text-gray-900 dark:text-gray-100"><%= number_with_delimiter(@total_credits_used) %></p>
-    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Deducted from quota</p>
+    <p class="text-3xl font-bold text-gray-900 dark:text-gray-100"><%= number_with_delimiter(@total_requests_used) %></p>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Counted against quota</p>
   </div>
 
   <!-- Average Response Time -->
@@ -135,8 +134,8 @@
       <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Daily request volume and errors</p>
     </div>
     <div class="p-6">
-      <div id="usage-over-time-chart" style="height: 300px;">
-        <div class="flex items-center justify-center h-full">
+      <div id="usage-over-time-chart" style="min-height: 300px;">
+        <div class="flex items-center justify-center" style="height: 300px;">
           <div class="text-center">
             <svg class="animate-spin h-8 w-8 text-blue-600 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
               <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
@@ -149,22 +148,20 @@
     </div>
   </div>
 
-  <!-- Usage by Endpoint Chart -->
+  <!-- Usage by Endpoint -->
   <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
       <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Usage by Endpoint</h2>
       <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Top endpoints by request count</p>
     </div>
-    <div class="p-6">
-      <div id="usage-by-endpoint-chart" style="height: 300px;">
-        <div class="flex items-center justify-center h-full">
-          <div class="text-center">
-            <svg class="animate-spin h-8 w-8 text-blue-600 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
-              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            <p class="text-sm text-gray-500 dark:text-gray-400">Loading chart...</p>
-          </div>
+    <div id="usage-by-endpoint-container">
+      <div class="flex items-center justify-center p-6" style="min-height: 300px;">
+        <div class="text-center">
+          <svg class="animate-spin h-8 w-8 text-blue-600 mx-auto mb-2" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <p class="text-sm text-gray-500 dark:text-gray-400">Loading...</p>
         </div>
       </div>
     </div>
@@ -188,7 +185,7 @@
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Method</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Response Time</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Credits</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Requests</th>
             <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">API Key</th>
           </tr>
         </thead>
@@ -246,12 +243,39 @@
 <%= javascript_include_tag "Chart.bundle", "data-turbo-track": "reload" %>
 
 <script>
-  // Load charts after page loads
+  const EMPTY_STATE_CHART = `
+    <div class="flex items-center justify-center" style="height: 300px;">
+      <div class="text-center">
+        <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">No data available</h3>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">No request data found in the selected date range.</p>
+      </div>
+    </div>`;
+
+  const EMPTY_STATE_ENDPOINTS = `
+    <div class="px-6 py-12 text-center">
+      <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+      </svg>
+      <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100">No API calls found</h3>
+      <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">No endpoint data in the selected date range.</p>
+    </div>`;
+
   document.addEventListener('turbo:load', function() {
     // Usage over time chart
     fetch('<%= by_date_dashboard_usage_path(range: params[:range], start_date: params[:start_date], end_date: params[:end_date]) %>')
       .then(response => response.json())
       .then(data => {
+        const container = document.getElementById('usage-over-time-chart');
+        const hasData = data.requests && Object.keys(data.requests).length > 0;
+
+        if (!hasData) {
+          container.innerHTML = EMPTY_STATE_CHART;
+          return;
+        }
+
         new Chartkick.LineChart("usage-over-time-chart", [
           {name: "Requests", data: data.requests},
           {name: "Errors", data: data.errors}
@@ -259,28 +283,41 @@
           colors: ["#3b82f6", "#ef4444"],
           library: {
             scales: {
-              y: {
-                beginAtZero: true
-              }
+              y: { beginAtZero: true }
             }
           }
         });
       });
 
-    // Usage by endpoint chart
+    // Usage by endpoint — rendered as a list like Recent Requests
     fetch('<%= by_endpoint_dashboard_usage_path(range: params[:range], start_date: params[:start_date], end_date: params[:end_date]) %>')
       .then(response => response.json())
       .then(data => {
-        new Chartkick.BarChart("usage-by-endpoint-chart", data, {
-          colors: ["#3b82f6"],
-          library: {
-            scales: {
-              y: {
-                beginAtZero: true
-              }
-            }
-          }
-        });
+        const container = document.getElementById('usage-by-endpoint-container');
+        const entries = data ? Object.entries(data) : [];
+
+        if (entries.length === 0) {
+          container.innerHTML = EMPTY_STATE_ENDPOINTS;
+          return;
+        }
+
+        const maxCount = Math.max(...entries.map(([, v]) => v));
+
+        const rows = entries.map(([endpoint, count]) => {
+          const pct = maxCount > 0 ? ((count / maxCount) * 100).toFixed(1) : 0;
+          return `
+            <div class="px-6 py-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+              <div class="flex items-center justify-between gap-4">
+                <code class="text-xs bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded truncate flex-1 min-w-0">${endpoint}</code>
+                <span class="text-sm font-semibold text-gray-900 dark:text-gray-100 shrink-0">${count.toLocaleString()}</span>
+              </div>
+              <div class="mt-2 w-full bg-gray-100 dark:bg-gray-700 rounded-full h-1.5">
+                <div class="bg-blue-500 h-1.5 rounded-full transition-all" style="width: ${pct}%"></div>
+              </div>
+            </div>`;
+        }).join('');
+
+        container.innerHTML = `<div class="divide-y divide-gray-200 dark:divide-gray-700">${rows}</div>`;
       });
   });
 </script>

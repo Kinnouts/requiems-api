@@ -13,7 +13,6 @@ dictionary information for words.
 
 ### Get Word Definition
 
-**Planned Endpoint:** `GET /v1/text/dictionary` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/text/dictionary`
 
 Get definitions and meanings for a word.

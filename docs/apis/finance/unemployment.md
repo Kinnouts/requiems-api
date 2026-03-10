@@ -13,7 +13,6 @@ statistics.
 
 ### Get Unemployment Data
 
-**Planned Endpoint:** `GET /v1/finance/unemployment` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/finance/unemployment`
 
 Get unemployment rates and data.

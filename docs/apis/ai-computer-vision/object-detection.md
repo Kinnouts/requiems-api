@@ -13,7 +13,6 @@ images.
 
 ### Detect Objects
 
-**Planned Endpoint:** `GET /v1/ai-computer-vision/object-detection` **Expected
-Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/ai-computer-vision/object-detection`
 
 Detect objects in an image.

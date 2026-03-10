@@ -13,7 +13,6 @@ publicly traded companies.
 
 ### Get Company Earnings
 
-**Planned Endpoint:** `GET /v1/finance/earnings` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/finance/earnings`
 
 Get earnings information for a specific company.

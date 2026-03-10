@@ -13,7 +13,6 @@ details about various animal species.
 
 ### Get Animal Information
 
-**Planned Endpoint:** `GET /v1/animals/animals` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/animals/animals`
 
 Get information about animals.

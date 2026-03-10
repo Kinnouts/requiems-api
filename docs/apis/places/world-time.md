@@ -14,7 +14,7 @@ and DST status.
 
 ### Get Current Time by Timezone
 
-**Endpoint:** `GET /v1/places/time/{timezone}` **Credit Cost:** 1 credit
+**Endpoint:** `GET /v1/places/time/{timezone}`
 
 Returns the current time for the given IANA timezone identifier.
 

@@ -13,7 +13,6 @@ charging infrastructure.
 
 ### Find EV Chargers
 
-**Planned Endpoint:** `GET /v1/transportation/ev-charger` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/transportation/ev-charger`
 
 Find electric vehicle charging stations.

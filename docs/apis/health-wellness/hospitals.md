@@ -13,7 +13,6 @@ providers.
 
 ### Find Hospitals
 
-**Planned Endpoint:** `GET /v1/health-wellness/hospitals` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/health-wellness/hospitals`
 
 Find hospitals and medical facilities.

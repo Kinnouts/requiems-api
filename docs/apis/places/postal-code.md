@@ -13,7 +13,6 @@ and mail systems.
 
 ### Get Postal Code Information
 
-**Planned Endpoint:** `GET /v1/places/postal-code` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/places/postal-code`
 
 Get postal code information.

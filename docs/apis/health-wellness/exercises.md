@@ -13,7 +13,6 @@ routines and fitness guidance.
 
 ### Get Exercise Information
 
-**Planned Endpoint:** `GET /v1/health-wellness/exercises` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/health-wellness/exercises`
 
 Get exercise routines and information.

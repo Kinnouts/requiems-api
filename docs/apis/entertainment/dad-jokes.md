@@ -13,7 +13,6 @@ wholesome humor that only dads seem to enjoy.
 
 ### Get Dad Joke
 
-**Planned Endpoint:** `GET /v1/entertainment/dad-jokes` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/entertainment/dad-jokes`
 
 Get a random dad joke.

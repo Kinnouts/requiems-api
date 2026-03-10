@@ -13,7 +13,6 @@ numerical representations of text for machine learning tasks.
 
 ### Generate Embeddings
 
-**Planned Endpoint:** `GET /v1/ai-computer-vision/embeddings` **Expected Credit
-Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/ai-computer-vision/embeddings`
 
 Generate embeddings for text.

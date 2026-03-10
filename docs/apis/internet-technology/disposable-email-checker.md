@@ -14,6 +14,5 @@ identify temporary and throwaway email addresses.
 ### Check Disposable Email
 
 **Planned Endpoint:** `GET /v1/internet-technology/disposable-email-checker`
-**Expected Credit Cost:** 1 credit
 
 Check if an email address is from a disposable email service.

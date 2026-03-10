@@ -13,7 +13,6 @@ and riddles to test your wit.
 
 ### Get Random Riddle
 
-**Planned Endpoint:** `GET /v1/entertainment/riddles` **Expected Credit Cost:**
-1 credit
+**Planned Endpoint:** `GET /v1/entertainment/riddles`
 
 Get a random riddle with its answer.

@@ -13,7 +13,6 @@ pollution and quality metrics.
 
 ### Get Air Quality
 
-**Planned Endpoint:** `GET /v1/places/air-quality` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/places/air-quality`
 
 Get air quality information for a location.

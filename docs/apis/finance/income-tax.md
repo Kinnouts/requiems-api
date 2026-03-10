@@ -13,7 +13,6 @@ information for different regions.
 
 ### Get Income Tax Information
 
-**Planned Endpoint:** `GET /v1/finance/income-tax` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/finance/income-tax`
 
 Get income tax information for a specific location.

@@ -13,6 +13,6 @@ worldwide.
 
 ### Get City Information
 
-**Planned Endpoint:** `GET /v1/places/city` **Expected Credit Cost:** 1 credit
+**Planned Endpoint:** `GET /v1/places/city`
 
 Get city information and data.

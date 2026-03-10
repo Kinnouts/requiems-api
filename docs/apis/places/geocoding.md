@@ -13,7 +13,6 @@ longitude for addresses.
 
 ### Geocode Address
 
-**Planned Endpoint:** `GET /v1/places/geocoding` **Expected Credit Cost:** 1
-credit
+**Planned Endpoint:** `GET /v1/places/geocoding`
 
 Convert an address to coordinates.

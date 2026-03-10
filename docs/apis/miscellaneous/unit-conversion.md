@@ -13,7 +13,7 @@ temperature, area, and speed conversions.
 
 ### Convert Units
 
-**Endpoint:** `GET /v1/misc/convert` **Credit Cost:** 1 credit
+**Endpoint:** `GET /v1/misc/convert`
 
 Convert a value from one unit to another.
 
