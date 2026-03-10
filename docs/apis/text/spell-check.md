@@ -65,6 +65,9 @@ Each `corrections` entry:
   uppercase letter, the suggestion will too.
 - When no mistakes are found, `corrections` is an empty array (`[]`) and
   `corrected` equals the input.
+- Only **ASCII letter sequences** (`[a-zA-Z]`) are spell-checked. Non-ASCII
+  characters (accented letters, CJK, emoji, etc.) are passed through unchanged
+  and do not affect position counting.
 
 ## Error Codes
 

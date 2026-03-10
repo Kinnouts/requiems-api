@@ -31,6 +31,9 @@ func init() {
 			words = append(words, w)
 		}
 	}
+	if err := scanner.Err(); err != nil {
+		panic("spellcheck: failed to read word list: " + err.Error())
+	}
 	model.Train(words)
 }
 
@@ -66,7 +69,7 @@ func (s *Service) Check(text string) Result {
 			corrections = append(corrections, Correction{
 				Original:  word,
 				Suggested: display,
-				Position:  start,
+				Position:  len([]rune(text[:start])),
 			})
 
 			// Copy verbatim text before this word, then the correction.

@@ -80,6 +80,19 @@ func TestService_Check_CorrectionsSliceNotNil(t *testing.T) {
 	}
 }
 
+func TestService_Check_PositionIsRuneOffset(t *testing.T) {
+	svc := NewService()
+	// "é" is a single rune but 2 UTF-8 bytes.
+	// "tset" starts at rune index 2 (é=1, space=1) but byte index 3.
+	result := svc.Check("é tset")
+	if len(result.Corrections) == 0 {
+		t.Fatal("expected a correction for tset")
+	}
+	if result.Corrections[0].Position != 2 {
+		t.Errorf("expected rune position 2, got %d", result.Corrections[0].Position)
+	}
+}
+
 func TestMatchCase_LowerInput(t *testing.T) {
 	got := matchCase("abc", "suggested")
 	if got != "suggested" {
