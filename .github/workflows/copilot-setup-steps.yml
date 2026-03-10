@@ -1,7 +1,5 @@
 name: "Copilot Setup Steps"
 
-# Automatically run when changed to allow easy validation, and allow manual
-# testing through the repository's "Actions" tab.
 on:
   workflow_dispatch:
   push:
@@ -12,14 +10,12 @@ on:
       - .github/workflows/copilot-setup-steps.yml
 
 jobs:
-  # Must be named `copilot-setup-steps` to be picked up by Copilot.
   copilot-setup-steps:
     runs-on: ubuntu-latest
 
     permissions:
       contents: read
 
-    # Services stay running throughout Copilot's entire session.
     services:
       postgres:
         image: postgres:16-alpine
@@ -51,7 +47,6 @@ jobs:
       - name: Load env defaults
         run: grep -v '^#' infra/docker/.env.example | grep -v '^$' | grep -v '=\s*$' >> $GITHUB_ENV
 
-      # ── Go ────────────────────────────────────────────────────────────────
       - name: Set up Go
         uses: actions/setup-go@v6
         with:
@@ -63,9 +58,8 @@ jobs:
         run: go mod download
 
       - name: Install golangci-lint
-        run: go install github.com/golangci/golangci-lint/cmd/golangci-lint@v2.10.2
+        run: go install github.com/golangci/golangci-lint/v2/cmd/golangci-lint@latest
 
-      # ── Ruby / Rails ──────────────────────────────────────────────────────
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
@@ -84,7 +78,6 @@ jobs:
           bin/rails db:create
           bin/rails db:schema:load
 
-      # ── Node / Cloudflare Workers ─────────────────────────────────────────
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
