@@ -59,8 +59,7 @@ gem "pagy", "~> 6.0"
 # Groupdate for time-series queries
 gem "groupdate", "~> 6.0"
 
-# Background jobs
-gem "sidekiq", "~> 7.0"
+# Redis for Rails cache
 gem "redis", "~> 5.0"
 
 # Rate limiting
