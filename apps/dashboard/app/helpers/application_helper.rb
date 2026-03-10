@@ -22,7 +22,7 @@ module ApplicationHelper
 
   def searchable_apis
     live_apis.map do |api|
-      category = find_category(api["category"])
+      category = find_category(Array(api["categories"]).first)
       {
         id: api["id"],
         title: api["name"],

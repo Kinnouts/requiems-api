@@ -18,7 +18,7 @@ module ApisHelper
 
   # Get APIs by category
   def apis_by_category(category_id)
-    all_apis.select { |api| api["category"] == category_id }
+    all_apis.select { |api| Array(api["categories"]).include?(category_id) }
   end
 
   # Get category by ID
@@ -78,9 +78,13 @@ module ApisHelper
     live_apis.select { |api| api["popular"] == true }
   end
 
-  # Group live APIs by category (returns hash)
+  # Group live APIs by category (returns hash; an API appears under each of its categories)
   def apis_grouped_by_category
-    live_apis.group_by { |api| api["category"] }
+    live_apis.each_with_object({}) do |api, hash|
+      Array(api["categories"]).each do |cat|
+        (hash[cat] ||= []) << api
+      end
+    end
   end
 
   # Get categories that have live APIs

@@ -2,8 +2,8 @@ categories:
   - id: email
     name: Email
     icon: "📧"
-    short_description: Validate and verify email addresses — detect disposable addresses, check deliverability, and keep your user data clean.
-    description: Validate, verify, and analyze email addresses with precision. From detecting disposable and temporary addresses to checking deliverability and extracting domain metadata, our Email APIs help you maintain clean user databases, reduce spam signups, and improve the performance of your email campaigns.
+    short_description: Validate email addresses at scale, reduce bounce rates, block disposable signups, and keep your lists clean.
+    description: Enterprise-grade email validation APIs for teams that care about deliverability. Detect disposable and temporary addresses, reduce bounce rates, block fraudulent signups, and maintain clean user databases — the same capabilities powering NeverBounce, ZeroBounce, and similar services, accessible through one unified API.
 
   - id: text
     name: Text
@@ -19,10 +19,10 @@ categories:
     coming_soon: true
 
   - id: technology
-    name: Internet/Technology
+    name: Developer Tools
     icon: "💻"
-    short_description: User agent parsing, password generation, phone validation, and bot detection for modern web apps.
-    description: Essential utilities for modern web and app development. Parse user agent strings for device detection, generate cryptographically secure passwords, validate phone numbers, detect bots, and access a suite of internet tools that power millions of applications worldwide.
+    short_description: QR codes, barcodes, password generation, user agent parsing, and essential utilities for modern apps.
+    description: Essential utilities for modern web and app development. Generate QR codes and barcodes, create cryptographically secure passwords, parse user agent strings for device detection, and build with a suite of developer tools that power millions of applications worldwide.
 
   - id: ai_vision
     name: AI/Computer Vision
@@ -49,12 +49,6 @@ categories:
     short_description: Nutrition data, fitness metrics, and wellness insights for healthcare platforms and fitness apps.
     description: Power health and wellness applications with reliable data on nutrition, fitness metrics, medical information, and wellness insights. Designed for healthcare platforms, fitness trackers, diet apps, and any product that helps people make informed decisions about their health.
     coming_soon: true
-
-  - id: misc
-    name: Miscellaneous
-    icon: "🔧"
-    short_description: Hit counters, unit conversion, and everyday utility tools that solve common development problems.
-    description: A versatile collection of utility APIs for the everyday challenges that don't fit neatly into one category. From atomic hit counters and unit conversion to general-purpose tools, these APIs solve common problems across all kinds of projects — simple, reliable, and ready to integrate in minutes.
 
   - id: places
     name: Places
@@ -103,11 +97,12 @@ categories:
     coming_soon: true
 
 apis:
-  # Email APIs
   - id: disposable-email
-    name: Disposable Email Checker
-    category: email
-    description: Detect disposable and temporary email addresses to prevent fraud and improve data quality
+    name: Email Validation
+    categories:
+      - email
+      - validation
+    description: Validate email addresses at scale, detect disposable and temporary addresses, reduce bounce rates, and keep your lists clean
     endpoints_count: 5
     status: live
     popular: true
@@ -117,14 +112,14 @@ apis:
       - Fraud Prevention
       - Data Quality
 
-  # Text APIs
   - id: advice
     name: Random Advice
-    category: text
+    categories:
+      - text
     description: Get random pieces of advice and wisdom for inspiration
     endpoints_count: 1
     status: live
-    popular: true
+    popular: false
     documentation_url: /apis/advice
     tags:
       - Random
@@ -132,11 +127,12 @@ apis:
 
   - id: lorem-ipsum
     name: Lorem Ipsum Generator
-    category: text
+    categories:
+      - text
     description: Generate placeholder text for design mockups and prototypes
     endpoints_count: 3
     status: live
-    popular: true
+    popular: false
     documentation_url: /apis/lorem-ipsum
     tags:
       - Placeholder
@@ -145,11 +141,12 @@ apis:
 
   - id: quotes
     name: Random Quotes
-    category: text
+    categories:
+      - text
     description: Access a database of inspirational and famous quotes
     endpoints_count: 2
     status: live
-    popular: true
+    popular: false
     documentation_url: /apis/quotes
     tags:
       - Random
@@ -158,11 +155,12 @@ apis:
 
   - id: words
     name: Random Words
-    category: text
+    categories:
+      - text
     description: Generate random words for testing, games, and creative projects
     endpoints_count: 2
     status: live
-    popular: true
+    popular: false
     documentation_url: /apis/words
     tags:
       - Random
@@ -171,11 +169,13 @@ apis:
 
   - id: profanity
     name: Profanity Filter
-    category: text
+    categories:
+      - text
+      - validation
     description: Detect and censor profanity in text for content moderation
     endpoints_count: 1
     status: live
-    popular: false
+    popular: true
     documentation_url: /apis/profanity
     tags:
       - Content Moderation
@@ -184,43 +184,21 @@ apis:
 
   - id: spell-check
     name: Spell Check
-    category: text
+    categories:
+      - text
     description: Check spelling and get correction suggestions for misspelled words
     endpoints_count: 1
     status: live
-    popular: false
+    popular: true
     documentation_url: /apis/spell-check
     tags:
       - Spell Check
       - Text Analysis
-  - id: detect-language
-    name: Language Detection
-    category: ai_vision
-    description: Detect the language of any text with confidence scoring
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/detect-language
-    tags:
-      - Language Detection
-      - NLP
-      - AI
-  # AI/Computer Vision APIs
-  - id: text-similarity
-    name: Text Similarity
-    category: ai_vision
-    description: Compare two texts and get a cosine similarity score between 0 and 1
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/text-similarity
-    tags:
-      - Text Analysis
-      - NLP
-      - Similarity
+
   - id: thesaurus
     name: Thesaurus
-    category: text
+    categories:
+      - text
     description: Find synonyms and antonyms for any word to enhance vocabulary and writing
     endpoints_count: 1
     status: live
@@ -232,10 +210,40 @@ apis:
       - Vocabulary
       - Writing
 
-  # Misc APIs
+  - id: detect-language
+    name: Language Detection
+    categories:
+      - ai_vision
+      - text
+    description: Detect the language of any text with confidence scoring
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/detect-language
+    tags:
+      - Language Detection
+      - NLP
+      - AI
+
+  - id: text-similarity
+    name: Text Similarity
+    categories:
+      - ai_vision
+    description: Compare two texts and get a cosine similarity score between 0 and 1
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/text-similarity
+    tags:
+      - Text Analysis
+      - NLP
+      - Similarity
+
+  # Developer Tools APIs
   - id: counter
     name: Counter
-    category: misc
+    categories:
+      - technology
     description: Atomic, namespace-isolated hit counter
     endpoints_count: 2
     status: live
@@ -248,7 +256,8 @@ apis:
 
   - id: random-user
     name: Random User
-    category: misc
+    categories:
+      - technology
     description: Generate random fake user profiles for testing and prototyping — names, emails, phone numbers, addresses, and avatars
     endpoints_count: 1
     status: live
@@ -259,13 +268,72 @@ apis:
       - Testing
       - Fake Data
 
-  - id: unit-conversion
-    name: Unit Conversion
-    category: conversion
-    description: Convert between units of measurement — length, weight, volume, temperature, area, and speed
+  - id: password-generator
+    name: Password Generator
+    categories:
+      - technology
+      - security
+    description: Generate cryptographically secure random passwords with customizable length and character sets
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/password-generator
+    tags:
+      - Security
+      - Password
+      - Random
+
+  - id: useragent
+    name: User Agent Parser
+    categories:
+      - technology
+    description: Parse user agent strings to extract browser, OS, device type, and bot detection
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/useragent
+    tags:
+      - User Agent
+      - Browser Detection
+      - Device Detection
+
+  - id: qr-code
+    name: QR Code Generator
+    categories:
+      - technology
+    description: Generate QR codes from any text or URL, returned as a PNG image or base64-encoded JSON
     endpoints_count: 2
     status: live
     popular: true
+    documentation_url: /apis/qr-code
+    tags:
+      - QR Code
+      - Image
+      - Barcode
+
+  - id: barcode
+    name: Barcode Generator
+    categories:
+      - technology
+    description: Generate barcodes in multiple formats (Code 128, Code 93, Code 39, EAN-8, EAN-13), returned as a PNG image or base64-encoded JSON
+    endpoints_count: 2
+    status: live
+    popular: true
+    documentation_url: /apis/barcode
+    tags:
+      - Barcode
+      - Image
+      - Code 128
+
+  # Conversion APIs
+  - id: unit-conversion
+    name: Unit Conversion
+    categories:
+      - conversion
+    description: Convert between units of measurement — length, weight, volume, temperature, area, and speed
+    endpoints_count: 2
+    status: live
+    popular: false
     documentation_url: /apis/unit-conversion
     tags:
       - Conversion
@@ -275,7 +343,8 @@ apis:
   # Entertainment APIs
   - id: horoscope
     name: Horoscope
-    category: entertainment
+    categories:
+      - entertainment
     description: Get daily horoscope readings for all 12 zodiac signs
     endpoints_count: 1
     status: live
@@ -288,7 +357,8 @@ apis:
 
   - id: sudoku
     name: Sudoku
-    category: entertainment
+    categories:
+      - entertainment
     description: Generate Sudoku puzzles with solutions across multiple difficulty levels
     endpoints_count: 1
     status: live
@@ -297,9 +367,11 @@ apis:
     tags:
       - Puzzle
       - Game
+
   - id: emoji
     name: Emoji
-    category: entertainment
+    categories:
+      - entertainment
     description: Look up emoji by name, search by keyword, or get a random emoji with full Unicode metadata.
     endpoints_count: 3
     status: live
@@ -313,7 +385,8 @@ apis:
   # Places APIs
   - id: timezone
     name: Timezone
-    category: places
+    categories:
+      - places
     description: Get timezone information for any location by coordinates or city name
     endpoints_count: 1
     status: live
@@ -326,7 +399,8 @@ apis:
 
   - id: working-days
     name: Working Days Calculator
-    category: places
+    categories:
+      - places
     description: Calculate the number of working days between two dates with optional country-specific holidays
     endpoints_count: 1
     status: live
@@ -339,7 +413,8 @@ apis:
 
   - id: world-time
     name: World Time
-    category: places
+    categories:
+      - places
     description: Get the current time for any IANA timezone by name
     endpoints_count: 1
     status: live
@@ -350,62 +425,16 @@ apis:
       - Timezone
       - World Clock
 
-  # Technology APIs
-  - id: password-generator
-    name: Password Generator
-    category: technology
-    description: Generate cryptographically secure random passwords with customizable length and character sets
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/password-generator
-    tags:
-      - Security
-      - Password
-      - Random
-  - id: useragent
-    name: User Agent Parser
-    category: technology
-    description: Parse user agent strings to extract browser, OS, device type, and bot detection
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/useragent
-    tags:
-      - User Agent
-      - Browser Detection
-      - Device Detection
-  - id: qr-code
-    name: QR Code Generator
-    category: technology
-    description: Generate QR codes from any text or URL, returned as a PNG image or base64-encoded JSON
-    endpoints_count: 2
-    status: live
-    popular: false
-    documentation_url: /apis/qr-code
-    tags:
-      - QR Code
-      - Image
-      - Barcode
-  - id: barcode
-    name: Barcode Generator
-    category: technology
-    description: Generate barcodes in multiple formats (Code 128, Code 93, Code 39, EAN-8, EAN-13), returned as a PNG image or base64-encoded JSON
-    endpoints_count: 2
-    status: live
-    popular: false
-    documentation_url: /apis/barcode
-    tags:
-      - Barcode
-      - Image
-      - Code 128
+  # Validation APIs
   - id: phone-validation
     name: Phone Validation
-    category: validation
+    categories:
+      - validation
+      - technology
     description: Validate phone numbers, detect country and number type, and get international format
     endpoints_count: 1
     status: live
-    popular: false
+    popular: true
     documentation_url: /apis/phone-validation
     tags:
       - Phone

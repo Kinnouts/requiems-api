@@ -19,7 +19,7 @@ class ApisController < ApplicationController
       return
     end
 
-    @category = find_category(@api["category"])
+    @category = find_category(Array(@api["categories"]).first)
     @categories = api_categories
     @documentation = api_documentation(params[:id])
 

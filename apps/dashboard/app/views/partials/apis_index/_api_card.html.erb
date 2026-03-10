@@ -3,6 +3,7 @@
   card_api_name = card_api["name"]
   card_api_description = card_api["description"]
   card_api_tags = card_api["tags"] || []
+  card_api_categories = Array(card_api["categories"])
   card_api_doc_url = card_api["documentation_url"]
 %>
 
@@ -11,7 +12,8 @@
    data-api-search-target="card"
    data-api-name="<%= card_api_name.downcase %>"
    data-api-description="<%= card_api_description.downcase %>"
-   data-api-tags="<%= card_api_tags.map(&:downcase).join(' ') %>">
+   data-api-tags="<%= card_api_tags.map(&:downcase).join(' ') %>"
+   data-api-categories="<%= card_api_categories.join(' ') %>">
 
   <!-- Live Demo Badge -->
   <div class="mb-2">
