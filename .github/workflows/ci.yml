@@ -89,7 +89,7 @@ jobs:
         run: go test -v -race -coverprofile=coverage.out ./...
 
       - name: Upload coverage
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: go-coverage
           path: apps/api/coverage.out
@@ -200,7 +200,7 @@ jobs:
         run: bundle exec brakeman --no-pager --format json --output brakeman.json || true
 
       - name: Upload Brakeman results
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         if: always()
         with:
           name: brakeman-results
@@ -317,7 +317,7 @@ jobs:
         run: pnpm exec vitest run --coverage.enabled --coverage.reporter=text
 
       - name: Upload coverage
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: worker-coverage
           path: apps/workers/auth-gateway/coverage/
