@@ -121,7 +121,7 @@ func bestSuggestion(input string, m *fuzzy.Model) string {
 			return input
 		}
 		bonus := 0
-		if len(p.Term) > 0 && len(input) > 0 && p.Term[0] == input[0] {
+		if p.Term != "" && input != "" && p.Term[0] == input[0] {
 			bonus = 100
 		}
 		effectiveScore := p.Score + bonus
@@ -137,7 +137,7 @@ func bestSuggestion(input string, m *fuzzy.Model) string {
 // matchCase applies the capitalisation pattern of src to dst so that, for
 // example, "Ths" → "This" and "THs" → "THIS".
 func matchCase(src, dst string) string {
-	if len(src) == 0 || len(dst) == 0 {
+	if src == "" || dst == "" {
 		return dst
 	}
 
