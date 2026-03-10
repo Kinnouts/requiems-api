@@ -6,6 +6,7 @@ Rails.application.routes.draw do
   get "sitemap.xml", to: "sitemap#sitemap", defaults: { format: :xml }
   get "llms.txt",    to: "sitemap#llms",    defaults: { format: :text }
   post "api/proxy", to: "api_proxy#create"
+  post "locale", to: "locale#update", as: :switch_locale
 
   namespace :webhooks do
     post "lemonsqueezy", to: "lemonsqueezy#create"
