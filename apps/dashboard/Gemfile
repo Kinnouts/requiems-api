@@ -60,6 +60,10 @@ gem "redis", "~> 5.0"
 # Rate limiting
 gem "rack-attack", "~> 6.7"
 
+# Internationalization
+gem "rails-i18n", "~> 8.0"
+gem "http_accept_language", "~> 2.1"
+
 # CSV export (removed from Ruby default gems in 3.4)
 gem "csv"
 

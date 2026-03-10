@@ -34,4 +34,11 @@ end
 # Include Devise test helpers for integration tests
 class ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
+
+  setup do
+    # Ensure locale is not injected as first positional arg in URL helpers.
+    # With scope "(:locale)" routes, omitting this causes positional args like
+    # path(@model) to land in the :locale slot instead of :id.
+    self.default_url_options = { locale: nil }
+  end
 end
