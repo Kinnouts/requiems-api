@@ -17,4 +17,4 @@ Contact Email (for follow-up): <%= @suggestion[:email] %>
 Submitted: <%= @timestamp.strftime("%B %d, %Y at %I:%M %p %Z") %>
 
 This suggestion was submitted through the Requiems API website.
-Consider creating an issue or discussion on GitHub: https://github.com/bobadilla-tech/requiems-api
+Consider creating an issue or discussion on GitHub: <%= ExternalLinks::GITHUB[:repository] %>
