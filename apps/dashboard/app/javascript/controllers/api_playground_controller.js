@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus";
+import hljs from "highlight.js";
 
 // Interactive API playground for testing endpoints — routes through /api/proxy
 export default class extends Controller {
@@ -181,7 +182,12 @@ export default class extends Controller {
     if (body && body.type === "image" && body.base64) {
       this.responseBodyTarget.innerHTML = `<img src="data:${body.content_type};base64,${body.base64}" class="max-w-full rounded" alt="Generated image" />`;
     } else {
-      this.responseBodyTarget.textContent = JSON.stringify(body, null, 2);
+      const codeEl = document.createElement("code");
+      codeEl.className = "language-json";
+      codeEl.textContent = JSON.stringify(body, null, 2);
+      hljs.highlightElement(codeEl);
+      this.responseBodyTarget.innerHTML = "";
+      this.responseBodyTarget.appendChild(codeEl);
     }
 
     this.hasResponse = true;
