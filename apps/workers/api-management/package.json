@@ -21,7 +21,7 @@
   },
   "dependencies": {
     "@hono/standard-validator": "^0.2.2",
-    "@hono/swagger-ui": "^0.5.3",
+    "@hono/swagger-ui": "^0.6.0",
     "hono": "^4.11.9",
     "nanoid": "^5.1.6",
     "zod": "^4.0.0"

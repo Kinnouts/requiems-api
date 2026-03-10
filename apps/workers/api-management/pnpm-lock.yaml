@@ -12,8 +12,8 @@ importers:
         specifier: ^0.2.2
         version: 0.2.2(@standard-schema/spec@1.1.0)(hono@4.12.3)
       '@hono/swagger-ui':
-        specifier: ^0.5.3
-        version: 0.5.3(hono@4.12.3)
+        specifier: ^0.6.0
+        version: 0.6.0(hono@4.12.3)
       hono:
         specifier: ^4.11.9
         version: 4.12.3
@@ -489,8 +489,8 @@ packages:
       '@standard-schema/spec': ^1.0.0
       hono: '>=3.9.0'
 
-  '@hono/swagger-ui@0.5.3':
-    resolution: {integrity: sha512-Hn90DOOJ62ICJQplQvCDVpi9Jcn6EhtRaiffyJIS53wA5RmRLtMCDQGVc0bor8vQD7JIwpkweWjs+3cycp+IvA==}
+  '@hono/swagger-ui@0.6.0':
+    resolution: {integrity: sha512-xl2D/0TEi3oG/uoiKA/yLfb3zUw6zweS9NY5+eIxgu506on5g9T8omeJyHeJnCM+RZgoydTR+w7nnFOpEoYIiQ==}
     peerDependencies:
       hono: '>=4.0.0'
 
@@ -1551,7 +1551,7 @@ snapshots:
       '@standard-schema/spec': 1.1.0
       hono: 4.12.3
 
-  '@hono/swagger-ui@0.5.3(hono@4.12.3)':
+  '@hono/swagger-ui@0.6.0(hono@4.12.3)':
     dependencies:
       hono: 4.12.3
 
