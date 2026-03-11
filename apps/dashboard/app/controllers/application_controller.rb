@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
 
     # Redirect all un-prefixed locale-scoped URLs to their explicit /{locale}/... equivalent
     # so every public page has a single canonical URL (e.g. / → /en/, /pricing → /en/pricing).
-    if params[:locale].blank? && request.get_or_head?
+    if params[:locale].blank? && (request.get? || request.head?)
       target = "/#{I18n.locale}#{request.path}"
       target += "?#{request.query_string}" if request.query_string.present?
       redirect_to target, status: :moved_permanently, allow_other_host: false
