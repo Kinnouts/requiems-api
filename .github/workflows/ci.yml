@@ -110,6 +110,10 @@ jobs:
           go-version: "1.26"
           cache-dependency-path: apps/api/go.sum
 
+      - name: Download dependencies
+        working-directory: apps/api
+        run: go mod download
+
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v9
         with:
