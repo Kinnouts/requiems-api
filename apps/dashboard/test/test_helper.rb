@@ -36,9 +36,10 @@ class ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    # Ensure locale is not injected as first positional arg in URL helpers.
-    # With scope "(:locale)" routes, omitting this causes positional args like
-    # path(@model) to land in the :locale slot instead of :id.
-    self.default_url_options = { locale: nil }
+    # Use the default locale explicitly so requests include the locale prefix
+    # (e.g. /en/admin/users) and bypass the set_locale redirect that enforces
+    # canonical locale-prefixed URLs. Using a symbol/string avoids the locale
+    # slot accidentally consuming a positional model argument in path helpers.
+    self.default_url_options = { locale: I18n.default_locale }
   end
 end
