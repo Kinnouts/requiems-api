@@ -5,64 +5,37 @@ import (
 	"testing"
 )
 
-func TestService_GetHolidays_US_2025(t *testing.T) {
-	svc := NewService()
-
-	resp, err := svc.GetHolidays("US", 2025)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
+func TestService_GetHolidays_Countries(t *testing.T) {
+	cases := []struct {
+		name    string
+		country string
+		year    int
+	}{
+		{name: "US_2025", country: "US", year: 2025},
+		{name: "GB_2025", country: "GB", year: 2025},
+		{name: "Japan", country: "JP", year: 2025},
+		{name: "Germany", country: "DE", year: 2025},
 	}
 
-	if resp.Country != "US" {
-		t.Errorf("expected country 'US', got %q", resp.Country)
-	}
-	if resp.Year != 2025 {
-		t.Errorf("expected year 2025, got %d", resp.Year)
-	}
-	if len(resp.Holidays) == 0 {
-		t.Error("expected non-empty holidays list")
-	}
-}
+	for _, tc := range cases {
+		t.Run(tc.name, func(t *testing.T) {
+			svc := NewService()
 
-func TestService_GetHolidays_GB_2025(t *testing.T) {
-	svc := NewService()
+			resp, err := svc.GetHolidays(tc.country, tc.year)
+			if err != nil {
+				t.Fatalf("unexpected error: %v", err)
+			}
 
-	resp, err := svc.GetHolidays("GB", 2025)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-
-	if resp.Country != "GB" {
-		t.Errorf("expected country 'GB', got %q", resp.Country)
-	}
-	if len(resp.Holidays) == 0 {
-		t.Error("expected non-empty holidays list")
-	}
-}
-
-func TestService_GetHolidays_Japan(t *testing.T) {
-	svc := NewService()
-
-	resp, err := svc.GetHolidays("JP", 2025)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-
-	if len(resp.Holidays) == 0 {
-		t.Error("expected non-empty holidays list for Japan")
-	}
-}
-
-func TestService_GetHolidays_Germany(t *testing.T) {
-	svc := NewService()
-
-	resp, err := svc.GetHolidays("DE", 2025)
-	if err != nil {
-		t.Fatalf("unexpected error: %v", err)
-	}
-
-	if len(resp.Holidays) == 0 {
-		t.Error("expected non-empty holidays list for Germany")
+			if resp.Country != tc.country {
+				t.Errorf("expected country %q, got %q", tc.country, resp.Country)
+			}
+			if resp.Year != tc.year {
+				t.Errorf("expected year %d, got %d", tc.year, resp.Year)
+			}
+			if len(resp.Holidays) == 0 {
+				t.Error("expected non-empty holidays list")
+			}
+		})
 	}
 }
 
