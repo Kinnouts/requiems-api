@@ -19,6 +19,13 @@
 
     <%= yield :head %>
 
+    <% en_path = I18n.locale == :en ? request.path : request.path.sub(%r{\A/es}, "") %>
+    <% es_path = I18n.locale == :es ? request.path : "/es#{request.path}" %>
+    <link rel="canonical" href="https://requiems.xyz<%= request.path %>">
+    <link rel="alternate" hreflang="en"        href="https://requiems.xyz<%= en_path %>">
+    <link rel="alternate" hreflang="es"        href="https://requiems.xyz<%= es_path %>">
+    <link rel="alternate" hreflang="x-default" href="https://requiems.xyz<%= en_path %>">
+
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
 

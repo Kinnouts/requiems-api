@@ -21,6 +21,15 @@ class ApplicationController < ActionController::Base
                   current_user_locale ||
                   http_accept_language.compatible_language_from(I18n.available_locales) ||
                   I18n.default_locale
+
+    # Redirect to the localized URL when locale was resolved from user preference or
+    # Accept-Language (not from the URL itself) so that the URL always reflects the
+    # page language — keeps canonical tags and hreflang accurate.
+    return if validated.present? || request.path.start_with?("/dashboard", "/admin", "/users")
+
+    if I18n.locale != I18n.default_locale && params[:locale].blank?
+      redirect_to url_for(locale: I18n.locale), status: :moved_permanently, allow_other_host: false
+    end
   end
 
   def current_user_locale
