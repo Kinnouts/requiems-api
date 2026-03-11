@@ -35,8 +35,9 @@ func (s *Service) Lookup(ctx context.Context, raw string) (LookupResponse, error
 
 	result, err := s.queryBIN(ctx, bin)
 	if errors.Is(err, pgx.ErrNoRows) && len(bin) == 8 {
-		// Fall back to the 6-digit prefix.
-		result, err = s.queryBIN(ctx, bin[:6])
+		// Fall back to the 6-digit prefix using a LEFT match so it finds both
+		// 6-digit rows stored as-is and 8-digit rows whose prefix matches.
+		result, err = s.queryBINByPrefix6(ctx, bin[:6])
 	}
 
 	if errors.Is(err, pgx.ErrNoRows) {
@@ -60,7 +61,7 @@ func (s *Service) Lookup(ctx context.Context, raw string) (LookupResponse, error
 	return result, nil
 }
 
-// queryBIN executes a single point-lookup against bin_data.
+// queryBIN executes a single point-lookup against bin_data by exact prefix.
 func (s *Service) queryBIN(ctx context.Context, prefix string) (LookupResponse, error) {
 	row := s.db.QueryRow(ctx, `
 		SELECT
@@ -71,6 +72,31 @@ func (s *Service) queryBIN(ctx context.Context, prefix string) (LookupResponse, 
 		FROM bin_data
 		WHERE bin_prefix = $1
 	`, prefix)
+
+	var r LookupResponse
+	err := row.Scan(
+		&r.BIN, &r.Scheme, &r.CardType, &r.CardLevel,
+		&r.IssuerName, &r.IssuerURL, &r.IssuerPhone,
+		&r.CountryCode, &r.CountryName,
+		&r.Prepaid, &r.Confidence,
+	)
+	return r, err
+}
+
+// queryBINByPrefix6 finds a row whose first 6 digits match prefix6, using the
+// functional index on LEFT(bin_prefix, 6). Used as a fallback when an 8-digit
+// exact lookup returns no rows.
+func (s *Service) queryBINByPrefix6(ctx context.Context, prefix6 string) (LookupResponse, error) {
+	row := s.db.QueryRow(ctx, `
+		SELECT
+			bin_prefix, scheme, card_type, card_level,
+			issuer_name, issuer_url, issuer_phone,
+			country_code, country_name,
+			prepaid, confidence
+		FROM bin_data
+		WHERE LEFT(bin_prefix, 6) = $1
+		LIMIT 1
+	`, prefix6)
 
 	var r LookupResponse
 	err := row.Scan(
@@ -145,6 +171,7 @@ func detectScheme(bin string) string {
 	}
 
 	n2 := atoiN(bin, 2)
+	n3 := atoiN(bin, 3)
 	n4 := atoiN(bin, 4)
 	n6 := atoiN(bin, 6)
 
@@ -193,8 +220,8 @@ func detectScheme(bin string) string {
 	case n4 == 6521 || n4 == 6522:
 		return "rupay"
 
-	// Discover: 644–649 (n4 6440–6499) and 65xx
-	case (n4 >= 6440 && n4 <= 6499) || n2 == 65:
+	// Discover: 644–649 and 65xx
+	case (n3 >= 644 && n3 <= 649) || n2 == 65:
 		return "discover"
 
 	// RuPay: 60 — check before UnionPay 62

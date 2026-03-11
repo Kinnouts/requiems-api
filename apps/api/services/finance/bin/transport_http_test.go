@@ -31,7 +31,7 @@ func (s *stubService) Lookup(_ context.Context, bin string) (LookupResponse, err
 // setupRouter wires up a stub service into a chi router for handler testing.
 func setupRouter(svc Looker) chi.Router {
 	r := chi.NewRouter()
-	RegisterRoutes(r, svc)
+	registerBINRoutes(r, svc)
 	return r
 }
 
