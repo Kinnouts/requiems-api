@@ -45,9 +45,8 @@ categories:
   - id: finance
     name: Finance
     icon: "💰"
-    short_description: Real-time stock prices, exchange rates, crypto values, and economic indicators for fintech apps.
-    description: Access real-time and historical financial data including stock prices, exchange rates, cryptocurrency values, interest rates, and economic indicators. Built for fintech apps, trading platforms, and business intelligence systems that require accurate, up-to-date financial information at scale.
-    coming_soon: true
+    short_description: Payment card data, exchange rates, and financial reference APIs for fintech apps.
+    description: Financial APIs for payment processing, card validation, and financial reference data. Look up BIN/IIN card metadata, validate payment instruments, and access financial reference datasets. Built for fintech apps, payment processors, and fraud detection systems.
 
   - id: security
     name: Security APIs
@@ -449,3 +448,19 @@ apis:
       - Conversion
       - Utilities
       - Measurement
+
+  # Finance APIs
+  - id: bin-lookup
+    name: BIN Lookup
+    categories:
+      - finance
+    description: Pass the first 6–8 digits of any payment card and get back the issuing bank, card network, type, and country
+    endpoints_count: 1
+    status: live
+    popular: true
+    documentation_url: /apis/bin-lookup
+    tags:
+      - BIN
+      - Payment Cards
+      - Fraud Prevention
+      - Fintech
