@@ -340,6 +340,19 @@ apis:
       - Calendar
       - Holidays
 
+  - id: holidays
+    name: Holidays
+    categories:
+      - places
+    description: Get a list of holidays for a specific country and year
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/holidays
+    tags:
+      - Calendar
+      - Holidays
+
   - id: world-time
     name: World Time
     categories:

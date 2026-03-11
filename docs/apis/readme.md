@@ -34,7 +34,7 @@ There are 5 places that track API status. They must be kept in sync:
 | `apps/api/services/text/router.go`          | advice, lorem, profanity, quotes, words |
 | `apps/api/services/entertainment/router.go` | horoscope                               |
 | `apps/api/services/misc/router.go`          | counter, unit conversion                |
-| `apps/api/services/places/router.go`        | timezone, working-days                  |
+| `apps/api/services/places/router.go`        | timezone, working-days, holidays        |
 | `apps/api/services/tech/router.go`          | phone, password, useragent              |
 | `apps/api/services/email/router.go`         | disposable email                        |
 
