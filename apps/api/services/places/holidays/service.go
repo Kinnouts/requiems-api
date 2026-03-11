@@ -31,6 +31,6 @@ func (s *Service) GetHolidays(country string, year int) (HolidayList, error) {
 		Country:  country,
 		Year:     year,
 		Holidays: holidayList,
-		Total:    len(holidays),
+		Total:    len(holidayList),
 	}, nil
 }
