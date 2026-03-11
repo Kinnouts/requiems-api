@@ -40,7 +40,8 @@ class Admin::AnalyticsController < ApplicationController
     free_requests = UsageLog
       .where(used_at: @start_date..@end_date)
       .joins(:user)
-      .where.missing(:subscription)
+      .joins("LEFT OUTER JOIN subscriptions ON subscriptions.user_id = users.id")
+      .where("subscriptions.id IS NULL OR subscriptions.plan_name = 'free'")
       .count
     @requests_by_plan["free"] = free_requests if free_requests > 0
 
@@ -52,6 +53,7 @@ class Admin::AnalyticsController < ApplicationController
       .average(:response_time_ms)
       .sort_by { |_, avg| -avg }
       .first(10)
+      .to_h
       .transform_values { |v| v.round(2) }
 
     # Top users by usage

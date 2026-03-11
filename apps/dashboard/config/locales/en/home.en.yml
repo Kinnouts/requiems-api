@@ -420,6 +420,7 @@ en:
       heading: "Meet Our Team"
       subheading: "The people building production-ready APIs for developers worldwide."
       company_prefix: "All team members are part of"
+      company_sentence: "All team members are part of %{company_link}"
       linkedin_cta: "Connect on LinkedIn"
       members:
         eliaz:
@@ -513,6 +514,7 @@ en:
         text: "We do not log the content of API requests or responses. Usage metadata (timestamps, endpoints, status codes) is retained for billing and analytics. See our"
         policy_link: "Privacy Policy"
         policy_suffix: "for details."
+        full: "We do not log the content of API requests or responses. Usage metadata (timestamps, endpoints, status codes) is retained for billing and analytics. See our %{link} for details."
       ip:
         heading: "6. Intellectual Property"
         text: "The API, documentation, and all related materials are owned by Bobadilla Tech and protected by copyright and other intellectual property laws. You may not copy, modify, or create derivative works without permission."
@@ -638,7 +640,7 @@ en:
         a1_html: "Getting started is easy! Sign up for a free account, generate your API key from the dashboard, and start making requests. Check out our %{docs_link} for detailed integration guides."
         docs_link: "documentation"
         q2: "Do I need a credit card to start?"
-        a2: "No! Our free plan includes 10,000 monthly credits with no credit card required. Perfect for testing and small projects. You can upgrade anytime when you need more."
+        a2: "No! Our free plan includes 500 monthly requests with no credit card required. Perfect for testing and small projects. You can upgrade anytime when you need more."
         q3: "What programming languages do you support?"
         a3: "Our REST API works with any programming language that can make HTTP requests. We provide code examples for popular languages including JavaScript/Node.js, Python, PHP, Ruby, Go, and Java."
       authentication:
@@ -663,10 +665,10 @@ en:
         heading: "Rate Limits"
         q1: "What are the rate limits?"
         a1: "Rate limits vary by plan:"
-        free: "Free: 100 requests/minute"
-        developer: "Developer: 300 requests/minute"
-        business: "Business: 1,000 requests/minute"
-        professional: "Professional: 5,000 requests/minute"
+        free: "Free: 30 requests/minute"
+        developer: "Developer: 5,000 requests/minute"
+        business: "Business: 10,000 requests/minute"
+        professional: "Professional: 50,000 requests/minute"
         q2: "How should I handle rate limit errors?"
         a2_html: "When you receive a 429 error, implement exponential backoff. Wait a few seconds and retry. Check the <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">Retry-After</code> header for the recommended wait time. Consider upgrading your plan if you consistently hit rate limits."
       support:

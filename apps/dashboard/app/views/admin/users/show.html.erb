@@ -100,17 +100,17 @@
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-500 mb-1">Billing Cycle</label>
-            <p class="text-sm text-gray-900"><%= @user.subscription.billing_cycle&.titleize || "—" %></p>
+            <p class="text-sm text-gray-900"><%= @user.subscription.plan&.titleize || "—" %></p>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-500 mb-1">Started</label>
-            <p class="text-sm text-gray-900"><%= @user.subscription.billing_cycle_start&.strftime("%B %d, %Y") || "—" %></p>
+            <p class="text-sm text-gray-900"><%= @user.subscription.current_period_start&.strftime("%B %d, %Y") || "—" %></p>
           </div>
           <% if @user.subscription.cancel_at_period_end? %>
             <div>
               <%= render "partials/shared/badge", text: "Canceling at Period End", variant: "warning", size: "xs" %>
               <p class="text-xs text-gray-600 mt-1">
-                Ends: <%= @user.subscription.billing_cycle_end&.strftime("%B %d, %Y") || "—" %>
+                Ends: <%= @user.subscription.current_period_end&.strftime("%B %d, %Y") || "—" %>
               </p>
             </div>
           <% end %>

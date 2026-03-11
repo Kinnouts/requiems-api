@@ -6,7 +6,7 @@
     <%= t("dashboard.overview.welcome", name: current_user.display_name) %>
   </h1>
   <p class="text-blue-100">
-    <%= t("dashboard.overview.subtitle", date: Date.current.strftime("%B %Y")) %>
+    <%= t("dashboard.overview.subtitle", date: l(Date.current, format: :month_year)) %>
   </p>
 </div>
 
@@ -229,13 +229,13 @@
         <div class="space-y-3">
           <div>
             <p class="text-sm text-gray-600 dark:text-gray-300"><%= t("dashboard.overview.current_plan") %></p>
-            <p class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= @current_plan.titleize %></p>
+            <p class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= t("dashboard.plans.#{@current_plan}") %></p>
           </div>
 
           <% if @next_billing_date %>
             <div>
               <p class="text-sm text-gray-600 dark:text-gray-300"><%= t("dashboard.overview.next_billing") %></p>
-              <p class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= @next_billing_date.strftime("%B %d, %Y") %></p>
+              <p class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= l(@next_billing_date, format: :long) %></p>
             </div>
           <% end %>
         </div>

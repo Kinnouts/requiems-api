@@ -20,7 +20,7 @@
         </h2>
 
         <div class="space-y-4">
-          <% t("home.error_codes.codes.success").each do |code| %>
+          <% Array(t("home.error_codes.codes.success", default: [])).each do |code| %>
             <div class="border-l-4 border-green-500 bg-green-50 dark:bg-green-900/20 p-4 rounded-r-lg">
               <div class="flex items-baseline mb-2">
                 <span class="text-lg font-bold text-green-900 dark:text-green-300 mr-3"><%= code[:code] %></span>
@@ -45,7 +45,7 @@
         </h2>
 
         <div class="space-y-4">
-          <% t("home.error_codes.codes.client_errors").each do |code| %>
+          <% Array(t("home.error_codes.codes.client_errors", default: [])).each do |code| %>
             <div class="border-l-4 border-amber-500 bg-amber-50 dark:bg-yellow-900/20 p-4 rounded-r-lg">
               <div class="flex items-baseline mb-2">
                 <span class="text-lg font-bold text-amber-900 dark:text-yellow-300 mr-3"><%= code[:code] %></span>
@@ -70,7 +70,7 @@
         </h2>
 
         <div class="space-y-4">
-          <% t("home.error_codes.codes.server_errors").each do |code| %>
+          <% Array(t("home.error_codes.codes.server_errors", default: [])).each do |code| %>
             <div class="border-l-4 border-red-500 bg-red-50 dark:bg-red-900/20 p-4 rounded-r-lg">
               <div class="flex items-baseline mb-2">
                 <span class="text-lg font-bold text-red-900 dark:text-red-300 mr-3"><%= code[:code] %></span>

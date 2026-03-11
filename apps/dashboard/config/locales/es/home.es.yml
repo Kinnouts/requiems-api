@@ -48,8 +48,8 @@ es:
         eu_badge: "UE"
         eu_desc: "Todos los centros de datos ubicados en la Unión Europea. Compatible con GDPR."
         payments_title: "Pagos seguros"
-        payments_badge: "Stripe"
-        payments_desc: "Todos los pagos procesados a través de Stripe. Nunca vemos ni almacenamos tus datos de pago."
+        payments_badge: "LemonSqueezy"
+        payments_desc: "Todos los pagos procesados a través de LemonSqueezy. Nunca vemos ni almacenamos tus datos de pago."
         gdpr_title: "Compatible con GDPR / CCPA"
         gdpr_badge: "Cumple"
         gdpr_desc: "Cumplimiento total con GDPR, CCPA y regulaciones internacionales de privacidad."
@@ -420,6 +420,7 @@ es:
       heading: "Conoce a nuestro equipo"
       subheading: "Las personas que construyen APIs listas para producción para desarrolladores de todo el mundo."
       company_prefix: "Todos los miembros del equipo forman parte de"
+      company_sentence: "Todos los miembros del equipo forman parte de %{company_link}"
       linkedin_cta: "Conectar en LinkedIn"
       members:
         eliaz:
@@ -438,7 +439,7 @@ es:
 
     status:
       title: "Estado de la API - Requiems API"
-      all_operational: "Todos los sistemas operativos"
+      all_operational: "Todos los sistemas están operativos"
       all_operational_desc: "Todos los servicios de Requiems API funcionan correctamente"
       operational: "Operativo"
       services:
@@ -513,6 +514,7 @@ es:
         text: "No registramos el contenido de las solicitudes o respuestas de la API. Los metadatos de uso (marcas de tiempo, endpoints, códigos de estado) se conservan para facturación y análisis. Consulta nuestra"
         policy_link: "Política de privacidad"
         policy_suffix: "para más detalles."
+        full: "No registramos el contenido de las solicitudes o respuestas de la API. Los metadatos de uso (marcas de tiempo, endpoints, códigos de estado) se conservan para facturación y análisis. Consulta nuestra %{link} para más detalles."
       ip:
         heading: "6. Propiedad intelectual"
         text: "La API, la documentación y todos los materiales relacionados son propiedad de Bobadilla Tech y están protegidos por derechos de autor y otras leyes de propiedad intelectual. No puedes copiar, modificar ni crear obras derivadas sin permiso."
@@ -638,7 +640,7 @@ es:
         a1_html: "¡Empezar es fácil! Crea una cuenta gratuita, genera tu clave API desde el panel y comienza a hacer solicitudes. Consulta nuestra %{docs_link} para guías detalladas de integración."
         docs_link: "documentación"
         q2: "¿Necesito una tarjeta de crédito para empezar?"
-        a2: "¡No! Nuestro plan gratuito incluye 10.000 créditos mensuales sin necesidad de tarjeta de crédito. Perfecto para pruebas y proyectos pequeños. Puedes actualizar en cualquier momento cuando necesites más."
+        a2: "¡No! Nuestro plan gratuito incluye 500 solicitudes mensuales sin necesidad de tarjeta de crédito. Perfecto para pruebas y proyectos pequeños. Puedes actualizar en cualquier momento cuando necesites más."
         q3: "¿Qué lenguajes de programación admiten?"
         a3: "Nuestra API REST funciona con cualquier lenguaje de programación que pueda hacer solicitudes HTTP. Proporcionamos ejemplos de código para lenguajes populares como JavaScript/Node.js, Python, PHP, Ruby, Go y Java."
       authentication:
@@ -663,10 +665,10 @@ es:
         heading: "Límites de tasa"
         q1: "¿Cuáles son los límites de tasa?"
         a1: "Los límites de tasa varían según el plan:"
-        free: "Gratuito: 100 solicitudes/minuto"
-        developer: "Desarrollador: 300 solicitudes/minuto"
-        business: "Negocio: 1.000 solicitudes/minuto"
-        professional: "Profesional: 5.000 solicitudes/minuto"
+        free: "Gratuito: 30 solicitudes/minuto"
+        developer: "Desarrollador: 5.000 solicitudes/minuto"
+        business: "Negocio: 10.000 solicitudes/minuto"
+        professional: "Profesional: 50.000 solicitudes/minuto"
         q2: "¿Cómo debo manejar los errores de límite de tasa?"
         a2_html: "Cuando recibas un error 429, implementa retroceso exponencial. Espera unos segundos y vuelve a intentarlo. Consulta el encabezado <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">Retry-After</code> para el tiempo de espera recomendado. Considera actualizar tu plan si constantemente alcanzas los límites de tasa."
       support:

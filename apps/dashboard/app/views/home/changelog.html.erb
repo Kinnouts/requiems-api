@@ -19,7 +19,7 @@
             <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">v0.1.0</h2>
             <%= render "partials/shared/badge", text: t("home.changelog.badge_latest"), variant: "success", size: "sm", class_names: "ml-3" %>
           </div>
-          <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">February 17, 2026</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-4"><%= l(Date.new(2026, 2, 17), format: :long) %></p>
 
           <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">✅ <%= t("home.changelog.v010.ci.heading") %></h3>
           <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-4">
@@ -48,7 +48,7 @@
           <div class="flex items-center mb-2">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">v0.0.2</h2>
           </div>
-          <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">February 8, 2026</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-4"><%= l(Date.new(2026, 2, 8), format: :long) %></p>
 
           <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">🚀 <%= t("home.changelog.v002.deploy.heading") %></h3>
           <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-4">
@@ -70,7 +70,7 @@
           <div class="flex items-center mb-2">
             <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">v0.0.1</h2>
           </div>
-          <p class="text-sm text-gray-600 dark:text-gray-400 mb-4">December 15, 2025</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mb-4"><%= l(Date.new(2025, 12, 15), format: :long) %></p>
 
           <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">🎯 <%= t("home.changelog.v001.init.heading") %></h3>
           <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-4">

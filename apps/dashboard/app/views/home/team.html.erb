@@ -8,7 +8,7 @@
         <%= t("home.team.subheading") %>
       </p>
       <p class="text-lg text-gray-500 dark:text-gray-400 mt-4">
-        <%= t("home.team.company_prefix") %> <a href="https://bobadilla.tech" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700 font-semibold">Bobadilla Technologies</a>
+        <%= t("home.team.company_sentence", company_link: link_to("Bobadilla Technologies", "https://bobadilla.tech", target: "_blank", rel: "noopener noreferrer", class: "text-blue-600 hover:text-blue-700 font-semibold")).html_safe %>
       </p>
     </div>
 

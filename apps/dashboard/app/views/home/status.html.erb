@@ -80,7 +80,7 @@
       </div>
 
       <div class="text-center text-gray-600 dark:text-gray-400">
-        <p class="mb-2"><%= t("home.status.last_updated", datetime: Time.current.strftime("%B %d, %Y at %I:%M %p %Z")) %></p>
+        <p class="mb-2"><%= t("home.status.last_updated", datetime: l(Time.current, format: :status_timestamp)) %></p>
         <p class="text-sm">
           <%= t("home.status.having_issues") %> <%= link_to t("home.status.contact_support"), contact_path, class: "text-blue-600 hover:text-blue-700" %>
         </p>

@@ -5,7 +5,7 @@ class LocaleController < ApplicationController
     locale = params[:locale].presence
     locale = nil unless I18n.available_locales.map(&:to_s).include?(locale)
 
-    current_user.update_column(:locale, locale) if user_signed_in?
+    current_user.update(locale: locale) if user_signed_in?
 
     I18n.locale = locale&.to_sym || I18n.default_locale
 
@@ -20,7 +20,8 @@ class LocaleController < ApplicationController
 
     uri = URI.parse(ref)
     # Strip existing locale prefix from path
-    path = uri.path.sub(%r{\A/(en|es)(?=/|\z)}, "")
+    locale_pattern = I18n.available_locales.map { |l| Regexp.escape(l.to_s) }.join("|")
+    path = uri.path.sub(%r{\A/(#{locale_pattern})(?=/|\z)}, "")
     path = "/" if path.blank?
 
     # Prepend new locale prefix if non-default
