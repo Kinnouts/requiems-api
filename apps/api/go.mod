@@ -11,7 +11,6 @@ require (
 )
 
 require (
-	github.com/bobadilla-tech/holidays-per-country v1.0.1 // indirect
 	github.com/boyter/go-string v1.0.5 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
@@ -36,6 +35,8 @@ require (
 require (
 	github.com/TwiN/go-away v1.8.1
 	github.com/bobadilla-tech/business-days-calculator v1.1.0
+	github.com/bobadilla-tech/go-email-normalizer v1.0.1
+	github.com/bobadilla-tech/holidays-per-country v1.0.1
 	github.com/boombuler/barcode v1.1.0
 	github.com/jaswdr/faker/v2 v2.9.1
 	github.com/medama-io/go-useragent v1.2.3
