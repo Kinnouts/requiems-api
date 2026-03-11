@@ -1,6 +1,7 @@
 package holidays
 
 import (
+	"strings"
 	"testing"
 )
 
@@ -96,6 +97,7 @@ func TestService_GetHolidays_DateFormat(t *testing.T) {
 	for _, h := range resp.Holidays {
 		if len(h.Date) != 10 {
 			t.Errorf("expected date in YYYY-MM-DD format, got %q", h.Date)
+			continue
 		}
 		if h.Date[4] != '-' || h.Date[7] != '-' {
 			t.Errorf("expected date in YYYY-MM-DD format, got %q", h.Date)
@@ -110,22 +112,7 @@ func TestService_GetHolidays_InvalidCountry(t *testing.T) {
 	if err == nil {
 		t.Fatal("expected error for invalid country code, got nil")
 	}
-	if err != nil {
-		if !contains(err.Error(), "no holidays found") {
-			t.Errorf("expected error message to contain 'no holidays found', got %q", err.Error())
-		}
+	if !strings.Contains(err.Error(), "no holidays found") {
+		t.Errorf("expected error message to contain 'no holidays found', got %q", err.Error())
 	}
-}
-
-func contains(s, substr string) bool {
-	return len(s) >= len(substr) && (s == substr || len(s) > 0 && containsAt(s, substr))
-}
-
-func containsAt(s, substr string) bool {
-	for i := 0; i <= len(s)-len(substr); i++ {
-		if s[i:i+len(substr)] == substr {
-			return true
-		}
-	}
-	return false
 }
