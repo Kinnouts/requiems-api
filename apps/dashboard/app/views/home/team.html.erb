@@ -1,14 +1,14 @@
-<% content_for :title, "Our Team - Requiems API" %>
+<% content_for :title, t("home.team.title") %>
 
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
   <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
-      <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">Meet Our Team</h1>
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4"><%= t("home.team.heading") %></h1>
       <p class="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-        The people building production-ready APIs for developers worldwide.
+        <%= t("home.team.subheading") %>
       </p>
       <p class="text-lg text-gray-500 dark:text-gray-400 mt-4">
-        All team members are part of <a href="https://bobadilla.tech" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700 font-semibold">Bobadilla Technologies</a>
+        <%= t("home.team.company_prefix") %> <a href="https://bobadilla.tech" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700 font-semibold">Bobadilla Technologies</a>
       </p>
     </div>
 
@@ -22,9 +22,9 @@
         </div>
         <div class="p-6">
           <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">Eliaz Bobadilla</h3>
-          <p class="text-sm font-medium text-blue-600 dark:text-blue-400 mb-3">Backend Engineer, Founding Engineer</p>
+          <p class="text-sm font-medium text-blue-600 dark:text-blue-400 mb-3"><%= t("home.team.members.eliaz.role") %></p>
           <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">
-            Leading the backend architecture and building the core infrastructure that powers Requiems API.
+            <%= t("home.team.members.eliaz.bio") %>
           </p>
           <a href="https://www.linkedin.com/in/ultirequiem/"
              target="_blank"
@@ -33,7 +33,7 @@
             <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
               <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
             </svg>
-            Connect on LinkedIn
+            <%= t("home.team.linkedin_cta") %>
           </a>
         </div>
       </div>
@@ -47,9 +47,9 @@
         </div>
         <div class="p-6">
           <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">Leonardo</h3>
-          <p class="text-sm font-medium text-blue-600 dark:text-blue-400 mb-3">Backend Engineer, Founding Engineer</p>
+          <p class="text-sm font-medium text-blue-600 dark:text-blue-400 mb-3"><%= t("home.team.members.leonardo.role") %></p>
           <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">
-            Building scalable backend systems and optimizing API performance for our growing user base.
+            <%= t("home.team.members.leonardo.bio") %>
           </p>
           <a href="https://www.linkedin.com/in/crydafan/"
              target="_blank"
@@ -58,7 +58,7 @@
             <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
               <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
             </svg>
-            Connect on LinkedIn
+            <%= t("home.team.linkedin_cta") %>
           </a>
         </div>
       </div>
@@ -72,9 +72,9 @@
         </div>
         <div class="p-6">
           <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">Alexandra Flores</h3>
-          <p class="text-sm font-medium text-blue-600 dark:text-blue-400 mb-3">Founder, Go-to-Market</p>
+          <p class="text-sm font-medium text-blue-600 dark:text-blue-400 mb-3"><%= t("home.team.members.alexandra.role") %></p>
           <p class="text-gray-600 dark:text-gray-400 mb-4 text-sm">
-            Driving our go-to-market strategy and building relationships with developers and enterprises worldwide.
+            <%= t("home.team.members.alexandra.bio") %>
           </p>
           <a href="https://www.linkedin.com/in/alexandra-flores-089b35351/"
              target="_blank"
@@ -83,19 +83,18 @@
             <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24">
               <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
             </svg>
-            Connect on LinkedIn
+            <%= t("home.team.linkedin_cta") %>
           </a>
         </div>
       </div>
     </div>
 
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 md:p-12 text-center">
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">Join Our Team</h2>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4"><%= t("home.team.join.heading") %></h2>
       <p class="text-gray-700 dark:text-gray-300 mb-6 max-w-2xl mx-auto">
-        We're always looking for talented engineers and builders who are passionate about creating developer-first products.
-        Interested in joining us?
+        <%= t("home.team.join.text") %>
       </p>
-      <%= link_to "Get in touch", contact_path, class: "inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors" %>
+      <%= link_to t("home.team.join.cta"), contact_path, class: "inline-block bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors" %>
     </div>
   </div>
 </div>

@@ -1,90 +1,81 @@
-<% content_for :title, "Privacy Policy - Requiems API" %>
+<% content_for :title, t("home.privacy.title") %>
 
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 md:p-12">
-      <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6">Privacy Policy</h1>
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6"><%= t("home.privacy.heading") %></h1>
 
       <p class="text-sm text-gray-600 dark:text-gray-400 mb-8">
-        Last updated: <%= Time.current.strftime("%B %d, %Y") %>
+        <%= t("home.privacy.last_updated", date: Time.current.strftime("%B %d, %Y")) %>
       </p>
 
       <div class="prose prose-lg max-w-none">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">Overview</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.privacy.overview.heading") %></h2>
         <p class="text-gray-700 dark:text-gray-300 mb-6">
-          Requiems API ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect,
-          use, disclose, and safeguard your information when you use our API platform and services.
+          <%= t("home.privacy.overview.text") %>
         </p>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">Information We Collect</h2>
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Account Information</h3>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.privacy.information_we_collect.heading") %></h2>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.privacy.information_we_collect.account.heading") %></h3>
         <p class="text-gray-700 dark:text-gray-300 mb-4">
-          When you register for an account, we collect your email address, name, and billing information.
+          <%= t("home.privacy.information_we_collect.account.text") %>
         </p>
 
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">API Usage Data</h3>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.privacy.information_we_collect.api_usage.heading") %></h3>
         <p class="text-gray-700 dark:text-gray-300 mb-4">
-          We collect metadata about your API requests including timestamps, endpoint accessed, and response codes.
-          We do NOT log the actual request or response data sent through our APIs.
+          <%= t("home.privacy.information_we_collect.api_usage.text") %>
         </p>
 
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Technical Information</h3>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.privacy.information_we_collect.technical.heading") %></h3>
         <p class="text-gray-700 dark:text-gray-300 mb-6">
-          We automatically collect IP addresses, user agent strings, and other technical information for security and operational purposes.
+          <%= t("home.privacy.information_we_collect.technical.text") %>
         </p>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">How We Use Your Information</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.privacy.how_we_use.heading") %></h2>
         <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-6">
-          <li>Provide, maintain, and improve our services</li>
-          <li>Process your transactions and send related information</li>
-          <li>Send you technical notices, updates, and support messages</li>
-          <li>Monitor and analyze usage patterns and trends</li>
-          <li>Detect, prevent, and address technical issues and fraud</li>
-          <li>Comply with legal obligations</li>
+          <% t("home.privacy.how_we_use.items").each do |item| %>
+            <li><%= item %></li>
+          <% end %>
         </ul>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">Data Storage and Security</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.privacy.data_storage.heading") %></h2>
         <p class="text-gray-700 dark:text-gray-300 mb-4">
-          All data is stored on servers located in the European Union. We implement industry-standard security measures including:
+          <%= t("home.privacy.data_storage.text") %>
         </p>
         <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-6">
-          <li>TLS 1.3 encryption for data in transit</li>
-          <li>AES-256 encryption for data at rest</li>
-          <li>Regular security audits and monitoring</li>
-          <li>Access controls and authentication mechanisms</li>
+          <% t("home.privacy.data_storage.items").each do |item| %>
+            <li><%= item %></li>
+          <% end %>
         </ul>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">Data Retention</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.privacy.data_retention.heading") %></h2>
         <p class="text-gray-700 dark:text-gray-300 mb-6">
-          We retain your account information for as long as your account is active. Usage logs are retained for 90 days.
-          You may request deletion of your account and associated data at any time.
+          <%= t("home.privacy.data_retention.text") %>
         </p>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">Your Rights (GDPR)</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.privacy.gdpr.heading") %></h2>
         <p class="text-gray-700 dark:text-gray-300 mb-4">
-          If you are located in the European Economic Area, you have the following rights:
+          <%= t("home.privacy.gdpr.intro") %>
         </p>
         <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-6">
-          <li>Right to access your personal data</li>
-          <li>Right to rectification of inaccurate data</li>
-          <li>Right to erasure ("right to be forgotten")</li>
-          <li>Right to restrict processing</li>
-          <li>Right to data portability</li>
-          <li>Right to object to processing</li>
+          <% t("home.privacy.gdpr.items").each do |item| %>
+            <li><%= item %></li>
+          <% end %>
         </ul>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">Third-Party Services</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.privacy.third_party.heading") %></h2>
         <p class="text-gray-700 dark:text-gray-300 mb-4">
-          We use the following third-party services:
+          <%= t("home.privacy.third_party.text") %>
         </p>
         <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-6">
-          <li><strong>LemonSqueezy:</strong> Payment processing (see their privacy policy)</li>
-          <li><strong>Cloudflare:</strong> Infrastructure and DDoS protection</li>
+          <% t("home.privacy.third_party.items").each do |item| %>
+            <li><%= raw item %></li>
+          <% end %>
         </ul>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">Contact Us</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.privacy.contact.heading") %></h2>
         <p class="text-gray-700 dark:text-gray-300 mb-6">
-          For privacy-related questions or to exercise your rights, contact us at:
+          <%= t("home.privacy.contact.text") %>
           <br/>
           <a href="mailto:eliaz@bobadilla.tech" class="text-blue-600 hover:text-blue-700 font-medium">eliaz@bobadilla.tech</a>
         </p>
