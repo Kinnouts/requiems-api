@@ -126,3 +126,24 @@ func TestHolidays_NoParams(t *testing.T) {
 		t.Errorf("expected status 400, got %d", w.Code)
 	}
 }
+
+func TestHolidays_LowercaseCountry(t *testing.T) {
+	r := setupRouter(t)
+
+	req := httptest.NewRequest(http.MethodGet, "/holidays?country=us&year=2025", http.NoBody)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected status 200, got %d: %s", w.Code, w.Body.String())
+	}
+
+	var resp httpx.Response[HolidayList]
+	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
+
+	if resp.Data.Country != "US" {
+		t.Errorf("expected country 'US', got %q", resp.Data.Country)
+	}
+}
