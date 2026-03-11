@@ -10,6 +10,8 @@ class ApplicationController < ActionController::Base
   # Changes to the importmap will invalidate the etag for HTML responses
   stale_when_importmap_changes
 
+  NON_LOCALE_CONTROLLERS = %w[rails/health sitemap api_proxy locale webhooks/lemonsqueezy].freeze
+
   before_action :set_locale
 
   private
@@ -22,13 +24,17 @@ class ApplicationController < ActionController::Base
                   http_accept_language.compatible_language_from(I18n.available_locales) ||
                   I18n.default_locale
 
-    # Redirect to the localized URL when locale was resolved from user preference or
-    # Accept-Language (not from the URL itself) so that the URL always reflects the
-    # page language — keeps canonical tags and hreflang accurate.
-    return if validated.present? || request.path.start_with?("/dashboard", "/admin", "/users")
+    # Skip redirect for non-locale-scoped controllers (sitemap, health check, webhooks, etc.).
+    # Cannot use request.path_parameters.key?(:locale) because Rails does not add optional
+    # route segments to path_parameters when they are absent from the URL.
+    return if NON_LOCALE_CONTROLLERS.include?(controller_path)
 
-    if I18n.locale != I18n.default_locale && params[:locale].blank?
-      redirect_to url_for(locale: I18n.locale), status: :moved_permanently, allow_other_host: false
+    # Redirect all un-prefixed locale-scoped URLs to their explicit /{locale}/... equivalent
+    # so every public page has a single canonical URL (e.g. / → /en/, /pricing → /en/pricing).
+    if params[:locale].blank?
+      target = "/#{I18n.locale}#{request.path}"
+      target += "?#{request.query_string}" if request.query_string.present?
+      redirect_to target, status: :moved_permanently, allow_other_host: false
     end
   end
 
@@ -37,6 +43,6 @@ class ApplicationController < ActionController::Base
   end
 
   def default_url_options
-    { locale: I18n.locale == I18n.default_locale ? nil : I18n.locale }
+    { locale: I18n.locale }
   end
 end

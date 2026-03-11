@@ -1,9 +1,9 @@
 User-agent: *
 Allow: /
 
-Disallow: /dashboard/
-Disallow: /admin/
-Disallow: /users/
+Disallow: /en/dashboard/
+Disallow: /en/admin/
+Disallow: /en/users/
 Disallow: /es/dashboard/
 Disallow: /es/admin/
 Disallow: /es/users/
