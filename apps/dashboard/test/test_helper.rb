@@ -30,10 +30,6 @@ class ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
   setup do
-    # Use the default locale explicitly so requests include the locale prefix
-    # (e.g. /en/admin/users) and bypass the set_locale redirect that enforces
-    # canonical locale-prefixed URLs. Using a symbol/string avoids the locale
-    # slot accidentally consuming a positional model argument in path helpers.
     self.default_url_options = { locale: I18n.default_locale }
   end
 end
