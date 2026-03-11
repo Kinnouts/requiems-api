@@ -19,13 +19,15 @@ func openDB(ctx context.Context, dsn string) (*pgx.Conn, error) {
 }
 
 func upsertRecords(ctx context.Context, conn *pgx.Conn, records map[string]RawBINRecord) (inserted, updated int, err error) {
-	// 1. Create staging table.
+	// 1. Create staging table and clear any rows from a prior run in this session.
 	_, err = conn.Exec(ctx, `
 		CREATE TEMP TABLE IF NOT EXISTS bin_data_stage (LIKE bin_data INCLUDING ALL)
 	`)
-	
 	if err != nil {
 		return 0, 0, fmt.Errorf("create staging table: %w", err)
+	}
+	if _, err = conn.Exec(ctx, `TRUNCATE TABLE bin_data_stage`); err != nil {
+		return 0, 0, fmt.Errorf("truncate staging table: %w", err)
 	}
 
 	// 2. Bulk copy into staging via the PostgreSQL COPY protocol.

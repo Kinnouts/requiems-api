@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"io"
 	"net/http"
-	"strconv"
 	"strings"
 	"time"
 )
@@ -214,5 +213,4 @@ func printTopN(m map[string]int, n int) {
 		pairs[i], pairs[max] = pairs[max], pairs[i]
 		fmt.Printf("  %-20s %d\n", pairs[i].k, pairs[i].v)
 	}
-	_ = strconv.Itoa(0) // keep import used
 }

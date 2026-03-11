@@ -18,9 +18,16 @@ import (
 )
 
 func main() {
+	const (
+		defaultIannuttallURL    = "https://raw.githubusercontent.com/iannuttall/binlist-data/master/binlist-data.csv"
+		defaultVenelinkochevURL = "https://raw.githubusercontent.com/venelinkochev/bin-list-data/master/bin-list-data.csv"
+	)
+
 	dbURL := flag.String("db-url", os.Getenv("DATABASE_URL"), "PostgreSQL connection string (required)")
 	dryRun := flag.Bool("dry-run", false, "Parse and normalise records but do not write to the database")
 	verbose := flag.Bool("verbose", false, "Log each record as it is processed")
+	urlA := flag.String("url-iannuttall", defaultIannuttallURL, "Override URL for iannuttall/binlist-data CSV")
+	urlB := flag.String("url-venelinkochev", defaultVenelinkochevURL, "Override URL for venelinkochev/bin-list-data CSV")
 
 	flag.Parse()
 
@@ -31,13 +38,13 @@ func main() {
 	sources := []Source{
 		{
 			Name:       "iannuttall",
-			URL:        "https://raw.githubusercontent.com/iannuttall/binlist-data/master/binlist-data.csv",
+			URL:        *urlA,
 			Confidence: 0.75,
 			Parse:      parseIannuttall,
 		},
 		{
 			Name:       "venelinkochev",
-			URL:        "https://raw.githubusercontent.com/venelinkochev/bin-list-data/master/bin-list-data.csv",
+			URL:        *urlB,
 			Confidence: 0.80,
 			Parse:      parseVenelinkochev,
 		},

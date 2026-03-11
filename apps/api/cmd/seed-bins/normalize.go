@@ -84,16 +84,20 @@ func normaliseCardType(s string) string {
 // normaliseCardLevel maps source category strings to canonical levels.
 func normaliseCardLevel(s string) string {
 	switch strings.ToUpper(strings.TrimSpace(s)) {
-	case "STANDARD", "CLASSIC", "NORMAL", "REGULAR", "BASIC", "TRADITIONAL":
+	case "CLASSIC", "NORMAL", "REGULAR", "BASIC", "TRADITIONAL":
 		return "classic"
+	case "STANDARD":
+		return "standard"
 	case "GOLD", "PREMIER", "PREFERRED":
 		return "gold"
 	case "PLATINUM", "WORLD", "PREMIUM", "TITANIUM", "TITANIO":
 		return "platinum"
 	case "INFINITE", "WORLD ELITE", "BLACK", "ELITE", "ULTRA":
 		return "infinite"
-	case "BUSINESS", "CORPORATE", "PURCHASING":
+	case "BUSINESS", "PURCHASING":
 		return "business"
+	case "CORPORATE":
+		return "corporate"
 	case "SIGNATURE":
 		return "signature"
 	default:
