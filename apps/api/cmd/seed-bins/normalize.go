@@ -10,7 +10,11 @@ import (
 func normalise(r RawBINRecord) RawBINRecord {
 	r.BINPrefix = strings.TrimSpace(r.BINPrefix)
 	r.Scheme = normaliseScheme(r.Scheme)
-	r.CardType = normaliseCardType(r.CardType)
+	normType := normaliseCardType(r.CardType)
+	r.CardType = normType
+	if normType == "prepaid" {
+		r.Prepaid = true
+	}
 	r.CardLevel = normaliseCardLevel(r.CardLevel)
 	r.CountryCode = strings.ToUpper(strings.TrimSpace(r.CountryCode))
 	r.CountryName = strings.TrimSpace(r.CountryName)
@@ -260,8 +264,8 @@ func detectScheme(bin string) string {
 	case n4 == 6521 || n4 == 6522:
 		return "rupay"
 
-	// Discover: 644–649, 65 (Maestro 6304 already handled above)
-	case n2 >= 64 && n2 <= 65:
+	// Discover: 644–649 (n4 6440–6499) and 65xx
+	case (n4 >= 6440 && n4 <= 6499) || n2 == 65:
 		return "discover"
 
 	// RuPay: 60 — check before UnionPay 62

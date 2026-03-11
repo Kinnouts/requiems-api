@@ -4,7 +4,7 @@
 // Usage:
 //
 //	go run ./cmd/seed-bins --db-url "postgres://requiem:requiem@localhost:5432/requiem"
-//	go run ./cmd/seed-bins --db-url "..." --dry-run
+//	go run ./cmd/seed-bins --dry-run
 //	go run ./cmd/seed-bins --db-url "..." --verbose
 package main
 
@@ -23,7 +23,7 @@ func main() {
 		defaultVenelinkochevURL = "https://raw.githubusercontent.com/venelinkochev/bin-list-data/master/bin-list-data.csv"
 	)
 
-	dbURL := flag.String("db-url", os.Getenv("DATABASE_URL"), "PostgreSQL connection string (required)")
+	dbURL := flag.String("db-url", os.Getenv("DATABASE_URL"), "PostgreSQL connection string (required unless --dry-run)")
 	dryRun := flag.Bool("dry-run", false, "Parse and normalise records but do not write to the database")
 	verbose := flag.Bool("verbose", false, "Log each record as it is processed")
 	urlA := flag.String("url-iannuttall", defaultIannuttallURL, "Override URL for iannuttall/binlist-data CSV")
@@ -31,8 +31,8 @@ func main() {
 
 	flag.Parse()
 
-	if *dbURL == "" {
-		log.Fatal("--db-url is required (or set DATABASE_URL env var)")
+	if *dbURL == "" && !*dryRun {
+		log.Fatal("--db-url is required when not using --dry-run (or set DATABASE_URL env var)")
 	}
 
 	sources := []Source{
@@ -53,18 +53,17 @@ func main() {
 	ctx := context.Background()
 	start := time.Now()
 
-	
 	all := make([]RawBINRecord, 0, 500_000)
-	
+
 	for _, src := range sources {
 		log.Printf("[%s] downloading from %s", src.Name, src.URL)
 		records, err := fetchAndParse(src)
-	
+
 		if err != nil {
 			log.Printf("[%s] WARN: skipping source: %v", src.Name, err)
 			continue
 		}
-	
+
 		log.Printf("[%s] parsed %d records", src.Name, len(records))
 		all = append(all, records...)
 	}
@@ -92,20 +91,17 @@ func main() {
 	}
 
 	conn, err := openDB(ctx, *dbURL)
-
 	if err != nil {
 		log.Fatalf("database connection failed: %v", err)
 	}
 
-	defer conn.Close(ctx)
-
 	inserted, updated, err := upsertRecords(ctx, conn, merged)
+	conn.Close(ctx)
 
 	if err != nil {
 		log.Fatalf("upsert failed: %v", err)
 	}
 
 	elapsed := time.Since(start).Round(time.Millisecond)
-	
-	log.Printf("done in %s — inserted=%d updated=%d total=%d", elapsed, inserted, updated, inserted+updated)
+	log.Printf("done in %s — inserted=%d updated=%d total=%d", elapsed, inserted, updated, inserted+updated) //nolint:gosec // G706: elapsed is time.Duration, not user input
 }

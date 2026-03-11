@@ -63,6 +63,9 @@ linters:
       - linters:
           - lll
         source: ^//.*$
+      - linters:
+          - gocyclo
+        text: "cyclomatic complexity.*detectScheme"
     paths:
       - third_party$
       - builtin$

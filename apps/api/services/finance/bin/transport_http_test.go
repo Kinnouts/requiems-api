@@ -62,7 +62,7 @@ func TestBINLookup_KnownBIN_Returns200(t *testing.T) {
 	}}
 
 	r := setupRouter(svc)
-	req := httptest.NewRequest(http.MethodGet, "/bin/424242", nil)
+	req := httptest.NewRequest(http.MethodGet, "/bin/424242", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -86,7 +86,7 @@ func TestBINLookup_ResponseEnvelope(t *testing.T) {
 	svc := &stubService{result: LookupResponse{Scheme: "mastercard"}}
 	r := setupRouter(svc)
 
-	req := httptest.NewRequest(http.MethodGet, "/bin/510000", nil)
+	req := httptest.NewRequest(http.MethodGet, "/bin/510000", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -114,7 +114,7 @@ func TestBINLookup_UnknownBIN_Returns404(t *testing.T) {
 	}}
 
 	r := setupRouter(svc)
-	req := httptest.NewRequest(http.MethodGet, "/bin/999999", nil)
+	req := httptest.NewRequest(http.MethodGet, "/bin/999999", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -131,7 +131,7 @@ func TestBINLookup_TooShort_Returns400(t *testing.T) {
 	}}
 
 	r := setupRouter(svc)
-	req := httptest.NewRequest(http.MethodGet, "/bin/4242", nil)
+	req := httptest.NewRequest(http.MethodGet, "/bin/4242", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -148,7 +148,7 @@ func TestBINLookup_TooLong_Returns400(t *testing.T) {
 	}}
 
 	r := setupRouter(svc)
-	req := httptest.NewRequest(http.MethodGet, "/bin/424242424", nil)
+	req := httptest.NewRequest(http.MethodGet, "/bin/424242424", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -165,7 +165,7 @@ func TestBINLookup_NonDigits_Returns400(t *testing.T) {
 	}}
 
 	r := setupRouter(svc)
-	req := httptest.NewRequest(http.MethodGet, "/bin/abcdef", nil)
+	req := httptest.NewRequest(http.MethodGet, "/bin/abcdef", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -178,7 +178,7 @@ func TestBINLookup_LuhnTrue(t *testing.T) {
 	svc := &stubService{result: LookupResponse{Luhn: true}}
 	r := setupRouter(svc)
 
-	req := httptest.NewRequest(http.MethodGet, "/bin/424242", nil)
+	req := httptest.NewRequest(http.MethodGet, "/bin/424242", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -192,7 +192,7 @@ func TestBINLookup_LuhnFalse(t *testing.T) {
 	svc := &stubService{result: LookupResponse{Luhn: false}}
 	r := setupRouter(svc)
 
-	req := httptest.NewRequest(http.MethodGet, "/bin/123456", nil)
+	req := httptest.NewRequest(http.MethodGet, "/bin/123456", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -206,7 +206,7 @@ func TestBINLookup_PrepaidTrue(t *testing.T) {
 	svc := &stubService{result: LookupResponse{Prepaid: true, CardType: "prepaid"}}
 	r := setupRouter(svc)
 
-	req := httptest.NewRequest(http.MethodGet, "/bin/630400", nil)
+	req := httptest.NewRequest(http.MethodGet, "/bin/630400", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -220,7 +220,7 @@ func TestBINLookup_ConfidenceField(t *testing.T) {
 	svc := &stubService{result: LookupResponse{Confidence: 0.87}}
 	r := setupRouter(svc)
 
-	req := httptest.NewRequest(http.MethodGet, "/bin/424242", nil)
+	req := httptest.NewRequest(http.MethodGet, "/bin/424242", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -234,7 +234,7 @@ func TestBINLookup_8DigitBIN(t *testing.T) {
 	svc := &stubService{result: LookupResponse{Scheme: "visa", CardType: "credit"}}
 	r := setupRouter(svc)
 
-	req := httptest.NewRequest(http.MethodGet, "/bin/42424242", nil)
+	req := httptest.NewRequest(http.MethodGet, "/bin/42424242", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -264,7 +264,7 @@ func TestBINLookup_AllResponseFieldsPresent(t *testing.T) {
 	}}
 
 	r := setupRouter(svc)
-	req := httptest.NewRequest(http.MethodGet, "/bin/510000", nil)
+	req := httptest.NewRequest(http.MethodGet, "/bin/510000", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 

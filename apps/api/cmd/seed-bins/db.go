@@ -42,7 +42,7 @@ func upsertRecords(ctx context.Context, conn *pgx.Conn, records map[string]RawBI
 	for _, r := range records {
 		rows = append(rows, []any{
 			r.BINPrefix,
-			int16(len(r.BINPrefix)),
+			int16(len(r.BINPrefix)), //nolint:gosec // BIN length is always 6 or 8, safe conversion
 			r.Scheme,
 			r.CardType,
 			r.CardLevel,
@@ -66,7 +66,7 @@ func upsertRecords(ctx context.Context, conn *pgx.Conn, records map[string]RawBI
 	if err != nil {
 		return 0, 0, fmt.Errorf("COPY into staging: %w", err)
 	}
-	log.Printf("staged %d rows", n)
+	log.Printf("staged %d rows", n) //nolint:gosec // G706: n is an int64 from CopyFrom, not user input
 
 	// 3. Merge staging → bin_data.
 	mergeRows, err := conn.Query(ctx, `
@@ -85,23 +85,23 @@ func upsertRecords(ctx context.Context, conn *pgx.Conn, records map[string]RawBI
 		ON CONFLICT (bin_prefix) DO UPDATE SET
 			prefix_length = EXCLUDED.prefix_length,
 			scheme        = CASE
-				WHEN EXCLUDED.confidence >= bin_data.confidence THEN EXCLUDED.scheme
+				WHEN EXCLUDED.confidence >= bin_data.confidence AND EXCLUDED.scheme    <> '' THEN EXCLUDED.scheme
 				ELSE bin_data.scheme
 			END,
 			card_type     = CASE
-				WHEN EXCLUDED.confidence >= bin_data.confidence THEN EXCLUDED.card_type
+				WHEN EXCLUDED.confidence >= bin_data.confidence AND EXCLUDED.card_type <> '' THEN EXCLUDED.card_type
 				ELSE bin_data.card_type
 			END,
 			card_level    = CASE
-				WHEN EXCLUDED.confidence >= bin_data.confidence THEN EXCLUDED.card_level
+				WHEN EXCLUDED.confidence >= bin_data.confidence AND EXCLUDED.card_level <> '' THEN EXCLUDED.card_level
 				ELSE bin_data.card_level
 			END,
-			issuer_name   = CASE WHEN EXCLUDED.issuer_name   <> '' THEN EXCLUDED.issuer_name   ELSE bin_data.issuer_name   END,
-			issuer_url    = CASE WHEN EXCLUDED.issuer_url    <> '' THEN EXCLUDED.issuer_url    ELSE bin_data.issuer_url    END,
-			issuer_phone  = CASE WHEN EXCLUDED.issuer_phone  <> '' THEN EXCLUDED.issuer_phone  ELSE bin_data.issuer_phone  END,
-			country_code  = CASE WHEN EXCLUDED.country_code  <> '' THEN EXCLUDED.country_code  ELSE bin_data.country_code  END,
-			country_name  = CASE WHEN EXCLUDED.country_name  <> '' THEN EXCLUDED.country_name  ELSE bin_data.country_name  END,
-			prepaid       = EXCLUDED.prepaid,
+			issuer_name   = CASE WHEN EXCLUDED.confidence >= bin_data.confidence AND EXCLUDED.issuer_name   <> '' THEN EXCLUDED.issuer_name   ELSE bin_data.issuer_name   END,
+			issuer_url    = CASE WHEN EXCLUDED.confidence >= bin_data.confidence AND EXCLUDED.issuer_url    <> '' THEN EXCLUDED.issuer_url    ELSE bin_data.issuer_url    END,
+			issuer_phone  = CASE WHEN EXCLUDED.confidence >= bin_data.confidence AND EXCLUDED.issuer_phone  <> '' THEN EXCLUDED.issuer_phone  ELSE bin_data.issuer_phone  END,
+			country_code  = CASE WHEN EXCLUDED.confidence >= bin_data.confidence AND EXCLUDED.country_code  <> '' THEN EXCLUDED.country_code  ELSE bin_data.country_code  END,
+			country_name  = CASE WHEN EXCLUDED.confidence >= bin_data.confidence AND EXCLUDED.country_name  <> '' THEN EXCLUDED.country_name  ELSE bin_data.country_name  END,
+			prepaid       = CASE WHEN EXCLUDED.confidence >= bin_data.confidence THEN EXCLUDED.prepaid ELSE bin_data.prepaid END,
 			source        = EXCLUDED.source,
 			confidence    = GREATEST(bin_data.confidence, EXCLUDED.confidence),
 			last_updated  = NOW()

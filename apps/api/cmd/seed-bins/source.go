@@ -204,13 +204,13 @@ func printTopN(m map[string]int, n int) {
 	}
 	// simple selection sort for top N
 	for i := 0; i < len(pairs) && i < n; i++ {
-		max := i
+		maxIdx := i
 		for j := i + 1; j < len(pairs); j++ {
-			if pairs[j].v > pairs[max].v {
-				max = j
+			if pairs[j].v > pairs[maxIdx].v {
+				maxIdx = j
 			}
 		}
-		pairs[i], pairs[max] = pairs[max], pairs[i]
+		pairs[i], pairs[maxIdx] = pairs[maxIdx], pairs[i]
 		fmt.Printf("  %-20s %d\n", pairs[i].k, pairs[i].v)
 	}
 }
