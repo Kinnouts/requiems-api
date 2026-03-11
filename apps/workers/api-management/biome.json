@@ -1,7 +1,11 @@
 {
-  "$schema": "https://biomejs.dev/schemas/1.5.3/schema.json",
-  "organizeImports": {
-    "enabled": true
+  "$schema": "https://biomejs.dev/schemas/2.4.6/schema.json",
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
   },
   "linter": {
     "enabled": true,
@@ -55,6 +59,6 @@
     }
   },
   "files": {
-    "ignore": ["node_modules", "dist", "wrangler.toml", ".wrangler"]
+    "includes": ["**", "!node_modules/**", "!dist/**", "!wrangler.toml", "!.wrangler/**"]
   }
 }

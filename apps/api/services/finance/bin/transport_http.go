@@ -1,0 +1,30 @@
+package bin
+
+import (
+	"net/http"
+
+	"github.com/go-chi/chi/v5"
+
+	"requiems-api/platform/httpx"
+)
+
+// RegisterRoutes mounts BIN lookup handlers on the given router.
+// Paths are relative to the parent mount point (/v1/finance).
+func RegisterRoutes(r chi.Router, svc Looker) {
+	// GET /bin/{bin} — look up card metadata for a 6–8 digit BIN prefix
+	r.Get("/bin/{bin}", func(w http.ResponseWriter, r *http.Request) {
+		rawBIN := chi.URLParam(r, "bin")
+
+		result, err := svc.Lookup(r.Context(), rawBIN)
+		if err != nil {
+			if ae, ok := err.(*httpx.AppError); ok {
+				httpx.Error(w, ae.Status, ae.Code, ae.Message)
+				return
+			}
+			httpx.Error(w, http.StatusInternalServerError, "internal_error", "internal server error")
+			return
+		}
+
+		httpx.JSON(w, http.StatusOK, result)
+	})
+}
