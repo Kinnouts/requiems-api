@@ -4,13 +4,13 @@
 <div class="mb-8">
   <div class="flex items-center justify-between">
     <div>
-      <%= link_to admin_users_path, class: "inline-flex items-center text-sm text-gray-600 hover:text-gray-900 mb-2" do %>
+      <%= link_to admin_users_path, class: "inline-flex items-center text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 mb-2" do %>
         <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
         </svg>
         Back to Users
       <% end %>
-      <h1 class="text-3xl font-bold text-gray-900">User Details</h1>
+      <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">User Details</h1>
     </div>
 
     <!-- User Status Badge -->
@@ -29,37 +29,37 @@
 <!-- User Information -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
   <!-- Main Info Card -->
-  <div class="lg:col-span-2 bg-white rounded-lg shadow">
-    <div class="px-6 py-4 border-b border-gray-200">
-      <h2 class="text-lg font-semibold text-gray-900">Account Information</h2>
+  <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Account Information</h2>
     </div>
     <div class="p-6">
       <div class="flex items-center mb-6">
         <img src="<%= gravatar_url(@user.email, size: 64) %>" alt="Avatar" class="flex-shrink-0 h-16 w-16 rounded-full">
         <div class="ml-4">
-          <div class="text-xl font-medium text-gray-900"><%= @user.email %></div>
+          <div class="text-xl font-medium text-gray-900 dark:text-gray-100"><%= @user.email %></div>
           <% if @user.name.present? %>
-            <div class="text-sm text-gray-600"><%= @user.name %></div>
+            <div class="text-sm text-gray-600 dark:text-gray-400"><%= @user.name %></div>
           <% end %>
         </div>
       </div>
 
       <div class="grid grid-cols-2 gap-4">
         <div>
-          <label class="block text-sm font-medium text-gray-500 mb-1">Company</label>
-          <p class="text-sm text-gray-900"><%= @user.company.presence || "—" %></p>
+          <label class="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Company</label>
+          <p class="text-sm text-gray-900 dark:text-gray-100"><%= @user.company.presence || "—" %></p>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-500 mb-1">User ID</label>
-          <p class="text-sm text-gray-900 font-mono"><%= @user.id %></p>
+          <label class="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">User ID</label>
+          <p class="text-sm text-gray-900 dark:text-gray-100 font-mono"><%= @user.id %></p>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-500 mb-1">Joined</label>
-          <p class="text-sm text-gray-900"><%= @user.created_at.strftime("%B %d, %Y") %></p>
+          <label class="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Joined</label>
+          <p class="text-sm text-gray-900 dark:text-gray-100"><%= @user.created_at.strftime("%B %d, %Y") %></p>
         </div>
         <div>
-          <label class="block text-sm font-medium text-gray-500 mb-1">Last Sign In</label>
-          <p class="text-sm text-gray-900">
+          <label class="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Last Sign In</label>
+          <p class="text-sm text-gray-900 dark:text-gray-100">
             <% if @user.last_sign_in_at.present? %>
               <%= time_ago_in_words(@user.last_sign_in_at) %> ago
             <% else %>
@@ -69,14 +69,14 @@
         </div>
         <% if @user.suspended? %>
           <div>
-            <label class="block text-sm font-medium text-gray-500 mb-1">Suspended At</label>
-            <p class="text-sm text-gray-900"><%= @user.suspended_at&.strftime("%B %d, %Y") || "—" %></p>
+            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Suspended At</label>
+            <p class="text-sm text-gray-900 dark:text-gray-100"><%= @user.suspended_at&.strftime("%B %d, %Y") || "—" %></p>
           </div>
         <% end %>
         <% if @user.banned? %>
           <div>
-            <label class="block text-sm font-medium text-gray-500 mb-1">Banned At</label>
-            <p class="text-sm text-gray-900"><%= @user.banned_at&.strftime("%B %d, %Y") || "—" %></p>
+            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Banned At</label>
+            <p class="text-sm text-gray-900 dark:text-gray-100"><%= @user.banned_at&.strftime("%B %d, %Y") || "—" %></p>
           </div>
         <% end %>
       </div>
@@ -84,47 +84,47 @@
   </div>
 
   <!-- Subscription Card -->
-  <div class="bg-white rounded-lg shadow">
-    <div class="px-6 py-4 border-b border-gray-200">
-      <h2 class="text-lg font-semibold text-gray-900">Subscription</h2>
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Subscription</h2>
     </div>
     <div class="p-6">
       <% if @user.subscription.present? %>
         <div class="space-y-4">
           <div>
-            <label class="block text-sm font-medium text-gray-500 mb-1">Plan</label>
+            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Plan</label>
             <%= render "partials/shared/badge",
               text: h(@user.subscription.plan_name.titleize),
               variant: @user.subscription.plan_name == "free" ? "default" : "primary",
               size: "sm" %>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-500 mb-1">Billing Cycle</label>
-            <p class="text-sm text-gray-900"><%= @user.subscription.plan&.titleize || "—" %></p>
+            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Billing Cycle</label>
+            <p class="text-sm text-gray-900 dark:text-gray-100"><%= @user.subscription.plan&.titleize || "—" %></p>
           </div>
           <div>
-            <label class="block text-sm font-medium text-gray-500 mb-1">Started</label>
-            <p class="text-sm text-gray-900"><%= @user.subscription.current_period_start&.strftime("%B %d, %Y") || "—" %></p>
+            <label class="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Started</label>
+            <p class="text-sm text-gray-900 dark:text-gray-100"><%= @user.subscription.current_period_start&.strftime("%B %d, %Y") || "—" %></p>
           </div>
           <% if @user.subscription.cancel_at_period_end? %>
             <div>
               <%= render "partials/shared/badge", text: "Canceling at Period End", variant: "warning", size: "xs" %>
-              <p class="text-xs text-gray-600 mt-1">
+              <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">
                 Ends: <%= @user.subscription.current_period_end&.strftime("%B %d, %Y") || "—" %>
               </p>
             </div>
           <% end %>
           <% if @user.subscription.lemonsqueezy_customer_id.present? %>
             <div>
-              <label class="block text-sm font-medium text-gray-500 mb-1">LemonSqueezy ID</label>
-              <p class="text-xs text-gray-600 font-mono"><%= @user.subscription.lemonsqueezy_customer_id %></p>
+              <label class="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">LemonSqueezy ID</label>
+              <p class="text-xs text-gray-600 dark:text-gray-400 font-mono"><%= @user.subscription.lemonsqueezy_customer_id %></p>
             </div>
           <% end %>
         </div>
       <% else %>
         <div class="text-center py-6">
           <%= render "partials/shared/badge", text: "Free Plan", variant: "default", size: "sm" %>
-          <p class="text-sm text-gray-600 mt-2">No active subscription</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">No active subscription</p>
         </div>
       <% end %>
     </div>
@@ -132,30 +132,30 @@
 </div>
 
 <!-- Usage Statistics -->
-<div class="bg-white rounded-lg shadow mb-8">
-  <div class="px-6 py-4 border-b border-gray-200">
-    <h2 class="text-lg font-semibold text-gray-900">Usage Statistics</h2>
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow mb-8">
+  <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+    <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Usage Statistics</h2>
   </div>
   <div class="p-6">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
-      <div class="bg-gray-50 rounded-lg p-4">
-        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Total Requests</p>
-        <p class="text-2xl font-bold text-gray-900"><%= number_with_delimiter(@usage_stats[:total_requests]) %></p>
+      <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+        <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Total Requests</p>
+        <p class="text-2xl font-bold text-gray-900 dark:text-gray-100"><%= number_with_delimiter(@usage_stats[:total_requests]) %></p>
       </div>
-      <div class="bg-gray-50 rounded-lg p-4">
-        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">This Month</p>
-        <p class="text-2xl font-bold text-gray-900"><%= number_with_delimiter(@usage_stats[:requests_this_month]) %></p>
+      <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+        <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">This Month</p>
+        <p class="text-2xl font-bold text-gray-900 dark:text-gray-100"><%= number_with_delimiter(@usage_stats[:requests_this_month]) %></p>
       </div>
-      <div class="bg-gray-50 rounded-lg p-4">
-        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Requests Used</p>
-        <p class="text-2xl font-bold text-gray-900"><%= number_with_delimiter(@usage_stats[:total_requests_used]) %></p>
+      <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+        <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Requests Used</p>
+        <p class="text-2xl font-bold text-gray-900 dark:text-gray-100"><%= number_with_delimiter(@usage_stats[:total_requests_used]) %></p>
       </div>
-      <div class="bg-gray-50 rounded-lg p-4">
-        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Avg Response</p>
-        <p class="text-2xl font-bold text-gray-900"><%= @usage_stats[:avg_response_time] %>ms</p>
+      <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+        <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Avg Response</p>
+        <p class="text-2xl font-bold text-gray-900 dark:text-gray-100"><%= @usage_stats[:avg_response_time] %>ms</p>
       </div>
-      <div class="bg-gray-50 rounded-lg p-4">
-        <p class="text-xs font-medium text-gray-500 uppercase tracking-wider mb-1">Error Rate</p>
+      <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+        <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-1">Error Rate</p>
         <p class="text-2xl font-bold <%= @usage_stats[:error_rate] > 5 ? 'text-red-600' : 'text-green-600' %>"><%= @usage_stats[:error_rate] %>%</p>
       </div>
     </div>
@@ -163,29 +163,29 @@
 </div>
 
 <!-- API Keys -->
-<div class="bg-white rounded-lg shadow mb-8">
-  <div class="px-6 py-4 border-b border-gray-200">
-    <h2 class="text-lg font-semibold text-gray-900">API Keys (<%= @api_keys.count %>)</h2>
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow mb-8">
+  <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+    <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">API Keys (<%= @api_keys.count %>)</h2>
   </div>
   <% if @api_keys.any? %>
     <div class="overflow-x-auto">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
+      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <thead class="bg-gray-50 dark:bg-gray-700">
           <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Key</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Environment</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Name</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Key</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Environment</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Created</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
+        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
           <% @api_keys.each do |api_key| %>
             <tr>
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900 dark:text-gray-100">
                 <%= api_key.name %>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 font-mono">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400 font-mono">
                 <%= api_key.prefix %>••••••••••••••••
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
@@ -194,7 +194,7 @@
                   variant: api_key.environment == "live" ? "primary" : "default",
                   size: "xs" %>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                 <%= time_ago_in_words(api_key.created_at) %> ago
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
@@ -211,39 +211,39 @@
     </div>
   <% else %>
     <div class="px-6 py-12 text-center">
-      <p class="text-sm text-gray-500">No API keys created</p>
+      <p class="text-sm text-gray-500 dark:text-gray-400">No API keys created</p>
     </div>
   <% end %>
 </div>
 
 <!-- Recent Activity -->
-<div class="bg-white rounded-lg shadow mb-8">
-  <div class="px-6 py-4 border-b border-gray-200">
-    <h2 class="text-lg font-semibold text-gray-900">Recent Activity</h2>
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow mb-8">
+  <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+    <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Recent Activity</h2>
   </div>
   <% if @recent_activity.any? %>
     <div class="overflow-x-auto">
-      <table class="min-w-full divide-y divide-gray-200">
-        <thead class="bg-gray-50">
+      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+        <thead class="bg-gray-50 dark:bg-gray-700">
           <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Timestamp</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Endpoint</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Method</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Response Time</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Requests</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Timestamp</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Endpoint</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Method</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Status</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Response Time</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Requests</th>
           </tr>
         </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
+        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
           <% @recent_activity.each do |log| %>
             <tr>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                 <%= log.used_at.strftime("%b %d, %I:%M %p") %>
               </td>
-              <td class="px-6 py-4 text-sm text-gray-900 font-mono">
+              <td class="px-6 py-4 text-sm text-gray-900 dark:text-gray-100 font-mono">
                 <%= log.endpoint %>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                 <%= log.http_method %>
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
@@ -257,10 +257,10 @@
                 %>
                 <%= render "partials/shared/badge", text: log.status_code.to_s, variant: status_variant, size: "xs" %>
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                 <%= log.response_time_ms || "—" %>ms
               </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                 <%= log.credits_used || 0 %>
               </td>
             </tr>
@@ -270,16 +270,16 @@
     </div>
   <% else %>
     <div class="px-6 py-12 text-center">
-      <p class="text-sm text-gray-500">No recent activity</p>
+      <p class="text-sm text-gray-500 dark:text-gray-400">No recent activity</p>
     </div>
   <% end %>
 </div>
 
 <!-- Admin Actions -->
-<div class="bg-white rounded-lg shadow border-2 border-red-200">
-  <div class="px-6 py-4 border-b border-gray-200 bg-red-50">
-    <h2 class="text-lg font-semibold text-red-900">Admin Actions</h2>
-    <p class="text-sm text-red-700 mt-1">These actions are permanent and cannot be undone easily.</p>
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow border-2 border-red-200 dark:border-red-800">
+  <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-red-50 dark:bg-red-900/20">
+    <h2 class="text-lg font-semibold text-red-900 dark:text-red-300">Admin Actions</h2>
+    <p class="text-sm text-red-700 dark:text-red-400 mt-1">These actions are permanent and cannot be undone easily.</p>
   </div>
   <div class="p-6">
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -328,14 +328,14 @@
       <% end %>
     </div>
 
-    <div class="mt-6 p-4 bg-yellow-50 border border-yellow-200 rounded-lg">
+    <div class="mt-6 p-4 bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg">
       <div class="flex">
         <svg class="h-5 w-5 text-yellow-600 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
         </svg>
         <div class="ml-3">
-          <h3 class="text-sm font-medium text-yellow-800">Admin Action Guidelines</h3>
-          <div class="mt-2 text-sm text-yellow-700">
+          <h3 class="text-sm font-medium text-yellow-800 dark:text-yellow-200">Admin Action Guidelines</h3>
+          <div class="mt-2 text-sm text-yellow-700 dark:text-yellow-300">
             <ul class="list-disc pl-5 space-y-1">
               <li><strong>Suspend</strong>: Temporary restriction, revokes all API keys</li>
               <li><strong>Ban</strong>: Permanent restriction, revokes keys and cancels subscription</li>

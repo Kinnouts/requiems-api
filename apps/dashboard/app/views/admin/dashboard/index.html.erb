@@ -2,72 +2,72 @@
 
 <!-- Header -->
 <div class="mb-8">
-  <h1 class="text-3xl font-bold text-gray-900">Admin Dashboard</h1>
-  <p class="mt-2 text-sm text-gray-600">System overview and key metrics</p>
+  <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Admin Dashboard</h1>
+  <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">System overview and key metrics</p>
 </div>
 
 <!-- System Stats Cards -->
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
   <!-- Total Users -->
-  <div class="bg-white rounded-lg shadow p-6">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-sm font-medium text-gray-500">Total Users</h3>
-      <div class="p-2 bg-blue-100 rounded-lg">
+      <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Total Users</h3>
+      <div class="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
         <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
         </svg>
       </div>
     </div>
-    <p class="text-3xl font-bold text-gray-900"><%= number_with_delimiter(@total_users) %></p>
-    <p class="text-sm text-gray-600 mt-1">
+    <p class="text-3xl font-bold text-gray-900 dark:text-gray-100"><%= number_with_delimiter(@total_users) %></p>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
       <%= number_with_delimiter(@active_users) %> active (30d)
     </p>
   </div>
 
   <!-- API Requests Today -->
-  <div class="bg-white rounded-lg shadow p-6">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-sm font-medium text-gray-500">Requests Today</h3>
-      <div class="p-2 bg-green-100 rounded-lg">
+      <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">Requests Today</h3>
+      <div class="p-2 bg-green-100 dark:bg-green-900/30 rounded-lg">
         <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
         </svg>
       </div>
     </div>
-    <p class="text-3xl font-bold text-gray-900"><%= number_with_delimiter(@total_requests_today) %></p>
-    <p class="text-sm text-gray-600 mt-1">
+    <p class="text-3xl font-bold text-gray-900 dark:text-gray-100"><%= number_with_delimiter(@total_requests_today) %></p>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
       <%= number_with_delimiter(@total_requests_30d) %> last 30 days
     </p>
   </div>
 
   <!-- Monthly Recurring Revenue -->
-  <div class="bg-white rounded-lg shadow p-6">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-sm font-medium text-gray-500">MRR</h3>
-      <div class="p-2 bg-purple-100 rounded-lg">
+      <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">MRR</h3>
+      <div class="p-2 bg-purple-100 dark:bg-purple-900/30 rounded-lg">
         <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
       </div>
     </div>
-    <p class="text-3xl font-bold text-gray-900">$<%= number_with_delimiter(@mrr) %></p>
-    <p class="text-sm text-gray-600 mt-1">
+    <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">$<%= number_with_delimiter(@mrr) %></p>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
       <%= @active_subscriptions %> active <%= "subscription".pluralize(@active_subscriptions) %>
     </p>
   </div>
 
   <!-- System Health -->
-  <div class="bg-white rounded-lg shadow p-6">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-sm font-medium text-gray-500">System Health</h3>
-      <div class="p-2 <%= @error_rate > 5 ? 'bg-red-100' : 'bg-green-100' %> rounded-lg">
+      <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400">System Health</h3>
+      <div class="p-2 <%= @error_rate > 5 ? 'bg-red-100 dark:bg-red-900/30' : 'bg-green-100 dark:bg-green-900/30' %> rounded-lg">
         <svg class="h-6 w-6 <%= @error_rate > 5 ? 'text-red-600' : 'text-green-600' %>" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
         </svg>
       </div>
     </div>
-    <p class="text-3xl font-bold text-gray-900"><%= @avg_response_time %>ms</p>
-    <p class="text-sm text-gray-600 mt-1">
+    <p class="text-3xl font-bold text-gray-900 dark:text-gray-100"><%= @avg_response_time %>ms</p>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
       <%= @error_rate %>% error rate
     </p>
   </div>
@@ -76,22 +76,22 @@
 <!-- Charts and Activity Row -->
 <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-8">
   <!-- API Keys Stats -->
-  <div class="bg-white rounded-lg shadow">
-    <div class="px-6 py-4 border-b border-gray-200">
-      <h2 class="text-lg font-semibold text-gray-900">API Keys</h2>
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">API Keys</h2>
     </div>
     <div class="p-6">
       <div class="text-center mb-6">
-        <p class="text-5xl font-bold text-gray-900"><%= number_with_delimiter(@total_api_keys) %></p>
-        <p class="text-sm text-gray-600 mt-2">Total API Keys</p>
+        <p class="text-5xl font-bold text-gray-900 dark:text-gray-100"><%= number_with_delimiter(@total_api_keys) %></p>
+        <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Total API Keys</p>
       </div>
       <div class="space-y-3">
         <div class="flex items-center justify-between">
-          <span class="text-sm text-gray-600">Active</span>
+          <span class="text-sm text-gray-600 dark:text-gray-400">Active</span>
           <span class="text-sm font-semibold text-green-600"><%= number_with_delimiter(@active_api_keys) %></span>
         </div>
         <div class="flex items-center justify-between">
-          <span class="text-sm text-gray-600">Revoked</span>
+          <span class="text-sm text-gray-600 dark:text-gray-400">Revoked</span>
           <span class="text-sm font-semibold text-red-600"><%= number_with_delimiter(@total_api_keys - @active_api_keys) %></span>
         </div>
       </div>
@@ -104,31 +104,30 @@
   </div>
 
   <!-- Recent Users -->
-  <div class="lg:col-span-2 bg-white rounded-lg shadow">
-    <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
-      <h2 class="text-lg font-semibold text-gray-900">Recent Users</h2>
+  <div class="lg:col-span-2 bg-white dark:bg-gray-800 rounded-lg shadow">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Recent Users</h2>
       <%= link_to admin_users_path, class: "text-sm text-blue-600 hover:text-blue-700 font-medium" do %>
         View All →
       <% end %>
     </div>
     <div class="overflow-x-auto">
       <% if @recent_users.any? %>
-        <table class="min-w-full divide-y divide-gray-200">
-          <thead class="bg-gray-50">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead class="bg-gray-50 dark:bg-gray-700">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Plan</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Joined</th>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">User</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Plan</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Joined</th>
             </tr>
           </thead>
-          <tbody class="bg-white divide-y divide-gray-200">
+          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
             <% @recent_users.each do |user| %>
-              <tr class="hover:bg-gray-50">
+              <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
                 <td class="px-6 py-4 whitespace-nowrap">
-                  <div class="text-sm font-medium text-gray-900"><%= user.email %></div>
+                  <div class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= user.email %></div>
                   <% if user.name.present? %>
-                    <div class="text-xs text-gray-500"><%= user.name %></div>
+                    <div class="text-xs text-gray-500 dark:text-gray-400"><%= user.name %></div>
                   <% end %>
                 </td>
                 <td class="px-6 py-4 whitespace-nowrap">
@@ -137,15 +136,8 @@
                     variant: user.subscription&.plan_name == "free" ? "default" : "primary",
                     size: "xs" %>
                 </td>
-                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600">
+                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
                   <%= time_ago_in_words(user.created_at) %> ago
-                </td>
-                <td class="px-6 py-4 whitespace-nowrap">
-                  <% if user.admin? %>
-                    <%= render "partials/shared/badge", text: "Admin", variant: "danger", size: "xs" %>
-                  <% else %>
-                    <%= render "partials/shared/badge", text: "User", variant: "success", size: "xs" %>
-                  <% end %>
                 </td>
               </tr>
             <% end %>
@@ -153,7 +145,7 @@
         </table>
       <% else %>
         <div class="px-6 py-12 text-center">
-          <p class="text-sm text-gray-500">No users yet</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400">No users yet</p>
         </div>
       <% end %>
     </div>
@@ -163,62 +155,62 @@
 <!-- Recent Activity Cards -->
 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
   <!-- Recent API Keys -->
-  <div class="bg-white rounded-lg shadow">
-    <div class="px-6 py-4 border-b border-gray-200">
-      <h2 class="text-lg font-semibold text-gray-900">Recent API Keys</h2>
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Recent API Keys</h2>
     </div>
     <div class="p-6">
       <% if @recent_api_keys.any? %>
         <div class="space-y-4">
           <% @recent_api_keys.each do |api_key| %>
-            <div class="flex items-center justify-between pb-4 border-b border-gray-100 last:border-0 last:pb-0">
+            <div class="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-gray-700 last:border-0 last:pb-0">
               <div class="flex-1 min-w-0">
-                <p class="text-sm font-medium text-gray-900 truncate"><%= api_key.name %></p>
-                <p class="text-xs text-gray-500"><%= api_key.user.email %></p>
+                <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate"><%= api_key.name %></p>
+                <p class="text-xs text-gray-500 dark:text-gray-400"><%= api_key.user.email %></p>
               </div>
               <div class="ml-4 flex-shrink-0 flex items-center space-x-2">
                 <%= render "partials/shared/badge",
                   text: api_key.environment.titleize,
                   variant: api_key.environment == "live" ? "primary" : "default",
                   size: "xs" %>
-                <span class="text-xs text-gray-500"><%= time_ago_in_words(api_key.created_at) %> ago</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400"><%= time_ago_in_words(api_key.created_at) %> ago</span>
               </div>
             </div>
           <% end %>
         </div>
       <% else %>
         <div class="text-center py-8">
-          <p class="text-sm text-gray-500">No API keys created yet</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400">No API keys created yet</p>
         </div>
       <% end %>
     </div>
   </div>
 
   <!-- Recent Subscriptions -->
-  <div class="bg-white rounded-lg shadow">
-    <div class="px-6 py-4 border-b border-gray-200">
-      <h2 class="text-lg font-semibold text-gray-900">Recent Subscriptions</h2>
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Recent Subscriptions</h2>
     </div>
     <div class="p-6">
       <% if @recent_subscriptions.any? %>
         <div class="space-y-4">
           <% @recent_subscriptions.each do |subscription| %>
-            <div class="flex items-center justify-between pb-4 border-b border-gray-100 last:border-0 last:pb-0">
+            <div class="flex items-center justify-between pb-4 border-b border-gray-100 dark:border-gray-700 last:border-0 last:pb-0">
               <div class="flex-1 min-w-0">
-                <p class="text-sm font-medium text-gray-900 truncate"><%= subscription.user.email %></p>
-                <p class="text-xs text-gray-500">
+                <p class="text-sm font-medium text-gray-900 dark:text-gray-100 truncate"><%= subscription.user.email %></p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
                   <%= subscription.plan_name.titleize %> plan
                 </p>
               </div>
               <div class="ml-4 flex-shrink-0">
-                <span class="text-xs text-gray-500"><%= time_ago_in_words(subscription.created_at) %> ago</span>
+                <span class="text-xs text-gray-500 dark:text-gray-400"><%= time_ago_in_words(subscription.created_at) %> ago</span>
               </div>
             </div>
           <% end %>
         </div>
       <% else %>
         <div class="text-center py-8">
-          <p class="text-sm text-gray-500">No paid subscriptions yet</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400">No paid subscriptions yet</p>
         </div>
       <% end %>
     </div>
