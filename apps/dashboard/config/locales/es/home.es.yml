@@ -34,6 +34,7 @@ es:
         requests_subtitle: "Solicitudes procesadas/mes"
         datacenters_title: "Centros de datos"
         datacenters_subtitle: "Unión Europea"
+        datacenters_value: "UE"
       security:
         heading: "Seguridad y cumplimiento primero"
         subheading: "Seguridad de nivel empresarial para equipos de todos los tamaños"
@@ -157,6 +158,11 @@ es:
           data_centers: "Centros de datos"
           support_response: "Tiempo de respuesta del soporte"
           sla: "SLA"
+        values:
+          all: "Todos"
+          eu: "UE"
+          community: "Comunidad"
+          none: "-"
       security:
         heading: "Seguridad y cumplimiento"
         soc2_title: "SOC 2 Tipo II"
@@ -255,9 +261,15 @@ es:
         heading: "Soporte"
         q1: "¿Cómo puedo obtener ayuda?"
         a1: "Ofrecemos múltiples canales de soporte:"
-        docs_channel: "Documentación - Guías completas y referencia de la API"
-        contact_channel: "Formulario de contacto - Soporte por correo (respuesta 24-48 horas)"
-        github_channel: "Issues de GitHub - Reporta errores o solicita funciones"
+        docs_channel:
+          label: "Documentación"
+          description: "Guías completas y referencia de la API"
+        contact_channel:
+          label: "Formulario de contacto"
+          description: "Soporte por correo (respuesta 24-48 horas)"
+        github_channel:
+          label: "Issues de GitHub"
+          description: "Reporta errores o solicita funciones"
         q2: "¿Cuáles son sus tiempos de respuesta de soporte?"
         a2: "Los tiempos de respuesta varían según el plan:"
         free_dev: "Gratuito y Desarrollador: 48 horas"

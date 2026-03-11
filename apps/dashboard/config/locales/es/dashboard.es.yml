@@ -1,5 +1,11 @@
 es:
   dashboard:
+    plans:
+      free: "Gratuito"
+      developer: "Desarrollador"
+      business: "Negocio"
+      professional: "Profesional"
+      enterprise: "Empresarial"
     overview:
       title: "Panel"
       welcome: "¡Bienvenido de nuevo, %{name}!"

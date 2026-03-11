@@ -84,6 +84,8 @@ class Dashboard::SettingsController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:email, :name, :company, :locale, :email_notifications, :usage_alerts, :weekly_reports)
+    p = params.require(:user).permit(:email, :name, :company, :locale, :email_notifications, :usage_alerts, :weekly_reports)
+    p[:locale] = p[:locale].presence # convert "" (auto-detect) to nil
+    p
   end
 end

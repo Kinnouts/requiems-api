@@ -26,6 +26,10 @@ class LocaleController < ApplicationController
     # Prepend new locale prefix if non-default
     path = "/#{I18n.locale}#{path}" if I18n.locale != I18n.default_locale
 
+    # Preserve query string and fragment
+    path = "#{path}?#{uri.query}" if uri.query.present?
+    path = "#{path}##{uri.fragment}" if uri.fragment.present?
+
     path
   rescue URI::InvalidURIError
     root_path

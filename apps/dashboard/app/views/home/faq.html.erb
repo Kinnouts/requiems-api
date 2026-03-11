@@ -134,9 +134,9 @@
                 <%= t("home.faq.support.a1") %>
               </p>
               <ul class="text-gray-700 dark:text-gray-300 space-y-1 ml-4">
-                <li>• <%= link_to t("home.faq.support.docs_channel").split(" - ").first, docs_path, class: "text-blue-600 hover:text-blue-700 underline" %> - <%= t("home.faq.support.docs_channel").split(" - ").last %></li>
-                <li>• <%= link_to t("home.faq.support.contact_channel").split(" - ").first, contact_path, class: "text-blue-600 hover:text-blue-700 underline" %> - <%= t("home.faq.support.contact_channel").split(" - ").last %></li>
-                <li>• <%= link_to t("home.faq.support.github_channel").split(" - ").first, "#{ExternalLinks::GITHUB[:repository]}/issues", target: "_blank", class: "text-blue-600 hover:text-blue-700 underline" %> - <%= t("home.faq.support.github_channel").split(" - ").last %></li>
+                <li>• <%= link_to t("home.faq.support.docs_channel.label"), docs_path, class: "text-blue-600 hover:text-blue-700 underline" %> - <%= t("home.faq.support.docs_channel.description") %></li>
+                <li>• <%= link_to t("home.faq.support.contact_channel.label"), contact_path, class: "text-blue-600 hover:text-blue-700 underline" %> - <%= t("home.faq.support.contact_channel.description") %></li>
+                <li>• <%= link_to t("home.faq.support.github_channel.label"), "#{ExternalLinks::GITHUB[:repository]}/issues", target: "_blank", rel: "noopener noreferrer", class: "text-blue-600 hover:text-blue-700 underline" %> - <%= t("home.faq.support.github_channel.description") %></li>
               </ul>
             </div>
 

@@ -34,6 +34,7 @@ en:
         requests_subtitle: "Requests processed/month"
         datacenters_title: "Data Centers"
         datacenters_subtitle: "European Union"
+        datacenters_value: "EU"
       security:
         heading: "Security & Compliance First"
         subheading: "Enterprise-grade security for teams of all sizes"
@@ -157,6 +158,11 @@ en:
           data_centers: "Data centers"
           support_response: "Support response"
           sla: "SLA"
+        values:
+          all: "All"
+          eu: "EU"
+          community: "Community"
+          none: "-"
       security:
         heading: "Security & Compliance"
         soc2_title: "SOC 2 Type II"
@@ -255,9 +261,15 @@ en:
         heading: "Support"
         q1: "How can I get help?"
         a1: "We offer multiple support channels:"
-        docs_channel: "Documentation - Comprehensive guides and API reference"
-        contact_channel: "Contact Form - Email support (24-48 hour response)"
-        github_channel: "GitHub Issues - Report bugs or request features"
+        docs_channel:
+          label: "Documentation"
+          description: "Comprehensive guides and API reference"
+        contact_channel:
+          label: "Contact Form"
+          description: "Email support (24-48 hour response)"
+        github_channel:
+          label: "GitHub Issues"
+          description: "Report bugs or request features"
         q2: "What are your support response times?"
         a2: "Response times vary by plan:"
         free_dev: "Free & Developer: 48 hours"

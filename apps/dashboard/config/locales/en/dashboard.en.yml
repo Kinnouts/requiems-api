@@ -1,5 +1,11 @@
 en:
   dashboard:
+    plans:
+      free: "Free"
+      developer: "Developer"
+      business: "Business"
+      professional: "Professional"
+      enterprise: "Enterprise"
     overview:
       title: "Dashboard"
       welcome: "Welcome back, %{name}!"
