@@ -18,17 +18,12 @@ func openDB(ctx context.Context, dsn string) (*pgx.Conn, error) {
 	return conn, nil
 }
 
-// upsertRecords loads all records into a temporary staging table and then
-// merges them into bin_data using INSERT ON CONFLICT. Returns the number of
-// rows inserted and updated.
 func upsertRecords(ctx context.Context, conn *pgx.Conn, records map[string]RawBINRecord) (inserted, updated int, err error) {
 	// 1. Create staging table.
-	// Note: no ON COMMIT DROP — that would drop the table at the end of the
-	// implicit single-statement transaction, before COPY runs.
-	// The temp table is dropped automatically when the session ends.
 	_, err = conn.Exec(ctx, `
 		CREATE TEMP TABLE IF NOT EXISTS bin_data_stage (LIKE bin_data INCLUDING ALL)
 	`)
+	
 	if err != nil {
 		return 0, 0, fmt.Errorf("create staging table: %w", err)
 	}
@@ -72,13 +67,7 @@ func upsertRecords(ctx context.Context, conn *pgx.Conn, records map[string]RawBI
 	log.Printf("staged %d rows", n)
 
 	// 3. Merge staging → bin_data.
-	// We count pre-existing rows to calculate insert vs update split.
-	var existingCount int
-	if err = conn.QueryRow(ctx, `SELECT COUNT(*) FROM bin_data`).Scan(&existingCount); err != nil {
-		return 0, 0, fmt.Errorf("count existing: %w", err)
-	}
-
-	_, err = conn.Exec(ctx, `
+	mergeRows, err := conn.Query(ctx, `
 		INSERT INTO bin_data (
 			bin_prefix, prefix_length, scheme, card_type, card_level,
 			issuer_name, issuer_url, issuer_phone,
@@ -114,21 +103,27 @@ func upsertRecords(ctx context.Context, conn *pgx.Conn, records map[string]RawBI
 			source        = EXCLUDED.source,
 			confidence    = GREATEST(bin_data.confidence, EXCLUDED.confidence),
 			last_updated  = NOW()
+		RETURNING (xmax = 0) AS is_insert
 	`)
 	if err != nil {
 		return 0, 0, fmt.Errorf("merge into bin_data: %w", err)
 	}
+	defer mergeRows.Close()
 
-	var totalCount int
-	if err = conn.QueryRow(ctx, `SELECT COUNT(*) FROM bin_data`).Scan(&totalCount); err != nil {
-		return 0, 0, fmt.Errorf("count final: %w", err)
+	for mergeRows.Next() {
+		var isInsert bool
+		if err = mergeRows.Scan(&isInsert); err != nil {
+			return 0, 0, fmt.Errorf("scan returning: %w", err)
+		}
+		if isInsert {
+			inserted++
+		} else {
+			updated++
+		}
 	}
-
-	inserted = totalCount - existingCount
-	if inserted < 0 {
-		inserted = 0
+	if err = mergeRows.Err(); err != nil {
+		return 0, 0, fmt.Errorf("rows: %w", err)
 	}
-	updated = len(records) - inserted
 
 	return inserted, updated, nil
 }
