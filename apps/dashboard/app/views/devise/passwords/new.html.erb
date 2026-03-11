@@ -7,10 +7,10 @@
         </span>
       <% end %>
       <h2 class="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-gray-100">
-        Forgot your password?
+        <%= t("auth.forgot_password.heading") %>
       </h2>
       <p class="mt-2 text-center text-sm text-gray-600 dark:text-gray-400">
-        Enter your email and we'll send you reset instructions
+        <%= t("auth.forgot_password.subheading") %>
       </p>
     </div>
 
@@ -18,12 +18,12 @@
       <%= render "devise/shared/error_messages", resource: resource %>
 
       <div>
-        <%= f.label :email, "Email address", class: "block text-sm font-medium text-gray-700 dark:text-gray-300" %>
+        <%= f.label :email, t("auth.forgot_password.email"), class: "block text-sm font-medium text-gray-700 dark:text-gray-300" %>
         <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "mt-1 appearance-none relative block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-gray-100 dark:bg-gray-700 rounded-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm", placeholder: "you@example.com" %>
       </div>
 
       <div>
-        <%= f.submit "Send reset instructions", class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900 focus:ring-indigo-500 cursor-pointer" %>
+        <%= f.submit t("auth.forgot_password.submit"), class: "group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 dark:focus:ring-offset-gray-900 focus:ring-indigo-500 cursor-pointer" %>
       </div>
 
       <div class="text-center text-sm">

@@ -1,36 +1,36 @@
-<% content_for :title, "FAQ - Requiems API" %>
+<% content_for :title, t("home.faq.title") %>
 
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 md:p-12">
-      <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">Frequently Asked Questions</h1>
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4"><%= t("home.faq.heading") %></h1>
       <p class="text-xl text-gray-600 dark:text-gray-400 mb-12">
-        Find answers to common questions about Requiems API
+        <%= t("home.faq.intro") %>
       </p>
 
       <div class="space-y-8">
         <!-- Getting Started -->
         <div>
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 pb-2 border-b border-gray-200 dark:border-gray-700">Getting Started</h2>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 pb-2 border-b border-gray-200 dark:border-gray-700"><%= t("home.faq.getting_started.heading") %></h2>
           <div class="space-y-6">
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">How do I get started with Requiems API?</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.faq.getting_started.q1") %></h3>
               <p class="text-gray-700 dark:text-gray-300">
-                Getting started is easy! Sign up for a free account, generate your API key from the dashboard, and start making requests. Check out our <%= link_to "documentation", docs_path, class: "text-blue-600 hover:text-blue-700 underline" %> for detailed integration guides.
+                <%= t("home.faq.getting_started.a1_html", docs_link: link_to(t("home.faq.getting_started.docs_link"), docs_path, class: "text-blue-600 hover:text-blue-700 underline")).html_safe %>
               </p>
             </div>
 
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Do I need a credit card to start?</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.faq.getting_started.q2") %></h3>
               <p class="text-gray-700 dark:text-gray-300">
-                No! Our free plan includes 10,000 monthly credits with no credit card required. Perfect for testing and small projects. You can upgrade anytime when you need more.
+                <%= t("home.faq.getting_started.a2") %>
               </p>
             </div>
 
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">What programming languages do you support?</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.faq.getting_started.q3") %></h3>
               <p class="text-gray-700 dark:text-gray-300">
-                Our REST API works with any programming language that can make HTTP requests. We provide code examples for popular languages including JavaScript/Node.js, Python, PHP, Ruby, Go, and Java.
+                <%= t("home.faq.getting_started.a3") %>
               </p>
             </div>
           </div>
@@ -38,27 +38,27 @@
 
         <!-- Authentication -->
         <div>
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 pb-2 border-b border-gray-200 dark:border-gray-700">Authentication</h2>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 pb-2 border-b border-gray-200 dark:border-gray-700"><%= t("home.faq.authentication.heading") %></h2>
           <div class="space-y-6">
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">How do I authenticate my requests?</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.faq.authentication.q1") %></h3>
               <p class="text-gray-700 dark:text-gray-300">
-                Include your API key in the Authorization header as a Bearer token:<br>
+                <%= t("home.faq.authentication.a1") %><br>
                 <code class="bg-gray-800 text-gray-100 px-3 py-1 rounded mt-2 inline-block">Authorization: Bearer YOUR_API_KEY</code>
               </p>
             </div>
 
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">What's the difference between test and live API keys?</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.faq.authentication.q2") %></h3>
               <p class="text-gray-700 dark:text-gray-300">
-                Test keys (starting with <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">req_test_</code>) are for development and testing. They work with all endpoints but don't count against your request quota. Live keys (<code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">req_live_</code>) are for production use and count against your monthly request quota.
+                <%= t("home.faq.authentication.a2_html").html_safe %>
               </p>
             </div>
 
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Can I regenerate my API key?</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.faq.authentication.q3") %></h3>
               <p class="text-gray-700 dark:text-gray-300">
-                Yes! Go to your dashboard, click on the API key you want to regenerate, and select "Regenerate". Note that the old key will stop working immediately, so update all your applications.
+                <%= t("home.faq.authentication.a3") %>
               </p>
             </div>
           </div>
@@ -66,33 +66,33 @@
 
         <!-- Billing & Usage -->
         <div>
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 pb-2 border-b border-gray-200 dark:border-gray-700">Billing & Usage</h2>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 pb-2 border-b border-gray-200 dark:border-gray-700"><%= t("home.faq.billing.heading") %></h2>
           <div class="space-y-6">
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">How is billing calculated?</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.faq.billing.q1") %></h3>
               <p class="text-gray-700 dark:text-gray-300">
-                Each API call costs 1 request. Your plan includes a monthly request allowance that resets at the start of each billing period. Some endpoints may count as more than 1 request — this is always stated explicitly in that endpoint's documentation.
+                <%= t("home.faq.billing.a1") %>
               </p>
             </div>
 
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">What happens if I exceed my request limit?</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.faq.billing.q2") %></h3>
               <p class="text-gray-700 dark:text-gray-300">
-                When you hit 75% of your quota, we'll send you an alert. At 90%, you'll get another warning. If you hit 100%, API requests will return a 429 error until you upgrade your plan or wait for your next billing cycle.
+                <%= t("home.faq.billing.a2") %>
               </p>
             </div>
 
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Can I upgrade or downgrade my plan?</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.faq.billing.q3") %></h3>
               <p class="text-gray-700 dark:text-gray-300">
-                Yes! You can change your plan anytime from your billing dashboard. Upgrades take effect immediately. Downgrades take effect at the start of your next billing period.
+                <%= t("home.faq.billing.a3") %>
               </p>
             </div>
 
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Do unused requests roll over?</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.faq.billing.q4") %></h3>
               <p class="text-gray-700 dark:text-gray-300">
-                No, unused requests don't roll over to the next month. Your request allowance resets at the beginning of each billing period. We recommend choosing a plan that matches your typical monthly usage.
+                <%= t("home.faq.billing.a4") %>
               </p>
             </div>
           </div>
@@ -100,25 +100,25 @@
 
         <!-- Rate Limits -->
         <div>
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 pb-2 border-b border-gray-200 dark:border-gray-700">Rate Limits</h2>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 pb-2 border-b border-gray-200 dark:border-gray-700"><%= t("home.faq.rate_limits.heading") %></h2>
           <div class="space-y-6">
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">What are the rate limits?</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.faq.rate_limits.q1") %></h3>
               <p class="text-gray-700 dark:text-gray-300 mb-2">
-                Rate limits vary by plan:
+                <%= t("home.faq.rate_limits.a1") %>
               </p>
               <ul class="text-gray-700 dark:text-gray-300 space-y-1 ml-4">
-                <li>• Free: 100 requests/minute</li>
-                <li>• Developer: 300 requests/minute</li>
-                <li>• Business: 1,000 requests/minute</li>
-                <li>• Professional: 5,000 requests/minute</li>
+                <li>• <%= t("home.faq.rate_limits.free") %></li>
+                <li>• <%= t("home.faq.rate_limits.developer") %></li>
+                <li>• <%= t("home.faq.rate_limits.business") %></li>
+                <li>• <%= t("home.faq.rate_limits.professional") %></li>
               </ul>
             </div>
 
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">How should I handle rate limit errors?</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.faq.rate_limits.q2") %></h3>
               <p class="text-gray-700 dark:text-gray-300">
-                When you receive a 429 error, implement exponential backoff. Wait a few seconds and retry. Check the <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">Retry-After</code> header for the recommended wait time. Consider upgrading your plan if you consistently hit rate limits.
+                <%= t("home.faq.rate_limits.a2_html").html_safe %>
               </p>
             </div>
           </div>
@@ -126,36 +126,36 @@
 
         <!-- Support -->
         <div>
-          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 pb-2 border-b border-gray-200 dark:border-gray-700">Support</h2>
+          <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 pb-2 border-b border-gray-200 dark:border-gray-700"><%= t("home.faq.support.heading") %></h2>
           <div class="space-y-6">
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">How can I get help?</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.faq.support.q1") %></h3>
               <p class="text-gray-700 dark:text-gray-300 mb-2">
-                We offer multiple support channels:
+                <%= t("home.faq.support.a1") %>
               </p>
               <ul class="text-gray-700 dark:text-gray-300 space-y-1 ml-4">
-                <li>• <%= link_to "Documentation", docs_path, class: "text-blue-600 hover:text-blue-700 underline" %> - Comprehensive guides and API reference</li>
-                <li>• <%= link_to "Contact Form", contact_path, class: "text-blue-600 hover:text-blue-700 underline" %> - Email support (24-48 hour response)</li>
-                <li>• <%= link_to "GitHub Issues", "https://github.com/bobadilla-tech/requiems-api/issues", target: "_blank", class: "text-blue-600 hover:text-blue-700 underline" %> - Report bugs or request features</li>
+                <li>• <%= link_to t("home.faq.support.docs_channel.label"), docs_path, class: "text-blue-600 hover:text-blue-700 underline" %> - <%= t("home.faq.support.docs_channel.description") %></li>
+                <li>• <%= link_to t("home.faq.support.contact_channel.label"), contact_path, class: "text-blue-600 hover:text-blue-700 underline" %> - <%= t("home.faq.support.contact_channel.description") %></li>
+                <li>• <%= link_to t("home.faq.support.github_channel.label"), "#{ExternalLinks::GITHUB[:repository]}/issues", target: "_blank", rel: "noopener noreferrer", class: "text-blue-600 hover:text-blue-700 underline" %> - <%= t("home.faq.support.github_channel.description") %></li>
               </ul>
             </div>
 
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">What are your support response times?</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.faq.support.q2") %></h3>
               <p class="text-gray-700 dark:text-gray-300 mb-2">
-                Response times vary by plan:
+                <%= t("home.faq.support.a2") %>
               </p>
               <ul class="text-gray-700 dark:text-gray-300 space-y-1 ml-4">
-                <li>• Free & Developer: 48 hours</li>
-                <li>• Business: 24 hours</li>
-                <li>• Professional: 12 hours (priority support)</li>
+                <li>• <%= t("home.faq.support.free_dev") %></li>
+                <li>• <%= t("home.faq.support.business_time") %></li>
+                <li>• <%= t("home.faq.support.professional_time") %></li>
               </ul>
             </div>
 
             <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-6">
-              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Do you offer enterprise support?</h3>
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.faq.support.q3") %></h3>
               <p class="text-gray-700 dark:text-gray-300">
-                Yes! Enterprise customers get dedicated support with guaranteed response times, direct access to our engineering team, and priority assistance. <%= link_to "Contact sales", talk_to_sales_path, class: "text-blue-600 hover:text-blue-700 underline" %> to learn more.
+                <%= t("home.faq.support.a3_html", sales_link: link_to(t("home.faq.support.contact_sales"), talk_to_sales_path, class: "text-blue-600 hover:text-blue-700 underline")).html_safe %>
               </p>
             </div>
           </div>
@@ -164,16 +164,16 @@
 
       <!-- Still have questions -->
       <div class="mt-12 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
-        <h2 class="text-lg font-semibold text-blue-900 dark:text-blue-300 mb-2">Still have questions?</h2>
+        <h2 class="text-lg font-semibold text-blue-900 dark:text-blue-300 mb-2"><%= t("home.faq.still_questions.heading") %></h2>
         <p class="text-blue-800 dark:text-blue-300 mb-4">
-          We're here to help! Reach out to our support team or check our documentation.
+          <%= t("home.faq.still_questions.text") %>
         </p>
         <div class="flex flex-col sm:flex-row gap-4">
           <%= link_to contact_path, class: "inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors" do %>
-            Contact Support
+            <%= t("home.faq.still_questions.contact") %>
           <% end %>
           <%= link_to docs_path, class: "inline-flex items-center justify-center px-4 py-2 border border-blue-300 dark:border-blue-700 text-sm font-medium rounded-md text-blue-700 dark:text-blue-400 bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors" do %>
-            View Documentation
+            <%= t("home.faq.still_questions.docs") %>
           <% end %>
         </div>
       </div>

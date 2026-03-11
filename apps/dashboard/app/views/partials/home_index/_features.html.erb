@@ -2,10 +2,10 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
       <h2 class="text-4xl font-bold text-gray-900 dark:text-gray-100">
-        Built for Developer Experience
+        <%= t("home.index.features.heading") %>
       </h2>
       <p class="mt-4 text-xl text-gray-600 dark:text-gray-400">
-        Everything you need to integrate and ship fast
+        <%= t("home.index.features.subheading") %>
       </p>
     </div>
 
@@ -19,9 +19,9 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
           </div>
-          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Live API Playground</h3>
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.index.features.playground_title") %></h3>
           <p class="text-gray-600 dark:text-gray-400">
-            Test every endpoint directly in the docs. See real responses instantly without writing code.
+            <%= t("home.index.features.playground_desc") %>
           </p>
         </div>
       <% end %>
@@ -34,9 +34,9 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
             </svg>
           </div>
-          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Code Examples</h3>
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.index.features.examples_title") %></h3>
           <p class="text-gray-600 dark:text-gray-400">
-            Copy-paste examples in cURL, Python, JavaScript, Ruby, Go, and more. Start in seconds.
+            <%= t("home.index.features.examples_desc") %>
           </p>
         </div>
       <% end %>
@@ -49,9 +49,9 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
           </div>
-          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">Precise Documentation</h3>
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.index.features.docs_title") %></h3>
           <p class="text-gray-600 dark:text-gray-400">
-            Every parameter, response field, and error code documented. No guessing required.
+            <%= t("home.index.features.docs_desc") %>
           </p>
         </div>
       <% end %>

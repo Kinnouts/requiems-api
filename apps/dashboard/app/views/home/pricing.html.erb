@@ -3,10 +3,10 @@
   <div class="bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 text-center">
       <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-        Simple, Transparent Pricing
+        <%= t("home.pricing.header.heading") %>
       </h1>
       <p class="text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-        Start free, scale as you grow. All plans include access to our full API catalog.
+        <%= t("home.pricing.header.description") %>
       </p>
     </div>
   </div>
@@ -20,16 +20,16 @@
           data-pricing-toggle-target="monthlyButton"
           data-action="click->pricing-toggle#showMonthly"
           class="px-6 py-2 rounded-md text-sm font-medium transition-colors bg-blue-600 text-white">
-          Monthly
+          <%= t("home.pricing.toggle.monthly") %>
         </button>
         <button
           type="button"
           data-pricing-toggle-target="yearlyButton"
           data-action="click->pricing-toggle#showYearly"
           class="px-6 py-2 rounded-md text-sm font-medium transition-colors text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100">
-          Yearly
+          <%= t("home.pricing.toggle.yearly") %>
           <span class="ml-1 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300">
-            Save 17%
+            <%= t("home.pricing.toggle.save") %>
           </span>
         </button>
       </div>
@@ -39,79 +39,53 @@
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
       <!-- Free Plan -->
       <%= render "partials/pricing/pricing_card",
-        name: "Free",
+        name: t("home.pricing.plans.free.name"),
         monthly_price: 0,
         yearly_price: 0,
-        description: "Perfect for testing and small projects",
+        description: t("home.pricing.plans.free.description"),
         requests: "500",
         rate_limit: "30/min",
-        features: [
-          "500 requests/month",
-          "30 requests/minute",
-          "All API endpoints",
-          "Community support",
-          "EU data centers"
-        ],
-        cta_text: "Start Free",
+        features: t("home.pricing.plans.free.features"),
+        cta_text: t("home.pricing.plans.free.cta"),
         cta_url: new_user_registration_path,
         popular: false %>
 
       <!-- Developer Plan -->
       <%= render "partials/pricing/pricing_card",
-        name: "Developer",
+        name: t("home.pricing.plans.developer.name"),
         monthly_price: 30,
         yearly_price: 25,
-        description: "For developers building production apps",
+        description: t("home.pricing.plans.developer.description"),
         requests: "100k",
         rate_limit: "5,000/min",
-        features: [
-          "100,000 requests/month",
-          "5,000 requests/minute",
-          "All API endpoints",
-          "Email support (24h response)",
-          "EU data centers"
-        ],
-        cta_text: "Start Free Trial",
+        features: t("home.pricing.plans.developer.features"),
+        cta_text: t("home.pricing.plans.developer.cta"),
         cta_url: user_signed_in? ? { method: :post, url: dashboard_checkout_billing_path, params: { plan: "developer", billing_cycle: "monthly" } } : new_user_registration_path(plan: "developer"),
         popular: false %>
 
       <!-- Business Plan (Most Popular) -->
       <%= render "partials/pricing/pricing_card",
-        name: "Business",
+        name: t("home.pricing.plans.business.name"),
         monthly_price: 75,
         yearly_price: 62.5,
-        description: "For growing businesses and teams",
+        description: t("home.pricing.plans.business.description"),
         requests: "1M",
         rate_limit: "10k/min",
-        features: [
-          "1,000,000 requests/month",
-          "10,000 requests/minute",
-          "All API endpoints",
-          "Priority email support (4h response)",
-          "EU data centers",
-          "Custom SLAs available"
-        ],
-        cta_text: "Start Free Trial",
+        features: t("home.pricing.plans.business.features"),
+        cta_text: t("home.pricing.plans.business.cta"),
         cta_url: user_signed_in? ? { method: :post, url: dashboard_checkout_billing_path, params: { plan: "business", billing_cycle: "monthly" } } : new_user_registration_path(plan: "business"),
         popular: true %>
 
       <!-- Professional Plan -->
       <%= render "partials/pricing/pricing_card",
-        name: "Professional",
+        name: t("home.pricing.plans.professional.name"),
         monthly_price: 150,
         yearly_price: 125,
-        description: "For high-volume applications",
+        description: t("home.pricing.plans.professional.description"),
         requests: "10M",
         rate_limit: "50k/min",
-        features: [
-          "10,000,000 requests/month",
-          "50,000 requests/minute",
-          "All API endpoints",
-          "Priority support (1h response)",
-          "EU data centers",
-          "Custom SLAs"
-        ],
-        cta_text: "Start Free Trial",
+        features: t("home.pricing.plans.professional.features"),
+        cta_text: t("home.pricing.plans.professional.cta"),
         cta_url: user_signed_in? ? { method: :post, url: dashboard_checkout_billing_path, params: { plan: "professional", billing_cycle: "monthly" } } : new_user_registration_path(plan: "professional"),
         popular: false %>
     </div>
@@ -120,45 +94,23 @@
     <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-lg text-white p-8 mb-16">
       <div class="flex flex-col lg:flex-row items-center justify-between">
         <div class="mb-6 lg:mb-0 lg:mr-8">
-          <h3 class="text-2xl font-bold mb-2">Enterprise</h3>
-          <p class="text-gray-300 mb-4">Custom solutions for large-scale deployments</p>
+          <h3 class="text-2xl font-bold mb-2"><%= t("home.pricing.plans.enterprise.heading") %></h3>
+          <p class="text-gray-300 mb-4"><%= t("home.pricing.plans.enterprise.description") %></p>
           <ul class="space-y-2 text-gray-200">
-            <li class="flex items-center">
-              <svg class="h-5 w-5 text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-              </svg>
-              Unlimited API requests
-            </li>
-            <li class="flex items-center">
-              <svg class="h-5 w-5 text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-              </svg>
-              Private dedicated servers
-            </li>
-            <li class="flex items-center">
-              <svg class="h-5 w-5 text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-              </svg>
-              EU data residency options
-            </li>
-            <li class="flex items-center">
-              <svg class="h-5 w-5 text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-              </svg>
-              Custom SLAs & support
-            </li>
-            <li class="flex items-center">
-              <svg class="h-5 w-5 text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
-              </svg>
-              On-premise deployment support
-            </li>
+            <% t("home.pricing.plans.enterprise.features").each do |feature| %>
+              <li class="flex items-center">
+                <svg class="h-5 w-5 text-green-400 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                </svg>
+                <%= feature %>
+              </li>
+            <% end %>
           </ul>
         </div>
         <div class="text-center">
-          <div class="text-4xl font-bold mb-4">Custom Pricing</div>
+          <div class="text-4xl font-bold mb-4"><%= t("home.pricing.plans.enterprise.price") %></div>
           <a href="mailto:eliaz@bobadilla.tech" class="inline-flex items-center px-8 py-4 bg-white text-gray-900 font-medium rounded-lg hover:bg-gray-100 transition-colors">
-            Contact Sales
+            <%= t("home.pricing.plans.enterprise.cta") %>
             <svg class="ml-2 h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"/>
             </svg>
@@ -170,27 +122,27 @@
     <!-- Feature Comparison Table -->
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden mb-16">
       <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">Compare Plans</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100"><%= t("home.pricing.table.heading") %></h2>
       </div>
 
       <div class="overflow-x-auto">
         <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
           <thead class="bg-gray-50 dark:bg-gray-700">
             <tr>
-              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Feature</th>
-              <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Free</th>
-              <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Developer</th>
-              <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Business</th>
-              <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Professional</th>
+              <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("home.pricing.table.feature_col") %></th>
+              <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("home.pricing.plans.free.name") %></th>
+              <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("home.pricing.plans.developer.name") %></th>
+              <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("home.pricing.plans.business.name") %></th>
+              <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("home.pricing.plans.professional.name") %></th>
             </tr>
           </thead>
           <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-            <%= render "partials/pricing/pricing_table_row", feature: "Monthly requests", values: ["500", "100k", "1M", "10M"] %>
-            <%= render "partials/pricing/pricing_table_row", feature: "Rate limit", values: ["30/min", "5k/min", "10k/min", "50k/min"] %>
-            <%= render "partials/pricing/pricing_table_row", feature: "API endpoints", values: ["All", "All", "All", "All"] %>
-            <%= render "partials/pricing/pricing_table_row", feature: "Data centers", values: ["EU", "EU", "EU", "EU"] %>
-            <%= render "partials/pricing/pricing_table_row", feature: "Support response", values: ["Community", "24h", "4h", "1h"] %>
-            <%= render "partials/pricing/pricing_table_row", feature: "SLA", values: ["-", "-", "99.9%", "99.95%"] %>
+            <%= render "partials/pricing/pricing_table_row", feature: t("home.pricing.table.rows.monthly_requests"), values: ["500", "100k", "1M", "10M"] %>
+            <%= render "partials/pricing/pricing_table_row", feature: t("home.pricing.table.rows.rate_limit"), values: ["30/min", "5k/min", "10k/min", "50k/min"] %>
+            <%= render "partials/pricing/pricing_table_row", feature: t("home.pricing.table.rows.api_endpoints"), values: Array.new(4) { t("home.pricing.table.values.all") } %>
+            <%= render "partials/pricing/pricing_table_row", feature: t("home.pricing.table.rows.data_centers"), values: Array.new(4) { t("home.pricing.table.values.eu") } %>
+            <%= render "partials/pricing/pricing_table_row", feature: t("home.pricing.table.rows.support_response"), values: [t("home.pricing.table.values.community"), "24h", "4h", "1h"] %>
+            <%= render "partials/pricing/pricing_table_row", feature: t("home.pricing.table.rows.sla"), values: [t("home.pricing.table.values.none"), t("home.pricing.table.values.none"), "99.9%", "99.95%"] %>
           </tbody>
         </table>
       </div>
@@ -198,7 +150,7 @@
 
     <!-- Security & Compliance Section -->
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-8 mb-16">
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">Security & Compliance</h2>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center"><%= t("home.pricing.security.heading") %></h2>
       <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
         <div class="text-center">
           <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-600 dark:text-blue-300 mb-4">
@@ -206,8 +158,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">SOC 2 Type II</h3>
-          <p class="text-gray-600 dark:text-gray-400 text-sm">In progress.</p>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.pricing.security.soc2_title") %></h3>
+          <p class="text-gray-600 dark:text-gray-400 text-sm"><%= t("home.pricing.security.soc2_desc") %></p>
         </div>
 
         <div class="text-center">
@@ -216,8 +168,8 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">EU Infrastructure</h3>
-          <p class="text-gray-600 dark:text-gray-400 text-sm">All data centers located in the EU for GDPR compliance.</p>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.pricing.security.eu_title") %></h3>
+          <p class="text-gray-600 dark:text-gray-400 text-sm"><%= t("home.pricing.security.eu_desc") %></p>
         </div>
 
         <div class="text-center">
@@ -226,36 +178,36 @@
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
             </svg>
           </div>
-          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Enterprise Encryption</h3>
-          <p class="text-gray-600 dark:text-gray-400 text-sm">TLS 1.3 in transit, AES-256 at rest. Zero logging of API request/response data.</p>
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.pricing.security.encryption_title") %></h3>
+          <p class="text-gray-600 dark:text-gray-400 text-sm"><%= t("home.pricing.security.encryption_desc") %></p>
         </div>
       </div>
     </div>
 
     <!-- FAQ Section -->
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-8">
-      <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">Frequently Asked Questions</h2>
+      <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6"><%= t("home.pricing.faq.heading") %></h2>
 
       <div class="space-y-4" data-controller="faq-accordion">
         <%= render "partials/pricing/faq_item",
-          question: "What happens if I exceed my monthly quota?",
-          answer: "Your API requests will return a 429 (Too Many Requests) error once you hit your monthly limit. We recommend upgrading to a higher plan before reaching your quota. You can monitor your usage in real-time from your dashboard." %>
+          question: t("home.pricing.faq.q1"),
+          answer: t("home.pricing.faq.a1") %>
 
         <%= render "partials/pricing/faq_item",
-          question: "Can I use Requiems API for commercial projects?",
-          answer: "Yes! All plans, including the free tier, can be used for commercial projects. Our managed cloud service provides enterprise-grade reliability, scalability, and support for production applications." %>
+          question: t("home.pricing.faq.q2"),
+          answer: t("home.pricing.faq.a2") %>
 
         <%= render "partials/pricing/faq_item",
-          question: "Do you offer custom enterprise plans?",
-          answer: "Yes! Enterprise plans include custom pricing, dedicated infrastructure, private deployments, EU data residency, custom SLAs, and dedicated support. Contact our sales team at eliaz@bobadilla.tech to discuss your requirements." %>
+          question: t("home.pricing.faq.q3"),
+          answer: t("home.pricing.faq.a3") %>
 
         <%= render "partials/pricing/faq_item",
-          question: "What data centers do you use?",
-          answer: "All plans run on EU data centers for GDPR compliance." %>
+          question: t("home.pricing.faq.q4"),
+          answer: t("home.pricing.faq.a4") %>
 
         <%= render "partials/pricing/faq_item",
-          question: "Is there a free trial for paid plans?",
-          answer: "Yes! All monthly paid plans include a 7-day free trial with full access to plan features. No credit card required to start the trial. You can cancel anytime during the trial period." %>
+          question: t("home.pricing.faq.q5"),
+          answer: t("home.pricing.faq.a5") %>
       </div>
     </div>
   </div>

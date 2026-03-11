@@ -1,0 +1,7 @@
+es:
+  date:
+    formats:
+      month_year: "%B %Y"
+  time:
+    formats:
+      status_timestamp: "%d de %B de %Y a las %H:%M %Z"

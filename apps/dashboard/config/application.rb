@@ -22,5 +22,14 @@ module Dashboard
     config.generators.system_tests = nil
 
     config.middleware.use Rack::Attack
+
+    config.i18n.available_locales = %i[en es]
+    config.i18n.default_locale = :en
+    config.i18n.fallbacks = true
+    config.i18n.load_path += Dir[Rails.root.join("config/locales/**/*.yml")]
+
+    # Fixed effective date for legal documents (Privacy Policy, Terms of Service).
+    # Update this when the documents are materially revised.
+    config.x.legal_effective_date = Date.new(2026, 2, 17)
   end
 end

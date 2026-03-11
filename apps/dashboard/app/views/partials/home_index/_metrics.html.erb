@@ -2,18 +2,18 @@
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="text-center mb-16">
       <h2 class="text-4xl font-bold text-gray-900 dark:text-gray-100">
-        Performance You Can Count On
+        <%= t("home.index.metrics.heading") %>
       </h2>
       <p class="mt-4 text-xl text-gray-600 dark:text-gray-400">
-        Enterprise-grade infrastructure without the enterprise complexity
+        <%= t("home.index.metrics.subheading") %>
       </p>
     </div>
 
     <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <%= render "partials/shared/stat_card", title: "Median Latency", value: "243ms", subtitle: "P50 response time", class_names: "border-2 border-blue-200" %>
-      <%= render "partials/shared/stat_card", title: "Uptime", value: "99.99%", subtitle: "Last 12 months SLA", class_names: "border-2 border-green-200" %>
-      <%= render "partials/shared/stat_card", title: "Monthly Requests", value: "200M+", subtitle: "Requests processed/month", class_names: "border-2 border-purple-200" %>
-      <%= render "partials/shared/stat_card", title: "Data Centers", value: "EU", subtitle: "European Union", class_names: "border-2 border-yellow-200" %>
+      <%= render "partials/shared/stat_card", title: t("home.index.metrics.latency_title"), value: "243ms", subtitle: t("home.index.metrics.latency_subtitle"), class_names: "border-2 border-blue-200" %>
+      <%= render "partials/shared/stat_card", title: t("home.index.metrics.uptime_title"), value: "99.99%", subtitle: t("home.index.metrics.uptime_subtitle"), class_names: "border-2 border-green-200" %>
+      <%= render "partials/shared/stat_card", title: t("home.index.metrics.requests_title"), value: "200M+", subtitle: t("home.index.metrics.requests_subtitle"), class_names: "border-2 border-purple-200" %>
+      <%= render "partials/shared/stat_card", title: t("home.index.metrics.datacenters_title"), value: t("home.index.metrics.datacenters_value"), subtitle: t("home.index.metrics.datacenters_subtitle"), class_names: "border-2 border-yellow-200" %>
     </div>
   </div>
 </div>

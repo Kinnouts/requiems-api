@@ -1,69 +1,66 @@
-<% content_for :title, "About Us - Requiems API" %>
+<% content_for :title, t("home.about.title") %>
 
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 md:p-12">
-      <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6">About Requiems API</h1>
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6"><%= t("home.about.heading") %></h1>
 
       <div class="prose prose-lg max-w-none">
         <p class="text-xl text-gray-600 dark:text-gray-400 mb-8">
-          Building production-ready APIs for developers worldwide.
+          <%= t("home.about.intro") %>
         </p>
 
         <div class="bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-600 p-4 mb-8">
           <p class="text-gray-700 dark:text-gray-300">
-            Requiems API is a product by <a href="https://bobadilla.tech" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700 dark:text-blue-400 font-semibold">Bobadilla Technologies</a>, a team dedicated to building developer-first tools and infrastructure.
+            <%= t("home.about.company_info_html").html_safe %>
           </p>
         </div>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">Our Mission</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.about.mission.heading") %></h2>
         <p class="text-gray-700 dark:text-gray-300 mb-6">
-          Requiems API provides developers with enterprise-grade API infrastructure without the enterprise complexity.
-          We believe in making powerful APIs accessible to developers of all sizes, from indie hackers to large enterprises.
+          <%= t("home.about.mission.text") %>
         </p>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">What We Offer</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.about.offerings.heading") %></h2>
         <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-6">
-          <li>Email validation and verification APIs</li>
-          <li>Text utility APIs (Lorem Ipsum, advice, quotes, random words)</li>
-          <li>Enterprise-grade infrastructure hosted in the EU</li>
-          <li>Transparent pricing with no hidden fees</li>
-          <li>Developer-first documentation and support</li>
+          <% t("home.about.offerings.items").each do |item| %>
+            <li><%= item %></li>
+          <% end %>
         </ul>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">Our Values</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.about.values.heading") %></h2>
         <div class="grid md:grid-cols-2 gap-6 mb-8">
           <div>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Developer Experience</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.about.values.dx_title") %></h3>
             <p class="text-gray-700 dark:text-gray-300">
-              We obsess over making our APIs easy to integrate and delightful to use.
+              <%= t("home.about.values.dx_text") %>
             </p>
           </div>
           <div>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Reliability</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.about.values.reliability_title") %></h3>
             <p class="text-gray-700 dark:text-gray-300">
-              99.99% uptime SLA backed by enterprise infrastructure and monitoring.
+              <%= t("home.about.values.reliability_text") %>
             </p>
           </div>
           <div>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Transparency</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.about.values.transparency_title") %></h3>
             <p class="text-gray-700 dark:text-gray-300">
-              Clear pricing, detailed documentation, and honest communication.
+              <%= t("home.about.values.transparency_text") %>
             </p>
           </div>
           <div>
-            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">Privacy</h3>
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.about.values.privacy_title") %></h3>
             <p class="text-gray-700 dark:text-gray-300">
-              EU-hosted infrastructure with GDPR compliance built-in from day one.
+              <%= t("home.about.values.privacy_text") %>
             </p>
           </div>
         </div>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">Contact Us</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.about.contact.heading") %></h2>
         <p class="text-gray-700 dark:text-gray-300">
-          Have questions or want to learn more?
-          <%= link_to "Get in touch", contact_path, class: "text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium" %>
-          or email us at
+          <%= t("home.about.contact.intro") %>
+          <%= link_to t("home.about.contact.get_in_touch"), contact_path, class: "text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium" %>
+          <%= t("home.about.contact.or_email") %>
           <a href="mailto:eliaz@bobadilla.tech" class="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium">eliaz@bobadilla.tech</a>
         </p>
       </div>

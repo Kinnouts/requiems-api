@@ -13,6 +13,10 @@ class User < ApplicationRecord
   has_many :audit_logs, dependent: :destroy
   has_many :abuse_reports, dependent: :destroy
 
+  SUPPORTED_LOCALES = %w[en es].freeze
+
+  validates :locale, inclusion: { in: SUPPORTED_LOCALES }, allow_nil: true
+
   scope :admins, -> { where(admin: true) }
   scope :active_users, -> { where(status: "active") }
   scope :suspended, -> { where(status: "suspended") }

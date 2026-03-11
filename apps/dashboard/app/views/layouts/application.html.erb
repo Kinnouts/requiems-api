@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="<%= I18n.locale %>">
   <head>
     <script>
       (function() {
@@ -18,6 +18,12 @@
     <%= csp_meta_tag %>
 
     <%= yield :head %>
+
+    <% base_path = request.path.sub(%r{\A/(en|es)(?=/|$)}, "") %>
+    <% base_path = "/" if base_path.blank? %>
+    <link rel="canonical" href="https://requiems.xyz<%= request.path %>">
+    <link rel="alternate" hreflang="en" href="https://requiems.xyz/en<%= base_path %>">
+    <link rel="alternate" hreflang="es" href="https://requiems.xyz/es<%= base_path %>">
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
     <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>

@@ -40,7 +40,8 @@ class Admin::AnalyticsController < ApplicationController
     free_requests = UsageLog
       .where(used_at: @start_date..@end_date)
       .joins(:user)
-      .where.missing(:subscription)
+      .joins("LEFT OUTER JOIN subscriptions ON subscriptions.user_id = users.id")
+      .where("subscriptions.id IS NULL OR subscriptions.plan_name = 'free'")
       .count
     @requests_by_plan["free"] = free_requests if free_requests > 0
 
@@ -52,6 +53,7 @@ class Admin::AnalyticsController < ApplicationController
       .average(:response_time_ms)
       .sort_by { |_, avg| -avg }
       .first(10)
+      .to_h
       .transform_values { |v| v.round(2) }
 
     # Top users by usage
@@ -81,12 +83,12 @@ class Admin::AnalyticsController < ApplicationController
     @revenue_by_plan = Subscription
       .where.not(plan_name: "free")
       .where(cancel_at_period_end: [ false, nil ])
-      .group(:plan_name, :billing_cycle)
+      .group(:plan_name, :plan)
       .count
-      .transform_keys { |plan, cycle| "#{plan.titleize} (#{cycle&.titleize || 'Monthly'})" }
-      .transform_values do |(plan, cycle), count|
+      .each_with_object({}) do |((plan, cycle), count), hash|
+        key = "#{plan.titleize} (#{cycle&.titleize || 'Monthly'})"
         price = plan_prices[plan]&.fetch(cycle&.to_sym || :monthly, 0) || 0
-        price * count
+        hash[key] = price * count
       end
 
     # Revenue trend (last 12 months)
@@ -99,10 +101,10 @@ class Admin::AnalyticsController < ApplicationController
       # Calculate revenue for that month (subscriptions active during that period)
       month_revenue = Subscription
         .where.not(plan_name: "free")
-        .where("billing_cycle_start <= ?", month_end)
-        .where("billing_cycle_end IS NULL OR billing_cycle_end >= ?", month_start)
+        .where("current_period_start <= ?", month_end)
+        .where("current_period_end IS NULL OR current_period_end >= ?", month_start)
         .sum do |sub|
-          plan_prices[sub.plan_name]&.fetch(sub.billing_cycle&.to_sym || :monthly, 0) || 0
+          plan_prices[sub.plan_name]&.fetch(sub.plan&.to_sym || :monthly, 0) || 0
         end
 
       @revenue_trend[month_label] = month_revenue
@@ -258,8 +260,8 @@ class Admin::AnalyticsController < ApplicationController
       .where.not(plan_name: "free")
       .where(cancel_at_period_end: [ false, nil ])
       .sum do |sub|
-        price = plan_prices[sub.plan_name]&.fetch(sub.billing_cycle&.to_sym || :monthly, 0) || 0
-        sub.billing_cycle == "yearly" ? (price * 12 / 12.0) : price
+        price = plan_prices[sub.plan_name]&.fetch(sub.plan&.to_sym || :monthly, 0) || 0
+        sub.plan == "yearly" ? (price * 12 / 12.0) : price
       end
   end
 

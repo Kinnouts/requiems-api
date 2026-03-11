@@ -1,125 +1,108 @@
-<% content_for :title, "Terms of Service - Requiems API" %>
+<% content_for :title, t("home.terms.title") %>
 
 <div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
   <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 md:p-12">
-      <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6">Terms of Service</h1>
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6"><%= t("home.terms.heading") %></h1>
 
       <p class="text-sm text-gray-600 dark:text-gray-400 mb-8">
-        Last updated: <%= Time.current.strftime("%B %d, %Y") %>
+        <%= t("home.terms.last_updated", date: l(Rails.application.config.x.legal_effective_date, format: :long)) %>
       </p>
 
       <div class="prose prose-lg max-w-none">
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">1. Acceptance of Terms</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.acceptance.heading") %></h2>
         <p class="text-gray-700 dark:text-gray-300 mb-6">
-          By accessing or using Requiems API, you agree to be bound by these Terms of Service and all applicable laws and regulations.
-          If you do not agree with any of these terms, you are prohibited from using or accessing this service.
+          <%= t("home.terms.acceptance.text") %>
         </p>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">2. API Access and Usage</h2>
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">2.1 API Keys</h3>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.api_access.heading") %></h2>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.terms.api_access.keys.heading") %></h3>
         <p class="text-gray-700 dark:text-gray-300 mb-4">
-          You are responsible for maintaining the confidentiality of your API keys. Do not share your API keys publicly or
-          embed them in client-side code. You are responsible for all activity that occurs using your API keys.
+          <%= t("home.terms.api_access.keys.text") %>
         </p>
 
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">2.2 Rate Limits</h3>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.terms.api_access.rate_limits.heading") %></h3>
         <p class="text-gray-700 dark:text-gray-300 mb-4">
-          Your API usage is subject to rate limits based on your subscription plan. Exceeding these limits may result in
-          temporary suspension of API access or additional charges.
+          <%= t("home.terms.api_access.rate_limits.text") %>
         </p>
 
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">2.3 Acceptable Use</h3>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.terms.api_access.acceptable_use.heading") %></h3>
         <p class="text-gray-700 dark:text-gray-300 mb-4">
-          You agree not to use the API for:
+          <%= t("home.terms.api_access.acceptable_use.intro") %>
         </p>
         <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-6">
-          <li>Illegal activities or to violate any laws</li>
-          <li>Attempting to gain unauthorized access to our systems</li>
-          <li>Transmitting malware, viruses, or harmful code</li>
-          <li>Harassment, spam, or abusive behavior</li>
-          <li>Reselling or redistributing API access without permission</li>
-          <li>Reverse engineering or attempting to extract source code</li>
+          <% t("home.terms.api_access.acceptable_use.items").each do |item| %>
+            <li><%= item %></li>
+          <% end %>
         </ul>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">3. Billing and Payments</h2>
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">3.1 Subscription Plans</h3>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.billing.heading") %></h2>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.terms.billing.plans.heading") %></h3>
         <p class="text-gray-700 dark:text-gray-300 mb-4">
-          Paid plans are billed monthly or annually in advance. All fees are non-refundable except as required by law or
-          as explicitly stated in these terms.
+          <%= t("home.terms.billing.plans.text") %>
         </p>
 
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">3.2 Free Trials</h3>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.terms.billing.trials.heading") %></h3>
         <p class="text-gray-700 dark:text-gray-300 mb-4">
-          Monthly paid plans include a 7-day free trial. You will not be charged until the trial period ends.
-          You may cancel anytime during the trial period.
+          <%= t("home.terms.billing.trials.text") %>
         </p>
 
-        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">3.3 Overages</h3>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.terms.billing.overages.heading") %></h3>
         <p class="text-gray-700 dark:text-gray-300 mb-6">
-          If you exceed your plan's monthly request quota, API requests will be blocked with a 429 error.
-          Upgrade your plan to restore access.
+          <%= t("home.terms.billing.overages.text") %>
         </p>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">4. Service Level and Uptime</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.sla.heading") %></h2>
         <p class="text-gray-700 dark:text-gray-300 mb-4">
-          We target 99.99% uptime but do not guarantee uninterrupted service. We are not liable for:
+          <%= t("home.terms.sla.intro") %>
         </p>
         <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-6">
-          <li>Scheduled maintenance windows</li>
-          <li>Force majeure events</li>
-          <li>Third-party service failures</li>
-          <li>Issues caused by your misuse of the API</li>
+          <% t("home.terms.sla.items").each do |item| %>
+            <li><%= item %></li>
+          <% end %>
         </ul>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">5. Data and Privacy</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.data_privacy.heading") %></h2>
         <p class="text-gray-700 dark:text-gray-300 mb-6">
-          We do not log the content of API requests or responses. Usage metadata (timestamps, endpoints, status codes)
-          is retained for billing and analytics. See our <%= link_to "Privacy Policy", privacy_path, class: "text-blue-600 hover:text-blue-700" %>
-          for details.
+          <%= t("home.terms.data_privacy.full", link: link_to(t("home.terms.data_privacy.policy_link"), privacy_path, class: "text-blue-600 hover:text-blue-700")).html_safe %>
         </p>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">6. Intellectual Property</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.ip.heading") %></h2>
         <p class="text-gray-700 dark:text-gray-300 mb-6">
-          The API, documentation, and all related materials are owned by Bobadilla Tech and protected by copyright and
-          other intellectual property laws. You may not copy, modify, or create derivative works without permission.
+          <%= t("home.terms.ip.text") %>
         </p>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">7. Termination</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.termination.heading") %></h2>
         <p class="text-gray-700 dark:text-gray-300 mb-4">
-          We may suspend or terminate your access to the API at any time for:
+          <%= t("home.terms.termination.intro") %>
         </p>
         <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-6">
-          <li>Violation of these terms</li>
-          <li>Non-payment of fees</li>
-          <li>Fraudulent or illegal activity</li>
-          <li>At our discretion with 30 days notice</li>
+          <% t("home.terms.termination.items").each do |item| %>
+            <li><%= item %></li>
+          <% end %>
         </ul>
         <p class="text-gray-700 dark:text-gray-300 mb-6">
-          You may cancel your account at any time from your dashboard settings.
+          <%= t("home.terms.termination.self_cancel") %>
         </p>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">8. Limitation of Liability</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.liability.heading") %></h2>
         <p class="text-gray-700 dark:text-gray-300 mb-6">
-          TO THE MAXIMUM EXTENT PERMITTED BY LAW, BOBADILLA TECH SHALL NOT BE LIABLE FOR ANY INDIRECT, INCIDENTAL,
-          SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR ANY LOSS OF PROFITS OR REVENUES, WHETHER INCURRED DIRECTLY
-          OR INDIRECTLY, OR ANY LOSS OF DATA, USE, GOODWILL, OR OTHER INTANGIBLE LOSSES.
+          <%= t("home.terms.liability.text") %>
         </p>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">9. Changes to Terms</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.changes.heading") %></h2>
         <p class="text-gray-700 dark:text-gray-300 mb-6">
-          We reserve the right to modify these terms at any time. We will notify you of material changes via email.
-          Continued use of the API after changes constitutes acceptance of the new terms.
+          <%= t("home.terms.changes.text") %>
         </p>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">10. Governing Law</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.governing_law.heading") %></h2>
         <p class="text-gray-700 dark:text-gray-300 mb-6">
-          These terms are governed by the laws of the European Union. Any disputes shall be resolved in EU courts.
+          <%= t("home.terms.governing_law.text") %>
         </p>
 
-        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4">Contact</h2>
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.contact.heading") %></h2>
         <p class="text-gray-700 dark:text-gray-300 mb-6">
-          Questions about these terms? Contact us at
+          <%= t("home.terms.contact.text") %>
           <a href="mailto:eliaz@bobadilla.tech" class="text-blue-600 hover:text-blue-700 font-medium">eliaz@bobadilla.tech</a>
         </p>
       </div>

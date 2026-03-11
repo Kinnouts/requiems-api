@@ -14,7 +14,7 @@
 <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg <%= 'ring-2 ring-blue-600 relative' if card_popular %> overflow-hidden">
   <% if card_popular %>
     <div class="absolute top-0 right-0 bg-blue-600 text-white px-4 py-1 text-xs font-semibold uppercase rounded-bl-lg">
-      Most Popular
+      <%= t("home.pricing.plans.popular_badge") %>
     </div>
   <% end %>
 
@@ -28,18 +28,18 @@
       <div data-pricing-toggle-target="monthlyPrice">
         <div class="flex items-baseline gap-1">
           <span class="text-4xl font-bold text-gray-900 dark:text-gray-100">$<%= card_monthly_price %></span>
-          <span class="text-gray-600 dark:text-gray-400">/month</span>
+          <span class="text-gray-600 dark:text-gray-400"><%= t("home.pricing.plans.per_month") %></span>
         </div>
       </div>
 
       <div class="hidden" data-pricing-toggle-target="yearlyPrice">
         <div class="flex items-baseline gap-1">
           <span class="text-4xl font-bold text-gray-900 dark:text-gray-100">$<%= card_yearly_price %></span>
-          <span class="text-gray-600 dark:text-gray-400">/month</span>
+          <span class="text-gray-600 dark:text-gray-400"><%= t("home.pricing.plans.per_month") %></span>
         </div>
         <% if card_yearly_price > 0 && card_monthly_price > card_yearly_price %>
           <p class="text-sm text-green-600 mt-1">
-            Save $<%= ((card_monthly_price - card_yearly_price) * 12).to_i %>/year
+            <%= t("home.pricing.plans.save_per_year", amount: ((card_monthly_price - card_yearly_price) * 12).to_i) %>
           </p>
         <% end %>
       </div>
