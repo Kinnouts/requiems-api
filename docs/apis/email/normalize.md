@@ -13,7 +13,7 @@ package.
 | Transformation | Example |
 | --- | --- |
 | Lowercase the full address | `User@Example.COM` → `user@example.com` |
-| Trim leading/trailing whitespace | `  user@example.com  ` → `user@example.com` |
+| Trim leading/trailing whitespace | `user@example.com` → `user@example.com` |
 | Remove dots from Gmail local part | `te.st.user@gmail.com` → `testuser@gmail.com` |
 | Strip plus tag (supported providers) | `user+spam@gmail.com` → `user@gmail.com` |
 | Resolve alias domains | `user@googlemail.com` → `user@gmail.com` |
