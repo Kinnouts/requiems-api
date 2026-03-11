@@ -11,11 +11,11 @@ type EmailNormalizationRequest struct {
 type EmailNormalizationChanges string
 
 type EmailNormalization struct {
-	Original   string              `json:"original"`
-	Normalized string              `json:"normalized"`
-	Local      string              `json:"local"`
-	Domain     string              `json:"domain"`
-	Changes    []normalizer.Change `json:"changes"`
+	Original   string                    `json:"original"`
+	Normalized string                    `json:"normalized"`
+	Local      string                    `json:"local"`
+	Domain     string                    `json:"domain"`
+	Changes    []EmailNormalizationChanges `json:"changes"`
 }
 
 func (EmailNormalization) IsData() {}
