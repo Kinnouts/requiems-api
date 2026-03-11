@@ -102,3 +102,30 @@ func TestService_GetHolidays_DateFormat(t *testing.T) {
 		}
 	}
 }
+
+func TestService_GetHolidays_InvalidCountry(t *testing.T) {
+	svc := NewService()
+
+	_, err := svc.GetHolidays("XX", 2025)
+	if err == nil {
+		t.Fatal("expected error for invalid country code, got nil")
+	}
+	if err != nil {
+		if !contains(err.Error(), "no holidays found") {
+			t.Errorf("expected error message to contain 'no holidays found', got %q", err.Error())
+		}
+	}
+}
+
+func contains(s, substr string) bool {
+	return len(s) >= len(substr) && (s == substr || len(s) > 0 && containsAt(s, substr))
+}
+
+func containsAt(s, substr string) bool {
+	for i := 0; i <= len(s)-len(substr); i++ {
+		if s[i:i+len(substr)] == substr {
+			return true
+		}
+	}
+	return false
+}
