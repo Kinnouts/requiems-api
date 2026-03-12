@@ -12,19 +12,30 @@ func NewService() *Service { return &Service{} }
 
 // Validate parses and validates a phone number, returning structured metadata.
 // When the number cannot be parsed or is not valid, Valid is false and the
-// optional fields (Country, Type, Formatted) are omitted.
+// optional fields are omitted.
 func (s *Service) Validate(number string) ValidateResponse {
 	num, err := phonenumbers.Parse(number, "")
 	if err != nil || !phonenumbers.IsValidNumber(num) {
 		return ValidateResponse{Number: number, Valid: false}
 	}
 
+	numType := phonenumbers.GetNumberType(num)
+
+	var c *Carrier
+	if name, err := phonenumbers.GetCarrierForNumber(num, "en"); err == nil && name != "" {
+		c = &Carrier{Name: name, Source: "metadata"}
+	}
+
+	risk := numberRisk(numType)
+
 	return ValidateResponse{
 		Number:    number,
 		Valid:     true,
 		Country:   phonenumbers.GetRegionCodeForNumber(num),
-		Type:      numberType(phonenumbers.GetNumberType(num)),
+		Type:      numberType(numType),
 		Formatted: phonenumbers.Format(num, phonenumbers.INTERNATIONAL),
+		Carrier:   c,
+		Risk:      &risk,
 	}
 }
 
@@ -55,5 +66,18 @@ func numberType(t phonenumbers.PhoneNumberType) string {
 		return "voicemail"
 	default:
 		return "unknown"
+	}
+}
+
+// numberRisk returns VOIP and virtual risk flags for a given phone number type.
+func numberRisk(t phonenumbers.PhoneNumberType) Risk {
+	switch t {
+	case phonenumbers.VOIP:
+		return Risk{IsVoIP: true, IsVirtual: true}
+	case phonenumbers.PERSONAL_NUMBER, phonenumbers.UAN,
+		phonenumbers.PAGER, phonenumbers.VOICEMAIL:
+		return Risk{IsVirtual: true}
+	default:
+		return Risk{}
 	}
 }
