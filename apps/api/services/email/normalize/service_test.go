@@ -214,6 +214,15 @@ func TestService_Normalize_InvalidEmail_MissingDomain(t *testing.T) {
 	}
 }
 
+func TestService_Normalize_InvalidEmail_DotlessDomain(t *testing.T) {
+	svc := NewService()
+
+	_, err := svc.Normalize("user@gmailcom")
+	if err == nil {
+		t.Error("expected an error for dotless domain 'user@gmailcom', got nil")
+	}
+}
+
 func TestService_Normalize_InvalidEmail_OnlyAtSign(t *testing.T) {
 	svc := NewService()
 
