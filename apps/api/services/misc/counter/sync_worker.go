@@ -51,47 +51,28 @@ func syncDirtyCounters(ctx context.Context, rdb *redis.Client, repo Repository) 
 	// Step 1: Reuse any existing processing snapshot from a prior failed cycle.
 	// This preserves at-least-once delivery by retrying the same dirty set
 	// before moving new dirty namespaces into processing.
-	processingExists, err := rdb.Exists(ctx, processingSetKey).Result()
-
+	acquired, err := acquireProcessingSet(ctx, rdb)
 	if err != nil {
 		return err
 	}
-
-	if processingExists == 0 {
-		// No in-flight snapshot exists, so atomically move the current dirty set
-		// into processing without overwriting an existing processing snapshot.
-		// If counter:dirty doesn't exist, Redis returns ERR no such key.
-		_, err := rdb.RenameNX(ctx, dirtySetKey, processingSetKey).Result()
-
-		if err != nil {
-			if redis.HasErrorPrefix(err, "ERR no such key") {
-				return nil
-			}
-
-			return err
-		}
+	if !acquired {
+		return nil
 	}
 
 	// Step 2: Get all namespaces from the processing set.
 	// Use SMEMBERS to fetch the snapshot. For very large sets (10K+),
 	// consider SSCAN for incremental retrieval.
-
 	namespaces, err := rdb.SMembers(ctx, processingSetKey).Result()
-
 	if err != nil && !errors.Is(err, redis.Nil) {
 		return err
 	}
-
 	if len(namespaces) == 0 {
-		// No counters in the processing set; clean it up
 		return rdb.Del(ctx, processingSetKey).Err()
 	}
 
 	// Step 3: Fetch all counter values in a single MGET operation.
-	// Build the full counter keys and fetch them atomically.
 	// MGET is O(N) for N counters and highly optimized in Redis.
 	counterKeys := make([]string, len(namespaces))
-
 	for i, ns := range namespaces {
 		counterKeys[i] = redisKey(ns)
 	}
@@ -103,51 +84,69 @@ func syncDirtyCounters(ctx context.Context, rdb *redis.Client, repo Repository) 
 
 	// Step 4: Build the map of namespaces to counter values for batch upsert.
 	// Skip counters that have been deleted (vals[i] == nil).
-	// This handles edge cases where a counter is incremented then deleted before sync.
+	counters := parseCounterValues(namespaces, vals)
+	if len(counters) == 0 {
+		return rdb.Del(ctx, processingSetKey).Err()
+	}
 
+	// Step 5: Perform a single batch UPSERT to PostgreSQL.
+	if err := repo.UpsertBatch(ctx, counters); err != nil {
+		return err
+	}
+
+	// Step 6: Delete the processing set after successful sync.
+	// If this fails, the processing set remains and will be retried next cycle.
+	return rdb.Del(ctx, processingSetKey).Err()
+}
+
+// acquireProcessingSet atomically moves the dirty set into the processing set.
+// Returns true if a processing set is ready to be consumed, false if there is
+// nothing to sync (dirty set is empty). Reuses an existing processing set when
+// a prior cycle failed mid-flight (at-least-once guarantee).
+func acquireProcessingSet(ctx context.Context, rdb *redis.Client) (bool, error) {
+	processingExists, err := rdb.Exists(ctx, processingSetKey).Result()
+	if err != nil {
+		return false, err
+	}
+	if processingExists > 0 {
+		return true, nil
+	}
+
+	// No in-flight snapshot exists — atomically rename the dirty set.
+	// If counter:dirty doesn't exist, Redis returns ERR no such key.
+	_, err = rdb.RenameNX(ctx, dirtySetKey, processingSetKey).Result()
+	if err != nil {
+		if redis.HasErrorPrefix(err, "ERR no such key") {
+			return false, nil
+		}
+		return false, err
+	}
+	return true, nil
+}
+
+// parseCounterValues builds a namespace→value map from parallel MGET results.
+// Entries where the Redis key no longer exists (nil) are silently skipped.
+func parseCounterValues(namespaces []string, vals []any) map[string]int64 {
 	counters := make(map[string]int64, len(namespaces))
-
 	for i, ns := range namespaces {
 		if vals[i] == nil {
-			// Counter no longer exists in Redis; skip it
 			continue
 		}
 
 		counterVal, ok := vals[i].(string)
-
 		if !ok {
 			log.Printf("counter value type assertion failed for %q", ns)
 			continue
 		}
 
 		val, err := strconv.ParseInt(counterVal, 10, 64)
-
+		
 		if err != nil {
 			log.Printf("counter parse error for %q: %v", ns, err)
 			continue
 		}
-
+		
 		counters[ns] = val
 	}
-
-	if len(counters) == 0 {
-		// No valid counters to sync; clean up the processing set
-		return rdb.Del(ctx, processingSetKey).Err()
-	}
-
-	// Step 5: Perform a single batch UPSERT to PostgreSQL.
-	// This is the most efficient database operation possible:
-	// - One TCP round-trip
-	// - One transaction
-	// - PostgreSQL planner optimizes the bulk insert
-	// For 10K counters, this typically <100ms depending on network latency.
-	if err := repo.UpsertBatch(ctx, counters); err != nil {
-		return err
-	}
-
-	// Step 6: Delete the processing set after successful sync.
-	// This marks the sync as complete and allows the pattern to repeat.
-	// If this fails (network error), the processing set remains and will
-	// be retried on the next worker cycle.
-	return rdb.Del(ctx, processingSetKey).Err()
+	return counters
 }

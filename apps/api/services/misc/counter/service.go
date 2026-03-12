@@ -72,7 +72,7 @@ func (s *service) Get(ctx context.Context, namespace string) (int64, error) {
 	}
 
 	// Hydrate Redis without clobbering a concurrent increment.
-	if err := s.rdb.SetNX(ctx, redisKey(namespace), total, 0).Err(); err != nil {
+	if err := s.rdb.SetArgs(ctx, redisKey(namespace), total, redis.SetArgs{Mode: "NX"}).Err(); err != nil {
 		log.Printf("counter redis hydrate error for %q: %v", namespace, err)
 	}
 

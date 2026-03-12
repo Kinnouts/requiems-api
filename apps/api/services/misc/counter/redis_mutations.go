@@ -26,14 +26,14 @@ redis.call("SADD", KEYS[2], ARGV[2])
 return val
 `)
 
-func incrementIfPresent(ctx context.Context, rdb *redis.Client, namespace string) (int64, bool, error) {
+func incrementIfPresent(ctx context.Context, rdb *redis.Client, namespace string) (val int64, missing bool, err error) {
 	res, err := incrementIfPresentScript.Run(ctx, rdb, []string{redisKey(namespace), dirtySetKey}, namespace).Result()
 
 	if err != nil {
 		return 0, false, err
 	}
 
-	val, err := toInt64(res)
+	val, err = toInt64(res)
 	if err != nil {
 		return 0, false, err
 	}

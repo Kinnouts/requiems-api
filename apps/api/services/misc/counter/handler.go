@@ -3,10 +3,11 @@ package counter
 import (
 	"net/http"
 	"regexp"
-	"requiems-api/platform/httpx"
-	"requiems-api/platform/middleware"
 
 	"github.com/go-chi/chi/v5"
+
+	"requiems-api/platform/httpx"
+	"requiems-api/platform/middleware"
 )
 
 var namespaceRe = regexp.MustCompile(`^[a-zA-Z0-9_-]{1,64}$`)

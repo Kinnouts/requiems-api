@@ -6,10 +6,11 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
-	"requiems-api/platform/httpx"
 	"testing"
 
 	"github.com/go-chi/chi/v5"
+
+	"requiems-api/platform/httpx"
 )
 
 var errRedisDown = errors.New("connection refused")
