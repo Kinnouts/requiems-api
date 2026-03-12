@@ -49,6 +49,7 @@ Existing top-level domains and their `/v1` prefixes:
 | `services/text/`          | `/v1/text`          |
 | `services/email/`         | `/v1/email`         |
 | `services/entertainment/` | `/v1/entertainment` |
+| `services/finance/`       | `/v1/finance`       |
 | `services/misc/`          | `/v1/misc`          |
 | `services/places/`        | `/v1/places`        |
 | `services/tech/`          | `/v1/tech`          |
