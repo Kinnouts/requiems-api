@@ -30,7 +30,7 @@ type Service struct {
 	n *normalizer.Normalizer
 }
 
-// NewService constructs a Service with the given disposable-domain checker.
+// NewService creates a Service initialized with a default email normalizer.
 func NewService() *Service {
 	return &Service{
 		n: normalizer.NewNormalizer(),
@@ -74,20 +74,23 @@ func (s *Service) ValidateEmail(ctx context.Context, email string) EmailValidati
 }
 
 // isValidSyntax reports whether email is a syntactically valid RFC 5322
-// address.
+// isValidSyntax reports whether the given email address conforms to RFC 5322 address syntax.
+// It returns true when the address parses successfully and false otherwise.
 func isValidSyntax(email string) bool {
 	_, err := mail.ParseAddress(email)
 	return err == nil
 }
 
-// checkMX returns true if domain has at least one MX record.
+// checkMX reports whether the given domain has at least one MX DNS record.
+// It performs an MX lookup using the provided context and returns true if at least one record is found.
 func checkMX(ctx context.Context, domain string) bool {
 	records, err := net.DefaultResolver.LookupMX(ctx, domain)
 	return err == nil && len(records) > 0
 }
 
 // suggestDomain returns a pointer to the closest well-known domain name when
-// the input looks like a common typo (edit distance ≤ 2), or nil otherwise.
+// suggestDomain suggests a correction for common email provider domain typos.
+// It returns a pointer to the closest domain from commonDomains when the edit distance is 2 or less, and returns nil for exact matches or when no close domain is found.
 func suggestDomain(domain string) *string {
 	const threshold = 2
 
@@ -112,7 +115,9 @@ func suggestDomain(domain string) *string {
 	return nil
 }
 
-// levenshtein computes the edit distance between two strings.
+// levenshtein computes the Levenshtein edit distance between two strings.
+// It compares Unicode code points (runes) and returns the minimum number of single-character edits
+// (insertions, deletions, or substitutions) required to change `a` into `b`.
 func levenshtein(a, b string) int {
 	ra, rb := []rune(a), []rune(b)
 	la, lb := len(ra), len(rb)

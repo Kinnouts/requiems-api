@@ -8,6 +8,8 @@ import (
 	"requiems-api/services/email/validate"
 )
 
+// RegisterRoutes registers HTTP routes for email-related services on the provided router.
+// It creates disposable, normalize, and validate service instances and registers each service's routes on r.
 func RegisterRoutes(r chi.Router) {
 	disposableSvc := disposable.NewService()
 	disposable.RegisterRoutes(r, disposableSvc)
