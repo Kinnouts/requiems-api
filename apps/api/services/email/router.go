@@ -5,6 +5,7 @@ import (
 
 	"requiems-api/services/email/disposable"
 	"requiems-api/services/email/normalize"
+	"requiems-api/services/email/validate"
 )
 
 func RegisterRoutes(r chi.Router) {
@@ -13,4 +14,7 @@ func RegisterRoutes(r chi.Router) {
 
 	normalizeSvc := normalize.NewService()
 	normalize.RegisterRoutes(r, normalizeSvc)
+
+	validateSvc := validate.NewService()
+	validate.RegisterRoutes(r, validateSvc)
 }
