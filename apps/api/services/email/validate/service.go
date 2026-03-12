@@ -48,14 +48,14 @@ func (s *Service) ValidateEmail(ctx context.Context, email string) EmailValidati
 		}
 	}
 
-	// syntax is valid, so @ is guaranteed to be present
-	_, domain, _ := strings.Cut(strings.ToLower(email), "@")
-
 	// Normalize; fall back to the original address on error.
 	normalized := email
 	if res, err := s.n.Normalize2(email); err == nil {
 		normalized = res.Normalized
 	}
+
+	// syntax is valid, so @ is guaranteed to be present
+	_, domain, _ := strings.Cut(strings.ToLower(normalized), "@")
 
 	mxValid := checkMX(ctx, domain)
 	isDisposable := disposable.IsDisposable(normalized)
