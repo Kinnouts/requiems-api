@@ -92,6 +92,20 @@ categories:
 
 apis:
   # Validation APIs
+  - id: email-normalize
+    name: Email Normalizer
+    categories:
+      - validation
+    description: Normalize email addresses to their canonical form — lowercased, trimmed, and canonicalized with provider-specific rules where supported, including alias-domain resolution
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/email-normalize
+    tags:
+      - Email
+      - Normalization
+      - Data Quality
+
   - id: disposable-email
     name: Email Validation
     categories:
