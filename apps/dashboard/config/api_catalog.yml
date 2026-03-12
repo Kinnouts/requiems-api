@@ -92,39 +92,11 @@ categories:
 
 apis:
   # Validation APIs
-  - id: email-normalize
-    name: Email Normalizer
-    categories:
-      - validation
-    description: Normalize email addresses to their canonical form — lowercased, trimmed, and canonicalized with provider-specific rules where supported, including alias-domain resolution
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/email-normalize
-    tags:
-      - Email
-      - Normalization
-      - Data Quality
-
-  - id: disposable-email
-    name: Email Validation
-    categories:
-      - validation
-    description: Validate email addresses at scale, detect disposable and temporary addresses, reduce bounce rates, and keep your lists clean
-    endpoints_count: 5
-    status: live
-    popular: true
-    documentation_url: /apis/disposable-email
-    tags:
-      - Email Validation
-      - Fraud Prevention
-      - Data Quality
-
   - id: email-validate
     name: Email Validator
     categories:
       - validation
-    description: Full email validation in one call — syntax check, MX record lookup, disposable domain detection, normalization, and typo suggestions
+    description: Full email validation in one call. Syntax check, MX record lookup, disposable domain detection, normalization, and typo suggestions. Includes everything from the Disposable Domain Checker and Email Normalizer in a single request.
     endpoints_count: 1
     status: live
     popular: true
@@ -132,6 +104,34 @@ apis:
     tags:
       - Email
       - Validation
+      - Data Quality
+
+  - id: disposable-email
+    name: Disposable Domain Checker
+    categories:
+      - technology
+    description: Check whether an email domain belongs to a known disposable or temporary email provider. Use this for targeted domain lookups. For full email validation including syntax, MX records, and normalization, see the Email Validator.
+    endpoints_count: 5
+    status: live
+    popular: false
+    documentation_url: /apis/disposable-email
+    tags:
+      - Email
+      - Fraud Prevention
+      - Data Quality
+
+  - id: email-normalize
+    name: Email Normalizer
+    categories:
+      - text
+    description: Normalize email addresses to their canonical form. Lowercased, trimmed, and canonicalized with provider-specific rules including alias-domain resolution. Also available as part of the full Email Validator.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/email-normalize
+    tags:
+      - Email
+      - Normalization
       - Data Quality
 
   - id: phone-validation
