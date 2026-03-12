@@ -59,6 +59,26 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_10_221218) do
     t.index ["user_id"], name: "index_audit_logs_on_user_id"
   end
 
+  create_table "bin_data", primary_key: "bin_prefix", id: { type: :string, limit: 8 }, force: :cascade do |t|
+    t.text "card_level", default: "", null: false
+    t.text "card_type", default: "", null: false
+    t.decimal "confidence", precision: 3, scale: 2, default: "0.5", null: false
+    t.string "country_code", limit: 2, default: "", null: false
+    t.text "country_name", default: "", null: false
+    t.timestamptz "first_seen", default: -> { "now()" }, null: false
+    t.text "issuer_name", default: "", null: false
+    t.text "issuer_phone", default: "", null: false
+    t.text "issuer_url", default: "", null: false
+    t.timestamptz "last_updated", default: -> { "now()" }, null: false
+    t.integer "prefix_length", limit: 2, null: false
+    t.boolean "prepaid", default: false, null: false
+    t.text "scheme", default: "", null: false
+    t.text "source", default: "", null: false
+    t.index "\"left\"((bin_prefix)::text, 6)", name: "idx_bin_data_prefix6"
+    t.index ["country_code"], name: "idx_bin_data_country"
+    t.index ["scheme"], name: "idx_bin_data_scheme"
+  end
+
   create_table "counters", primary_key: "namespace", id: :text, force: :cascade do |t|
     t.bigint "total", default: 0, null: false
     t.datetime "updated_at", precision: nil, null: false
