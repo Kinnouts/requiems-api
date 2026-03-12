@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"crypto/subtle"
 	"net/http"
 
 	"requiems-api/platform/httpx"
@@ -26,7 +27,7 @@ func BackendSecretAuth(expectedSecret string) func(http.Handler) http.Handler {
 				return
 			}
 
-			if providedSecret != expectedSecret {
+			if subtle.ConstantTimeCompare([]byte(providedSecret), []byte(expectedSecret)) != 1 {
 				httpx.Error(w, http.StatusForbidden, "forbidden", "Invalid X-Backend-Secret")
 				return
 			}
