@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	"github.com/go-chi/chi/v5"
@@ -113,7 +114,7 @@ func TestPhone_UKMobile(t *testing.T) {
 func TestPhone_CarrierPresent(t *testing.T) {
 	r := setupRouter()
 
-	req := httptest.NewRequest(http.MethodGet, "/validate/phone?number=%2B51923531893", http.NoBody)
+	req := httptest.NewRequest(http.MethodGet, "/validate/phone?number=%2B447400123456", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -200,6 +201,72 @@ func TestPhone_InvalidHasNoCarrierOrRisk(t *testing.T) {
 	}
 	if resp.Data.Risk != nil {
 		t.Error("expected risk to be absent for invalid number")
+	}
+}
+
+func TestPhone_BatchValidate(t *testing.T) {
+	r := setupRouter()
+
+	body := `{"numbers":["+447400123456","+12015551234","12345"]}`
+	req := httptest.NewRequest(http.MethodPost, "/validate/phone/batch", strings.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
+	}
+
+	var resp httpx.Response[BatchValidateResponse]
+	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
+
+	if resp.Data.Total != 3 {
+		t.Errorf("expected total=3, got %d", resp.Data.Total)
+	}
+	if len(resp.Data.Results) != 3 {
+		t.Fatalf("expected 3 results, got %d", len(resp.Data.Results))
+	}
+	if !resp.Data.Results[0].Valid {
+		t.Error("expected result[0] valid=true")
+	}
+	if !resp.Data.Results[1].Valid {
+		t.Error("expected result[1] valid=true")
+	}
+	if resp.Data.Results[2].Valid {
+		t.Error("expected result[2] valid=false")
+	}
+}
+
+func TestPhone_BatchValidate_EmptyBody(t *testing.T) {
+	r := setupRouter()
+
+	req := httptest.NewRequest(http.MethodPost, "/validate/phone/batch", strings.NewReader(`{"numbers":[]}`))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusUnprocessableEntity {
+		t.Errorf("expected 422, got %d: %s", w.Code, w.Body.String())
+	}
+}
+
+func TestPhone_BatchValidate_ExceedsLimit(t *testing.T) {
+	r := setupRouter()
+
+	numbers := make([]string, 51)
+	for i := range numbers {
+		numbers[i] = `"+447400123456"`
+	}
+	body := `{"numbers":[` + strings.Join(numbers, ",") + `]}`
+	req := httptest.NewRequest(http.MethodPost, "/validate/phone/batch", strings.NewReader(body))
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusUnprocessableEntity {
+		t.Errorf("expected 422, got %d: %s", w.Code, w.Body.String())
 	}
 }
 

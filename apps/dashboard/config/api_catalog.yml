@@ -139,8 +139,8 @@ apis:
     categories:
       - validation
       - technology
-    description: Validate phone numbers, detect country and number type, and get international format
-    endpoints_count: 1
+    description: Validate phone numbers globally. Detect carrier, country, type, and VOIP or virtual risk using only phone metadata.
+    endpoints_count: 2
     status: live
     popular: true
     documentation_url: /apis/phone-validation

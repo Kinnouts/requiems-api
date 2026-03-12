@@ -29,3 +29,16 @@ type ValidateResponse struct {
 }
 
 func (ValidateResponse) IsData() {}
+
+// BatchValidateRequest is the body for validating multiple phone numbers at once.
+type BatchValidateRequest struct {
+	Numbers []string `json:"numbers" validate:"required,min=1,max=50,dive,required"`
+}
+
+// BatchValidateResponse is the response for a batch phone number validation request.
+type BatchValidateResponse struct {
+	Results []ValidateResponse `json:"results"`
+	Total   int                `json:"total"`
+}
+
+func (BatchValidateResponse) IsData() {}

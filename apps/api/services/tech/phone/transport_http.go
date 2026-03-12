@@ -1,6 +1,7 @@
 package phone
 
 import (
+	"context"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -19,4 +20,10 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 
 		httpx.JSON(w, http.StatusOK, svc.Validate(req.Number))
 	})
+
+	r.Post("/validate/phone/batch", httpx.Handle(
+		func(_ context.Context, req BatchValidateRequest) (BatchValidateResponse, error) {
+			return svc.ValidateBatch(req.Numbers), nil
+		},
+	))
 }
