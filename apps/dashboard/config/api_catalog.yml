@@ -120,6 +120,20 @@ apis:
       - Fraud Prevention
       - Data Quality
 
+  - id: email-validate
+    name: Email Validator
+    categories:
+      - validation
+    description: Full email validation in one call — syntax check, MX record lookup, disposable domain detection, normalization, and typo suggestions
+    endpoints_count: 1
+    status: live
+    popular: true
+    documentation_url: /apis/email-validate
+    tags:
+      - Email
+      - Validation
+      - Data Quality
+
   - id: phone-validation
     name: Phone Validation
     categories:
