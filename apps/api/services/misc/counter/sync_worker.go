@@ -31,10 +31,6 @@ func StartSyncWorker(ctx context.Context, rdb *redis.Client, repo Repository) {
 		case <-ticker.C:
 			if err := runSyncCycle(ctx, rdb, repo); err != nil {
 				log.Printf("counter sync error: %v", err)
-				
-				if err := rdb.Del(ctx, processingSetKey).Err(); err != nil {
-					log.Printf("counter cleanup error: %v", err)
-				}
 			}
 		}
 	}
@@ -52,18 +48,26 @@ func runSyncCycle(ctx context.Context, rdb *redis.Client, repo Repository) (err 
 }
 
 func syncDirtyCounters(ctx context.Context, rdb *redis.Client, repo Repository) error {
-	// Step 1: Atomically rename the dirty set to a processing snapshot.
-	// This prevents race conditions by ensuring new updates go into a fresh set.
-	// If counter:dirty doesn't exist, Rename returns redis.Nil (not an error for us)
-	err := rdb.Rename(ctx, dirtySetKey, processingSetKey).Err()
+	// Step 1: Reuse any existing processing snapshot from a prior failed cycle.
+	// This preserves at-least-once delivery by retrying the same dirty set
+	// before moving new dirty namespaces into processing.
+	processingExists, err := rdb.Exists(ctx, processingSetKey).Result()
 
-	if err != nil && !errors.Is(err, redis.Nil) {
+	if err != nil {
 		return err
 	}
 
-	// If the dirty set didn't exist, nothing to sync
-	if errors.Is(err, redis.Nil) {
-		return nil
+	if processingExists == 0 {
+		// No in-flight snapshot exists, so atomically move the current dirty set
+		// into processing. If counter:dirty doesn't exist, Rename returns redis.Nil.
+		err = rdb.Rename(ctx, dirtySetKey, processingSetKey).Err()
+		if err != nil && !errors.Is(err, redis.Nil) {
+			return err
+		}
+
+		if errors.Is(err, redis.Nil) {
+			return nil
+		}
 	}
 
 	// Step 2: Get all namespaces from the processing set.
@@ -142,6 +146,6 @@ func syncDirtyCounters(ctx context.Context, rdb *redis.Client, repo Repository) 
 	// Step 6: Delete the processing set after successful sync.
 	// This marks the sync as complete and allows the pattern to repeat.
 	// If this fails (network error), the processing set remains and will
-	// be cleaned up on the next worker cycle.
+	// be retried on the next worker cycle.
 	return rdb.Del(ctx, processingSetKey).Err()
 }
