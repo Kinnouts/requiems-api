@@ -35,7 +35,7 @@ require (
 require (
 	github.com/TwiN/go-away v1.8.1
 	github.com/bobadilla-tech/business-days-calculator v1.1.0
-	github.com/bobadilla-tech/go-email-normalizer v1.0.1
+	github.com/bobadilla-tech/go-email-normalizer v1.1.0
 	github.com/bobadilla-tech/holidays-per-country v1.0.1
 	github.com/boombuler/barcode v1.1.0
 	github.com/jaswdr/faker/v2 v2.9.1

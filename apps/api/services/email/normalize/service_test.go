@@ -16,11 +16,16 @@ func containsChange(changes []normalizer.Change, target normalizer.Change) bool 
 	return false
 }
 
+// --- Valid email tests ---
+
 func TestService_Normalize_OriginalPreserved(t *testing.T) {
 	svc := NewService()
 
 	input := "User@Example.com"
-	result := svc.Normalize(input)
+	result, err := svc.Normalize(input)
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 
 	if result.Original != input {
 		t.Errorf("expected Original %q, got %q", input, result.Original)
@@ -30,7 +35,10 @@ func TestService_Normalize_OriginalPreserved(t *testing.T) {
 func TestService_Normalize_SplitsLocalAndDomain(t *testing.T) {
 	svc := NewService()
 
-	result := svc.Normalize("user@example.com")
+	result, err := svc.Normalize("user@example.com")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 
 	if result.Local != "user" {
 		t.Errorf("expected Local %q, got %q", "user", result.Local)
@@ -45,7 +53,10 @@ func TestService_Normalize_LowercasesDomain(t *testing.T) {
 
 	// For unknown providers the local part is preserved (case-sensitive per
 	// RFC 5321); only the domain is lowercased.
-	result := svc.Normalize("User@Example.com")
+	result, err := svc.Normalize("User@Example.com")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 
 	if result.Normalized != "User@example.com" {
 		t.Errorf("expected normalized %q, got %q", "User@example.com", result.Normalized)
@@ -58,7 +69,10 @@ func TestService_Normalize_LowercasesDomain(t *testing.T) {
 func TestService_Normalize_NoChangesForAlreadyNormalisedEmail(t *testing.T) {
 	svc := NewService()
 
-	result := svc.Normalize("user@example.com")
+	result, err := svc.Normalize("user@example.com")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 
 	if result.Normalized != "user@example.com" {
 		t.Errorf("expected normalized to equal input, got %q", result.Normalized)
@@ -71,7 +85,10 @@ func TestService_Normalize_NoChangesForAlreadyNormalisedEmail(t *testing.T) {
 func TestService_Normalize_GmailRemovesDots(t *testing.T) {
 	svc := NewService()
 
-	result := svc.Normalize("te.st.user@gmail.com")
+	result, err := svc.Normalize("te.st.user@gmail.com")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 
 	if result.Normalized != "testuser@gmail.com" {
 		t.Errorf("expected normalized %q, got %q", "testuser@gmail.com", result.Normalized)
@@ -84,7 +101,10 @@ func TestService_Normalize_GmailRemovesDots(t *testing.T) {
 func TestService_Normalize_GmailRemovesPlusTag(t *testing.T) {
 	svc := NewService()
 
-	result := svc.Normalize("testuser+spam@gmail.com")
+	result, err := svc.Normalize("testuser+spam@gmail.com")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 
 	if result.Normalized != "testuser@gmail.com" {
 		t.Errorf("expected normalized %q, got %q", "testuser@gmail.com", result.Normalized)
@@ -97,7 +117,10 @@ func TestService_Normalize_GmailRemovesPlusTag(t *testing.T) {
 func TestService_Normalize_GooglemailCanonicalisedToGmail(t *testing.T) {
 	svc := NewService()
 
-	result := svc.Normalize("user@googlemail.com")
+	result, err := svc.Normalize("user@googlemail.com")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 
 	if result.Normalized != "user@gmail.com" {
 		t.Errorf("expected normalized %q, got %q", "user@gmail.com", result.Normalized)
@@ -110,7 +133,10 @@ func TestService_Normalize_GooglemailCanonicalisedToGmail(t *testing.T) {
 func TestService_Normalize_WhitespaceTrimmed(t *testing.T) {
 	svc := NewService()
 
-	result := svc.Normalize("  user@example.com  ")
+	result, err := svc.Normalize("  user@example.com  ")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 
 	if result.Normalized != "user@example.com" {
 		t.Errorf("expected whitespace to be trimmed, got %q", result.Normalized)
@@ -123,7 +149,10 @@ func TestService_Normalize_WhitespaceTrimmed(t *testing.T) {
 func TestService_Normalize_NormalizedFieldPopulated(t *testing.T) {
 	svc := NewService()
 
-	result := svc.Normalize("user@example.com")
+	result, err := svc.Normalize("user@example.com")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 
 	if result.Normalized == "" {
 		t.Error("expected non-empty Normalized field")
@@ -133,10 +162,72 @@ func TestService_Normalize_NormalizedFieldPopulated(t *testing.T) {
 func TestService_Normalize_LocalAndDomainMatchNormalized(t *testing.T) {
 	svc := NewService()
 
-	result := svc.Normalize("Test.User+tag@Gmail.com")
+	result, err := svc.Normalize("Test.User+tag@Gmail.com")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 
 	if result.Local+"@"+result.Domain != result.Normalized {
 		t.Errorf("expected Local@Domain to equal Normalized %q, got %q@%q",
 			result.Normalized, result.Local, result.Domain)
+	}
+}
+
+// --- Invalid email tests ---
+
+func TestService_Normalize_InvalidEmail_NoAtSign(t *testing.T) {
+	svc := NewService()
+
+	_, err := svc.Normalize("not-an-email")
+	if err == nil {
+		t.Error("expected an error for input without '@', got nil")
+	}
+}
+
+func TestService_Normalize_InvalidEmail_EmptyString(t *testing.T) {
+	svc := NewService()
+
+	_, err := svc.Normalize("")
+	if err == nil {
+		t.Error("expected an error for empty input, got nil")
+	}
+}
+
+func TestService_Normalize_InvalidEmail_MissingLocal(t *testing.T) {
+	svc := NewService()
+
+	_, err := svc.Normalize("@example.com")
+	if err == nil {
+		t.Error("expected an error for input missing local part, got nil")
+	}
+}
+
+func TestService_Normalize_InvalidEmail_MissingDomain(t *testing.T) {
+	svc := NewService()
+
+	_, err := svc.Normalize("user@")
+	if err == nil {
+		t.Error("expected an error for input missing domain, got nil")
+	}
+}
+
+func TestService_Normalize_InvalidEmail_OnlyAtSign(t *testing.T) {
+	svc := NewService()
+
+	_, err := svc.Normalize("@")
+	if err == nil {
+		t.Error("expected an error for bare '@', got nil")
+	}
+}
+
+func TestService_Normalize_InvalidEmail_ReturnsZeroValue(t *testing.T) {
+	svc := NewService()
+
+	result, err := svc.Normalize("not-an-email")
+	if err == nil {
+		t.Fatal("expected an error, got nil")
+	}
+	if result.Original != "" || result.Normalized != "" || result.Local != "" || result.Domain != "" {
+		t.Errorf("expected zero-value EmailNormalization on error, got %+v", result)
 	}
 }

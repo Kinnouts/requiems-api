@@ -16,8 +16,11 @@ func NewService() *Service {
 	}
 }
 
-func (s *Service) Normalize(email string) EmailNormalization {
-	result := s.n.Normalize2(email)
+func (s *Service) Normalize(email string) (EmailNormalization, error) {
+	result, err := s.n.Normalize2(email)
+	if err != nil {
+		return EmailNormalization{}, err
+	}
 
 	local, domain, ok := strings.Cut(result.Normalized, "@")
 	if !ok {
@@ -25,7 +28,7 @@ func (s *Service) Normalize(email string) EmailNormalization {
 			Original:   email,
 			Normalized: result.Normalized,
 			Changes:    result.Changes,
-		}
+		}, nil
 	}
 
 	return EmailNormalization{
@@ -34,5 +37,5 @@ func (s *Service) Normalize(email string) EmailNormalization {
 		Local:      local,
 		Domain:     domain,
 		Changes:    result.Changes,
-	}
+	}, nil
 }
