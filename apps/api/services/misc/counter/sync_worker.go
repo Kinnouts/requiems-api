@@ -140,12 +140,10 @@ func parseCounterValues(namespaces []string, vals []any) map[string]int64 {
 		}
 
 		val, err := strconv.ParseInt(counterVal, 10, 64)
-		
 		if err != nil {
 			log.Printf("counter parse error for %q: %v", ns, err)
 			continue
 		}
-		
 		counters[ns] = val
 	}
 	return counters
