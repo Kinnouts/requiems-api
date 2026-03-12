@@ -33,8 +33,7 @@ func Handle[Req any, Res Data](
 		var req Req
 
 		if err := BindAndValidate(r, &req); err != nil {
-			var vf *ValidationFailure
-			if errors.As(err, &vf) {
+			if vf, ok := errors.AsType[*ValidationFailure](err); ok {
 				writeValidationError(w, vf.Fields)
 				return
 			}
@@ -44,6 +43,7 @@ func Handle[Req any, Res Data](
 		}
 
 		res, err := fn(r.Context(), req)
+		
 		if err != nil {
 			if ae, ok := errors.AsType[*AppError](err); ok {
 				Error(w, ae.Status, ae.Code, ae.Message)
