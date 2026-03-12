@@ -2,8 +2,10 @@ package counter
 
 import (
 	"context"
+	"fmt"
+	"sort"
+	"strings"
 
-	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -40,28 +42,31 @@ func (r *postgresRepository) UpsertBatch(ctx context.Context, counters map[strin
 		return nil
 	}
 
-	batch := &pgx.Batch{}
-	for namespace, total := range counters {
-		batch.Queue(`
+	namespaces := make([]string, 0, len(counters))
+	for namespace := range counters {
+		namespaces = append(namespaces, namespace)
+	}
+	sort.Strings(namespaces)
+
+	placeholders := make([]string, 0, len(namespaces))
+	args := make([]any, 0, len(namespaces)*2)
+	for i, namespace := range namespaces {
+		argOffset := i*2 + 1
+		placeholders = append(placeholders, fmt.Sprintf("($%d, $%d, NOW())", argOffset, argOffset+1))
+		args = append(args, namespace, counters[namespace])
+	}
+
+	query := `
 INSERT INTO counters(namespace, total, updated_at)
-VALUES ($1, $2, NOW())
+VALUES ` + strings.Join(placeholders, ", ") + `
 ON CONFLICT(namespace)
 DO UPDATE SET
   total      = EXCLUDED.total,
   updated_at = NOW()
-`, namespace, total)
-	}
+`
 
-	results := r.db.SendBatch(ctx, batch)
-	defer results.Close()
-
-	for i := 0; i < batch.Len(); i++ {
-		if _, err := results.Exec(); err != nil {
-			return err
-		}
-	}
-
-	return nil
+	_, err := r.db.Exec(ctx, query, args...)
+	return err
 }
 
 func (r *postgresRepository) Get(ctx context.Context, namespace string) (int64, error) {

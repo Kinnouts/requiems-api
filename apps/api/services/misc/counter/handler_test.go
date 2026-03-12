@@ -66,7 +66,7 @@ func TestIncrementHandler(t *testing.T) {
 		}
 	})
 
-	t.Run("returns 400 for invalid namespace via service error", func(t *testing.T) {
+	t.Run("returns 400 for invalid namespace from URL param validation", func(t *testing.T) {
 		svc := &mockService{
 			incrementFn: func(_ context.Context, ns string) (int64, error) {
 				return 1, nil
@@ -133,7 +133,7 @@ func TestGetHandler(t *testing.T) {
 		}
 	})
 
-	t.Run("returns 400 on validation error", func(t *testing.T) {
+	t.Run("returns 400 for invalid namespace from URL param validation", func(t *testing.T) {
 		svc := &mockService{
 			getFn: func(_ context.Context, ns string) (int64, error) {
 				return 42, nil
