@@ -80,6 +80,9 @@ func TestService_Normalize_NoChangesForAlreadyNormalisedEmail(t *testing.T) {
 	if len(result.Changes) != 0 {
 		t.Errorf("expected no changes for already-normalised email, got %v", result.Changes)
 	}
+	if result.Changes == nil {
+		t.Error("expected Changes to be an empty slice, not nil")
+	}
 }
 
 func TestService_Normalize_GmailRemovesDots(t *testing.T) {
