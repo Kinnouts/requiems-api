@@ -3,10 +3,9 @@ package counter
 import (
 	"errors"
 	"net/http"
+	"requiems-api/platform/httpx"
 
 	"github.com/go-chi/chi/v5"
-
-	"requiems-api/platform/httpx"
 )
 
 // RegisterRoutes mounts counter handlers on the given router.
@@ -21,6 +20,7 @@ func counterError(w http.ResponseWriter, err error) {
 		httpx.Error(w, http.StatusBadRequest, "bad_request", err.Error())
 		return
 	}
+
 	httpx.Error(w, http.StatusInternalServerError, "internal_error", "internal server error")
 }
 

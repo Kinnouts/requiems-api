@@ -6,16 +6,14 @@ import (
 	"errors"
 	"net/http"
 	"net/http/httptest"
+	"requiems-api/platform/httpx"
 	"testing"
 
 	"github.com/go-chi/chi/v5"
-
-	"requiems-api/platform/httpx"
 )
 
 var errRedisDown = errors.New("connection refused")
 
-// mockService is a test double for Service.
 type mockService struct {
 	incrementFn func(ctx context.Context, namespace string) (int64, error)
 	getFn       func(ctx context.Context, namespace string) (int64, error)
@@ -53,6 +51,7 @@ func TestIncrementHandler(t *testing.T) {
 		}
 
 		var resp httpx.Response[Counter]
+
 		if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 			t.Fatalf("decode response: %v", err)
 		}
