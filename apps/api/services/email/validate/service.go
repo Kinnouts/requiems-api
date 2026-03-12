@@ -3,7 +3,7 @@ package validate
 import (
 	"context"
 	"net"
-	"net/mail"
+	"regexp"
 	"slices"
 	"strings"
 
@@ -24,6 +24,40 @@ var commonDomains = []string{
 	"yandex.com", "yandex.ru",
 	"mail.com", "zoho.com",
 }
+
+// addrSpecRe matches a plain RFC 5322 addr-spec (local-part "@" domain).
+// Display-name formats such as "Name <user@example.com>" are rejected.
+//
+// Grammar (no obs- forms, no CFWS):
+//
+//	addr-spec      = local-part "@" domain
+//	local-part     = dot-atom / quoted-string
+//	dot-atom       = atext+ ("." atext+)*
+//	atext          = ALPHA / DIGIT / !#$%&'*+/=?^_`{|}~-
+//	quoted-string  = DQUOTE (qtext / quoted-pair)* DQUOTE
+//	qtext          = %x21 / %x23-5B / %x5D-7E  (printable excl. DQUOTE, \)
+//	quoted-pair    = "\" (VCHAR / WSP)
+//	domain         = dot-atom / domain-literal
+//	domain label   = [a-zA-Z0-9] ([a-zA-Z0-9-]{0,61} [a-zA-Z0-9])?
+//	domain-literal = "[" dtext* "]"
+//	dtext          = %x21-5A / %x5E-7E  (printable excl. [, \, ])
+var addrSpecRe = regexp.MustCompile(
+	`^(?:` +
+		// quoted-string local part
+		// qtext = %x09 / %x20-21 / %x23-5B / %x5D-7E  (tab, space, printable excl. DQUOTE and \)
+		// quoted-pair = "\" (VCHAR / WSP)
+		`"(?:[\x09\x20-\x21\x23-\x5b\x5d-\x7e]|\\[\x09\x20-\x7e])*"` +
+		`|` +
+		// dot-atom local part: atext characters, dots only between groups
+		`[a-zA-Z0-9!#$%&'*+/=?^_` + "`" + `{|}~-]+(?:\.[a-zA-Z0-9!#$%&'*+/=?^_` + "`" + `{|}~-]+)*` +
+		`)@(?:` +
+		// domain literal
+		`\[[\x21-\x5a\x5e-\x7e]*\]` +
+		`|` +
+		// dot-atom domain: labels separated by dots; each label cannot start or end with a hyphen
+		`[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*` +
+		`)$`,
+)
 
 // Service validates email addresses.
 type Service struct {
@@ -73,12 +107,11 @@ func (s *Service) ValidateEmail(ctx context.Context, email string) EmailValidati
 	}
 }
 
-// isValidSyntax reports whether email is a syntactically valid RFC 5322
-// isValidSyntax reports whether the given email address conforms to RFC 5322 address syntax.
-// It returns true when the address parses successfully and false otherwise.
+// isValidSyntax reports whether email is a syntactically valid RFC 5322 plain
+// addr-spec. Display-name formats such as "Name <user@example.com>" and
+// angle-addr forms such as "<user@example.com>" are rejected.
 func isValidSyntax(email string) bool {
-	_, err := mail.ParseAddress(email)
-	return err == nil
+	return addrSpecRe.MatchString(email)
 }
 
 // checkMX reports whether the given domain has at least one MX DNS record.

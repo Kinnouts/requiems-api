@@ -16,14 +16,33 @@ func TestIsValidSyntax(t *testing.T) {
 		email string
 		want  bool
 	}{
+		// Standard valid addr-specs.
 		{"user@example.com", true},
 		{"user+tag@example.co.uk", true},
 		{"user.name@sub.domain.com", true},
+		// Quoted local part — valid per RFC 5322 §3.4.1.
+		{`"quoted user"@example.com`, true},
+		{`"user@domain"@example.com`, true},
+		// Domain literal — valid per RFC 5322 §3.4.1.
+		{"user@[127.0.0.1]", true},
+		// Empty / no address.
 		{"", false},
 		{"notanemail", false},
+		// Missing local part or domain.
 		{"@nodomain.com", false},
 		{"noatsign.com", false},
+		// Multiple @ signs.
 		{"double@@domain.com", false},
+		// Dot violations in local part.
+		{".user@example.com", false},
+		{"user.@example.com", false},
+		{"user..name@example.com", false},
+		// Display-name format — rejected; input must be plain addr-spec.
+		{"Display Name <user@example.com>", false},
+		// Angle-addr without display name — also rejected.
+		{"<user@example.com>", false},
+		// Whitespace in local part — not an atext character.
+		{"user name@example.com", false},
 	}
 
 	for _, tc := range cases {
