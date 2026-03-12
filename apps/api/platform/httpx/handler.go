@@ -43,7 +43,7 @@ func Handle[Req any, Res Data](
 		}
 
 		res, err := fn(r.Context(), req)
-		
+
 		if err != nil {
 			if ae, ok := errors.AsType[*AppError](err); ok {
 				Error(w, ae.Status, ae.Code, ae.Message)
