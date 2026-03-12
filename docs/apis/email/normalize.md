@@ -57,11 +57,17 @@ All responses are wrapped in the standard envelope:
 
 | Value | When applied |
 | --- | --- |
-| `lowercased` | Any uppercase characters were found |
 | `trimmed_whitespace` | Leading or trailing whitespace was present |
-| `removed_dots` | Dots were removed from the local part (Gmail) |
-| `removed_plus_tag` | A plus tag was stripped (Gmail) |
-| `canonicalised_domain` | An alias domain was resolved (e.g. googlemail.com → gmail.com) |
+| `removed_trailing_dot` | One or more trailing dots were stripped from the raw input |
+| `lowercase` | Any uppercase characters were found |
+| `removed_dots` | Dots were removed from the local part (e.g. Gmail, Protonmail) |
+| `removed_underscores` | Underscores were removed from the local part (Protonmail) |
+| `removed_hyphens` | Hyphens were removed from the local part (Protonmail) |
+| `replaced_hyphens_with_dots` | Hyphens in the local part were replaced with dots (Yandex) |
+| `removed_plus_tag` | A plus-sign subaddress (`+tag`) was stripped (e.g. Gmail, Apple, Fastmail) |
+| `removed_plus_signs` | All plus signs were removed regardless of position (e.g. Microsoft, Yahoo, Zoho) |
+| `removed_subaddress` | A dash-delimited subaddress (`-tag`) was stripped (Yahoo) |
+| `canonicalized_domain` | An alias domain was resolved (e.g. googlemail.com → gmail.com) |
 
 ## Example
 
@@ -82,10 +88,10 @@ Response:
     "local": "testuser",
     "domain": "gmail.com",
     "changes": [
-      "lowercased",
+      "lowercase",
       "removed_dots",
       "removed_plus_tag",
-      "canonicalised_domain"
+      "canonicalized_domain"
     ]
   },
   "metadata": {
