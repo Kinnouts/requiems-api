@@ -24,3 +24,5 @@ node_modules
 .playwright-mcp/
 .pnpm-store/
 apps/workers/shared/package-lock.json
+vendor/
+apps/dashboard/vendor/
