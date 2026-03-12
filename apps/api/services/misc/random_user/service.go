@@ -6,15 +6,14 @@ import (
 	faker "github.com/jaswdr/faker/v2"
 )
 
-// Service generates random fake user data.
+// Generates random fake user data.
 type Service struct{}
 
-// NewService returns a new Service.
 func NewService() *Service {
 	return &Service{}
 }
 
-// Generate returns a randomly generated User.
+// Returns a randomly generated User.
 func (s *Service) Generate() User {
 	f := faker.New()
 
@@ -22,12 +21,14 @@ func (s *Service) Generate() User {
 	email := f.Internet().SafeEmail()
 	phone := f.Phone().Number()
 
+	fakerAddress := f.Address()
+
 	address := Address{
-		Street:  f.Address().StreetAddress(),
-		City:    f.Address().City(),
-		State:   f.Address().State(),
-		Zip:     f.Address().PostCode(),
-		Country: f.Address().Country(),
+		Street:  fakerAddress.StreetAddress(),
+		City:    fakerAddress.City(),
+		State:   fakerAddress.State(),
+		Zip:     fakerAddress.PostCode(),
+		Country: fakerAddress.Country(),
 	}
 
 	avatar := "https://api.dicebear.com/9.x/identicon/svg?seed=" + url.QueryEscape(name)

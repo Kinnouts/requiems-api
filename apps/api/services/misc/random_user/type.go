@@ -1,6 +1,6 @@
 package randomuser
 
-// Address holds the user's postal address fields.
+// Holds the user's postal address fields.
 type Address struct {
 	Street  string `json:"street"`
 	City    string `json:"city"`
@@ -9,7 +9,7 @@ type Address struct {
 	Country string `json:"country"`
 }
 
-// User is the response model for the random-user endpoint.
+// Response model for the random-user endpoint.
 type User struct {
 	Name    string  `json:"name"`
 	Email   string  `json:"email"`
