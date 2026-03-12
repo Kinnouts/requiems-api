@@ -4,6 +4,8 @@ github.com/Microsoft/go-winio v0.6.2 h1:F2VQgta7ecxGYO8k3ZZz3RS8fVIXVxONVUPlNERo
 github.com/Microsoft/go-winio v0.6.2/go.mod h1:yd8OoFMLzJbo9gZq8j5qaps8bJ9aShtEA8Ipt1oGCvU=
 github.com/TwiN/go-away v1.8.1 h1:zbbr0ISBkDSbnUFHrnRUhbCR/7+9ONMWtIi1BiQWX8Y=
 github.com/TwiN/go-away v1.8.1/go.mod h1:nSQEvd/FYBNmnC27RGJdPi91LXYMG8SrRc1o1w+VmKY=
+github.com/agnivade/levenshtein v1.2.1 h1:EHBY3UOn1gwdy/VbFwgo4cxecRznFk7fKWN1KOX7eoM=
+github.com/agnivade/levenshtein v1.2.1/go.mod h1:QVVI16kDrtSuwcpd0p1+xMC6Z/VfhtCyDIjcwga4/DU=
 github.com/bobadilla-tech/business-days-calculator v1.1.0 h1:l0m28ko/oItgjjBlB+JqxGcE612FWx1tapqTNHCWn6c=
 github.com/bobadilla-tech/business-days-calculator v1.1.0/go.mod h1:Xayj9noAcTPZjwqDEwWRu96uDraHfObnj7TdZylXi9A=
 github.com/bobadilla-tech/go-email-normalizer v1.2.0 h1:aCsGRY0Yt0L+22l+g3xTNf4bTt7x5b2Vn1Dzdku+XCY=

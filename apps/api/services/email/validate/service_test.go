@@ -54,32 +54,6 @@ func TestIsValidSyntax(t *testing.T) {
 	}
 }
 
-// ---- levenshtein ------------------------------------------------------------
-
-func TestLevenshtein(t *testing.T) {
-	cases := []struct {
-		a, b string
-		want int
-	}{
-		{"", "", 0},
-		{"abc", "", 3},
-		{"", "abc", 3},
-		{"abc", "abc", 0},
-		{"kitten", "sitting", 3},
-		{"gmial.com", "gmail.com", 2},
-		{"gamil.com", "gmail.com", 2},
-		{"outllook.com", "outlook.com", 1},
-	}
-
-	for _, tc := range cases {
-		t.Run(tc.a+"_"+tc.b, func(t *testing.T) {
-			if got := levenshtein(tc.a, tc.b); got != tc.want {
-				t.Errorf("levenshtein(%q, %q) = %d, want %d", tc.a, tc.b, got, tc.want)
-			}
-		})
-	}
-}
-
 // ---- suggestDomain ----------------------------------------------------------
 
 func TestSuggestDomain(t *testing.T) {

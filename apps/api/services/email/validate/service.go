@@ -7,6 +7,7 @@ import (
 	"slices"
 	"strings"
 
+	"github.com/agnivade/levenshtein"
 	normalizer "github.com/bobadilla-tech/go-email-normalizer"
 	disposable "github.com/bobadilla-tech/is-email-disposable"
 )
@@ -136,7 +137,7 @@ func suggestDomain(domain string) *string {
 	bestDist := threshold + 1
 
 	for _, d := range commonDomains {
-		if dist := levenshtein(domain, d); dist < bestDist {
+		if dist := levenshtein.ComputeDistance(domain, d); dist < bestDist {
 			bestDist = dist
 			best = d
 		}
@@ -146,39 +147,4 @@ func suggestDomain(domain string) *string {
 		return &best
 	}
 	return nil
-}
-
-// levenshtein computes the Levenshtein edit distance between two strings.
-// It compares Unicode code points (runes) and returns the minimum number of single-character edits
-// (insertions, deletions, or substitutions) required to change `a` into `b`.
-func levenshtein(a, b string) int {
-	ra, rb := []rune(a), []rune(b)
-	la, lb := len(ra), len(rb)
-
-	if la == 0 {
-		return lb
-	}
-	if lb == 0 {
-		return la
-	}
-
-	prev := make([]int, lb+1)
-	for j := range prev {
-		prev[j] = j
-	}
-
-	for i := 1; i <= la; i++ {
-		curr := make([]int, lb+1)
-		curr[0] = i
-		for j := 1; j <= lb; j++ {
-			if ra[i-1] == rb[j-1] {
-				curr[j] = prev[j-1]
-			} else {
-				curr[j] = 1 + min(prev[j], curr[j-1], prev[j-1])
-			}
-		}
-		prev = curr
-	}
-
-	return prev[lb]
 }
