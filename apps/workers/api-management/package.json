@@ -22,13 +22,13 @@
   "dependencies": {
     "@hono/standard-validator": "^0.2.2",
     "hono": "^4.12.7",
-    "@hono/swagger-ui": "^0.6.0",
+    "@hono/swagger-ui": "^0.6.1",
     "nanoid": "^5.1.6",
     "zod": "^4.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.6",
-    "@cloudflare/workers-types": "^4.20260310.1",
+    "@cloudflare/workers-types": "^4.20260312.1",
     "@edge-runtime/vm": "^5.0.0",
     "@types/node": "^25.4.0",
     "@vitest/coverage-v8": "^1.2.0",

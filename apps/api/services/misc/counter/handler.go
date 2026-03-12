@@ -1,27 +1,25 @@
 package counter
 
 import (
-	"errors"
 	"net/http"
+	"regexp"
+	"requiems-api/platform/httpx"
+	"requiems-api/platform/middleware"
 
 	"github.com/go-chi/chi/v5"
-
-	"requiems-api/platform/httpx"
 )
 
-// RegisterRoutes mounts counter handlers on the given router.
-// Paths are relative to the parent mount point (e.g. /v1/misc).
-func RegisterRoutes(r chi.Router, svc Service) {
-	r.Post("/counter/{namespace}", incrementHandler(svc))
-	r.Get("/counter/{namespace}", getHandler(svc))
-}
+var namespaceRe = regexp.MustCompile(`^[a-zA-Z0-9_-]{1,64}$`)
 
-func counterError(w http.ResponseWriter, err error) {
-	if errors.Is(err, ErrInvalidNamespace) {
-		httpx.Error(w, http.StatusBadRequest, "bad_request", err.Error())
-		return
-	}
-	httpx.Error(w, http.StatusInternalServerError, "internal_error", "internal server error")
+const namespaceValidationErrorMessage = "invalid namespace: must be 1-64 chars, alphanumeric, hyphen or underscore only"
+
+func RegisterRoutes(r chi.Router, svc Service) {
+	r.Group(func(validated chi.Router) {
+		validated.Use(middleware.ValidateURLParam("namespace", namespaceRe, namespaceValidationErrorMessage))
+
+		validated.Post("/counter/{namespace}", incrementHandler(svc))
+		validated.Get("/counter/{namespace}", getHandler(svc))
+	})
 }
 
 func incrementHandler(svc Service) http.HandlerFunc {
@@ -30,7 +28,7 @@ func incrementHandler(svc Service) http.HandlerFunc {
 
 		val, err := svc.Increment(r.Context(), ns)
 		if err != nil {
-			counterError(w, err)
+			httpx.Error(w, http.StatusInternalServerError, "internal_error", "Failed to increment counter")
 			return
 		}
 
@@ -44,7 +42,7 @@ func getHandler(svc Service) http.HandlerFunc {
 
 		val, err := svc.Get(r.Context(), ns)
 		if err != nil {
-			counterError(w, err)
+			httpx.Error(w, http.StatusInternalServerError, "internal_error", "Failed to get counter")
 			return
 		}
 

@@ -9,7 +9,7 @@ import (
 	"github.com/redis/go-redis/v9"
 )
 
-// Service defines the counter business logic interface.
+// Counter business logic interface.
 type Service interface {
 	Increment(ctx context.Context, namespace string) (int64, error)
 	Get(ctx context.Context, namespace string) (int64, error)
@@ -25,20 +25,34 @@ func NewService(rdb *redis.Client, repo Repository) Service {
 }
 
 // Increment atomically increments the Redis counter and returns the new value.
+// Marks the counter as dirty so it will be synced to PostgreSQL on the next cycle.
 func (s *service) Increment(ctx context.Context, namespace string) (int64, error) {
-	if err := validateNamespace(namespace); err != nil {
+	// Fast path: increment in Redis when the key already exists.
+	val, missing, err := incrementIfPresent(ctx, s.rdb, namespace)
+	if err != nil {
 		return 0, err
 	}
-	return s.rdb.Incr(ctx, redisKey(namespace)).Result()
+
+	if !missing {
+		return val, nil
+	}
+
+	// Cold-cache bootstrap path: hydrate baseline from PostgreSQL before first increment.
+	base, err := s.repo.Get(ctx, namespace)
+	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			base = 0
+		} else {
+			return 0, err
+		}
+	}
+
+	return incrementWithBootstrap(ctx, s.rdb, namespace, base)
 }
 
 // Get returns the counter value from Redis, falling back to PostgreSQL when the
 // key is absent. If a PostgreSQL value is found it is hydrated back into Redis.
 func (s *service) Get(ctx context.Context, namespace string) (int64, error) {
-	if err := validateNamespace(namespace); err != nil {
-		return 0, err
-	}
-
 	val, err := s.rdb.Get(ctx, redisKey(namespace)).Int64()
 	if err == nil {
 		return val, nil
@@ -57,8 +71,8 @@ func (s *service) Get(ctx context.Context, namespace string) (int64, error) {
 		return 0, err
 	}
 
-	// Hydrate Redis
-	if err := s.rdb.Set(ctx, redisKey(namespace), total, 0).Err(); err != nil {
+	// Hydrate Redis without clobbering a concurrent increment.
+	if err := s.rdb.SetNX(ctx, redisKey(namespace), total, 0).Err(); err != nil {
 		log.Printf("counter redis hydrate error for %q: %v", namespace, err)
 	}
 

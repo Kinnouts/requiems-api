@@ -7,7 +7,7 @@ require (
 	github.com/go-playground/validator/v10 v10.30.1
 	github.com/golang-migrate/migrate/v4 v4.19.1
 	github.com/jackc/pgx/v5 v5.8.0
-	github.com/redis/go-redis/v9 v9.7.3
+	github.com/redis/go-redis/v9 v9.18.0
 )
 
 require (
@@ -27,6 +27,7 @@ require (
 	github.com/tidwall/rtree v1.10.0 // indirect
 	github.com/twpayne/go-polyline v1.1.1 // indirect
 	go.mongodb.org/mongo-driver v1.11.4 // indirect
+	go.uber.org/atomic v1.11.0 // indirect
 	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394 // indirect
 	golang.org/x/sys v0.39.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
@@ -35,7 +36,7 @@ require (
 require (
 	github.com/TwiN/go-away v1.8.1
 	github.com/bobadilla-tech/business-days-calculator v1.1.0
-	github.com/bobadilla-tech/go-email-normalizer v1.1.0
+	github.com/bobadilla-tech/go-email-normalizer v1.2.0
 	github.com/bobadilla-tech/holidays-per-country v1.0.1
 	github.com/boombuler/barcode v1.1.0
 	github.com/jaswdr/faker/v2 v2.9.1
