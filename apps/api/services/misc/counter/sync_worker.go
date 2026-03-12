@@ -48,15 +48,9 @@ const dirtySetKey = "counter:dirty"
 const processingSetKey = "counter:dirty:processing"
 
 // StartSyncWorker runs a background goroutine that periodically syncs dirty
-// Redis counters to PostgreSQL using the atomic dirty-set swap pattern.
-// It stops when ctx is cancelled and recovers from panics.
+// redis counters to PostgreSQL using the atomic dirty-set swap pattern.
+// It stops when ctx is cancelled and isolates panics to a single sync cycle.
 func StartSyncWorker(ctx context.Context, rdb *redis.Client, repo Repository) {
-	defer func() {
-		if r := recover(); r != nil {
-			log.Printf("counter sync worker panicked: %v — continuing to recover from dirty set", r)
-		}
-	}()
-
 	ticker := time.NewTicker(syncInterval)
 	defer ticker.Stop()
 
@@ -65,9 +59,9 @@ func StartSyncWorker(ctx context.Context, rdb *redis.Client, repo Repository) {
 		case <-ctx.Done():
 			return
 		case <-ticker.C:
-			if err := syncDirtyCounters(ctx, rdb, repo); err != nil {
+			if err := runSyncCycle(ctx, rdb, repo); err != nil {
 				log.Printf("counter sync error: %v", err)
-				// On error, attempt cleanup of processing set to avoid stale data
+				
 				if err := rdb.Del(ctx, processingSetKey).Err(); err != nil {
 					log.Printf("counter cleanup error: %v", err)
 				}
@@ -76,28 +70,17 @@ func StartSyncWorker(ctx context.Context, rdb *redis.Client, repo Repository) {
 	}
 }
 
-// syncDirtyCounters implements the race-safe dirty-set swap pattern.
-// It atomically renames the dirty set, fetches counter values,
-// and performs a batch upsert to PostgreSQL.
-//
-// Performance characteristics:
-// - Redis operations: 6 calls (RENAME, SMEMBERS, MGET, DEL)
-// - Single round-trip to Redis per cycle
-// - Single batch INSERT...ON CONFLICT to PostgreSQL
-// - Zero allocated memory per counter (uses pipeline)
-//
-// Error recovery:
-// - If sync fails after RENAME, the processing set persists
-// - Next cycle RENAME will fail gracefully (key doesn't exist)
-// - On panic recovery, cleanup attempts to clear orphaned processing set
-//
-// Scaling notes:
-// - For 10K+ dirty counters, SMEMBERS returns all at once
-//   Consider SSCAN with cursor for very large sets
-// - MGET is efficient up to ~100K keys
-//   For larger batches, consider pipelining multiple SMEMBERS calls
-// - PostgreSQL batch insert speed depends on connection pool size
-//   Tune pool size based on counter velocity and sync interval
+func runSyncCycle(ctx context.Context, rdb *redis.Client, repo Repository) (err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			err = errors.New("counter sync worker panicked during cycle")
+			log.Printf("counter sync worker panicked: %v — worker will continue on next cycle", r)
+		}
+	}()
+
+	return syncDirtyCounters(ctx, rdb, repo)
+}
+
 func syncDirtyCounters(ctx context.Context, rdb *redis.Client, repo Repository) error {
 	// Step 1: Atomically rename the dirty set to a processing snapshot.
 	// This prevents race conditions by ensuring new updates go into a fresh set.
@@ -154,7 +137,7 @@ func syncDirtyCounters(ctx context.Context, rdb *redis.Client, repo Repository) 
 			continue
 		}
 
-		val, err := parseInt64(counterVal)
+		val, err := strconv.ParseInt(counterVal, 10, 64)
 		if err != nil {
 			log.Printf("counter parse error for %q: %v", ns, err)
 			continue
@@ -183,9 +166,4 @@ func syncDirtyCounters(ctx context.Context, rdb *redis.Client, repo Repository) 
 	// If this fails (network error), the processing set remains and will
 	// be cleaned up on the next worker cycle.
 	return rdb.Del(ctx, processingSetKey).Err()
-}
-
-// parseInt64 safely parses a string to int64.
-func parseInt64(s string) (int64, error) {
-	return strconv.ParseInt(s, 10, 64)
 }
