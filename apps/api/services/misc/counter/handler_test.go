@@ -66,14 +66,14 @@ func TestIncrementHandler(t *testing.T) {
 		}
 	})
 
-	t.Run("returns 400 for invalid namespace via service error", func(t *testing.T) {
+	t.Run("returns 400 for invalid namespace from URL param validation", func(t *testing.T) {
 		svc := &mockService{
 			incrementFn: func(_ context.Context, ns string) (int64, error) {
-				return 0, validateNamespace("!!!invalid!!!")
+				return 1, nil
 			},
 		}
 
-		req := httptest.NewRequest(http.MethodPost, "/counter/hits", http.NoBody)
+		req := httptest.NewRequest(http.MethodPost, "/counter/!!!invalid!!!", http.NoBody)
 		w := httptest.NewRecorder()
 
 		newTestRouter(svc).ServeHTTP(w, req)
@@ -133,14 +133,14 @@ func TestGetHandler(t *testing.T) {
 		}
 	})
 
-	t.Run("returns 400 on validation error", func(t *testing.T) {
+	t.Run("returns 400 for invalid namespace from URL param validation", func(t *testing.T) {
 		svc := &mockService{
 			getFn: func(_ context.Context, ns string) (int64, error) {
-				return 0, validateNamespace("!!!invalid!!!")
+				return 42, nil
 			},
 		}
 
-		req := httptest.NewRequest(http.MethodGet, "/counter/page-views", http.NoBody)
+		req := httptest.NewRequest(http.MethodGet, "/counter/!!!invalid!!!", http.NoBody)
 		w := httptest.NewRecorder()
 
 		newTestRouter(svc).ServeHTTP(w, req)
@@ -166,20 +166,4 @@ func TestGetHandler(t *testing.T) {
 			t.Fatalf("expected 500, got %d", w.Code)
 		}
 	})
-}
-
-func TestValidateNamespace(t *testing.T) {
-	valid := []string{"hits", "page-views", "my_counter", "a", "A1b2-c3_d4"}
-	for _, ns := range valid {
-		if err := validateNamespace(ns); err != nil {
-			t.Errorf("expected %q to be valid, got error: %v", ns, err)
-		}
-	}
-
-	invalid := []string{"", "has space", "has/slash", "has.dot", "toolong_toolong_toolong_toolong_toolong_toolong_toolong_toolong_toolong"}
-	for _, ns := range invalid {
-		if err := validateNamespace(ns); err == nil {
-			t.Errorf("expected %q to be invalid", ns)
-		}
-	}
 }
