@@ -59,14 +59,16 @@ func syncDirtyCounters(ctx context.Context, rdb *redis.Client, repo Repository) 
 
 	if processingExists == 0 {
 		// No in-flight snapshot exists, so atomically move the current dirty set
-		// into processing. If counter:dirty doesn't exist, Rename returns redis.Nil.
-		err = rdb.Rename(ctx, dirtySetKey, processingSetKey).Err()
-		if err != nil && !errors.Is(err, redis.Nil) {
-			return err
-		}
+		// into processing without overwriting an existing processing snapshot.
+		// If counter:dirty doesn't exist, Redis returns ERR no such key.
+		_, err := rdb.RenameNX(ctx, dirtySetKey, processingSetKey).Result()
 
-		if errors.Is(err, redis.Nil) {
-			return nil
+		if err != nil {
+			if redis.HasErrorPrefix(err, "ERR no such key") {
+				return nil
+			}
+
+			return err
 		}
 	}
 
@@ -75,7 +77,7 @@ func syncDirtyCounters(ctx context.Context, rdb *redis.Client, repo Repository) 
 	// consider SSCAN for incremental retrieval.
 
 	namespaces, err := rdb.SMembers(ctx, processingSetKey).Result()
-	
+
 	if err != nil && !errors.Is(err, redis.Nil) {
 		return err
 	}
@@ -104,7 +106,7 @@ func syncDirtyCounters(ctx context.Context, rdb *redis.Client, repo Repository) 
 	// This handles edge cases where a counter is incremented then deleted before sync.
 
 	counters := make(map[string]int64, len(namespaces))
-	
+
 	for i, ns := range namespaces {
 		if vals[i] == nil {
 			// Counter no longer exists in Redis; skip it
@@ -112,14 +114,14 @@ func syncDirtyCounters(ctx context.Context, rdb *redis.Client, repo Repository) 
 		}
 
 		counterVal, ok := vals[i].(string)
-	
+
 		if !ok {
 			log.Printf("counter value type assertion failed for %q", ns)
 			continue
 		}
 
 		val, err := strconv.ParseInt(counterVal, 10, 64)
-	
+
 		if err != nil {
 			log.Printf("counter parse error for %q: %v", ns, err)
 			continue
