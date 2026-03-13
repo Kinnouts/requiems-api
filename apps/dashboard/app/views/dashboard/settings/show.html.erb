@@ -1,9 +1,9 @@
-<% content_for :title, "Settings" %>
+<% content_for :title, t("dashboard.settings.title") %>
 
 <!-- Header -->
 <div class="mb-8">
-  <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Settings</h1>
-  <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Manage your account preferences and security settings</p>
+  <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100"><%= t("dashboard.settings.title") %></h1>
+  <p class="mt-2 text-sm text-gray-600 dark:text-gray-400"><%= t("dashboard.settings.subtitle") %></p>
 </div>
 
 <%= form_with model: current_user, url: dashboard_settings_path, method: :patch, local: true do |f| %>
@@ -16,7 +16,7 @@
         </svg>
         <div>
           <h3 class="text-sm font-medium text-red-800 dark:text-red-300 mb-1">
-            <%= pluralize(current_user.errors.count, "error") %> prohibited these settings from being saved:
+            <%= t("dashboard.settings.errors", count: current_user.errors.count) %>
           </h3>
           <ul class="list-disc list-inside text-sm text-red-700 dark:text-red-400 space-y-1">
             <% current_user.errors.full_messages.each do |message| %>
@@ -31,38 +31,38 @@
   <!-- Account Information -->
   <div class="bg-white dark:bg-gray-800 rounded-lg shadow mb-8">
     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Account Information</h2>
-      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Update your account details and email address</p>
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= t("dashboard.settings.account_info.heading") %></h2>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1"><%= t("dashboard.settings.account_info.subheading") %></p>
     </div>
 
     <div class="p-6 space-y-6">
       <!-- Email -->
       <div>
-        <%= f.label :email, "Email Address", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+        <%= f.label :email, t("dashboard.settings.account_info.email_label"), class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
         <%= f.email_field :email,
           class: "w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent",
           required: true %>
         <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">
-          This is your login email and where we'll send important notifications.
+          <%= t("dashboard.settings.account_info.email_hint") %>
         </p>
       </div>
 
       <!-- Name -->
       <div>
-        <%= f.label :name, "Full Name", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+        <%= f.label :name, t("dashboard.settings.account_info.name_label"), class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
         <%= f.text_field :name,
-          placeholder: "Your full name",
+          placeholder: t("dashboard.settings.account_info.name_placeholder"),
           class: "w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
-        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Optional - helps us personalize your experience</p>
+        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400"><%= t("dashboard.settings.account_info.name_hint") %></p>
       </div>
 
       <!-- Company -->
       <div>
-        <%= f.label :company, "Company Name", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+        <%= f.label :company, t("dashboard.settings.account_info.company_label"), class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
         <%= f.text_field :company,
-          placeholder: "Your company or organization",
+          placeholder: t("dashboard.settings.account_info.company_placeholder"),
           class: "w-full px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
-        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Optional - displayed on invoices</p>
+        <p class="mt-1 text-xs text-gray-500 dark:text-gray-400"><%= t("dashboard.settings.account_info.company_hint") %></p>
       </div>
 
       <!-- Profile Picture -->
@@ -71,16 +71,15 @@
           <div class="flex items-center gap-4">
             <img src="<%= gravatar_url(current_user.email, size: 48) %>" alt="Profile picture" class="h-12 w-12 rounded-full">
             <div>
-              <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100">Profile Picture</h3>
+              <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= t("dashboard.settings.account_info.avatar_heading") %></h3>
               <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                Your avatar is provided by
-                <%= link_to "Gravatar", "https://gravatar.com", target: "_blank", rel: "noopener noreferrer", class: "text-blue-600 hover:text-blue-700 font-medium" %>,
-                based on your email address. Update it there to change it here.
+                <%= t("dashboard.settings.account_info.avatar_body",
+                  gravatar_link: link_to(t("dashboard.settings.account_info.gravatar_link_text"), "https://gravatar.com", target: "_blank", rel: "noopener noreferrer", class: "text-blue-600 hover:text-blue-700 font-medium")).html_safe %>
               </p>
             </div>
           </div>
           <%= link_to "https://gravatar.com", target: "_blank", rel: "noopener noreferrer", class: "text-sm text-blue-600 hover:text-blue-700 font-medium shrink-0" do %>
-            Update on Gravatar →
+            <%= t("dashboard.settings.account_info.update_gravatar") %>
           <% end %>
         </div>
       </div>
@@ -89,11 +88,11 @@
       <div class="pt-6 border-t border-gray-200 dark:border-gray-700">
         <div class="flex items-center justify-between">
           <div>
-            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100">Password</h3>
+            <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= t("dashboard.settings.account_info.password_heading") %></h3>
             <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">••••••••••••</p>
           </div>
           <%= link_to edit_user_registration_path, class: "text-sm text-blue-600 hover:text-blue-700 font-medium" do %>
-            Change Password →
+            <%= t("dashboard.settings.account_info.change_password") %>
           <% end %>
         </div>
       </div>
@@ -103,8 +102,8 @@
   <!-- Language Preference -->
   <div class="bg-white dark:bg-gray-800 rounded-lg shadow mb-8">
     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Language Preference</h2>
-      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Choose your preferred language for the interface</p>
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= t("dashboard.settings.language.heading") %></h2>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1"><%= t("dashboard.settings.language.subheading") %></p>
     </div>
     <div class="p-6">
       <div class="flex flex-wrap gap-3" data-controller="locale-selector">
@@ -122,18 +121,18 @@
           class: "flex items-center gap-2 px-4 py-2 rounded-lg border cursor-pointer transition-colors #{auto_selected ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300' : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-500'}",
           data: { locale_selector_target: "option", action: "click->locale-selector#select" } do %>
           <%= f.radio_button :locale, "", checked: auto_selected, class: "sr-only" %>
-          <span class="text-sm font-medium">Auto-detect</span>
+          <span class="text-sm font-medium"><%= t("dashboard.settings.language.auto_detect") %></span>
         <% end %>
       </div>
-      <p class="mt-3 text-xs text-gray-500 dark:text-gray-400">Auto-detect uses your browser's language settings</p>
+      <p class="mt-3 text-xs text-gray-500 dark:text-gray-400"><%= t("dashboard.settings.language.auto_detect_hint") %></p>
     </div>
   </div>
 
   <!-- Email Preferences -->
   <div class="bg-white dark:bg-gray-800 rounded-lg shadow mb-8">
     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Email Preferences</h2>
-      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Control what emails you receive from us</p>
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= t("dashboard.settings.email_prefs.heading") %></h2>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1"><%= t("dashboard.settings.email_prefs.subheading") %></p>
     </div>
 
     <div class="p-6 space-y-4">
@@ -142,8 +141,8 @@
         <%= f.check_box :email_notifications,
           class: "mt-1 mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" %>
         <div class="flex-1">
-          <div class="text-sm font-medium text-gray-900 dark:text-gray-100">Email Notifications</div>
-          <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Receive emails about account activity, API key changes, and important updates</p>
+          <div class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= t("dashboard.settings.email_prefs.notifications_label") %></div>
+          <p class="text-xs text-gray-600 dark:text-gray-400 mt-1"><%= t("dashboard.settings.email_prefs.notifications_hint") %></p>
         </div>
       </label>
 
@@ -152,8 +151,8 @@
         <%= f.check_box :usage_alerts,
           class: "mt-1 mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" %>
         <div class="flex-1">
-          <div class="text-sm font-medium text-gray-900 dark:text-gray-100">Usage Alerts</div>
-          <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Get notified when you reach 75% and 90% of your monthly quota</p>
+          <div class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= t("dashboard.settings.email_prefs.usage_alerts_label") %></div>
+          <p class="text-xs text-gray-600 dark:text-gray-400 mt-1"><%= t("dashboard.settings.email_prefs.usage_alerts_hint") %></p>
         </div>
       </label>
 
@@ -162,8 +161,8 @@
         <%= f.check_box :weekly_reports,
           class: "mt-1 mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded" %>
         <div class="flex-1">
-          <div class="text-sm font-medium text-gray-900 dark:text-gray-100">Weekly Usage Reports</div>
-          <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">Receive a weekly summary of your API usage and performance</p>
+          <div class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= t("dashboard.settings.email_prefs.weekly_reports_label") %></div>
+          <p class="text-xs text-gray-600 dark:text-gray-400 mt-1"><%= t("dashboard.settings.email_prefs.weekly_reports_hint") %></p>
         </div>
       </label>
     </div>
@@ -171,9 +170,9 @@
 
   <!-- Save Button -->
   <div class="flex items-center justify-end mb-8">
-    <%= f.submit "Save Changes",
+    <%= f.submit t("dashboard.settings.save_btn"),
       class: "px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors",
-      data: { disable_with: "Saving..." } %>
+      data: { disable_with: t("dashboard.settings.saving") } %>
   </div>
 <% end %>
 

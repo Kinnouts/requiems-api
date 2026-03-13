@@ -34,47 +34,47 @@
     <div class="wrapper">
       <div class="container">
         <div class="header">
-          <h1>Account Deletion Requested</h1>
-          <p>Requiems API — Action Required</p>
+          <h1><%= t("dashboard.mailers.account_deletion.header_title") %></h1>
+          <p><%= t("dashboard.mailers.account_deletion.header_subtitle") %></p>
         </div>
 
         <div class="body">
-          <p class="greeting">Hi <strong><%= @user.email %></strong>,</p>
+          <p class="greeting"><%= t("dashboard.mailers.account_deletion.greeting_html", email: @user.email) %></p>
 
-          <p class="greeting">We received a request to permanently delete your Requiems API account. Click the button below to confirm.</p>
+          <p class="greeting"><%= t("dashboard.mailers.account_deletion.intro") %></p>
 
           <div class="warning-box">
-            <p>This action is permanent and cannot be undone.</p>
+            <p><%= t("dashboard.mailers.account_deletion.warning") %></p>
           </div>
 
           <div class="reason-box">
-            <div class="label">Your reason</div>
+            <div class="label"><%= t("dashboard.mailers.account_deletion.reason_label") %></div>
             <div class="value"><%= @reason %></div>
           </div>
 
           <p class="expiry">
-            This link expires at <strong><%= @expires_at.strftime("%B %d, %Y at %I:%M %p %Z") %></strong>.
-            After that you will need to request a new confirmation email.
+            <%= t("dashboard.mailers.account_deletion.expiry_html", expires_at: @expires_at.strftime("%B %d, %Y at %I:%M %p %Z")) %>
           </p>
 
           <div class="cta-wrapper">
-            <%= link_to "Confirm Account Deletion", @confirm_url, class: "cta-button" %>
+            <%= link_to t("dashboard.mailers.account_deletion.confirm_btn"), @confirm_url, class: "cta-button" %>
           </div>
 
           <div class="consequences">
-            <p>Deleting your account will:</p>
+            <p><%= t("dashboard.mailers.account_deletion.consequences_heading") %></p>
             <ul>
-              <li>Revoke all your API keys immediately</li>
-              <li>Cancel your active subscription</li>
-              <li>Permanently delete all usage data and history</li>
+              <li><%= t("dashboard.mailers.account_deletion.consequence_1") %></li>
+              <li><%= t("dashboard.mailers.account_deletion.consequence_2") %></li>
+              <li><%= t("dashboard.mailers.account_deletion.consequence_3") %></li>
             </ul>
           </div>
 
           <hr class="divider" />
 
           <div class="footer">
-            <p>If you didn't request this, you can safely ignore this email. Your account will not be deleted.</p>
-            <p>If you have concerns, contact us at <a href="mailto:support@requiems.xyz">support@requiems.xyz</a>.</p>
+            <p><%= t("dashboard.mailers.account_deletion.ignore_notice") %></p>
+            <p><%= t("dashboard.mailers.account_deletion.contact_notice_html",
+              email_link: mail_to("support@requiems.xyz", "support@requiems.xyz")) %></p>
           </div>
         </div>
       </div>
