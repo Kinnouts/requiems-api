@@ -195,8 +195,7 @@ function buildOperation(
             properties: {
               data: {
                 type: "object",
-                properties:
-                  dataProperties,
+                properties: dataProperties,
               },
               metadata: {
                 type: "object",
@@ -233,9 +232,16 @@ function buildOperation(
 
 // --- Main ---
 
-const catalog = yaml.load(readFileSync(catalogPath, "utf8")) as {
-  apis: CatalogEntry[];
-};
+let catalog: { apis: CatalogEntry[] };
+try {
+  catalog = yaml.load(readFileSync(catalogPath, "utf8")) as {
+    apis: CatalogEntry[];
+  };
+} catch (err) {
+  console.error(`❌ Failed to read catalog at ${catalogPath}:`, err);
+  process.exit(1);
+}
+
 const catalogMap = new Map<string, CatalogEntry>();
 for (const entry of catalog.apis ?? []) {
   catalogMap.set(entry.id, entry);
@@ -244,14 +250,24 @@ for (const entry of catalog.apis ?? []) {
 const paths: Record<string, Record<string, unknown>> = {};
 const tags: { name: string; description?: string }[] = [];
 
-const docFiles = readdirSync(apiDocsDir)
-  .filter((f) => f.endsWith(".yml") || f.endsWith(".yaml"))
-  .sort();
+let docFiles: string[];
+try {
+  docFiles = readdirSync(apiDocsDir)
+    .filter((f) => f.endsWith(".yml") || f.endsWith(".yaml"))
+    .sort();
+} catch (err) {
+  console.error(`❌ Failed to read api_docs directory at ${apiDocsDir}:`, err);
+  process.exit(1);
+}
 
 for (const file of docFiles) {
-  const doc = yaml.load(
-    readFileSync(join(apiDocsDir, file), "utf8"),
-  ) as YamlApiDoc;
+  let doc: YamlApiDoc;
+  try {
+    doc = yaml.load(readFileSync(join(apiDocsDir, file), "utf8")) as YamlApiDoc;
+  } catch (err) {
+    console.warn(`⚠️  Skipping ${file}: failed to parse YAML —`, err);
+    continue;
+  }
 
   if (!doc?.api_id || !doc.endpoints?.length) continue;
 
@@ -295,12 +311,17 @@ const spec = {
   paths,
 };
 
-mkdirSync(outputDir, { recursive: true });
-writeFileSync(
-  outputPath,
-  `// AUTO-GENERATED — do not edit. Run \`pnpm generate:openapi\` to regenerate.\n` +
-    `export const openApiSpec = ${JSON.stringify(spec, null, 2)};\n`,
-);
+try {
+  mkdirSync(outputDir, { recursive: true });
+  writeFileSync(
+    outputPath,
+    `// AUTO-GENERATED — do not edit. Run \`pnpm generate:openapi\` to regenerate.\n` +
+      `export const openApiSpec = ${JSON.stringify(spec, null, 2)};\n`,
+  );
+} catch (err) {
+  console.error(`❌ Failed to write output to ${outputPath}:`, err);
+  process.exit(1);
+}
 
 console.log(
   `✅ OpenAPI spec generated: ${Object.keys(paths).length} paths across ${docFiles.length} APIs`,
