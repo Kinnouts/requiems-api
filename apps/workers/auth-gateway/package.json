@@ -5,6 +5,9 @@
   "type": "module",
   "packageManager": "pnpm@10.26.0",
   "scripts": {
+    "generate:openapi": "tsx scripts/generate-openapi.ts",
+    "predev": "pnpm run generate:openapi",
+    "predeploy": "pnpm run generate:openapi",
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "deploy:prod": "wrangler deploy --env production",
@@ -28,6 +31,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.6",
+    "@types/js-yaml": "^4.0.9",
+    "js-yaml": "^4.1.0",
     "@cloudflare/workers-types": "^4.20260312.1",
     "@edge-runtime/vm": "^5.0.0",
     "@types/node": "^25.4.0",
