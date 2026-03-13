@@ -23,3 +23,6 @@ apps/dashboard/.kamal/hooks/post-proxy-reboot.sample linguist-vendored
 
 **/node_modules/* linguist-vendored
 **/vendor/* linguist-vendored
+
+# Mark auto-generated files as generated
+**/generated/* linguist-generated
