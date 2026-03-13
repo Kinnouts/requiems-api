@@ -1,4 +1,4 @@
-<% content_for :title, "Billing & Subscription" %>
+<% content_for :title, t("dashboard.billing.title") %>
 
 <!-- Plan Selection Notice -->
 <% if params[:plan].present? && valid_plan?(params[:plan]) %>
@@ -8,8 +8,8 @@
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
       </svg>
       <div>
-        <h3 class="text-sm font-medium text-blue-800 dark:text-blue-300 mb-1">Ready to upgrade to <%= params[:plan].titleize %>?</h3>
-        <p class="text-sm text-blue-700 dark:text-blue-400">Scroll down to see the <%= params[:plan].titleize %> plan details and start your 7-day free trial!</p>
+        <h3 class="text-sm font-medium text-blue-800 dark:text-blue-300 mb-1"><%= t("dashboard.billing.plan_notice.heading", plan: params[:plan].titleize) %></h3>
+        <p class="text-sm text-blue-700 dark:text-blue-400"><%= t("dashboard.billing.plan_notice.body", plan: params[:plan].titleize) %></p>
       </div>
     </div>
   </div>
@@ -17,14 +17,14 @@
 
 <!-- Header -->
 <div class="mb-8">
-  <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100">Billing & Subscription</h1>
-  <p class="mt-2 text-sm text-gray-600 dark:text-gray-400">Manage your plan, payment method, and billing history</p>
+  <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100"><%= t("dashboard.billing.title") %></h1>
+  <p class="mt-2 text-sm text-gray-600 dark:text-gray-400"><%= t("dashboard.billing.subtitle") %></p>
 </div>
 
 <!-- Current Plan Section -->
 <div class="bg-white dark:bg-gray-800 rounded-lg shadow mb-8">
   <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
-    <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Current Plan</h2>
+    <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= t("dashboard.billing.current_plan.heading") %></h2>
     <%= render "partials/shared/badge",
       text: @plan_info[:name],
       variant: @current_plan == "free" ? "default" : "primary",
@@ -38,20 +38,20 @@
         <div class="mb-6">
           <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
             <% if @current_plan == "free" %>
-              Free Plan
+              <%= t("dashboard.billing.current_plan.free_label") %>
             <% else %>
-              $<%= @plan_info[:price_monthly] %><span class="text-lg text-gray-600 dark:text-gray-400">/month</span>
+              $<%= @plan_info[:price_monthly] %><span class="text-lg text-gray-600 dark:text-gray-400"><%= t("dashboard.billing.current_plan.per_month") %></span>
             <% end %>
           </h3>
           <p class="text-sm text-gray-600 dark:text-gray-400">
             <% if @subscription %>
               <% if @subscription.cancel_at_period_end %>
-                Cancels on <%= @subscription.current_period_end.strftime("%B %d, %Y") %>
+                <%= t("dashboard.billing.current_plan.cancels_on", date: @subscription.current_period_end.strftime("%B %d, %Y")) %>
               <% else %>
-                Renews on <%= @subscription.current_period_end.strftime("%B %d, %Y") %>
+                <%= t("dashboard.billing.current_plan.renews_on", date: @subscription.current_period_end.strftime("%B %d, %Y")) %>
               <% end %>
             <% else %>
-              No renewal - Free plan
+              <%= t("dashboard.billing.current_plan.no_renewal") %>
             <% end %>
           </p>
         </div>
@@ -75,7 +75,7 @@
               <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
               </svg>
-              Upgrade Plan
+              <%= t("dashboard.billing.current_plan.upgrade_btn") %>
             <% end %>
           <% else %>
             <%= button_to dashboard_portal_billing_path, method: :post, data: { turbo: false }, class: "inline-flex items-center justify-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors" do %>
@@ -83,7 +83,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
               </svg>
-              Manage Subscription
+              <%= t("dashboard.billing.current_plan.manage_btn") %>
             <% end %>
           <% end %>
         </div>
@@ -91,13 +91,13 @@
 
       <!-- Usage Stats -->
       <div>
-        <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">Usage This Period</h3>
+        <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-4"><%= t("dashboard.billing.usage.heading") %></h3>
 
         <!-- Usage Bar -->
         <div class="mb-4">
           <div class="flex items-center justify-between mb-2">
             <span class="text-2xl font-bold text-gray-900 dark:text-gray-100"><%= number_with_delimiter(@usage_this_period) %></span>
-            <span class="text-sm text-gray-600 dark:text-gray-400">of <%= number_with_delimiter(@plan_info[:requests_per_month]) %> requests</span>
+            <span class="text-sm text-gray-600 dark:text-gray-400"><%= t("dashboard.billing.usage.of_requests", limit: number_with_delimiter(@plan_info[:requests_per_month])) %></span>
           </div>
 
           <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-3">
@@ -112,7 +112,7 @@
             %>
             <div class="<%= bar_color %> h-3 rounded-full transition-all" style="width: <%= [@quota_used_percent, 100].min %>%"></div>
           </div>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mt-2"><%= @quota_used_percent %>% used</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-2"><%= t("dashboard.billing.usage.percent_used", percent: @quota_used_percent) %></p>
         </div>
 
         <!-- Usage Warning -->
@@ -123,8 +123,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
               </svg>
               <div class="text-sm text-red-800 dark:text-red-300">
-                <p class="font-medium mb-1">Running low on requests!</p>
-                <p>You're approaching your monthly limit. Consider upgrading to avoid service interruption.</p>
+                <p class="font-medium mb-1"><%= t("dashboard.billing.usage.warning_critical_heading") %></p>
+                <p><%= t("dashboard.billing.usage.warning_critical_body") %></p>
               </div>
             </div>
           </div>
@@ -135,8 +135,8 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
               </svg>
               <div class="text-sm text-yellow-800 dark:text-yellow-300">
-                <p class="font-medium mb-1">Heads up!</p>
-                <p>You've used <%= @quota_used_percent %>% of your monthly quota. You may want to upgrade soon.</p>
+                <p class="font-medium mb-1"><%= t("dashboard.billing.usage.warning_moderate_heading") %></p>
+                <p><%= t("dashboard.billing.usage.warning_moderate_body", percent: @quota_used_percent) %></p>
               </div>
             </div>
           </div>
@@ -144,9 +144,9 @@
 
         <!-- Rate Limit Info -->
         <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
-          <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Rate Limit</h4>
+          <h4 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2"><%= t("dashboard.billing.usage.rate_limit_heading") %></h4>
           <p class="text-2xl font-bold text-gray-900 dark:text-gray-100"><%= number_with_delimiter(@plan_info[:rate_limit_per_minute]) %></p>
-          <p class="text-xs text-gray-600 dark:text-gray-400 mt-1">requests per minute</p>
+          <p class="text-xs text-gray-600 dark:text-gray-400 mt-1"><%= t("dashboard.billing.usage.rate_limit_unit") %></p>
         </div>
       </div>
     </div>
@@ -155,13 +155,33 @@
 
 <!-- Available Plans -->
 <% if @current_plan != "professional" %>
-  <div class="bg-white dark:bg-gray-800 rounded-lg shadow mb-8">
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow mb-8" data-controller="pricing-toggle">
     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Upgrade Your Plan</h2>
-      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">Choose a plan that fits your needs</p>
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= t("dashboard.billing.upgrade_section.heading") %></h2>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1"><%= t("dashboard.billing.upgrade_section.subtitle") %></p>
     </div>
 
     <div class="p-6">
+      <div class="flex justify-center mb-6">
+        <div class="bg-gray-100 dark:bg-gray-700 rounded-lg border border-gray-200 dark:border-gray-600 p-1 inline-flex">
+          <button
+            type="button"
+            data-pricing-toggle-target="monthlyButton"
+            data-action="click->pricing-toggle#showMonthly"
+            class="px-5 py-1.5 rounded-md text-sm font-medium transition-colors bg-blue-600 text-white">
+            <%= t("dashboard.billing.upgrade_section.monthly") %>
+          </button>
+          <button
+            type="button"
+            data-pricing-toggle-target="yearlyButton"
+            data-action="click->pricing-toggle#showYearly"
+            class="px-5 py-1.5 rounded-md text-sm font-medium transition-colors text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100">
+            <%= t("dashboard.billing.upgrade_section.yearly") %>
+            <span class="ml-1 inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-green-100 dark:bg-green-900/20 text-green-800 dark:text-green-300"><%= t("dashboard.billing.upgrade_section.save_percent") %></span>
+          </button>
+        </div>
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         <%
           plan_order = { "free" => 0, "developer" => 1, "business" => 2, "professional" => 3 }
@@ -171,17 +191,24 @@
           <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-6 hover:border-blue-500 transition-colors <%= plan[:id] == 'business' ? 'ring-2 ring-blue-500' : '' %>">
             <% if plan[:id] == "business" %>
               <div class="inline-block px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 text-xs font-semibold rounded-full mb-4">
-                Most Popular
+                <%= t("dashboard.billing.upgrade_section.most_popular") %>
               </div>
+            <% else %>
+              <div class="invisible inline-block px-3 py-1 text-xs font-semibold rounded-full mb-4">&nbsp;</div>
             <% end %>
 
             <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2"><%= plan[:name] %></h3>
             <div class="mb-4">
-              <span class="text-3xl font-bold text-gray-900 dark:text-gray-100">$<%= plan[:price_monthly] %></span>
-              <span class="text-gray-600 dark:text-gray-400">/month</span>
-              <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                or $<%= (plan[:price_yearly] / 12.0).round %>/month billed yearly
-              </p>
+              <div data-pricing-toggle-target="monthlyPrice">
+                <span class="text-3xl font-bold text-gray-900 dark:text-gray-100">$<%= plan[:price_monthly] %></span>
+                <span class="text-gray-600 dark:text-gray-400"><%= t("dashboard.billing.upgrade_section.per_month") %></span>
+                <p class="invisible text-sm mt-1">&nbsp;</p>
+              </div>
+              <div class="hidden" data-pricing-toggle-target="yearlyPrice">
+                <span class="text-3xl font-bold text-gray-900 dark:text-gray-100">$<%= (plan[:price_yearly] / 12.0).round %></span>
+                <span class="text-gray-600 dark:text-gray-400"><%= t("dashboard.billing.upgrade_section.per_month") %></span>
+                <p class="text-sm text-green-600 dark:text-green-400 mt-1"><%= t("dashboard.billing.upgrade_section.billed_yearly", price: plan[:price_yearly]) %></p>
+              </div>
             </div>
 
             <ul class="space-y-2 mb-6">
@@ -195,12 +222,10 @@
               <% end %>
             </ul>
 
-            <%= button_to dashboard_checkout_billing_path,
-              method: :post,
-              params: { plan: plan[:id], billing_cycle: "monthly" },
-              data: { turbo: false },
-              class: "block w-full text-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors" do %>
-              Upgrade to <%= plan[:name] %>
+            <%= form_with url: dashboard_checkout_billing_path, method: :post, data: { turbo: false } do |f| %>
+              <%= f.hidden_field :plan, value: plan[:id] %>
+              <%= f.hidden_field :billing_cycle, value: "monthly", data: { pricing_toggle_target: "billingCycleInput" } %>
+              <%= f.submit t("dashboard.billing.upgrade_section.upgrade_btn", plan: plan[:name]), class: "block w-full text-center px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors cursor-pointer" %>
             <% end %>
           </div>
         <% end %>
@@ -208,7 +233,7 @@
 
       <div class="mt-6 text-center">
         <%= link_to pricing_path, class: "text-blue-600 hover:text-blue-700 font-medium" do %>
-          View all plans and pricing details →
+          <%= t("dashboard.billing.upgrade_section.view_all") %>
         <% end %>
       </div>
     </div>
@@ -220,7 +245,7 @@
   <!-- Payment Method -->
   <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Payment Method</h2>
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= t("dashboard.billing.payment.heading") %></h2>
     </div>
 
     <div class="p-6">
@@ -232,8 +257,8 @@
             </svg>
           </div>
           <div class="ml-4">
-            <p class="text-sm font-medium text-gray-900 dark:text-gray-100">Managed by LemonSqueezy</p>
-            <p class="text-xs text-gray-600 dark:text-gray-400">Secure payment processing</p>
+            <p class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= t("dashboard.billing.payment.managed_by") %></p>
+            <p class="text-xs text-gray-600 dark:text-gray-400"><%= t("dashboard.billing.payment.secure_processing") %></p>
           </div>
         </div>
 
@@ -241,15 +266,15 @@
           method: :post,
           data: { turbo: false },
           class: "block w-full text-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" do %>
-          Update Payment Method
+          <%= t("dashboard.billing.payment.update_btn") %>
         <% end %>
       <% else %>
         <div class="text-center py-8">
           <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
           </svg>
-          <p class="text-sm text-gray-600 dark:text-gray-400">No payment method on file</p>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Upgrade to add a payment method</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400"><%= t("dashboard.billing.payment.none_heading") %></p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1"><%= t("dashboard.billing.payment.none_hint") %></p>
         </div>
       <% end %>
     </div>
@@ -258,36 +283,36 @@
   <!-- Billing History -->
   <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
     <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Billing History</h2>
+      <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= t("dashboard.billing.history.heading") %></h2>
     </div>
 
     <div class="p-6">
       <% if @subscription && @current_plan != "free" %>
         <div class="divide-y divide-gray-100 dark:divide-gray-700">
           <div class="flex items-center justify-between py-3">
-            <span class="text-sm text-gray-600 dark:text-gray-400">Plan</span>
+            <span class="text-sm text-gray-600 dark:text-gray-400"><%= t("dashboard.billing.history.plan_label") %></span>
             <span class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= @plan_info[:name] %></span>
           </div>
           <div class="flex items-center justify-between py-3">
-            <span class="text-sm text-gray-600 dark:text-gray-400">Status</span>
+            <span class="text-sm text-gray-600 dark:text-gray-400"><%= t("dashboard.billing.history.status_label") %></span>
             <span class="text-sm font-medium <%= @subscription.status == 'active' ? 'text-green-600 dark:text-green-400' : 'text-yellow-600 dark:text-yellow-400' %>">
               <%= @subscription.status&.titleize %>
             </span>
           </div>
           <% if @subscription.current_period_start %>
             <div class="flex items-center justify-between py-3">
-              <span class="text-sm text-gray-600 dark:text-gray-400">Period started</span>
+              <span class="text-sm text-gray-600 dark:text-gray-400"><%= t("dashboard.billing.history.period_started") %></span>
               <span class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= @subscription.current_period_start.strftime("%b %d, %Y") %></span>
             </div>
           <% end %>
           <% if @subscription.current_period_end %>
             <div class="flex items-center justify-between py-3">
-              <span class="text-sm text-gray-600 dark:text-gray-400"><%= @subscription.cancel_at_period_end? ? "Cancels on" : "Renews on" %></span>
+              <span class="text-sm text-gray-600 dark:text-gray-400"><%= @subscription.cancel_at_period_end? ? t("dashboard.billing.history.cancels_on") : t("dashboard.billing.history.renews_on") %></span>
               <span class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= @subscription.current_period_end.strftime("%b %d, %Y") %></span>
             </div>
           <% end %>
           <div class="pt-4">
-            <p class="text-xs text-gray-500 dark:text-gray-400">Full invoice history available in the LemonSqueezy customer portal via Manage Subscription.</p>
+            <p class="text-xs text-gray-500 dark:text-gray-400"><%= t("dashboard.billing.history.portal_note") %></p>
           </div>
         </div>
       <% else %>
@@ -295,8 +320,8 @@
           <svg class="mx-auto h-12 w-12 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
           </svg>
-          <p class="text-sm text-gray-600 dark:text-gray-400">No billing history</p>
-          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Invoices will appear here after your first payment</p>
+          <p class="text-sm text-gray-600 dark:text-gray-400"><%= t("dashboard.billing.history.none_heading") %></p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1"><%= t("dashboard.billing.history.none_hint") %></p>
         </div>
       <% end %>
     </div>
@@ -306,29 +331,29 @@
 <!-- FAQ Section -->
 <div class="bg-white dark:bg-gray-800 rounded-lg shadow mt-8">
   <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-    <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100">Billing FAQ</h2>
+    <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= t("dashboard.billing.faq.heading") %></h2>
   </div>
 
   <div class="p-6">
     <div class="space-y-4">
       <div>
-        <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">When will I be charged?</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-400">You'll be charged at the beginning of each billing period. Your first charge happens when you upgrade to a paid plan.</p>
+        <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1"><%= t("dashboard.billing.faq.q1_heading") %></h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400"><%= t("dashboard.billing.faq.q1_body") %></p>
       </div>
 
       <div>
-        <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Can I cancel anytime?</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-400">Yes! You can cancel your subscription at any time. You'll continue to have access until the end of your current billing period.</p>
+        <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1"><%= t("dashboard.billing.faq.q2_heading") %></h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400"><%= t("dashboard.billing.faq.q2_body") %></p>
       </div>
 
       <div>
-        <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">What happens if I exceed my quota?</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-400">API requests will be rejected with a 429 status code. You can upgrade your plan to increase your quota immediately.</p>
+        <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1"><%= t("dashboard.billing.faq.q3_heading") %></h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400"><%= t("dashboard.billing.faq.q3_body") %></p>
       </div>
 
       <div>
-        <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">Do unused requests roll over?</h3>
-        <p class="text-sm text-gray-600 dark:text-gray-400">No, unused requests do not roll over to the next billing period. Your quota resets at the start of each period.</p>
+        <h3 class="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1"><%= t("dashboard.billing.faq.q4_heading") %></h3>
+        <p class="text-sm text-gray-600 dark:text-gray-400"><%= t("dashboard.billing.faq.q4_body") %></p>
       </div>
     </div>
   </div>
