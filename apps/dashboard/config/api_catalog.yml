@@ -1,6 +1,6 @@
 categories:
   - id: validation
-    name: Validation APIs
+    name: Validation
     icon: "✓"
     short_description: Stop bad data at the door. Fake emails, bad phone numbers, and toxic content cause real problems downstream.
     description: Bad data compounds. A fake email means a wasted send. A bad phone number means a failed delivery. Profanity in a user submission means a moderation incident. These APIs let you reject garbage at the point of entry, so it never reaches your database in the first place.
@@ -24,7 +24,7 @@ categories:
     description: QR codes and barcodes seem simple until you're managing dependencies, output formats, and edge cases across multiple platforms. These APIs return a ready-to-use PNG or base64 payload. Drop it wherever you need it.
 
   - id: ai_vision
-    name: AI/Computer Vision
+    name: AI & Computer Vision
     icon: "🤖"
     short_description: Machine learning capabilities without the model management. Call an endpoint, get an answer.
     description: Language detection, semantic similarity, image analysis, object recognition. Capabilities that used to require your own ML infrastructure are now available as REST endpoints. No model hosting, no GPU costs, no versioning headaches.
@@ -49,46 +49,40 @@ categories:
     description: Financial APIs for payment processing, card validation, and financial reference data. Look up BIN/IIN card metadata, validate payment instruments, and access financial reference datasets. Built for fintech apps, payment processors, and fraud detection systems.
 
   - id: security
-    name: Validation Research
-    icon: "🔬"
+    name: Security & Privacy
+    icon: "🔒"
     short_description: Password strength analysis, breach detection, and advanced data validation for robust apps.
     description: Go beyond basic validation with research-grade APIs for password strength analysis, data breach detection, IP reputation checks, and advanced input validation. Build more reliable products by integrating deep validation intelligence directly into your workflows.
-    coming_soon: true
 
   - id: health
     name: Health/Wellness
     icon: "🏥"
     short_description: Nutrition data, fitness metrics, and wellness insights for healthcare platforms and fitness apps.
     description: Power health and wellness applications with reliable data on nutrition, fitness metrics, medical information, and wellness insights. Designed for healthcare platforms, fitness trackers, diet apps, and any product that helps people make informed decisions about their health.
-    coming_soon: true
 
   - id: tax
     name: Tax
     icon: "📋"
     short_description: VAT, sales tax, GST, and income tax calculations for e-commerce and invoicing systems.
     description: Simplify tax calculations with accurate, jurisdiction-aware APIs for VAT, sales tax, GST, and income tax. Integrate seamlessly into e-commerce checkouts, invoicing systems, and financial applications that operate across multiple countries and complex tax regimes.
-    coming_soon: true
 
   - id: transportation
     name: Transportation
     icon: "🚗"
     short_description: Flight status, route info, carrier lookups, and tracking data for travel and logistics apps.
     description: Access transportation and logistics data including flight status, route information, carrier lookups, and tracking details. Designed for travel applications, e-commerce platforms, and logistics management systems that depend on accurate, real-time movement data.
-    coming_soon: true
 
   - id: data
-    name: Data APIs
+    name: Data
     icon: "📊"
     short_description: Curated structured datasets — country info, public records, and reference tables ready to integrate.
     description: Access curated, structured datasets across dozens of domains. From country information and public records to reference data and lookup tables, these APIs save you the time of building and maintaining your own data pipelines — so you can focus on what matters.
-    coming_soon: true
 
-  - id: animals
-    name: Animals
+  - id: nature
+    name: Nature
     icon: "🐾"
     short_description: Species facts, habitat data, and behavioral traits for educational and wildlife applications.
     description: Explore the animal kingdom with rich datasets covering species facts, habitat information, behavioral traits, and high-quality imagery. Ideal for educational platforms, wildlife apps, trivia games, and any project that brings the natural world to life for your users.
-    coming_soon: true
 
 apis:
   # Validation APIs
@@ -110,6 +104,7 @@ apis:
     name: Disposable Domain Checker
     categories:
       - technology
+      - data
     description: Check whether an email domain belongs to a known disposable or temporary email provider. Use this for targeted domain lookups. For full email validation including syntax, MX records, and normalization, see the Email Validator.
     endpoints_count: 5
     status: live
@@ -139,6 +134,7 @@ apis:
     categories:
       - validation
       - technology
+      - data
     description: Validate phone numbers globally. Detect carrier, country, type, and VOIP or virtual risk using only phone metadata.
     endpoints_count: 2
     status: live
@@ -467,6 +463,8 @@ apis:
     name: Unit Conversion
     categories:
       - technology
+      - health
+      - transportation
     description: Convert between units of measurement — length, weight, volume, temperature, area, and speed
     endpoints_count: 2
     status: live
@@ -482,6 +480,7 @@ apis:
     name: BIN Lookup
     categories:
       - finance
+      - tax
     description: Pass the first 6–8 digits of any payment card and get back the issuing bank, card network, type, and country
     endpoints_count: 1
     status: live

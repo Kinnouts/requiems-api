@@ -22,17 +22,9 @@
           <%= t("shared.footer.sections.api_categories") %>
         </h3>
         <ul class="space-y-3">
-          <li><%= link_to t("shared.footer.links.finance"), category_path("finance"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to t("shared.footer.links.technology"), category_path("technology"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to t("shared.footer.links.ai_vision"), category_path("ai_vision"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to t("shared.footer.links.animals"), category_path("animals"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to t("shared.footer.links.entertainment"), category_path("entertainment"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to t("shared.footer.links.health"), category_path("health"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to t("shared.footer.links.miscellaneous"), category_path("misc"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to t("shared.footer.links.places"), category_path("places"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to t("shared.footer.links.text"), category_path("text"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to t("shared.footer.links.transportation"), category_path("transportation"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
-          <li><%= link_to t("shared.footer.links.tax"), category_path("tax"), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <% api_categories.reject { |c| c["coming_soon"] }.each do |cat| %>
+            <li><%= link_to cat["name"], category_path(cat["id"]), class: "text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %></li>
+          <% end %>
         </ul>
       </div>
 
