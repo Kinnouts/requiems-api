@@ -3,7 +3,6 @@
   section_apis = local_assigns.fetch(:apis, [])
   category_id = section_category["id"]
   category_name = section_category["name"]
-  category_icon = section_category["icon"]
   category_description = section_category["short_description"] || section_category["description"]
 %>
 
@@ -12,7 +11,9 @@
     <!-- Section Header -->
     <div class="mb-4">
       <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 flex items-center">
-        <span class="mr-2"><%= category_icon %></span>
+        <span class="mr-2 inline-flex items-center justify-center w-8 h-8 rounded-full flex-shrink-0 <%= category_color_classes(category_id) %>">
+          <%= category_icon_svg(category_id, size: "w-4 h-4") %>
+        </span>
         <%= link_to category_name, category_path(category_id), class: "hover:text-blue-600 dark:hover:text-blue-400 transition-colors" %>
       </h2>
       <p class="mt-1 text-sm text-gray-600 dark:text-gray-400">

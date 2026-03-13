@@ -1,11 +1,11 @@
 es:
   home:
     index:
-      title: "Requiems API - Desarrolla más rápido con APIs listas para producción"
+      title: "Requiems API - Reemplaza meses de infraestructura con una sola llamada API"
       hero:
-        title_line1: "Desarrolla más rápido con"
-        title_line2: "APIs Listas para Producción"
-        description: "Una clave API. Posibilidades ilimitadas. Accede a validación de correo, utilidades de texto y más a través de una plataforma gestionada alojada en servidores de la UE."
+        title_line1: "Reemplaza meses de infraestructura"
+        title_line2: "con una sola llamada API."
+        description: "125 APIs empresariales que eliminan meses de obtención de datos, validación y dolores de cabeza de infraestructura."
         cta_primary: "Obtener clave API gratis"
         cta_secondary: "Ver documentación de APIs"
         try_badge: "✨ Pruébalo ahora • Sin tarjeta de crédito"
@@ -16,7 +16,7 @@ es:
         playground_title: "Playground de APIs en vivo"
         playground_desc: "Prueba cada endpoint directamente en la documentación. Ve respuestas reales al instante sin escribir código."
         examples_title: "Ejemplos de código"
-        examples_desc: "Ejemplos listos para copiar en cURL, Python, JavaScript, Ruby, Go y más. Empieza en segundos."
+        examples_desc: "Ejemplos listos para copiar en cURL, Python, JavaScript, Go y más — o copia como Markdown para herramientas de IA. Empieza en segundos."
         docs_title: "Documentación precisa"
         docs_desc: "Cada parámetro, campo de respuesta y código de error documentado. Sin adivinar."
       categories:
@@ -725,3 +725,26 @@ es:
       additional:
         talk_to_sales: "Hablar con ventas"
         suggest_api: "Sugerir una nueva API"
+    for_llms:
+      title: "Para LLMs y Herramientas de IA - Requiems API"
+      heading: "Para LLMs y Herramientas de IA"
+      intro: "Requiems API ofrece endpoints de documentación legibles por máquina siguiendo el estándar llms.txt, facilitando que las herramientas y agentes de IA descubran y usen nuestras APIs."
+      llms_txt:
+        heading: "llms.txt — Índice de APIs"
+        description: "Un directorio de todas las APIs disponibles con enlaces a sus páginas de documentación individuales. Sigue el estándar llms.txt para la descubribilidad por IA."
+      llms_full:
+        heading: "llms-full.txt — Documentación Completa"
+        description: "La documentación completa de todas las APIs en un único archivo de texto plano. Ideal para ingesta masiva, indexación offline o carga en modelos de contexto largo."
+      api_md:
+        heading: "Markdown por API"
+        description: "Obtén la documentación completa de cualquier API en formato Markdown añadiendo /index.md a su URL."
+        pattern: "Patrón: /apis/{api-id}/index.md"
+      open_in_ai:
+        heading: "Abrir en Claude / ChatGPT"
+        description: "Cada página de documentación de API incluye un botón «Abrir en Claude» y «Abrir en ChatGPT» que carga la referencia completa de la API como prompt para obtener ayuda de integración al instante."
+        note: "Encuentra estos botones en cualquier página individual de API en la sección de documentación."
+      cta:
+        heading: "¿Listo para integrar?"
+        text: "Explora el catálogo completo de APIs o descarga la documentación completa para empezar."
+        browse_apis: "Ver APIs"
+        full_docs: "Descargar llms-full.txt"

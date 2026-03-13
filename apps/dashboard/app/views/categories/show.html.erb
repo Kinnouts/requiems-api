@@ -12,7 +12,9 @@
     <div class="flex-1 px-8 py-10">
       <!-- Category Header -->
       <div class="text-center mb-10 max-w-3xl mx-auto">
-        <div class="text-5xl mb-4"><%= @category["icon"] %></div>
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 <%= category_color_classes(@category["id"]) %>">
+          <%= category_icon_svg(@category["id"], size: "w-8 h-8") %>
+        </div>
         <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-3">
           <%= @category["name"] %>
         </h1>
@@ -22,7 +24,12 @@
       </div>
 
       <!-- API Cards Grid -->
-      <% if @apis.any? %>
+      <% if @category["coming_soon"] %>
+        <div class="text-center py-16">
+          <h2 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">Coming Soon</h2>
+          <p class="text-gray-500 dark:text-gray-400">We're working on bringing APIs to this category. Check back soon!</p>
+        </div>
+      <% elsif @apis.any? %>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-3">
           <% @apis.each do |api| %>
             <%= render 'partials/apis_index/api_card', api: api %>
@@ -30,13 +37,7 @@
         </div>
       <% else %>
         <div class="text-center py-16">
-          <% if @category["coming_soon"] %>
-            <div class="text-5xl mb-4">🚧</div>
-            <h2 class="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">Coming Soon</h2>
-            <p class="text-gray-500 dark:text-gray-400">We're working on bringing APIs to this category. Check back soon!</p>
-          <% else %>
-            <p class="text-gray-500 dark:text-gray-400">No APIs available in this category yet.</p>
-          <% end %>
+          <p class="text-gray-500 dark:text-gray-400">No APIs available in this category yet.</p>
         </div>
       <% end %>
     </div>

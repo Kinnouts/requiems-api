@@ -4,7 +4,9 @@ Rails.application.routes.draw do
   # Non-locale routes: health check, sitemaps, webhooks, API proxy, dev tools
   get "up" => "rails/health#show", as: :rails_health_check
   get "sitemap.xml", to: "sitemap#sitemap", defaults: { format: :xml }
-  get "llms.txt",    to: "sitemap#llms",    defaults: { format: :text }
+  get "llms.txt",      to: "sitemap#llms",      defaults: { format: :text }
+  get "llms-full.txt", to: "sitemap#llms_full", defaults: { format: :text }
+  get "apis/:id/index.md", to: "sitemap#api_doc", defaults: { format: :text }
   post "api/proxy", to: "api_proxy#create"
   post "locale", to: "locale#update", as: :switch_locale
 
@@ -112,6 +114,7 @@ Rails.application.routes.draw do
     get "glossary", to: "home#glossary"
     get "error_codes", to: "home#error_codes"
     get "faq", to: "home#faq"
+    get "for-llms", to: "home#for_llms"
 
     get "suggest-an-api", to: "suggestions#new", as: "suggest_api"
     post "suggest-an-api", to: "suggestions#create"
@@ -119,6 +122,7 @@ Rails.application.routes.draw do
     post "talk-to-sales", to: "sales_inquiries#create"
 
     get "examples", to: "examples#index"
+    get "apis/:id/index.md", to: "sitemap#api_doc", defaults: { format: :text }
     resources :apis, only: [ :index, :show ]
     resources :categories, only: [ :show ]
     resources :examples, only: [ :show ]
