@@ -190,4 +190,16 @@ module ApisHelper
 
     lines.join("\n")
   end
+
+  def open_in_claude_url(documentation)
+    doc_url = "#{request.base_url}/apis/#{documentation['api_id']}/index.md"
+    prompt = "Read this page from the Requiems API docs: #{doc_url} and help me integrate this API into my project."
+    "https://claude.ai/new?q=#{ERB::Util.url_encode(prompt)}"
+  end
+
+  def open_in_chatgpt_url(documentation)
+    doc_url = "#{request.base_url}/apis/#{documentation['api_id']}/index.md"
+    prompt = "Read this page from the Requiems API docs: #{doc_url} and help me integrate this API into my project."
+    "https://chatgpt.com/?q=#{ERB::Util.url_encode(prompt)}"
+  end
 end

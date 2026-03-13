@@ -38,6 +38,7 @@ es:
         our_team: "Nuestro equipo"
         suggest_api: "Sugerir una API"
         faq: "Preguntas frecuentes"
+        for_llms: "Para LLMs y herramientas de IA"
         privacy_policy: "Política de privacidad"
         terms_of_service: "Términos de servicio"
         contact_us: "Contáctanos"

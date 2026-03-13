@@ -1,0 +1,146 @@
+<% content_for :title, t("home.for_llms.title") %>
+
+<% content_for :head do %>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/github-dark.min.css">
+<% end %>
+
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Header -->
+    <div class="mb-12">
+      <div class="flex items-center gap-3 mb-4">
+        <div class="flex items-center justify-center w-10 h-10 rounded-lg bg-purple-100 dark:bg-purple-900/30">
+          <svg class="h-5 w-5 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2"/>
+          </svg>
+        </div>
+        <span class="text-sm font-medium text-purple-600 dark:text-purple-400 uppercase tracking-wider">AI Tooling</span>
+      </div>
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4"><%= t("home.for_llms.heading") %></h1>
+      <p class="text-xl text-gray-600 dark:text-gray-400 max-w-2xl">
+        <%= t("home.for_llms.intro") %>
+      </p>
+    </div>
+
+    <div class="space-y-6">
+
+      <!-- llms.txt -->
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-mono font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">GET</span>
+              <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= t("home.for_llms.llms_txt.heading") %></h2>
+            </div>
+            <a href="/llms.txt" target="_blank" rel="noopener noreferrer" class="text-sm text-blue-600 dark:text-blue-400 hover:underline font-mono">/llms.txt →</a>
+          </div>
+        </div>
+        <div class="px-6 py-5">
+          <p class="text-gray-600 dark:text-gray-400 mb-4"><%= t("home.for_llms.llms_txt.description") %></p>
+          <div data-controller="highlight" class="relative">
+            <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code class="language-bash">curl https://requiems.xyz/llms.txt</code></pre>
+            <button type="button"
+                    data-controller="copy"
+                    data-copy-text-value="curl https://requiems.xyz/llms.txt"
+                    data-action="click->copy#copy"
+                    class="absolute top-2 right-2 p-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded transition-colors"
+                    title="Copy">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- llms-full.txt -->
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-mono font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">GET</span>
+              <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= t("home.for_llms.llms_full.heading") %></h2>
+            </div>
+            <a href="/llms-full.txt" download="llms-full.txt" class="text-sm text-blue-600 dark:text-blue-400 hover:underline font-mono">/llms-full.txt ↓</a>
+          </div>
+        </div>
+        <div class="px-6 py-5">
+          <p class="text-gray-600 dark:text-gray-400 mb-4"><%= t("home.for_llms.llms_full.description") %></p>
+          <div data-controller="highlight" class="relative">
+            <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code class="language-bash">curl https://requiems.xyz/llms-full.txt</code></pre>
+            <button type="button"
+                    data-controller="copy"
+                    data-copy-text-value="curl https://requiems.xyz/llms-full.txt"
+                    data-action="click->copy#copy"
+                    class="absolute top-2 right-2 p-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded transition-colors"
+                    title="Copy">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Per-API Markdown -->
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+          <div class="flex items-center gap-3">
+            <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-mono font-medium bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300">GET</span>
+            <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= t("home.for_llms.api_md.heading") %></h2>
+          </div>
+        </div>
+        <div class="px-6 py-5">
+          <p class="text-gray-600 dark:text-gray-400 mb-2"><%= t("home.for_llms.api_md.description") %></p>
+          <p class="text-sm font-mono text-gray-500 dark:text-gray-400 mb-4"><%= t("home.for_llms.api_md.pattern") %></p>
+          <div data-controller="highlight" class="relative">
+            <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code class="language-bash">curl https://requiems.xyz/apis/email-validate/index.md</code></pre>
+            <button type="button"
+                    data-controller="copy"
+                    data-copy-text-value="curl https://requiems.xyz/apis/email-validate/index.md"
+                    data-action="click->copy#copy"
+                    class="absolute top-2 right-2 p-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded transition-colors"
+                    title="Copy">
+              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Open in Claude / ChatGPT -->
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
+        <div class="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+          <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= t("home.for_llms.open_in_ai.heading") %></h2>
+        </div>
+        <div class="px-6 py-5">
+          <p class="text-gray-600 dark:text-gray-400 mb-4"><%= t("home.for_llms.open_in_ai.description") %></p>
+          <div class="flex items-start gap-3 p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
+            <svg class="h-5 w-5 text-gray-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <p class="text-sm text-gray-500 dark:text-gray-400"><%= t("home.for_llms.open_in_ai.note") %></p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- CTA -->
+    <div class="mt-8 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6">
+      <h2 class="text-lg font-semibold text-blue-900 dark:text-blue-300 mb-2"><%= t("home.for_llms.cta.heading") %></h2>
+      <p class="text-blue-800 dark:text-blue-300 mb-4"><%= t("home.for_llms.cta.text") %></p>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <%= link_to apis_path, class: "inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 transition-colors" do %>
+          <%= t("home.for_llms.cta.browse_apis") %>
+        <% end %>
+        <a href="/llms-full.txt" download="llms-full.txt" class="inline-flex items-center justify-center px-4 py-2 border border-blue-300 dark:border-blue-700 text-sm font-medium rounded-md text-blue-700 dark:text-blue-400 bg-white dark:bg-gray-800 hover:bg-blue-50 dark:hover:bg-gray-700 transition-colors">
+          <%= t("home.for_llms.cta.full_docs") %>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>

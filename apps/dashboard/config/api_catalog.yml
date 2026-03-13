@@ -49,10 +49,10 @@ categories:
     description: Financial APIs for payment processing, card validation, and financial reference data. Look up BIN/IIN card metadata, validate payment instruments, and access financial reference datasets. Built for fintech apps, payment processors, and fraud detection systems.
 
   - id: security
-    name: Security APIs
-    icon: "🔒"
-    short_description: Password analysis, breach detection, IP reputation, and encryption tools for safer apps.
-    description: Strengthen your application's defenses with security-focused APIs for password strength analysis, data breach detection, IP reputation checks, and encryption utilities. Build safer products by integrating threat intelligence and security validation directly into your workflows.
+    name: Validation Research
+    icon: "🔬"
+    short_description: Password strength analysis, breach detection, and advanced data validation for robust apps.
+    description: Go beyond basic validation with research-grade APIs for password strength analysis, data breach detection, IP reputation checks, and advanced input validation. Build more reliable products by integrating deep validation intelligence directly into your workflows.
     coming_soon: true
 
   - id: health

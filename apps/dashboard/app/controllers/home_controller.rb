@@ -39,4 +39,7 @@ class HomeController < ApplicationController
 
   def team
   end
+
+  def for_llms
+  end
 end

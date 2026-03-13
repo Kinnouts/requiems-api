@@ -1,11 +1,11 @@
 en:
   home:
     index:
-      title: "Requiems API - Ship Faster With Production-Ready APIs"
+      title: "Requiems API - Replace Months of Infrastructure with a Single API Call"
       hero:
-        title_line1: "Ship Faster With"
-        title_line2: "Production-Ready APIs"
-        description: "One API key. Unlimited possibilities. Access email validation, text utilities, and more through a single managed platform hosted on EU servers."
+        title_line1: "Replace Months of Infrastructure"
+        title_line2: "with a Single API."
+        description: "100+ enterprise APIs that eliminate months of data sourcing, validation, and infrastructure headaches."
         cta_primary: "Get Free API Key"
         cta_secondary: "Browse API Docs"
         try_badge: "✨ Try it now • No credit card required"
@@ -16,7 +16,7 @@ en:
         playground_title: "Live API Playground"
         playground_desc: "Test every endpoint directly in the docs. See real responses instantly without writing code."
         examples_title: "Code Examples"
-        examples_desc: "Copy-paste examples in cURL, Python, JavaScript, Ruby, Go, and more. Start in seconds."
+        examples_desc: "Copy-paste examples in cURL, Python, JavaScript, Go, and more — or copy as Markdown for AI tools. Start in seconds."
         docs_title: "Precise Documentation"
         docs_desc: "Every parameter, response field, and error code documented. No guessing required."
       categories:
@@ -195,13 +195,13 @@ en:
           example: "Example: Requiems API provides a REST API for validating email addresses programmatically."
         - name: "Endpoint"
           definition: "A specific URL where an API can access the resources it needs. Each endpoint corresponds to a specific function or resource in the API."
-          example: "Example: <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">POST /v1/email/disposable/check</code>"
+          example: 'Example: <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">POST /v1/email/disposable/check</code>'
         - name: "Authentication"
           definition: "The process of verifying the identity of a user or application. APIs typically require authentication to ensure only authorized users can access the service."
-          example: "Example: Including your API key in the Authorization header: <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">Authorization: Bearer YOUR_API_KEY</code>"
+          example: 'Example: Including your API key in the Authorization header: <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">Authorization: Bearer YOUR_API_KEY</code>'
         - name: "API Key"
           definition: "A unique identifier used to authenticate requests to an API. API keys act as both an identifier and a secret token for authentication."
-          example: "Example: <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">req_live_1234567890abcdef</code>"
+          example: 'Example: <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">req_live_1234567890abcdef</code>'
         - name: "Rate Limiting"
           definition: "A technique used to control the number of requests a user can make to an API within a given time period. This helps prevent abuse and ensures fair usage."
           example: "Example: Free plan allows 100 requests per minute"
@@ -213,19 +213,19 @@ en:
           example: "Example: Using GET to retrieve data, POST to create, PUT to update, DELETE to remove"
         - name: "JSON (JavaScript Object Notation)"
           definition: "A lightweight data interchange format that's easy for humans to read and write, and easy for machines to parse and generate. Most modern APIs use JSON for request and response bodies."
-          example: "Example: <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">{\"email\": \"test@example.com\", \"is_disposable\": false}</code>"
+          example: 'Example: <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">{"email": "test@example.com", "is_disposable": false}</code>'
         - name: "HTTP Status Codes"
           definition: "Three-digit codes returned by web servers to indicate the result of an HTTP request. Common codes include 200 (success), 404 (not found), and 500 (server error)."
-          example: "Learn more: <a href=\"/error_codes\" class=\"text-blue-600 hover:text-blue-700\">Error Codes Reference</a>"
+          example: 'Learn more: <a href="/error_codes" class="text-blue-600 hover:text-blue-700">Error Codes Reference</a>'
         - name: "Webhook"
           definition: "A method for an application to provide real-time information to other applications. Instead of you making repeated API requests, the server sends data to your specified URL when an event occurs."
           example: "Example: Receive a notification when your request balance drops below a threshold"
         - name: "Query Parameters"
           definition: "Key-value pairs appended to a URL to filter, sort, or modify the API response. They appear after a question mark (?) in the URL."
-          example: "Example: <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">/v1/words?limit=10&min_length=5</code>"
+          example: 'Example: <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">/v1/words?limit=10&min_length=5</code>'
         - name: "Headers"
           definition: "Additional information sent with HTTP requests and responses. Headers can contain authentication tokens, content types, custom metadata, and more."
-          example: "Example: <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">Content-Type: application/json</code>"
+          example: 'Example: <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">Content-Type: application/json</code>'
       help:
         heading: "Need More Help?"
         text: "Check out our comprehensive documentation or contact our support team"
@@ -546,7 +546,7 @@ en:
       last_updated: "Last updated: %{date}"
       overview:
         heading: "Overview"
-        text: "Requiems API (\"we\", \"our\", or \"us\") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our API platform and services."
+        text: 'Requiems API ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our API platform and services.'
       information_we_collect:
         heading: "Information We Collect"
         account:
@@ -584,7 +584,7 @@ en:
         items:
           - "Right to access your personal data"
           - "Right to rectification of inaccurate data"
-          - "Right to erasure (\"right to be forgotten\")"
+          - 'Right to erasure ("right to be forgotten")'
           - "Right to restrict processing"
           - "Right to data portability"
           - "Right to object to processing"
@@ -602,7 +602,7 @@ en:
       title: "About Us - Requiems API"
       heading: "About Requiems API"
       intro: "Building production-ready APIs for developers worldwide."
-      company_info_html: "Requiems API is a product by <a href=\"https://bobadilla.tech\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-blue-600 hover:text-blue-700 dark:text-blue-400 font-semibold\">Bobadilla Technologies</a>, a team dedicated to building developer-first tools and infrastructure."
+      company_info_html: 'Requiems API is a product by <a href="https://bobadilla.tech" target="_blank" rel="noopener noreferrer" class="text-blue-600 hover:text-blue-700 dark:text-blue-400 font-semibold">Bobadilla Technologies</a>, a team dedicated to building developer-first tools and infrastructure.'
       mission:
         heading: "Our Mission"
         text: "Requiems API provides developers with enterprise-grade API infrastructure without the enterprise complexity. We believe in making powerful APIs accessible to developers of all sizes, from indie hackers to large enterprises."
@@ -648,9 +648,9 @@ en:
         q1: "How do I authenticate my requests?"
         a1: "Include your API key in the Authorization header as a Bearer token:"
         q2: "What's the difference between test and live API keys?"
-        a2_html: "Test keys (starting with <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">req_test_</code>) are for development and testing. They work with all endpoints but don't count against your request quota. Live keys (<code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">req_live_</code>) are for production use and count against your monthly request quota."
+        a2_html: 'Test keys (starting with <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">req_test_</code>) are for development and testing. They work with all endpoints but don''t count against your request quota. Live keys (<code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">req_live_</code>) are for production use and count against your monthly request quota.'
         q3: "Can I regenerate my API key?"
-        a3: "Yes! Go to your dashboard, click on the API key you want to regenerate, and select \"Regenerate\". Note that the old key will stop working immediately, so update all your applications."
+        a3: 'Yes! Go to your dashboard, click on the API key you want to regenerate, and select "Regenerate". Note that the old key will stop working immediately, so update all your applications.'
       billing:
         heading: "Billing & Usage"
         q1: "How is billing calculated?"
@@ -670,7 +670,7 @@ en:
         business: "Business: 10,000 requests/minute"
         professional: "Professional: 50,000 requests/minute"
         q2: "How should I handle rate limit errors?"
-        a2_html: "When you receive a 429 error, implement exponential backoff. Wait a few seconds and retry. Check the <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">Retry-After</code> header for the recommended wait time. Consider upgrading your plan if you consistently hit rate limits."
+        a2_html: 'When you receive a 429 error, implement exponential backoff. Wait a few seconds and retry. Check the <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">Retry-After</code> header for the recommended wait time. Consider upgrading your plan if you consistently hit rate limits.'
       support:
         heading: "Support"
         q1: "How can I get help?"
@@ -725,3 +725,26 @@ en:
       additional:
         talk_to_sales: "Talk to Sales"
         suggest_api: "Suggest a New API"
+    for_llms:
+      title: "For LLMs & AI Tools - Requiems API"
+      heading: "For LLMs & AI Tools"
+      intro: "Requiems API provides machine-readable documentation endpoints following the llms.txt standard, making it easy for AI tools and agents to discover and use our APIs."
+      llms_txt:
+        heading: "llms.txt — API Index"
+        description: "A directory of all available APIs with links to individual documentation pages. Follows the llms.txt standard for AI discoverability."
+      llms_full:
+        heading: "llms-full.txt — Complete Documentation"
+        description: "The full documentation for every API in a single plain-text file. Ideal for bulk ingestion, offline indexing, or loading into a large-context model."
+      api_md:
+        heading: "Per-API Markdown"
+        description: "Get the complete documentation for any single API in Markdown format by appending /index.md to its URL."
+        pattern: "Pattern: /apis/{api-id}/index.md"
+      open_in_ai:
+        heading: "Open in Claude / ChatGPT"
+        description: 'Every API documentation page includes an "Open in Claude" and "Open in ChatGPT" button that pre-loads the full API reference as a prompt, so you can get integration help instantly.'
+        note: "Find these buttons on any individual API page under the docs section."
+      cta:
+        heading: "Ready to integrate?"
+        text: "Browse the full API catalog or download the complete documentation to get started."
+        browse_apis: "Browse APIs"
+        full_docs: "Download llms-full.txt"
