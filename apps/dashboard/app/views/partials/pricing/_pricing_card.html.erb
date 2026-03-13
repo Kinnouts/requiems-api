@@ -18,10 +18,10 @@
     </div>
   <% end %>
 
-  <div class="p-6">
+  <div class="p-6 flex flex-col h-full">
     <!-- Plan Name -->
     <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2"><%= card_name %></h3>
-    <p class="text-gray-600 dark:text-gray-400 text-sm mb-6"><%= card_description %></p>
+    <p class="text-gray-600 dark:text-gray-400 text-sm mb-6 h-10 line-clamp-2"><%= card_description %></p>
 
     <!-- Price -->
     <div class="mb-6">
@@ -30,6 +30,7 @@
           <span class="text-4xl font-bold text-gray-900 dark:text-gray-100">$<%= card_monthly_price %></span>
           <span class="text-gray-600 dark:text-gray-400"><%= t("home.pricing.plans.per_month") %></span>
         </div>
+        <p class="invisible text-sm mt-1">&nbsp;</p>
       </div>
 
       <div class="hidden" data-pricing-toggle-target="yearlyPrice">
@@ -45,19 +46,8 @@
       </div>
     </div>
 
-    <!-- CTA Button -->
-    <% if card_cta_url.is_a?(Hash) && card_cta_url[:method] == :post %>
-      <%= form_with url: card_cta_url[:url], method: :post, class: "mb-6", data: { turbo: false } do |f| %>
-        <%= f.hidden_field :plan, value: card_cta_url[:params][:plan] %>
-        <%= f.hidden_field :billing_cycle, value: "monthly", data: { pricing_toggle_target: "billingCycleInput" } %>
-        <%= f.submit card_cta_text, class: "block w-full px-6 py-3 #{card_popular ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100'} font-medium rounded-lg transition-colors cursor-pointer" %>
-      <% end %>
-    <% else %>
-      <%= link_to card_cta_text, card_cta_url, class: "block w-full text-center px-6 py-3 #{card_popular ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100'} font-medium rounded-lg transition-colors mb-6" %>
-    <% end %>
-
     <!-- Features List -->
-    <div class="border-t border-gray-200 dark:border-gray-700 pt-6">
+    <div class="border-t border-gray-200 dark:border-gray-700 pt-6 flex-1">
       <ul class="space-y-3">
         <% card_features.each do |feature| %>
           <li class="flex items-start">
@@ -68,6 +58,19 @@
           </li>
         <% end %>
       </ul>
+    </div>
+
+    <!-- CTA Button -->
+    <div class="mt-6">
+      <% if card_cta_url.is_a?(Hash) && card_cta_url[:method] == :post %>
+        <%= form_with url: card_cta_url[:url], method: :post, data: { turbo: false } do |f| %>
+          <%= f.hidden_field :plan, value: card_cta_url[:params][:plan] %>
+          <%= f.hidden_field :billing_cycle, value: "monthly", data: { pricing_toggle_target: "billingCycleInput" } %>
+          <%= f.submit card_cta_text, class: "block w-full px-6 py-3 #{card_popular ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100'} font-medium rounded-lg transition-colors cursor-pointer" %>
+        <% end %>
+      <% else %>
+        <%= link_to card_cta_text, card_cta_url, class: "block w-full text-center px-6 py-3 #{card_popular ? 'bg-blue-600 hover:bg-blue-700 text-white' : 'bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-900 dark:text-gray-100'} font-medium rounded-lg transition-colors" %>
+      <% end %>
     </div>
   </div>
 </div>
