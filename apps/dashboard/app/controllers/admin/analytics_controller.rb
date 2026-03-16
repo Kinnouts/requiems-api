@@ -24,10 +24,9 @@ class Admin::AnalyticsController < ApplicationController
     @requests_by_endpoint = UsageLog
       .where(used_at: @start_date..@end_date)
       .group(:endpoint)
+      .order("COUNT(*) DESC")
+      .limit(10)
       .count
-      .sort_by { |_, count| -count }
-      .first(10)
-      .to_h
 
     # Requests by plan (single query using CASE WHEN to bucket free/no-subscription users)
     @requests_by_plan = UsageLog
@@ -42,10 +41,9 @@ class Admin::AnalyticsController < ApplicationController
       .where(used_at: @start_date..@end_date)
       .where.not(response_time_ms: nil)
       .group(:endpoint)
+      .order("AVG(response_time_ms) DESC")
+      .limit(10)
       .average(:response_time_ms)
-      .sort_by { |_, avg| -avg }
-      .first(10)
-      .to_h
       .transform_values { |v| v.round(2) }
 
     # Top users by usage
