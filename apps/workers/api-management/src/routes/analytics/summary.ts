@@ -45,35 +45,36 @@ app.get(
           billingResult?.earliest || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
       }
 
-      // Get total requests and credits
-      const totalsResult = await c.env.DB.prepare(`
-        SELECT
-          COUNT(*) as totalRequests,
-          SUM(credits_used) as totalCredits
-        FROM credit_usage
-        WHERE user_id = ?
-          AND used_at >= ?
-          AND used_at <= ?
-      `)
-        .bind(userId, sinceDate, until)
-        .first<{ totalRequests: number; totalCredits: number }>();
+      // Run independent queries in parallel
+      const [totalsResult, topEndpointsResult] = await Promise.all([
+        c.env.DB.prepare(`
+          SELECT
+            COUNT(*) as totalRequests,
+            SUM(credits_used) as totalCredits
+          FROM credit_usage
+          WHERE user_id = ?
+            AND used_at >= ?
+            AND used_at <= ?
+        `)
+          .bind(userId, sinceDate, until)
+          .first<{ totalRequests: number; totalCredits: number }>(),
 
-      // Get top 5 endpoints
-      const topEndpointsResult = await c.env.DB.prepare(`
-        SELECT
-          endpoint,
-          COUNT(*) as requests,
-          SUM(credits_used) as credits
-        FROM credit_usage
-        WHERE user_id = ?
-          AND used_at >= ?
-          AND used_at <= ?
-        GROUP BY endpoint
-        ORDER BY credits DESC
-        LIMIT 5
-      `)
-        .bind(userId, sinceDate, until)
-        .all<EndpointStats>();
+        c.env.DB.prepare(`
+          SELECT
+            endpoint,
+            COUNT(*) as requests,
+            SUM(credits_used) as credits
+          FROM credit_usage
+          WHERE user_id = ?
+            AND used_at >= ?
+            AND used_at <= ?
+          GROUP BY endpoint
+          ORDER BY credits DESC
+          LIMIT 5
+        `)
+          .bind(userId, sinceDate, until)
+          .all<EndpointStats>(),
+      ]);
 
       const summary: UsageSummary = {
         userId,
