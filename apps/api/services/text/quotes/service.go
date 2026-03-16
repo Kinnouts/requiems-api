@@ -2,6 +2,7 @@ package quotes
 
 import (
 	"context"
+	"time"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -23,6 +24,9 @@ func NewService(db *pgxpool.Pool) *Service {
 }
 
 func (s *Service) Random(ctx context.Context) (Quote, error) {
+	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
+	defer cancel()
+
 	row := s.db.QueryRow(ctx, `
 SELECT id, text, author
 FROM quotes
