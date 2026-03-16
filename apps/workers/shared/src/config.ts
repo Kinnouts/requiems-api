@@ -1,4 +1,14 @@
 /**
+ * Plan request limits (monthly quotas) shared with the Rails dashboard.
+ *
+ * IMPORTANT: This JSON file is the single source of truth for per-plan
+ * request limits. It is also read by Rails (apps/dashboard) to populate
+ * User::PLAN_LIMITS. Update plan-limits.json instead of editing the
+ * numbers here directly.
+ */
+import PLAN_REQUEST_LIMITS from "../plan-limits.json";
+
+/**
  * Plan configurations
  *
  * All plans use monthly request quotas
@@ -15,19 +25,19 @@
  */
 export const PLANS = {
   free: {
-    requestLimit: 500,
+    requestLimit: PLAN_REQUEST_LIMITS.free,
     ratePerMinute: 30,
   },
   developer: {
-    requestLimit: 100_000,
+    requestLimit: PLAN_REQUEST_LIMITS.developer,
     ratePerMinute: 5000,
   },
   business: {
-    requestLimit: 1_000_000,
+    requestLimit: PLAN_REQUEST_LIMITS.business,
     ratePerMinute: 10000,
   },
   professional: {
-    requestLimit: 10_000_000,
+    requestLimit: PLAN_REQUEST_LIMITS.professional,
     ratePerMinute: 50000,
   },
   enterprise: {
