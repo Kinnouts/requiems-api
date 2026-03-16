@@ -89,8 +89,8 @@ class Dashboard::UsageController < ApplicationController
       @end_date = Time.current
       @range_label = "Last 90 Days"
     when "custom"
-      @start_date = params[:start_date]&.to_date&.beginning_of_day || 30.days.ago
-      @end_date = params[:end_date]&.to_date&.end_of_day || Time.current
+      @start_date = parse_date_param(params[:start_date])&.beginning_of_day || 30.days.ago
+      @end_date = parse_date_param(params[:end_date])&.end_of_day || Time.current
       @range_label = "#{@start_date.to_date} to #{@end_date.to_date}"
     else
       @start_date = 30.days.ago
@@ -130,6 +130,16 @@ class Dashboard::UsageController < ApplicationController
       .where(used_at: @start_date..@end_date)
       .order(used_at: :desc)
       .limit(limit)
+  end
+
+  DATE_FORMAT = /\A\d{4}-\d{2}-\d{2}\z/
+
+  def parse_date_param(value)
+    return nil unless value.is_a?(String) && value.match?(DATE_FORMAT)
+
+    value.to_date
+  rescue ArgumentError
+    nil
   end
 
   def generate_csv(usage_logs)
