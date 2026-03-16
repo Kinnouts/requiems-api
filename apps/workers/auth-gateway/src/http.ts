@@ -59,20 +59,33 @@ export function addUsageHeaders(
 
 export type BackendResult =
   | { ok: true; response: Response }
-  | {
-      ok: false;
-      error: string;
-    };
+  | { ok: false; error: string; status: 502 | 504 };
+
+const BACKEND_TIMEOUT_MS = 10_000;
 
 /**
- * Fetch from backend with error handling
+ * Fetch from backend with error handling and a hard timeout.
+ * Returns status 504 on timeout, 502 on other network errors.
  */
-export async function fetchBackend(url: string | URL, init: RequestInit): Promise<BackendResult> {
+export async function fetchBackend(
+  url: string | URL,
+  init: RequestInit,
+  timeoutMs = BACKEND_TIMEOUT_MS,
+): Promise<BackendResult> {
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), timeoutMs);
+
   try {
-    const response = await fetch(url, init);
+    const response = await fetch(url, { ...init, signal: controller.signal });
     return { ok: true, response };
   } catch (error) {
+    if (error instanceof Error && error.name === "AbortError") {
+      console.error("Backend timeout:", error);
+      return { ok: false, error: "Backend timeout", status: 504 };
+    }
     console.error("Backend error:", error);
-    return { ok: false, error: "Backend unavailable" };
+    return { ok: false, error: "Backend unavailable", status: 502 };
+  } finally {
+    clearTimeout(timer);
   }
 }

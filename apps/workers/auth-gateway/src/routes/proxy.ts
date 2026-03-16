@@ -61,7 +61,7 @@ app.all("/*", async (c) => {
 
   if (!result.ok) {
     log.error("Backend fetch failed", { error: result.error });
-    return jsonError(502, result.error);
+    return jsonError(result.status, result.error);
   }
 
   const backendResponse = result.response;
