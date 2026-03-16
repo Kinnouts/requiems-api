@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import * as z from "zod";
-import { jsonResponse, createLogger, internalError } from "@requiem/workers-shared";
+import { jsonError, jsonResponse, createLogger, internalError, USAGE_EXPORT_MAX_LIMIT } from "@requiem/workers-shared";
 import { validateQuery } from "../../middleware";
 import type { WorkerBindings } from "../../env";
 import type { UsageExportResponse, UsageRecord } from "./types";
@@ -9,7 +9,7 @@ const app = new Hono<{ Bindings: WorkerBindings }>();
 
 const exportQuerySchema = z.object({
   since: z.string().min(1, "Missing required parameter: since"),
-  limit: z.coerce.number().min(1).max(5000).default(1000),
+  limit: z.coerce.number().min(1).max(USAGE_EXPORT_MAX_LIMIT).default(1000),
   cursor: z.coerce.number().min(0).default(0),
 });
 

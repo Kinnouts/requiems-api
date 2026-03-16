@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import * as z from "zod";
-import { jsonResponse, createLogger, internalError, THIRTY_DAYS_AGO_MS } from "@requiem/workers-shared";
+import { jsonError, jsonResponse, createLogger, internalError, THIRTY_DAYS_AGO_MS, ANALYTICS_ENDPOINT_MAX_LIMIT } from "@requiem/workers-shared";
 import { validateQuery } from "../../middleware";
 import type { WorkerBindings } from "../../env";
 import type { EndpointStats } from "./types";
@@ -11,7 +11,7 @@ const byEndpointQuerySchema = z.object({
   userId: z.string().min(1, "Missing required parameter: userId"),
   since: z.string().optional(),
   until: z.string().optional().default(() => new Date().toISOString()),
-  limit: z.coerce.number().min(1).max(100).default(10),
+  limit: z.coerce.number().min(1).max(ANALYTICS_ENDPOINT_MAX_LIMIT).default(10),
 });
 
 /**
