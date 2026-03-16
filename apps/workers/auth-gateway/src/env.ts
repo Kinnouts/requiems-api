@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { createEnvValidator } from "@requiem/workers-shared";
 import type { BaseWorkerBindings } from "@requiem/workers-shared";
 
 export interface WorkerBindings extends BaseWorkerBindings {
@@ -12,14 +13,6 @@ const envSchema = z.object({
   ENVIRONMENT: z.enum(["development", "staging", "production"]).default("production"),
 });
 
-export function validateEnv(env: WorkerBindings): WorkerBindings {
-  envSchema.parse({
-    BACKEND_URL: env.BACKEND_URL,
-    BACKEND_SECRET: env.BACKEND_SECRET,
-    ENVIRONMENT: env.ENVIRONMENT,
-  });
-
-  return env;
-}
+export const validateEnv = createEnvValidator(envSchema);
 
 export type ValidatedEnv = z.infer<typeof envSchema>;
