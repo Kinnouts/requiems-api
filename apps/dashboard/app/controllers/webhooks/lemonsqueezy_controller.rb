@@ -184,17 +184,7 @@ class Webhooks::LemonsqueezyController < ApplicationController
   end
 
   def determine_plan_name(variant_id)
-    variant_id = variant_id.to_s
-    config = AppConfig.instance
-
-    case variant_id
-    when config.lemonsqueezy_developer_monthly_variant_id, config.lemonsqueezy_developer_yearly_variant_id
-      "developer"
-    when config.lemonsqueezy_business_monthly_variant_id, config.lemonsqueezy_business_yearly_variant_id
-      "business"
-    when config.lemonsqueezy_professional_monthly_variant_id, config.lemonsqueezy_professional_yearly_variant_id
-      "professional"
-    else
+    AppConfig.plan_name_for_variant_id(variant_id) || begin
       Rails.logger.warn "[LemonSqueezy] Unknown variant_id: #{variant_id}"
       "free"
     end
