@@ -12,7 +12,7 @@ import (
 func RegisterRoutes(r chi.Router, svc *Service) {
 	r.Post("/spellcheck", httpx.Handle(
 		func(ctx context.Context, req Request) (Result, error) {
-			return svc.Check(req.Text), nil
+			return svc.Check(req.Text)
 		},
 	))
 }
