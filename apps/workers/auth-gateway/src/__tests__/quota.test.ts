@@ -65,7 +65,7 @@ describe("Quota exceeded — integration", () => {
       DB: {
         prepare: (_sql: string) => ({
           bind: (..._args: unknown[]) => ({
-            first: async <T>() => ({ total: PLANS.free.requestLimit + 1 } as T),
+            first: async <T>() => ({ total: PLANS.free.requestLimit + 1 }) as T,
             run: async () => ({ success: true, meta: {} }),
           }),
         }),
