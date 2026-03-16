@@ -59,6 +59,7 @@ class Dashboard::UsageController < ApplicationController
 
     # Fetch all usage logs for the date range
     usage_logs = current_user.usage_logs
+      .includes(:api_key)
       .where(used_at: @start_date..@end_date)
       .order(used_at: :desc)
 
