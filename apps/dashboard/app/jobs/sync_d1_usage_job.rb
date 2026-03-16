@@ -24,7 +24,15 @@ class SyncD1UsageJob < ApplicationJob
     result = service.fetch_usage(since: last_sync_at)
 
     if result[:usage].empty?
-      Rails.logger.info("No new usage records to sync")
+      window_seconds = (start_time - last_sync_at).round
+      if window_seconds > SYNC_INTERVAL * 2
+        Rails.logger.warn(
+          "D1 sync returned 0 records over a #{window_seconds}s window " \
+          "(since: #{last_sync_at.iso8601}). Possible API outage or misconfiguration."
+        )
+      else
+        Rails.logger.info("No new usage records to sync (since: #{last_sync_at.iso8601})")
+      end
       return
     end
 
