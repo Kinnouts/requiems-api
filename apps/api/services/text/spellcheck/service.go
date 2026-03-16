@@ -4,6 +4,8 @@ import (
 	"bufio"
 	"bytes"
 	_ "embed"
+	"errors"
+	"fmt"
 	"regexp"
 	"strings"
 	"unicode"
@@ -17,12 +19,17 @@ var wordListData []byte
 // wordRe matches sequences of ASCII letters (words).
 var wordRe = regexp.MustCompile(`[a-zA-Z]+`)
 
-// model is the shared spell-check model trained on an embedded English word list.
-var model *fuzzy.Model
+// Service performs spell checking and correction.
+type Service struct {
+	model   *fuzzy.Model
+	initErr error
+}
 
-func init() {
-	model = fuzzy.NewModel()
-	model.SetThreshold(1)
+// NewService returns a new spellcheck Service. If the embedded word list
+// cannot be loaded the service is still valid but Check will return an error.
+func NewService() *Service {
+	m := fuzzy.NewModel()
+	m.SetThreshold(1)
 
 	var words []string
 	scanner := bufio.NewScanner(bytes.NewReader(wordListData))
@@ -32,20 +39,23 @@ func init() {
 		}
 	}
 	if err := scanner.Err(); err != nil {
-		panic("spellcheck: failed to read word list: " + err.Error())
+		return &Service{initErr: fmt.Errorf("spellcheck: word list unavailable: %w", err)}
 	}
-	model.Train(words)
+	m.Train(words)
+	return &Service{model: m}
 }
 
-// Service performs spell checking and correction.
-type Service struct{}
-
-// NewService returns a new spellcheck Service.
-func NewService() *Service { return &Service{} }
+// errUnavailable is returned by Check when the service failed to initialise.
+var errUnavailable = errors.New("spellcheck: service unavailable")
 
 // Check inspects text for spelling mistakes and returns the corrected text
-// together with a list of individual corrections.
-func (s *Service) Check(text string) Result {
+// together with a list of individual corrections. It returns an error if the
+// service failed to initialise.
+func (s *Service) Check(text string) (Result, error) {
+	if s.initErr != nil {
+		return Result{}, errUnavailable
+	}
+
 	var corrections []Correction
 
 	// Find all word positions so that we can replace in one pass.
@@ -59,7 +69,7 @@ func (s *Service) Check(text string) Result {
 		word := text[start:end]
 		lower := strings.ToLower(word)
 
-		suggestion := bestSuggestion(lower, model)
+		suggestion := bestSuggestion(lower, s.model)
 
 		// bestSuggestion returns the input unchanged when the word is already
 		// in the model's vocabulary.
@@ -90,7 +100,7 @@ func (s *Service) Check(text string) Result {
 	return Result{
 		Corrected:   builder.String(),
 		Corrections: corrections,
-	}
+	}, nil
 }
 
 // bestSuggestion picks the most likely correction from the model's exhaustive

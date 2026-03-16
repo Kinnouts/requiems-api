@@ -7,7 +7,10 @@ import (
 func TestService_Check_NoMistakes(t *testing.T) {
 	svc := NewService()
 
-	result := svc.Check("This is a test")
+	result, err := svc.Check("This is a test")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 
 	if result.Corrected != "This is a test" {
 		t.Errorf("expected corrected to equal input, got %q", result.Corrected)
@@ -20,7 +23,10 @@ func TestService_Check_NoMistakes(t *testing.T) {
 func TestService_Check_MisspelledWords(t *testing.T) {
 	svc := NewService()
 
-	result := svc.Check("Ths is a tset")
+	result, err := svc.Check("Ths is a tset")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 
 	if len(result.Corrections) == 0 {
 		t.Fatal("expected corrections, got none")
@@ -50,7 +56,10 @@ func TestService_Check_EmptyText(t *testing.T) {
 
 	// Empty text is not a valid request (validate:"required" enforces that at
 	// the HTTP layer), but the service itself should return a safe empty result.
-	result := svc.Check("")
+	result, err := svc.Check("")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 
 	if result.Corrected != "" {
 		t.Errorf("expected empty corrected string, got %q", result.Corrected)
@@ -63,7 +72,10 @@ func TestService_Check_EmptyText(t *testing.T) {
 func TestService_Check_CorrectedTextReflectsFixes(t *testing.T) {
 	svc := NewService()
 
-	result := svc.Check("Ths is a tset")
+	result, err := svc.Check("Ths is a tset")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 
 	if result.Corrected == "Ths is a tset" {
 		t.Error("expected corrected text to differ from misspelled input")
@@ -73,7 +85,10 @@ func TestService_Check_CorrectedTextReflectsFixes(t *testing.T) {
 func TestService_Check_CorrectionsSliceNotNil(t *testing.T) {
 	svc := NewService()
 
-	result := svc.Check("Hello world")
+	result, err := svc.Check("Hello world")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 
 	if result.Corrections == nil {
 		t.Error("expected non-nil corrections slice for clean input")
@@ -84,7 +99,10 @@ func TestService_Check_PositionIsRuneOffset(t *testing.T) {
 	svc := NewService()
 	// "é" is a single rune but 2 UTF-8 bytes.
 	// "tset" starts at rune index 2 (é=1, space=1) but byte index 3.
-	result := svc.Check("é tset")
+	result, err := svc.Check("é tset")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
 	if len(result.Corrections) == 0 {
 		t.Fatal("expected a correction for tset")
 	}

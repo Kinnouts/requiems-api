@@ -1,8 +1,7 @@
 import { Hono } from "hono";
-import { sValidator } from "@hono/standard-validator";
 import * as z from "zod";
-import { jsonError, jsonResponse, createLogger, internalError, THIRTY_DAYS_AGO_MS } from "@requiem/workers-shared";
-
+import { jsonResponse, createLogger, internalError, THIRTY_DAYS_AGO_MS } from "@requiem/workers-shared";
+import { validateQuery } from "../../middleware";
 import type { WorkerBindings } from "../../env";
 import type { DateStats } from "./types";
 
@@ -10,8 +9,8 @@ const app = new Hono<{ Bindings: WorkerBindings }>();
 
 const byDateQuerySchema = z.object({
   userId: z.string().min(1, "Missing required parameter: userId"),
-  since: z.string().optional().default(() => new Date(Date.now() - THIRTY_DAYS_AGO_MS).toISOString()),
-  until: z.string().optional().default(() => new Date().toISOString()),
+  since: z.string().datetime({ message: "since must be a valid ISO 8601 datetime" }).optional().default(() => new Date(Date.now() - THIRTY_DAYS_AGO_MS).toISOString()),
+  until: z.string().datetime({ message: "until must be a valid ISO 8601 datetime" }).optional().default(() => new Date().toISOString()),
   groupBy: z.enum(["day", "hour"]).default("day"),
 });
 
@@ -27,11 +26,7 @@ const byDateQuerySchema = z.object({
  */
 app.get(
   "/by-date",
-  sValidator("query", byDateQuerySchema, (result, _c) => {
-    if (!result.success) {
-      return jsonError(400, result.error[0]?.message ?? "Validation error");
-    }
-  }),
+  validateQuery(byDateQuerySchema),
   async (c) => {
     const log = createLogger(c.req.raw);
 

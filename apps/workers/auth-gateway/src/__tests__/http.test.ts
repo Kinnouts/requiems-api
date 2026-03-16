@@ -263,6 +263,25 @@ describe("HTTP Utilities", () => {
       expect(result.ok).toBe(false);
       if (!result.ok) {
         expect(result.error).toBe("Backend unavailable");
+        expect(result.status).toBe(502);
+      }
+    });
+
+    it("returns 504 on timeout", async () => {
+      global.fetch = (_url, init) =>
+        new Promise((_resolve, reject) => {
+          (init?.signal as AbortSignal | undefined)?.addEventListener("abort", () => {
+            const err = new DOMException("The operation was aborted.", "AbortError");
+            reject(err);
+          });
+        });
+
+      const result = await fetchBackend("https://api.example.com", { method: "GET" }, 1);
+
+      expect(result.ok).toBe(false);
+      if (!result.ok) {
+        expect(result.error).toBe("Backend timeout");
+        expect(result.status).toBe(504);
       }
     });
   });

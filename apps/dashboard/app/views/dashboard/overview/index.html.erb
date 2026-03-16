@@ -29,21 +29,10 @@
     </div>
 
     <!-- Usage Progress Bar -->
-    <%
-      total_limit = @usage_this_month + @requests_remaining
-      usage_percentage = total_limit > 0 ? ((@usage_this_month.to_f / total_limit) * 100).round : 0
-      bar_color = if usage_percentage >= 90
-        "bg-red-500"
-      elsif usage_percentage >= 75
-        "bg-yellow-500"
-      else
-        "bg-blue-500"
-      end
-    %>
     <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-3">
-      <div class="<%= bar_color %> h-2 rounded-full transition-all" style="width: <%= usage_percentage %>%"></div>
+      <div class="<%= @bar_color %> h-2 rounded-full transition-all" style="width: <%= @usage_percentage %>%"></div>
     </div>
-    <p class="text-xs text-gray-500 dark:text-gray-400 mt-2"><%= t("dashboard.overview.used_this_month", percent: usage_percentage) %></p>
+    <p class="text-xs text-gray-500 dark:text-gray-400 mt-2"><%= t("dashboard.overview.used_this_month", percent: @usage_percentage) %></p>
   </div>
 
   <!-- Total API Calls -->

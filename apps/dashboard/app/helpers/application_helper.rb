@@ -25,6 +25,14 @@ module ApplicationHelper
     "https://www.gravatar.com/avatar/#{hash}?s=#{size}&d=mp"
   end
 
+  def status_code_variant(code)
+    case code.to_s
+    when /\A2/ then "success"
+    when /\A4/ then "warning"
+    else "danger"
+    end
+  end
+
   private
 
   def searchable_apis

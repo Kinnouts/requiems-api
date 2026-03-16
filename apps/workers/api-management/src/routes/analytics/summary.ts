@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { sValidator } from "@hono/standard-validator";
 import * as z from "zod";
-import { jsonError, jsonResponse, createLogger, internalError } from "@requiem/workers-shared";
+import { jsonResponse, createLogger, internalError, THIRTY_DAYS_AGO_MS } from "@requiem/workers-shared";
+import { validateQuery } from "../../middleware";
 import type { WorkerBindings } from "../../env";
 import type { EndpointStats, UsageSummary } from "./types";
 
@@ -24,11 +24,7 @@ const summaryQuerySchema = z.object({
  */
 app.get(
   "/summary",
-  sValidator("query", summaryQuerySchema, (result, _c) => {
-    if (!result.success) {
-      return jsonError(400, result.error[0]?.message ?? "Validation error");
-    }
-  }),
+  validateQuery(summaryQuerySchema),
   async (c) => {
     const log = createLogger(c.req.raw);
     const { userId, since, until } = c.req.valid("query");
@@ -46,38 +42,39 @@ app.get(
           .first<{ earliest: string }>();
 
         sinceDate =
-          billingResult?.earliest || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+          billingResult?.earliest || new Date(Date.now() - THIRTY_DAYS_AGO_MS).toISOString();
       }
 
-      // Get total requests and credits
-      const totalsResult = await c.env.DB.prepare(`
-        SELECT
-          COUNT(*) as totalRequests,
-          SUM(credits_used) as totalCredits
-        FROM credit_usage
-        WHERE user_id = ?
-          AND used_at >= ?
-          AND used_at <= ?
-      `)
-        .bind(userId, sinceDate, until)
-        .first<{ totalRequests: number; totalCredits: number }>();
+      // Run independent queries in parallel
+      const [totalsResult, topEndpointsResult] = await Promise.all([
+        c.env.DB.prepare(`
+          SELECT
+            COUNT(*) as totalRequests,
+            SUM(credits_used) as totalCredits
+          FROM credit_usage
+          WHERE user_id = ?
+            AND used_at >= ?
+            AND used_at <= ?
+        `)
+          .bind(userId, sinceDate, until)
+          .first<{ totalRequests: number; totalCredits: number }>(),
 
-      // Get top 5 endpoints
-      const topEndpointsResult = await c.env.DB.prepare(`
-        SELECT
-          endpoint,
-          COUNT(*) as requests,
-          SUM(credits_used) as credits
-        FROM credit_usage
-        WHERE user_id = ?
-          AND used_at >= ?
-          AND used_at <= ?
-        GROUP BY endpoint
-        ORDER BY credits DESC
-        LIMIT 5
-      `)
-        .bind(userId, sinceDate, until)
-        .all<EndpointStats>();
+        c.env.DB.prepare(`
+          SELECT
+            endpoint,
+            COUNT(*) as requests,
+            SUM(credits_used) as credits
+          FROM credit_usage
+          WHERE user_id = ?
+            AND used_at >= ?
+            AND used_at <= ?
+          GROUP BY endpoint
+          ORDER BY credits DESC
+          LIMIT 5
+        `)
+          .bind(userId, sinceDate, until)
+          .all<EndpointStats>(),
+      ]);
 
       const summary: UsageSummary = {
         userId,

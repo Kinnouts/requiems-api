@@ -82,81 +82,15 @@ class Dashboard::BillingController < ApplicationController
   private
 
   def get_plan_info(plan_name)
-    config = AppConfig.instance
-
-    plans = {
-      "free" => {
-        name: "Free",
-        price_monthly: 0,
-        price_yearly: 0,
-        requests_per_month: 500,
-        rate_limit_per_minute: 30,
-        features: [
-          "500 requests/month",
-          "30 requests/minute",
-          "Community support",
-          "US data centers"
-        ]
-      },
-      "developer" => {
-        name: "Developer",
-        price_monthly: 30,
-        price_yearly: 300, # $25/month billed yearly
-        requests_per_month: 100_000,
-        rate_limit_per_minute: 5_000,
-        lemonsqueezy_variant_id_monthly: config.lemonsqueezy_developer_monthly_variant_id,
-        lemonsqueezy_variant_id_yearly: config.lemonsqueezy_developer_yearly_variant_id,
-        features: [
-          "100,000 requests/month",
-          "5,000 requests/minute",
-          "Email support",
-          "US data centers"
-        ]
-      },
-      "business" => {
-        name: "Business",
-        price_monthly: 75,
-        price_yearly: 750, # $62.50/month billed yearly
-        requests_per_month: 1_000_000,
-        rate_limit_per_minute: 10_000,
-        lemonsqueezy_variant_id_monthly: config.lemonsqueezy_business_monthly_variant_id,
-        lemonsqueezy_variant_id_yearly: config.lemonsqueezy_business_yearly_variant_id,
-        features: [
-          "1M requests/month",
-          "10,000 requests/minute",
-          "Priority email support",
-          "US & EU data centers",
-          "99.9% SLA"
-        ]
-      },
-      "professional" => {
-        name: "Professional",
-        price_monthly: 150,
-        price_yearly: 1500, # $125/month billed yearly
-        requests_per_month: 10_000_000,
-        rate_limit_per_minute: 50_000,
-        lemonsqueezy_variant_id_monthly: config.lemonsqueezy_professional_monthly_variant_id,
-        lemonsqueezy_variant_id_yearly: config.lemonsqueezy_professional_yearly_variant_id,
-        features: [
-          "10M requests/month",
-          "50,000 requests/minute",
-          "24/7 priority support",
-          "US & EU data centers",
-          "99.99% SLA",
-          "Dedicated support engineer"
-        ]
-      }
-    }
-
-    plans[plan_name] || plans["free"]
+    PlanConfig.for(plan_name)
   end
 
   def get_all_plans
-    [ "free", "developer", "business", "professional" ].map { |plan| get_plan_info(plan).merge(id: plan) }
+    PlanConfig.all
   end
 
   def valid_plan?(plan)
-    %w[developer business professional].include?(plan)
+    PlanConfig.paid?(plan)
   end
 
   def create_lemonsqueezy_checkout_url(plan, billing_cycle)
