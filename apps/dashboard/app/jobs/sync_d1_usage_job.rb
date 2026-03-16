@@ -11,6 +11,13 @@
 class SyncD1UsageJob < ApplicationJob
   queue_as :default
 
+  retry_on D1SyncService::Error, attempts: 5, wait: :polynomially_longer do |job, error|
+    Rails.logger.error(
+      "SyncD1UsageJob permanently failed after retries: #{error.message}",
+      job_id: job.job_id
+    )
+  end
+
   LAST_SYNC_KEY = "d1_sync:last_sync_at"
   SYNC_INTERVAL = 5.minutes
 
