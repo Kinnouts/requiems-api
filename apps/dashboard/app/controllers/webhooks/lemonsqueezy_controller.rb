@@ -27,7 +27,7 @@ class Webhooks::LemonsqueezyController < ApplicationController
     end
 
     head :ok
-  rescue => e
+  rescue ActiveRecord::RecordInvalid => e
     Rails.logger.error "[LemonSqueezy Webhook] Error: #{e.message}"
     Rails.logger.error e.backtrace.join("\n")
     head :bad_request
