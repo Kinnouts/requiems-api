@@ -14,18 +14,6 @@ export const errorHandler: ErrorHandler = (err, c: Context) => {
     stack: err.stack,
   });
 
-  if (c.env?.ENVIRONMENT === "development") {
-    return jsonResponse(
-      {
-        error: "Internal server error",
-        details: err.message,
-        name: err.name,
-        stack: err.stack,
-      },
-      500,
-    );
-  }
-
   return jsonResponse(
     {
       error: "Internal server error",
