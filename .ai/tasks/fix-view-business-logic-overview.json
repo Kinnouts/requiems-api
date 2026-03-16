@@ -1,0 +1,10 @@
+{
+  "id": "fix-view-business-logic-overview",
+  "title": "Move usage percentage and bar color logic from ERB to controller",
+  "description": "dashboard/overview/index.html.erb computes usage_percentage and bar_color inline using multi-line Ruby logic. Move these computations to the controller as @usage_percentage and @bar_color instance variables so the view only renders values it is given.",
+  "pain_score": 4,
+  "files": [
+    "apps/dashboard/app/views/dashboard/overview/index.html.erb",
+    "apps/dashboard/app/controllers/dashboard/overview_controller.rb"
+  ]
+}

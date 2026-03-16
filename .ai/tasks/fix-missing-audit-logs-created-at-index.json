@@ -1,0 +1,10 @@
+{
+  "id": "fix-missing-audit-logs-created-at-index",
+  "title": "Add index on audit_logs.created_at for admin query ordering",
+  "description": "Admin controllers order audit_logs by created_at. Without an index this is a sort over a full table scan. Add add_index :audit_logs, :created_at.",
+  "pain_score": 5,
+  "files": [
+    "apps/dashboard/db/schema.rb",
+    "apps/dashboard/db/migrate"
+  ]
+}

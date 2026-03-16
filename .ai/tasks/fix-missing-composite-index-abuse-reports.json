@@ -1,0 +1,10 @@
+{
+  "id": "fix-missing-composite-index-abuse-reports",
+  "title": "Add composite index on abuse_reports (status, created_at)",
+  "description": "Queries on abuse_reports filter by status AND order by created_at. Individual indexes on each column are less efficient than a composite index for this access pattern. Add add_index :abuse_reports, [:status, :created_at].",
+  "pain_score": 6,
+  "files": [
+    "apps/dashboard/db/schema.rb",
+    "apps/dashboard/db/migrate"
+  ]
+}

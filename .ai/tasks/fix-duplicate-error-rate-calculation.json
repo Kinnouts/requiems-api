@@ -1,0 +1,13 @@
+{
+  "id": "fix-duplicate-error-rate-calculation",
+  "title": "Extract duplicated error rate calculation to UsageLog class method",
+  "description": "Error rate calculation logic is copy-pasted across 4 controllers (usage_controller, admin/users_controller, admin/abuse_reports_controller, admin/analytics_controller). Extract as UsageLog.error_rate_for(scope) class method and replace all usages.",
+  "pain_score": 7,
+  "files": [
+    "apps/dashboard/app/models/usage_log.rb",
+    "apps/dashboard/app/controllers/dashboard/usage_controller.rb",
+    "apps/dashboard/app/controllers/admin/users_controller.rb",
+    "apps/dashboard/app/controllers/admin/abuse_reports_controller.rb",
+    "apps/dashboard/app/controllers/admin/analytics_controller.rb"
+  ]
+}

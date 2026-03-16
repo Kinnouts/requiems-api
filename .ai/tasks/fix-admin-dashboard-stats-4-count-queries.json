@@ -1,0 +1,9 @@
+{
+  "id": "fix-admin-dashboard-stats-4-count-queries",
+  "title": "Replace 4 separate COUNT queries with a single grouped query in AbuseReportsController",
+  "description": "abuse_reports_controller fires 4 separate COUNT queries (total, pending, investigating, resolved). Replace with AbuseReport.group(:status).count and derive each count from the resulting hash in one query.",
+  "pain_score": 8,
+  "files": [
+    "apps/dashboard/app/controllers/admin/abuse_reports_controller.rb"
+  ]
+}

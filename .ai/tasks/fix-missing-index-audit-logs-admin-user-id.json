@@ -1,0 +1,10 @@
+{
+  "id": "fix-missing-index-audit-logs-admin-user-id",
+  "title": "Add missing index on audit_logs.admin_user_id",
+  "description": "audit_logs.admin_user_id is queried/joined in admin controllers but has no index, causing full table scans. Generate a migration to add add_index :audit_logs, :admin_user_id.",
+  "pain_score": 6,
+  "files": [
+    "apps/dashboard/db/schema.rb",
+    "apps/dashboard/db/migrate"
+  ]
+}

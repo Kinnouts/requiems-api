@@ -1,0 +1,9 @@
+{
+  "id": "fix-kv-silent-failures-auth-gateway",
+  "title": "Log KV cache write failures instead of swallowing them silently",
+  "description": "KV put operations in requests.ts use .catch(() => {}) which silently swallows errors. If KV writes fail, the cache becomes stale and reverse-lookup indexes go missing — with zero operational visibility. Replace empty catch handlers with structured logging.",
+  "pain_score": 8,
+  "files": [
+    "apps/workers/auth-gateway/src/requests.ts"
+  ]
+}

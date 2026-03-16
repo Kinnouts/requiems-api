@@ -1,0 +1,10 @@
+{
+  "id": "fix-view-status-code-helper-usage",
+  "title": "Extract status code to color variant mapping to a view helper",
+  "description": "dashboard/usage/show.html.erb contains inline Ruby logic mapping HTTP status codes to color variant strings (success/warning/danger). Extract to a ApplicationHelper method status_code_variant(code) and call it from the view.",
+  "pain_score": 4,
+  "files": [
+    "apps/dashboard/app/views/dashboard/usage/show.html.erb",
+    "apps/dashboard/app/helpers/application_helper.rb"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "fix-audit-log-missing-admin-association",
+  "title": "Add missing belongs_to :admin_user association to AuditLog model",
+  "description": "audit_logs has an admin_user_id integer column set in controller code, but AuditLog model only declares belongs_to :user. Add belongs_to :admin_user, class_name: 'User', optional: true so the association is navigable and avoids raw integer column access.",
+  "pain_score": 6,
+  "files": [
+    "apps/dashboard/app/models/audit_log.rb"
+  ]
+}

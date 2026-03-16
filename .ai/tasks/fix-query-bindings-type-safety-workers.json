@@ -1,0 +1,9 @@
+{
+  "id": "fix-query-bindings-type-safety-workers",
+  "title": "Tighten type of SQL bindings array in api-keys list route",
+  "description": "api-keys/list.ts declares let bindings: unknown[] for the D1 query binding values. Using unknown[] loses type safety — the compiler cannot catch incorrect binding values. Change to (string | number | boolean | null)[] to match the types D1 actually accepts.",
+  "pain_score": 4,
+  "files": [
+    "apps/workers/api-management/src/routes/api-keys/list.ts"
+  ]
+}

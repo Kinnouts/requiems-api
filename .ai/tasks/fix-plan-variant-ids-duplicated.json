@@ -1,0 +1,11 @@
+{
+  "id": "fix-plan-variant-ids-duplicated",
+  "title": "Centralize LemonSqueezy variant-ID-to-plan mapping",
+  "description": "The mapping from LemonSqueezy variant IDs to plan names appears in both the webhook controller and billing controller. If a variant ID changes, both files must be updated. Centralize this mapping in PlanConfig (or its own constant) and reference it from both places.",
+  "pain_score": 7,
+  "files": [
+    "apps/dashboard/app/controllers/webhooks/lemonsqueezy_controller.rb",
+    "apps/dashboard/app/controllers/dashboard/billing_controller.rb",
+    "apps/dashboard/app/lib/plan_config.rb"
+  ]
+}

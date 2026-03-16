@@ -1,0 +1,9 @@
+{
+  "id": "fix-timezone-not-cached-go",
+  "title": "Cache time.LoadLocation results in timezone service",
+  "description": "places/timezone/service.go calls time.LoadLocation() on every request, which reads from the system timezone database each time. Cache loaded locations in a package-level sync.Map so repeated requests for the same timezone reuse the cached *time.Location.",
+  "pain_score": 5,
+  "files": [
+    "apps/api/services/places/timezone/service.go"
+  ]
+}

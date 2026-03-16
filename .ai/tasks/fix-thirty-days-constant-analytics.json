@@ -1,0 +1,10 @@
+{
+  "id": "fix-thirty-days-constant-analytics",
+  "title": "Replace hardcoded 30-day millisecond calculation with shared THIRTY_DAYS_AGO_MS constant",
+  "description": "analytics/by-endpoint.ts and analytics/summary.ts each compute new Date(Date.now() - 30 * 24 * 60 * 60 * 1000) inline, ignoring the THIRTY_DAYS_AGO_MS constant already defined and used in by-date.ts. Replace inline calculations with the shared constant.",
+  "pain_score": 6,
+  "files": [
+    "apps/workers/api-management/src/routes/analytics/by-endpoint.ts",
+    "apps/workers/api-management/src/routes/analytics/summary.ts"
+  ]
+}

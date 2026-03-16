@@ -1,0 +1,9 @@
+{
+  "id": "fix-credit-adjustment-missing-validations",
+  "title": "Add validations to CreditAdjustment model",
+  "description": "CreditAdjustment model has no validations. Add validates :user_id, :amount, :adjustment_type, presence: true and validates :amount, numericality: true to prevent corrupt adjustment records from being written.",
+  "pain_score": 4,
+  "files": [
+    "apps/dashboard/app/models/credit_adjustment.rb"
+  ]
+}

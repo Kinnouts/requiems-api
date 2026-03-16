@@ -1,0 +1,10 @@
+{
+  "id": "fix-analytics-revenue-extract-service",
+  "title": "Extract 95-line analytics revenue action into AnalyticsRevenueService",
+  "description": "Admin::AnalyticsController#revenue is 95 lines containing MRR calculation, revenue-by-plan mapping, 12-month trend computation, and churn rate logic. Extract to app/services/analytics_revenue_service.rb, leaving the controller action as a thin wrapper.",
+  "pain_score": 7,
+  "files": [
+    "apps/dashboard/app/controllers/admin/analytics_controller.rb",
+    "apps/dashboard/app/services/analytics_revenue_service.rb"
+  ]
+}

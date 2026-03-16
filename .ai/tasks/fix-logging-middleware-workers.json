@@ -1,0 +1,10 @@
+{
+  "id": "fix-logging-middleware-workers",
+  "title": "Extract repeated createLogger call to Hono middleware in api-management",
+  "description": "Every route handler in api-management starts with const log = createLogger(c.req.raw). Extract this into a Hono middleware that attaches log to the context (c.var.log) so routes can use it without the boilerplate line.",
+  "pain_score": 5,
+  "files": [
+    "apps/workers/api-management/src/index.ts",
+    "apps/workers/api-management/src/middleware"
+  ]
+}
