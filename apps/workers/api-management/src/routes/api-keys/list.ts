@@ -38,7 +38,7 @@ app.get(
 
     try {
       let query: string;
-      let bindings: unknown[];
+      let bindings: (string | number | boolean | null)[];
 
       if (userId) {
         query = activeOnly
