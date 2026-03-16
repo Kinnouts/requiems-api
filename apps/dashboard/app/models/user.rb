@@ -13,6 +13,7 @@ class User < ApplicationRecord
   has_many :audit_logs, dependent: :destroy
   has_many :abuse_reports, dependent: :destroy
 
+  PLAN_LIMITS = PlanConfig::PLANS.transform_values { |v| v[:requests_per_month] }.freeze
   SUPPORTED_LOCALES = %w[en es].freeze
 
   validates :locale, inclusion: { in: SUPPORTED_LOCALES }, allow_nil: true
