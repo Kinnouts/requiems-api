@@ -20,7 +20,7 @@ class Admin::DashboardController < ApplicationController
       total_requests_today = UsageLog.where("used_at >= ?", Time.current.beginning_of_day).count
 
       # Revenue Statistics
-      active_subscriptions = Subscription.paid.count
+      active_subscriptions = Subscription.paying.count
       mrr = calculate_mrr
 
       # System Health
