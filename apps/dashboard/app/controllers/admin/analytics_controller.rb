@@ -111,21 +111,7 @@ class Admin::AnalyticsController < ApplicationController
     end
 
     # Error rate trend (by hour or day)
-    group_interval = @time_range == "1h" ? 5.minutes : (@time_range == "24h" ? 1.hour : 1.day)
-    @error_rate_trend = {}
-
-    current = @start_time
-    while current < Time.current
-      next_time = current + group_interval
-      period_total = UsageLog.where(used_at: current..next_time).count
-      period_errors = UsageLog.where(used_at: current..next_time).where("status_code >= ?", 400).count
-
-      error_rate = period_total > 0 ? ((period_errors.to_f / period_total) * 100).round(2) : 0
-      label = current.strftime(@time_range == "1h" ? "%H:%M" : (@time_range == "24h" ? "%H:00" : "%b %d"))
-      @error_rate_trend[label] = error_rate
-
-      current = next_time
-    end
+    @error_rate_trend = build_error_rate_trend(@start_time, @time_range)
 
     # Rate limit hits (last 24h)
     # Note: This would need to be tracked in the database

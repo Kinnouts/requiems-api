@@ -22,6 +22,38 @@ class User < ApplicationRecord
   scope :suspended, -> { where(status: "suspended") }
   scope :banned, -> { where(status: "banned") }
 
+  scope :search_by, ->(query) {
+    term = "%#{query}%"
+    where("email ILIKE ? OR name ILIKE ? OR company ILIKE ?", term, term, term)
+  }
+
+  scope :with_plan, ->(plan) {
+    if plan == "free"
+      left_joins(:subscription)
+        .where(subscriptions: { id: nil })
+        .or(left_joins(:subscription).where(subscriptions: { plan_name: "free" }))
+    else
+      joins(:subscription).where(subscriptions: { plan_name: plan })
+    end
+  }
+
+  scope :with_status, ->(status) {
+    case status
+    when "admin" then where(admin: true)
+    when "suspended" then where(status: "suspended")
+    when "active" then where(status: "active")
+    else all
+    end
+  }
+
+  scope :sorted_by, ->(sort) {
+    case sort
+    when "oldest" then order(created_at: :asc)
+    when "name" then order(name: :asc)
+    else order(created_at: :desc)
+    end
+  }
+
   def admin?
     admin == true
   end
