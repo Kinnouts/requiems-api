@@ -5,7 +5,8 @@ class UsageLog < ApplicationRecord
   belongs_to :api_key
 
   validates :user_id, :used_at, :endpoint, presence: true
-  
+  validates :user_id, :used_at, :endpoint, presence: true
+
   def self.error_rate_for(scope)
     total = scope.count
     return 0 if total.zero?
