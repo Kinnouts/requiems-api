@@ -91,17 +91,20 @@ class Admin::AnalyticsController < ApplicationController
     successful_requests = successful_requests.to_i
     @uptime_percentage = total_requests > 0 ? ((successful_requests.to_f / total_requests) * 100).round(2) : 100.0
 
-    # Average response times (P50, P95, P99)
-    response_times = UsageLog
+    # Average response times (P50, P95, P99) computed in the database
+    p50, p95, p99 = UsageLog
       .where(used_at: @start_time..Time.current)
       .where.not(response_time_ms: nil)
-      .order(:response_time_ms)
-      .pluck(:response_time_ms)
+      .pick(
+        "percentile_cont(0.50) WITHIN GROUP (ORDER BY response_time_ms)",
+        "percentile_cont(0.95) WITHIN GROUP (ORDER BY response_time_ms)",
+        "percentile_cont(0.99) WITHIN GROUP (ORDER BY response_time_ms)"
+      )
 
-    if response_times.any?
-      @p50_response_time = percentile(response_times, 50).round(2)
-      @p95_response_time = percentile(response_times, 95).round(2)
-      @p99_response_time = percentile(response_times, 99).round(2)
+    if p50
+      @p50_response_time = p50.round(2)
+      @p95_response_time = p95.round(2)
+      @p99_response_time = p99.round(2)
     else
       @p50_response_time = @p95_response_time = @p99_response_time = 0
     end
@@ -147,13 +150,4 @@ class Admin::AnalyticsController < ApplicationController
     end
   end
 
-  def percentile(sorted_array, percentile)
-    return 0 if sorted_array.empty?
-
-    index = (percentile / 100.0) * (sorted_array.length - 1)
-    lower = sorted_array[index.floor]
-    upper = sorted_array[index.ceil]
-
-    lower + (upper - lower) * (index - index.floor)
-  end
 end
