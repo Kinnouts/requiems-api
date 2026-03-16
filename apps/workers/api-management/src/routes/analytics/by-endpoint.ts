@@ -46,8 +46,14 @@ app.get(
           .bind(userId)
           .first<{ earliest: string }>();
 
-        sinceDate =
-          billingResult?.earliest || new Date(Date.now() - THIRTY_DAYS_AGO_MS).toISOString();
+        if (billingResult?.earliest) {
+          sinceDate = billingResult.earliest;
+        } else {
+          sinceDate = new Date(Date.now() - THIRTY_DAYS_AGO_MS).toISOString();
+          log.warn("No active billing cycle found for user; falling back to 30-day window", {
+            userId,
+          });
+        }
       }
 
       // Query usage by endpoint

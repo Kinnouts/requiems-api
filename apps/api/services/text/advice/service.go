@@ -3,6 +3,7 @@ package advice
 import (
 	"context"
 	"time"
+	"fmt"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -28,7 +29,7 @@ LIMIT 1;
 
 	var a Advice
 	if err := row.Scan(&a.ID, &a.Text); err != nil {
-		return Advice{}, err
+		return Advice{}, fmt.Errorf("scan advice: %w", err)
 	}
 	return a, nil
 }

@@ -3,6 +3,7 @@ package quotes
 import (
 	"context"
 	"time"
+	"fmt"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -37,7 +38,7 @@ LIMIT 1;
 	var q Quote
 
 	if err := row.Scan(&q.ID, &q.Text, &q.Author); err != nil {
-		return Quote{}, err
+		return Quote{}, fmt.Errorf("scan quote: %w", err)
 	}
 
 	return q, nil
