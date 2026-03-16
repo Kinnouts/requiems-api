@@ -34,7 +34,7 @@ func New(ctx context.Context, cfg config.Config) (*App, error) {
 
 	router := chi.NewRouter()
 
-	router.Get("/healthz", Healthz)
+	router.Get("/healthz", Healthz(pool))
 
 	router.Group(func(protected chi.Router) {
 		protected.Use(middleware.BackendSecretAuth(cfg.BackendSecret))
