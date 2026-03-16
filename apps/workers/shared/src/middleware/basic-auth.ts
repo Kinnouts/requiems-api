@@ -41,7 +41,17 @@ export const basicAuthMiddleware = async (c: Context, next: Next) => {
   try {
     const base64Credentials = authHeader.substring(6);
     const credentials = atob(base64Credentials);
-    const [username, password] = credentials.split(":");
+    const colonIndex = credentials.indexOf(":");
+    if (colonIndex === -1) {
+      return new Response("Unauthorized", {
+        status: 401,
+        headers: {
+          "WWW-Authenticate": 'Basic realm="API Management Documentation"',
+        },
+      });
+    }
+    const username = credentials.substring(0, colonIndex);
+    const password = credentials.substring(colonIndex + 1);
 
     const env = c.env as BasicAuthBindings;
     const validUsername = env.SWAGGER_USERNAME;
