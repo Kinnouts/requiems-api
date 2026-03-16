@@ -18,8 +18,6 @@
       "@requiem/workers-shared/*": ["../shared/src/*"],
       "hono": ["./node_modules/hono"],
       "hono/*": ["./node_modules/hono/*"],
-      "nanoid": ["./node_modules/nanoid"],
-      "nanoid/*": ["./node_modules/nanoid/*"],
       "zod": ["./node_modules/zod"],
       "zod/*": ["./node_modules/zod/*"],
       "@cloudflare/workers-types": ["./node_modules/@cloudflare/workers-types"],

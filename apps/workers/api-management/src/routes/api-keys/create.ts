@@ -4,11 +4,11 @@ import {
   type ApiKeyData,
   createLogger,
   extractKeyPrefix,
-  generateApiKey,
   internalError,
   jsonError,
   jsonResponse,
 } from "@requiem/workers-shared";
+import { generateApiKey } from "../../lib/generate-api-key";
 import type { WorkerBindings } from "../../env";
 import { planSchema } from "./schemas";
 

@@ -1,24 +1,3 @@
-import { customAlphabet } from "nanoid";
-
-/**
- * API key generator for Requiems API
- * Generates keys in format: requiem_<24_random_chars>
- */
-
-const ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const KEY_LENGTH = 24;
-const nanoid = customAlphabet(ALPHABET, KEY_LENGTH);
-
-/**
- * Generate a new API key
- * @returns Full API key (e.g., "requiem_abc123...")
- */
-export function generateApiKey(): string {
-  const prefix = "requiem";
-  const randomPart = nanoid();
-  return `${prefix}_${randomPart}`;
-}
-
 /**
  * Extract the key prefix (first 12 characters)
  * @param fullKey - Full API key
