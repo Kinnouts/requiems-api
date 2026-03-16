@@ -104,7 +104,7 @@
               <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-gray-100 font-mono"><%= log.endpoint %></td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <%= render "partials/shared/badge",
-                  text: log.status_code.to_s,
+                  text: h(log.status_code.to_s),
                   variant: (log.status_code || 0) >= 400 ? "danger" : "success",
                   size: "xs" %>
               </td>

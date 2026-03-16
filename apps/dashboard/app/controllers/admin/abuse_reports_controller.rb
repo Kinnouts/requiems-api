@@ -89,10 +89,6 @@ class Admin::AbuseReportsController < ApplicationController
   end
 
   def calculate_error_rate(user)
-    total = user.usage_logs.count
-    return 0 if total.zero?
-
-    errors = user.usage_logs.where("status_code >= ?", 400).count
-    ((errors.to_f / total) * 100).round(2)
+    UsageLog.error_rate_for(user.usage_logs)
   end
 end

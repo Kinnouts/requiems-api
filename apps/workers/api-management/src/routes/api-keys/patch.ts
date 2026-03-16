@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { sValidator } from "@hono/standard-validator";
 import * as z from "zod";
 import { type ApiKeyData, createLogger, internalError, jsonError, jsonResponse } from "@requiem/workers-shared";
+import { validateJson } from "../../middleware";
 import type { WorkerBindings } from "../../env";
 import { planSchema } from "./schemas";
 
@@ -23,11 +23,7 @@ const patchApiKeySchema = z
  */
 app.patch(
   "/:keyPrefix",
-  sValidator("json", patchApiKeySchema, (result, _c) => {
-    if (!result.success) {
-      return jsonError(400, result.error[0]?.message ?? "Validation error");
-    }
-  }),
+  validateJson(patchApiKeySchema),
   async (c) => {
     const log = createLogger(c.req.raw);
     const keyPrefix = c.req.param("keyPrefix");

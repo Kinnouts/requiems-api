@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { sValidator } from "@hono/standard-validator";
 import * as z from "zod";
-import { jsonError, jsonResponse, createLogger, internalError, THIRTY_DAYS_AGO_MS } from "@requiem/workers-shared";
+import { jsonError, jsonResponse, createLogger, internalError, THIRTY_DAYS_AGO_MS, ANALYTICS_ENDPOINT_MAX_LIMIT } from "@requiem/workers-shared";
+import { validateQuery } from "../../middleware";
 import type { WorkerBindings } from "../../env";
 import type { EndpointStats } from "./types";
 
@@ -11,7 +11,7 @@ const byEndpointQuerySchema = z.object({
   userId: z.string().min(1, "Missing required parameter: userId"),
   since: z.string().optional(),
   until: z.string().optional().default(() => new Date().toISOString()),
-  limit: z.coerce.number().min(1).max(100).default(10),
+  limit: z.coerce.number().min(1).max(ANALYTICS_ENDPOINT_MAX_LIMIT).default(10),
 });
 
 /**
@@ -26,11 +26,7 @@ const byEndpointQuerySchema = z.object({
  */
 app.get(
   "/by-endpoint",
-  sValidator("query", byEndpointQuerySchema, (result, _c) => {
-    if (!result.success) {
-      return jsonError(400, result.error[0]?.message ?? "Validation error");
-    }
-  }),
+  validateQuery(byEndpointQuerySchema),
   async (c) => {
     const log = createLogger(c.req.raw);
     const { userId, limit, since, until } = c.req.valid("query");

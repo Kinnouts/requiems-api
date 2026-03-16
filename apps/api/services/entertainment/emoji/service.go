@@ -39,14 +39,11 @@ func (s *Service) GetByName(name string) (Emoji, bool) {
 // (case-insensitive). Returns a List with matching results.
 func (s *Service) Search(query string) List {
 	query = strings.ToLower(query)
-	var matches []Emoji
+	matches := make([]Emoji, 0)
 	for _, e := range emojis {
 		if strings.Contains(e.Name, query) || strings.Contains(strings.ToLower(e.Category), query) {
 			matches = append(matches, e)
 		}
-	}
-	if matches == nil {
-		matches = []Emoji{}
 	}
 	return List{Items: matches, Total: len(matches)}
 }
