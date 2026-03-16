@@ -3,12 +3,13 @@ import { jsonError } from "@requiem/workers-shared";
 import type { Context, Next } from "hono";
 import type { WorkerBindings } from "../env";
 
-function timingSafeEqual(a: string, b: string): boolean {
+async function timingSafeEqual(a: string, b: string): Promise<boolean> {
   const enc = new TextEncoder();
-  const aBytes = enc.encode(a);
-  const bBytes = enc.encode(b);
-  if (aBytes.byteLength !== bBytes.byteLength) return false;
-  return crypto.subtle.timingSafeEqual(aBytes, bBytes);
+  const [aHash, bHash] = await Promise.all([
+    crypto.subtle.digest("SHA-256", enc.encode(a)),
+    crypto.subtle.digest("SHA-256", enc.encode(b)),
+  ]);
+  return crypto.subtle.timingSafeEqual(aHash, bHash);
 }
 
 /**
@@ -20,7 +21,7 @@ export async function apiKeyAuthMiddleware(c: Context<{ Bindings: WorkerBindings
   const apiKey = c.req.header("X-API-Management-Key");
   const expectedKey = c.env.API_MANAGEMENT_API_KEY;
 
-  if (!apiKey || !timingSafeEqual(apiKey, expectedKey)) {
+  if (!apiKey || !(await timingSafeEqual(apiKey, expectedKey))) {
     return jsonError(401, "Unauthorized - Invalid or missing API management key");
   }
 
