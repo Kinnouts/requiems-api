@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { sValidator } from "@hono/standard-validator";
 import * as z from "zod";
-import { jsonError, jsonResponse, createLogger, internalError } from "@requiem/workers-shared";
+import { jsonResponse, createLogger, internalError } from "@requiem/workers-shared";
+import { validateQuery } from "../../middleware";
 import type { WorkerBindings } from "../../env";
 import type { EndpointStats, UsageSummary } from "./types";
 
@@ -24,11 +24,7 @@ const summaryQuerySchema = z.object({
  */
 app.get(
   "/summary",
-  sValidator("query", summaryQuerySchema, (result, _c) => {
-    if (!result.success) {
-      return jsonError(400, result.error[0]?.message ?? "Validation error");
-    }
-  }),
+  validateQuery(summaryQuerySchema),
   async (c) => {
     const log = createLogger(c.req.raw);
     const { userId, since, until } = c.req.valid("query");
