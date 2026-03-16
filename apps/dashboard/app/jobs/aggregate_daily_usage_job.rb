@@ -11,6 +11,13 @@
 class AggregateDailyUsageJob < ApplicationJob
   queue_as :default
 
+  retry_on StandardError, attempts: 3, wait: :polynomially_longer do |job, error|
+    Rails.logger.error(
+      "AggregateDailyUsageJob permanently failed after retries: #{error.message}",
+      job_id: job.job_id
+    )
+  end
+
   def perform(date: Date.yesterday)
     Rails.logger.info("Starting daily usage aggregation for #{date}")
 
