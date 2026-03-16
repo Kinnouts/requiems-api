@@ -1,6 +1,7 @@
 package profanity
 
 import (
+	"context"
 	"strings"
 
 	goaway "github.com/TwiN/go-away"
@@ -17,7 +18,7 @@ func NewService() *Service { return &Service{} }
 
 // Check inspects text for profanity, returning a censored copy of the text
 // and the deduplicated list of flagged words found.
-func (s *Service) Check(text string) Result {
+func (s *Service) Check(ctx context.Context, text string) Result {
 	censored := detector.Censor(text)
 	hasProfanity := detector.IsProfane(text)
 
