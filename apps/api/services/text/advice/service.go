@@ -2,12 +2,19 @@ package advice
 
 import (
 	"context"
+	"time"
+	"fmt"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
+type querier interface {
+	QueryRow(ctx context.Context, sql string, args ...any) pgx.Row
+}
+
 type Service struct {
-	db *pgxpool.Pool
+	db querier
 }
 
 func NewService(db *pgxpool.Pool) *Service {
@@ -15,6 +22,9 @@ func NewService(db *pgxpool.Pool) *Service {
 }
 
 func (s *Service) Random(ctx context.Context) (Advice, error) {
+	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
+	defer cancel()
+
 	row := s.db.QueryRow(ctx, `
 SELECT id, text
 FROM advice
@@ -24,7 +34,7 @@ LIMIT 1;
 
 	var a Advice
 	if err := row.Scan(&a.ID, &a.Text); err != nil {
-		return Advice{}, err
+		return Advice{}, fmt.Errorf("scan advice: %w", err)
 	}
 	return a, nil
 }

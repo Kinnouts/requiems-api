@@ -2,7 +2,10 @@ package words
 
 import (
 	"context"
+	"time"
+	"fmt"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -15,8 +18,12 @@ type Word struct {
 
 func (Word) IsData() {}
 
+type querier interface {
+	QueryRow(ctx context.Context, sql string, args ...any) pgx.Row
+}
+
 type Service struct {
-	db *pgxpool.Pool
+	db querier
 }
 
 func NewService(db *pgxpool.Pool) *Service {
@@ -24,6 +31,9 @@ func NewService(db *pgxpool.Pool) *Service {
 }
 
 func (s *Service) Random(ctx context.Context) (Word, error) {
+	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
+	defer cancel()
+
 	row := s.db.QueryRow(ctx, `
 SELECT id, word, definition, part_of_speech
 FROM words
@@ -33,7 +43,7 @@ LIMIT 1;
 
 	var w Word
 	if err := row.Scan(&w.ID, &w.Word, &w.Definition, &w.PartOfSpeech); err != nil {
-		return Word{}, err
+		return Word{}, fmt.Errorf("scan word: %w", err)
 	}
 
 	return w, nil

@@ -43,18 +43,34 @@ func RegisterRoutes(router chi.Router, svc *Service) {
 		perPage := 100
 
 		if pageStr := r.URL.Query().Get("page"); pageStr != "" {
-			if p, err := strconv.Atoi(pageStr); err == nil && p > 0 {
-				page = p
+			p, err := strconv.Atoi(pageStr)
+			if err != nil || p <= 0 {
+				httpx.Error(w, http.StatusBadRequest, "bad_request", "page must be a positive integer")
+				return
 			}
+			page = p
 		}
 
 		if perPageStr := r.URL.Query().Get("per_page"); perPageStr != "" {
-			if pp, err := strconv.Atoi(perPageStr); err == nil && pp > 0 {
-				perPage = pp
+			pp, err := strconv.Atoi(perPageStr)
+			if err != nil || pp <= 0 {
+				httpx.Error(w, http.StatusBadRequest, "bad_request", "per_page must be a positive integer")
+				return
 			}
+			perPage = pp
 		}
 
-		httpx.JSON(w, http.StatusOK, svc.GetDomains(page, perPage))
+		result, err := svc.GetDomains(page, perPage)
+		if err != nil {
+			if appErr, ok := err.(*httpx.AppError); ok {
+				httpx.Error(w, appErr.Status, appErr.Code, appErr.Message)
+				return
+			}
+			httpx.Error(w, http.StatusInternalServerError, "internal_error", "unexpected error")
+			return
+		}
+
+		httpx.JSON(w, http.StatusOK, result)
 	})
 
 	// GET /disposable/stats — blocklist statistics

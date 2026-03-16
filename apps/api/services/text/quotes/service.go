@@ -2,7 +2,10 @@ package quotes
 
 import (
 	"context"
+	"time"
+	"fmt"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -14,8 +17,12 @@ type Quote struct {
 
 func (Quote) IsData() {}
 
+type querier interface {
+	QueryRow(ctx context.Context, sql string, args ...any) pgx.Row
+}
+
 type Service struct {
-	db *pgxpool.Pool
+	db querier
 }
 
 func NewService(db *pgxpool.Pool) *Service {
@@ -23,6 +30,9 @@ func NewService(db *pgxpool.Pool) *Service {
 }
 
 func (s *Service) Random(ctx context.Context) (Quote, error) {
+	ctx, cancel := context.WithTimeout(ctx, 3*time.Second)
+	defer cancel()
+
 	row := s.db.QueryRow(ctx, `
 SELECT id, text, author
 FROM quotes
@@ -33,7 +43,7 @@ LIMIT 1;
 	var q Quote
 
 	if err := row.Scan(&q.ID, &q.Text, &q.Author); err != nil {
-		return Quote{}, err
+		return Quote{}, fmt.Errorf("scan quote: %w", err)
 	}
 
 	return q, nil

@@ -24,36 +24,26 @@ class Admin::AnalyticsController < ApplicationController
     @requests_by_endpoint = UsageLog
       .where(used_at: @start_date..@end_date)
       .group(:endpoint)
+      .order("COUNT(*) DESC")
+      .limit(10)
       .count
-      .sort_by { |_, count| -count }
-      .first(10)
-      .to_h
 
-    # Requests by plan
+    # Requests by plan (single query using CASE WHEN to bucket free/no-subscription users)
     @requests_by_plan = UsageLog
-      .where(used_at: @start_date..@end_date)
-      .joins(user: :subscription)
-      .group("subscriptions.plan_name")
-      .count
-
-    # Add free plan users
-    free_requests = UsageLog
       .where(used_at: @start_date..@end_date)
       .joins(:user)
       .joins("LEFT OUTER JOIN subscriptions ON subscriptions.user_id = users.id")
-      .where("subscriptions.id IS NULL OR subscriptions.plan_name = 'free'")
+      .group(Arel.sql("CASE WHEN subscriptions.id IS NULL OR subscriptions.plan_name = 'free' THEN 'free' ELSE subscriptions.plan_name END"))
       .count
-    @requests_by_plan["free"] = free_requests if free_requests > 0
 
     # Average response times by endpoint (top 10)
     @avg_response_by_endpoint = UsageLog
       .where(used_at: @start_date..@end_date)
       .where.not(response_time_ms: nil)
       .group(:endpoint)
+      .order("AVG(response_time_ms) DESC")
+      .limit(10)
       .average(:response_time_ms)
-      .sort_by { |_, avg| -avg }
-      .first(10)
-      .to_h
       .transform_values { |v| v.round(2) }
 
     # Top users by usage
@@ -90,9 +80,15 @@ class Admin::AnalyticsController < ApplicationController
     else 24.hours.ago
     end
 
-    # API Uptime (percentage of successful requests)
-    total_requests = UsageLog.where(used_at: @start_time..Time.current).count
-    successful_requests = UsageLog.where(used_at: @start_time..Time.current).where(status_code: 200..299).count
+    # API Uptime (percentage of successful requests — single query)
+    total_requests, successful_requests = UsageLog
+      .where(used_at: @start_time..Time.current)
+      .pick(
+        Arel.sql("COUNT(*)"),
+        Arel.sql("COUNT(*) FILTER (WHERE status_code BETWEEN 200 AND 299)")
+      )
+    total_requests = total_requests.to_i
+    successful_requests = successful_requests.to_i
     @uptime_percentage = total_requests > 0 ? ((successful_requests.to_f / total_requests) * 100).round(2) : 100.0
 
     # Average response times (P50, P95, P99)

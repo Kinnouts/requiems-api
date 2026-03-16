@@ -53,7 +53,13 @@ app.get(
         .bind(since, afterId, limit)
         .all<UsageRecord>();
 
-      const records = result.results || [];
+      if (!result.success) {
+        throw new Error("D1 query failed");
+      }
+      if (!Array.isArray(result.results)) {
+        throw new Error(`Unexpected D1 response shape: results is ${typeof result.results}`);
+      }
+      const records = result.results;
       const hasMore = records.length === limit;
       const nextCursor = hasMore ? records[records.length - 1].id.toString() : undefined;
 

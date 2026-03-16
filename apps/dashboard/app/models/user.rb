@@ -15,13 +15,6 @@ class User < ApplicationRecord
 
   SUPPORTED_LOCALES = %w[en es].freeze
 
-  PLAN_LIMITS = {
-    "free" => 500,
-    "developer" => 100_000,
-    "business" => 1_000_000,
-    "professional" => 10_000_000
-  }.freeze
-
   validates :locale, inclusion: { in: SUPPORTED_LOCALES }, allow_nil: true
 
   scope :admins, -> { where(admin: true) }
@@ -94,7 +87,7 @@ class User < ApplicationRecord
   end
 
   def requests_remaining
-    limit = PLAN_LIMITS[current_plan] || PLAN_LIMITS["free"]
+    limit = PlanConfig.requests_per_month(current_plan)
     [ limit - usage_this_month, 0 ].max
   end
 

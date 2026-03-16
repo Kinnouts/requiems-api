@@ -1,6 +1,7 @@
 package timezone
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -25,32 +26,21 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 		httpx.JSON(w, http.StatusOK, *info)
 	})
 
-	r.Get("/timezone", func(w http.ResponseWriter, r *http.Request) {
-		req := Request{}
+	r.Get("/timezone", handleGetTimezone(svc))
+}
 
-		if err := httpx.BindQuery(r, &req); err != nil {
+func handleGetTimezone(svc *Service) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		req, hasCity, hasCoords, err := parseTimezoneQuery(r)
+		if err != nil {
 			httpx.Error(w, http.StatusBadRequest, "bad_request", err.Error())
 			return
 		}
 
-		q := r.URL.Query()
-		hasCoords := q.Has("lat") && q.Has("lon")
-		hasCity := q.Has("city")
-
-		if !hasCoords && !hasCity {
-			httpx.Error(w, http.StatusBadRequest, "bad_request",
-				"provide either 'city' or both 'lat' and 'lon' query parameters")
-			return
-		}
-
-		var (
-			info *Info
-			err  error
-		)
-
+		var info *Info
 		if hasCity {
 			info, err = svc.GetTimezoneByCity(req.City)
-		} else {
+		} else if hasCoords {
 			info, err = svc.GetTimezoneByCoords(req.Lat, req.Lon)
 		}
 
@@ -60,5 +50,21 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 		}
 
 		httpx.JSON(w, http.StatusOK, *info)
-	})
+	}
+}
+
+func parseTimezoneQuery(r *http.Request) (req Request, hasCity, hasCoords bool, err error) {
+	if err = httpx.BindQuery(r, &req); err != nil {
+		return
+	}
+
+	q := r.URL.Query()
+	hasCoords = q.Has("lat") && q.Has("lon")
+	hasCity = q.Has("city")
+
+	if !hasCoords && !hasCity {
+		err = errors.New("provide either 'city' or both 'lat' and 'lon' query parameters")
+	}
+
+	return
 }
