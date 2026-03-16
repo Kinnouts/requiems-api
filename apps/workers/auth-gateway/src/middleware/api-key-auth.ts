@@ -2,6 +2,7 @@ import type { MiddlewareHandler } from "hono";
 import {
   type ApiKeyData,
   createLogger,
+  isValidKeyFormat,
   jsonError,
   maskApiKey,
   type PlanConfig,
@@ -38,6 +39,10 @@ export const apiKeyAuthMiddleware: MiddlewareHandler<{
 
   if (!apiKey) {
     return jsonError(401, "Get your key at requiems-api.xyz");
+  }
+
+  if (!isValidKeyFormat(apiKey)) {
+    return jsonError(401, "Invalid API key");
   }
 
   // Fetch API key data from KV
