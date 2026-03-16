@@ -59,6 +59,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_16_160000) do
     t.string "ip_address"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
+    t.index ["admin_user_id"], name: "index_audit_logs_on_admin_user_id"
     t.index ["created_at"], name: "index_audit_logs_on_created_at"
     t.index ["user_id"], name: "index_audit_logs_on_user_id"
   end
