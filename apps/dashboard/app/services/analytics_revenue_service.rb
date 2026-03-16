@@ -45,8 +45,7 @@ class AnalyticsRevenueService
 
   def calculate_mrr
     Subscription
-      .where.not(plan_name: "free")
-      .where(cancel_at_period_end: [ false, nil ])
+      .paying
       .sum do |sub|
         price = PLAN_PRICES[sub.plan_name]&.fetch(sub.plan&.to_sym || :monthly, 0) || 0
         sub.plan == "yearly" ? (price * 12 / 12.0) : price
@@ -55,8 +54,7 @@ class AnalyticsRevenueService
 
   def revenue_by_plan
     Subscription
-      .where.not(plan_name: "free")
-      .where(cancel_at_period_end: [ false, nil ])
+      .paying
       .group(:plan_name, :plan)
       .count
       .each_with_object({}) do |((plan, cycle), count), hash|
@@ -74,7 +72,7 @@ class AnalyticsRevenueService
       month_label = month_start.strftime("%b %Y")
 
       month_revenue = Subscription
-        .where.not(plan_name: "free")
+        .paid
         .where("current_period_start <= ?", month_end)
         .where("current_period_end IS NULL OR current_period_end >= ?", month_start)
         .sum do |sub|
@@ -87,15 +85,12 @@ class AnalyticsRevenueService
   end
 
   def active_subscriptions
-    Subscription
-      .where.not(plan_name: "free")
-      .where(cancel_at_period_end: [ false, nil ])
-      .count
+    Subscription.paying.count
   end
 
   def subscriptions_by_plan
     Subscription
-      .where.not(plan_name: "free")
+      .paid
       .group(:plan_name)
       .count
       .transform_keys(&:titleize)
@@ -105,14 +100,14 @@ class AnalyticsRevenueService
     start_of_period = 30.days.ago
 
     subscriptions_at_start = Subscription
+      .paid
       .where("created_at < ?", start_of_period)
-      .where.not(plan_name: "free")
       .count
 
     canceled_in_period = Subscription
+      .paid
       .where(cancel_at_period_end: true)
       .where("canceled_at >= ?", start_of_period)
-      .where.not(plan_name: "free")
       .count
 
     return 0 if subscriptions_at_start == 0
@@ -128,14 +123,14 @@ class AnalyticsRevenueService
       month_label = month_start.strftime("%b %Y")
 
       new_subs = Subscription
-        .where.not(plan_name: "free")
+        .paid
         .where(created_at: month_start..month_end)
         .count
 
       canceled_subs = Subscription
+        .paid
         .where(cancel_at_period_end: true)
         .where(canceled_at: month_start..month_end)
-        .where.not(plan_name: "free")
         .count
 
       result[month_label] = { new: new_subs, canceled: canceled_subs }
