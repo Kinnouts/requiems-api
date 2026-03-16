@@ -22,7 +22,11 @@ const DEV_KEYS: DevKey[] = [
   { apiKey: "rq_free_000001", userId: "dev_user_free", plan: "free" },
   { apiKey: "rq_devl_000001", userId: "dev_user_developer", plan: "developer" },
   { apiKey: "rq_bizz_000001", userId: "dev_user_business", plan: "business" },
-  { apiKey: "rq_prof_000001", userId: "dev_user_professional", plan: "professional" },
+  {
+    apiKey: "rq_prof_000001",
+    userId: "dev_user_professional",
+    plan: "professional",
+  },
 ];
 
 const CREATED_AT = "2025-01-01T00:00:00.000Z";

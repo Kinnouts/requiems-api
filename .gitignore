@@ -15,6 +15,7 @@ go.work.sum
 .dev.vars
 .idea/
 .vscode/
+!.vscode/extensions.json
 *.swp
 *.swo
 .DS_Store
