@@ -11,7 +11,7 @@
     "dev": "wrangler dev",
     "deploy": "wrangler deploy",
     "deploy:prod": "wrangler deploy --env production",
-    "typecheck": "bun install && (cd ../shared && bun install) && tsc --noEmit",
+    "typecheck": "tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest watch",
     "test:coverage": "vitest run --coverage",
@@ -31,6 +31,7 @@
     "zod": "^4.0.0"
   },
   "devDependencies": {
+    "nanoid": "^5.1.6",
     "@biomejs/biome": "^2.4.6",
     "@cloudflare/workers-types": "^4.20260312.1",
     "@edge-runtime/vm": "^5.0.0",
