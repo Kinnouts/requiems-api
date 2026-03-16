@@ -54,7 +54,9 @@ func (s *Service) GetTimezoneByCity(city string) (*Info, error) {
 // loadLocation returns a cached *time.Location for tzName, loading it on first use.
 func loadLocation(tzName string) (*time.Location, error) {
 	if v, ok := locationCache.Load(tzName); ok {
-		return v.(*time.Location), nil
+		if loc, ok := v.(*time.Location); ok {
+			return loc, nil
+		}
 	}
 	loc, err := time.LoadLocation(tzName)
 	if err != nil {

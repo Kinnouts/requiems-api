@@ -18,7 +18,7 @@ var commonDomains = map[string]struct{}{
 	"yahoo.com": {}, "yahoo.co.uk": {}, "yahoo.fr": {}, "yahoo.es": {}, "yahoo.de": {},
 	"outlook.com": {}, "hotmail.com": {}, "hotmail.co.uk": {}, "hotmail.fr": {},
 	"icloud.com": {}, "me.com": {}, "mac.com": {},
-	"aol.com": {},
+	"aol.com":        {},
 	"protonmail.com": {}, "proton.me": {},
 	"live.com": {}, "msn.com": {},
 	"yandex.com": {}, "yandex.ru": {},
