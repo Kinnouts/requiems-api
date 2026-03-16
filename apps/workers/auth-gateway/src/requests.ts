@@ -1,4 +1,4 @@
-import { type RequestCheckResult, withRetry } from "@requiem/workers-shared";
+import { type Logger, type RequestCheckResult, withRetry } from "@requiem/workers-shared";
 import type { WorkerBindings } from "./env";
 
 /**
@@ -18,6 +18,7 @@ export async function getRequestUsage(
   userId: string,
   period: "daily" | "monthly",
   billingCycleStart?: string,
+  logger?: Logger,
 ): Promise<number> {
   const startDate = period === "daily" ? getTodayStart() : billingCycleStart || getMonthStart();
   const cacheKey = `quota:${userId}:${startDate}`;
@@ -41,7 +42,9 @@ export async function getRequestUsage(
   const usage = result?.total || 0;
 
   // Write to KV with 60-second TTL (best-effort, don't block on failure)
-  bindings.KV.put(cacheKey, usage.toString(), { expirationTtl: 60 }).catch(() => {});
+  bindings.KV.put(cacheKey, usage.toString(), { expirationTtl: 60 }).catch((err) => {
+    logger?.warn("KV cache write failed in getRequestUsage", { error: err, cacheKey });
+  });
 
   return usage;
 }
@@ -59,6 +62,7 @@ export async function recordRequestUsage(
   endpoint: string,
   requests: number,
   billingCycleStart?: string,
+  logger?: Logger,
 ): Promise<void> {
   // Retry the D1 write up to 3 times with exponential backoff.
   // The KV cache update below remains best-effort — D1 is the source of truth.
@@ -80,7 +84,9 @@ export async function recordRequestUsage(
   if (cached !== null) {
     bindings.KV.put(cacheKey, (Number(cached) + requests).toString(), {
       expirationTtl: 60,
-    }).catch(() => {});
+    }).catch((err) => {
+      logger?.warn("KV cache write failed in recordRequestUsage", { error: err, cacheKey });
+    });
   }
 }
 
@@ -93,8 +99,9 @@ export async function checkRequestUsage(
   period: "daily" | "monthly",
   limit: number,
   billingCycleStart?: string,
+  logger?: Logger,
 ): Promise<RequestCheckResult> {
-  const usage = await getRequestUsage(bindings, userId, period, billingCycleStart);
+  const usage = await getRequestUsage(bindings, userId, period, billingCycleStart, logger);
   const remaining = Math.max(0, limit - usage);
   const resetAt = getResetTime(period, billingCycleStart);
 
