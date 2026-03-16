@@ -12,7 +12,7 @@ import (
 func RegisterRoutes(r chi.Router, svc *Service) {
 	r.Post("/profanity", httpx.Handle(
 		func(ctx context.Context, req Request) (Result, error) {
-			return svc.Check(req.Text), nil
+			return svc.Check(ctx, req.Text), nil
 		},
 	))
 }
