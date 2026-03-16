@@ -8,7 +8,7 @@ import (
 func TestService_Check_NoProfanity(t *testing.T) {
 	svc := NewService()
 
-	result := svc.Check(context.Background(),"Hello, world!")
+	result := svc.Check(context.Background(), "Hello, world!")
 
 	if result.HasProfanity {
 		t.Error("expected HasProfanity to be false")
@@ -24,7 +24,7 @@ func TestService_Check_NoProfanity(t *testing.T) {
 func TestService_Check_WithProfanity(t *testing.T) {
 	svc := NewService()
 
-	result := svc.Check(context.Background(),"What the fuck is this shit")
+	result := svc.Check(context.Background(), "What the fuck is this shit")
 
 	if !result.HasProfanity {
 		t.Error("expected HasProfanity to be true")
@@ -42,7 +42,7 @@ func TestService_Check_CaseInsensitive(t *testing.T) {
 
 	// go-away detects "shit" as a substring of "BULLSHIT" and censors only
 	// the matched portion; the flagged canonical word is "shit".
-	result := svc.Check(context.Background(),"This is BULLSHIT")
+	result := svc.Check(context.Background(), "This is BULLSHIT")
 
 	if !result.HasProfanity {
 		t.Error("expected HasProfanity to be true for uppercase word")
@@ -55,7 +55,7 @@ func TestService_Check_CaseInsensitive(t *testing.T) {
 func TestService_Check_DeduplicatesFlaggedWords(t *testing.T) {
 	svc := NewService()
 
-	result := svc.Check(context.Background(),"shit shit shit")
+	result := svc.Check(context.Background(), "shit shit shit")
 
 	if len(result.FlaggedWords) != 1 {
 		t.Errorf("expected 1 unique flagged word, got %d: %v", len(result.FlaggedWords), result.FlaggedWords)
@@ -65,7 +65,7 @@ func TestService_Check_DeduplicatesFlaggedWords(t *testing.T) {
 func TestService_Check_EmptyFlaggedWordsSlice(t *testing.T) {
 	svc := NewService()
 
-	result := svc.Check(context.Background(),"clean text here")
+	result := svc.Check(context.Background(), "clean text here")
 
 	// FlaggedWords must be an empty slice, not nil (for consistent JSON serialisation).
 	if result.FlaggedWords == nil {
@@ -76,7 +76,7 @@ func TestService_Check_EmptyFlaggedWordsSlice(t *testing.T) {
 func TestService_Check_EmptyText(t *testing.T) {
 	svc := NewService()
 
-	result := svc.Check(context.Background(),"")
+	result := svc.Check(context.Background(), "")
 
 	if result.HasProfanity {
 		t.Error("expected no profanity for empty text")
@@ -90,7 +90,7 @@ func TestService_Check_LeetSpeak(t *testing.T) {
 	svc := NewService()
 
 	// go-away handles leet-speak obfuscation out of the box.
-	result := svc.Check(context.Background(),"F   u   C  k th1$ $h!t")
+	result := svc.Check(context.Background(), "F   u   C  k th1$ $h!t")
 
 	if !result.HasProfanity {
 		t.Error("expected HasProfanity to be true for leet-speak input")
