@@ -4,7 +4,6 @@ import (
 	"context"
 	"net"
 	"regexp"
-	"slices"
 	"strings"
 
 	"github.com/agnivade/levenshtein"
@@ -12,18 +11,18 @@ import (
 	disposable "github.com/bobadilla-tech/is-email-disposable"
 )
 
-// commonDomains is the curated list of well-known email providers used for
+// commonDomains is the curated set of well-known email providers used for
 // typo suggestions. Keep entries lowercase.
-var commonDomains = []string{
-	"gmail.com", "googlemail.com",
-	"yahoo.com", "yahoo.co.uk", "yahoo.fr", "yahoo.es", "yahoo.de",
-	"outlook.com", "hotmail.com", "hotmail.co.uk", "hotmail.fr",
-	"icloud.com", "me.com", "mac.com",
-	"aol.com",
-	"protonmail.com", "proton.me",
-	"live.com", "msn.com",
-	"yandex.com", "yandex.ru",
-	"mail.com", "zoho.com",
+var commonDomains = map[string]struct{}{
+	"gmail.com": {}, "googlemail.com": {},
+	"yahoo.com": {}, "yahoo.co.uk": {}, "yahoo.fr": {}, "yahoo.es": {}, "yahoo.de": {},
+	"outlook.com": {}, "hotmail.com": {}, "hotmail.co.uk": {}, "hotmail.fr": {},
+	"icloud.com": {}, "me.com": {}, "mac.com": {},
+	"aol.com":    {},
+	"protonmail.com": {}, "proton.me": {},
+	"live.com": {}, "msn.com": {},
+	"yandex.com": {}, "yandex.ru": {},
+	"mail.com": {}, "zoho.com": {},
 }
 
 // addrSpecRe matches a plain RFC 5322 addr-spec (local-part "@" domain).
@@ -129,14 +128,14 @@ func suggestDomain(domain string) *string {
 	const threshold = 2
 
 	// Exact match — no suggestion needed.
-	if slices.Contains(commonDomains, domain) {
+	if _, ok := commonDomains[domain]; ok {
 		return nil
 	}
 
 	best := ""
 	bestDist := threshold + 1
 
-	for _, d := range commonDomains {
+	for d := range commonDomains {
 		if dist := levenshtein.ComputeDistance(domain, d); dist < bestDist {
 			bestDist = dist
 			best = d
