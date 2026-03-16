@@ -3,4 +3,6 @@
 class UsageLog < ApplicationRecord
   belongs_to :user
   belongs_to :api_key
+
+  validates :user_id, :used_at, :endpoint, presence: true
 end
