@@ -33,6 +33,7 @@ func New(ctx context.Context, cfg config.Config) (*App, error) {
 	}
 
 	router := chi.NewRouter()
+	router.Use(middleware.RequestID)
 
 	router.Get("/healthz", Healthz)
 
