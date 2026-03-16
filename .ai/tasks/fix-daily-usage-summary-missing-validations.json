@@ -1,9 +1,0 @@
-{
-  "id": "fix-daily-usage-summary-missing-validations",
-  "title": "Add model validations to DailyUsageSummary",
-  "description": "DailyUsageSummary has no model validations. Add validates :user_id, :date, presence: true and validates :date, uniqueness: { scope: :user_id } to prevent duplicate summaries and catch bad data at the model layer.",
-  "pain_score": 5,
-  "files": [
-    "apps/dashboard/app/models/daily_usage_summary.rb"
-  ]
-}

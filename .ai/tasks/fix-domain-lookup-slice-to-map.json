@@ -1,9 +1,0 @@
-{
-  "id": "fix-domain-lookup-slice-to-map",
-  "title": "Convert commonDomains slice to map for O(1) lookup in email validate service",
-  "description": "text/validate/service.go defines commonDomains as a []string and searches it linearly on every email validation. Convert to a map[string]struct{} initialized at package level so domain lookup is O(1) instead of O(n).",
-  "pain_score": 5,
-  "files": [
-    "apps/api/services/text/validate/service.go"
-  ]
-}

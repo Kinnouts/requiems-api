@@ -1,9 +1,0 @@
-{
-  "id": "fix-n1-usage-csv-export",
-  "title": "Fix N+1 query in usage CSV export by eager loading api_key",
-  "description": "The CSV export in usage_controller iterates usage_logs and accesses log.api_key.name for each row without eager loading. This causes one SQL query per row. Add .includes(:api_key) to the usage_logs query.",
-  "pain_score": 8,
-  "files": [
-    "apps/dashboard/app/controllers/dashboard/usage_controller.rb"
-  ]
-}

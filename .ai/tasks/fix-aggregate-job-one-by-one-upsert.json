@@ -1,9 +1,0 @@
-{
-  "id": "fix-aggregate-job-one-by-one-upsert",
-  "title": "Replace per-row upsert loop with upsert_all in AggregateDailyUsageJob",
-  "description": "aggregate_daily_usage_job.rb loops through aggregated summaries and calls DailyUsageSummary.upsert(...) for each record individually. Replace with DailyUsageSummary.upsert_all(records) to batch the operation in a single SQL statement.",
-  "pain_score": 6,
-  "files": [
-    "apps/dashboard/app/jobs/aggregate_daily_usage_job.rb"
-  ]
-}

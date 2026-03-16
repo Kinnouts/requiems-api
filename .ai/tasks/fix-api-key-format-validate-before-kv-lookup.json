@@ -1,9 +1,0 @@
-{
-  "id": "fix-api-key-format-validate-before-kv-lookup",
-  "title": "Validate API key format before KV lookup in auth-gateway middleware",
-  "description": "The auth-gateway middleware checks that the key header exists but immediately queries KV without validating key format. Malformed or probing requests waste KV quota. Call isValidKeyFormat() first and return 401 immediately on invalid format.",
-  "pain_score": 6,
-  "files": [
-    "apps/workers/auth-gateway/src/middleware/api-key-auth.ts"
-  ]
-}

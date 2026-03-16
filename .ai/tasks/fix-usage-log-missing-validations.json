@@ -1,9 +1,0 @@
-{
-  "id": "fix-usage-log-missing-validations",
-  "title": "Add presence validations to UsageLog model",
-  "description": "UsageLog model has no validations despite being the core usage accounting record. Add validates :user_id, :used_at, :endpoint, presence: true so invalid records are rejected at the model layer before reaching the database.",
-  "pain_score": 4,
-  "files": [
-    "apps/dashboard/app/models/usage_log.rb"
-  ]
-}

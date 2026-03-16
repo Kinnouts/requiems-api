@@ -1,9 +1,0 @@
-{
-  "id": "fix-admin-dashboard-stats-no-cache",
-  "title": "Cache expensive admin dashboard aggregate queries",
-  "description": "admin/dashboard_controller executes multiple aggregate COUNT queries (users, usage logs, revenue, etc.) on every page load. Wrap these in Rails.cache.fetch with a short TTL (5 minutes) to avoid hammering the database on every admin visit.",
-  "pain_score": 7,
-  "files": [
-    "apps/dashboard/app/controllers/admin/dashboard_controller.rb"
-  ]
-}

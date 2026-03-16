@@ -1,9 +1,0 @@
-{
-  "id": "fix-webhook-missing-transactions",
-  "title": "Wrap webhook subscription handlers in database transactions",
-  "description": "handle_subscription_created and handle_subscription_updated update both the DB and Cloudflare KV without a transaction. If Cloudflare sync fails after the DB save, the two stores become inconsistent. Wrap each handler in ActiveRecord transaction.",
-  "pain_score": 8,
-  "files": [
-    "apps/dashboard/app/controllers/webhooks/lemonsqueezy_controller.rb"
-  ]
-}

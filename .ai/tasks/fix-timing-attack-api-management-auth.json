@@ -1,9 +1,0 @@
-{
-  "id": "fix-timing-attack-api-management-auth",
-  "title": "Replace string equality with timing-safe comparison for API key auth",
-  "description": "API key comparison in api-management middleware uses !== which is vulnerable to timing attacks. Replace with crypto.subtle.timingSafeEqual() to prevent character-by-character key guessing.",
-  "pain_score": 9,
-  "files": [
-    "apps/workers/api-management/src/middleware/api-key-auth.ts"
-  ]
-}

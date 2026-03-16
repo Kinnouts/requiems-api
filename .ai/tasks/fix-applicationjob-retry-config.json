@@ -1,9 +1,0 @@
-{
-  "id": "fix-applicationjob-retry-config",
-  "title": "Enable commented-out retry and discard config in ApplicationJob",
-  "description": "retry_on ActiveRecord::Deadlocked and discard_on ActiveJob::DeserializationError are commented out in ApplicationJob. Without these, deadlocked jobs retry infinitely and deserialization errors cause repeated failures. Uncomment and configure both.",
-  "pain_score": 8,
-  "files": [
-    "apps/dashboard/app/jobs/application_job.rb"
-  ]
-}

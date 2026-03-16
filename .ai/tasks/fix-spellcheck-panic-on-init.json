@@ -1,9 +1,0 @@
-{
-  "id": "fix-spellcheck-panic-on-init",
-  "title": "Replace panic on missing word list with graceful error in spellcheck service",
-  "description": "services/text/spellcheck/service.go panics at startup if the embedded word list cannot be loaded. This crashes the entire process instead of returning a 500 for spellcheck requests only. Change init to return an error and have the service return a clear service-unavailable error if initialization failed.",
-  "pain_score": 5,
-  "files": [
-    "apps/api/services/text/spellcheck/service.go"
-  ]
-}

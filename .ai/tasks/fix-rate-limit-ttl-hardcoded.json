@@ -1,9 +1,0 @@
-{
-  "id": "fix-rate-limit-ttl-hardcoded",
-  "title": "Extract hardcoded rate limit TTL to a named constant",
-  "description": "rate-limit.ts has the KV expiration TTL hardcoded as 60 (seconds). Extract to a RATE_LIMIT_WINDOW_SECONDS constant so it is self-documenting and easy to adjust without hunting magic numbers.",
-  "pain_score": 5,
-  "files": [
-    "apps/workers/auth-gateway/src/rate-limit.ts"
-  ]
-}

@@ -1,9 +1,0 @@
-{
-  "id": "fix-fetchbackend-missing-timeout",
-  "title": "Add request timeout to fetchBackend in auth-gateway",
-  "description": "fetchBackend() in the auth gateway has no timeout. If the Go backend hangs, the worker will hit Cloudflare's CPU/wall-clock limit and return an opaque worker error instead of a clean 502/504. Add AbortController with a configurable timeout (e.g. 10s).",
-  "pain_score": 7,
-  "files": [
-    "apps/workers/auth-gateway/src/http.ts"
-  ]
-}

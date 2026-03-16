@@ -1,9 +1,0 @@
-{
-  "id": "fix-missing-usage-log-scopes",
-  "title": "Add in_range, successful, and with_errors scopes to UsageLog model",
-  "description": "Controllers repeat date-range and status-code filter conditions on UsageLog. Add model scopes: in_range(start_date, end_date), successful (status_code 2xx), with_errors (status_code >= 400) to centralize these query patterns.",
-  "pain_score": 5,
-  "files": [
-    "apps/dashboard/app/models/usage_log.rb"
-  ]
-}

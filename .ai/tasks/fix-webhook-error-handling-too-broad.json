@@ -1,9 +1,0 @@
-{
-  "id": "fix-webhook-error-handling-too-broad",
-  "title": "Narrow overly broad rescue clause in LemonSqueezy webhook controller",
-  "description": "The top-level rescue in lemonsqueezy_controller.rb catches all exceptions (rescue => e) including programming errors like NoMethodError and NameError, masking bugs as 400 responses. Rescue only expected error types (e.g., ActiveRecord::RecordInvalid, StandardError subclasses from the Cloudflare service).",
-  "pain_score": 8,
-  "files": [
-    "apps/dashboard/app/controllers/webhooks/lemonsqueezy_controller.rb"
-  ]
-}

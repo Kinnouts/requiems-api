@@ -1,9 +1,0 @@
-{
-  "id": "fix-analytics-system-health-extract",
-  "title": "Extract percentile calculation and error trend loop from system_health action",
-  "description": "Admin::AnalyticsController#system_health is 78 lines containing a custom percentile computation and an error-trend loop. Extract the percentile logic to a private method percentile(values, p) and the trend aggregation to a separate private method. Reduces function length below 40 lines.",
-  "pain_score": 6,
-  "files": [
-    "apps/dashboard/app/controllers/admin/analytics_controller.rb"
-  ]
-}

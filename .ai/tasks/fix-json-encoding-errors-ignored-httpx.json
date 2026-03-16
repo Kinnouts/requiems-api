@@ -1,9 +1,0 @@
-{
-  "id": "fix-json-encoding-errors-ignored-httpx",
-  "title": "Log JSON encoding errors in httpx instead of silently discarding them",
-  "description": "httpx.go uses _ = json.NewEncoder(w).Encode(...) in three places, silently discarding encoding errors. If encoding fails the client receives a partial/malformed response with no indication of failure. Capture the error and log it.",
-  "pain_score": 7,
-  "files": [
-    "apps/api/platform/httpx/httpx.go"
-  ]
-}

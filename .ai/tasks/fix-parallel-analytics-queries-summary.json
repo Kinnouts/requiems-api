@@ -1,9 +1,0 @@
-{
-  "id": "fix-parallel-analytics-queries-summary",
-  "title": "Run independent D1 queries in parallel in analytics summary route",
-  "description": "The analytics summary route executes two independent D1 queries sequentially (totals and top endpoints). These have no dependency on each other and add cumulative latency. Wrap them in Promise.all([...]) to run concurrently.",
-  "pain_score": 7,
-  "files": [
-    "apps/workers/api-management/src/routes/analytics/summary.ts"
-  ]
-}
