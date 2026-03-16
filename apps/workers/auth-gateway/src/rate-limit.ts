@@ -1,6 +1,8 @@
 import type { PlanConfig, PlanName, RateLimitResult } from "@requiem/workers-shared";
 import type { WorkerBindings } from "./env";
 
+const RATE_LIMIT_WINDOW_SECONDS = 60;
+
 /**
  * Get request limits description for a plan
  */
@@ -47,7 +49,7 @@ export async function checkRateLimit(
   }
 
   await bindings.KV.put(minuteKey, (minuteCount + 1).toString(), {
-    expirationTtl: 60,
+    expirationTtl: RATE_LIMIT_WINDOW_SECONDS,
   });
 
   return {
