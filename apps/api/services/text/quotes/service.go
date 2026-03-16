@@ -5,6 +5,7 @@ import (
 	"time"
 	"fmt"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 )
 
@@ -16,8 +17,12 @@ type Quote struct {
 
 func (Quote) IsData() {}
 
+type querier interface {
+	QueryRow(ctx context.Context, sql string, args ...any) pgx.Row
+}
+
 type Service struct {
-	db *pgxpool.Pool
+	db querier
 }
 
 func NewService(db *pgxpool.Pool) *Service {
