@@ -4,10 +4,10 @@
  * Auto-runs before dev and deploy via predev/predeploy hooks.
  */
 
-import { writeFileSync, mkdirSync } from "fs";
-import { join} from "path";
+import { writeFileSync, mkdirSync } from "node:fs";
+import { join} from "node:path";
 
-import { buildOperation, loadAPIDoc, loadAPIDocs, loadCatalog } from "./helpers";
+import { buildOperation, buildSpec, loadAPIDoc, loadAPIDocs, loadCatalog } from "./helpers";
 
 import type { CatalogEntry } from "./types";
 
@@ -15,8 +15,8 @@ const outputDir = join(import.meta.dirname, "../../src/generated");
 const outputPath = join(outputDir, "openapi.ts");
 
 
-function main() {
-  const catalog = loadCatalog();
+async function main() {
+  const catalog = await loadCatalog();
 
   const catalogMap = new Map<string, CatalogEntry>();
   
@@ -24,14 +24,13 @@ function main() {
     catalogMap.set(entry.id, entry);
   }
 
-  const docFiles= loadAPIDocs();
-
+  const docFiles= await loadAPIDocs();
 
   const paths: Record<string, Record<string, unknown>> = {};
-  const tags: { name: string; description?: string }[] = [];
+  const tags: { name: string; description: string }[] = [];
 
   for (const file of docFiles) {
-    const doc = loadAPIDoc(file);
+    const doc = await loadAPIDoc(file);
 
     if (!doc || !doc?.api_id || !doc.endpoints?.length) continue;
 
@@ -47,38 +46,16 @@ function main() {
       const method = endpoint.method.toLowerCase();
 
       if (!paths[pathKey]) paths[pathKey] = {};
+
       paths[pathKey][method] = buildOperation(endpoint, doc.api_id);
     }
   }
 
-  // Assemble spec
-  const spec = {
-    openapi: "3.0.3",
-    info: {
-      title: "Requiems API",
-      version: "1.0.0",
-      description:
-        "Unified access to enterprise-grade APIs — email validation, text utilities, and more. Authenticate with the `requiems-api-key` header.",
-    },
-    servers: [{ url: "https://api.requiems.xyz", description: "Production" }],
-    components: {
-      securitySchemes: {
-        "requiems-api-key": {
-          type: "apiKey",
-          in: "header",
-          name: "requiems-api-key",
-          description: "Your Requiems API key",
-        },
-      },
-    },
-    security: [{ "requiems-api-key": [] }],
-    tags,
-    paths,
-  };
+  const spec = buildSpec(tags, paths);
 
-  // Write output
   try {
     mkdirSync(outputDir, { recursive: true });
+
     writeFileSync(
       outputPath,
       `// AUTO-GENERATED — do not edit. Run \`pnpm generate:openapi\` to regenerate.\n` +
@@ -94,4 +71,4 @@ function main() {
   );
 }
 
-main();
+await main();

@@ -1,19 +1,10 @@
-import { readFileSync, readdirSync } from "fs";
-import { join, resolve } from "path";
+import { readFile, readdir} from "node:fs/promises";
+import { join, } from "node:path";
 
 import yaml from "js-yaml";
 
 import type { YamlError, YamlEndpoint, CatalogEntry, YamlApiDoc } from "./types";
-
-
-const TYPE_SCHEMAS: Record<string, Record<string, unknown>> = {
-  array: { type: "array", items: {} },
-  object: { type: "object" },
-  integer: { type: "integer" },
-  number: { type: "number" },
-  boolean: { type: "boolean" },
-  string: { type: "string" },
-};
+import { apiDocsDir, baseSpec, catalogPath, METHODS_WITH_BODY, TYPE_SCHEMAS } from "./constants";
 
 export function yamlTypeToSchema(type: string): Record<string, unknown> {
   return TYPE_SCHEMAS[type] ?? { type: "string" };
@@ -41,7 +32,6 @@ export function getErrorStatus(error: YamlError): number {
   return KNOWN_ERROR_CODES[String(error.code)] ?? 400;
 }
 
-const METHODS_WITH_BODY =  ["POST", "PUT", "PATCH"]
 
 export function buildOperation(
   endpoint: YamlEndpoint,
@@ -194,16 +184,12 @@ export function buildOperation(
   return operation;
 }
 
-const monorepoRoot = resolve(import.meta.dirname, "../../../../../");
 
-
-export const apiDocsDir = join(monorepoRoot, "apps/dashboard/config/api_docs");
-export const catalogPath = join(monorepoRoot, "apps/dashboard/config/api_catalog.yml");
-
-
-export function loadCatalog(){
+export async function loadCatalog(){
   try {
-    return  yaml.load(readFileSync(catalogPath, "utf8")) as {
+    const catalogContent = await readFile(catalogPath, "utf8");
+
+    return  yaml.load(catalogContent) as {
       apis: CatalogEntry[];
     };
   } catch (err) {
@@ -212,9 +198,11 @@ export function loadCatalog(){
   }
 }
 
-export function loadAPIDocs(){
+export async function loadAPIDocs(){
     try {
-     return readdirSync(apiDocsDir)
+     const files = await readdir(apiDocsDir);
+
+     return files
       .filter((f) => f.endsWith(".yml") || f.endsWith(".yaml"))
       .sort();
   } catch (err) {
@@ -223,11 +211,25 @@ export function loadAPIDocs(){
   }
 }
 
-export function loadAPIDoc(file:string): YamlApiDoc | null {
+export async function loadAPIDoc(file:string) {
       try {
-        return yaml.load(readFileSync(join(apiDocsDir, file), "utf8")) as YamlApiDoc;
+        const apiDocContent = await readFile(join(apiDocsDir, file), "utf8");
+        return yaml.load(apiDocContent) as YamlApiDoc;
       } catch (err) {
         console.warn(`⚠️  Skipping ${file}: failed to parse YAML —`, err);
         return null;
       }
+}
+
+export function buildSpec(
+  tags: { name: string; description: string }[],
+  paths: Record<string, Record<string, unknown>>,
+){
+    const spec = {
+...baseSpec,
+    tags,
+    paths,
+  };
+
+  return spec;
 }
