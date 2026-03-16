@@ -54,7 +54,17 @@ func RegisterRoutes(router chi.Router, svc *Service) {
 			}
 		}
 
-		httpx.JSON(w, http.StatusOK, svc.GetDomains(page, perPage))
+		result, err := svc.GetDomains(page, perPage)
+		if err != nil {
+			if appErr, ok := err.(*httpx.AppError); ok {
+				httpx.Error(w, appErr.Status, appErr.Code, appErr.Message)
+				return
+			}
+			httpx.Error(w, http.StatusInternalServerError, "internal_error", "unexpected error")
+			return
+		}
+
+		httpx.JSON(w, http.StatusOK, result)
 	})
 
 	// GET /disposable/stats — blocklist statistics
