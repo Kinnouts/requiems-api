@@ -95,6 +95,7 @@ app.all("/*", async (c) => {
       url.pathname,
       requestMultiplier,
       keyData.billingCycleStart,
+      log,
     ).catch((err) => {
       log.error("Failed to record usage after retries", {
         error: err,

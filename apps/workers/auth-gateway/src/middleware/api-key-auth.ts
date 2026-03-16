@@ -83,6 +83,7 @@ export const apiKeyAuthMiddleware: MiddlewareHandler<{
     "monthly",
     plan.requestLimit,
     keyData.billingCycleStart,
+    log,
   );
 
   if (requestUsage.usage >= plan.requestLimit) {
