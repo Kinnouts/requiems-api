@@ -11,6 +11,8 @@ class Subscription < ApplicationRecord
   # Scopes
   scope :active, -> { where(status: %w[active trialing]) }
   scope :cancelled, -> { where(status: "cancelled") }
+  scope :paid, -> { where.not(plan_name: "free") }
+  scope :paying, -> { paid.where(cancel_at_period_end: [ false, nil ]) }
 
   # Callbacks
   after_create :sync_to_cloudflare
