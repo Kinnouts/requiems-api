@@ -2,6 +2,7 @@ package httpx
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"time"
 )
@@ -37,10 +38,12 @@ type ErrorResponse struct {
 func JSON[T Data](w http.ResponseWriter, status int, v T) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	_ = json.NewEncoder(w).Encode(Response[T]{
+	if err := json.NewEncoder(w).Encode(Response[T]{
 		Data:     v,
 		Metadata: Metadata{Timestamp: time.Now().UTC().Format(time.RFC3339)},
-	})
+	}); err != nil {
+		log.Printf("httpx: failed to encode JSON response: %v", err)
+	}
 }
 
 // Error writes a JSON error response with a machine-readable code and a
@@ -50,11 +53,13 @@ func JSON[T Data](w http.ResponseWriter, status int, v T) {
 func Error(w http.ResponseWriter, status int, code, message string) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(status)
-	_ = json.NewEncoder(w).Encode(ErrorResponse{
+	if err := json.NewEncoder(w).Encode(ErrorResponse{
 		Error:    code,
 		Message:  message,
 		Metadata: Metadata{Timestamp: time.Now().UTC().Format(time.RFC3339)},
-	})
+	}); err != nil {
+		log.Printf("httpx: failed to encode error response: %v", err)
+	}
 }
 
 // writeValidationError writes a 422 Unprocessable Entity with a structured
@@ -62,9 +67,11 @@ func Error(w http.ResponseWriter, status int, code, message string) {
 func writeValidationError(w http.ResponseWriter, fields []FieldError) {
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusUnprocessableEntity)
-	_ = json.NewEncoder(w).Encode(ErrorResponse{
+	if err := json.NewEncoder(w).Encode(ErrorResponse{
 		Error:    "validation_failed",
 		Fields:   fields,
 		Metadata: Metadata{Timestamp: time.Now().UTC().Format(time.RFC3339)},
-	})
+	}); err != nil {
+		log.Printf("httpx: failed to encode validation error response: %v", err)
+	}
 }

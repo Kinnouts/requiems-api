@@ -67,99 +67,16 @@ class Admin::AnalyticsController < ApplicationController
   end
 
   def revenue
-    # Monthly Recurring Revenue
-    @mrr = calculate_mrr
+    data = AnalyticsRevenueService.new.call
 
-    # Annual Recurring Revenue
-    @arr = @mrr * 12
-
-    # Revenue by plan
-    plan_prices = {
-      "developer" => { monthly: 30, yearly: 25 },
-      "business" => { monthly: 75, yearly: 62.5 },
-      "professional" => { monthly: 150, yearly: 125 }
-    }
-
-    @revenue_by_plan = Subscription
-      .where.not(plan_name: "free")
-      .where(cancel_at_period_end: [ false, nil ])
-      .group(:plan_name, :plan)
-      .count
-      .each_with_object({}) do |((plan, cycle), count), hash|
-        key = "#{plan.titleize} (#{cycle&.titleize || 'Monthly'})"
-        price = plan_prices[plan]&.fetch(cycle&.to_sym || :monthly, 0) || 0
-        hash[key] = price * count
-      end
-
-    # Revenue trend (last 12 months)
-    @revenue_trend = {}
-    (0..11).each do |i|
-      month_start = i.months.ago.beginning_of_month
-      month_end = i.months.ago.end_of_month
-      month_label = month_start.strftime("%b %Y")
-
-      # Calculate revenue for that month (subscriptions active during that period)
-      month_revenue = Subscription
-        .where.not(plan_name: "free")
-        .where("current_period_start <= ?", month_end)
-        .where("current_period_end IS NULL OR current_period_end >= ?", month_start)
-        .sum do |sub|
-          plan_prices[sub.plan_name]&.fetch(sub.plan&.to_sym || :monthly, 0) || 0
-        end
-
-      @revenue_trend[month_label] = month_revenue
-    end
-    @revenue_trend = @revenue_trend.reverse_each.to_h
-
-    # Active subscriptions
-    @active_subscriptions = Subscription
-      .where.not(plan_name: "free")
-      .where(cancel_at_period_end: [ false, nil ])
-      .count
-
-    # Subscriptions by plan
-    @subscriptions_by_plan = Subscription
-      .where.not(plan_name: "free")
-      .group(:plan_name)
-      .count
-      .transform_keys(&:titleize)
-
-    # Churn rate (last 30 days)
-    start_of_period = 30.days.ago
-    subscriptions_at_start = Subscription
-      .where("created_at < ?", start_of_period)
-      .where.not(plan_name: "free")
-      .count
-
-    canceled_in_period = Subscription
-      .where(cancel_at_period_end: true)
-      .where("canceled_at >= ?", start_of_period)
-      .where.not(plan_name: "free")
-      .count
-
-    @churn_rate = subscriptions_at_start > 0 ? ((canceled_in_period.to_f / subscriptions_at_start) * 100).round(2) : 0
-
-    # New vs Canceled subscriptions (last 12 months)
-    @new_vs_canceled = {}
-    (0..11).each do |i|
-      month_start = i.months.ago.beginning_of_month
-      month_end = i.months.ago.end_of_month
-      month_label = month_start.strftime("%b %Y")
-
-      new_subs = Subscription
-        .where.not(plan_name: "free")
-        .where(created_at: month_start..month_end)
-        .count
-
-      canceled_subs = Subscription
-        .where(cancel_at_period_end: true)
-        .where(canceled_at: month_start..month_end)
-        .where.not(plan_name: "free")
-        .count
-
-      @new_vs_canceled[month_label] = { new: new_subs, canceled: canceled_subs }
-    end
-    @new_vs_canceled = @new_vs_canceled.reverse_each.to_h
+    @mrr                  = data.mrr
+    @arr                  = data.arr
+    @revenue_by_plan      = data.revenue_by_plan
+    @revenue_trend        = data.revenue_trend
+    @active_subscriptions = data.active_subscriptions
+    @subscriptions_by_plan = data.subscriptions_by_plan
+    @churn_rate           = data.churn_rate
+    @new_vs_canceled      = data.new_vs_canceled
   end
 
   def system_health
@@ -233,40 +150,6 @@ class Admin::AnalyticsController < ApplicationController
     unless current_user.admin?
       redirect_to root_path, alert: "Access denied. Admin privileges required."
     end
-  end
-
-  def calculate_mrr
-    plan_prices = {
-      "developer" => { monthly: 30, yearly: 25 },
-      "business" => { monthly: 75, yearly: 62.5 },
-      "professional" => { monthly: 150, yearly: 125 }
-    }
-
-    Subscription
-      .where.not(plan_name: "free")
-      .where(cancel_at_period_end: [ false, nil ])
-      .sum do |sub|
-        price = plan_prices[sub.plan_name]&.fetch(sub.plan&.to_sym || :monthly, 0) || 0
-        sub.plan == "yearly" ? (price * 12 / 12.0) : price
-      end
-  end
-
-  def build_error_rate_trend(start_time, time_range)
-    group_interval = time_range == "1h" ? 5.minutes : (time_range == "24h" ? 1.hour : 1.day)
-    time_format = time_range == "1h" ? "%H:%M" : (time_range == "24h" ? "%H:00" : "%b %d")
-    trend = {}
-    current = start_time
-
-    while current < Time.current
-      next_time = current + group_interval
-      period_total = UsageLog.where(used_at: current..next_time).count
-      period_errors = UsageLog.where(used_at: current..next_time).where("status_code >= ?", 400).count
-
-      trend[current.strftime(time_format)] = period_total > 0 ? ((period_errors.to_f / period_total) * 100).round(2) : 0
-      current = next_time
-    end
-
-    trend
   end
 
   def percentile(sorted_array, percentile)
