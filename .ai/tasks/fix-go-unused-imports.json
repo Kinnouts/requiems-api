@@ -1,9 +1,0 @@
-{
-  "id": "fix-go-unused-imports",
-  "title": "Audit and remove dead code / unused exports across Go services",
-  "description": "Run go vet and staticcheck across apps/api to surface unused variables, dead functions, and unused exported symbols introduced by past refactors. Remove identified dead code to reduce maintenance surface.",
-  "pain_score": 3,
-  "files": [
-    "apps/api/services"
-  ]
-}

@@ -1,9 +1,0 @@
-{
-  "id": "add-pagination-to-admin-usage",
-  "title": "Add keyset pagination to admin usage listing to prevent full-table loads",
-  "description": "AdminAnalyticsController loads recent usage with .first(10) applied in Ruby after fetching all rows. Add a LIMIT clause at the SQL level (and keyset pagination if needed) so only 10 rows are fetched from the database.",
-  "pain_score": 6,
-  "files": [
-    "apps/dashboard/app/controllers/admin/analytics_controller.rb"
-  ]
-}

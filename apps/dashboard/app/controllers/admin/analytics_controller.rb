@@ -149,5 +149,4 @@ class Admin::AnalyticsController < ApplicationController
       redirect_to root_path, alert: "Access denied. Admin privileges required."
     end
   end
-
 end

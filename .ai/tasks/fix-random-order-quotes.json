@@ -1,9 +1,0 @@
-{
-  "id": "fix-random-order-quotes",
-  "title": "Replace ORDER BY random() in quotes service with indexed random access",
-  "description": "GetQuote uses ORDER BY random() which causes a full table scan on every request. Replace with a random integer offset pattern (SELECT count → random offset → LIMIT 1 at offset) to avoid full scans.",
-  "pain_score": 9,
-  "files": [
-    "apps/api/services/text/quotes/service.go"
-  ]
-}

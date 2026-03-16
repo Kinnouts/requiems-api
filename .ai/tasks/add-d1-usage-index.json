@@ -1,9 +1,0 @@
-{
-  "id": "add-d1-usage-index",
-  "title": "Add index on credit_usage(api_key, created_at) in D1 schema",
-  "description": "Quota queries in requests.ts filter credit_usage by api_key and a date range. The D1 SQLite table likely lacks an index on these columns, causing full scans on every auth check. Add the index in the D1 migration/schema file to speed up quota lookups.",
-  "pain_score": 8,
-  "files": [
-    "apps/workers/auth-gateway/src/requests.ts"
-  ]
-}

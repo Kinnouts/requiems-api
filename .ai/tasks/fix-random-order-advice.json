@@ -1,9 +1,0 @@
-{
-  "id": "fix-random-order-advice",
-  "title": "Replace ORDER BY random() in advice service with indexed random access",
-  "description": "GetAdvice uses ORDER BY random() which causes a full table scan on every request. Replace with TABLESAMPLE BERNOULLI or a random offset pattern using a count query + OFFSET to leverage index scans.",
-  "pain_score": 9,
-  "files": [
-    "apps/api/services/text/advice/service.go"
-  ]
-}

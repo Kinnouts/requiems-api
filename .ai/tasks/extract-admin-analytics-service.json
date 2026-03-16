@@ -1,9 +1,0 @@
-{
-  "id": "extract-admin-analytics-service",
-  "title": "Extract AdminAnalyticsController business logic into AnalyticsService",
-  "description": "AdminAnalyticsController#usage is 59+ lines calculating 6 different metrics inline. Extract each metric calculation into a dedicated method in an AnalyticsService PORO. Controller becomes thin orchestration only.",
-  "pain_score": 7,
-  "files": [
-    "apps/dashboard/app/controllers/admin/analytics_controller.rb"
-  ]
-}

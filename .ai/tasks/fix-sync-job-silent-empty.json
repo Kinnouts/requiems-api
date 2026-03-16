@@ -1,9 +1,0 @@
-{
-  "id": "fix-sync-job-silent-empty",
-  "title": "Add observability to SyncD1UsageJob on empty or failed sync",
-  "description": "SyncD1UsageJob returns early silently when the API response is empty. An outage or misconfiguration causing empty results looks identical to a legitimate empty sync. Add a warning log with expected vs actual record counts and consider raising on unexpected empty responses.",
-  "pain_score": 6,
-  "files": [
-    "apps/dashboard/app/jobs/sync_d1_usage_job.rb"
-  ]
-}

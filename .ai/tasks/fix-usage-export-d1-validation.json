@@ -1,9 +1,0 @@
-{
-  "id": "fix-usage-export-d1-validation",
-  "title": "Validate D1 response shape in usage export route",
-  "description": "export.ts uses `result.results || []` without validating the D1 response structure. A malformed or unexpected D1 response silently returns an empty export instead of surfacing the error. Add a Zod schema or explicit shape check before processing.",
-  "pain_score": 4,
-  "files": [
-    "apps/workers/api-management/src/routes/usage/export.ts"
-  ]
-}

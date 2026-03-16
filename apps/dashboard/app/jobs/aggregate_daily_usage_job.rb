@@ -17,7 +17,7 @@ class AggregateDailyUsageJob < ApplicationJob
       job_id: job.job_id
     )
   end
-  
+
   BATCH_SIZE = 1000
   private_constant :BATCH_SIZE
 

@@ -1,9 +1,0 @@
-{
-  "id": "fix-usage-date-validation",
-  "title": "Validate start_date/end_date params in UsageController before parsing",
-  "description": "UsageController calls .to_date?.beginning_of_day on raw user params without format validation. An invalid date string can raise or silently produce wrong results. Add explicit format validation (e.g., /\\A\\d{4}-\\d{2}-\\d{2}\\z/) before parsing.",
-  "pain_score": 6,
-  "files": [
-    "apps/dashboard/app/controllers/dashboard/usage_controller.rb"
-  ]
-}

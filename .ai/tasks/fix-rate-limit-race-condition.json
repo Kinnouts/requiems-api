@@ -1,9 +1,0 @@
-{
-  "id": "fix-rate-limit-race-condition",
-  "title": "Fix race condition in KV-based rate limiter",
-  "description": "rate-limit.ts reads then writes the KV counter in two separate operations. Concurrent requests can read the same value and both increment, allowing bursting past limits. Use Cloudflare's atomic KV increment or Durable Objects for correct counters.",
-  "pain_score": 8,
-  "files": [
-    "apps/workers/auth-gateway/src/rate-limit.ts"
-  ]
-}

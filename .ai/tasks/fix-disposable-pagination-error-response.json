@@ -1,9 +1,0 @@
-{
-  "id": "fix-disposable-pagination-error-response",
-  "title": "Return 400 on invalid pagination params in disposable email endpoint",
-  "description": "disposable/transport_http.go silently falls back to default page/per_page when non-integer values are provided. Callers receive no indication their params were invalid. Return a 400 Bad Request with a descriptive error message instead of silently using defaults.",
-  "pain_score": 5,
-  "files": [
-    "apps/api/services/email/disposable/transport_http.go"
-  ]
-}

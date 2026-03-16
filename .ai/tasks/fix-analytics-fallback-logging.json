@@ -1,9 +1,0 @@
-{
-  "id": "fix-analytics-fallback-logging",
-  "title": "Log when analytics date range falls back to default 30-day window",
-  "description": "by-endpoint.ts falls back to THIRTY_DAYS_AGO_MS silently when billingResult.earliest is null/undefined. This masks missing billing records. Add a structured warning log when the fallback is triggered so the condition is visible in production.",
-  "pain_score": 4,
-  "files": [
-    "apps/workers/api-management/src/routes/analytics/by-endpoint.ts"
-  ]
-}

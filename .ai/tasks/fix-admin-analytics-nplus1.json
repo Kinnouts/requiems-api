@@ -1,9 +1,0 @@
-{
-  "id": "fix-admin-analytics-nplus1",
-  "title": "Fix N+1 queries in admin analytics dashboard",
-  "description": "AdminAnalyticsController performs multiple separate queries that could be combined: separate queries for paid vs free plan requests_by_plan instead of a single CASE WHEN query, and joins without select constraints fetching all columns. Consolidate into fewer targeted SQL queries.",
-  "pain_score": 8,
-  "files": [
-    "apps/dashboard/app/controllers/admin/analytics_controller.rb"
-  ]
-}

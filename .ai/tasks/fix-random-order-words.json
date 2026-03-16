@@ -1,9 +1,0 @@
-{
-  "id": "fix-random-order-words",
-  "title": "Replace ORDER BY random() in words service with indexed random access",
-  "description": "GetWord uses ORDER BY random() causing full table scans. Replace with the count + random-offset approach used consistently across all text services to eliminate sequential scans.",
-  "pain_score": 9,
-  "files": [
-    "apps/api/services/text/words/service.go"
-  ]
-}
