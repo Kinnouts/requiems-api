@@ -15,6 +15,13 @@ class User < ApplicationRecord
 
   SUPPORTED_LOCALES = %w[en es].freeze
 
+  PLAN_LIMITS = {
+    "free" => 500,
+    "developer" => 100_000,
+    "business" => 1_000_000,
+    "professional" => 10_000_000
+  }.freeze
+
   validates :locale, inclusion: { in: SUPPORTED_LOCALES }, allow_nil: true
 
   scope :admins, -> { where(admin: true) }
@@ -76,6 +83,30 @@ class User < ApplicationRecord
 
   def current_plan
     subscription&.plan_name || "free"
+  end
+
+  def usage_this_month
+    usage_logs.this_month.count
+  end
+
+  def total_requests
+    usage_logs.count
+  end
+
+  def requests_remaining
+    limit = PLAN_LIMITS[current_plan] || PLAN_LIMITS["free"]
+    [ limit - usage_this_month, 0 ].max
+  end
+
+  def avg_response_time_ms
+    logs = usage_logs.last_7_days.with_response_time
+    return 0 if logs.empty?
+
+    (logs.average(:response_time_ms) || 0).round
+  end
+
+  def recent_activity(limit = 10)
+    usage_logs.recent(limit)
   end
 
   def ban!(reason:, admin_user:)
