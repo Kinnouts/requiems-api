@@ -1,0 +1,9 @@
+{
+  "id": "fix-timing-safe-equal",
+  "title": "Fix length-leaking timingSafeEqual in API management auth middleware",
+  "description": "The custom timingSafeEqual in api-management auth middleware checks byteLength before the constant-time loop, leaking key length via timing. Replace with the Web Crypto API's crypto.subtle.timingSafeEqual for a correct constant-time comparison.",
+  "pain_score": 8,
+  "files": [
+    "apps/workers/api-management/src/middleware/api-key-auth.ts"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "add-usage-logs-endpoint-index",
+  "title": "Add index on usage_logs(endpoint) for analytics group-by queries",
+  "description": "Admin analytics groups usage_logs by endpoint for top-endpoint calculations. Without an index on the endpoint column, this requires a sequential scan. Add a single-column index on endpoint to speed up GROUP BY and COUNT queries.",
+  "pain_score": 6,
+  "files": [
+    "apps/dashboard/db/migrate"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "fix-timezone-handler-size",
+  "title": "Decompose timezone HTTP handler into validation, lookup, and response steps",
+  "description": "places/timezone/transport_http.go handler mixes parameter parsing, validation, and response formatting in one ~64-line function. Extract parameter parsing and response shaping into focused helpers to stay under the 40-line handler guideline.",
+  "pain_score": 3,
+  "files": [
+    "apps/api/services/places/timezone/transport_http.go"
+  ]
+}

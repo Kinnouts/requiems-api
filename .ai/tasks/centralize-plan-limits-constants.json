@@ -1,0 +1,10 @@
+{
+  "id": "centralize-plan-limits-constants",
+  "title": "Centralize plan limit magic numbers into a single constants module",
+  "description": "Request limits, plan names, and quota values are hardcoded in multiple places across User model and UsageController. Define a PlanLimits constant module (mirroring workers-shared/config.ts) so limits are changed in one place.",
+  "pain_score": 5,
+  "files": [
+    "apps/dashboard/app/models/user.rb",
+    "apps/dashboard/app/controllers/dashboard/usage_controller.rb"
+  ]
+}

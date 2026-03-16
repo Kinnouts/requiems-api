@@ -1,0 +1,9 @@
+{
+  "id": "fix-error-handler-stack-exposure",
+  "title": "Remove stack trace exposure from shared error handler",
+  "description": "error-handler.ts includes error.stack in development responses. If the NODE_ENV check misfires or misconfigures in staging/production, internal implementation details are exposed to callers. Move stack traces to the structured logger only and never include them in HTTP responses.",
+  "pain_score": 6,
+  "files": [
+    "apps/workers/shared/src/middleware/error-handler.ts"
+  ]
+}

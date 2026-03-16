@@ -1,0 +1,9 @@
+{
+  "id": "fix-disposable-domains-empty-fallback",
+  "title": "Return 404 instead of empty list when disposable domain page is out of range",
+  "description": "GetDomains returns an empty slice with HasMore:false when page is beyond the last page. Callers cannot distinguish between a genuinely empty result set and an out-of-range page. Return a 404 with a clear message when page * per_page exceeds total domain count.",
+  "pain_score": 4,
+  "files": [
+    "apps/api/services/email/disposable/service.go"
+  ]
+}

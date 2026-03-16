@@ -1,0 +1,9 @@
+{
+  "id": "add-kv-retry-on-cache-miss",
+  "title": "Add single retry for KV.get before falling through to D1 on cache miss",
+  "description": "requests.ts has no retry when KV.get fails transiently. A single transient KV error sends traffic directly to D1. Add one retry with a short delay (or immediate retry) before the D1 fallback to reduce unnecessary D1 load during KV blips.",
+  "pain_score": 5,
+  "files": [
+    "apps/workers/auth-gateway/src/requests.ts"
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "id": "fix-go-error-wrapping",
+  "title": "Add %w error wrapping to service-layer errors in Go API",
+  "description": "Go service files return bare errors (fmt.Errorf without %w) losing the original error chain. This makes it impossible to use errors.Is/As for targeted error handling upstream. Replace fmt.Errorf(\"...: \" + err.Error()) patterns with fmt.Errorf(\"...: %w\", err).",
+  "pain_score": 5,
+  "files": [
+    "apps/api/services/text/advice/service.go",
+    "apps/api/services/text/quotes/service.go",
+    "apps/api/services/text/words/service.go",
+    "apps/api/services/email/disposable/service.go"
+  ]
+}

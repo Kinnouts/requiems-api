@@ -1,0 +1,9 @@
+{
+  "id": "add-response-time-db-percentile",
+  "title": "Use SQL percentile_cont() instead of in-memory sort for p95 response time",
+  "description": "AdminAnalyticsController loads all response_time_ms values into Ruby memory and sorts them to compute percentiles. Use PostgreSQL percentile_cont(0.95) WITHIN GROUP (ORDER BY response_time_ms) to compute p95 in the database, eliminating the full result-set load.",
+  "pain_score": 7,
+  "files": [
+    "apps/dashboard/app/controllers/admin/analytics_controller.rb"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "fix-rails-job-retry-strategy",
+  "title": "Configure explicit retry and discard policies on background jobs",
+  "description": "SyncD1UsageJob and AggregateDailyUsageJob don't declare sidekiq_options for retry count or dead-letter behavior. Failed jobs will retry with defaults indefinitely. Add explicit retry limits and on_discard callbacks to alert on permanent failures.",
+  "pain_score": 5,
+  "files": [
+    "apps/dashboard/app/jobs/sync_d1_usage_job.rb",
+    "apps/dashboard/app/jobs/aggregate_daily_usage_job.rb"
+  ]
+}

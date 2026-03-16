@@ -1,0 +1,9 @@
+{
+  "id": "fix-duplicate-usage-log-validation",
+  "title": "Remove duplicate presence validations in UsageLog model",
+  "description": "UsageLog declares `validates :user_id, :used_at, :endpoint, presence: true` twice. The duplicate is harmless but indicates copy-paste drift and will confuse future maintainers. Remove the duplicate line.",
+  "pain_score": 3,
+  "files": [
+    "apps/dashboard/app/models/usage_log.rb"
+  ]
+}

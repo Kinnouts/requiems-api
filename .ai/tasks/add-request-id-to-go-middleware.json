@@ -1,0 +1,9 @@
+{
+  "id": "add-request-id-to-go-middleware",
+  "title": "Propagate X-Request-ID through Go middleware for distributed tracing",
+  "description": "Go API middleware does not extract or generate a request ID and add it to the response. When the auth gateway proxies a request, the cf-ray ID is lost. Add middleware to read X-Request-ID (or generate one) and include it in all log lines and response headers.",
+  "pain_score": 5,
+  "files": [
+    "apps/api/platform/middleware"
+  ]
+}

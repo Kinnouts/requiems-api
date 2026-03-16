@@ -1,0 +1,10 @@
+{
+  "id": "add-cors-config-validation",
+  "title": "Validate CORS allowed origins list is non-empty at worker startup",
+  "description": "If the CORS allowed-origins configuration is missing or empty, the worker silently allows or denies all origins depending on fallback behavior. Add a startup assertion in worker env.ts that validates required CORS config is present and non-empty.",
+  "pain_score": 4,
+  "files": [
+    "apps/workers/auth-gateway/src/env.ts",
+    "apps/workers/auth-gateway/src/http.ts"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "id": "fix-usage-quota-consistency",
+  "title": "Align quota deduction with rate limiting on backend errors",
+  "description": "In proxy.ts, when the Go backend returns a non-2xx response, requestsUsed is set to 0 and quota is not deducted, but the request already passed rate limiting. This creates an inconsistency: rate limit ticks but quota does not. Decide on a consistent policy and enforce it in one place.",
+  "pain_score": 7,
+  "files": [
+    "apps/workers/auth-gateway/src/requests.ts",
+    "apps/workers/auth-gateway/src/index.ts"
+  ]
+}

@@ -1,0 +1,11 @@
+{
+  "id": "add-go-service-unit-tests",
+  "title": "Add unit tests for text service random-selection edge cases",
+  "description": "The advice, quotes, and words services have no unit tests for the empty-table case or single-row table case. These edge cases (random offset on a 0-row or 1-row table) can panic or return wrong results. Add table-driven tests with an in-memory DB or mock.",
+  "pain_score": 5,
+  "files": [
+    "apps/api/services/text/advice/service.go",
+    "apps/api/services/text/quotes/service.go",
+    "apps/api/services/text/words/service.go"
+  ]
+}

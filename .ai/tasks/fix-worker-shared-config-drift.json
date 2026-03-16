@@ -1,0 +1,10 @@
+{
+  "id": "fix-worker-shared-config-drift",
+  "title": "Ensure plan limits in workers-shared/config.ts match Rails PlanLimits",
+  "description": "Plan quota values are defined independently in workers-shared/config.ts and in the Rails app. When limits are updated, both must be changed manually or they drift. Add a CI check or shared source-of-truth (e.g., a JSON config consumed by both) to enforce consistency.",
+  "pain_score": 7,
+  "files": [
+    "apps/workers/shared/src/config.ts",
+    "apps/dashboard/app/models/user.rb"
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "id": "fix-aggregate-job-memory",
+  "title": "Batch inserts in AggregateDailyUsageJob to avoid full result-set in memory",
+  "description": "AggregateDailyUsageJob maps the entire query result into memory before upserting. For large datasets this causes memory spikes. Switch to batched upserts using insert_all with batch_size or process records in chunks with find_each.",
+  "pain_score": 7,
+  "files": [
+    "apps/dashboard/app/jobs/aggregate_daily_usage_job.rb"
+  ]
+}

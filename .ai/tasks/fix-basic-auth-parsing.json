@@ -1,0 +1,9 @@
+{
+  "id": "fix-basic-auth-parsing",
+  "title": "Harden basic auth credential parsing against malformed input",
+  "description": "basic-auth.ts uses atob() + split(':') without handling invalid base64 or credentials without a colon separator. atob() throws on invalid input; split without limit yields undefined password. Wrap in try/catch and validate credential format before destructuring.",
+  "pain_score": 7,
+  "files": [
+    "apps/workers/shared/src/middleware/basic-auth.ts"
+  ]
+}

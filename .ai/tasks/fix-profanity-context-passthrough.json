@@ -1,0 +1,9 @@
+{
+  "id": "fix-profanity-context-passthrough",
+  "title": "Pass context through profanity service handler for cancellation support",
+  "description": "profanity/transport_http.go discards the request context (uses _ parameter) preventing cancellation propagation to downstream calls. Accept and thread context.Context through the handler so in-flight requests can be cancelled when clients disconnect.",
+  "pain_score": 4,
+  "files": [
+    "apps/api/services/text/profanity/transport_http.go"
+  ]
+}

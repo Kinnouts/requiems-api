@@ -1,0 +1,9 @@
+{
+  "id": "fix-kv-quota-cache-fallback",
+  "title": "Add circuit-breaker for KV quota cache to protect D1 on KV outage",
+  "description": "requests.ts silently swallows KV write failures. If KV is degraded, every request skips cache and hits D1 directly, potentially overwhelming it. Add a per-instance in-memory fallback or a simple open/closed flag to shed D1 load during KV outages.",
+  "pain_score": 6,
+  "files": [
+    "apps/workers/auth-gateway/src/requests.ts"
+  ]
+}

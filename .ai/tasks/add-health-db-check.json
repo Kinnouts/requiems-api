@@ -1,0 +1,9 @@
+{
+  "id": "add-health-db-check",
+  "title": "Include database connectivity in Go /healthz endpoint",
+  "description": "The Go /healthz endpoint likely returns 200 even when PostgreSQL is unreachable, causing load balancers to route traffic to a broken instance. Add a lightweight DB ping (SELECT 1) to the health check so it fails fast when the database is down.",
+  "pain_score": 6,
+  "files": [
+    "apps/api/app/app.go"
+  ]
+}

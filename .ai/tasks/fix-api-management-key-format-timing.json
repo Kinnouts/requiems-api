@@ -1,0 +1,9 @@
+{
+  "id": "fix-api-management-key-format-timing",
+  "title": "Remove format check timing leak from API management auth middleware",
+  "description": "The auth middleware checks key format (length, prefix) before doing the constant-time comparison. This creates a timing side-channel that reveals whether a submitted key has the correct format. Move all format checks to after the constant-time comparison, or return a uniform response time regardless.",
+  "pain_score": 6,
+  "files": [
+    "apps/workers/api-management/src/middleware/api-key-auth.ts"
+  ]
+}

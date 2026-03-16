@@ -1,0 +1,9 @@
+{
+  "id": "fix-csv-deleted-api-key",
+  "title": "Handle soft-deleted API keys in CSV export gracefully",
+  "description": "UsageController CSV export accesses log.api_key&.name and falls back to 'Unknown' for deleted keys. The nil guard is silent. Consider storing the api_key name on usage_log at record time (denormalize) so exports remain accurate after key deletion.",
+  "pain_score": 4,
+  "files": [
+    "apps/dashboard/app/controllers/dashboard/usage_controller.rb"
+  ]
+}
