@@ -1,7 +1,7 @@
 import { Hono } from "hono";
-import { sValidator } from "@hono/standard-validator";
 import * as z from "zod";
-import { createLogger, jsonError, jsonResponse, internalError } from "@requiem/workers-shared";
+import { createLogger, jsonResponse, internalError } from "@requiem/workers-shared";
+import { validateQuery } from "../../middleware";
 import type { WorkerBindings } from "../../env";
 
 const app = new Hono<{ Bindings: WorkerBindings }>();
@@ -30,11 +30,7 @@ interface ApiKeyRecord {
  */
 app.get(
   "/",
-  sValidator("query", listQuerySchema, (result, _c) => {
-    if (!result.success) {
-      return jsonError(400, result.error[0]?.message ?? "Validation error");
-    }
-  }),
+  validateQuery(listQuerySchema),
   async (c) => {
     const log = createLogger(c.req.raw);
     const { userId, active } = c.req.valid("query");
