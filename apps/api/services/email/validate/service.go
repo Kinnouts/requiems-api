@@ -18,7 +18,7 @@ var commonDomains = map[string]struct{}{
 	"yahoo.com": {}, "yahoo.co.uk": {}, "yahoo.fr": {}, "yahoo.es": {}, "yahoo.de": {},
 	"outlook.com": {}, "hotmail.com": {}, "hotmail.co.uk": {}, "hotmail.fr": {},
 	"icloud.com": {}, "me.com": {}, "mac.com": {},
-	"aol.com":    {},
+	"aol.com": {},
 	"protonmail.com": {}, "proton.me": {},
 	"live.com": {}, "msn.com": {},
 	"yandex.com": {}, "yandex.ru": {},
@@ -134,10 +134,17 @@ func suggestDomain(domain string) *string {
 
 	best := ""
 	bestDist := threshold + 1
+	bestLenDiff := 0
 
 	for d := range commonDomains {
-		if dist := levenshtein.ComputeDistance(domain, d); dist < bestDist {
+		dist := levenshtein.ComputeDistance(domain, d)
+		lenDiff := len(domain) - len(d)
+		if lenDiff < 0 {
+			lenDiff = -lenDiff
+		}
+		if dist < bestDist || (dist == bestDist && lenDiff < bestLenDiff) {
 			bestDist = dist
+			bestLenDiff = lenDiff
 			best = d
 		}
 	}
