@@ -4,6 +4,8 @@ import (
 	"strings"
 
 	disposable "github.com/bobadilla-tech/is-email-disposable"
+
+	"requiems-api/platform/httpx"
 )
 
 type Service struct{}
@@ -51,7 +53,7 @@ func (s *Service) CheckDomain(domain string) DomainCheckResponse {
 }
 
 // GetDomains returns paginated list of disposable domains
-func (s *Service) GetDomains(page, perPage int) DomainsListResponse {
+func (s *Service) GetDomains(page, perPage int) (DomainsListResponse, error) {
 	allDomains := disposable.GetAllDomains()
 	total := len(allDomains)
 
@@ -67,14 +69,12 @@ func (s *Service) GetDomains(page, perPage int) DomainsListResponse {
 	start := (page - 1) * perPage
 	end := start + perPage
 
-	// Handle edge cases
+	// Page is beyond the last page
 	if start >= total {
-		return DomainsListResponse{
-			Domains: []string{},
-			Total:   total,
-			Page:    page,
-			PerPage: perPage,
-			HasMore: false,
+		return DomainsListResponse{}, &httpx.AppError{
+			Status:  404,
+			Code:    "page_out_of_range",
+			Message: "page exceeds total number of available pages",
 		}
 	}
 
@@ -88,7 +88,7 @@ func (s *Service) GetDomains(page, perPage int) DomainsListResponse {
 		Page:    page,
 		PerPage: perPage,
 		HasMore: end < total,
-	}
+	}, nil
 }
 
 // GetStats returns statistics about disposable domains
