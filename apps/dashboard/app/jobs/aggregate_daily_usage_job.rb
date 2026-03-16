@@ -31,21 +31,19 @@ class AggregateDailyUsageJob < ApplicationJob
         "COUNT(CASE WHEN status_code >= 400 THEN 1 END) as error_count"
       )
 
-    inserted_count = 0
-
-    aggregated.each do |summary|
-      DailyUsageSummary.upsert(
-        {
-          user_id: summary.user_id,
-          date: summary.date,
-          total_requests: summary.total_requests,
-          total_credits: summary.total_credits,
-          updated_at: Time.current
-        },
-        unique_by: [ :user_id, :date ]
-      )
-      inserted_count += 1
+    records = aggregated.map do |summary|
+      {
+        user_id: summary.user_id,
+        date: summary.date,
+        total_requests: summary.total_requests,
+        total_credits: summary.total_credits,
+        updated_at: Time.current
+      }
     end
+
+    DailyUsageSummary.upsert_all(records, unique_by: [ :user_id, :date ]) if records.any?
+
+    inserted_count = records.size
 
     duration = (Time.current - start_time).round(2)
 
