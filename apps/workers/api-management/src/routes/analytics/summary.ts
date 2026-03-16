@@ -1,6 +1,6 @@
 import { Hono } from "hono";
 import * as z from "zod";
-import { jsonResponse, createLogger, internalError } from "@requiem/workers-shared";
+import { jsonResponse, createLogger, internalError, THIRTY_DAYS_AGO_MS } from "@requiem/workers-shared";
 import { validateQuery } from "../../middleware";
 import type { WorkerBindings } from "../../env";
 import type { EndpointStats, UsageSummary } from "./types";
@@ -42,7 +42,7 @@ app.get(
           .first<{ earliest: string }>();
 
         sinceDate =
-          billingResult?.earliest || new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
+          billingResult?.earliest || new Date(Date.now() - THIRTY_DAYS_AGO_MS).toISOString();
       }
 
       // Get total requests and credits
