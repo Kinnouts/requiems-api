@@ -10,8 +10,8 @@ const app = new Hono<{ Bindings: WorkerBindings }>();
 
 const byDateQuerySchema = z.object({
   userId: z.string().min(1, "Missing required parameter: userId"),
-  since: z.string().optional().default(() => new Date(Date.now() - THIRTY_DAYS_AGO_MS).toISOString()),
-  until: z.string().optional().default(() => new Date().toISOString()),
+  since: z.string().datetime({ message: "since must be a valid ISO 8601 datetime" }).optional().default(() => new Date(Date.now() - THIRTY_DAYS_AGO_MS).toISOString()),
+  until: z.string().datetime({ message: "until must be a valid ISO 8601 datetime" }).optional().default(() => new Date().toISOString()),
   groupBy: z.enum(["day", "hour"]).default("day"),
 });
 
