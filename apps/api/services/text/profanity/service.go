@@ -22,7 +22,7 @@ func (s *Service) Check(text string) Result {
 	hasProfanity := detector.IsProfane(text)
 
 	flaggedSet := map[string]bool{}
-	var flaggedWords []string
+	flaggedWords := make([]string, 0)
 
 	if hasProfanity {
 		remaining := text
@@ -47,10 +47,6 @@ func (s *Service) Check(text string) Result {
 			}
 			remaining = remaining[idx+len(word):]
 		}
-	}
-
-	if flaggedWords == nil {
-		flaggedWords = []string{}
 	}
 
 	return Result{

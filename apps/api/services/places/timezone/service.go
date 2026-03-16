@@ -3,10 +3,13 @@ package timezone
 import (
 	"fmt"
 	"strings"
+	"sync"
 	"time"
 
 	"github.com/ringsaturn/tzf"
 )
+
+var locationCache sync.Map
 
 // Service handles timezone lookups.
 type Service struct {
@@ -48,9 +51,24 @@ func (s *Service) GetTimezoneByCity(city string) (*Info, error) {
 	return buildTimezoneInfo(name)
 }
 
+// loadLocation returns a cached *time.Location for tzName, loading it on first use.
+func loadLocation(tzName string) (*time.Location, error) {
+	if v, ok := locationCache.Load(tzName); ok {
+		if loc, ok := v.(*time.Location); ok {
+			return loc, nil
+		}
+	}
+	loc, err := time.LoadLocation(tzName)
+	if err != nil {
+		return nil, err
+	}
+	locationCache.Store(tzName, loc)
+	return loc, nil
+}
+
 // buildTimezoneInfo loads the IANA timezone and computes the current info.
 func buildTimezoneInfo(tzName string) (*Info, error) {
-	loc, err := time.LoadLocation(tzName)
+	loc, err := loadLocation(tzName)
 	if err != nil {
 		return nil, fmt.Errorf("invalid timezone %q: %w", tzName, err)
 	}

@@ -73,6 +73,20 @@ class AppConfig
     end
   end
 
+  def plan_name_for_variant_id(variant_id)
+    variant_id = variant_id.to_s
+    case variant_id
+    when lemonsqueezy_developer_monthly_variant_id, lemonsqueezy_developer_yearly_variant_id
+      "developer"
+    when lemonsqueezy_business_monthly_variant_id, lemonsqueezy_business_yearly_variant_id
+      "business"
+    when lemonsqueezy_professional_monthly_variant_id, lemonsqueezy_professional_yearly_variant_id
+      "professional"
+    else
+      nil
+    end
+  end
+
   def checkout_uuid_for(plan:, billing_cycle:)
     case plan.to_s.downcase
     when "developer"

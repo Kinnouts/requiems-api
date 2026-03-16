@@ -88,6 +88,18 @@ const ENDPOINT_PREFIXES: Array<[string, string, number]> = Array.from(
 export const DEFAULT_REQUEST_MULTIPLIER = 1;
 
 /**
+ * Maximum number of records returned by the usage export endpoint.
+ * Caps the `limit` query parameter to prevent oversized D1 result sets.
+ */
+export const USAGE_EXPORT_MAX_LIMIT = 5000;
+
+/**
+ * Maximum number of endpoints returned by the analytics by-endpoint endpoint.
+ * Caps the `limit` query parameter to bound the result set size.
+ */
+export const ANALYTICS_ENDPOINT_MAX_LIMIT = 100;
+
+/**
  * Get the request multiplier for an endpoint
  * Matches exact path first, then tries prefix matching for dynamic routes
  */
