@@ -1,5 +1,4 @@
 import { Hono } from "hono";
-import { sValidator } from "@hono/standard-validator";
 import * as z from "zod";
 import {
   type ApiKeyData,
@@ -10,6 +9,7 @@ import {
   jsonError,
   jsonResponse,
 } from "@requiem/workers-shared";
+import { validateJson } from "../../middleware";
 import type { WorkerBindings } from "../../env";
 import { planSchema } from "./schemas";
 
@@ -37,11 +37,7 @@ interface CreateApiKeyResponse {
  */
 app.post(
   "/",
-  sValidator("json", createApiKeySchema, (result, _c) => {
-    if (!result.success) {
-      return jsonError(400, result.error[0]?.message ?? "Validation error");
-    }
-  }),
+  validateJson(createApiKeySchema),
   async (c) => {
     const log = createLogger(c.req.raw);
     const body = c.req.valid("json");

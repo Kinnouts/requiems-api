@@ -8,48 +8,10 @@ class Admin::UsersController < ApplicationController
 
   def index
     @users = User.all
-
-    # Search by email, name, or company
-    if params[:search].present?
-      search_term = "%#{params[:search]}%"
-      @users = @users.where(
-        "email ILIKE ? OR name ILIKE ? OR company ILIKE ?",
-        search_term, search_term, search_term
-      )
-    end
-
-    # Filter by plan
-    if params[:plan].present? && params[:plan] != "all"
-      if params[:plan] == "free"
-        @users = @users.left_joins(:subscription)
-          .where(subscriptions: { id: nil })
-          .or(@users.left_joins(:subscription).where(subscriptions: { plan_name: "free" }))
-      else
-        @users = @users.joins(:subscription).where(subscriptions: { plan_name: params[:plan] })
-      end
-    end
-
-    # Filter by status
-    case params[:status]
-    when "admin"
-      @users = @users.where(admin: true)
-    when "suspended"
-      @users = @users.where(status: "suspended")
-    when "active"
-      @users = @users.where(status: "active")
-    end
-
-    # Sort
-    @users = case params[:sort]
-    when "oldest"
-               @users.order(created_at: :asc)
-    when "name"
-               @users.order(name: :asc)
-    else # newest (default)
-               @users.order(created_at: :desc)
-    end
-
-    # Paginate (using pagy gem)
+    @users = @users.search_by(params[:search]) if params[:search].present?
+    @users = @users.with_plan(params[:plan]) if params[:plan].present? && params[:plan] != "all"
+    @users = @users.with_status(params[:status]) if params[:status].present?
+    @users = @users.sorted_by(params[:sort])
     @pagy, @users = pagy(@users, items: 20)
   end
 
@@ -147,10 +109,6 @@ class Admin::UsersController < ApplicationController
   end
 
   def calculate_user_error_rate
-    total = @user.usage_logs.count
-    return 0 if total.zero?
-
-    errors = @user.usage_logs.where("status_code >= ?", 400).count
-    ((errors.to_f / total) * 100).round(2)
+    UsageLog.error_rate_for(@user.usage_logs)
   end
 end

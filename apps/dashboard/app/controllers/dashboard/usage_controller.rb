@@ -120,15 +120,8 @@ class Dashboard::UsageController < ApplicationController
   end
 
   def calculate_error_rate
-    total = calculate_total_requests
-    return 0 if total.zero?
-
-    errors = current_user.usage_logs
-      .where(used_at: @start_date..@end_date)
-      .where("status_code >= ?", 400)
-      .count
-
-    ((errors.to_f / total) * 100).round(2)
+    scope = current_user.usage_logs.where(used_at: @start_date..@end_date)
+    UsageLog.error_rate_for(scope)
   end
 
   def fetch_recent_requests(limit = 20)

@@ -30,10 +30,11 @@ class Admin::AbuseReportsController < ApplicationController
     @pagy, @abuse_reports = pagy(@abuse_reports, items: 20)
 
     # Statistics
-    @total_reports = AbuseReport.count
-    @pending_reports = AbuseReport.where(status: "pending").count
-    @investigating_reports = AbuseReport.where(status: "investigating").count
-    @resolved_reports = AbuseReport.where(status: "resolved").count
+    counts_by_status = AbuseReport.group(:status).count
+    @total_reports = counts_by_status.values.sum
+    @pending_reports = counts_by_status["pending"].to_i
+    @investigating_reports = counts_by_status["investigating"].to_i
+    @resolved_reports = counts_by_status["resolved"].to_i
   end
 
   def show
@@ -88,10 +89,6 @@ class Admin::AbuseReportsController < ApplicationController
   end
 
   def calculate_error_rate(user)
-    total = user.usage_logs.count
-    return 0 if total.zero?
-
-    errors = user.usage_logs.where("status_code >= ?", 400).count
-    ((errors.to_f / total) * 100).round(2)
+    UsageLog.error_rate_for(user.usage_logs)
   end
 end
