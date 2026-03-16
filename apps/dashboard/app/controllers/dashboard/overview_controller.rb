@@ -33,18 +33,8 @@ class Dashboard::OverviewController < ApplicationController
   end
 
   def calculate_requests_remaining
-    # Plan limits (should match pricing config)
-    plan_limits = {
-      "free" => 500,
-      "developer" => 100_000,
-      "business" => 1_000_000,
-      "professional" => 10_000_000
-    }
-
-    limit = plan_limits[@current_plan] || 500
-    used = @usage_this_month
-
-    [ limit - used, 0 ].max
+    limit = PlanConfig.requests_per_month(@current_plan)
+    [ limit - @usage_this_month, 0 ].max
   end
 
   def calculate_avg_response_time
