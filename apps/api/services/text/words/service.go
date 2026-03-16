@@ -2,6 +2,7 @@ package words
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 )
@@ -33,7 +34,7 @@ LIMIT 1;
 
 	var w Word
 	if err := row.Scan(&w.ID, &w.Word, &w.Definition, &w.PartOfSpeech); err != nil {
-		return Word{}, err
+		return Word{}, fmt.Errorf("scan word: %w", err)
 	}
 
 	return w, nil
