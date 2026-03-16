@@ -1,7 +1,6 @@
 import { Hono } from "hono";
 import * as z from "zod";
 import { jsonError, jsonResponse, createLogger, internalError, USAGE_EXPORT_MAX_LIMIT } from "@requiem/workers-shared";
-import { validateQuery } from "../../middleware";
 import type { WorkerBindings } from "../../env";
 import type { UsageExportResponse, UsageRecord } from "./types";
 
@@ -26,10 +25,14 @@ const exportQuerySchema = z.object({
  */
 app.get(
   "/export",
-  validateQuery(exportQuerySchema),
   async (c) => {
     const log = createLogger(c.req.raw);
-    const { since, limit, cursor: afterId } = c.req.valid("query");
+
+    const parsed = exportQuerySchema.safeParse(c.req.query());
+    if (!parsed.success) {
+      return jsonError(400, parsed.error.issues[0]?.message ?? "Validation error");
+    }
+    const { since, limit, cursor: afterId } = parsed.data;
 
     try {
       // Fetch usage records using keyset pagination on the autoincrement id.

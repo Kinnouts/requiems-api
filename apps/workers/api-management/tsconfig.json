@@ -15,7 +15,13 @@
     "forceConsistentCasingInFileNames": true,
     "paths": {
       "@requiem/workers-shared": ["../shared/src"],
-      "@requiem/workers-shared/*": ["../shared/src/*"]
+      "@requiem/workers-shared/*": ["../shared/src/*"],
+      "hono": ["./node_modules/hono"],
+      "hono/*": ["./node_modules/hono/*"],
+      "nanoid": ["./node_modules/nanoid"],
+      "nanoid/*": ["./node_modules/nanoid/*"],
+      "@cloudflare/workers-types": ["./node_modules/@cloudflare/workers-types"],
+      "@cloudflare/workers-types/*": ["./node_modules/@cloudflare/workers-types/*"]
     }
   },
   "include": ["src/**/*", "../shared/src/**/*"],

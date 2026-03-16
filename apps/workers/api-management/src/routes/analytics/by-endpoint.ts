@@ -1,7 +1,6 @@
 import { Hono } from "hono";
 import * as z from "zod";
 import { jsonError, jsonResponse, createLogger, internalError, THIRTY_DAYS_AGO_MS, ANALYTICS_ENDPOINT_MAX_LIMIT } from "@requiem/workers-shared";
-import { validateQuery } from "../../middleware";
 import type { WorkerBindings } from "../../env";
 import type { EndpointStats } from "./types";
 
@@ -26,10 +25,14 @@ const byEndpointQuerySchema = z.object({
  */
 app.get(
   "/by-endpoint",
-  validateQuery(byEndpointQuerySchema),
   async (c) => {
     const log = createLogger(c.req.raw);
-    const { userId, limit, since, until } = c.req.valid("query");
+
+    const parsed = byEndpointQuerySchema.safeParse(c.req.query());
+    if (!parsed.success) {
+      return jsonError(400, parsed.error.issues[0]?.message ?? "Validation error");
+    }
+    const { userId, limit, since, until } = parsed.data;
 
     try {
       // If no "since" provided, get the earliest billing cycle start for this user

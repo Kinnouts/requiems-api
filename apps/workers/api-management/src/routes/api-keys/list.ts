@@ -1,7 +1,6 @@
 import { Hono } from "hono";
 import * as z from "zod";
-import { createLogger, jsonResponse, internalError } from "@requiem/workers-shared";
-import { validateQuery } from "../../middleware";
+import { createLogger, jsonError, jsonResponse, internalError } from "@requiem/workers-shared";
 import type { WorkerBindings } from "../../env";
 
 const app = new Hono<{ Bindings: WorkerBindings }>();
@@ -30,10 +29,13 @@ interface ApiKeyRecord {
  */
 app.get(
   "/",
-  validateQuery(listQuerySchema),
   async (c) => {
     const log = createLogger(c.req.raw);
-    const { userId, active } = c.req.valid("query");
+    const parsed = listQuerySchema.safeParse(c.req.query());
+    if (!parsed.success) {
+      return jsonError(400, parsed.error.issues[0]?.message ?? "Validation error");
+    }
+    const { userId, active } = parsed.data;
     const activeOnly = active !== "false";
 
     try {

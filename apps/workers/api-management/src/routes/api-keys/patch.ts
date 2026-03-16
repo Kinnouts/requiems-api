@@ -1,7 +1,6 @@
 import { Hono } from "hono";
 import * as z from "zod";
 import { type ApiKeyData, createLogger, internalError, jsonError, jsonResponse } from "@requiem/workers-shared";
-import { validateJson } from "../../middleware";
 import type { WorkerBindings } from "../../env";
 import { planSchema } from "./schemas";
 
@@ -23,11 +22,16 @@ const patchApiKeySchema = z
  */
 app.patch(
   "/:keyPrefix",
-  validateJson(patchApiKeySchema),
   async (c) => {
     const log = createLogger(c.req.raw);
     const keyPrefix = c.req.param("keyPrefix");
-    const body = c.req.valid("json");
+
+    const rawBody = await c.req.json().catch(() => null);
+    const parsed = patchApiKeySchema.safeParse(rawBody);
+    if (!parsed.success) {
+      return jsonError(400, parsed.error.issues[0]?.message ?? "Validation error");
+    }
+    const body = parsed.data;
 
     try {
       // O(1) reverse-lookup

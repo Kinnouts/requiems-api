@@ -1,7 +1,6 @@
 import { Hono } from "hono";
 import * as z from "zod";
-import { jsonResponse, createLogger, internalError, THIRTY_DAYS_AGO_MS } from "@requiem/workers-shared";
-import { validateQuery } from "../../middleware";
+import { jsonError, jsonResponse, createLogger, internalError, THIRTY_DAYS_AGO_MS } from "@requiem/workers-shared";
 import type { WorkerBindings } from "../../env";
 import type { EndpointStats, UsageSummary } from "./types";
 
@@ -24,10 +23,14 @@ const summaryQuerySchema = z.object({
  */
 app.get(
   "/summary",
-  validateQuery(summaryQuerySchema),
   async (c) => {
     const log = createLogger(c.req.raw);
-    const { userId, since, until } = c.req.valid("query");
+
+    const parsed = summaryQuerySchema.safeParse(c.req.query());
+    if (!parsed.success) {
+      return jsonError(400, parsed.error.issues[0]?.message ?? "Validation error");
+    }
+    const { userId, since, until } = parsed.data;
 
     try {
       // If no "since" provided, get the earliest billing cycle start

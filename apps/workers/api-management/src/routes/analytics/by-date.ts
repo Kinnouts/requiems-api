@@ -1,7 +1,6 @@
 import { Hono } from "hono";
 import * as z from "zod";
-import { jsonResponse, createLogger, internalError, THIRTY_DAYS_AGO_MS } from "@requiem/workers-shared";
-import { validateQuery } from "../../middleware";
+import { jsonError, jsonResponse, createLogger, internalError, THIRTY_DAYS_AGO_MS } from "@requiem/workers-shared";
 import type { WorkerBindings } from "../../env";
 import type { DateStats } from "./types";
 
@@ -26,11 +25,14 @@ const byDateQuerySchema = z.object({
  */
 app.get(
   "/by-date",
-  validateQuery(byDateQuerySchema),
   async (c) => {
     const log = createLogger(c.req.raw);
 
-    const { userId, groupBy, since, until } = c.req.valid("query");
+    const parsed = byDateQuerySchema.safeParse(c.req.query());
+    if (!parsed.success) {
+      return jsonError(400, parsed.error.issues[0]?.message ?? "Validation error");
+    }
+    const { userId, groupBy, since, until } = parsed.data;
   
     try {
       const dateFormat = groupBy === "day" ? "%Y-%m-%d" : "%Y-%m-%d %H:00:00";

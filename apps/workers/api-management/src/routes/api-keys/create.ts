@@ -9,7 +9,6 @@ import {
   jsonError,
   jsonResponse,
 } from "@requiem/workers-shared";
-import { validateJson } from "../../middleware";
 import type { WorkerBindings } from "../../env";
 import { planSchema } from "./schemas";
 
@@ -37,10 +36,15 @@ interface CreateApiKeyResponse {
  */
 app.post(
   "/",
-  validateJson(createApiKeySchema),
   async (c) => {
     const log = createLogger(c.req.raw);
-    const body = c.req.valid("json");
+
+    const rawBody = await c.req.json().catch(() => null);
+    const parsed = createApiKeySchema.safeParse(rawBody);
+    if (!parsed.success) {
+      return jsonError(400, parsed.error.issues[0]?.message ?? "Validation error");
+    }
+    const body = parsed.data;
 
     try {
       // Generate new API key
