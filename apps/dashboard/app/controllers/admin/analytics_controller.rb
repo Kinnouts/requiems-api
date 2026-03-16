@@ -110,7 +110,6 @@ class Admin::AnalyticsController < ApplicationController
       @p50_response_time = @p95_response_time = @p99_response_time = 0
     end
 
-    # Error rate trend (by hour or day)
     @error_rate_trend = build_error_rate_trend(@start_time, @time_range)
 
     # Rate limit hits (last 24h)
