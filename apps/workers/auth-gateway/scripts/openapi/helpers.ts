@@ -1,5 +1,5 @@
-import { readFile, readdir} from "node:fs/promises";
-import { join, } from "node:path";
+import { readFile, readdir } from "node:fs/promises";
+import { join } from "node:path";
 
 import yaml from "js-yaml";
 
@@ -32,11 +32,7 @@ export function getErrorStatus(error: YamlError): number {
   return KNOWN_ERROR_CODES[String(error.code)] ?? 400;
 }
 
-
-export function buildOperation(
-  endpoint: YamlEndpoint,
-  apiId: string,
-): Record<string, unknown> {
+export function buildOperation(endpoint: YamlEndpoint, apiId: string): Record<string, unknown> {
   const params = endpoint.parameters ?? [];
 
   const pathAndQueryParams = params
@@ -59,9 +55,7 @@ export function buildOperation(
       return param;
     });
 
-  const bodyParams = params.filter(
-    (p) => !p.location || p.location === "body",
-  );
+  const bodyParams = params.filter((p) => !p.location || p.location === "body");
 
   const operation: Record<string, unknown> = {
     summary: endpoint.name,
@@ -75,10 +69,7 @@ export function buildOperation(
   // Build requestBody for POST/PUT/PATCH with body params
   const method = endpoint.method.toUpperCase();
 
-  if (
-    bodyParams.length > 0 &&
-    METHODS_WITH_BODY.includes(method)
-  ) {
+  if (bodyParams.length > 0 && METHODS_WITH_BODY.includes(method)) {
     const properties: Record<string, unknown> = {};
     const required: string[] = [];
 
@@ -115,7 +106,6 @@ export function buildOperation(
   }
 
   const responses: Record<string, unknown> = {};
-
 
   const successResponse: Record<string, unknown> = {
     description: "Successful response",
@@ -184,12 +174,11 @@ export function buildOperation(
   return operation;
 }
 
-
-export async function loadCatalog(){
+export async function loadCatalog() {
   try {
     const catalogContent = await readFile(catalogPath, "utf8");
 
-    return  yaml.load(catalogContent) as {
+    return yaml.load(catalogContent) as {
       apis: CatalogEntry[];
     };
   } catch (err) {
@@ -198,35 +187,33 @@ export async function loadCatalog(){
   }
 }
 
-export async function loadAPIDocs(){
-    try {
-     const files = await readdir(apiDocsDir);
+export async function loadAPIDocs() {
+  try {
+    const files = await readdir(apiDocsDir);
 
-     return files
-      .filter((f) => f.endsWith(".yml") || f.endsWith(".yaml"))
-      .sort();
+    return files.filter((f) => f.endsWith(".yml") || f.endsWith(".yaml")).sort();
   } catch (err) {
     console.error(`❌ Failed to read api_docs directory at ${apiDocsDir}:`, err);
     process.exit(1);
   }
 }
 
-export async function loadAPIDoc(file:string) {
-      try {
-        const apiDocContent = await readFile(join(apiDocsDir, file), "utf8");
-        return yaml.load(apiDocContent) as YamlApiDoc;
-      } catch (err) {
-        console.warn(`⚠️  Skipping ${file}: failed to parse YAML —`, err);
-        return null;
-      }
+export async function loadAPIDoc(file: string) {
+  try {
+    const apiDocContent = await readFile(join(apiDocsDir, file), "utf8");
+    return yaml.load(apiDocContent) as YamlApiDoc;
+  } catch (err) {
+    console.warn(`⚠️  Skipping ${file}: failed to parse YAML —`, err);
+    return null;
+  }
 }
 
 export function buildSpec(
   tags: { name: string; description: string }[],
   paths: Record<string, Record<string, unknown>>,
-){
-    const spec = {
-...baseSpec,
+) {
+  const spec = {
+    ...baseSpec,
     tags,
     paths,
   };

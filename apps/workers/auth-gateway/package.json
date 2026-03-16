@@ -17,6 +17,7 @@
     "test:coverage": "vitest run --coverage",
     "lint": "biome lint ./src ./scripts",
     "lint:fix": "biome lint --write --unsafe ./src ./scripts",
+    "fix": "biome lint --write --unsafe ./src ./scripts && biome format --write ./src ./scripts",
     "format": "biome format --write ./src ./scripts",
     "format:check": "biome format ./src ./scripts",
     "db:migrate": "wrangler d1 execute requiem-usage --local --yes --file=schema.sql",

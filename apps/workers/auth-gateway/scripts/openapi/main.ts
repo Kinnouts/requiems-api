@@ -5,7 +5,7 @@
  */
 
 import { writeFileSync, mkdirSync } from "node:fs";
-import { join} from "node:path";
+import { join } from "node:path";
 
 import { buildOperation, buildSpec, loadAPIDoc, loadAPIDocs, loadCatalog } from "./helpers";
 
@@ -14,17 +14,16 @@ import type { CatalogEntry } from "./types";
 const outputDir = join(import.meta.dirname, "../../src/generated");
 const outputPath = join(outputDir, "openapi.ts");
 
-
 async function main() {
   const catalog = await loadCatalog();
 
   const catalogMap = new Map<string, CatalogEntry>();
-  
+
   for (const entry of catalog.apis ?? []) {
     catalogMap.set(entry.id, entry);
   }
 
-  const docFiles= await loadAPIDocs();
+  const docFiles = await loadAPIDocs();
 
   const paths: Record<string, Record<string, unknown>> = {};
   const tags: { name: string; description: string }[] = [];
