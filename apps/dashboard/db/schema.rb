@@ -25,6 +25,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_10_221218) do
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["api_key_id"], name: "index_abuse_reports_on_api_key_id"
+    t.index ["status", "created_at"], name: "index_abuse_reports_on_status_and_created_at"
     t.index ["user_id"], name: "index_abuse_reports_on_user_id"
   end
 
