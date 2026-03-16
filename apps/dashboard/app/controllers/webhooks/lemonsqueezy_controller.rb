@@ -75,20 +75,22 @@ class Webhooks::LemonsqueezyController < ApplicationController
 
     plan_name = determine_plan_name(data[:variant_id])
 
-    subscription = user.subscription || user.build_subscription
-    subscription.update!(
-      lemonsqueezy_subscription_id: params[:data][:id],
-      lemonsqueezy_customer_id: data[:customer_id],
-      plan_name: plan_name,
-      status: data[:status],
-      current_period_start: data[:renews_at] ? Time.zone.parse(data[:renews_at]) - 1.month : Time.current,
-      current_period_end: data[:renews_at],
-      trial_ends_at: data[:trial_ends_at],
-      cancel_at_period_end: false
-    )
+    ActiveRecord::Base.transaction do
+      subscription = user.subscription || user.build_subscription
+      subscription.update!(
+        lemonsqueezy_subscription_id: params[:data][:id],
+        lemonsqueezy_customer_id: data[:customer_id],
+        plan_name: plan_name,
+        status: data[:status],
+        current_period_start: data[:renews_at] ? Time.zone.parse(data[:renews_at]) - 1.month : Time.current,
+        current_period_end: data[:renews_at],
+        trial_ends_at: data[:trial_ends_at],
+        cancel_at_period_end: false
+      )
 
-    # Sync to Cloudflare KV
-    Cloudflare::ApiManagementService.new.sync_user_plan(user, plan_name)
+      # Sync to Cloudflare KV — inside transaction so a failure rolls back the DB save
+      Cloudflare::ApiManagementService.new.sync_user_plan(user, plan_name)
+    end
 
     Rails.logger.info "[LemonSqueezy] Subscription created for user #{user.id}: #{plan_name}"
   end
@@ -104,15 +106,17 @@ class Webhooks::LemonsqueezyController < ApplicationController
 
     plan_name = determine_plan_name(data[:variant_id])
 
-    subscription.update!(
-      status: data[:status],
-      plan_name: plan_name,
-      current_period_end: data[:renews_at],
-      cancel_at_period_end: data[:ends_at].present?
-    )
+    ActiveRecord::Base.transaction do
+      subscription.update!(
+        status: data[:status],
+        plan_name: plan_name,
+        current_period_end: data[:renews_at],
+        cancel_at_period_end: data[:ends_at].present?
+      )
 
-    # Sync to Cloudflare KV
-    Cloudflare::ApiManagementService.new.sync_user_plan(subscription.user, plan_name)
+      # Sync to Cloudflare KV — inside transaction so a failure rolls back the DB save
+      Cloudflare::ApiManagementService.new.sync_user_plan(subscription.user, plan_name)
+    end
 
     Rails.logger.info "[LemonSqueezy] Subscription updated: #{subscription.id}"
   end
@@ -126,14 +130,16 @@ class Webhooks::LemonsqueezyController < ApplicationController
       return
     end
 
-    subscription.update!(
-      status: "cancelled",
-      cancel_at_period_end: true,
-      plan_name: "free"
-    )
+    ActiveRecord::Base.transaction do
+      subscription.update!(
+        status: "cancelled",
+        cancel_at_period_end: true,
+        plan_name: "free"
+      )
 
-    # Downgrade to free plan in Cloudflare KV
-    Cloudflare::ApiManagementService.new.sync_user_plan(subscription.user, "free")
+      # Downgrade to free plan in Cloudflare KV — inside transaction so a failure rolls back the DB save
+      Cloudflare::ApiManagementService.new.sync_user_plan(subscription.user, "free")
+    end
 
     Rails.logger.info "[LemonSqueezy] Subscription cancelled: #{subscription.id}"
   end
@@ -149,14 +155,16 @@ class Webhooks::LemonsqueezyController < ApplicationController
 
     plan_name = determine_plan_name(data[:variant_id])
 
-    subscription.update!(
-      status: data[:status],
-      plan_name: plan_name,
-      cancel_at_period_end: false
-    )
+    ActiveRecord::Base.transaction do
+      subscription.update!(
+        status: data[:status],
+        plan_name: plan_name,
+        cancel_at_period_end: false
+      )
 
-    # Restore plan in Cloudflare KV
-    Cloudflare::ApiManagementService.new.sync_user_plan(subscription.user, plan_name)
+      # Restore plan in Cloudflare KV — inside transaction so a failure rolls back the DB save
+      Cloudflare::ApiManagementService.new.sync_user_plan(subscription.user, plan_name)
+    end
 
     Rails.logger.info "[LemonSqueezy] Subscription resumed: #{subscription.id}"
   end
