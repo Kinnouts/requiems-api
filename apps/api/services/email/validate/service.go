@@ -76,7 +76,7 @@ func NewService() *Service {
 func (s *Service) ValidateEmail(ctx context.Context, email string) EmailValidation {
 	if !isValidSyntax(email) {
 		return EmailValidation{
-			Email:       email,
+			Email:       nil,
 			Valid:       false,
 			SyntaxValid: false,
 		}
@@ -96,13 +96,13 @@ func (s *Service) ValidateEmail(ctx context.Context, email string) EmailValidati
 	suggestion := suggestDomain(domain)
 
 	return EmailValidation{
-		Email:       email,
+		Email:       &email,
 		Valid:       mxValid,
 		SyntaxValid: true,
 		MxValid:     mxValid,
 		Disposable:  isDisposable,
-		Normalized:  normalized,
-		Domain:      domain,
+		Normalized:  &normalized,
+		Domain:      &domain,
 		Suggestion:  suggestion,
 	}
 }

@@ -70,11 +70,11 @@ func TestValidate_ValidEmail(t *testing.T) {
 	if !resp.Data.SyntaxValid {
 		t.Error("expected SyntaxValid=true")
 	}
-	if resp.Data.Email != "user@gmail.com" {
-		t.Errorf("expected Email=user@gmail.com, got %q", resp.Data.Email)
+	if *resp.Data.Email != "user@gmail.com" {
+		t.Errorf("expected Email=user@gmail.com, got %q", *resp.Data.Email)
 	}
-	if resp.Data.Domain != "gmail.com" {
-		t.Errorf("expected Domain=gmail.com, got %q", resp.Data.Domain)
+	if *resp.Data.Domain != "gmail.com" {
+		t.Errorf("expected Domain=gmail.com, got %q", *resp.Data.Domain)
 	}
 }
 
