@@ -131,8 +131,8 @@ func TestValidateEmail_ValidGmail(t *testing.T) {
 	if !result.Valid {
 		t.Error("expected Valid=true")
 	}
-	if result.Domain != "gmail.com" {
-		t.Errorf("expected Domain=gmail.com, got %q", result.Domain)
+	if *result.Domain != "gmail.com" {
+		t.Errorf("expected Domain=gmail.com, got %q", *result.Domain)
 	}
 	if result.Suggestion != nil {
 		t.Errorf("expected Suggestion=nil for known-good domain, got %q", *result.Suggestion)
@@ -165,7 +165,7 @@ func TestValidateEmail_GmailPlusNormalized(t *testing.T) {
 	if !result.SyntaxValid {
 		t.Error("expected SyntaxValid=true")
 	}
-	if result.Normalized == "User.Name+tag@gmail.com" {
+	if *result.Normalized == "User.Name+tag@gmail.com" {
 		t.Error("expected email to be normalized (Gmail strips dots and plus-tags)")
 	}
 }
