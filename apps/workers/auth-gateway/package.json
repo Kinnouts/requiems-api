@@ -27,7 +27,7 @@
     "kv:seed": "node scripts/seed-kv.ts"
   },
   "dependencies": {
-    "hono": "^4.12.7",
+    "hono": "^4.12.8",
     "zod": "^4.0.0"
   },
   "devDependencies": {
