@@ -19,8 +19,8 @@ importers:
         specifier: ^4.20260312.1
         version: 4.20260312.1
       hono:
-        specifier: ^4.12.4
-        version: 4.12.7
+        specifier: ^4.12.8
+        version: 4.12.8
       nanoid:
         specifier: ^5.1.6
         version: 5.1.6
@@ -86,8 +86,8 @@ packages:
   '@cloudflare/workers-types@4.20260312.1':
     resolution: {integrity: sha512-ySoTKc2ZKpwHll4H6byPWkxI/vmCc86B4h+hKo077zSTmBqIcxvbFozmOcEY7dhudMMDBnCgwZ9FknRrJxyqiQ==}
 
-  hono@4.12.7:
-    resolution: {integrity: sha512-jq9l1DM0zVIvsm3lv9Nw9nlJnMNPOcAtsbsgiUhWcFzPE99Gvo6yRTlszSLLYacMeQ6quHD6hMfId8crVHvexw==}
+  hono@4.12.8:
+    resolution: {integrity: sha512-VJCEvtrezO1IAR+kqEYnxUOoStaQPGrCmX3j4wDTNOcD1uRPFpGlwQUIW8niPuvHXaTUxeOUl5MMDGrl+tmO9A==}
     engines: {node: '>=16.9.0'}
 
   nanoid@5.1.6:
@@ -142,7 +142,7 @@ snapshots:
 
   '@cloudflare/workers-types@4.20260312.1': {}
 
-  hono@4.12.7: {}
+  hono@4.12.8: {}
 
   nanoid@5.1.6: {}
 
