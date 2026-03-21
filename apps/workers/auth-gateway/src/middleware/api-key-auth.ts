@@ -9,6 +9,7 @@ import {
   PLANS,
   type RateLimitResult,
   type RequestCheckResult,
+  WEBSITE_URL,
 } from "@requiem/workers-shared";
 
 import { checkRateLimit, getRequestLimitMessage } from "../rate-limit";
@@ -38,7 +39,7 @@ export const apiKeyAuthMiddleware: MiddlewareHandler<{
   const apiKey = c.req.header("requiems-api-key");
 
   if (!apiKey) {
-    return jsonError(401, "Get your key at requiems-api.xyz");
+    return jsonError(401, `Get your key at ${WEBSITE_URL}`);
   }
 
   if (!isValidKeyFormat(apiKey)) {
