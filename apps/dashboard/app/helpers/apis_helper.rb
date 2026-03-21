@@ -124,6 +124,22 @@ module ApisHelper
         lines << ep["response_example"].strip
         lines << ""
       end
+
+      if ep["response_fields"].present?
+        lines << "Response schema:"
+        ep["response_fields"].each do |f|
+          lines << "  #{f["name"]} [#{f["type"]}] - #{f["description"]}"
+        end
+        lines << ""
+      end
+
+      if ep["errors"].present?
+        lines << "Errors:"
+        ep["errors"].each do |e|
+          lines << "  #{e["code"]} (#{e["status"]}) - #{e["description"]}"
+        end
+        lines << ""
+      end
     end
 
     lines.join("\n")
@@ -166,11 +182,33 @@ module ApisHelper
       end
 
       if ep["response_example"].present?
-        lines << "### Response"
+        lines << "### Response Example"
         lines << ""
         lines << "```json"
         lines << ep["response_example"].strip
         lines << "```"
+        lines << ""
+      end
+
+      if ep["response_fields"].present?
+        lines << "### Response Schema"
+        lines << ""
+        lines << "| Field | Type | Description |"
+        lines << "|-------|------|-------------|"
+        ep["response_fields"].each do |f|
+          lines << "| `#{f["name"]}` | #{f["type"]} | #{f["description"]} |"
+        end
+        lines << ""
+      end
+
+      if ep["errors"].present?
+        lines << "### Errors"
+        lines << ""
+        lines << "| Code | Status | Description |"
+        lines << "|------|--------|-------------|"
+        ep["errors"].each do |e|
+          lines << "| `#{e["code"]}` | #{e["status"]} | #{e["description"]} |"
+        end
         lines << ""
       end
 
