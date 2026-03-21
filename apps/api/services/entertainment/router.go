@@ -4,6 +4,7 @@ import (
 	"github.com/go-chi/chi/v5"
 
 	"requiems-api/services/entertainment/emoji"
+	"requiems-api/services/entertainment/facts"
 	"requiems-api/services/entertainment/horoscope"
 	"requiems-api/services/entertainment/sudoku"
 )
@@ -17,4 +18,7 @@ func RegisterRoutes(r chi.Router) {
 
 	emojiSvc := emoji.NewService()
 	emoji.RegisterRoutes(r, emojiSvc)
+
+	factsSvc := facts.NewService()
+	facts.RegisterRoutes(r, factsSvc)
 }
