@@ -42,12 +42,12 @@ Get Chuck Norris jokes and facts
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/entertainment/chuck-norris`
 
-### [Dad Jokes](./dad-jokes.md) - ⏳ Planned
+### [Dad Jokes](./dad-jokes.md) - ✅ Live
 
 Get classic dad jokes
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/entertainment/dad-jokes`
+- **Status:** live
+- **Endpoint:** `GET /v1/entertainment/jokes/dad`
 
 ### [Day in History](./day-in-history.md) - ⏳ Planned
 
