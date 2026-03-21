@@ -1332,11 +1332,13 @@ export const openApiSpec = {
                         },
                         "normalized": {
                           "type": "string",
-                          "description": "The canonical form of the address after normalization (lowercase, plus-tag removal, alias-domain resolution). Empty string when syntax is invalid"
+                          "nullable": true,
+                          "description": "The canonical form of the address after normalization (lowercase, plus-tag removal, alias-domain resolution). Null when syntax is invalid"
                         },
                         "domain": {
                           "type": "string",
-                          "description": "The domain part of the address (after @). Empty string when syntax is invalid"
+                          "nullable": true,
+                          "description": "The domain part of the address (after @). Null when syntax is invalid"
                         },
                         "suggestion": {
                           "type": "string",

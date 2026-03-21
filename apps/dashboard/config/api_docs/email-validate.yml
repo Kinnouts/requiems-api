@@ -55,8 +55,8 @@ endpoints:
 
     response_fields:
       - name: email
-        type: string
-        description: The email address exactly as supplied in the request body
+        type: string|null
+        description: The email address exactly as supplied in the request body; null when syntax is invalid
       - name: valid
         type: boolean
         description: "Overall validity. True only when the address passes syntax validation and the domain has at least one MX record"
@@ -70,11 +70,11 @@ endpoints:
         type: boolean
         description: Whether the address uses a known disposable or temporary email domain
       - name: normalized
-        type: string
-        description: "The canonical form of the address after normalization (lowercase, plus-tag removal, alias-domain resolution). Empty string when syntax is invalid"
+        type: string|null
+        description: "The canonical form of the address after normalization (lowercase, plus-tag removal, alias-domain resolution). Null when syntax is invalid"
       - name: domain
-        type: string
-        description: "The domain part of the address (after @). Empty string when syntax is invalid"
+        type: string|null
+        description: "The domain part of the address (after @). Null when syntax is invalid"
       - name: suggestion
         type: string
         description: "A corrected domain name when the supplied domain looks like a typo of a well-known provider (e.g. gmial.com → gmail.com). Null when no close match is found or the domain is already correct"
