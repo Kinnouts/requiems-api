@@ -11,7 +11,6 @@ require (
 )
 
 require (
-	github.com/agnivade/levenshtein v1.2.1 // indirect
 	github.com/boyter/go-string v1.0.5 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
@@ -36,6 +35,7 @@ require (
 
 require (
 	github.com/TwiN/go-away v1.8.1
+	github.com/agnivade/levenshtein v1.2.1
 	github.com/bobadilla-tech/business-days-calculator v1.1.0
 	github.com/bobadilla-tech/go-email-normalizer v1.2.0
 	github.com/bobadilla-tech/holidays-per-country v1.0.1
@@ -47,6 +47,7 @@ require (
 	github.com/ringsaturn/tzf v1.0.4
 	github.com/sajari/fuzzy v1.0.0
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
+	github.com/yuin/goldmark v1.7.17
 )
 
 require (
