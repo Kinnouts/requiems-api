@@ -6,6 +6,7 @@ import (
 	"requiems-api/services/entertainment/emoji"
 	"requiems-api/services/entertainment/horoscope"
 	"requiems-api/services/entertainment/sudoku"
+	"requiems-api/services/entertainment/trivia"
 )
 
 func RegisterRoutes(r chi.Router) {
@@ -17,4 +18,7 @@ func RegisterRoutes(r chi.Router) {
 
 	emojiSvc := emoji.NewService()
 	emoji.RegisterRoutes(r, emojiSvc)
+
+	triviaSvc := trivia.NewService()
+	trivia.RegisterRoutes(r, triviaSvc)
 }
