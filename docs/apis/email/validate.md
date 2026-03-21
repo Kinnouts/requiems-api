@@ -49,13 +49,13 @@ All responses are wrapped in the standard envelope:
 
 | Field | Type | Description |
 | --- | --- | --- |
-| `email` | string | Exact input supplied by the caller |
+| `email` | string\|null | Exact input supplied by the caller; `null` when syntax is invalid |
 | `valid` | boolean | `true` only when `syntax_valid` and `mx_valid` are both `true` |
 | `syntax_valid` | boolean | Passes RFC 5322 syntax check |
 | `mx_valid` | boolean | Domain has at least one MX record |
 | `disposable` | boolean | Domain is on the disposable email blocklist |
-| `normalized` | string | Canonical address after normalization; empty when syntax is invalid |
-| `domain` | string | Domain part (`after @`); empty when syntax is invalid |
+| `normalized` | string\|null | Canonical address after normalization; `null` when syntax is invalid |
+| `domain` | string\|null | Domain part (after `@`); `null` when syntax is invalid |
 | `suggestion` | string\|null | Closest well-known domain when the input looks like a typo; `null` otherwise |
 
 ## Examples
@@ -119,13 +119,13 @@ Response:
 ```json
 {
   "data": {
-    "email": "not-an-email",
+    "email": null,
     "valid": false,
     "syntax_valid": false,
     "mx_valid": false,
     "disposable": false,
-    "normalized": "",
-    "domain": "",
+    "normalized": null,
+    "domain": null,
     "suggestion": null
   },
   "metadata": { "timestamp": "2026-01-01T00:00:00Z" }
