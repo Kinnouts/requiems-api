@@ -20,4 +20,20 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 
 		httpx.JSON(w, http.StatusOK, wrd)
 	})
+
+	r.Get("/dictionary/{word}", func(w http.ResponseWriter, r *http.Request) {
+		word := chi.URLParam(r, "word")
+		if word == "" {
+			httpx.Error(w, http.StatusBadRequest, "bad_request", "word is required")
+			return
+		}
+
+		entry, err := svc.Define(word)
+		if err != nil {
+			httpx.Error(w, http.StatusNotFound, "not_found", "word not found in dictionary")
+			return
+		}
+
+		httpx.JSON(w, http.StatusOK, entry)
+	})
 }
