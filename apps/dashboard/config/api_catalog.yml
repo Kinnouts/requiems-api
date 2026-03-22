@@ -459,6 +459,20 @@ apis:
       - Unicode
       - Entertainment
 
+  - id: trivia
+    name: Trivia
+    categories:
+      - entertainment
+    description: Get random trivia questions with multiple-choice answers. Filter by category (science, history, geography, sports, music, movies, literature, math, technology, nature) and difficulty (easy, medium, hard).
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/trivia
+    tags:
+      - Quiz
+      - Trivia
+      - Entertainment
+
   - id: unit-conversion
     name: Unit Conversion
     categories:
