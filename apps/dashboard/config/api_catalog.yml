@@ -189,6 +189,21 @@ apis:
       - Vocabulary
       - Writing
 
+  - id: dictionary
+    name: Dictionary
+    categories:
+      - text
+    description: Get word definitions, phonetics, usage examples, and synonyms
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/dictionary
+    tags:
+      - Definitions
+      - Phonetics
+      - Vocabulary
+      - Education
+
   - id: lorem-ipsum
     name: Lorem Ipsum Generator
     categories:
