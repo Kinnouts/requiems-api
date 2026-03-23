@@ -19,6 +19,10 @@ import (
 )
 
 func registerV1Routes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb *redis.Client) {
+	convertRouter := chi.NewRouter()
+	convert.RegisterRoutes(convertRouter)
+	r.Mount("/convert", convertRouter)
+
 	textRouter := chi.NewRouter()
 	text.RegisterRoutes(textRouter, pool)
 	r.Mount("/text", textRouter)
