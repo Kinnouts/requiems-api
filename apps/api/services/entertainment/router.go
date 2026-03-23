@@ -24,13 +24,13 @@ func RegisterRoutes(r chi.Router) {
 
 	factsSvc := facts.NewService()
 	facts.RegisterRoutes(r, factsSvc)
-  
+
 	triviaSvc := trivia.NewService()
 	trivia.RegisterRoutes(r, triviaSvc)
-  
+
 	chuckNorrisSvc := chucknorris.NewService()
 	chucknorris.RegisterRoutes(r, chuckNorrisSvc)
-  
+
 	jokesSvc := jokes.NewService()
 	jokes.RegisterRoutes(r, jokesSvc)
 }

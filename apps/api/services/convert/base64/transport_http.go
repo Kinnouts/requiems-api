@@ -12,13 +12,13 @@ import (
 // Paths are relative to the parent mount point.
 func RegisterRoutes(r chi.Router, svc *Service) {
 	r.Post("/base64/encode", httpx.Handle(
-		func(_ context.Context, req EncodeRequest) (Base64Result, error) {
+		func(_ context.Context, req EncodeRequest) (Result, error) {
 			return svc.Encode(req.Value, req.Variant), nil
 		},
 	))
 
 	r.Post("/base64/decode", httpx.Handle(
-		func(_ context.Context, req DecodeRequest) (Base64Result, error) {
+		func(_ context.Context, req DecodeRequest) (Result, error) {
 			return svc.Decode(req.Value, req.Variant)
 		},
 	))

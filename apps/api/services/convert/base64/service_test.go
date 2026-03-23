@@ -1,4 +1,4 @@
-package base64
+package base64 //nolint:revive
 
 import (
 	"errors"

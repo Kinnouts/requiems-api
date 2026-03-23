@@ -94,7 +94,7 @@ func (s *Service) Random(category string) (Fact, error) {
 		}
 	}
 
-	e := pool[rand.IntN(len(pool))]
+	e := pool[rand.IntN(len(pool))] //nolint:gosec
 	return Fact{
 		Fact:     e.fact,
 		Category: e.category,

@@ -15,17 +15,17 @@ func NewService() *Service { return &Service{} }
 
 // Encode encodes value using the specified variant ("standard" or "url").
 // When variant is empty it defaults to standard Base64 encoding.
-func (s *Service) Encode(value, variant string) Base64Result {
+func (s *Service) Encode(value, variant string) Result {
 	if variant == "url" {
-		return Base64Result{Result: base64.URLEncoding.EncodeToString([]byte(value))}
+		return Result{Result: base64.URLEncoding.EncodeToString([]byte(value))}
 	}
-	return Base64Result{Result: base64.StdEncoding.EncodeToString([]byte(value))}
+	return Result{Result: base64.StdEncoding.EncodeToString([]byte(value))}
 }
 
 // Decode decodes a Base64-encoded string using the specified variant ("standard"
 // or "url"). When variant is empty it defaults to standard Base64 encoding.
 // Returns an error for invalid Base64 input.
-func (s *Service) Decode(value, variant string) (Base64Result, error) {
+func (s *Service) Decode(value, variant string) (Result, error) {
 	var (
 		decoded []byte
 		err     error
@@ -38,12 +38,12 @@ func (s *Service) Decode(value, variant string) (Base64Result, error) {
 	}
 
 	if err != nil {
-		return Base64Result{}, &httpx.AppError{
+		return Result{}, &httpx.AppError{
 			Status:  http.StatusUnprocessableEntity,
 			Code:    "invalid_base64",
 			Message: "value is not valid base64",
 		}
 	}
 
-	return Base64Result{Result: string(decoded)}, nil
+	return Result{Result: string(decoded)}, nil
 }

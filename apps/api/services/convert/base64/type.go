@@ -12,9 +12,9 @@ type DecodeRequest struct {
 	Variant string `json:"variant" validate:"omitempty,oneof=standard url"`
 }
 
-// Base64Result is the response returned by both the encode and decode endpoints.
-type Base64Result struct {
+// Result is the response returned by both the encode and decode endpoints.
+type Result struct {
 	Result string `json:"result"`
 }
 
-func (Base64Result) IsData() {}
+func (Result) IsData() {}
