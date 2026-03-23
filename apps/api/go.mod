@@ -42,11 +42,12 @@ require (
 	github.com/boombuler/barcode v1.1.0
 	github.com/jaswdr/faker/v2 v2.9.1
 	github.com/medama-io/go-useragent v1.2.3
-	github.com/nyaruka/phonenumbers v1.6.11
+	github.com/nyaruka/phonenumbers v1.6.12
 	github.com/pemistahl/lingua-go v1.4.0
 	github.com/ringsaturn/tzf v1.0.4
 	github.com/sajari/fuzzy v1.0.0
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
+	github.com/yuin/goldmark v1.7.17
 )
 
 require (

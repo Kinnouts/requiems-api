@@ -31,6 +31,7 @@ There are 5 places that track API status. They must be kept in sync:
 | File                                        | Registered services                     |
 | ------------------------------------------- | --------------------------------------- |
 | `apps/api/app/routes_v1.go`                 | Top-level domain mounts                 |
+| `apps/api/services/convert/router.go`       | base64 encode/decode                    |
 | `apps/api/services/text/router.go`          | advice, lorem, profanity, quotes, words |
 | `apps/api/services/entertainment/router.go` | horoscope                               |
 | `apps/api/services/misc/router.go`          | counter, unit conversion                |

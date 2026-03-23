@@ -4,6 +4,7 @@ import (
 	"github.com/go-chi/chi/v5"
 
 	"requiems-api/services/ai/detectlanguage"
+	"requiems-api/services/ai/sentiment"
 	"requiems-api/services/ai/similarity"
 )
 
@@ -14,4 +15,7 @@ func RegisterRoutes(r chi.Router) {
 
 	detectlanguageSvc := detectlanguage.NewService()
 	detectlanguage.RegisterRoutes(r, detectlanguageSvc)
+
+	sentimentSvc := sentiment.NewService()
+	sentiment.RegisterRoutes(r, sentimentSvc)
 }

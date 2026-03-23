@@ -45,8 +45,9 @@ All 36 endpoints are currently planned. This category includes:
 
 **Progress:** 0 live, 36 planned
 
-### [Internet / Technology](./internet-technology/readme.md) - 15 endpoints
+### [Internet / Technology](./internet-technology/readme.md) - 16 endpoints
 
+- [Base64 Encode / Decode](./internet-technology/base64.md) - ✅ mvp
 - [Password Generator](./internet-technology/password-generator.md) - ✅ mvp
 - [User Agent](./internet-technology/user-agent.md) - ✅ mvp
 - [Validate Phone](./internet-technology/validate-phone.md) - ✅ mvp
@@ -63,7 +64,7 @@ All 36 endpoints are currently planned. This category includes:
 - [Web Scraper](./internet-technology/web-scraper.md) - ⏳ planned
 - [Whois](./internet-technology/whois.md) - ⏳ planned
 
-**Progress:** 3 live, 12 planned
+**Progress:** 4 live, 12 planned
 
 ### [AI / Computer Vision](./ai-computer-vision/readme.md) - 6 endpoints
 
@@ -170,7 +171,7 @@ All 9 endpoints are currently planned. This category includes:
 | --------------------- | ------- | ----- | ------- |
 | Entertainment         | 15      | 3     | 12      |
 | Finance               | 36      | 0     | 36      |
-| Internet / Technology | 15      | 3     | 12      |
+| Internet / Technology | 16      | 4     | 12      |
 | AI / Computer Vision  | 6       | 0     | 6       |
 | Animals               | 3       | 0     | 3       |
 | Health / Wellness     | 7       | 0     | 7       |
@@ -180,14 +181,14 @@ All 9 endpoints are currently planned. This category includes:
 | Transportation        | 9       | 0     | 9       |
 | Email                 | 1       | 1     | 0       |
 | Weather               | 1       | 0     | 1       |
-| **TOTAL**             | **129** | **14** | **115** |
+| **TOTAL**             | **130** | **15** | **115** |
 
 ## Live APIs
 
 Currently live and production-ready:
 
 - Entertainment: Advice, Quotes, Horoscope
-- Internet / Technology: Password Generator, User Agent, Validate Phone
+- Internet / Technology: Base64 Encode / Decode, Password Generator, User Agent, Validate Phone
 - Miscellaneous: Counter, Unit Conversion
 - Places: Timezone, Working Days
 - Text: Lorem Ipsum, Profanity Filter, Random Word
