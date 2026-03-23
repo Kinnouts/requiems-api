@@ -8,6 +8,7 @@ import (
 	"github.com/redis/go-redis/v9"
 
 	"requiems-api/services/ai"
+	"requiems-api/services/convert"
 	"requiems-api/services/email"
 	"requiems-api/services/entertainment"
 	"requiems-api/services/finance"
@@ -37,6 +38,10 @@ func registerV1Routes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb
 	miscRouter := chi.NewRouter()
 	misc.RegisterRoutes(ctx, miscRouter, pool, rdb)
 	r.Mount("/misc", miscRouter)
+
+	convertRouter := chi.NewRouter()
+	convert.RegisterRoutes(convertRouter)
+	r.Mount("/convert", convertRouter)
 
 	placesRouter := chi.NewRouter()
 	places.RegisterRoutes(placesRouter)

@@ -290,6 +290,20 @@ apis:
       - Testing
       - Fake Data
 
+  - id: base64
+    name: Base64 Encode / Decode
+    categories:
+      - technology
+    description: Encode strings to Base64 and decode Base64 back to plain text. Supports standard and URL-safe (base64url) variants.
+    endpoints_count: 2
+    status: live
+    popular: false
+    documentation_url: /apis/base64
+    tags:
+      - Base64
+      - Encoding
+      - Utilities
+
   # Media Generation APIs
   - id: qr-code
     name: QR Code Generator

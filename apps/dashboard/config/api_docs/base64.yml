@@ -1,0 +1,239 @@
+# Base64 Encode / Decode API Documentation
+
+api_id: base64
+api_name: Base64 Encode / Decode
+description: Encode strings to Base64 and decode Base64 back to plain text. Supports standard and URL-safe (base64url) variants.
+base_url: https://api.requiems.xyz
+
+overview:
+  use_cases:
+    - Encode binary data for safe transmission in JSON or HTML
+    - Decode Base64 payloads from third-party APIs or webhooks
+    - Build developer tools and data inspection utilities
+    - URL-safe encoding for tokens in URLs and filenames
+    - Encoding credentials for Basic Auth headers
+
+  features:
+    - Standard Base64 encoding and decoding (RFC 4648)
+    - URL-safe Base64 encoding and decoding (base64url, RFC 4648 §5)
+    - Returns 422 with a clear error for invalid Base64 input
+    - Zero dependencies — fast, in-memory only
+
+endpoints:
+  - name: Encode
+    method: POST
+    path: /v1/convert/base64/encode
+    description: Encode a plain-text string to Base64
+
+    parameters:
+      - name: value
+        type: string
+        required: true
+        location: body
+        description: The string to encode
+        example: "Hello, world!"
+      - name: variant
+        type: string
+        required: false
+        location: body
+        description: "Encoding variant: standard (default) or url (URL-safe base64url)"
+        example: standard
+        default: standard
+
+    response_example: |
+      {
+        "data": {
+          "result": "SGVsbG8sIHdvcmxkIQ=="
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: result
+        type: string
+        description: The Base64-encoded output
+
+    errors:
+      - code: 400
+        message: bad_request
+        description: Missing or empty value field
+      - code: 422
+        message: validation_failed
+        description: Validation constraint on the variant field (must be standard or url)
+
+    code_examples:
+      curl: |
+        curl -X POST https://api.requiems.xyz/v1/convert/base64/encode \
+          -H "requiems-api-key: YOUR_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d '{"value": "Hello, world!"}'
+
+        # URL-safe variant
+        curl -X POST https://api.requiems.xyz/v1/convert/base64/encode \
+          -H "requiems-api-key: YOUR_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d '{"value": "Hello, world!", "variant": "url"}'
+
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/convert/base64/encode"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+        payload = {"value": "Hello, world!"}
+
+        response = requests.post(url, json=payload, headers=headers)
+        print(response.json()["data"]["result"])  # SGVsbG8sIHdvcmxkIQ==
+
+      javascript: |
+        const response = await fetch('https://api.requiems.xyz/v1/convert/base64/encode', {
+          method: 'POST',
+          headers: {
+            'requiems-api-key': 'YOUR_API_KEY',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ value: 'Hello, world!' })
+        });
+
+        const { data } = await response.json();
+        console.log(data.result); // SGVsbG8sIHdvcmxkIQ==
+
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/convert/base64/encode')
+        request = Net::HTTP::Post.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+        request['Content-Type'] = 'application/json'
+        request.body = { value: 'Hello, world!' }.to_json
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        puts JSON.parse(response.body)['data']['result']  # SGVsbG8sIHdvcmxkIQ==
+
+  - name: Decode
+    method: POST
+    path: /v1/convert/base64/decode
+    description: Decode a Base64-encoded string back to plain text
+
+    parameters:
+      - name: value
+        type: string
+        required: true
+        location: body
+        description: The Base64-encoded string to decode
+        example: "SGVsbG8sIHdvcmxkIQ=="
+      - name: variant
+        type: string
+        required: false
+        location: body
+        description: "Encoding variant: standard (default) or url (URL-safe base64url)"
+        example: standard
+        default: standard
+
+    response_example: |
+      {
+        "data": {
+          "result": "Hello, world!"
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: result
+        type: string
+        description: The decoded plain-text output
+
+    errors:
+      - code: 400
+        message: bad_request
+        description: Missing or empty value field
+      - code: 422
+        message: invalid_base64
+        description: The value is not valid Base64 and cannot be decoded
+
+    code_examples:
+      curl: |
+        curl -X POST https://api.requiems.xyz/v1/convert/base64/decode \
+          -H "requiems-api-key: YOUR_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d '{"value": "SGVsbG8sIHdvcmxkIQ=="}'
+
+        # URL-safe variant
+        curl -X POST https://api.requiems.xyz/v1/convert/base64/decode \
+          -H "requiems-api-key: YOUR_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d '{"value": "SGVsbG8sIHdvcmxkIQ==", "variant": "url"}'
+
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/convert/base64/decode"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+        payload = {"value": "SGVsbG8sIHdvcmxkIQ=="}
+
+        response = requests.post(url, json=payload, headers=headers)
+        result = response.json()
+
+        if response.status_code == 200:
+            print(result["data"]["result"])  # Hello, world!
+        else:
+            print(f"Error: {result['error']}")  # invalid_base64
+
+      javascript: |
+        const response = await fetch('https://api.requiems.xyz/v1/convert/base64/decode', {
+          method: 'POST',
+          headers: {
+            'requiems-api-key': 'YOUR_API_KEY',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ value: 'SGVsbG8sIHdvcmxkIQ==' })
+        });
+
+        if (response.ok) {
+          const { data } = await response.json();
+          console.log(data.result); // Hello, world!
+        } else {
+          const err = await response.json();
+          console.error(err.error); // invalid_base64
+        }
+
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/convert/base64/decode')
+        request = Net::HTTP::Post.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+        request['Content-Type'] = 'application/json'
+        request.body = { value: 'SGVsbG8sIHdvcmxkIQ==' }.to_json
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        body = JSON.parse(response.body)
+        if response.code == '200'
+          puts body['data']['result']  # Hello, world!
+        else
+          puts body['error']  # invalid_base64
+        end
+
+faq:
+  - question: What is the difference between standard and url variants?
+    answer: "Standard Base64 uses the alphabet A-Z, a-z, 0-9, +, and /. The url variant (base64url) replaces + with - and / with _ so the output is safe to include directly in URLs and filenames without percent-encoding."
+
+  - question: Does the decode endpoint accept input without padding?
+    answer: "No. Both the standard and url variants use strict Base64 decoding which requires correct = padding. If your input lacks padding, add the appropriate number of = characters before decoding. A 422 invalid_base64 error is returned for malformed or unpadded input."
+
+  - question: Can I encode binary data?
+    answer: "The endpoint accepts a JSON string. If your binary data can be represented as a UTF-8 string you can pass it directly. For raw binary (non-UTF-8 bytes), encode it on the client side before sending."
+
+  - question: Is there a size limit on the value field?
+    answer: "Yes. The entire JSON request body is capped at 1 MB (the platform-wide limit for all POST endpoints). Because Base64 encoding increases payload size by roughly 33%, input strings should be kept well under 750 KB to stay within that limit."

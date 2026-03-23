@@ -14,6 +14,14 @@ Generate and validate barcodes
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/internet-technology/barcode`
 
+### [Base64 Encode / Decode](./base64.md) - ✅ MVP
+
+Encode and decode Base64 strings
+
+- **Status:** mvp
+- **Endpoints:** `POST /v1/convert/base64/encode`, `POST /v1/convert/base64/decode`
+- **Credit Cost:** 1
+
 ### [Disposable Email Checker](./disposable-email-checker.md) - ⏳ Planned
 
 Check if an email is from a disposable email service
@@ -114,6 +122,6 @@ Get WHOIS information for domains
 
 ## Category Statistics
 
-- Total Endpoints: 15
-- Live: 4
+- Total Endpoints: 16
+- Live: 5
 - Planned: 11
