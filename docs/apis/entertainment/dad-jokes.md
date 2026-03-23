@@ -2,17 +2,39 @@
 
 ## Status
 
-⏳ **Planned** - Not yet implemented
+✅ **Available**
 
 ## Overview
 
-Get classic dad jokes. This endpoint will provide groan-worthy puns and
-wholesome humor that only dads seem to enjoy.
+Get classic dad jokes. Groan-worthy puns and wholesome humor that only dads
+seem to enjoy.
 
-## Planned Endpoints
+## Endpoints
 
-### Get Dad Joke
+### Get a Random Dad Joke
 
-**Planned Endpoint:** `GET /v1/entertainment/dad-jokes`
+**Endpoint:** `GET /v1/entertainment/jokes/dad`
 
 Get a random dad joke.
+
+#### Response
+
+```json
+{
+  "data": {
+    "id": "joke_7",
+    "joke": "Why don't scientists trust atoms? Because they make up everything!"
+  },
+  "metadata": {
+    "timestamp": "2024-01-01T00:00:00Z"
+  }
+}
+```
+
+#### Fields
+
+| Field  | Type   | Description                     |
+| ------ | ------ | ------------------------------- |
+| `id`   | string | Unique identifier for the joke  |
+| `joke` | string | The dad joke text               |
+
