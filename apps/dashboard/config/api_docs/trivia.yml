@@ -1,0 +1,150 @@
+# Trivia API Documentation
+
+api_id: trivia
+api_name: Trivia
+description: Get random trivia questions with multiple-choice answers. Filter by category and difficulty to target specific question pools.
+base_url: https://api.requiems.xyz
+
+overview:
+  use_cases:
+    - Quiz games and trivia applications
+    - Educational platforms and learning apps
+    - Social and party game features
+    - Daily challenge widgets
+    - Knowledge-testing integrations
+
+  features:
+    - 10 categories — science, history, geography, sports, music, movies, literature, math, technology, nature
+    - Three difficulty levels — easy, medium, hard
+    - Four answer options per question with the correct answer always included
+    - Optional category and difficulty filtering
+    - Each request returns a randomly selected question from the matching pool
+
+endpoints:
+  - name: Get Trivia Question
+    method: GET
+    path: /v1/entertainment/trivia
+    description: Returns a random trivia question with multiple-choice answers. Use the optional category and difficulty query parameters to filter the question pool.
+
+    parameters:
+      - name: category
+        location: query
+        type: string
+        required: false
+        description: "Filter by category. One of: science, history, geography, sports, music, movies, literature, math, technology, nature."
+      - name: difficulty
+        location: query
+        type: string
+        required: false
+        description: "Filter by difficulty. One of: easy, medium, hard."
+
+    response_example: |
+      {
+        "data": {
+          "question": "What is the largest planet in our solar system?",
+          "options": ["Earth", "Jupiter", "Saturn", "Mars"],
+          "answer": "Jupiter",
+          "category": "science",
+          "difficulty": "easy"
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: question
+        type: string
+        description: The trivia question text
+      - name: options
+        type: array[string]
+        description: Four multiple-choice answer options
+      - name: answer
+        type: string
+        description: The correct answer — always one of the values in options
+      - name: category
+        type: string
+        description: The category the question belongs to
+      - name: difficulty
+        type: string
+        description: The difficulty level of the question (easy, medium, or hard)
+
+    errors:
+      - status: 400
+        code: bad_request
+        description: An invalid category or difficulty value was provided
+      - status: 404
+        code: not_found
+        description: No questions match the given category and difficulty combination
+      - status: 401
+        code: unauthorized
+        description: Missing API key
+      - status: 403
+        code: forbidden
+        description: Invalid or revoked API key
+
+    code_examples:
+      curl: |
+        # Random question (no filters)
+        curl "https://api.requiems.xyz/v1/entertainment/trivia" \
+          -H "requiems-api-key: YOUR_API_KEY"
+
+        # Filtered by category and difficulty
+        curl "https://api.requiems.xyz/v1/entertainment/trivia?category=science&difficulty=medium" \
+          -H "requiems-api-key: YOUR_API_KEY"
+
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/entertainment/trivia"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+        params = {"category": "science", "difficulty": "medium"}
+
+        response = requests.get(url, headers=headers, params=params)
+        data = response.json()["data"]
+        print(data["question"])
+        print("Options:", data["options"])
+        print("Answer:", data["answer"])
+
+      javascript: |
+        const response = await fetch(
+          'https://api.requiems.xyz/v1/entertainment/trivia?category=science&difficulty=medium',
+          { headers: { 'requiems-api-key': 'YOUR_API_KEY' } }
+        );
+        const { data } = await response.json();
+        console.log(data.question);
+        console.log('Options:', data.options);
+        console.log('Answer:', data.answer);
+
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/entertainment/trivia')
+        uri.query = URI.encode_www_form(category: 'science', difficulty: 'medium')
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        data = JSON.parse(response.body)['data']
+        puts data['question']
+        puts "Answer: #{data['answer']}"
+
+faq:
+  - question: What categories are available?
+    answer: "Ten categories are supported: science, history, geography, sports, music, movies, literature, math, technology, and nature."
+
+  - question: What difficulty levels are available?
+    answer: "Three levels are supported: easy, medium, and hard. When neither category nor difficulty is specified, a question is selected at random from the entire question pool."
+
+  - question: Is the correct answer always one of the options?
+    answer: Yes. The answer field always matches one of the values in the options array.
+
+  - question: What happens if no questions match my filters?
+    answer: The API returns a 404 not_found error. Try broadening your filter — for example, drop the difficulty filter or use a different category.
+
+  - question: Are the answer options always in the same order?
+    answer: No. While the options array is stable for a given question in the current dataset, the question returned is randomized per request.

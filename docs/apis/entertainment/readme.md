@@ -107,15 +107,16 @@ Get Sudoku puzzles and solutions
 - **Status:** mvp
 - **Endpoint:** `GET /v1/entertainment/sudoku`
 
-### [Trivia](./trivia.md) - ⏳ Planned
+### [Trivia](./trivia.md) - ✅ MVP
 
 Get trivia questions and answers
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/entertainment/trivia`
+- **Status:** mvp
+- **Endpoint:** `GET /v1/entertainment/trivia`
+- **Endpoint:** `GET /v1/entertainment/trivia?category=science&difficulty=medium`
 
 ## Category Statistics
 
-- Total Endpoints: 17
-- Live: 4
-- Planned: 12
+- Total Endpoints: 18
+- Live: 5
+- Planned: 11
