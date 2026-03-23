@@ -3,6 +3,7 @@ package entertainment
 import (
 	"github.com/go-chi/chi/v5"
 
+	"requiems-api/services/entertainment/chucknorris"
 	"requiems-api/services/entertainment/emoji"
 	"requiems-api/services/entertainment/horoscope"
 	"requiems-api/services/entertainment/jokes"
@@ -19,6 +20,11 @@ func RegisterRoutes(r chi.Router) {
 	emojiSvc := emoji.NewService()
 	emoji.RegisterRoutes(r, emojiSvc)
 
+<<<<<<< copilot/add-chuck-norris-facts-endpoint
+	chuckNorrisSvc := chucknorris.NewService()
+	chucknorris.RegisterRoutes(r, chuckNorrisSvc)
+=======
 	jokesSvc := jokes.NewService()
 	jokes.RegisterRoutes(r, jokesSvc)
+>>>>>>> main
 }
