@@ -1,4 +1,4 @@
-package base64
+package base64 //nolint:revive // package name matches the service domain it implements
 
 // EncodeRequest is the request body for the Base64 encode endpoint.
 type EncodeRequest struct {

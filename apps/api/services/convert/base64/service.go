@@ -1,4 +1,4 @@
-package base64
+package base64 //nolint:revive // package name matches the service domain it implements
 
 import (
 	"encoding/base64"
