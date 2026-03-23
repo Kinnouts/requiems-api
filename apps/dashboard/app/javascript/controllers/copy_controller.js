@@ -49,7 +49,7 @@ export default class extends Controller {
   }
 
   showSuccess() {
-    const originalText = this.element.textContent;
+    const originalHTML = this.element.innerHTML;
 
     // Show feedback
     this.element.textContent = this.successMessageValue;
@@ -57,13 +57,13 @@ export default class extends Controller {
 
     // Reset after 2 seconds
     setTimeout(() => {
-      this.element.textContent = originalText;
+      this.element.innerHTML = originalHTML;
       this.element.classList.remove("text-green-600");
     }, 2000);
   }
 
   showError() {
-    const originalText = this.element.textContent;
+    const originalHTML = this.element.innerHTML;
 
     // Show error
     this.element.textContent = this.errorMessageValue;
@@ -71,7 +71,7 @@ export default class extends Controller {
 
     // Reset after 2 seconds
     setTimeout(() => {
-      this.element.textContent = originalText;
+      this.element.innerHTML = originalHTML;
       this.element.classList.remove("text-red-600");
     }, 2000);
   }
