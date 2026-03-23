@@ -212,7 +212,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_16_170000) do
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["status"], name: "index_users_on_status"
-    t.check_constraint "locale IS NULL OR (locale::text = ANY (ARRAY['en'::character varying, 'es'::character varying]::text[]))", name: "locale_valid_values"
+    t.check_constraint "locale IS NULL OR (locale::text = ANY (ARRAY['en'::character varying::text, 'es'::character varying::text]))", name: "locale_valid_values"
   end
 
   create_table "words", id: :serial, force: :cascade do |t|

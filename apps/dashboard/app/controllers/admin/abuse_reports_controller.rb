@@ -27,7 +27,7 @@ class Admin::AbuseReportsController < ApplicationController
     end
 
     # Paginate
-    @pagy, @abuse_reports = pagy(@abuse_reports, items: 20)
+    @pagy, @abuse_reports = pagy(@abuse_reports, limit: 20)
 
     # Statistics
     counts_by_status = AbuseReport.group(:status).count

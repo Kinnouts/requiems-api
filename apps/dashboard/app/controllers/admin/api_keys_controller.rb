@@ -18,7 +18,7 @@ class Admin::ApiKeysController < ApplicationController
 
     @api_keys = @api_keys.where(active: params[:active] == "true") if params[:active].present?
 
-    @pagy, @api_keys = pagy(@api_keys, items: 25)
+    @pagy, @api_keys = pagy(@api_keys, limit: 25)
   end
 
   def show

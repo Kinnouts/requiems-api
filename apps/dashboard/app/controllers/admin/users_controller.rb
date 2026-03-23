@@ -12,7 +12,7 @@ class Admin::UsersController < ApplicationController
     @users = @users.with_plan(params[:plan]) if params[:plan].present? && params[:plan] != "all"
     @users = @users.with_status(params[:status]) if params[:status].present?
     @users = @users.sorted_by(params[:sort])
-    @pagy, @users = pagy(@users, items: 20)
+    @pagy, @users = pagy(@users, limit: 20)
   end
 
   def show

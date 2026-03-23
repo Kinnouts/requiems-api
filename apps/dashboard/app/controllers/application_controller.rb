@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  include Pagy::Backend
+  include Pagy::Method
   include HttpAcceptLanguage::EasyAccess
 
   allow_browser versions: :modern
