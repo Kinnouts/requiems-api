@@ -459,6 +459,20 @@ apis:
       - Unicode
       - Entertainment
 
+  - id: dad-jokes
+    name: Dad Jokes
+    categories:
+      - entertainment
+    description: Get a random dad joke. Classic groan-worthy puns and wholesome humor, served one at a time.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/dad-jokes
+    tags:
+      - Jokes
+      - Humor
+      - Entertainment
+
   - id: unit-conversion
     name: Unit Conversion
     categories:
