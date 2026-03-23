@@ -334,6 +334,22 @@ apis:
       - Code 128
 
   # AI/Computer Vision APIs
+  - id: sentiment
+    name: Sentiment Analysis
+    categories:
+      - ai_vision
+      - text
+    description: Analyze the sentiment of any text and get a positive, negative, or neutral classification with a confidence score and full class breakdown.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/sentiment
+    tags:
+      - Sentiment
+      - NLP
+      - AI
+      - Text Analysis
+
   - id: detect-language
     name: Language Detection
     categories:
@@ -501,6 +517,35 @@ apis:
       - Quiz
       - Trivia
       
+  - id: chuck-norris
+    name: Chuck Norris Facts
+    categories:
+      - entertainment
+    description: Get a random Chuck Norris fact from a curated built-in database. Every call returns a different fact with a stable unique ID.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/chuck-norris
+    tags:
+      - Jokes
+      - Humor
+      - Entertainment
+
+  - id: facts
+    name: Random Facts
+    categories:
+      - entertainment
+    description: Get random interesting facts from a curated database. Filter by category — science, history, technology, nature, space, or food. Includes source attribution.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/facts
+    tags:
+      - Facts
+      - Education
+      - Trivia
+      - Entertainment
+
   - id: dad-jokes
     name: Dad Jokes
     categories:
@@ -514,6 +559,22 @@ apis:
       - Jokes
       - Humor
       - Entertainment
+
+  - id: markdown
+    name: Markdown to HTML
+    categories:
+      - technology
+      - text
+    description: Convert Markdown to HTML in a single API call. Optionally sanitize the output to strip unsafe tags and prevent XSS.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/markdown
+    tags:
+      - Markdown
+      - HTML
+      - Conversion
+      - Utilities
 
   - id: unit-conversion
     name: Unit Conversion

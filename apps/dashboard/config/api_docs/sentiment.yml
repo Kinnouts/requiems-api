@@ -1,0 +1,136 @@
+api_id: sentiment
+api_name: Sentiment Analysis
+description: Analyze the sentiment of any text and get back a positive, negative, or neutral classification with a confidence score and full breakdown.
+base_url: https://api.requiems.xyz
+
+overview:
+  use_cases:
+    - Monitoring customer feedback and support tickets
+    - Analyzing social media mentions and product reviews
+    - Preprocessing text for NLP and ML pipelines
+    - Real-time moderation of user-generated content
+
+  features:
+    - Returns positive, negative, or neutral classification
+    - Confidence score between 0.0 and 1.0
+    - Full breakdown showing proportional scores for all three classes
+    - Works on short phrases and long-form text
+
+endpoints:
+  - name: Analyze Sentiment
+    method: POST
+    path: /v1/ai/sentiment
+    description: Analyzes the sentiment of the provided text and returns a classification, confidence score, and a full breakdown across all three sentiment classes.
+
+    parameters:
+      - name: text
+        type: string
+        required: true
+        location: body
+        description: The text to analyze.
+        example: "I absolutely love this product, it exceeded my expectations!"
+
+    request_example: |
+      {
+        "text": "I absolutely love this product, it exceeded my expectations!"
+      }
+
+    response_example: |
+      {
+        "data": {
+          "sentiment": "positive",
+          "score": 0.97,
+          "breakdown": {
+            "positive": 0.97,
+            "negative": 0.01,
+            "neutral": 0.02
+          }
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: sentiment
+        type: string
+        description: "The dominant sentiment class: positive, negative, or neutral"
+      - name: score
+        type: number
+        description: Confidence score for the dominant sentiment, between 0.0 and 1.0
+      - name: breakdown.positive
+        type: number
+        description: Proportional score for positive sentiment (sums to 1.0 with other classes)
+      - name: breakdown.negative
+        type: number
+        description: Proportional score for negative sentiment (sums to 1.0 with other classes)
+      - name: breakdown.neutral
+        type: number
+        description: Proportional score for neutral sentiment (sums to 1.0 with other classes)
+
+    errors:
+      - code: 422
+        message: unprocessable_entity
+
+    code_examples:
+      curl: |
+        curl -X POST https://api.requiems.xyz/v1/ai/sentiment \
+          -H "requiems-api-key: YOUR_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d '{"text": "I absolutely love this product!"}'
+
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/ai/sentiment"
+        headers = {
+            "requiems-api-key": "YOUR_API_KEY",
+            "Content-Type": "application/json"
+        }
+        payload = {"text": "I absolutely love this product!"}
+
+        response = requests.post(url, json=payload, headers=headers)
+        data = response.json()['data']
+        print(f"{data['sentiment']} ({data['score']:.2f})")
+
+      javascript: |
+        const response = await fetch(
+          'https://api.requiems.xyz/v1/ai/sentiment',
+          {
+            method: 'POST',
+            headers: {
+              'requiems-api-key': 'YOUR_API_KEY',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ text: 'I absolutely love this product!' })
+          }
+        );
+        const { data } = await response.json();
+        console.log(`${data.sentiment} (${data.score.toFixed(2)})`);
+
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/ai/sentiment')
+        request = Net::HTTP::Post.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+        request['Content-Type'] = 'application/json'
+        request.body = { text: 'I absolutely love this product!' }.to_json
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        data = JSON.parse(response.body)['data']
+        puts "#{data['sentiment']} (#{data['score'].round(2)})"
+
+faq:
+  - question: What are the possible sentiment values?
+    answer: The sentiment field returns one of three values — positive, negative, or neutral — based on whichever class has the highest score.
+
+  - question: What does the breakdown represent?
+    answer: The three breakdown values (positive, negative, neutral) always sum to 1.0. They represent the proportional confidence across all classes, not just the dominant one.
+
+  - question: How long can the input text be?
+    answer: There is no strict character limit enforced at the API level, but very long inputs may be truncated by the underlying model. Aim for inputs under 512 tokens for best accuracy.
