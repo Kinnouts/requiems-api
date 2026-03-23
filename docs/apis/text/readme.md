@@ -7,12 +7,12 @@ analysis, generation, and manipulation.
 
 ## Endpoints
 
-### [Dictionary](./dictionary.md) - ⏳ Planned
+### [Dictionary](./dictionary.md) - ✅ MVP
 
-Get word definitions and meanings
+Get word definitions, phonetics, examples, and synonyms
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/text/dictionary`
+- **Status:** mvp
+- **Endpoint:** `GET /v1/text/dictionary/{word}`
 
 ### [Lorem Ipsum](./lorem-ipsum.md) - ✅ MVP
 
@@ -67,5 +67,5 @@ Find synonyms and antonyms for words
 ## Category Statistics
 
 - Total Endpoints: 8
-- Live: 4
-- Planned: 4
+- Live: 5
+- Planned: 3
