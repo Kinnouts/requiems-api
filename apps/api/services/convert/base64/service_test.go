@@ -1,4 +1,4 @@
-package base64 //nolint:revive
+package base64 //nolint:revive // package name matches the service it tests; renaming would obscure intent
 
 import (
 	"errors"

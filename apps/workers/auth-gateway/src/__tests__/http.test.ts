@@ -230,6 +230,24 @@ describe("HTTP Utilities", () => {
 
       expect(modified.headers.get("Access-Control-Allow-Origin")).toBe("*");
     });
+
+    it("strips X-Usage-Count internal header from backend response", () => {
+      const original = new Response("test", {
+        headers: { "X-Usage-Count": "42" },
+      });
+
+      const modified = addUsageHeaders(original, {
+        requestsUsed: 42,
+        requestsRemaining: 58,
+        requestsReset: "2024-01-01",
+        plan: "developer",
+        rateLimitLimit: 5000,
+        rateLimitRemaining: 4999,
+      });
+
+      expect(modified.headers.get("X-Usage-Count")).toBeNull();
+      expect(modified.headers.get("X-Requests-Used")).toBe("42");
+    });
   });
 
   describe("fetchBackend", () => {
