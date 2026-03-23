@@ -9,9 +9,9 @@ import {
   type RequestCheckResult,
 } from "@requiem/workers-shared";
 
+import type { WorkerBindings } from "../env";
 import { addUsageHeaders, fetchBackend, filterHeaders } from "../http";
 import { recordRequestUsage } from "../requests";
-import type { WorkerBindings } from "../env";
 
 type Variables = {
   apiKey: string;
@@ -85,6 +85,13 @@ app.all("/*", async (c) => {
     return response;
   }
 
+  // Use dynamic multiplier from backend if present (batch endpoints set X-Usage-Count),
+  // otherwise fall back to the static per-endpoint multiplier.
+  const usageCountHeader = backendResponse.headers.get("X-Usage-Count");
+  const parsedCount = usageCountHeader ? parseInt(usageCountHeader, 10) : NaN;
+  const effectiveMultiplier =
+    !Number.isNaN(parsedCount) && parsedCount > 0 ? parsedCount : requestMultiplier;
+
   // Record usage after response is sent — waitUntil keeps the worker alive for the write.
   // recordRequestUsage retries up to 3 times internally; log if all attempts fail.
   c.executionCtx.waitUntil(
@@ -93,7 +100,7 @@ app.all("/*", async (c) => {
       apiKey,
       keyData.userId,
       url.pathname,
-      requestMultiplier,
+      effectiveMultiplier,
       keyData.billingCycleStart,
       log,
     ).catch((err) => {
@@ -107,8 +114,8 @@ app.all("/*", async (c) => {
 
   // Add usage headers to successful response
   const response = addUsageHeaders(backendResponse, {
-    requestsUsed: requestMultiplier,
-    requestsRemaining: Math.max(0, requestUsage.remaining - requestMultiplier),
+    requestsUsed: effectiveMultiplier,
+    requestsRemaining: Math.max(0, requestUsage.remaining - effectiveMultiplier),
     requestsReset: requestUsage.resetAt,
     plan: keyData.plan,
     rateLimitLimit: plan.ratePerMinute,

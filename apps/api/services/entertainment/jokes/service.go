@@ -31,7 +31,7 @@ var dadJokes = []string{
 	"Why do fish swim in salt water? Because pepper makes them sneeze.",
 	"What do you call a pile of cats? A meow-ntain.",
 	"I asked my dog what two minus two is. He said nothing.",
-	"What do you call a sad cup of coffee? Depresso.", //nolint:misspell
+	"What do you call a sad cup of coffee? Depresso.", //nolint:misspell // intentional coffee pun, not a typo
 	"Why did the coffee file a police report? It got mugged.",
 	"I only know 25 letters of the alphabet. I don't know y.",
 	"What do you call a dinosaur that crashes their car? Tyrannosaurus wrecks.",

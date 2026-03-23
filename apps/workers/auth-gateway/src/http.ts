@@ -46,6 +46,7 @@ export function addUsageHeaders(
     headers: response.headers,
   });
 
+  newResponse.headers.delete("X-Usage-Count");
   newResponse.headers.set("Access-Control-Allow-Origin", "*");
   newResponse.headers.set("X-Requests-Used", headers.requestsUsed.toString());
   newResponse.headers.set("X-Requests-Remaining", headers.requestsRemaining.toString());

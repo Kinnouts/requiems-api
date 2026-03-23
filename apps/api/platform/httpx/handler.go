@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 	"net/http"
+	"strconv"
 )
 
 // Handle wraps an endpoint function with automatic JSON binding, validation,
@@ -54,6 +55,40 @@ func Handle[Req any, Res Data](
 			return
 		}
 
+		JSON(w, http.StatusOK, res)
+	}
+}
+
+// HandleBatch is like Handle but the handler also returns an item count.
+// The count is written as X-Usage-Count header so the auth gateway can
+// charge per item instead of per request.
+func HandleBatch[Req any, Res Data](
+	fn func(ctx context.Context, req Req) (Res, int, error),
+) http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		r.Body = http.MaxBytesReader(w, r.Body, 1<<20)
+
+		var req Req
+		if err := BindAndValidate(r, &req); err != nil {
+			if vf, ok := errors.AsType[*ValidationFailure](err); ok {
+				writeValidationError(w, vf.Fields)
+				return
+			}
+			Error(w, http.StatusBadRequest, "bad_request", cleanDecodeError(err))
+			return
+		}
+
+		res, count, err := fn(r.Context(), req)
+		if err != nil {
+			if ae, ok := errors.AsType[*AppError](err); ok {
+				Error(w, ae.Status, ae.Code, ae.Message)
+				return
+			}
+			Error(w, http.StatusInternalServerError, "internal_error", "internal server error")
+			return
+		}
+
+		w.Header().Set("X-Usage-Count", strconv.Itoa(count))
 		JSON(w, http.StatusOK, res)
 	}
 }

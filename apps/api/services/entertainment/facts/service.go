@@ -94,7 +94,7 @@ func (s *Service) Random(category string) (Fact, error) {
 		}
 	}
 
-	e := pool[rand.IntN(len(pool))] //nolint:gosec
+	e := pool[rand.IntN(len(pool))] //nolint:gosec // non-security random selection; crypto/rand not needed here
 	return Fact{
 		Fact:     e.fact,
 		Category: e.category,
