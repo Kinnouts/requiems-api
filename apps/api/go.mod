@@ -1,6 +1,6 @@
 module requiems-api
 
-go 1.26
+go 1.26.1
 
 require (
 	github.com/go-chi/chi/v5 v5.2.5
@@ -11,14 +11,18 @@ require (
 )
 
 require (
+	github.com/bobadilla-tech/go-ip-intelligence v1.0.0 // indirect
 	github.com/boyter/go-string v1.0.5 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/dgryski/go-rendezvous v0.0.0-20200823014737-9f7001d12a5f // indirect
 	github.com/gabriel-vasile/mimetype v1.4.12 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
+	github.com/ip2location/ip2proxy-go/v4 v4.1.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
+	github.com/oschwald/geoip2-golang v1.13.0 // indirect
+	github.com/oschwald/maxminddb-golang v1.13.0 // indirect
 	github.com/paulmach/orb v0.12.0 // indirect
 	github.com/ringsaturn/tzf-rel-lite v0.0.2026-a // indirect
 	github.com/shopspring/decimal v1.3.1 // indirect
@@ -31,6 +35,7 @@ require (
 	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394 // indirect
 	golang.org/x/sys v0.39.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
+	lukechampine.com/uint128 v1.2.0 // indirect
 )
 
 require (
