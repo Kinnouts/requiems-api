@@ -14,7 +14,7 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 
 		result, err := svc.CheckIP(r.Context(), ip)
 		if err != nil {
-			http.Error(w, "internal server error", http.StatusInternalServerError)
+			httpx.Error(w, http.StatusInternalServerError, "internal server error", "failed to check IP address")
 			return
 		}
 

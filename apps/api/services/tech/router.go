@@ -1,9 +1,12 @@
 package tech
 
 import (
+	"log"
+
 	"github.com/go-chi/chi/v5"
 
 	"requiems-api/services/tech/barcode"
+	"requiems-api/services/tech/ip/vpn"
 	"requiems-api/services/tech/password"
 	"requiems-api/services/tech/phone"
 	"requiems-api/services/tech/qr"
@@ -25,4 +28,10 @@ func RegisterRoutes(r chi.Router) {
 
 	barcodeSvc := barcode.NewService()
 	barcode.RegisterRoutes(r, barcodeSvc)
+
+	vpnSvc, err := vpn.NewService()
+	if err != nil {
+		log.Fatalf("tech: failed to initialize vpn service: %v", err)
+	}
+	vpn.RegisterRoutes(r, vpnSvc)
 }

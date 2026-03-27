@@ -30,7 +30,7 @@ func (s *Service) CheckIP(ctx context.Context, ip string) (IPCheckResponse, erro
 		return IPCheckResponse{}, err
 	}
 	return IPCheckResponse{
-		Ip:         ip,
+		IP:         ip,
 		IsVPN:      result.IsVPN,
 		IsProxy:    result.IsProxy,
 		IsTor:      result.IsTor,

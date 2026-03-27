@@ -4,8 +4,8 @@ import "github.com/bobadilla-tech/go-ip-intelligence/ipi"
 
 // IPCheckResponse is the JSON payload returned by the VPN/proxy detection endpoint.
 type IPCheckResponse struct {
-	// Ip is the analysed address.
-	Ip string `json:"ip"`
+	// IP is the analysed address.
+	IP string `json:"ip"`
 	// IsVPN is true when the address belongs to a known VPN provider.
 	IsVPN bool `json:"is_vpn"`
 	// IsProxy is true when the address is a known public or web proxy.
