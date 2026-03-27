@@ -2,6 +2,7 @@ package vpn
 
 import (
 	"context"
+	"net"
 
 	"github.com/bobadilla-tech/go-ip-intelligence/ipi"
 )
@@ -24,13 +25,13 @@ func NewService() (*Service, error) {
 	}, nil
 }
 
-func (s *Service) CheckIP(ctx context.Context, ip string) (IPCheckResponse, error) {
-	result, err := s.c.CheckString(ctx, ip)
+func (s *Service) CheckIP(ctx context.Context, ip net.IP) (IPCheckResponse, error) {
+	result, err := s.c.Check(ctx, ip)
 	if err != nil {
 		return IPCheckResponse{}, err
 	}
 	return IPCheckResponse{
-		IP:         ip,
+		IP:         ip.String(),
 		IsVPN:      result.IsVPN,
 		IsProxy:    result.IsProxy,
 		IsTor:      result.IsTor,

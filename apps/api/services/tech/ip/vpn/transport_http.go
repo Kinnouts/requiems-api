@@ -10,7 +10,11 @@ import (
 
 func RegisterRoutes(r chi.Router, svc *Service) {
 	r.Get("/ip/vpn/{ip}", func(w http.ResponseWriter, r *http.Request) {
-		ip := getIP(r)
+		ip := net.ParseIP(getIP(r))
+		if ip == nil {
+			httpx.Error(w, http.StatusBadRequest, "bad_request", "invalid IP address")
+			return
+		}
 
 		result, err := svc.CheckIP(r.Context(), ip)
 		if err != nil {
