@@ -11,10 +11,10 @@ type Service struct {
 	c *ipi.Client
 }
 
-func NewService() (*Service, error) {
+func NewService(databasePath, asnDatabasePath string) (*Service, error) {
 	client, err := ipi.New(
-		ipi.WithDatabasePath(""),
-		ipi.WithASNDatabasePath(""),
+		ipi.WithDatabasePath(databasePath),
+		ipi.WithASNDatabasePath(asnDatabasePath),
 	)
 	if err != nil {
 		return nil, err

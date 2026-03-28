@@ -5,6 +5,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
+	"requiems-api/platform/config"
 	"requiems-api/services/tech/barcode"
 	"requiems-api/services/tech/ip/vpn"
 	"requiems-api/services/tech/password"
@@ -13,7 +14,7 @@ import (
 	"requiems-api/services/tech/useragent"
 )
 
-func RegisterRoutes(r chi.Router) {
+func RegisterRoutes(r chi.Router, cfg config.Config) {
 	phoneSvc := phone.NewService()
 	phone.RegisterRoutes(r, phoneSvc)
 
@@ -29,7 +30,7 @@ func RegisterRoutes(r chi.Router) {
 	barcodeSvc := barcode.NewService()
 	barcode.RegisterRoutes(r, barcodeSvc)
 
-	vpnSvc, err := vpn.NewService()
+	vpnSvc, err := vpn.NewService(cfg.VPNDatabasePath, cfg.VPNASNDatabasePath)
 	if err != nil {
 		log.Fatalf("tech: failed to initialize vpn service: %v", err)
 	}
