@@ -32,7 +32,8 @@ func RegisterRoutes(r chi.Router, cfg config.Config) {
 
 	vpnSvc, err := vpn.NewService(cfg.VPNDatabasePath, cfg.VPNASNDatabasePath)
 	if err != nil {
-		log.Fatalf("tech: failed to initialize vpn service: %v", err)
+		log.Printf("tech: failed to initialize vpn service; route disabled: %v", err)
+		return
 	}
 	vpn.RegisterRoutes(r, vpnSvc)
 }
