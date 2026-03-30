@@ -16,7 +16,7 @@ func RegisterRoutes(r chi.Router) {
 
 	timezoneSvc, err := timezone.NewService()
 	if err != nil {
-		log.Fatalf("places: failed to initialize timezone service: %v", err)
+		log.Printf("places: failed to initialize timezone service: %v", err)
 	}
 	timezone.RegisterRoutes(r, timezoneSvc)
 

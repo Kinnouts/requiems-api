@@ -93,6 +93,23 @@ func HandleBatch[Req any, Res Data](
 	}
 }
 
+// Guard returns h unchanged when svc is non-nil. When svc is nil (because the
+// service failed to initialize at startup), every request to the wrapped
+// handler receives a 500 Internal Server Error response instead of panicking
+// or crashing the process.
+//
+// Usage in a transport_http.go RegisterRoutes function:
+//
+//	r.Get("/endpoint", httpx.Guard(svc, myHandler))
+func Guard[S any](svc *S, h http.HandlerFunc) http.HandlerFunc {
+	if svc == nil {
+		return func(w http.ResponseWriter, r *http.Request) {
+			Error(w, http.StatusInternalServerError, "internal_error", "service unavailable")
+		}
+	}
+	return h
+}
+
 // cleanDecodeError returns a safe, human-readable message for JSON decode
 // errors, hiding internal implementation details from the client.
 func cleanDecodeError(err error) string {
