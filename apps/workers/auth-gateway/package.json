@@ -27,11 +27,11 @@
     "kv:seed": "node scripts/seed-kv.ts"
   },
   "dependencies": {
-    "hono": "^4.12.8",
+    "hono": "^4.12.9",
     "zod": "^4.0.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.4.6",
+    "@biomejs/biome": "^2.4.9",
     "@cloudflare/workers-types": "^4.20260317.1",
     "@edge-runtime/vm": "^5.0.0",
     "@types/js-yaml": "^4.0.9",
@@ -39,8 +39,8 @@
     "@vitest/coverage-v8": "^1.2.0",
     "js-yaml": "^4.1.0",
     "tsx": "^4.19.2",
-    "typescript": "^5.3.3",
+    "typescript": "^6.0.2",
     "vitest": "^1.2.0",
-    "wrangler": "^4.72.0"
+    "wrangler": "^4.77.0"
   }
 }

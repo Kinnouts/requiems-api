@@ -6,7 +6,7 @@ require (
 	github.com/go-chi/chi/v5 v5.2.5
 	github.com/go-playground/validator/v10 v10.30.1
 	github.com/golang-migrate/migrate/v4 v4.19.1
-	github.com/jackc/pgx/v5 v5.8.0
+	github.com/jackc/pgx/v5 v5.9.1
 	github.com/redis/go-redis/v9 v9.18.0
 )
 
@@ -52,7 +52,7 @@ require (
 	github.com/ringsaturn/tzf v1.0.4
 	github.com/sajari/fuzzy v1.0.0
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
-	github.com/yuin/goldmark v1.7.17
+	github.com/yuin/goldmark v1.8.2
 )
 
 require (
