@@ -22,6 +22,31 @@ func setupRouter(t *testing.T) chi.Router {
 	return r
 }
 
+func TestTimezone_NilService_Returns500(t *testing.T) {
+	r := chi.NewRouter()
+	RegisterRoutes(r, nil)
+
+	for _, path := range []string{"/timezone?lat=51.5&lon=-0.1", "/time/UTC"} {
+		req := httptest.NewRequest(http.MethodGet, path, http.NoBody)
+		w := httptest.NewRecorder()
+		r.ServeHTTP(w, req)
+
+		if w.Code != http.StatusInternalServerError {
+			t.Errorf("path %q: expected 500, got %d", path, w.Code)
+		}
+
+		var resp httpx.ErrorResponse
+		if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
+			t.Errorf("path %q: failed to decode response: %v", path, err)
+			continue
+		}
+
+		if resp.Error != "internal_error" {
+			t.Errorf("path %q: expected error code %q, got %q", path, "internal_error", resp.Error)
+		}
+	}
+}
+
 func TestTimezone_ByCoords(t *testing.T) {
 	r := setupRouter(t)
 
