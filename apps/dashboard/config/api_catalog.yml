@@ -304,6 +304,24 @@ apis:
       - Encoding
       - Utilities
 
+  - id: vpn-detection
+    name: VPN & Proxy Detection
+    categories:
+      - technology
+      - security
+    description: Detect if an IP address belongs to a VPN, proxy, Tor exit node, or hosting provider. Returns threat scores and fraud indicators for fraud prevention and risk assessment.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/vpn-detection
+    tags:
+      - VPN
+      - Proxy
+      - Tor
+      - Security
+      - Fraud Prevention
+      - IP Intelligence
+
   # Media Generation APIs
   - id: qr-code
     name: QR Code Generator
