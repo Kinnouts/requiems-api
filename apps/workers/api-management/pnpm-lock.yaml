@@ -10,13 +10,13 @@ importers:
     dependencies:
       '@hono/standard-validator':
         specifier: ^0.2.2
-        version: 0.2.2(@standard-schema/spec@1.1.0)(hono@4.12.7)
+        version: 0.2.2(@standard-schema/spec@1.1.0)(hono@4.12.9)
       '@hono/swagger-ui':
         specifier: ^0.6.1
-        version: 0.6.1(hono@4.12.7)
+        version: 0.6.1(hono@4.12.9)
       hono:
-        specifier: 4.12.7
-        version: 4.12.7
+        specifier: 4.12.9
+        version: 4.12.9
       nanoid:
         specifier: ^5.1.7
         version: 5.1.7
@@ -945,8 +945,8 @@ packages:
     resolution: {integrity: sha512-EykJT/Q1KjTWctppgIAgfSO0tKVuZUjhgMr17kqTumMl6Afv3EISleU7qZUzoXDFTAHTDC4NOoG/ZxU3EvlMPQ==}
     engines: {node: '>=8'}
 
-  hono@4.12.7:
-    resolution: {integrity: sha512-jq9l1DM0zVIvsm3lv9Nw9nlJnMNPOcAtsbsgiUhWcFzPE99Gvo6yRTlszSLLYacMeQ6quHD6hMfId8crVHvexw==}
+  hono@4.12.9:
+    resolution: {integrity: sha512-wy3T8Zm2bsEvxKZM5w21VdHDDcwVS1yUFFY6i8UobSsKfFceT7TOwhbhfKsDyx7tYQlmRM5FLpIuYvNFyjctiA==}
     engines: {node: '>=16.9.0'}
 
   html-escaper@2.0.2:
@@ -1549,14 +1549,14 @@ snapshots:
   '@esbuild/win32-x64@0.27.3':
     optional: true
 
-  '@hono/standard-validator@0.2.2(@standard-schema/spec@1.1.0)(hono@4.12.7)':
+  '@hono/standard-validator@0.2.2(@standard-schema/spec@1.1.0)(hono@4.12.9)':
     dependencies:
       '@standard-schema/spec': 1.1.0
-      hono: 4.12.7
+      hono: 4.12.9
 
-  '@hono/swagger-ui@0.6.1(hono@4.12.7)':
+  '@hono/swagger-ui@0.6.1(hono@4.12.9)':
     dependencies:
-      hono: 4.12.7
+      hono: 4.12.9
 
   '@img/colour@1.1.0': {}
 
@@ -1980,7 +1980,7 @@ snapshots:
 
   has-flag@4.0.0: {}
 
-  hono@4.12.7: {}
+  hono@4.12.9: {}
 
   html-escaper@2.0.2: {}
 
