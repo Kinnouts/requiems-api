@@ -6,6 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/bobadilla-tech/go-ip-intelligence/v2/ipi"
 	"github.com/go-chi/chi/v5"
 
 	"requiems-api/platform/httpx"
@@ -14,9 +15,13 @@ import (
 var testSvc *Service
 
 func init() {
-	svc, err := NewService("", "")
+	client, err := ipi.New(
+		ipi.WithDatabasePath(""),
+		ipi.WithASNDatabasePath(""),
+		ipi.WithCityDatabasePath(""),
+	)
 	if err == nil {
-		testSvc = svc
+		testSvc = NewService(client)
 	}
 }
 

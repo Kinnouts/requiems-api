@@ -3,10 +3,13 @@ package tech
 import (
 	"log"
 
+	"github.com/bobadilla-tech/go-ip-intelligence/v2/ipi"
 	"github.com/go-chi/chi/v5"
 
 	"requiems-api/platform/config"
 	"requiems-api/services/tech/barcode"
+	"requiems-api/services/tech/ip/asn"
+	"requiems-api/services/tech/ip/info"
 	"requiems-api/services/tech/ip/vpn"
 	"requiems-api/services/tech/password"
 	"requiems-api/services/tech/phone"
@@ -30,10 +33,21 @@ func RegisterRoutes(r chi.Router, cfg config.Config) {
 	barcodeSvc := barcode.NewService()
 	barcode.RegisterRoutes(r, barcodeSvc)
 
-	vpnSvc, err := vpn.NewService(cfg.VPNDatabasePath, cfg.VPNASNDatabasePath)
+	ipiClient, err := ipi.New(
+		ipi.WithDatabasePath(cfg.VPNDatabasePath),
+		ipi.WithASNDatabasePath(cfg.VPNASNDatabasePath),
+		ipi.WithCityDatabasePath(cfg.IPCityDatabasePath),
+	)
 	if err != nil {
-		log.Printf("tech: failed to initialize vpn service; route disabled: %v", err)
-		return
+		log.Printf("tech: failed to initialize ip intelligence client; ip routes disabled: %v", err)
 	}
+
+	vpnSvc := vpn.NewService(ipiClient)
 	vpn.RegisterRoutes(r, vpnSvc)
+
+	asnSvc := asn.NewService(ipiClient)
+	asn.RegisterRoutes(r, asnSvc)
+
+	infoSvc := info.NewService(ipiClient)
+	info.RegisterRoutes(r, infoSvc)
 }

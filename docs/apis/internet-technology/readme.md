@@ -43,12 +43,19 @@ Get domain information and availability
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/internet-technology/domain`
 
-### [IP Lookup](./ip-lookup.md) - ⏳ Planned
+### [ASN Lookup](./asn-lookup.md) - ✅ MVP
 
-Get information about IP addresses
+Look up Autonomous System Number (ASN), organization, ISP, and network route information for any IP address.
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/internet-technology/ip-lookup`
+- **Status:** mvp
+- **Endpoint:** `GET /v1/tech/ip/asn/{ip}`
+
+### [IP Geolocation](./ip-lookup.md) - ✅ MVP
+
+Get IP geolocation data including country, city, ISP, and VPN detection.
+
+- **Status:** mvp
+- **Endpoints:** `GET /v1/tech/ip` (caller IP), `GET /v1/tech/ip/{ip}` (specific IP)
 
 ### [MX Lookup](./mx-lookup.md) - ⏳ Planned
 
@@ -122,6 +129,6 @@ Get WHOIS information for domains
 
 ## Category Statistics
 
-- Total Endpoints: 16
-- Live: 5
+- Total Endpoints: 18
+- Live: 7
 - Planned: 11

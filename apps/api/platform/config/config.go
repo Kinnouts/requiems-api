@@ -9,6 +9,7 @@ type Config struct {
 	RedisURL           string
 	VPNDatabasePath    string
 	VPNASNDatabasePath string
+	IPCityDatabasePath string
 }
 
 func Load() Config {
@@ -19,6 +20,7 @@ func Load() Config {
 		RedisURL:           envOrDefault("REDIS_URL", "redis://localhost:6379/0"),
 		VPNDatabasePath:    envOrDefault("VPN_DATABASE_PATH", "dbs/IP2PROXY-LITE-PX2.BIN"),
 		VPNASNDatabasePath: envOrDefault("VPN_ASN_DATABASE_PATH", "dbs/GeoLite2-ASN.mmdb"),
+		IPCityDatabasePath: envOrDefault("IP_CITY_DATABASE_PATH", "dbs/GeoLite2-City.mmdb"),
 	}
 }
 
