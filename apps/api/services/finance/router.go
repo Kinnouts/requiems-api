@@ -6,6 +6,7 @@ import (
 
 	"requiems-api/services/finance/bin"
 	"requiems-api/services/finance/inflation"
+	"requiems-api/services/finance/mortgage"
 )
 
 // RegisterRoutes mounts all finance domain handlers on the given router.
@@ -16,4 +17,7 @@ func RegisterRoutes(r chi.Router, pool *pgxpool.Pool) {
 
 	inflationSvc := inflation.NewService(pool)
 	inflation.RegisterRoutes(r, inflationSvc)
+
+	mortgageSvc := mortgage.NewService()
+	mortgage.RegisterRoutes(r, mortgageSvc)
 }
