@@ -41,7 +41,7 @@ func New(ctx context.Context, cfg config.Config) (*App, error) {
 		protected.Use(middleware.BackendSecretAuth(cfg.BackendSecret))
 
 		protected.Route("/v1", func(v1 chi.Router) {
-			registerV1Routes(ctx, v1, pool, rdb)
+			registerV1Routes(ctx, v1, pool, rdb, cfg)
 		})
 	})
 

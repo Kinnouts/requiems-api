@@ -140,7 +140,7 @@ services:
       auth-gateway:
         condition: service_started
 
-  # Sidekiq for background jobs
+  # Solid Queue for background jobs
   sidekiq:
     image: ruby:3.4-alpine
     working_dir: /app
@@ -149,7 +149,7 @@ services:
         apk update &&
         apk add --no-cache build-base postgresql-dev tzdata yaml-dev &&
         bundle install &&
-        bundle exec sidekiq
+        bundle exec ruby bin/jobs start
       "
     env_file:
       - .env.example

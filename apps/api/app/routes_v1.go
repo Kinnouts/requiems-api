@@ -7,6 +7,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/redis/go-redis/v9"
 
+	"requiems-api/platform/config"
 	"requiems-api/services/ai"
 	"requiems-api/services/convert"
 	"requiems-api/services/email"
@@ -18,7 +19,7 @@ import (
 	"requiems-api/services/text"
 )
 
-func registerV1Routes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb *redis.Client) {
+func registerV1Routes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb *redis.Client, cfg config.Config) {
 	convertRouter := chi.NewRouter()
 	convert.RegisterRoutes(convertRouter)
 	r.Mount("/convert", convertRouter)
@@ -48,7 +49,7 @@ func registerV1Routes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb
 	r.Mount("/places", placesRouter)
 
 	techRouter := chi.NewRouter()
-	tech.RegisterRoutes(techRouter)
+	tech.RegisterRoutes(techRouter, cfg)
 	r.Mount("/tech", techRouter)
 
 	financeRouter := chi.NewRouter()

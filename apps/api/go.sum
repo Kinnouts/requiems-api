@@ -12,6 +12,8 @@ github.com/bobadilla-tech/business-days-calculator v1.1.0 h1:l0m28ko/oItgjjBlB+J
 github.com/bobadilla-tech/business-days-calculator v1.1.0/go.mod h1:Xayj9noAcTPZjwqDEwWRu96uDraHfObnj7TdZylXi9A=
 github.com/bobadilla-tech/go-email-normalizer v1.2.0 h1:aCsGRY0Yt0L+22l+g3xTNf4bTt7x5b2Vn1Dzdku+XCY=
 github.com/bobadilla-tech/go-email-normalizer v1.2.0/go.mod h1:iHGTIZ9nc2tSPLssbRmwKsum84dm8oXGt8lAceKnDdk=
+github.com/bobadilla-tech/go-ip-intelligence v1.0.0 h1:hmsSEj6IaONdN4+10ZsISVv/YpdZodA9cN6ppsWAU9s=
+github.com/bobadilla-tech/go-ip-intelligence v1.0.0/go.mod h1:Xkih6qNLJL8nZKyx0wUQ/k5Evtx+eBosXbNPUEWRR24=
 github.com/bobadilla-tech/holidays-per-country v1.0.1 h1:AFH9uxSkyMCLcZ/F2fbzmwdoix5Pbq+q3Vfye8uYoQw=
 github.com/bobadilla-tech/holidays-per-country v1.0.1/go.mod h1:uZq0qDg1zJ1bccuGOOAkaGsnwCDs6iQyAeAeT94ige4=
 github.com/bobadilla-tech/is-email-disposable v1.0.1 h1:low7YuSmZJL8kXfIEwO1C3KvnDHIJGTWOZroBu1fBmg=
@@ -79,6 +81,8 @@ github.com/google/go-cmp v0.5.2/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/
 github.com/google/go-cmp v0.5.5/go.mod h1:v8dTdLbMG2kIc/vJvl+f65V22dbkXbowE6jgT/gNBxE=
 github.com/google/go-cmp v0.7.0 h1:wk8382ETsv4JYUZwIsn6YpYiWiBsYLSJiTsyBybVuN8=
 github.com/google/go-cmp v0.7.0/go.mod h1:pXiqmnSA92OHEEa9HXL2W4E7lf9JzCmGVUdgjX3N/iU=
+github.com/ip2location/ip2proxy-go/v4 v4.1.0 h1:eHd4WL6Fk21TcKRXxCuyBTcW2ZPfWWiAA5Qd5PCM1G4=
+github.com/ip2location/ip2proxy-go/v4 v4.1.0/go.mod h1:knSLTGvow2tCTxGuZNACMiqRW7h9u/F7KFrPa8HBJ8U=
 github.com/jackc/pgpassfile v1.0.0 h1:/6Hmqy13Ss2zCq62VdNG8tM1wchn8zjSGOBJ6icpsIM=
 github.com/jackc/pgpassfile v1.0.0/go.mod h1:CEx0iS5ambNFdcRtxPj5JhEz+xB6uRky5eyVu/W2HEg=
 github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761 h1:iCEnooe7UlwOQYpKFhBabPMi4aNAfoODPEFNiAnClxo=
@@ -120,6 +124,10 @@ github.com/opencontainers/go-digest v1.0.0 h1:apOUWs51W5PlhuyGyz9FCeeBIOUDA/6nW8
 github.com/opencontainers/go-digest v1.0.0/go.mod h1:0JzlMkj0TRzQZfJkVvzbP0HBR3IKzErnv2BNG4W4MAM=
 github.com/opencontainers/image-spec v1.1.0 h1:8SG7/vwALn54lVB/0yZ/MMwhFrPYtpEHQb2IpWsCzug=
 github.com/opencontainers/image-spec v1.1.0/go.mod h1:W4s4sFTMaBeK1BQLXbG4AdM2szdn85PY75RI83NrTrM=
+github.com/oschwald/geoip2-golang v1.13.0 h1:Q44/Ldc703pasJeP5V9+aFSZFmBN7DKHbNsSFzQATJI=
+github.com/oschwald/geoip2-golang v1.13.0/go.mod h1:P9zG+54KPEFOliZ29i7SeYZ/GM6tfEL+rgSn03hYuUo=
+github.com/oschwald/maxminddb-golang v1.13.0 h1:R8xBorY71s84yO06NgTmQvqvTvlS/bnYZrrWX1MElnU=
+github.com/oschwald/maxminddb-golang v1.13.0/go.mod h1:BU0z8BfFVhi1LQaonTwwGQlsHUEu9pWNdMfmq4ztm0o=
 github.com/paulmach/orb v0.12.0 h1:z+zOwjmG3MyEEqzv92UN49Lg1JFYx0L9GpGKNVDKk1s=
 github.com/paulmach/orb v0.12.0/go.mod h1:5mULz1xQfs3bmQm63QEJA6lNGujuRafwA5S/EnuLaLU=
 github.com/paulmach/protoscan v0.2.1/go.mod h1:SpcSwydNLrxUGSDvXvO0P7g7AuhJ7lcKfDlhJCDw2gY=
@@ -250,3 +258,5 @@ gopkg.in/yaml.v3 v3.0.0-20200313102051-9f266ea9e77c/go.mod h1:K4uyk7z7BCEPqu6E+C
 gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
 gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
+lukechampine.com/uint128 v1.2.0 h1:mBi/5l91vocEN8otkC5bDLhi2KdCticRiwbdB0O+rjI=
+lukechampine.com/uint128 v1.2.0/go.mod h1:c4eWIwlEGaxC/+H1VguhU4PHXNWDCDMUlWdIWl2j1gk=
