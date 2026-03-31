@@ -200,6 +200,26 @@ histories.
   - **Turbo Frames** - Partial page updates
   - **Stimulus** - JavaScript sprinkles
 
+### Syntax Highlighting
+
+Always use the `highlight` Stimulus controller (`highlight_controller.js`) — never add a separate hljs call or import.
+
+**Standalone code block:**
+```erb
+<div data-controller="highlight">
+  <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 text-sm overflow-x-auto"><code class="language-bash">your code here</code></pre>
+</div>
+```
+
+**With code tabs** — add `highlight` alongside `code-tabs` on the same element:
+```erb
+<div data-controller="code-tabs highlight">
+  ...tabs and content blocks...
+</div>
+```
+
+The controller runs `hljs.highlightElement()` on every `pre code` inside the element on connect. Always set `class="language-{lang}"` on the `<code>` tag (`language-bash` for curl/shell, `language-javascript`, `language-python`, `language-go`, etc.).
+
 ## Testing
 
 ```bash
