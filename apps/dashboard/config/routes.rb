@@ -53,6 +53,8 @@ Rails.application.routes.draw do
 
       resources :invoices, only: [ :index, :show ]
 
+      get "quick_start", to: "quick_start#index"
+
       resource :settings, only: [ :show, :update ] do
         member do
           post   :request_deletion

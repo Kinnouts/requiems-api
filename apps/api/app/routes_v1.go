@@ -53,6 +53,6 @@ func registerV1Routes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb
 	r.Mount("/tech", techRouter)
 
 	financeRouter := chi.NewRouter()
-	finance.RegisterRoutes(financeRouter, pool)
+	finance.RegisterRoutes(financeRouter, pool, rdb)
 	r.Mount("/finance", financeRouter)
 }

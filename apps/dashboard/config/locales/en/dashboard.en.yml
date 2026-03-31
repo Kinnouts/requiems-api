@@ -282,6 +282,29 @@ en:
         unknown_key: "Unknown"
         empty_heading: "No usage data"
         empty_body: "No API calls found in the selected date range."
+    quick_start:
+      title: "Quick Start"
+      heading: "Get Started with Requiems API"
+      subtitle: "Follow these steps to make your first API call in minutes"
+      step_1:
+        heading: "1. Create Your Account"
+        body: "Sign up for a free account to get your API key and start making requests. No credit card required."
+        cta: "Already done! You're logged in."
+      step_2:
+        heading: "2. Get Your API Key"
+        body: "Go to API Keys to create a key. You'll include it in every request as a header."
+        cta: "Manage API Keys"
+        header_label: "Include this header in every request:"
+      step_3:
+        heading: "3. Make Your First API Call"
+        body: "Try this example request to get a random piece of advice:"
+        note: "Replace YOUR_API_KEY with an active key from your API Keys page."
+      step_4:
+        heading: "4. Code Examples"
+        body: "Copy and adapt these examples in your preferred language."
+      copy_btn: "Copy"
+      copied_btn: "Copied!"
+      browse_apis: "Browse All APIs"
     mailers:
       account_deletion:
         subject: "Confirm your account deletion"
