@@ -57,12 +57,12 @@ Get IP geolocation data including country, city, ISP, and VPN detection.
 - **Status:** mvp
 - **Endpoints:** `GET /v1/tech/ip` (caller IP), `GET /v1/tech/ip/{ip}` (specific IP)
 
-### [MX Lookup](./mx-lookup.md) - ⏳ Planned
+### [MX Lookup](./mx-lookup.md) - ✅ MVP
 
 Perform MX record lookups
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/internet-technology/mx-lookup`
+- **Status:** mvp
+- **Endpoint:** `GET /v1/tech/mx/{domain}`
 
 ### [Password Generator](./password-generator.md) - ✅ MVP
 

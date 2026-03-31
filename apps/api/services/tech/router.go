@@ -8,9 +8,11 @@ import (
 
 	"requiems-api/platform/config"
 	"requiems-api/services/tech/barcode"
+	"requiems-api/services/tech/domain"
 	"requiems-api/services/tech/ip/asn"
 	"requiems-api/services/tech/ip/info"
 	"requiems-api/services/tech/ip/vpn"
+	"requiems-api/services/tech/mx"
 	"requiems-api/services/tech/password"
 	"requiems-api/services/tech/phone"
 	"requiems-api/services/tech/qr"
@@ -34,6 +36,9 @@ func RegisterRoutes(r chi.Router, cfg config.Config) {
 	barcodeSvc := barcode.NewService()
 	barcode.RegisterRoutes(r, barcodeSvc)
 
+	domainSvc := domain.NewService()
+	domain.RegisterRoutes(r, domainSvc)
+
 	ipiClient, err := ipi.New(
 		ipi.WithDatabasePath(cfg.VPNDatabasePath),
 		ipi.WithASNDatabasePath(cfg.VPNASNDatabasePath),
@@ -54,4 +59,6 @@ func RegisterRoutes(r chi.Router, cfg config.Config) {
 
 	whoisSvc := whois.NewService()
 	whois.RegisterRoutes(r, whoisSvc)
+	mxSvc := mx.NewService()
+	mx.RegisterRoutes(r, mxSvc)
 }
