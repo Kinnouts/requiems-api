@@ -4,7 +4,7 @@ import (
 	"context"
 	"net"
 
-	"github.com/bobadilla-tech/go-ip-intelligence/ipi"
+	"github.com/bobadilla-tech/go-ip-intelligence/v2/ipi"
 )
 
 type Service struct {

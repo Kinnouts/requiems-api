@@ -1,6 +1,6 @@
 package vpn
 
-import "github.com/bobadilla-tech/go-ip-intelligence/ipi"
+import "github.com/bobadilla-tech/go-ip-intelligence/v2/ipi"
 
 // IPCheckResponse is the JSON payload returned by the VPN/proxy detection endpoint.
 type IPCheckResponse struct {
