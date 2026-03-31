@@ -19,6 +19,7 @@ ENV PORT=8080
 
 COPY --from=build /out/api /app/api
 COPY migrations /app/migrations
+COPY dbs /app/dbs
 
 USER appuser
 
