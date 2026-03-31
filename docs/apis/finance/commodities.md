@@ -69,11 +69,22 @@ All responses use the standard envelope:
 
 ## Seeding
 
-The table must be populated with the seed CLI before the endpoint returns data:
+The table must be populated with the seed CLI before the endpoint returns data.
+
+**Development:**
 
 ```bash
 docker exec requiem-dev-api-1 go run ./cmd/seed-commodities \
   --db-url "postgres://requiem:requiem@db:5432/requiem"
 ```
 
-See [`cmd/seed-commodities/readme.md`](../../../apps/api/cmd/seed-commodities/readme.md) for full options.
+**Production** (from `infra/docker`):
+
+```bash
+docker compose exec api go run ./cmd/seed-commodities \
+  --db-url "$DATABASE_URL"
+```
+
+Re-running is safe (idempotent upsert). Run annually to refresh prices with the latest FRED and Yahoo Finance data.
+
+See [`cmd/seed-commodities/readme.md`](../../../apps/api/cmd/seed-commodities/readme.md) for full CLI options.

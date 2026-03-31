@@ -20,9 +20,10 @@ User → Cloudflare Worker (Edge) → Hetzner VPS (Backend)
 
 **Components to Deploy:**
 
-1. Cloudflare Worker (apps/workers/auth-gateway)
-2. VPS Backend (Go API + Rails Dashboard + PostgreSQL + Redis)
-3. DNS and domain configuration
+1. Cloudflare Worker — Auth Gateway (apps/workers/auth-gateway)
+2. Cloudflare Worker — API Management (apps/workers/api-management)
+3. VPS Backend (Go API + Rails Dashboard + PostgreSQL + Redis)
+4. DNS and domain configuration
 
 ---
 
@@ -284,10 +285,13 @@ Wait for DNS propagation (5-30 minutes).
 
 In Cloudflare DNS settings, create these A records:
 
-| Type | Name     | Content     | Proxy Status | TTL  |
-| ---- | -------- | ----------- | ------------ | ---- |
-| A    | @        | YOUR_VPS_IP | ☁️ Proxied   | Auto |
-| A    | internal | YOUR_VPS_IP | ☁️ Proxied   | Auto |
+| Type | Name           | Content     | Proxy Status | TTL  |
+| ---- | -------------- | ----------- | ------------ | ---- |
+| A    | @              | YOUR_VPS_IP | ☁️ Proxied   | Auto |
+| A    | internal       | YOUR_VPS_IP | ☁️ Proxied   | Auto |
+
+The Workers custom domains (`api.requiems.xyz`, `api-management.requiems.xyz`) are
+configured in `wrangler.toml` and created automatically when you deploy each Worker.
 
 **Important:**
 
@@ -312,9 +316,11 @@ nslookup internal.requiems.xyz
 
 ---
 
-## Part 5: Deploy Cloudflare Worker
+## Part 5: Deploy Cloudflare Workers
 
-### 5.1 Setup Cloudflare Resources
+Both workers share the same KV namespace and D1 database, so you only create those once.
+
+### 5.1 Setup Wrangler
 
 ```bash
 # Install wrangler globally
@@ -322,63 +328,85 @@ npm install -g wrangler
 
 # Login to Cloudflare
 wrangler login
+```
 
-# Navigate to worker directory
+### 5.2 Create Shared Edge Resources (first deploy only)
+
+```bash
 cd apps/workers/auth-gateway
-```
 
-### 5.2 Create KV Namespace
-
-```bash
-# Create KV namespace for production
+# Create KV namespace for API keys and rate limiting
 wrangler kv:namespace create KV --env production
+# Output: { binding = "KV", id = "abc123..." }
+# → Update id in both wrangler.toml files
 
-# Output will be:
-# { binding = "KV", id = "abc123..." }
-
-# Update wrangler.toml with the ID
-```
-
-### 5.3 Create D1 Database
-
-```bash
-# Create D1 database for production
+# Create D1 database for usage tracking
 wrangler d1 create requiem-usage --env production
+# Output: { database_id = "xyz456..." }
+# → Update database_id in both wrangler.toml files
 
-# Apply schema
-wrangler d1 execute requiem-usage --file=schema.sql --env production
-
-# Update wrangler.toml with the database ID
+# Apply D1 schema
+pnpm run db:migrate:prod
 ```
 
-### 5.4 Set Production Secrets
+### 5.3 Deploy Auth Gateway
+
+The Auth Gateway is the public-facing edge service at `api.requiems.xyz`.
 
 ```bash
-# Backend URL (your VPS internal domain)
+cd apps/workers/auth-gateway
+
+# Set secrets
 wrangler secret put BACKEND_URL --env production
 # Enter: https://internal.requiems.xyz
 
-# Backend secret (must match VPS .env BACKEND_SECRET)
 wrangler secret put BACKEND_SECRET --env production
-# Enter: your_32_char_minimum_secret_here
+# Enter: (same value as VPS .env BACKEND_SECRET)
+
+# Deploy
+pnpm run deploy:prod
 ```
 
-### 5.5 Deploy Worker
+### 5.4 Deploy API Management Worker
+
+The API Management Worker is the internal service used only by the Rails dashboard.
+It is reachable at `api-management.requiems.xyz`.
 
 ```bash
-# Deploy to production
-pnpm run deploy:prod
+cd apps/workers/api-management
 
-# Or manually
-wrangler deploy --env production
+# Set secrets
+wrangler secret put API_MANAGEMENT_API_KEY --env production
+# Enter: a strong random key (32+ chars) — Rails uses this to authenticate
+# Generate: openssl rand -base64 48
+
+# Deploy
+pnpm run deploy:prod
 ```
 
-### 5.6 Configure Worker Route
+Set the matching key in the Rails dashboard `.env` on the VPS:
 
-1. Go to Cloudflare Dashboard → Workers & Pages
-2. Click on your worker
-3. Go to Settings → Triggers → Routes
-4. Add route: `api.requiems.xyz/*` → your-worker-name
+```bash
+API_MANAGEMENT_URL=https://api-management.requiems.xyz
+API_MANAGEMENT_API_KEY=same_key_as_above
+```
+
+Then restart the dashboard and sidekiq:
+
+```bash
+cd infra/docker
+docker compose restart dashboard sidekiq
+```
+
+### 5.5 Verify Worker Routes
+
+Both workers use `custom_domain = true` in `wrangler.toml` — Cloudflare registers
+the hostnames automatically on first deploy. Confirm in the Cloudflare Dashboard:
+
+1. Workers & Pages → `requiem-auth-gateway-production` → Settings → Domains & Routes
+   - Should show: `api.requiems.xyz`
+2. Workers & Pages → `requiem-api-management-production` → Settings → Domains & Routes
+   - Should show: `api-management.requiems.xyz`
 
 ---
 
@@ -435,7 +463,51 @@ done
 
 ## Part 7: Post-Deployment
 
-### 7.1 Create Admin User
+### 7.1 Seed Static Data
+
+Some endpoints require data to be seeded after the first deploy. Migrations create the tables automatically on startup, but the data must be populated manually once.
+
+**Run all seeds in order:**
+
+```bash
+cd infra/docker
+
+# BIN/IIN card data (~700k records — takes ~5 min)
+docker compose exec api go run ./cmd/seed-bins \
+  --db-url "$DATABASE_URL"
+
+# Inflation data (World Bank CPI, ~241 countries × 30 years)
+docker compose exec api go run ./cmd/seed-inflation \
+  --db-url "$DATABASE_URL"
+
+# IBAN country data
+docker compose exec api go run ./cmd/seed-iban \
+  --db-url "$DATABASE_URL"
+
+# Commodity prices (FRED + Yahoo Finance, 16 commodities × ~30 years)
+docker compose exec api go run ./cmd/seed-commodities \
+  --db-url "$DATABASE_URL"
+```
+
+`DATABASE_URL` must be set in your `.env` file, or pass it explicitly:
+
+```bash
+docker compose exec api go run ./cmd/seed-commodities \
+  --db-url "postgres://requiem:YOUR_PASSWORD@db:5432/requiem"
+```
+
+**Re-seeding is safe** — all seed commands use `INSERT ... ON CONFLICT DO UPDATE`, so running them again only updates changed records.
+
+**Keeping commodity prices current** — commodity prices are annual averages from FRED and Yahoo Finance. Re-run the commodity seed once per year (or whenever you want fresh data):
+
+```bash
+docker compose exec api go run ./cmd/seed-commodities \
+  --db-url "$DATABASE_URL"
+```
+
+---
+
+### 7.3 Create Admin User
 
 ```bash
 docker compose exec dashboard rails runner "
@@ -450,7 +522,7 @@ User.create!(
 "
 ```
 
-### 7.2 Setup Monitoring
+### 7.4 Setup Monitoring
 
 **Cloudflare Analytics:**
 
@@ -471,7 +543,7 @@ df -h
 du -sh /var/lib/docker/volumes
 ```
 
-### 7.3 Setup Backups
+### 7.5 Setup Backups
 
 **Database Backups (cron job):**
 
@@ -519,11 +591,17 @@ crontab -e
 - `CLOUDFLARE_ACCOUNT_ID` - Cloudflare account
 - `CLOUDFLARE_KV_NAMESPACE_ID` - KV namespace
 - `CLOUDFLARE_API_TOKEN` - Cloudflare API token
+- `API_MANAGEMENT_URL` - `https://api-management.requiems.xyz`
+- `API_MANAGEMENT_API_KEY` - Must match the api-management worker secret
 
-### Cloudflare Worker (Wrangler secrets)
+### Auth Gateway Worker (Wrangler secrets)
 
-- `BACKEND_URL` - Internal backend URL (`https://internal.yourdomain.com`)
-- `BACKEND_SECRET` - Must match VPS BACKEND_SECRET
+- `BACKEND_URL` - Internal backend URL (`https://internal.requiems.xyz`)
+- `BACKEND_SECRET` - Must match VPS `BACKEND_SECRET`
+
+### API Management Worker (Wrangler secrets)
+
+- `API_MANAGEMENT_API_KEY` - Must match VPS `API_MANAGEMENT_API_KEY`
 
 ---
 
@@ -613,6 +691,8 @@ docker compose ps
 docker compose logs -f
 ```
 
+**If the update adds a new seeded table** (e.g. a new commodity, inflation country set, or BIN dataset), re-run the relevant seed command after deploy. See [Section 7.1](#71-seed-static-data).
+
 ### Clean Deployment (Wipe Database)
 
 Use this when changing database credentials or starting fresh:
@@ -657,11 +737,16 @@ docker compose up -d --build api
 docker compose up -d --build dashboard
 ```
 
-### Update Worker
+### Update Workers
 
 ```bash
+# Auth Gateway
 cd apps/workers/auth-gateway
-wrangler deploy --env production
+pnpm run deploy:prod
+
+# API Management
+cd apps/workers/api-management
+pnpm run deploy:prod
 ```
 
 ### Quick Restart (No Rebuild)
