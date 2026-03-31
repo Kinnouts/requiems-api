@@ -124,24 +124,10 @@ func fetchFRED(cfg CommodityConfig) ([]CommodityRecord, error) {
 		if err != nil {
 			return nil, fmt.Errorf("read csv: %w", err)
 		}
-		if len(record) < 2 {
+		val, year, ok := parseFREDRow(record)
+		if !ok {
 			continue
 		}
-
-		valStr := strings.TrimSpace(record[1])
-		if valStr == "." || valStr == "" {
-			continue
-		}
-		val, err := strconv.ParseFloat(valStr, 64)
-		if err != nil || math.IsNaN(val) || math.IsInf(val, 0) || val <= 0 {
-			continue
-		}
-
-		year, err := parseYear(strings.TrimSpace(record[0]))
-		if err != nil || year < 1960 || year > time.Now().Year() {
-			continue
-		}
-
 		accumulate(byYear, year, val)
 	}
 
@@ -171,13 +157,13 @@ func fetchYahoo(cfg CommodityConfig) ([]CommodityRecord, error) {
 	url := fmt.Sprintf("%s/%s?interval=1mo&range=30y", yahooBaseURL, cfg.Symbol)
 
 	client := &http.Client{Timeout: 30 * time.Second}
-	req, err := http.NewRequest(http.MethodGet, url, nil)
+	req, err := http.NewRequest(http.MethodGet, url, http.NoBody)
 	if err != nil {
 		return nil, fmt.Errorf("build request: %w", err)
 	}
 	req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36")
 
-	resp, err := client.Do(req)
+	resp, err := client.Do(req) //nolint:gosec // URL is constructed from a hard-coded constant and internal config, not user input
 	if err != nil {
 		return nil, fmt.Errorf("download: %w", err)
 	}
@@ -212,27 +198,14 @@ func fetchYahoo(cfg CommodityConfig) ([]CommodityRecord, error) {
 	byYear := make(map[int]*yearAcc)
 
 	for i, ts := range timestamps {
-		if i >= len(closes) || closes[i] == nil {
+		val, ok := parseYahooClose(closes, i)
+		if !ok {
 			continue
 		}
-		var val float64
-		switch v := closes[i].(type) {
-		case float64:
-			val = v
-		case json.Number:
-			val, _ = v.Float64()
-		default:
-			continue
-		}
-		if math.IsNaN(val) || math.IsInf(val, 0) || val <= 0 {
-			continue
-		}
-
 		year := time.Unix(ts, 0).UTC().Year()
 		if year < 1960 || year > time.Now().Year() {
 			continue
 		}
-
 		accumulate(byYear, year, val)
 	}
 
@@ -240,6 +213,46 @@ func fetchYahoo(cfg CommodityConfig) ([]CommodityRecord, error) {
 }
 
 // ---- shared helpers ----
+
+// parseFREDRow validates and parses a CSV record into (val, year, ok).
+func parseFREDRow(record []string) (float64, int, bool) {
+	if len(record) < 2 {
+		return 0, 0, false
+	}
+	valStr := strings.TrimSpace(record[1])
+	if valStr == "." || valStr == "" {
+		return 0, 0, false
+	}
+	val, err := strconv.ParseFloat(valStr, 64)
+	if err != nil || math.IsNaN(val) || math.IsInf(val, 0) || val <= 0 {
+		return 0, 0, false
+	}
+	year, err := parseYear(strings.TrimSpace(record[0]))
+	if err != nil || year < 1960 || year > time.Now().Year() {
+		return 0, 0, false
+	}
+	return val, year, true
+}
+
+// parseYahooClose extracts a positive finite float64 from closes at index i.
+func parseYahooClose(closes []interface{}, i int) (float64, bool) {
+	if i >= len(closes) || closes[i] == nil {
+		return 0, false
+	}
+	var val float64
+	switch v := closes[i].(type) {
+	case float64:
+		val = v
+	case json.Number:
+		val, _ = v.Float64()
+	default:
+		return 0, false
+	}
+	if math.IsNaN(val) || math.IsInf(val, 0) || val <= 0 {
+		return 0, false
+	}
+	return val, true
+}
 
 type yearAcc struct {
 	sum   float64

@@ -489,12 +489,7 @@ docker compose exec api go run ./cmd/seed-commodities \
   --db-url "$DATABASE_URL"
 ```
 
-`DATABASE_URL` must be set in your `.env` file, or pass it explicitly:
-
-```bash
-docker compose exec api go run ./cmd/seed-commodities \
-  --db-url "postgres://requiem:YOUR_PASSWORD@db:5432/requiem"
-```
+`DATABASE_URL` is already set in `infra/docker/.env` — the shell picks it up automatically when you run these commands from the `infra/docker` directory.
 
 **Re-seeding is safe** — all seed commands use `INSERT ... ON CONFLICT DO UPDATE`, so running them again only updates changed records.
 

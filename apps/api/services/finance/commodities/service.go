@@ -48,12 +48,12 @@ func (s *Service) Get(ctx context.Context, slug string) (CommodityPrice, error) 
 	var results []yearRow
 	for rows.Next() {
 		var r yearRow
-		if err = rows.Scan(&r.year, &r.price, &r.name, &r.unit, &r.currency); err != nil {
+		if err := rows.Scan(&r.year, &r.price, &r.name, &r.unit, &r.currency); err != nil {
 			return CommodityPrice{}, err
 		}
 		results = append(results, r)
 	}
-	if err = rows.Err(); err != nil {
+	if err := rows.Err(); err != nil {
 		return CommodityPrice{}, err
 	}
 
