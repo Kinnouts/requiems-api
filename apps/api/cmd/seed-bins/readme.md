@@ -8,26 +8,26 @@ The Go migration that creates the table runs automatically on API startup.
 
 ## Usage
 
-Run inside the API Docker container (required — uses the `db` hostname):
+**Production** — run from `infra/docker/` as a one-off container on the compose network:
 
 ```bash
-# Basic run (uses DATABASE_URL from container env)
-docker exec requiem-dev-api-1 go run ./cmd/seed-bins
-
-# Dry-run: fetch and normalise but do not write to the database
-docker exec requiem-dev-api-1 go run ./cmd/seed-bins --dry-run
-
-# Verbose: print each record as it is processed
-docker exec requiem-dev-api-1 go run ./cmd/seed-bins --verbose
-
-# Custom database URL
-docker exec requiem-dev-api-1 go run ./cmd/seed-bins --db-url "postgres://..."
+docker run --rm \
+  --network requiem-backend_default \
+  --env-file .env \
+  -v $(pwd)/../../apps/api:/app \
+  -w /app \
+  golang:1.26-alpine \
+  go run ./cmd/seed-bins
 ```
 
-In production (container is named differently):
+Add `--dry-run` or `--verbose` at the end as needed.
+
+**Development** — Go toolchain is available in the dev container:
 
 ```bash
-docker compose exec api go run ./cmd/seed-bins
+docker exec requiem-dev-api-1 go run ./cmd/seed-bins
+docker exec requiem-dev-api-1 go run ./cmd/seed-bins --dry-run
+docker exec requiem-dev-api-1 go run ./cmd/seed-bins --verbose
 ```
 
 ## Flags

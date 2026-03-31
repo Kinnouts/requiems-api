@@ -611,6 +611,22 @@ apis:
       - Measurement
 
   # Finance APIs
+  - id: inflation
+    name: Inflation
+    categories:
+      - finance
+    description: Historical and current CPI inflation rates for 241 countries, sourced from the World Bank. Includes up to 30 years of annual data.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/inflation
+    tags:
+      - Inflation
+      - CPI
+      - Economics
+      - Macroeconomics
+      - World Bank
+
   - id: bin-lookup
     name: BIN Lookup
     categories:
