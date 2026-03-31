@@ -5,6 +5,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 
 	"requiems-api/services/finance/bin"
+	"requiems-api/services/finance/inflation"
 )
 
 // RegisterRoutes mounts all finance domain handlers on the given router.
@@ -12,4 +13,7 @@ import (
 func RegisterRoutes(r chi.Router, pool *pgxpool.Pool) {
 	binSvc := bin.NewService(pool)
 	bin.RegisterRoutes(r, binSvc)
+
+	inflationSvc := inflation.NewService(pool)
+	inflation.RegisterRoutes(r, inflationSvc)
 }
