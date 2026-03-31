@@ -11,18 +11,13 @@ type Service struct {
 	c *ipi.Client
 }
 
-func NewService(databasePath, asnDatabasePath string) (*Service, error) {
-	client, err := ipi.New(
-		ipi.WithDatabasePath(databasePath),
-		ipi.WithASNDatabasePath(asnDatabasePath),
-	)
-	if err != nil {
-		return nil, err
+func NewService(c *ipi.Client) *Service {
+	if c == nil {
+		return nil
 	}
-
 	return &Service{
-		c: client,
-	}, nil
+		c: c,
+	}
 }
 
 func (s *Service) CheckIP(ctx context.Context, ip net.IP) (IPCheckResponse, error) {

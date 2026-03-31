@@ -4,13 +4,24 @@ import (
 	"context"
 	"net"
 	"testing"
+
+	"github.com/bobadilla-tech/go-ip-intelligence/v2/ipi"
 )
 
+func newTestClient() (*ipi.Client, error) {
+	return ipi.New(
+		ipi.WithDatabasePath(""),
+		ipi.WithASNDatabasePath(""),
+		ipi.WithCityDatabasePath(""),
+	)
+}
+
 func TestService_CheckIP(t *testing.T) {
-	svc, err := NewService("", "")
+	client, err := newTestClient()
 	if err != nil {
 		t.Skipf("VPN service not available: %v", err)
 	}
+	svc := NewService(client)
 
 	tests := []struct {
 		name    string
@@ -59,10 +70,11 @@ func TestService_CheckIP(t *testing.T) {
 }
 
 func TestService_CheckIP_ResponseFields(t *testing.T) {
-	svc, err := NewService("", "")
+	client, err := newTestClient()
 	if err != nil {
 		t.Skipf("VPN service not available: %v", err)
 	}
+	svc := NewService(client)
 
 	ip := net.ParseIP("8.8.8.8")
 	result, err := svc.CheckIP(context.Background(), ip)
@@ -91,12 +103,5 @@ func TestService_CheckIP_ResponseFields(t *testing.T) {
 
 	if result.FraudScore < 0 || result.FraudScore > 100 {
 		t.Errorf("fraud_score out of range: %d", result.FraudScore)
-	}
-}
-
-func TestService_CheckIP_InvalidService(t *testing.T) {
-	_, err := NewService("/nonexistent/path", "/another/nonexistent")
-	if err == nil {
-		t.Error("expected error for invalid database paths")
 	}
 }
