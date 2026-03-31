@@ -17,6 +17,7 @@ require (
 	github.com/gabriel-vasile/mimetype v1.4.12 // indirect
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
+	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/ip2location/ip2proxy-go/v4 v4.1.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
@@ -25,6 +26,7 @@ require (
 	github.com/paulmach/orb v0.12.0 // indirect
 	github.com/ringsaturn/tzf-rel-lite v0.0.2026-a // indirect
 	github.com/shopspring/decimal v1.3.1 // indirect
+	github.com/spf13/pflag v1.0.9 // indirect
 	github.com/tidwall/geoindex v1.7.0 // indirect
 	github.com/tidwall/geojson v1.4.6 // indirect
 	github.com/tidwall/rtree v1.10.0 // indirect
@@ -52,6 +54,7 @@ require (
 	github.com/ringsaturn/tzf v1.0.4
 	github.com/sajari/fuzzy v1.0.0
 	github.com/skip2/go-qrcode v0.0.0-20200617195104-da1b6568686e
+	github.com/spf13/cobra v1.10.2
 	github.com/yuin/goldmark v1.8.2
 )
 
