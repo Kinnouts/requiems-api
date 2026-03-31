@@ -50,12 +50,12 @@ Look up Autonomous System Number (ASN), organization, ISP, and network route inf
 - **Status:** mvp
 - **Endpoint:** `GET /v1/tech/ip/asn/{ip}`
 
-### [IP Lookup](./ip-lookup.md) - ✅ MVP
+### [IP Geolocation](./ip-lookup.md) - ✅ MVP
 
-Get geolocation data for any IP address including country, city, ISP, and VPN detection.
+Get IP geolocation data including country, city, ISP, and VPN detection.
 
 - **Status:** mvp
-- **Endpoint:** `GET /v1/tech/ip/{ip}`
+- **Endpoints:** `GET /v1/tech/ip` (caller IP), `GET /v1/tech/ip/{ip}` (specific IP)
 
 ### [MX Lookup](./mx-lookup.md) - ⏳ Planned
 

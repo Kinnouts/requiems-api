@@ -14,21 +14,101 @@ overview:
   features:
     - Country and city lookup
     - ISP identification
-    - VPN/Proxy detection
+    - VPN detection
     - Support for both IPv4 and IPv6 addresses
 
 endpoints:
-  - name: Get IP Info
+  - name: Get IP Info (Caller IP)
+    method: GET
+    path: /v1/tech/ip
+    description: Get geolocation and network information for the requesting client's IP address. Useful when you want information about the user making the request without specifying an IP explicitly.
+
+    response_example: |
+      {
+        "data": {
+          "ip": "8.8.8.8",
+          "country": "United States",
+          "country_code": "US",
+          "city": "Mountain View",
+          "isp": "Google Public DNS",
+          "is_vpn": false
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: ip
+        type: string
+        description: The IP address that was looked up (the requesting client's IP)
+      - name: country
+        type: string
+        description: Country name where the IP is located
+      - name: country_code
+        type: string
+        description: Two-letter ISO country code (e.g., "US", "GB", "DE")
+      - name: city
+        type: string
+        description: City name where the IP is located
+      - name: isp
+        type: string
+        description: Internet Service Provider providing the IP
+      - name: is_vpn
+        type: boolean
+        description: True when the IP belongs to a known VPN
+
+    errors:
+      - code: internal_error
+        status: 500
+        description: Unexpected server error
+
+    code_examples:
+      curl: |
+        curl "https://api.requiems.xyz/v1/tech/ip" \
+          -H "requiems-api-key: YOUR_API_KEY"
+
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/tech/ip"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+
+        response = requests.get(url, headers=headers)
+        print(response.json())
+
+      javascript: |
+        const response = await fetch('https://api.requiems.xyz/v1/tech/ip', {
+          headers: { 'requiems-api-key': 'YOUR_API_KEY' }
+        });
+
+        const data = await response.json();
+        console.log(data.data.country, data.data.city);
+
+      ruby: |
+        require 'net/http'
+
+        uri = URI('https://api.requiems.xyz/v1/tech/ip')
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        puts JSON.parse(response.body)
+
+  - name: Get IP Info for IP
     method: GET
     path: /v1/tech/ip/{ip}
-    description: Get geolocation and network information for an IP address. If no IP is provided, uses the caller's IP address.
+    description: Get geolocation and network information for a specific IP address.
 
     parameters:
       - name: ip
         type: string
-        required: false
+        required: true
         location: path
-        description: The IP address to look up (supports IPv4 and IPv6). If omitted, uses the requester's IP address.
+        description: The IP address to look up (supports IPv4 and IPv6)
         example: 8.8.8.8
 
     response_example: |
@@ -64,7 +144,7 @@ endpoints:
         description: Internet Service Provider providing the IP
       - name: is_vpn
         type: boolean
-        description: True when the IP belongs to a known VPN or proxy provider
+        description: True when the IP belongs to a known VPN
 
     errors:
       - code: bad_request
@@ -114,7 +194,7 @@ faq:
     answer: Accuracy varies by IP type. ISP and hosting provider IPs typically have city-level accuracy (80-95% accurate), while residential IPs can be accurate to within a few kilometers. Mobile IPs are generally less accurate.
 
   - question: What does the is_vpn field indicate?
-    answer: The is_vpn field indicates whether the IP is known to belong to a VPN, proxy, or similar service. This is useful for fraud detection — users hiding behind VPNs may pose higher risk for certain use cases.
+    answer: The is_vpn field indicates whether the IP is known to belong to a VPN. This is useful for fraud detection — users hiding behind VPNs may pose higher risk for certain use cases.
 
   - question: Does this support IPv6?
     answer: Yes, both IPv4 and IPv6 addresses are fully supported.

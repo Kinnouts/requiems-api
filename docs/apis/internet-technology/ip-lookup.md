@@ -2,15 +2,25 @@
 
 Get geolocation data for any IP address including country, city, ISP, and VPN detection.
 
-## Endpoint
+## Endpoints
+
+### Lookup Caller IP
+
+`GET /v1/tech/ip`
+
+Returns geolocation information for the requesting client's IP address. Useful when you want information about the user making the request without specifying an IP explicitly.
+
+**Parameters:** None
+
+### Lookup Specific IP
 
 `GET /v1/tech/ip/{ip}`
 
-## Parameters
+Returns geolocation information for a specific IP address.
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `ip` | string | No | IP address to look up (IPv4 or IPv6). If omitted, uses the requester's IP. |
+| `ip` | string | Yes | IP address to look up (IPv4 or IPv6) |
 
 ## Response Envelope
 
@@ -41,7 +51,7 @@ All responses are wrapped in the standard envelope:
 | `country_code` | string | Two-letter ISO country code (e.g., "US", "GB") |
 | `city` | string | City name where the IP is located |
 | `isp` | string | Internet Service Provider |
-| `is_vpn` | boolean | True if the IP belongs to a known VPN/proxy |
+| `is_vpn` | boolean | True if the IP belongs to a known VPN |
 
 ## Error Codes
 
@@ -52,7 +62,14 @@ All responses are wrapped in the standard envelope:
 
 ## Examples
 
-### cURL
+### Lookup Caller IP
+
+```bash
+curl "https://api.requiems.xyz/v1/tech/ip" \
+  -H "requiems-api-key: YOUR_API_KEY"
+```
+
+### Lookup Specific IP
 
 ```bash
 curl "https://api.requiems.xyz/v1/tech/ip/8.8.8.8" \
@@ -64,6 +81,7 @@ curl "https://api.requiems.xyz/v1/tech/ip/8.8.8.8" \
 ```python
 import requests
 
+# Lookup specific IP
 url = "https://api.requiems.xyz/v1/tech/ip/8.8.8.8"
 headers = {"requiems-api-key": "YOUR_API_KEY"}
 

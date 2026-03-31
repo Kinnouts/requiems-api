@@ -19,17 +19,101 @@ overview:
     - Support for both IPv4 and IPv6 addresses
 
 endpoints:
-  - name: Lookup ASN
+  - name: Lookup ASN (Caller IP)
+    method: GET
+    path: /v1/tech/ip/asn
+    description: Look up ASN, organization, ISP, and network details for the requesting client's IP address. Useful when you want information about the user making the request without specifying an IP explicitly.
+
+    response_example: |
+      {
+        "data": {
+          "ip": "8.8.8.8",
+          "asn": "AS15169",
+          "org": "Google LLC",
+          "isp": "Google Public DNS",
+          "domain": "google.com",
+          "route": "8.8.8.0/24",
+          "type": "hosting"
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: ip
+        type: string
+        description: The IP address that was looked up (the requesting client's IP)
+      - name: asn
+        type: string
+        description: Autonomous System Number in format "ASxxxx" (e.g., "AS15169")
+      - name: org
+        type: string
+        description: Organization name owning the IP address range
+      - name: isp
+        type: string
+        description: Internet Service Provider providing the IP
+      - name: domain
+        type: string
+        description: Domain name associated with the IP or IP range
+      - name: route
+        type: string
+        description: CIDR notation of the network route (e.g., "8.8.8.0/24")
+      - name: type
+        type: string
+        description: Type of network (e.g., "hosting", "isp", "business", "cdn")
+
+    errors:
+      - code: internal_error
+        status: 500
+        description: Unexpected server error
+
+    code_examples:
+      curl: |
+        curl "https://api.requiems.xyz/v1/tech/ip/asn" \
+          -H "requiems-api-key: YOUR_API_KEY"
+
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/tech/ip/asn"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+
+        response = requests.get(url, headers=headers)
+        print(response.json())
+
+      javascript: |
+        const response = await fetch('https://api.requiems.xyz/v1/tech/ip/asn', {
+          headers: { 'requiems-api-key': 'YOUR_API_KEY' }
+        });
+
+        const data = await response.json();
+        console.log(data.data.asn, data.data.org);
+
+      ruby: |
+        require 'net/http'
+
+        uri = URI('https://api.requiems.xyz/v1/tech/ip/asn')
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        puts JSON.parse(response.body)
+
+  - name: Lookup ASN for IP
     method: GET
     path: /v1/tech/ip/asn/{ip}
-    description: Look up ASN, organization, ISP, and network details for an IP address. If no IP is provided, uses the caller's IP address.
+    description: Look up ASN, organization, ISP, and network details for a specific IP address.
 
     parameters:
       - name: ip
         type: string
-        required: false
+        required: true
         location: path
-        description: The IP address to look up (supports IPv4 and IPv6). If omitted, uses the requester's IP address.
+        description: The IP address to look up (supports IPv4 and IPv6)
         example: 8.8.8.8
 
     response_example: |

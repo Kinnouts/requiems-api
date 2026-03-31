@@ -2,15 +2,25 @@
 
 Look up Autonomous System Number (ASN), organization, ISP, and network route information for any IP address.
 
-## Endpoint
+## Endpoints
+
+### Lookup Caller IP
+
+`GET /v1/tech/ip/asn`
+
+Returns ASN information for the requesting client's IP address. Useful when you want information about the user making the request without specifying an IP explicitly.
+
+**Parameters:** None
+
+### Lookup Specific IP
 
 `GET /v1/tech/ip/asn/{ip}`
 
-## Parameters
+Returns ASN information for a specific IP address.
 
 | Name | Type | Required | Description |
 |------|------|----------|-------------|
-| `ip` | string | No | IP address to look up (IPv4 or IPv6). If omitted, uses the requester's IP. |
+| `ip` | string | Yes | IP address to look up (IPv4 or IPv6) |
 
 ## Response Envelope
 
@@ -54,7 +64,14 @@ All responses are wrapped in the standard envelope:
 
 ## Examples
 
-### cURL
+### Lookup Caller IP
+
+```bash
+curl "https://api.requiems.xyz/v1/tech/ip/asn" \
+  -H "requiems-api-key: YOUR_API_KEY"
+```
+
+### Lookup Specific IP
 
 ```bash
 curl "https://api.requiems.xyz/v1/tech/ip/asn/8.8.8.8" \
@@ -66,6 +83,7 @@ curl "https://api.requiems.xyz/v1/tech/ip/asn/8.8.8.8" \
 ```python
 import requests
 
+# Lookup specific IP
 url = "https://api.requiems.xyz/v1/tech/ip/asn/8.8.8.8"
 headers = {"requiems-api-key": "YOUR_API_KEY"}
 
