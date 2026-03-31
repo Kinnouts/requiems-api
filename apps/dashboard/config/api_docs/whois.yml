@@ -1,0 +1,143 @@
+api_id: whois
+api_name: WHOIS Lookup
+description: Get domain registration details including registrar, name servers, status, creation and expiry dates, and DNSSEC information.
+base_url: https://api.requiems.xyz
+
+overview:
+  use_cases:
+    - Verifying domain ownership before initiating a transfer
+    - Checking domain expiry dates for monitoring or alerting
+    - Enriching lead data with registrar and registration details
+    - Security research and phishing domain investigation
+
+  features:
+    - Registrar name and WHOIS server
+    - Name servers list
+    - Domain status flags (e.g. clientTransferProhibited)
+    - Creation, updated, and expiry dates
+    - DNSSEC status
+
+endpoints:
+  - name: WHOIS Lookup
+    method: GET
+    path: /v1/tech/whois/{domain}
+    description: Returns WHOIS registration information for a domain name.
+
+    parameters:
+      - name: domain
+        type: string
+        required: true
+        location: path
+        description: "The domain name to look up (e.g. example.com)"
+        example: example.com
+
+    response_example: |
+      {
+        "data": {
+          "domain": "example.com",
+          "registrar": "RESERVED-Internet Assigned Numbers Authority",
+          "name_servers": [
+            "A.IANA-SERVERS.NET",
+            "B.IANA-SERVERS.NET"
+          ],
+          "status": [
+            "clientDeleteProhibited",
+            "clientTransferProhibited",
+            "clientUpdateProhibited"
+          ],
+          "created_date": "1995-08-14T04:00:00Z",
+          "updated_date": "2023-08-14T07:01:38Z",
+          "expiry_date": "2024-08-13T04:00:00Z",
+          "dnssec": true
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: domain
+        type: string
+        description: The domain name that was looked up
+      - name: registrar
+        type: string
+        description: The name of the registrar holding the domain registration
+      - name: name_servers
+        type: array of strings
+        description: List of authoritative name servers for the domain
+      - name: status
+        type: array of strings
+        description: "EPP status codes for the domain (e.g. clientTransferProhibited)"
+      - name: created_date
+        type: string
+        description: Date the domain was first registered (ISO 8601)
+      - name: updated_date
+        type: string
+        description: Date the domain record was last updated (ISO 8601)
+      - name: expiry_date
+        type: string
+        description: Date the domain registration expires (ISO 8601)
+      - name: dnssec
+        type: boolean
+        description: True when DNSSEC is enabled for the domain
+
+    errors:
+      - code: bad_request
+        status: 400
+        description: The domain name format is invalid.
+      - code: not_found
+        status: 404
+        description: No WHOIS record was found for the domain.
+      - code: internal_error
+        status: 500
+        description: Unexpected server error or upstream WHOIS query failure.
+
+    code_examples:
+      curl: |
+        curl "https://api.requiems.xyz/v1/tech/whois/example.com" \
+          -H "requiems-api-key: YOUR_API_KEY"
+
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/tech/whois/example.com"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+
+        response = requests.get(url, headers=headers)
+        print(response.json())
+
+      javascript: |
+        const response = await fetch('https://api.requiems.xyz/v1/tech/whois/example.com', {
+          headers: { 'requiems-api-key': 'YOUR_API_KEY' }
+        });
+
+        const data = await response.json();
+        console.log(data.data.registrar, data.data.expiry_date);
+
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/tech/whois/example.com')
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        data = JSON.parse(response.body)
+        puts data['data']['registrar']
+
+faq:
+  - question: What domains are supported?
+    answer: Any publicly registered domain with a WHOIS server is supported. This includes all common TLDs (.com, .net, .org, .io, etc.) and most country-code TLDs (ccTLDs).
+
+  - question: Why are some fields empty in the response?
+    answer: WHOIS data availability depends on the registry and registrar policies. Many registrars redact personal contact information under GDPR or similar privacy regulations. Fields will be omitted from the response when not available.
+
+  - question: What does the not_found error mean?
+    answer: A 404 not_found response means the domain is either unregistered or the registry returned no data for it.
+
+  - question: How fresh is the WHOIS data?
+    answer: WHOIS data is fetched live from the authoritative WHOIS servers on each request. There is no caching layer, so the data reflects the current state of the registry.
