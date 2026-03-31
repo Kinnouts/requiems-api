@@ -778,3 +778,18 @@ apis:
       - Payment Cards
       - Fraud Prevention
       - Fintech
+
+  - id: crypto
+    name: Crypto Prices
+    categories:
+      - finance
+    description: "Get live cryptocurrency prices, 24h change, market cap, and trading volume for 20+ major coins including BTC, ETH, SOL, and more."
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/crypto
+    tags:
+      - Crypto
+      - Bitcoin
+      - Finance
+      - Prices
