@@ -15,6 +15,7 @@ import (
 	"requiems-api/services/tech/phone"
 	"requiems-api/services/tech/qr"
 	"requiems-api/services/tech/useragent"
+	"requiems-api/services/tech/whois"
 )
 
 func RegisterRoutes(r chi.Router, cfg config.Config) {
@@ -50,4 +51,7 @@ func RegisterRoutes(r chi.Router, cfg config.Config) {
 
 	infoSvc := info.NewService(ipiClient)
 	info.RegisterRoutes(r, infoSvc)
+
+	whoisSvc := whois.NewService()
+	whois.RegisterRoutes(r, whoisSvc)
 }
