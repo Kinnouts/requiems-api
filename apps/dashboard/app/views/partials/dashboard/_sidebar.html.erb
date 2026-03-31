@@ -54,6 +54,12 @@
         text: "Settings",
         path: dashboard_settings_path,
         active: controller_name == "settings" %>
+
+      <%= render "partials/dashboard/sidebar_link",
+        icon: "rocket",
+        text: "Quick Start",
+        path: dashboard_quick_start_path,
+        active: controller_name == "quick_start" %>
     </ul>
   </nav>
 
