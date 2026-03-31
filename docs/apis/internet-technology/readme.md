@@ -120,12 +120,12 @@ Scrape web pages for content
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/internet-technology/web-scraper`
 
-### [Whois](./whois.md) - ⏳ Planned
+### [Whois](./whois.md) - ✅ MVP
 
 Get WHOIS information for domains
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/internet-technology/whois`
+- **Status:** mvp
+- **Endpoint:** `GET /v1/tech/whois/{domain}`
 
 ## Category Statistics
 

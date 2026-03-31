@@ -352,6 +352,20 @@ apis:
       - Fraud Prevention
       - IP Intelligence
 
+  - id: whois
+    name: WHOIS Lookup
+    categories:
+      - technology
+    description: Get domain registration details including registrar, name servers, status, creation and expiry dates, and DNSSEC information.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/whois
+    tags:
+      - WHOIS
+      - Domain
+      - DNS
+      - Registration
   - id: domain-info
     name: Domain Info
     categories:
