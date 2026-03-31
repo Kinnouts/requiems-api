@@ -11,6 +11,7 @@ import (
 	"requiems-api/services/tech/ip/asn"
 	"requiems-api/services/tech/ip/info"
 	"requiems-api/services/tech/ip/vpn"
+	"requiems-api/services/tech/mx"
 	"requiems-api/services/tech/password"
 	"requiems-api/services/tech/phone"
 	"requiems-api/services/tech/qr"
@@ -50,4 +51,7 @@ func RegisterRoutes(r chi.Router, cfg config.Config) {
 
 	infoSvc := info.NewService(ipiClient)
 	info.RegisterRoutes(r, infoSvc)
+
+	mxSvc := mx.NewService()
+	mx.RegisterRoutes(r, mxSvc)
 }

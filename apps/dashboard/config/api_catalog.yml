@@ -352,6 +352,22 @@ apis:
       - Fraud Prevention
       - IP Intelligence
 
+  - id: mx-lookup
+    name: MX Lookup
+    categories:
+      - technology
+    description: Look up MX (Mail Exchange) records for any domain. Returns all mail server hostnames with their priorities, sorted from highest to lowest priority.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/mx-lookup
+    tags:
+      - MX
+      - DNS
+      - Email
+      - Mail Server
+      - Lookup
+
   # Media Generation APIs
   - id: qr-code
     name: QR Code Generator
