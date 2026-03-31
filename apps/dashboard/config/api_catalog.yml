@@ -352,6 +352,20 @@ apis:
       - Fraud Prevention
       - IP Intelligence
 
+  - id: domain-info
+    name: Domain Info
+    categories:
+      - technology
+    description: Look up DNS records and check domain availability. Returns A, AAAA, MX, NS, TXT, and CNAME records alongside a registration availability flag.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/domain-info
+    tags:
+      - Domain
+      - DNS
+      - Availability
+      - WHOIS
   - id: mx-lookup
     name: MX Lookup
     categories:
