@@ -304,6 +304,36 @@ apis:
       - Encoding
       - Utilities
 
+  - id: ip-asn
+    name: ASN Lookup
+    categories:
+      - technology
+    description: Look up Autonomous System Number (ASN), organization, ISP, and network route information for any IP address.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/ip-asn
+    tags:
+      - ASN
+      - IP
+      - Network
+      - Lookup
+
+  - id: ip-info
+    name: IP Geolocation
+    categories:
+      - technology
+    description: Get geolocation data for any IP address including country, city, ISP, and VPN detection.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/ip-info
+    tags:
+      - IP
+      - Geolocation
+      - Location
+      - VPN
+
   - id: vpn-detection
     name: VPN & Proxy Detection
     categories:

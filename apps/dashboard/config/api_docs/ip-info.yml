@@ -1,0 +1,123 @@
+api_id: ip-info
+api_name: IP Geolocation
+description: Get geolocation data for any IP address including country, city, ISP, and VPN detection. Use this endpoint to enrich user data with location information for personalization, fraud detection, or content localization.
+base_url: https://api.requiems.xyz
+
+overview:
+  use_cases:
+    - User location personalization
+    - Fraud detection and risk scoring
+    - Content localization and geo-targeting
+    - Analytics and user insights
+    - Compliance and regulatory requirements
+
+  features:
+    - Country and city lookup
+    - ISP identification
+    - VPN/Proxy detection
+    - Support for both IPv4 and IPv6 addresses
+
+endpoints:
+  - name: Get IP Info
+    method: GET
+    path: /v1/tech/ip/{ip}
+    description: Get geolocation and network information for an IP address. If no IP is provided, uses the caller's IP address.
+
+    parameters:
+      - name: ip
+        type: string
+        required: false
+        location: path
+        description: The IP address to look up (supports IPv4 and IPv6). If omitted, uses the requester's IP address.
+        example: 8.8.8.8
+
+    response_example: |
+      {
+        "data": {
+          "ip": "8.8.8.8",
+          "country": "United States",
+          "country_code": "US",
+          "city": "Mountain View",
+          "isp": "Google Public DNS",
+          "is_vpn": false
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: ip
+        type: string
+        description: The IP address that was looked up
+      - name: country
+        type: string
+        description: Country name where the IP is located
+      - name: country_code
+        type: string
+        description: Two-letter ISO country code (e.g., "US", "GB", "DE")
+      - name: city
+        type: string
+        description: City name where the IP is located
+      - name: isp
+        type: string
+        description: Internet Service Provider providing the IP
+      - name: is_vpn
+        type: boolean
+        description: True when the IP belongs to a known VPN or proxy provider
+
+    errors:
+      - code: bad_request
+        status: 400
+        description: The IP address is invalid
+      - code: internal_error
+        status: 500
+        description: Unexpected server error
+
+    code_examples:
+      curl: |
+        curl "https://api.requiems.xyz/v1/tech/ip/8.8.8.8" \
+          -H "requiems-api-key: YOUR_API_KEY"
+
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/tech/ip/8.8.8.8"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+
+        response = requests.get(url, headers=headers)
+        print(response.json())
+
+      javascript: |
+        const response = await fetch('https://api.requiems.xyz/v1/tech/ip/8.8.8.8', {
+          headers: { 'requiems-api-key': 'YOUR_API_KEY' }
+        });
+
+        const data = await response.json();
+        console.log(data.data.country, data.data.city);
+
+      ruby: |
+        require 'net/http'
+
+        uri = URI('https://api.requiems.xyz/v1/tech/ip/8.8.8.8')
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        puts JSON.parse(response.body)
+
+faq:
+  - question: How accurate is the geolocation data?
+    answer: Accuracy varies by IP type. ISP and hosting provider IPs typically have city-level accuracy (80-95% accurate), while residential IPs can be accurate to within a few kilometers. Mobile IPs are generally less accurate.
+
+  - question: What does the is_vpn field indicate?
+    answer: The is_vpn field indicates whether the IP is known to belong to a VPN, proxy, or similar service. This is useful for fraud detection — users hiding behind VPNs may pose higher risk for certain use cases.
+
+  - question: Does this support IPv6?
+    answer: Yes, both IPv4 and IPv6 addresses are fully supported.
+
+  - question: What happens with private IP addresses?
+    answer: Private IP addresses (like 192.168.x.x, 10.x.x.x, 172.16-31.x.x) do not have geolocation data publicly assigned. The API returns the IP with empty location fields for private addresses.

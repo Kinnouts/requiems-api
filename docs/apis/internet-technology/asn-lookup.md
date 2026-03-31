@@ -1,10 +1,10 @@
-# IP Geolocation API
+# ASN Lookup API
 
-Get geolocation data for any IP address including country, city, ISP, and VPN detection.
+Look up Autonomous System Number (ASN), organization, ISP, and network route information for any IP address.
 
 ## Endpoint
 
-`GET /v1/tech/ip/{ip}`
+`GET /v1/tech/ip/asn/{ip}`
 
 ## Parameters
 
@@ -20,11 +20,12 @@ All responses are wrapped in the standard envelope:
 {
   "data": {
     "ip": "8.8.8.8",
-    "country": "United States",
-    "country_code": "US",
-    "city": "Mountain View",
+    "asn": "AS15169",
+    "org": "Google LLC",
     "isp": "Google Public DNS",
-    "is_vpn": false
+    "domain": "google.com",
+    "route": "8.8.8.0/24",
+    "type": "hosting"
   },
   "metadata": {
     "timestamp": "2026-01-01T00:00:00Z"
@@ -37,11 +38,12 @@ All responses are wrapped in the standard envelope:
 | Field | Type | Description |
 |-------|------|-------------|
 | `ip` | string | The IP address that was looked up |
-| `country` | string | Country name where the IP is located |
-| `country_code` | string | Two-letter ISO country code (e.g., "US", "GB") |
-| `city` | string | City name where the IP is located |
+| `asn` | string | Autonomous System Number (e.g., "AS15169") |
+| `org` | string | Organization name owning the IP range |
 | `isp` | string | Internet Service Provider |
-| `is_vpn` | boolean | True if the IP belongs to a known VPN/proxy |
+| `domain` | string | Domain name associated with the IP |
+| `route` | string | CIDR notation of the network route |
+| `type` | string | Type of network (hosting, isp, business, cdn) |
 
 ## Error Codes
 
@@ -55,7 +57,7 @@ All responses are wrapped in the standard envelope:
 ### cURL
 
 ```bash
-curl "https://api.requiems.xyz/v1/tech/ip/8.8.8.8" \
+curl "https://api.requiems.xyz/v1/tech/ip/asn/8.8.8.8" \
   -H "requiems-api-key: YOUR_API_KEY"
 ```
 
@@ -64,7 +66,7 @@ curl "https://api.requiems.xyz/v1/tech/ip/8.8.8.8" \
 ```python
 import requests
 
-url = "https://api.requiems.xyz/v1/tech/ip/8.8.8.8"
+url = "https://api.requiems.xyz/v1/tech/ip/asn/8.8.8.8"
 headers = {"requiems-api-key": "YOUR_API_KEY"}
 
 response = requests.get(url, headers=headers)
@@ -73,9 +75,9 @@ print(response.json())
 
 ## FAQ
 
-**How accurate is the geolocation data?**
+**What is an ASN?**
 
-Accuracy varies by IP type. ISP and hosting provider IPs typically have city-level accuracy (80-95%). Residential IPs can be accurate to within a few kilometers. Mobile IPs are generally less accurate.
+An Autonomous System Number (ASN) is a unique identifier assigned to a group of IP networks and routers that operate under a common administration.
 
 **Does this support IPv6?**
 
@@ -83,4 +85,4 @@ Yes, both IPv4 and IPv6 addresses are fully supported.
 
 **What happens with private IP addresses?**
 
-Private IP addresses (192.168.x.x, 10.x.x.x, 172.16-31.x.x) do not have geolocation data. The API returns the IP with empty location fields.
+Private IP addresses (192.168.x.x, 10.x.x.x, 172.16-31.x.x) do not have ASN information. The API returns the IP with empty ASN fields.
