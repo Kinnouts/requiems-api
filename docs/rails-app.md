@@ -204,6 +204,8 @@ histories.
 
 Always use the `highlight` Stimulus controller (`highlight_controller.js`) — never add a separate hljs call or import.
 
+The hljs CSS is loaded via `<link>` tag in both layouts (`application.html.erb` and `dashboard.html.erb`). Do **not** use `@import` for it in `application.css` — Tailwind v4 strips external URL imports during compilation.
+
 **Standalone code block:**
 ```erb
 <div data-controller="highlight">

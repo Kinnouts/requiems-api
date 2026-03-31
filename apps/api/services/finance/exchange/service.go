@@ -122,7 +122,7 @@ func (s *Service) fetchRate(ctx context.Context, from, to string) (float64, time
 		return 0, time.Time{}, &httpx.AppError{
 			Status:  http.StatusUnprocessableEntity,
 			Code:    "invalid_currency",
-			Message: fmt.Sprintf("unknown currency code: %s", from),
+			Message: fmt.Sprintf("unknown currency code: %s or %s", from, to),
 		}
 	}
 
