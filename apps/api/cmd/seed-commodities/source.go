@@ -215,7 +215,7 @@ func fetchYahoo(cfg CommodityConfig) ([]CommodityRecord, error) {
 // ---- shared helpers ----
 
 // parseFREDRow validates and parses a CSV record into (val, year, ok).
-func parseFREDRow(record []string) (float64, int, bool) {
+func parseFREDRow(record []string) (val float64, year int, ok bool) {
 	if len(record) < 2 {
 		return 0, 0, false
 	}
@@ -223,11 +223,12 @@ func parseFREDRow(record []string) (float64, int, bool) {
 	if valStr == "." || valStr == "" {
 		return 0, 0, false
 	}
-	val, err := strconv.ParseFloat(valStr, 64)
+	var err error
+	val, err = strconv.ParseFloat(valStr, 64)
 	if err != nil || math.IsNaN(val) || math.IsInf(val, 0) || val <= 0 {
 		return 0, 0, false
 	}
-	year, err := parseYear(strings.TrimSpace(record[0]))
+	year, err = parseYear(strings.TrimSpace(record[0]))
 	if err != nil || year < 1960 || year > time.Now().Year() {
 		return 0, 0, false
 	}

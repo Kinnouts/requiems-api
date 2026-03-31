@@ -42,7 +42,7 @@ docker run --rm \
 ## Data Source
 
 [globalcitizen/php-iban](https://github.com/globalcitizen/php-iban) —
-`utils/iban-registry-file`
+`registry.txt`
 
 This file is a pipe-separated mirror of the SWIFT IBAN Registry
 (ISO 13616). It includes every country that has officially adopted the
@@ -50,8 +50,7 @@ IBAN scheme, with:
 
 - Expected total IBAN length
 - BBAN format string (SWIFT notation, e.g. `8!n10!n`)
-- 1-indexed bank identifier start/end positions within the full IBAN
-- 1-indexed account identifier start/end positions
+- 0-indexed bank and branch identifier offsets within the BBAN
 - SEPA membership flag
 
 ## What Gets Seeded
@@ -73,6 +72,6 @@ Each row in `iban_countries` represents one country with:
 ## Pipeline
 
 1. **Fetch** — download registry file (30s timeout)
-2. **Parse** — read pipe-separated lines, skip non-`CR` records
-3. **Convert** — translate 1-indexed IBAN positions to 0-indexed BBAN offsets
+2. **Parse** — read pipe-separated lines, skip header
+3. **Convert** — derive account offset from bank/branch end positions
 4. **Upsert** — staging table → COPY bulk insert → `ON CONFLICT DO UPDATE`
