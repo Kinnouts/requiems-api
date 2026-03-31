@@ -113,12 +113,17 @@ func acquireProcessingSet(ctx context.Context, rdb *redis.Client) (bool, error) 
 	}
 
 	// No in-flight snapshot exists — atomically rename the dirty set.
-	// If counter:dirty doesn't exist, Redis returns ERR no such key.
+	// Check existence first to avoid the ERR no such key error from RENAMENX.
+	dirtyExists, err := rdb.Exists(ctx, dirtySetKey).Result()
+	if err != nil {
+		return false, err
+	}
+	if dirtyExists == 0 {
+		return false, nil
+	}
+
 	_, err = rdb.RenameNX(ctx, dirtySetKey, processingSetKey).Result()
 	if err != nil {
-		if redis.HasErrorPrefix(err, "ERR no such key") {
-			return false, nil
-		}
 		return false, err
 	}
 	return true, nil

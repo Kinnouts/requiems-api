@@ -7,6 +7,7 @@ import (
 
 	"requiems-api/services/finance/bin"
 	"requiems-api/services/finance/commodities"
+	"requiems-api/services/finance/crypto"
 	"requiems-api/services/finance/exchange"
 	"requiems-api/services/finance/iban"
 	"requiems-api/services/finance/inflation"
@@ -33,4 +34,7 @@ func RegisterRoutes(r chi.Router, pool *pgxpool.Pool, rdb *redis.Client) {
 
 	exchangeSvc := exchange.NewService(rdb)
 	exchange.RegisterRoutes(r, exchangeSvc)
+
+	cryptoSvc := crypto.NewService(rdb)
+	crypto.RegisterRoutes(r, cryptoSvc)
 }

@@ -1,7 +1,7 @@
 package mx
 
-// MXRecord represents a single MX record entry.
-type MXRecord struct {
+// Record represents a single MX record entry.
+type Record struct {
 	Host     string `json:"host"`
 	Priority uint16 `json:"priority"`
 }
@@ -9,7 +9,7 @@ type MXRecord struct {
 // LookupResponse is the JSON payload returned by the MX lookup endpoint.
 type LookupResponse struct {
 	Domain  string     `json:"domain"`
-	Records []MXRecord `json:"records"`
+	Records []Record `json:"records"`
 }
 
 func (LookupResponse) IsData() {}

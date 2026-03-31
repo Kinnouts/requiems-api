@@ -54,7 +54,7 @@ func TestExchangeRate_HappyPath(t *testing.T) {
 		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
 	}
 
-	var resp httpx.Response[ExchangeRateResponse]
+	var resp httpx.Response[RateResponse]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("decode: %v", err)
 	}

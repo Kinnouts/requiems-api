@@ -1,7 +1,7 @@
 package exchange
 
-// ExchangeRateRequest holds the validated query parameters for GET /exchange-rate.
-type ExchangeRateRequest struct {
+// RateRequest holds the validated query parameters for GET /exchange-rate.
+type RateRequest struct {
 	From string `query:"from" validate:"required,len=3,alpha"`
 	To   string `query:"to"   validate:"required,len=3,alpha"`
 }
@@ -13,15 +13,15 @@ type ConvertRequest struct {
 	Amount float64 `query:"amount" validate:"required,gt=0"`
 }
 
-// ExchangeRateResponse is the response payload for GET /v1/finance/exchange-rate.
-type ExchangeRateResponse struct {
+// RateResponse is the response payload for GET /v1/finance/exchange-rate.
+type RateResponse struct {
 	From      string  `json:"from"`
 	To        string  `json:"to"`
 	Rate      float64 `json:"rate"`
 	Timestamp string  `json:"timestamp"`
 }
 
-func (ExchangeRateResponse) IsData() {}
+func (RateResponse) IsData() {}
 
 // ConvertResponse is the response payload for GET /v1/finance/convert.
 type ConvertResponse struct {
