@@ -16,8 +16,8 @@ type ScheduleEntry struct {
 	Balance   float64 `json:"balance"`
 }
 
-// MortgageResponse is the response payload for GET /v1/finance/mortgage.
-type MortgageResponse struct {
+// Response is the response payload for GET /v1/finance/mortgage.
+type Response struct {
 	Principal      float64         `json:"principal"`
 	Rate           float64         `json:"rate"`
 	Years          int             `json:"years"`
@@ -27,4 +27,4 @@ type MortgageResponse struct {
 	Schedule       []ScheduleEntry `json:"schedule"`
 }
 
-func (MortgageResponse) IsData() {}
+func (Response) IsData() {}

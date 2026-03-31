@@ -5,7 +5,7 @@ import "math"
 // Calculator is the interface used by the HTTP transport layer, allowing
 // transport tests to inject a stub without requiring the concrete *Service.
 type Calculator interface {
-	Calculate(principal, annualRate float64, years int) MortgageResponse
+	Calculate(principal, annualRate float64, years int) Response
 }
 
 // Service computes mortgage payments and amortization schedules.
@@ -16,7 +16,7 @@ func NewService() *Service { return &Service{} }
 
 // Calculate returns the monthly payment, totals, and full amortization
 // schedule for a fixed-rate mortgage.
-func (s *Service) Calculate(principal, annualRate float64, years int) MortgageResponse {
+func (s *Service) Calculate(principal, annualRate float64, years int) Response {
 	n := years * 12
 	monthlyRate := annualRate / 100.0 / 12.0
 
@@ -50,7 +50,7 @@ func (s *Service) Calculate(principal, annualRate float64, years int) MortgageRe
 
 	totalPayment := monthlyPayment * float64(n)
 
-	return MortgageResponse{
+	return Response{
 		Principal:      principal,
 		Rate:           annualRate,
 		Years:          years,

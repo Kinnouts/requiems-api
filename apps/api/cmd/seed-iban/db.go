@@ -40,12 +40,12 @@ func upsertRecords(ctx context.Context, conn *pgx.Conn, countries []RawIBANCount
 		rows = append(rows, []any{
 			c.CountryCode,
 			c.CountryName,
-			int16(c.IBANLength),     //nolint:gosec // IBAN lengths are small positive integers
+			int16(c.IBANLength), //nolint:gosec // IBAN lengths are small positive integers
 			c.BBANFormat,
-			int16(c.BankOffset()),   //nolint:gosec
-			int16(c.BankLength()),   //nolint:gosec
-			int16(c.AccountOffset()), //nolint:gosec
-			int16(c.AccountLength()), //nolint:gosec
+			int16(c.BankOffset()),    //nolint:gosec // bank offsets are small positive integers
+			int16(c.BankLength()),    //nolint:gosec // bank lengths are small positive integers
+			int16(c.AccountOffset()), //nolint:gosec // account offsets are small positive integers
+			int16(c.AccountLength()), //nolint:gosec // account lengths are small positive integers
 			c.SEPAMember,
 		})
 	}

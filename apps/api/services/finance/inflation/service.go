@@ -25,7 +25,7 @@ func NewService(db *pgxpool.Pool) *Service {
 
 // GetInflation returns the latest inflation rate and historical data for the
 // given 2-letter ISO 3166-1 alpha-2 country code.
-func (s *Service) GetInflation(ctx context.Context, rawCode string) (InflationResponse, error) {
+func (s *Service) GetInflation(ctx context.Context, rawCode string) (Response, error) {
 	code := strings.ToUpper(strings.TrimSpace(rawCode))
 
 	rows, err := s.db.Query(ctx, `
@@ -36,7 +36,7 @@ func (s *Service) GetInflation(ctx context.Context, rawCode string) (InflationRe
 		LIMIT $2
 	`, code, historyDepth)
 	if err != nil {
-		return InflationResponse{}, err
+		return Response{}, err
 	}
 	defer rows.Close()
 
@@ -48,17 +48,17 @@ func (s *Service) GetInflation(ctx context.Context, rawCode string) (InflationRe
 	var results []yearRate
 	for rows.Next() {
 		var yr yearRate
-		if err = rows.Scan(&yr.year, &yr.rate); err != nil {
-			return InflationResponse{}, err
+		if err := rows.Scan(&yr.year, &yr.rate); err != nil {
+			return Response{}, err
 		}
 		results = append(results, yr)
 	}
-	if err = rows.Err(); err != nil {
-		return InflationResponse{}, err
+	if err := rows.Err(); err != nil {
+		return Response{}, err
 	}
 
 	if len(results) == 0 {
-		return InflationResponse{}, &httpx.AppError{
+		return Response{}, &httpx.AppError{
 			Status:  http.StatusNotFound,
 			Code:    "not_found",
 			Message: "no inflation data found for country",
@@ -74,7 +74,7 @@ func (s *Service) GetInflation(ctx context.Context, rawCode string) (InflationRe
 		})
 	}
 
-	return InflationResponse{
+	return Response{
 		Country:    code,
 		Rate:       latest.rate,
 		Period:     strconv.Itoa(int(latest.year)),

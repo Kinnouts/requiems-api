@@ -15,13 +15,13 @@ import (
 // stubGetter implements Getter for transport tests. It returns a fixed result
 // or a fixed error on every call, keeping tests DB-free and fast.
 type stubGetter struct {
-	result InflationResponse
+	result Response
 	err    error
 }
 
-func (s *stubGetter) GetInflation(_ context.Context, countryCode string) (InflationResponse, error) {
+func (s *stubGetter) GetInflation(_ context.Context, countryCode string) (Response, error) {
 	if s.err != nil {
-		return InflationResponse{}, s.err
+		return Response{}, s.err
 	}
 	r := s.result
 	r.Country = countryCode
@@ -37,9 +37,9 @@ func setupRouter(g Getter) chi.Router {
 
 // ---- helper ----
 
-func decodeResponse(t *testing.T, w *httptest.ResponseRecorder) httpx.Response[InflationResponse] {
+func decodeResponse(t *testing.T, w *httptest.ResponseRecorder) httpx.Response[Response] {
 	t.Helper()
-	var resp httpx.Response[InflationResponse]
+	var resp httpx.Response[Response]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
@@ -49,7 +49,7 @@ func decodeResponse(t *testing.T, w *httptest.ResponseRecorder) httpx.Response[I
 // ---- tests ----
 
 func TestInflation_KnownCountry_Returns200(t *testing.T) {
-	svc := &stubGetter{result: InflationResponse{
+	svc := &stubGetter{result: Response{
 		Rate:       3.2,
 		Period:     "2024",
 		Historical: []HistoricalRate{{Period: "2023", Rate: 4.1}},
@@ -74,7 +74,7 @@ func TestInflation_KnownCountry_Returns200(t *testing.T) {
 }
 
 func TestInflation_ResponseEnvelope(t *testing.T) {
-	svc := &stubGetter{result: InflationResponse{Rate: 2.5, Period: "2024"}}
+	svc := &stubGetter{result: Response{Rate: 2.5, Period: "2024"}}
 	r := setupRouter(svc)
 
 	req := httptest.NewRequest(http.MethodGet, "/inflation?country=DE", http.NoBody)
@@ -141,7 +141,7 @@ func TestInflation_InvalidCountryCode_Returns400(t *testing.T) {
 }
 
 func TestInflation_LowercaseCountryAccepted(t *testing.T) {
-	svc := &stubGetter{result: InflationResponse{Rate: 1.5, Period: "2024"}}
+	svc := &stubGetter{result: Response{Rate: 1.5, Period: "2024"}}
 	r := setupRouter(svc)
 
 	req := httptest.NewRequest(http.MethodGet, "/inflation?country=us", http.NoBody)
@@ -163,7 +163,7 @@ func TestInflation_HistoricalFieldPresent(t *testing.T) {
 		{Period: "2023", Rate: 4.1},
 		{Period: "2022", Rate: 8.0},
 	}
-	svc := &stubGetter{result: InflationResponse{
+	svc := &stubGetter{result: Response{
 		Rate:       3.2,
 		Period:     "2024",
 		Historical: historical,

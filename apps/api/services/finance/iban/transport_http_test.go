@@ -171,7 +171,7 @@ func TestIBAN_AllResponseFieldsPresent(t *testing.T) {
 
 	checks := map[string]bool{
 		"iban non-empty":      d.IBAN != "",
-		"country non-empty":  d.Country != "",
+		"country non-empty":   d.Country != "",
 		"bank_code non-empty": d.BankCode != "",
 		"account non-empty":   d.Account != "",
 		"valid is true":       d.Valid,

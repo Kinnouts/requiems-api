@@ -22,11 +22,11 @@ type RawIBANCountry struct {
 	BBANLength  int
 	BBANFormat  string
 	// 0-indexed positions within the BBAN (per SWIFT IBAN Registry).
-	BankIDStart    int
-	BankIDEnd      int
-	BranchIDStart  int
-	BranchIDEnd    int
-	SEPAMember     bool
+	BankIDStart   int
+	BankIDEnd     int
+	BranchIDStart int
+	BranchIDEnd   int
+	SEPAMember    bool
 }
 
 // BankOffset returns the 0-indexed start position of the bank code within the

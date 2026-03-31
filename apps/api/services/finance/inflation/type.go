@@ -8,15 +8,15 @@ type HistoricalRate struct {
 	Rate   float64 `json:"rate"`
 }
 
-// InflationResponse is the response payload for GET /v1/finance/inflation.
-type InflationResponse struct {
+// Response is the response payload for GET /v1/finance/inflation.
+type Response struct {
 	Country    string           `json:"country"`
 	Rate       float64          `json:"rate"`
 	Period     string           `json:"period"`
 	Historical []HistoricalRate `json:"historical"`
 }
 
-func (InflationResponse) IsData() {}
+func (Response) IsData() {}
 
 // Request holds the validated query parameters for the inflation endpoint.
 type Request struct {
@@ -26,5 +26,5 @@ type Request struct {
 // Getter is the interface used by the HTTP transport layer, allowing transport
 // tests to inject a stub without requiring a database connection.
 type Getter interface {
-	GetInflation(ctx context.Context, countryCode string) (InflationResponse, error)
+	GetInflation(ctx context.Context, countryCode string) (Response, error)
 }

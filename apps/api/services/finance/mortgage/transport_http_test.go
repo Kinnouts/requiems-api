@@ -13,10 +13,10 @@ import (
 
 // stubCalculator implements Calculator for transport tests.
 type stubCalculator struct {
-	result MortgageResponse
+	result Response
 }
 
-func (s *stubCalculator) Calculate(principal, annualRate float64, years int) MortgageResponse {
+func (s *stubCalculator) Calculate(principal, annualRate float64, years int) Response {
 	r := s.result
 	r.Principal = principal
 	r.Rate = annualRate
@@ -30,9 +30,9 @@ func setupRouter(c Calculator) chi.Router {
 	return r
 }
 
-func decodeResponse(t *testing.T, w *httptest.ResponseRecorder) httpx.Response[MortgageResponse] {
+func decodeResponse(t *testing.T, w *httptest.ResponseRecorder) httpx.Response[Response] {
 	t.Helper()
-	var resp httpx.Response[MortgageResponse]
+	var resp httpx.Response[Response]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
@@ -40,7 +40,7 @@ func decodeResponse(t *testing.T, w *httptest.ResponseRecorder) httpx.Response[M
 }
 
 func TestMortgage_HappyPath_Returns200(t *testing.T) {
-	svc := &stubCalculator{result: MortgageResponse{MonthlyPayment: 1896.20}}
+	svc := &stubCalculator{result: Response{MonthlyPayment: 1896.20}}
 	r := setupRouter(svc)
 
 	req := httptest.NewRequest(http.MethodGet, "/mortgage?principal=300000&rate=6.5&years=30", http.NoBody)
