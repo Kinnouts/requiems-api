@@ -747,6 +747,22 @@ apis:
       - Agriculture
       - Finance
 
+  - id: exchange-rate
+    name: Exchange Rate
+    categories:
+      - finance
+    description: "Get live currency exchange rates and convert amounts between currencies. Rates are sourced from the ECB and cached for up to one hour."
+    endpoints_count: 2
+    status: live
+    popular: false
+    documentation_url: /apis/exchange-rate
+    tags:
+      - Currency
+      - Exchange Rate
+      - Finance
+      - Conversion
+      - Forex
+
   - id: bin-lookup
     name: BIN Lookup
     categories:
