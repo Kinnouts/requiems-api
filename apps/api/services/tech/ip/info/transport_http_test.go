@@ -187,6 +187,39 @@ func TestInfo_ResponseFields(t *testing.T) {
 	if resp.Data.IP != "1.1.1.1" {
 		t.Errorf("expected IP 1.1.1.1, got %s", resp.Data.IP)
 	}
-	// is_vpn must be a valid boolean (always true — just asserting the field exists)
-	_ = resp.Data.IsVPN
+func TestInfo_ResponseFields(t *testing.T) {
+	skipIfNoService(t)
+	r := setupRouter()
+
+	req := httptest.NewRequest(http.MethodGet, "/ip/1.1.1.1", http.NoBody)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected 200, got %d", w.Code)
+	}
+
+	body := w.Body.Bytes()
+
+	var resp httpx.Response[LookupResponse]
+	if err := json.Unmarshal(body, &resp); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
+
+	if resp.Data.IP != "1.1.1.1" {
+		t.Errorf("expected IP 1.1.1.1, got %s", resp.Data.IP)
+	}
+	
+	var raw map[string]any
+	if err := json.Unmarshal(body, &raw); err != nil {
+		t.Fatalf("failed to decode raw response: %v", err)
+	}
+	data, ok := raw["data"].(map[string]any)
+	if !ok {
+		t.Fatalf("expected object at data")
+	}
+	if _, ok := data["is_vpn"]; !ok {
+		t.Error("expected data.is_vpn to be present in response JSON")
+	}
+}
 }
