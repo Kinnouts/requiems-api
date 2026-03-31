@@ -627,6 +627,21 @@ apis:
       - Macroeconomics
       - World Bank
 
+  - id: mortgage
+    name: Mortgage Calculator
+    categories:
+      - finance
+    description: Calculate monthly mortgage payments and full amortization schedules. Pass principal, annual interest rate, and loan term in years.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/mortgage
+    tags:
+      - Mortgage
+      - Finance
+      - Calculator
+      - Amortization
+
   - id: bin-lookup
     name: BIN Lookup
     categories:
