@@ -24,15 +24,15 @@ func fakeFrankfurter(base, target string, rate float64) http.HandlerFunc {
 	}
 }
 
-func newTestService(handler http.Handler) (*Service, func()) {
+func newTestService(handler http.Handler) (svc *Service, cleanup func()) {
 	srv := httptest.NewServer(handler)
-	svc := newServiceWithClient(nil, srv.Client(), srv.URL)
+	svc = newServiceWithClient(nil, srv.Client(), srv.URL)
 	return svc, srv.Close
 }
 
 func TestGetRate_CacheMiss_FetchesFromAPI(t *testing.T) {
-	svc, close := newTestService(fakeFrankfurter("USD", "EUR", 0.92))
-	defer close()
+	svc, cleanup := newTestService(fakeFrankfurter("USD", "EUR", 0.92))
+	defer cleanup()
 
 	rate, ts, err := svc.GetRate(t.Context(), "USD", "EUR")
 	if err != nil {
@@ -47,8 +47,8 @@ func TestGetRate_CacheMiss_FetchesFromAPI(t *testing.T) {
 }
 
 func TestGetRate_DateParsedCorrectly(t *testing.T) {
-	svc, close := newTestService(fakeFrankfurter("USD", "GBP", 0.78))
-	defer close()
+	svc, cleanup := newTestService(fakeFrankfurter("USD", "GBP", 0.78))
+	defer cleanup()
 
 	_, ts, err := svc.GetRate(t.Context(), "USD", "GBP")
 	if err != nil {
@@ -66,8 +66,8 @@ func TestGetRate_InvalidTargetCurrency_Returns422(t *testing.T) {
 		w.Header().Set("Content-Type", "application/json")
 		json.NewEncoder(w).Encode(resp)
 	})
-	svc, close := newTestService(handler)
-	defer close()
+	svc, cleanup := newTestService(handler)
+	defer cleanup()
 
 	_, _, err := svc.GetRate(t.Context(), "USD", "XYZ")
 	if err == nil {
@@ -90,8 +90,8 @@ func TestGetRate_APIReturns404_Returns422(t *testing.T) {
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		http.NotFound(w, r)
 	})
-	svc, close := newTestService(handler)
-	defer close()
+	svc, cleanup := newTestService(handler)
+	defer cleanup()
 
 	_, _, err := svc.GetRate(t.Context(), "XYZ", "EUR")
 	if err == nil {
@@ -111,8 +111,8 @@ func TestGetRate_APIReturns500_Returns503(t *testing.T) {
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "internal error", http.StatusInternalServerError)
 	})
-	svc, close := newTestService(handler)
-	defer close()
+	svc, cleanup := newTestService(handler)
+	defer cleanup()
 
 	_, _, err := svc.GetRate(t.Context(), "USD", "EUR")
 	if err == nil {

@@ -108,7 +108,7 @@ func (s *Service) fetchRate(ctx context.Context, from, to string) (float64, time
 		return 0, time.Time{}, fmt.Errorf("exchange: build request: %w", err)
 	}
 
-	resp, err := s.httpClient.Do(req)
+	resp, err := s.httpClient.Do(req) //nolint:gosec // URL is built from a fixed base URL and validated 3-char alpha currency codes
 	if err != nil {
 		return 0, time.Time{}, &httpx.AppError{
 			Status:  http.StatusServiceUnavailable,
