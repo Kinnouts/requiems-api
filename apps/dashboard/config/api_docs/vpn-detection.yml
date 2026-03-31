@@ -43,7 +43,7 @@ endpoints:
           "is_tor": false,
           "is_hosting": true,
           "score": 1,
-          "threat": "low",
+          "threat": 1,
           "fraud_score": 0,
           "asn_org": "GOOGLE-ASN"
         },
@@ -72,8 +72,8 @@ endpoints:
         type: integer
         description: Raw threat score (0-9+). Tor contributes 3, VPN or Proxy each contribute 2, Hosting contributes 1
       - name: threat
-        type: string
-        description: Threat level derived from score — one of none, low, medium, high, or critical
+        type: integer
+        description: "Threat level derived from score: 0 = None, 1 = Low, 2–3 = Medium, 4–5 = High, 6+ = Critical"
       - name: fraud_score
         type: integer
         description: Fraud risk score from 0 (no risk) to 100 (high risk). Available when using IP2Proxy PX5 or higher
