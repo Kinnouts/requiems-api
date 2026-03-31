@@ -26,7 +26,7 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 		result, err := svc.CheckASN(r.Context(), ip.String())
 		if err != nil {
 			if strings.Contains(err.Error(), "private/reserved") {
-				httpx.JSON(w, http.StatusOK, ASNResponse{IP: ip.String()})
+				httpx.JSON(w, http.StatusOK, IPAddressASNResponse{IP: ip.String()})
 				return
 			}
 			httpx.Error(w, http.StatusInternalServerError, "internal_error", "internal error")

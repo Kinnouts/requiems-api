@@ -18,12 +18,12 @@ func NewService(c *ipi.Client) *Service {
 	return &Service{c: c}
 }
 
-func (s *Service) CheckInfo(ctx context.Context, ip string) (InfoResponse, error) {
+func (s *Service) CheckInfo(ctx context.Context, ip string) (LookupResponse, error) {
 	result, err := s.c.CheckString(ctx, ip)
 	if err != nil {
-		return InfoResponse{}, err
+		return LookupResponse{}, err
 	}
-	return InfoResponse{
+	return LookupResponse{
 		IP:          net.IP(result.IP).String(),
 		Country:     result.Country,
 		CountryCode: result.CountryCode,

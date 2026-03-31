@@ -1,7 +1,7 @@
 package asn
 
-// ASNResponse is the JSON payload returned by the ASN lookup endpoint.
-type ASNResponse struct {
+// IPAddressASNResponse is the JSON payload returned by the ASN lookup endpoint.
+type IPAddressASNResponse struct {
 	IP     string `json:"ip"`
 	ASN    string `json:"asn"`
 	Org    string `json:"org"`
@@ -11,4 +11,4 @@ type ASNResponse struct {
 	Type   string `json:"type"`
 }
 
-func (ASNResponse) IsData() {}
+func (IPAddressASNResponse) IsData() {}

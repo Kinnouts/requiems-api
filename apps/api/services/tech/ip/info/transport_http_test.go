@@ -59,7 +59,7 @@ func TestInfo_HappyPath_PathParam(t *testing.T) {
 		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
 	}
 
-	var resp httpx.Response[InfoResponse]
+	var resp httpx.Response[LookupResponse]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
@@ -82,7 +82,7 @@ func TestInfo_HappyPath_NoPathParam(t *testing.T) {
 		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
 	}
 
-	var resp httpx.Response[InfoResponse]
+	var resp httpx.Response[LookupResponse]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
@@ -131,7 +131,7 @@ func TestInfo_PrivateIP_ReturnsEmpty(t *testing.T) {
 		t.Fatalf("expected 200 for private IP, got %d: %s", w.Code, w.Body.String())
 	}
 
-	var resp httpx.Response[InfoResponse]
+	var resp httpx.Response[LookupResponse]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
@@ -158,7 +158,7 @@ func TestInfo_XRealIP(t *testing.T) {
 		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
 	}
 
-	var resp httpx.Response[InfoResponse]
+	var resp httpx.Response[LookupResponse]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
@@ -179,7 +179,7 @@ func TestInfo_ResponseFields(t *testing.T) {
 		t.Fatalf("expected 200, got %d", w.Code)
 	}
 
-	var resp httpx.Response[InfoResponse]
+	var resp httpx.Response[LookupResponse]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}

@@ -59,7 +59,7 @@ func TestASN_HappyPath(t *testing.T) {
 		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
 	}
 
-	var resp httpx.Response[ASNResponse]
+	var resp httpx.Response[IPAddressASNResponse]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
@@ -111,7 +111,7 @@ func TestASN_PrivateIP(t *testing.T) {
 		t.Fatalf("expected 200 for private IP, got %d: %s", w.Code, w.Body.String())
 	}
 
-	var resp httpx.Response[ASNResponse]
+	var resp httpx.Response[IPAddressASNResponse]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
@@ -151,7 +151,7 @@ func TestASN_XForwardedFor(t *testing.T) {
 		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
 	}
 
-	var resp httpx.Response[ASNResponse]
+	var resp httpx.Response[IPAddressASNResponse]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}

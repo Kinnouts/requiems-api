@@ -17,12 +17,12 @@ func NewService(c *ipi.Client) *Service {
 	return &Service{c: c}
 }
 
-func (s *Service) CheckASN(ctx context.Context, ip string) (ASNResponse, error) {
+func (s *Service) CheckASN(ctx context.Context, ip string) (IPAddressASNResponse, error) {
 	info, err := s.c.CheckASNString(ctx, ip)
 	if err != nil {
-		return ASNResponse{}, err
+		return IPAddressASNResponse{}, err
 	}
-	return ASNResponse{
+	return IPAddressASNResponse{
 		IP:     info.IP,
 		ASN:    info.ASN,
 		Org:    info.Org,
