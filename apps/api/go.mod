@@ -20,6 +20,9 @@ require (
 	github.com/inconshreveable/mousetrap v1.1.0 // indirect
 	github.com/ip2location/ip2proxy-go/v4 v4.1.0 // indirect
 	github.com/leodido/go-urn v1.4.0 // indirect
+	github.com/likexian/gokit v0.25.16 // indirect
+	github.com/likexian/whois v1.15.7 // indirect
+	github.com/likexian/whois-parser v1.24.21 // indirect
 	github.com/mitchellh/mapstructure v1.5.0 // indirect
 	github.com/oschwald/geoip2-golang v1.13.0 // indirect
 	github.com/oschwald/maxminddb-golang v1.13.0 // indirect
@@ -34,6 +37,7 @@ require (
 	go.mongodb.org/mongo-driver v1.11.4 // indirect
 	go.uber.org/atomic v1.11.0 // indirect
 	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394 // indirect
+	golang.org/x/net v0.48.0 // indirect
 	golang.org/x/sys v0.39.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
 	lukechampine.com/uint128 v1.2.0 // indirect
