@@ -5,6 +5,8 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 
 	"requiems-api/services/finance/bin"
+	"requiems-api/services/finance/commodities"
+	"requiems-api/services/finance/iban"
 	"requiems-api/services/finance/inflation"
 	"requiems-api/services/finance/mortgage"
 )
@@ -20,4 +22,10 @@ func RegisterRoutes(r chi.Router, pool *pgxpool.Pool) {
 
 	mortgageSvc := mortgage.NewService()
 	mortgage.RegisterRoutes(r, mortgageSvc)
+
+	ibanSvc := iban.NewService(pool)
+	iban.RegisterRoutes(r, ibanSvc)
+
+	commoditiesSvc := commodities.NewService(pool)
+	commodities.RegisterRoutes(r, commoditiesSvc)
 }

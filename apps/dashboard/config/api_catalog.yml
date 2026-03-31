@@ -627,6 +627,21 @@ apis:
       - Macroeconomics
       - World Bank
 
+  - id: iban
+    name: IBAN Validator
+    categories:
+      - finance
+    description: Validate IBAN numbers and extract the bank code and account number. Supports all countries in the official SWIFT IBAN Registry (~80 countries).
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/iban
+    tags:
+      - IBAN
+      - Banking
+      - Validation
+      - Finance
+
   - id: mortgage
     name: Mortgage Calculator
     categories:
@@ -641,6 +656,22 @@ apis:
       - Finance
       - Calculator
       - Amortization
+
+  - id: commodities
+    name: Commodity Prices
+    categories:
+      - finance
+    description: Historical and current annual average prices for 16 major commodities — precious metals, energy, and agricultural goods. Sourced from FRED (Federal Reserve Economic Data).
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/commodities
+    tags:
+      - Commodities
+      - Metals
+      - Energy
+      - Agriculture
+      - Finance
 
   - id: bin-lookup
     name: BIN Lookup
