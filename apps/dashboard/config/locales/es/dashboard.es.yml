@@ -282,6 +282,29 @@ es:
         unknown_key: "Desconocida"
         empty_heading: "Sin datos de uso"
         empty_body: "No se encontraron llamadas a la API en el rango de fechas seleccionado."
+    quick_start:
+      title: "Inicio Rápido"
+      heading: "Comienza con la API de Requiems"
+      subtitle: "Sigue estos pasos para hacer tu primera llamada a la API en minutos"
+      step_1:
+        heading: "1. Crea Tu Cuenta"
+        body: "Regístrate para obtener una cuenta gratuita y conseguir tu clave de API. No se requiere tarjeta de crédito."
+        cta: "¡Ya lo hiciste! Has iniciado sesión."
+      step_2:
+        heading: "2. Obtén Tu Clave de API"
+        body: "Ve a Claves de API para crear una clave. La incluirás en cada solicitud como encabezado."
+        cta: "Administrar Claves de API"
+        header_label: "Incluye este encabezado en cada solicitud:"
+      step_3:
+        heading: "3. Haz Tu Primera Llamada a la API"
+        body: "Prueba esta solicitud de ejemplo para obtener un consejo aleatorio:"
+        note: "Reemplaza YOUR_API_KEY con una clave activa de tu página de Claves de API."
+      step_4:
+        heading: "4. Ejemplos de Código"
+        body: "Copia y adapta estos ejemplos en tu lenguaje preferido."
+      copy_btn: "Copiar"
+      copied_btn: "¡Copiado!"
+      browse_apis: "Ver Todas las APIs"
     mailers:
       account_deletion:
         subject: "Confirma la eliminación de tu cuenta"

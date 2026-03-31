@@ -1,0 +1,129 @@
+api_id: mx-lookup
+api_name: MX Lookup
+description: Look up MX (Mail Exchange) records for any domain. Returns all mail server hostnames and their priorities, sorted from highest to lowest priority (ascending numeric value). Use this to verify email deliverability, discover mail server infrastructure, and diagnose email routing issues.
+base_url: https://api.requiems.xyz
+
+overview:
+  use_cases:
+    - Verifying a domain is configured to receive email before sending
+    - Email deliverability checks in validation pipelines
+    - Discovering mail server infrastructure for a domain
+    - Diagnosing email routing and delivery issues
+    - Building email validation tools that go beyond syntax checking
+
+  features:
+    - Returns all MX records for any domain
+    - Records sorted by priority (lowest numeric value = highest priority)
+    - Includes both hostname and priority for each mail server
+    - Returns 404 when no MX records exist for the domain
+
+endpoints:
+  - name: MX Lookup
+    method: GET
+    path: /v1/tech/mx/{domain}
+    description: Retrieve all MX records for a domain. Results are sorted by priority ascending (lowest numeric value has highest mail delivery priority per RFC 5321).
+
+    parameters:
+      - name: domain
+        type: string
+        required: true
+        location: path
+        description: The domain name to look up MX records for (e.g. gmail.com)
+        example: gmail.com
+
+    response_example: |
+      {
+        "data": {
+          "domain": "gmail.com",
+          "records": [
+            { "host": "gmail-smtp-in.l.google.com.", "priority": 5 },
+            { "host": "alt1.gmail-smtp-in.l.google.com.", "priority": 10 },
+            { "host": "alt2.gmail-smtp-in.l.google.com.", "priority": 20 },
+            { "host": "alt3.gmail-smtp-in.l.google.com.", "priority": 30 },
+            { "host": "alt4.gmail-smtp-in.l.google.com.", "priority": 40 }
+          ]
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: domain
+        type: string
+        description: The domain that was queried
+      - name: records
+        type: array
+        description: List of MX records, sorted by priority ascending (lowest number = highest priority)
+      - name: records[].host
+        type: string
+        description: Fully-qualified hostname of the mail server (typically ends with a trailing dot)
+      - name: records[].priority
+        type: integer
+        description: MX priority value. Lower values have higher delivery priority per RFC 5321.
+
+    errors:
+      - code: bad_request
+        status: 400
+        description: The domain parameter is not a valid domain name.
+      - code: not_found
+        status: 404
+        description: No MX records were found for the domain (domain may not accept email).
+      - code: internal_error
+        status: 500
+        description: DNS lookup failed due to an unexpected server error.
+
+    code_examples:
+      curl: |
+        curl "https://api.requiems.xyz/v1/tech/mx/gmail.com" \
+          -H "requiems-api-key: YOUR_API_KEY"
+
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/tech/mx/gmail.com"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+
+        response = requests.get(url, headers=headers)
+        data = response.json()["data"]
+        for record in data["records"]:
+            print(record["priority"], record["host"])
+
+      javascript: |
+        const response = await fetch('https://api.requiems.xyz/v1/tech/mx/gmail.com', {
+          headers: { 'requiems-api-key': 'YOUR_API_KEY' }
+        });
+
+        const { data } = await response.json();
+        data.records.forEach(r => console.log(r.priority, r.host));
+
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/tech/mx/gmail.com')
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        data = JSON.parse(response.body)['data']
+        data['records'].each { |r| puts "#{r['priority']} #{r['host']}" }
+
+faq:
+  - question: What does priority mean in MX records?
+    answer: MX priority is a numeric value where a lower number means higher delivery preference. Mail servers try the lowest-priority-number host first. For example, a server with priority 5 is tried before one with priority 10. This allows mail server failover to be configured at the DNS level.
+
+  - question: Why does the host have a trailing dot?
+    answer: The trailing dot is standard DNS notation indicating an absolute (fully-qualified) domain name rather than a relative one. Most mail clients strip it automatically; it is safe to remove when displaying to end users.
+
+  - question: What happens if a domain has no MX records?
+    answer: The API returns HTTP 404 with error code "not_found". A domain with no MX records cannot receive email via standard SMTP delivery.
+
+  - question: Can I look up subdomains?
+    answer: Yes. Any valid domain or subdomain can be queried. However, subdomains typically do not have their own MX records unless explicitly configured; in that case you will receive a 404 response.
+
+  - question: Are the results always sorted?
+    answer: Yes. Records are always returned sorted by priority ascending (lowest number first), regardless of the order returned by the DNS resolver.
