@@ -22,9 +22,9 @@ func (s *Service) Lookup(ctx context.Context, domain string) (LookupResponse, er
 		return LookupResponse{}, err
 	}
 
-	sorted := make([]MXRecord, 0, len(records))
+	sorted := make([]Record, 0, len(records))
 	for _, mx := range records {
-		sorted = append(sorted, MXRecord{
+		sorted = append(sorted, Record{
 			Host:     mx.Host,
 			Priority: mx.Pref,
 		})

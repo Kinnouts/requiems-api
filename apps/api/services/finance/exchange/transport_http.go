@@ -22,7 +22,7 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 func registerExchangeRoutes(r chi.Router, f Fetcher) {
 	// GET /exchange-rate?from=USD&to=EUR
 	r.Get("/exchange-rate", func(w http.ResponseWriter, r *http.Request) {
-		var req ExchangeRateRequest
+		var req RateRequest
 		if err := httpx.BindQuery(r, &req); err != nil {
 			httpx.Error(w, http.StatusBadRequest, "bad_request", err.Error())
 			return
@@ -42,7 +42,7 @@ func registerExchangeRoutes(r chi.Router, f Fetcher) {
 			return
 		}
 
-		httpx.JSON(w, http.StatusOK, ExchangeRateResponse{
+		httpx.JSON(w, http.StatusOK, RateResponse{
 			From:      from,
 			To:        to,
 			Rate:      rate,
