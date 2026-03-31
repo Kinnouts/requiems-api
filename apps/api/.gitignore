@@ -33,3 +33,4 @@ build-errors.log
 
 # Air (hot reload)
 tmp/
+dbs/*
