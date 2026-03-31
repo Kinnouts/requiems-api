@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/csv"
+	"encoding/json"
 	"fmt"
 	"io"
 	"math"
@@ -11,14 +12,24 @@ import (
 	"time"
 )
 
-// CommodityConfig defines one commodity and its FRED data source.
+// SourceType selects the data provider for a commodity.
+type SourceType string
+
+const (
+	SourceFRED  SourceType = "fred"
+	SourceYahoo SourceType = "yahoo"
+)
+
+// CommodityConfig defines one commodity and its data source.
 type CommodityConfig struct {
-	Slug       string  // primary key slug used in the API (e.g. "gold")
-	Name       string  // human-readable name (e.g. "Gold")
-	SeriesID   string  // FRED series identifier
-	Unit       string  // display unit for the API response (e.g. "oz", "barrel")
-	Currency   string  // always "USD"
-	ConvFactor float64 // multiply raw FRED value by this to get the target unit's price
+	Slug       string     // primary key slug used in the API (e.g. "gold")
+	Name       string     // human-readable name
+	Source     SourceType // fred or yahoo
+	SeriesID   string     // FRED series ID (if Source == fred)
+	Symbol     string     // Yahoo Finance symbol (if Source == yahoo)
+	Unit       string     // display unit for the API response
+	Currency   string     // always "USD"
+	ConvFactor float64    // multiply raw source value by this to get target unit price
 }
 
 // CommodityRecord is a single annual average price ready for upsert.
@@ -33,40 +44,57 @@ type CommodityRecord struct {
 
 // commodities is the authoritative list of supported commodity slugs.
 //
-// FRED series notes:
-//   - Daily series (e.g. gold, silver, oil): averaged per calendar year.
-//   - Monthly series (e.g. natural gas, copper, agricultural): averaged per year.
-//   - ConvFactor converts FRED's native unit to the API's display unit.
-//     FRED Copper/Aluminum/etc. is USD/metric ton; Copper display unit is lb → ÷ 2204.623
-//     FRED Sugar/Cotton is US cents/lb → ÷ 100 for USD/lb
-//     FRED Coffee is USD/kg → ÷ 2.20462 for USD/lb
-//     FRED Wheat/Corn/Soybeans is USD/metric ton → display is USD/metric ton (no conversion)
+// FRED (fredgraph.csv, no API key required):
+//   - World Bank monthly series work without licensing restrictions.
+//   - ICE/LBMA precious metals series are no longer available via free CSV download.
+//
+// Yahoo Finance (v8/finance/chart, no API key required):
+//   - Used for precious metals (COMEX continuous front-month contracts) and
+//     commodities whose World Bank FRED series return 404.
+//   - ZC=F (corn) quotes in USX (US cents per bushel) → ConvFactor = 0.01.
 var commodities = []CommodityConfig{
-	{Slug: "gold", Name: "Gold", SeriesID: "GOLDAMGBD228NLBM", Unit: "oz", Currency: "USD", ConvFactor: 1.0},
-	{Slug: "silver", Name: "Silver", SeriesID: "SLVPRUSD", Unit: "oz", Currency: "USD", ConvFactor: 1.0},
-	{Slug: "platinum", Name: "Platinum", SeriesID: "PLTNUMGBD228NLBM", Unit: "oz", Currency: "USD", ConvFactor: 1.0},
-	{Slug: "palladium", Name: "Palladium", SeriesID: "PALLADIUMGBD228NLBM", Unit: "oz", Currency: "USD", ConvFactor: 1.0},
-	{Slug: "oil", Name: "Crude Oil (WTI)", SeriesID: "DCOILWTICO", Unit: "barrel", Currency: "USD", ConvFactor: 1.0},
-	{Slug: "brent", Name: "Brent Crude", SeriesID: "DCOILBRENTEU", Unit: "barrel", Currency: "USD", ConvFactor: 1.0},
-	{Slug: "natural-gas", Name: "Natural Gas", SeriesID: "MHHNGSP", Unit: "mmbtu", Currency: "USD", ConvFactor: 1.0},
-	{Slug: "copper", Name: "Copper", SeriesID: "PCOPPUSDM", Unit: "lb", Currency: "USD", ConvFactor: 1.0 / 2204.623},
-	{Slug: "aluminum", Name: "Aluminum", SeriesID: "PALUMUSDM", Unit: "metric_ton", Currency: "USD", ConvFactor: 1.0},
-	{Slug: "wheat", Name: "Wheat", SeriesID: "PWHEAMTUSDM", Unit: "metric_ton", Currency: "USD", ConvFactor: 1.0},
-	{Slug: "corn", Name: "Corn", SeriesID: "PMAIZEUSDM", Unit: "metric_ton", Currency: "USD", ConvFactor: 1.0},
-	{Slug: "soybeans", Name: "Soybeans", SeriesID: "PSOYBUSDM", Unit: "metric_ton", Currency: "USD", ConvFactor: 1.0},
-	{Slug: "coffee", Name: "Coffee", SeriesID: "PCOFFOTMUSDM", Unit: "lb", Currency: "USD", ConvFactor: 1.0 / 2.20462},
-	{Slug: "sugar", Name: "Sugar", SeriesID: "PSUGAISAUSDM", Unit: "lb", Currency: "USD", ConvFactor: 1.0 / 100},
-	{Slug: "cotton", Name: "Cotton", SeriesID: "PCOTTINDUSDM", Unit: "lb", Currency: "USD", ConvFactor: 1.0 / 100},
-	{Slug: "cocoa", Name: "Cocoa", SeriesID: "PCOCOAUSDM", Unit: "metric_ton", Currency: "USD", ConvFactor: 1.0},
+	// Precious metals — Yahoo Finance (COMEX/NYMEX continuous front-month)
+	{Slug: "gold", Name: "Gold", Source: SourceYahoo, Symbol: "GC=F", Unit: "oz", Currency: "USD", ConvFactor: 1.0},
+	{Slug: "silver", Name: "Silver", Source: SourceYahoo, Symbol: "SI=F", Unit: "oz", Currency: "USD", ConvFactor: 1.0},
+	{Slug: "platinum", Name: "Platinum", Source: SourceYahoo, Symbol: "PL=F", Unit: "oz", Currency: "USD", ConvFactor: 1.0},
+	{Slug: "palladium", Name: "Palladium", Source: SourceYahoo, Symbol: "PA=F", Unit: "oz", Currency: "USD", ConvFactor: 1.0},
+
+	// Energy — FRED (EIA daily series)
+	{Slug: "oil", Name: "Crude Oil (WTI)", Source: SourceFRED, SeriesID: "DCOILWTICO", Unit: "barrel", Currency: "USD", ConvFactor: 1.0},
+	{Slug: "brent", Name: "Brent Crude", Source: SourceFRED, SeriesID: "DCOILBRENTEU", Unit: "barrel", Currency: "USD", ConvFactor: 1.0},
+	{Slug: "natural-gas", Name: "Natural Gas", Source: SourceFRED, SeriesID: "MHHNGSP", Unit: "mmbtu", Currency: "USD", ConvFactor: 1.0},
+
+	// Base metals — FRED (World Bank monthly, USD/metric ton)
+	{Slug: "copper", Name: "Copper", Source: SourceFRED, SeriesID: "PCOPPUSDM", Unit: "lb", Currency: "USD", ConvFactor: 1.0 / 2204.623},
+	{Slug: "aluminum", Name: "Aluminum", Source: SourceFRED, SeriesID: "PALUMUSDM", Unit: "metric_ton", Currency: "USD", ConvFactor: 1.0},
+
+	// Agricultural — FRED (World Bank) + Yahoo Finance for missing series
+	{Slug: "wheat", Name: "Wheat", Source: SourceFRED, SeriesID: "PWHEAMTUSDM", Unit: "metric_ton", Currency: "USD", ConvFactor: 1.0},
+	{Slug: "corn", Name: "Corn", Source: SourceYahoo, Symbol: "ZC=F", Unit: "bushel", Currency: "USD", ConvFactor: 0.01}, // ZC=F is USX/bushel
+	{Slug: "soybeans", Name: "Soybeans", Source: SourceFRED, SeriesID: "PSOYBUSDM", Unit: "metric_ton", Currency: "USD", ConvFactor: 1.0},
+	{Slug: "coffee", Name: "Coffee", Source: SourceFRED, SeriesID: "PCOFFOTMUSDM", Unit: "lb", Currency: "USD", ConvFactor: 1.0 / 2.20462},
+	{Slug: "sugar", Name: "Sugar", Source: SourceFRED, SeriesID: "PSUGAISAUSDM", Unit: "lb", Currency: "USD", ConvFactor: 0.01},
+	{Slug: "cotton", Name: "Cotton", Source: SourceFRED, SeriesID: "PCOTTINDUSDM", Unit: "lb", Currency: "USD", ConvFactor: 0.01},
+	{Slug: "cocoa", Name: "Cocoa", Source: SourceYahoo, Symbol: "CC=F", Unit: "metric_ton", Currency: "USD", ConvFactor: 1.0},
 }
 
-// fredBaseURL is the FRED CSV download endpoint (no API key required).
+// fetchAndAggregate dispatches to the right fetcher based on the commodity source.
+func fetchAndAggregate(cfg CommodityConfig) ([]CommodityRecord, error) {
+	switch cfg.Source {
+	case SourceFRED:
+		return fetchFRED(cfg)
+	case SourceYahoo:
+		return fetchYahoo(cfg)
+	default:
+		return nil, fmt.Errorf("unknown source: %s", cfg.Source)
+	}
+}
+
+// ---- FRED ----
+
 const fredBaseURL = "https://fred.stlouisfed.org/graph/fredgraph.csv"
 
-// fetchAndAggregate downloads the FRED CSV series for cfg, parses date-value
-// pairs, skips missing observations ("."), groups by calendar year, and returns
-// the annual averages as CommodityRecord slices.
-func fetchAndAggregate(cfg CommodityConfig) ([]CommodityRecord, error) {
+func fetchFRED(cfg CommodityConfig) ([]CommodityRecord, error) {
 	url := fredBaseURL + "?id=" + cfg.SeriesID
 
 	client := &http.Client{Timeout: 30 * time.Second}
@@ -81,16 +109,9 @@ func fetchAndAggregate(cfg CommodityConfig) ([]CommodityRecord, error) {
 		return nil, fmt.Errorf("download: HTTP %d — %s", resp.StatusCode, strings.TrimSpace(string(body)))
 	}
 
-	// yearAcc accumulates (sum, count) per year for averaging.
-	type acc struct {
-		sum   float64
-		count int
-	}
-	byYear := make(map[int]*acc)
+	byYear := make(map[int]*yearAcc)
 
 	r := csv.NewReader(resp.Body)
-
-	// Skip the header row (DATE,VALUE).
 	if _, err = r.Read(); err != nil {
 		return nil, fmt.Errorf("read header: %w", err)
 	}
@@ -107,39 +128,140 @@ func fetchAndAggregate(cfg CommodityConfig) ([]CommodityRecord, error) {
 			continue
 		}
 
-		dateStr := strings.TrimSpace(record[0])
 		valStr := strings.TrimSpace(record[1])
-
-		// FRED encodes missing observations as "."
 		if valStr == "." || valStr == "" {
 			continue
 		}
-
 		val, err := strconv.ParseFloat(valStr, 64)
 		if err != nil || math.IsNaN(val) || math.IsInf(val, 0) || val <= 0 {
 			continue
 		}
 
-		// dateStr is either YYYY-MM-DD (daily/monthly) or YYYY (annual).
-		year, err := parseYear(dateStr)
+		year, err := parseYear(strings.TrimSpace(record[0]))
 		if err != nil || year < 1960 || year > time.Now().Year() {
 			continue
 		}
 
-		if byYear[year] == nil {
-			byYear[year] = &acc{}
-		}
-		byYear[year].sum += val
-		byYear[year].count++
+		accumulate(byYear, year, val)
 	}
 
+	return buildRecords(cfg, byYear), nil
+}
+
+// ---- Yahoo Finance ----
+
+const yahooBaseURL = "https://query1.finance.yahoo.com/v8/finance/chart"
+
+type yahooChart struct {
+	Chart struct {
+		Result []struct {
+			Timestamps []int64 `json:"timestamp"`
+			Indicators struct {
+				Quote []struct {
+					Close []interface{} `json:"close"`
+				} `json:"quote"`
+			} `json:"indicators"`
+		} `json:"result"`
+	} `json:"chart"`
+}
+
+// fetchYahoo downloads 30 years of monthly data from Yahoo Finance, groups by
+// year, and returns annual averages.
+func fetchYahoo(cfg CommodityConfig) ([]CommodityRecord, error) {
+	url := fmt.Sprintf("%s/%s?interval=1mo&range=30y", yahooBaseURL, cfg.Symbol)
+
+	client := &http.Client{Timeout: 30 * time.Second}
+	req, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		return nil, fmt.Errorf("build request: %w", err)
+	}
+	req.Header.Set("User-Agent", "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36")
+
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("download: %w", err)
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		body, _ := io.ReadAll(io.LimitReader(resp.Body, 512))
+		return nil, fmt.Errorf("download: HTTP %d — %s", resp.StatusCode, strings.TrimSpace(string(body)))
+	}
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("read body: %w", err)
+	}
+
+	var chart yahooChart
+	if err = json.Unmarshal(body, &chart); err != nil {
+		return nil, fmt.Errorf("parse JSON: %w", err)
+	}
+	if len(chart.Chart.Result) == 0 {
+		return nil, fmt.Errorf("no data returned for symbol %s", cfg.Symbol)
+	}
+
+	result := chart.Chart.Result[0]
+	if len(result.Indicators.Quote) == 0 {
+		return nil, fmt.Errorf("no quote data for symbol %s", cfg.Symbol)
+	}
+
+	closes := result.Indicators.Quote[0].Close
+	timestamps := result.Timestamps
+
+	byYear := make(map[int]*yearAcc)
+
+	for i, ts := range timestamps {
+		if i >= len(closes) || closes[i] == nil {
+			continue
+		}
+		var val float64
+		switch v := closes[i].(type) {
+		case float64:
+			val = v
+		case json.Number:
+			val, _ = v.Float64()
+		default:
+			continue
+		}
+		if math.IsNaN(val) || math.IsInf(val, 0) || val <= 0 {
+			continue
+		}
+
+		year := time.Unix(ts, 0).UTC().Year()
+		if year < 1960 || year > time.Now().Year() {
+			continue
+		}
+
+		accumulate(byYear, year, val)
+	}
+
+	return buildRecords(cfg, byYear), nil
+}
+
+// ---- shared helpers ----
+
+type yearAcc struct {
+	sum   float64
+	count int
+}
+
+func accumulate(m map[int]*yearAcc, year int, val float64) {
+	if m[year] == nil {
+		m[year] = &yearAcc{}
+	}
+	m[year].sum += val
+	m[year].count++
+}
+
+func buildRecords(cfg CommodityConfig, byYear map[int]*yearAcc) []CommodityRecord {
 	records := make([]CommodityRecord, 0, len(byYear))
 	for year, a := range byYear {
 		if a.count == 0 {
 			continue
 		}
 		avg := a.sum / float64(a.count)
-		price := math.Round(avg*cfg.ConvFactor*10000) / 10000 // 4 decimal places
+		price := math.Round(avg*cfg.ConvFactor*10000) / 10000
 
 		records = append(records, CommodityRecord{
 			Slug:     cfg.Slug,
@@ -150,12 +272,9 @@ func fetchAndAggregate(cfg CommodityConfig) ([]CommodityRecord, error) {
 			Price:    price,
 		})
 	}
-
-	return records, nil
+	return records
 }
 
-// parseYear extracts the 4-digit year from a FRED date string.
-// Handles both "YYYY-MM-DD" and "YYYY" formats.
 func parseYear(s string) (int, error) {
 	if len(s) < 4 {
 		return 0, fmt.Errorf("date too short: %q", s)
@@ -163,7 +282,6 @@ func parseYear(s string) (int, error) {
 	return strconv.Atoi(s[:4])
 }
 
-// printStats prints a summary of the loaded records to stdout.
 func printStats(records []CommodityRecord) {
 	bySlug := make(map[string]int)
 	for _, r := range records {
