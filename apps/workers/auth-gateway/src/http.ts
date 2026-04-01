@@ -10,6 +10,9 @@
 export function filterHeaders(headers: Headers, backendSecret: string): Headers {
   const filtered = new Headers();
 
+  // Capture real client IP before stripping Cloudflare headers
+  const connectingIp = headers.get("CF-Connecting-IP");
+
   for (const [key, value] of headers.entries()) {
     const lowerKey = key.toLowerCase();
 
@@ -19,6 +22,10 @@ export function filterHeaders(headers: Headers, backendSecret: string): Headers 
     if (lowerKey === "keep-alive") continue;
 
     filtered.set(key, value);
+  }
+
+  if (connectingIp) {
+    filtered.set("X-Forwarded-For", connectingIp);
   }
 
   filtered.set("X-Backend-Secret", backendSecret);
