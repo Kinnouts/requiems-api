@@ -246,6 +246,39 @@ docker compose up -d --build
 
 ## Cloudflare Integration
 
+### Client IP Resolution (Cloudflare Dependency)
+
+The Rails dashboard sits behind Cloudflare as a reverse proxy. This means
+`request.remote_ip` in Rails returns Cloudflare's **edge node IP**, not the
+user's real browser IP. Rails has no `config.action_dispatch.trusted_proxies`
+configured, so it does not strip Cloudflare from the forwarded chain.
+
+Cloudflare injects the real client IP via the `CF-Connecting-IP` header on
+every request it forwards. Code that needs the actual client IP must read this
+header explicitly:
+
+```ruby
+real_ip = request.headers["CF-Connecting-IP"] || request.remote_ip
+```
+
+The fallback to `request.remote_ip` handles local development and any traffic
+that reaches Rails directly (e.g. internal health checks, Docker networking).
+
+**Affected code:**
+- `ApiProxyController` — forwards `X-Forwarded-For` to the Go backend so the
+  IP endpoint (`GET /v1/tech/ip`) returns the user's real IP instead of a
+  Cloudflare datacenter IP.
+
+**Note:** The auth gateway (`apps/workers/auth-gateway/`) has the same
+constraint — it reads `CF-Connecting-IP` from Cloudflare and forwards it as
+`X-Forwarded-For` when proxying to the Go backend. See
+[auth-gateway.md](./auth-gateway.md).
+
+**If Cloudflare is removed:** replace `CF-Connecting-IP` reads with proper
+`config.action_dispatch.trusted_proxies` pointing at the upstream load
+balancer / reverse proxy, and update `filterHeaders` in the auth gateway
+similarly.
+
 ### API Management Service
 
 API key operations (create, update, revoke) are sent to the API Management

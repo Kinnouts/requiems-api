@@ -60,6 +60,10 @@ class ApiProxyController < ApplicationController
     uri.path = endpoint
     uri.query = nil
 
+    # CF-Connecting-IP is set by Cloudflare with the real client IP.
+    # request.remote_ip alone returns Cloudflare's edge node IP because the
+    # dashboard sits behind Cloudflare and Rails has no trusted-proxy config.
+    # Fall back to remote_ip for local/direct traffic (dev, internal).
     headers = {
       "X-Backend-Secret" => ::AppConfig.backend_secret,
       "Content-Type" => "application/json",
