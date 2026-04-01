@@ -64,7 +64,7 @@ class ApiProxyController < ApplicationController
       "X-Backend-Secret" => ::AppConfig.backend_secret,
       "Content-Type" => "application/json",
       "User-Agent" => "Requiems-Playground/1.0",
-      "X-Forwarded-For" => request.remote_ip
+      "X-Forwarded-For" => request.headers["CF-Connecting-IP"] || request.remote_ip
     }
 
     http = Net::HTTP.new(uri.host, uri.port)
