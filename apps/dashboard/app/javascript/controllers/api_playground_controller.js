@@ -124,7 +124,8 @@ export default class extends Controller {
     // Replace path parameters in the URL
     let endpoint = this.urlValue;
     Object.entries(data.path || {}).forEach(([key, value]) => {
-      endpoint = endpoint.replace(`{${key}}`, value.split("/").map(encodeURIComponent).join("/"));
+      const encodePathSegment = (s) => encodeURIComponent(s).replace(/%3A/gi, ":");
+      endpoint = endpoint.replace(`{${key}}`, value.split("/").map(encodePathSegment).join("/"));
     });
 
     // Combine body and query params for the proxy

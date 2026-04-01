@@ -167,6 +167,28 @@ func TestInfo_XRealIP(t *testing.T) {
 	}
 }
 
+func TestInfo_IPv6Address(t *testing.T) {
+	skipIfNoService(t)
+	r := setupRouter()
+
+	req := httptest.NewRequest(http.MethodGet, "/ip/2001:4860:4860::8888", http.NoBody)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected 200 for IPv6, got %d: %s", w.Code, w.Body.String())
+	}
+
+	var resp httpx.Response[LookupResponse]
+	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
+
+	if resp.Data.IP == "" {
+		t.Error("expected non-empty IP for IPv6")
+	}
+}
+
 func TestInfo_ResponseFields(t *testing.T) {
 	skipIfNoService(t)
 	r := setupRouter()
