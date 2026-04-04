@@ -12,6 +12,7 @@ import (
 	"requiems-api/services/finance/iban"
 	"requiems-api/services/finance/inflation"
 	"requiems-api/services/finance/mortgage"
+	"requiems-api/services/finance/swift"
 )
 
 // RegisterRoutes mounts all finance domain handlers on the given router.
@@ -37,4 +38,7 @@ func RegisterRoutes(r chi.Router, pool *pgxpool.Pool, rdb *redis.Client) {
 
 	cryptoSvc := cryptocoin.NewService(rdb)
 	cryptocoin.RegisterRoutes(r, cryptoSvc)
+
+	swiftSvc := swift.NewService(pool)
+	swift.RegisterRoutes(r, swiftSvc)
 }

@@ -46,7 +46,7 @@ func registerV1Routes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb
 	r.Mount("/misc", miscRouter)
 
 	placesRouter := chi.NewRouter()
-	places.RegisterRoutes(placesRouter)
+	places.RegisterRoutes(placesRouter, cfg, rdb)
 	r.Mount("/places", placesRouter)
 
 	techRouter := chi.NewRouter()
