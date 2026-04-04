@@ -74,6 +74,8 @@ Run inside the API Docker container so the db hostname resolves:
 				return fmt.Errorf("load failed: %w", err)
 			}
 			log.Printf("parsed %d SWIFT code records", len(records))
+			records = dedupeBySwiftCode(records)
+			log.Printf("deduped to %d unique SWIFT code records", len(records))
 
 			if verbose {
 				for _, r := range records {
@@ -113,4 +115,31 @@ Run inside the API Docker container so the db hostname resolves:
 	cmd.Flags().StringVar(&url, "url", "", "Optional SWIFT codes CSV URL (overrides --source)")
 
 	return cmd
+}
+
+func dedupeBySwiftCode(records []RawSWIFTRecord) []RawSWIFTRecord {
+	seen := make(map[string]int, len(records))
+	result := make([]RawSWIFTRecord, 0, len(records))
+
+	for _, r := range records {
+		if idx, ok := seen[r.SwiftCode]; ok {
+			existing := result[idx]
+			if existing.BankName == "" && r.BankName != "" {
+				existing.BankName = r.BankName
+			}
+			if existing.City == "" && r.City != "" {
+				existing.City = r.City
+			}
+			if existing.CountryName == "" && r.CountryName != "" {
+				existing.CountryName = r.CountryName
+			}
+			result[idx] = existing
+			continue
+		}
+
+		seen[r.SwiftCode] = len(result)
+		result = append(result, r)
+	}
+
+	return result
 }
