@@ -793,3 +793,20 @@ apis:
       - Bitcoin
       - Finance
       - Prices
+
+
+  - id: fitness-exercises
+    name: Fitness Exercises
+    categories:
+      - health
+    description: "Browse 1,500+ exercises with step-by-step instructions, target muscles, secondary muscles, equipment requirements, and body part filters."
+    endpoints_count: 6
+    status: live
+    popular: false
+    documentation_url: /apis/fitness-exercises
+    tags:
+      - Fitness
+      - Exercise
+      - Health
+      - Workout
+      - Muscles

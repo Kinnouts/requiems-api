@@ -13,6 +13,7 @@ import (
 	"requiems-api/services/email"
 	"requiems-api/services/entertainment"
 	"requiems-api/services/finance"
+	"requiems-api/services/fitness"
 	"requiems-api/services/misc"
 	"requiems-api/services/places"
 	"requiems-api/services/tech"
@@ -55,4 +56,8 @@ func registerV1Routes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb
 	financeRouter := chi.NewRouter()
 	finance.RegisterRoutes(financeRouter, pool, rdb)
 	r.Mount("/finance", financeRouter)
+
+	fitnessRouter := chi.NewRouter()
+	fitness.RegisterRoutes(fitnessRouter, pool)
+	r.Mount("/fitness", fitnessRouter)
 }
