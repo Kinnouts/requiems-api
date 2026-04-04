@@ -40,13 +40,41 @@ type colIndices struct {
 // 8-character codes are expanded to 11 characters by appending "XXX".
 // Rows with malformed or missing SWIFT codes are skipped.
 func fetchAndParse(source string) ([]RawSWIFTRecord, error) {
+	return fetchAndParseWithCountries(source, "")
+}
+
+func fetchAndParseWithCountries(source, countriesSource string) ([]RawSWIFTRecord, error) {
 	body, err := openSource(source)
 	if err != nil {
 		return nil, err
 	}
 	defer body.Close()
 
-	cols, reader, err := readHeader(body)
+	reader := csv.NewReader(body)
+	reader.TrimLeadingSpace = true
+
+	firstRow, err := reader.Read()
+	if err != nil {
+		return nil, fmt.Errorf("read first row: %w", err)
+	}
+
+	if isHeaderRow(firstRow) {
+		return parseHeaderBased(reader, firstRow)
+	}
+
+	countryNames := map[string]string{}
+	if countriesSource != "" {
+		countryNames, err = loadCountryNames(countriesSource)
+		if err != nil {
+			return nil, err
+		}
+	}
+
+	return parseNoHeaderBased(reader, firstRow, countryNames)
+}
+
+func parseHeaderBased(reader *csv.Reader, header []string) ([]RawSWIFTRecord, error) {
+	cols, err := parseHeaderCols(header)
 	if err != nil {
 		return nil, err
 	}
@@ -59,6 +87,31 @@ func fetchAndParse(source string) ([]RawSWIFTRecord, error) {
 		}
 		rec, ok := parseRow(row, cols)
 		if ok {
+			records = append(records, rec)
+		}
+	}
+
+	if len(records) == 0 {
+		return nil, fmt.Errorf("no SWIFT code records found — the dataset format may have changed")
+	}
+
+	return records, nil
+}
+
+func parseNoHeaderBased(reader *csv.Reader, firstRow []string, countryNames map[string]string) ([]RawSWIFTRecord, error) {
+	var records []RawSWIFTRecord
+
+	if rec, ok := parseNoHeaderRow(firstRow, countryNames); ok {
+		records = append(records, rec)
+	}
+
+	for {
+		row, err := reader.Read()
+		if err != nil {
+			break
+		}
+
+		if rec, ok := parseNoHeaderRow(row, countryNames); ok {
 			records = append(records, rec)
 		}
 	}
@@ -95,16 +148,8 @@ func openSource(source string) (io.ReadCloser, error) {
 	return f, nil
 }
 
-// readHeader reads the CSV header and returns the resolved column indices.
-func readHeader(r io.Reader) (colIndices, *csv.Reader, error) {
-	reader := csv.NewReader(r)
-	reader.TrimLeadingSpace = true
-
-	header, err := reader.Read()
-	if err != nil {
-		return colIndices{}, nil, fmt.Errorf("read header: %w", err)
-	}
-
+// parseHeaderCols resolves column indexes from a CSV header row.
+func parseHeaderCols(header []string) (colIndices, error) {
 	idx := make(map[string]int, len(header))
 	for i, h := range header {
 		idx[strings.ToLower(strings.TrimSpace(h))] = i
@@ -112,7 +157,7 @@ func readHeader(r io.Reader) (colIndices, *csv.Reader, error) {
 
 	swiftCol, ok := resolveCol(idx, "swift_code", "bic", "swiftcode", "swift")
 	if !ok {
-		return colIndices{}, nil, fmt.Errorf("could not find SWIFT code column in header: %v", header)
+		return colIndices{}, fmt.Errorf("could not find SWIFT code column in header: %v", header)
 	}
 
 	bankNameCol, _ := resolveCol(idx, "bank_name", "name", "institution_name", "institution")
@@ -124,7 +169,98 @@ func readHeader(r io.Reader) (colIndices, *csv.Reader, error) {
 		bankName:    bankNameCol,
 		city:        cityCol,
 		countryName: countryNameCol,
-	}, reader, nil
+	}, nil
+}
+
+func isHeaderRow(row []string) bool {
+	for _, cell := range row {
+		normalized := strings.ToLower(strings.TrimSpace(cell))
+		switch normalized {
+		case "swift_code", "bic", "swiftcode", "swift", "bank_name", "name", "city", "country_name", "country":
+			return true
+		}
+	}
+	return false
+}
+
+func parseNoHeaderRow(row []string, countryNames map[string]string) (RawSWIFTRecord, bool) {
+	if len(row) < 4 {
+		return RawSWIFTRecord{}, false
+	}
+
+	countryCode := strings.ToUpper(strings.TrimSpace(row[0]))
+	raw := strings.ToUpper(strings.TrimSpace(row[1]))
+	if !isValidBIC(raw) {
+		return RawSWIFTRecord{}, false
+	}
+	if len(raw) == 8 {
+		raw += "XXX"
+	}
+
+	rec := RawSWIFTRecord{
+		SwiftCode:    raw,
+		BankCode:     raw[0:4],
+		CountryCode:  raw[4:6],
+		LocationCode: raw[6:8],
+		BranchCode:   raw[8:11],
+		BankName:     strings.TrimSpace(row[2]),
+		City:         strings.TrimSpace(row[3]),
+		CountryName:  countryNames[countryCode],
+	}
+
+	return rec, true
+}
+
+func loadCountryNames(source string) (map[string]string, error) {
+	body, err := openSource(source)
+	if err != nil {
+		return nil, fmt.Errorf("load countries source: %w", err)
+	}
+	defer body.Close()
+
+	reader := csv.NewReader(body)
+	reader.TrimLeadingSpace = true
+
+	header, err := reader.Read()
+	if err != nil {
+		return nil, fmt.Errorf("read countries header: %w", err)
+	}
+
+	idx := make(map[string]int, len(header))
+	for i, h := range header {
+		idx[strings.ToLower(strings.TrimSpace(h))] = i
+	}
+
+	codeCol, ok := idx["alpha-2"]
+	if !ok {
+		return nil, fmt.Errorf("countries CSV missing alpha-2 column")
+	}
+
+	nameCol, ok := idx["name"]
+	if !ok {
+		return nil, fmt.Errorf("countries CSV missing name column")
+	}
+
+	countries := make(map[string]string)
+	for {
+		row, err := reader.Read()
+		if err != nil {
+			break
+		}
+		if codeCol >= len(row) || nameCol >= len(row) {
+			continue
+		}
+
+		code := strings.ToUpper(strings.TrimSpace(row[codeCol]))
+		name := strings.TrimSpace(row[nameCol])
+		if code == "" || name == "" {
+			continue
+		}
+
+		countries[code] = name
+	}
+
+	return countries, nil
 }
 
 // parseRow converts one CSV row into a RawSWIFTRecord. Returns false if the

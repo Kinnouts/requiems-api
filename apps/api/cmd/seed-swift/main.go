@@ -19,10 +19,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// defaultDataSource points to the vendored SWIFT/BIC CSV snapshot in this
-// repository. Use --source to override this path, or --url to download from
-// an alternate remote dataset.
-const defaultDataSource = "dbs/swift_codes.csv"
+const (
+	defaultDataSource = "https://raw.githubusercontent.com/maranemil/swift-bic-codes-allinone/master/csv/AllCountries_v1.csv"
+	defaultCountries  = "https://raw.githubusercontent.com/maranemil/swift-bic-codes-allinone/master/csv/countries.csv"
+)
 
 func main() {
 	if err := newRootCmd().Execute(); err != nil {
@@ -36,13 +36,14 @@ func newRootCmd() *cobra.Command {
 		dryRun     bool
 		verbose    bool
 		sourcePath string
+		countries  string
 		url        string
 	)
 
 	cmd := &cobra.Command{
 		Use:   "seed-swift",
-		Short: "Seed the swift_codes table from a vendored SWIFT/BIC dataset",
-		Long: `Loads a CSV of SWIFT/BIC codes and upserts the bank records into
+		Short: "Seed the swift_codes table from an upstream SWIFT/BIC dataset",
+		Long: `Downloads and normalises SWIFT/BIC code data, then upserts the bank records into
 the swift_codes PostgreSQL table.
 
 Each record includes the full 11-character BIC, component fields (bank code,
@@ -68,7 +69,7 @@ Run inside the API Docker container so the db hostname resolves:
 			}
 
 			log.Printf("loading SWIFT codes from %s", effectiveSource)
-			records, err := fetchAndParse(effectiveSource)
+			records, err := fetchAndParseWithCountries(effectiveSource, countries)
 			if err != nil {
 				return fmt.Errorf("load failed: %w", err)
 			}
@@ -107,7 +108,8 @@ Run inside the API Docker container so the db hostname resolves:
 	cmd.Flags().StringVar(&dbURL, "db-url", os.Getenv("DATABASE_URL"), "PostgreSQL connection string (required unless --dry-run)")
 	cmd.Flags().BoolVar(&dryRun, "dry-run", false, "Parse and print records without writing to the database")
 	cmd.Flags().BoolVar(&verbose, "verbose", false, "Log each SWIFT code record as it is processed")
-	cmd.Flags().StringVar(&sourcePath, "source", defaultDataSource, "Path to a local SWIFT codes CSV file")
+	cmd.Flags().StringVar(&sourcePath, "source", defaultDataSource, "Path or URL for SWIFT codes CSV source")
+	cmd.Flags().StringVar(&countries, "countries", defaultCountries, "Path or URL for country code mapping CSV")
 	cmd.Flags().StringVar(&url, "url", "", "Optional SWIFT codes CSV URL (overrides --source)")
 
 	return cmd
