@@ -83,7 +83,7 @@ func TestFind_NotFound(t *testing.T) {
 }
 
 func TestFind_MultiWordCity(t *testing.T) {
-	req := httptest.NewRequest(http.MethodGet, "/cities/new york city", http.NoBody)
+	req := httptest.NewRequest(http.MethodGet, "/cities/new%20york%20city", http.NoBody)
 	w := httptest.NewRecorder()
 	setupRouter().ServeHTTP(w, req)
 

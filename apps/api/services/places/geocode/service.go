@@ -176,6 +176,9 @@ func (s *Service) fromCache(ctx context.Context, key string) (string, bool) {
 }
 
 func (s *Service) toCache(ctx context.Context, key string, v any) {
+	if s.rdb == nil {
+		return
+	}
 	b, err := json.Marshal(v)
 	if err != nil {
 		return

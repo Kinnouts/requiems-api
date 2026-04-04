@@ -58,13 +58,13 @@ func TestSanitizeSWIFT_PrimaryOfficeXXX(t *testing.T) {
 }
 
 func TestSanitizeSWIFT_AlphanumericLocation(t *testing.T) {
-	// Location code with digit is valid.
-	got, err := sanitizeSWIFT("DEUT2EDB")
+	// Location code with digit is valid (chars 7-8 are alphanumeric).
+	got, err := sanitizeSWIFT("DEUTDE2B")
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
 	}
-	if got != "DEUT2EDBXXX" {
-		t.Errorf("expected DEUT2EDBXXX, got %q", got)
+	if got != "DEUTDE2BXXX" {
+		t.Errorf("expected DEUTDE2BXXX, got %q", got)
 	}
 }
 
