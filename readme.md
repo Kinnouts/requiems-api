@@ -20,6 +20,7 @@ logic, and infrastructure setup. Start building features today, not
 infrastructure.
 
 [![CI](https://github.com/bobadilla-tech/requiems-api/actions/workflows/ci.yml/badge.svg)](https://github.com/bobadilla-tech/requiems-api/actions/workflows/ci.yml)
+[![codecov](https://codecov.io/gh/bobadilla-tech/requiems-api/graph/badge.svg?token=N3O0R9J0SN)](https://codecov.io/gh/bobadilla-tech/requiems-api)
 [![Get Started](https://img.shields.io/badge/Get_Started-→-blue)](https://requiems.xyz)
 [![Documentation](https://img.shields.io/badge/Documentation-📖-green)](https://requiems.xyz/apis)
 

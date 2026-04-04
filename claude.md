@@ -32,8 +32,8 @@ All docs are in `docs/` — see `docs/readme.md` for the full index.
 
 ### Full Stack Development
 
-See [docs/getting-started.md](docs/getting-started.md) for environment setup
-and local development configuration.
+See [docs/getting-started.md](docs/getting-started.md) for environment setup and
+local development configuration.
 
 Start all services with hot reload:
 
@@ -387,7 +387,8 @@ Key-value store for:
 
 Usage tracking:
 
-- `credit_usage` table: Records every API call (requests used per billing period)
+- `credit_usage` table: Records every API call (requests used per billing
+  period)
 - SQL queries for billing period aggregations
 
 ## Key Dependencies
@@ -419,8 +420,8 @@ Usage tracking:
 
 ### Adding New Go Endpoints
 
-See `docs/adding-go-endpoints.md` for the full step-by-step guide including
-code patterns, testing, documentation YAML, and the pre-merge checklist.
+See `docs/adding-go-endpoints.md` for the full step-by-step guide including code
+patterns, testing, documentation YAML, and the pre-merge checklist.
 
 ### Go Backend Security
 
