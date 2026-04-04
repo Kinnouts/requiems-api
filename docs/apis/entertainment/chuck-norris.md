@@ -34,10 +34,10 @@ Returns a randomly selected Chuck Norris fact.
 
 #### Response Fields
 
-| Field  | Type   | Description                                         |
-| ------ | ------ | --------------------------------------------------- |
-| `id`   | string | Unique fact identifier in the format `cn_<index>`   |
-| `fact` | string | The Chuck Norris fact text                          |
+| Field  | Type   | Description                                       |
+| ------ | ------ | ------------------------------------------------- |
+| `id`   | string | Unique fact identifier in the format `cn_<index>` |
+| `fact` | string | The Chuck Norris fact text                        |
 
 #### Error Responses
 

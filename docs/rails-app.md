@@ -202,11 +202,15 @@ histories.
 
 ### Syntax Highlighting
 
-Always use the `highlight` Stimulus controller (`highlight_controller.js`) — never add a separate hljs call or import.
+Always use the `highlight` Stimulus controller (`highlight_controller.js`) —
+never add a separate hljs call or import.
 
-The hljs CSS is loaded via `<link>` tag in both layouts (`application.html.erb` and `dashboard.html.erb`). Do **not** use `@import` for it in `application.css` — Tailwind v4 strips external URL imports during compilation.
+The hljs CSS is loaded via `<link>` tag in both layouts (`application.html.erb`
+and `dashboard.html.erb`). Do **not** use `@import` for it in `application.css`
+— Tailwind v4 strips external URL imports during compilation.
 
 **Standalone code block:**
+
 ```erb
 <div data-controller="highlight">
   <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 text-sm overflow-x-auto"><code class="language-bash">your code here</code></pre>
@@ -214,13 +218,17 @@ The hljs CSS is loaded via `<link>` tag in both layouts (`application.html.erb` 
 ```
 
 **With code tabs** — add `highlight` alongside `code-tabs` on the same element:
+
 ```erb
 <div data-controller="code-tabs highlight">
   ...tabs and content blocks...
 </div>
 ```
 
-The controller runs `hljs.highlightElement()` on every `pre code` inside the element on connect. Always set `class="language-{lang}"` on the `<code>` tag (`language-bash` for curl/shell, `language-javascript`, `language-python`, `language-go`, etc.).
+The controller runs `hljs.highlightElement()` on every `pre code` inside the
+element on connect. Always set `class="language-{lang}"` on the `<code>` tag
+(`language-bash` for curl/shell, `language-javascript`, `language-python`,
+`language-go`, etc.).
 
 ## Testing
 
@@ -253,9 +261,9 @@ The Rails dashboard sits behind Cloudflare as a reverse proxy. This means
 user's real browser IP. Rails has no `config.action_dispatch.trusted_proxies`
 configured, so it does not strip Cloudflare from the forwarded chain.
 
-Cloudflare injects the real client IP via the `CF-Connecting-IP` header on
-every request it forwards. Code that needs the actual client IP must read this
-header explicitly:
+Cloudflare injects the real client IP via the `CF-Connecting-IP` header on every
+request it forwards. Code that needs the actual client IP must read this header
+explicitly:
 
 ```ruby
 real_ip = request.headers["CF-Connecting-IP"] || request.remote_ip
@@ -265,8 +273,9 @@ The fallback to `request.remote_ip` handles local development and any traffic
 that reaches Rails directly (e.g. internal health checks, Docker networking).
 
 **Affected code:**
-- `ApiProxyController` — forwards `X-Forwarded-For` to the Go backend so the
-  IP endpoint (`GET /v1/tech/ip`) returns the user's real IP instead of a
+
+- `ApiProxyController` — forwards `X-Forwarded-For` to the Go backend so the IP
+  endpoint (`GET /v1/tech/ip`) returns the user's real IP instead of a
   Cloudflare datacenter IP.
 
 **Note:** The auth gateway (`apps/workers/auth-gateway/`) has the same
@@ -275,9 +284,8 @@ constraint — it reads `CF-Connecting-IP` from Cloudflare and forwards it as
 [auth-gateway.md](./auth-gateway.md).
 
 **If Cloudflare is removed:** replace `CF-Connecting-IP` reads with proper
-`config.action_dispatch.trusted_proxies` pointing at the upstream load
-balancer / reverse proxy, and update `filterHeaders` in the auth gateway
-similarly.
+`config.action_dispatch.trusted_proxies` pointing at the upstream load balancer
+/ reverse proxy, and update `filterHeaders` in the auth gateway similarly.
 
 ### API Management Service
 

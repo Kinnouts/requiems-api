@@ -144,7 +144,7 @@ func (s *Service) fetchPrice(ctx context.Context, coinID, symbol, name string) (
 		return Price{}, fmt.Errorf("crypto: build request: %w", err)
 	}
 
-	resp, err := s.httpClient.Do(req) //nolint:gosec
+	resp, err := s.httpClient.Do(req) //nolint:gosec // URL is built from a hardcoded base, not user input
 	if err != nil {
 		return Price{}, &httpx.AppError{
 			Status:  http.StatusServiceUnavailable,

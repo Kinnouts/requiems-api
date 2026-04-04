@@ -8,8 +8,8 @@ Annual CPI inflation rates for 241 countries, sourced from the World Bank.
 
 ## Parameters
 
-| Name      | Type   | Required | Description                                    |
-| --------- | ------ | -------- | ---------------------------------------------- |
+| Name      | Type   | Required | Description                                                      |
+| --------- | ------ | -------- | ---------------------------------------------------------------- |
 | `country` | string | yes      | ISO 3166-1 alpha-2 country code (e.g. US, GB). Case-insensitive. |
 
 ## Response
@@ -42,8 +42,8 @@ World Bank indicator `FP.CPI.TOTL.ZG`. Updated annually; re-run
 
 ## Error Codes
 
-| Code          | Status | When                                          |
-| ------------- | ------ | --------------------------------------------- |
-| `bad_request` | 400    | Missing or invalid country code               |
-| `not_found`   | 404    | No data for that country in the World Bank set |
-| `internal_error` | 500 | Unexpected failure                           |
+| Code             | Status | When                                           |
+| ---------------- | ------ | ---------------------------------------------- |
+| `bad_request`    | 400    | Missing or invalid country code                |
+| `not_found`      | 404    | No data for that country in the World Bank set |
+| `internal_error` | 500    | Unexpected failure                             |

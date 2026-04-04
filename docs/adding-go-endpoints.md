@@ -830,9 +830,9 @@ All responses are wrapped in the standard envelope:
 
 File: `apps/workers/shared/src/config.ts`
 
-Most endpoints cost **1 request** and do not need a config entry.
-Only add an entry if your endpoint explicitly counts as more than 1 request
-(rare — document this clearly in the endpoint's API doc):
+Most endpoints cost **1 request** and do not need a config entry. Only add an
+entry if your endpoint explicitly counts as more than 1 request (rare — document
+this clearly in the endpoint's API doc):
 
 ```ts
 // In ENDPOINT_MULTIPLIERS map:

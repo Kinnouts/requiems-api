@@ -527,6 +527,48 @@ apis:
       - Timezone
       - World Clock
 
+  - id: postal-code
+    name: Postal Code
+    categories:
+      - places
+    description: Look up city, state, and coordinates for any postal code worldwide
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/postal-code
+    tags:
+      - Postal Code
+      - Zip Code
+      - Location
+
+  - id: geocode
+    name: Geocoding
+    categories:
+      - places
+    description: Convert addresses to coordinates and coordinates back to addresses
+    endpoints_count: 2
+    status: live
+    popular: false
+    documentation_url: /apis/geocode
+    tags:
+      - Geocoding
+      - Coordinates
+      - Address
+
+  - id: cities
+    name: Cities
+    categories:
+      - places
+    description: Look up city metadata including population, timezone, and coordinates
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/cities
+    tags:
+      - Cities
+      - Population
+      - Timezone
+
   # Entertainment APIs
   - id: quotes
     name: Random Quotes
@@ -793,3 +835,20 @@ apis:
       - Bitcoin
       - Finance
       - Prices
+
+
+  - id: fitness-exercises
+    name: Fitness Exercises
+    categories:
+      - health
+    description: "Browse 1,500+ exercises with step-by-step instructions, target muscles, secondary muscles, equipment requirements, and body part filters."
+    endpoints_count: 6
+    status: live
+    popular: false
+    documentation_url: /apis/fitness-exercises
+    tags:
+      - Fitness
+      - Exercise
+      - Health
+      - Workout
+      - Muscles

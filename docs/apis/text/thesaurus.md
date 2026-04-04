@@ -15,9 +15,9 @@ opposite words for the given input.
 
 ## Path Parameters
 
-| Parameter | Type   | Required | Description             |
-| --------- | ------ | -------- | ----------------------- |
-| `word`    | string | Yes      | The word to look up     |
+| Parameter | Type   | Required | Description         |
+| --------- | ------ | -------- | ------------------- |
+| `word`    | string | Yes      | The word to look up |
 
 ## Response
 
@@ -25,8 +25,25 @@ opposite words for the given input.
 {
   "data": {
     "word": "happy",
-    "synonyms": ["joyful", "cheerful", "content", "pleased", "delighted", "glad", "elated", "blissful"],
-    "antonyms": ["sad", "unhappy", "miserable", "sorrowful", "dejected", "gloomy", "melancholy"]
+    "synonyms": [
+      "joyful",
+      "cheerful",
+      "content",
+      "pleased",
+      "delighted",
+      "glad",
+      "elated",
+      "blissful"
+    ],
+    "antonyms": [
+      "sad",
+      "unhappy",
+      "miserable",
+      "sorrowful",
+      "dejected",
+      "gloomy",
+      "melancholy"
+    ]
   },
   "metadata": {
     "timestamp": "2026-01-01T00:00:00Z"
@@ -36,9 +53,11 @@ opposite words for the given input.
 
 ## Notes
 
-- Lookup is **case-insensitive**: `Happy`, `HAPPY`, and `happy` all return the same result.
+- Lookup is **case-insensitive**: `Happy`, `HAPPY`, and `happy` all return the
+  same result.
 - The `word` field in the response is always normalized to lowercase.
-- Both `synonyms` and `antonyms` are always present in the response (may be empty arrays).
+- Both `synonyms` and `antonyms` are always present in the response (may be
+  empty arrays).
 
 ## Error Codes
 

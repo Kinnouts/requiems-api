@@ -30,10 +30,10 @@ Encode a plain-text string to Base64.
 }
 ```
 
-| Field     | Type   | Required | Description                                  |
-| --------- | ------ | -------- | -------------------------------------------- |
-| `value`   | string | ✅        | The string to encode                         |
-| `variant` | string | ❌        | `standard` (default) or `url` (URL-safe)     |
+| Field     | Type   | Required | Description                              |
+| --------- | ------ | -------- | ---------------------------------------- |
+| `value`   | string | ✅       | The string to encode                     |
+| `variant` | string | ❌       | `standard` (default) or `url` (URL-safe) |
 
 **Response:** `200 OK`
 
@@ -74,10 +74,10 @@ Decode a Base64-encoded string back to plain text.
 }
 ```
 
-| Field     | Type   | Required | Description                                  |
-| --------- | ------ | -------- | -------------------------------------------- |
-| `value`   | string | ✅        | The Base64 string to decode                  |
-| `variant` | string | ❌        | `standard` (default) or `url` (URL-safe)     |
+| Field     | Type   | Required | Description                              |
+| --------- | ------ | -------- | ---------------------------------------- |
+| `value`   | string | ✅       | The Base64 string to decode              |
+| `variant` | string | ❌       | `standard` (default) or `url` (URL-safe) |
 
 **Response:** `200 OK`
 
@@ -105,22 +105,22 @@ curl -X POST https://api.requiems.xyz/v1/convert/base64/decode \
 
 ## Variants
 
-| Variant    | Key        | Alphabet                                | Padding |
-| ---------- | ---------- | --------------------------------------- | ------- |
-| Standard   | `standard` | `A-Z a-z 0-9 + /`                       | `=`     |
-| URL-safe   | `url`      | `A-Z a-z 0-9 - _` (replaces `+` → `-`, `/` → `_`) | `=` |
+| Variant  | Key        | Alphabet                                          | Padding |
+| -------- | ---------- | ------------------------------------------------- | ------- |
+| Standard | `standard` | `A-Z a-z 0-9 + /`                                 | `=`     |
+| URL-safe | `url`      | `A-Z a-z 0-9 - _` (replaces `+` → `-`, `/` → `_`) | `=`     |
 
-Use `url` when the encoded output will appear in a URL, filename, or HTTP
-header where `+` and `/` are problematic.
+Use `url` when the encoded output will appear in a URL, filename, or HTTP header
+where `+` and `/` are problematic.
 
 ---
 
 ## Error Responses
 
-| HTTP Status | Error Code       | Reason                              |
-| ----------- | ---------------- | ----------------------------------- |
-| 400         | `bad_request`    | Missing or empty `value` field      |
-| 422         | `invalid_base64` | Input is not valid Base64           |
+| HTTP Status | Error Code       | Reason                         |
+| ----------- | ---------------- | ------------------------------ |
+| 400         | `bad_request`    | Missing or empty `value` field |
+| 422         | `invalid_base64` | Input is not valid Base64      |
 
 ---
 

@@ -95,17 +95,17 @@ The `converted` field is `amount × rate`, rounded to 2 decimal places.
 
 ## Caching
 
-Each currency pair is cached in Redis with a 1-hour TTL. A cache miss triggers
-a single HTTP call to `api.frankfurter.app`. Subsequent requests within the
-hour are served instantly from cache.
+Each currency pair is cached in Redis with a 1-hour TTL. A cache miss triggers a
+single HTTP call to `api.frankfurter.app`. Subsequent requests within the hour
+are served instantly from cache.
 
 ## Error Codes
 
-| Code               | Status | When                                                  |
-| ------------------ | ------ | ----------------------------------------------------- |
-| `bad_request`      | 400    | Missing parameter or currency code is not 3 letters   |
-| `invalid_currency` | 422    | Currency code not recognised by the ECB data source   |
-| `upstream_error`   | 503    | Frankfurter upstream temporarily unavailable          |
+| Code               | Status | When                                                |
+| ------------------ | ------ | --------------------------------------------------- |
+| `bad_request`      | 400    | Missing parameter or currency code is not 3 letters |
+| `invalid_currency` | 422    | Currency code not recognised by the ECB data source |
+| `upstream_error`   | 503    | Frankfurter upstream temporarily unavailable        |
 
 ## Data Source
 

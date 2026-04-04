@@ -1,6 +1,7 @@
 # IP Geolocation API
 
-Get geolocation data for any IP address including country, city, ISP, and VPN detection.
+Get geolocation data for any IP address including country, city, ISP, and VPN
+detection.
 
 ## Endpoints
 
@@ -8,7 +9,9 @@ Get geolocation data for any IP address including country, city, ISP, and VPN de
 
 `GET /v1/tech/ip`
 
-Returns geolocation information for the requesting client's IP address. Useful when you want information about the user making the request without specifying an IP explicitly.
+Returns geolocation information for the requesting client's IP address. Useful
+when you want information about the user making the request without specifying
+an IP explicitly.
 
 **Parameters:** None
 
@@ -18,9 +21,9 @@ Returns geolocation information for the requesting client's IP address. Useful w
 
 Returns geolocation information for a specific IP address.
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `ip` | string | Yes | IP address to look up (IPv4 or IPv6) |
+| Name | Type   | Required | Description                          |
+| ---- | ------ | -------- | ------------------------------------ |
+| `ip` | string | Yes      | IP address to look up (IPv4 or IPv6) |
 
 ## Response Envelope
 
@@ -44,21 +47,21 @@ All responses are wrapped in the standard envelope:
 
 ## Response Fields
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `ip` | string | The IP address that was looked up |
-| `country` | string | Country name where the IP is located |
-| `country_code` | string | Two-letter ISO country code (e.g., "US", "GB") |
-| `city` | string | City name where the IP is located |
-| `isp` | string | Internet Service Provider |
-| `is_vpn` | boolean | True if the IP belongs to a known VPN |
+| Field          | Type    | Description                                    |
+| -------------- | ------- | ---------------------------------------------- |
+| `ip`           | string  | The IP address that was looked up              |
+| `country`      | string  | Country name where the IP is located           |
+| `country_code` | string  | Two-letter ISO country code (e.g., "US", "GB") |
+| `city`         | string  | City name where the IP is located              |
+| `isp`          | string  | Internet Service Provider                      |
+| `is_vpn`       | boolean | True if the IP belongs to a known VPN          |
 
 ## Error Codes
 
-| Code | Status | When |
-|------|--------|------|
-| `bad_request` | 400 | Invalid IP address |
-| `internal_error` | 500 | Unexpected failure |
+| Code             | Status | When               |
+| ---------------- | ------ | ------------------ |
+| `bad_request`    | 400    | Invalid IP address |
+| `internal_error` | 500    | Unexpected failure |
 
 ## Examples
 
@@ -93,7 +96,9 @@ print(response.json())
 
 **How accurate is the geolocation data?**
 
-Accuracy varies by IP type. ISP and hosting provider IPs typically have city-level accuracy (80-95%). Residential IPs can be accurate to within a few kilometers. Mobile IPs are generally less accurate.
+Accuracy varies by IP type. ISP and hosting provider IPs typically have
+city-level accuracy (80-95%). Residential IPs can be accurate to within a few
+kilometers. Mobile IPs are generally less accurate.
 
 **Does this support IPv6?**
 
@@ -101,4 +106,5 @@ Yes, both IPv4 and IPv6 addresses are fully supported.
 
 **What happens with private IP addresses?**
 
-Private IP addresses (192.168.x.x, 10.x.x.x, 172.16-31.x.x) do not have geolocation data. The API returns the IP with empty location fields.
+Private IP addresses (192.168.x.x, 10.x.x.x, 172.16-31.x.x) do not have
+geolocation data. The API returns the IP with empty location fields.

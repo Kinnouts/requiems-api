@@ -3,8 +3,8 @@
 ## Overview
 
 The Auth Gateway is a Cloudflare Worker that sits at the edge of the Requiem API
-architecture, handling authentication, rate limiting, and request tracking before
-requests reach the backend.
+architecture, handling authentication, rate limiting, and request tracking
+before requests reach the backend.
 
 **Location:** [apps/workers/auth-gateway/](../apps/workers/auth-gateway/)
 **Technology:** TypeScript on Cloudflare Workers **Runtime:** V8 isolates
@@ -170,12 +170,12 @@ X-RateLimit-Remaining: 4999
 ## Plan Tiers
 
 | Plan         | Request Limit | Period  | Rate Limit | Price      |
-| ------------ | ------------ | ------- | ---------- | ---------- |
-| Free         | 500          | Monthly | 30/min     | $0/month   |
-| Developer    | 100,000      | Monthly | 5,000/min  | $29/month  |
-| Business     | 1,000,000    | Monthly | 10,000/min | $74/month  |
-| Professional | 10,000,000   | Monthly | 50,000/min | $149/month |
-| Enterprise   | Unlimited    | Monthly | Unlimited  | Custom     |
+| ------------ | ------------- | ------- | ---------- | ---------- |
+| Free         | 500           | Monthly | 30/min     | $0/month   |
+| Developer    | 100,000       | Monthly | 5,000/min  | $29/month  |
+| Business     | 1,000,000     | Monthly | 10,000/min | $74/month  |
+| Professional | 10,000,000    | Monthly | 50,000/min | $149/month |
+| Enterprise   | Unlimited     | Monthly | Unlimited  | Custom     |
 
 ## Endpoint Costs
 

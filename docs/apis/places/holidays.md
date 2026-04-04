@@ -13,10 +13,10 @@ a list of national holidays with their dates.
 
 ## Query Parameters
 
-| Parameter | Type   | Required | Description                                    |
-| --------- | ------ | -------- | ---------------------------------------------- |
+| Parameter | Type   | Required | Description                                  |
+| --------- | ------ | -------- | -------------------------------------------- |
 | `country` | string | Yes      | ISO 3166-1 alpha-2 country code (e.g., `US`) |
-| `year`    | int    | Yes      | Year (e.g., `2025`)                            |
+| `year`    | int    | Yes      | Year (e.g., `2025`)                          |
 
 ## Response
 
@@ -43,26 +43,26 @@ a list of national holidays with their dates.
 }
 ```
 
-| Field     | Type           | Description                                  |
-| --------- | -------------- | -------------------------------------------- |
-| `country` | string         | ISO 3166-1 alpha-2 country code             |
-| `year`    | int            | Year                                         |
-| `holidays` | array of objects | List of holidays with date and name       |
-| `total`   | int            | Total number of holidays for the country/year |
+| Field      | Type             | Description                                   |
+| ---------- | ---------------- | --------------------------------------------- |
+| `country`  | string           | ISO 3166-1 alpha-2 country code               |
+| `year`     | int              | Year                                          |
+| `holidays` | array of objects | List of holidays with date and name           |
+| `total`    | int              | Total number of holidays for the country/year |
 
 ### Holiday Object
 
-| Field | Type   | Description              |
-| ------| ------ | ------------------------ |
-| `date`| string | Date in `YYYY-MM-DD` format |
-| `name`| string | Name of the holiday      |
+| Field  | Type   | Description                 |
+| ------ | ------ | --------------------------- |
+| `date` | string | Date in `YYYY-MM-DD` format |
+| `name` | string | Name of the holiday         |
 
 ## Error Codes
 
-| Code          | Status | When                                                          |
-| ------------- | ------ | ------------------------------------------------------------- |
-| `bad_request` | 400    | Missing or invalid country code or year                      |
-| `not_found`   | 404    | No holidays found for the specified country and year         |
+| Code          | Status | When                                                 |
+| ------------- | ------ | ---------------------------------------------------- |
+| `bad_request` | 400    | Missing or invalid country code or year              |
+| `not_found`   | 404    | No holidays found for the specified country and year |
 
 ## Code Examples
 
@@ -113,7 +113,7 @@ const response = await fetch(
 
 const { data } = await response.json();
 console.log(`Found ${data.total} holidays in ${data.country}`);
-data.holidays.forEach(h => console.log(`  ${h.date}: ${h.name}`));
+data.holidays.forEach((h) => console.log(`  ${h.date}: ${h.name}`));
 ```
 
 ### Ruby
@@ -157,14 +157,14 @@ states plus many territories and dependencies.
 holidays for each country, including federal holidays, bank holidays, and widely
 observed holidays. Religious and regional holidays may vary by country.
 
-**Can I get holidays for multiple years?** Currently, holidays are returned for a
-single year per request. To get holidays across multiple years, make separate
+**Can I get holidays for multiple years?** Currently, holidays are returned for
+a single year per request. To get holidays across multiple years, make separate
 requests for each year.
 
 **Are holiday dates stable across years?** No. Holidays like "Thanksgiving" fall
 on different dates each year. The API returns the correct date for the specified
 year.
 
-**What about moveable holidays?** Some holidays (like Easter) are calculated based
-on astronomical events. The API handles these automatically and returns the
-correct date for the specified year and country.
+**What about moveable holidays?** Some holidays (like Easter) are calculated
+based on astronomical events. The API handles these automatically and returns
+the correct date for the specified year and country.

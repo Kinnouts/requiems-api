@@ -113,7 +113,8 @@ Get trivia questions and answers
 
 - **Status:** mvp
 - **Endpoint:** `GET /v1/entertainment/trivia`
-- **Endpoint:** `GET /v1/entertainment/trivia?category=science&difficulty=medium`
+- **Endpoint:**
+  `GET /v1/entertainment/trivia?category=science&difficulty=medium`
 
 ## Category Statistics
 

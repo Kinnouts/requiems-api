@@ -14,12 +14,12 @@ provider domains.
 
 ## What It Checks
 
-| Check | How |
-| --- | --- |
-| Syntax | RFC 5322 parse via `net/mail.ParseAddress` |
-| MX record | Live DNS lookup — domain must have ≥ 1 MX record |
-| Disposable | Checked against the 90,000+ domain blocklist |
-| Normalization | Lowercase, plus-tag removal, alias-domain resolution |
+| Check           | How                                                       |
+| --------------- | --------------------------------------------------------- |
+| Syntax          | RFC 5322 parse via `net/mail.ParseAddress`                |
+| MX record       | Live DNS lookup — domain must have ≥ 1 MX record          |
+| Disposable      | Checked against the 90,000+ domain blocklist              |
+| Normalization   | Lowercase, plus-tag removal, alias-domain resolution      |
 | Typo suggestion | Levenshtein distance ≤ 2 against ~20 well-known providers |
 
 ## Request
@@ -30,9 +30,10 @@ provider domains.
 }
 ```
 
-**Validation:** `email` is required. A missing field returns `422 Unprocessable
-Entity`. Syntax errors do not return a 4xx — they return `200 OK` with
-`syntax_valid: false` and `valid: false`.
+**Validation:** `email` is required. A missing field returns
+`422 Unprocessable
+Entity`. Syntax errors do not return a 4xx — they return
+`200 OK` with `syntax_valid: false` and `valid: false`.
 
 ## Response Envelope
 
@@ -47,16 +48,16 @@ All responses are wrapped in the standard envelope:
 
 ## Response Fields
 
-| Field | Type | Description |
-| --- | --- | --- |
-| `email` | string\|null | Exact input supplied by the caller; `null` when syntax is invalid |
-| `valid` | boolean | `true` only when `syntax_valid` and `mx_valid` are both `true` |
-| `syntax_valid` | boolean | Passes RFC 5322 syntax check |
-| `mx_valid` | boolean | Domain has at least one MX record |
-| `disposable` | boolean | Domain is on the disposable email blocklist |
-| `normalized` | string\|null | Canonical address after normalization; `null` when syntax is invalid |
-| `domain` | string\|null | Domain part (after `@`); `null` when syntax is invalid |
-| `suggestion` | string\|null | Closest well-known domain when the input looks like a typo; `null` otherwise |
+| Field          | Type         | Description                                                                  |
+| -------------- | ------------ | ---------------------------------------------------------------------------- |
+| `email`        | string\|null | Exact input supplied by the caller; `null` when syntax is invalid            |
+| `valid`        | boolean      | `true` only when `syntax_valid` and `mx_valid` are both `true`               |
+| `syntax_valid` | boolean      | Passes RFC 5322 syntax check                                                 |
+| `mx_valid`     | boolean      | Domain has at least one MX record                                            |
+| `disposable`   | boolean      | Domain is on the disposable email blocklist                                  |
+| `normalized`   | string\|null | Canonical address after normalization; `null` when syntax is invalid         |
+| `domain`       | string\|null | Domain part (after `@`); `null` when syntax is invalid                       |
+| `suggestion`   | string\|null | Closest well-known domain when the input looks like a typo; `null` otherwise |
 
 ## Examples
 
@@ -134,11 +135,11 @@ Response:
 
 ## Error Codes
 
-| Code | Status | When |
-| --- | --- | --- |
-| `validation_failed` | 422 | `email` field is missing from the request body |
-| `bad_request` | 400 | Body is missing, invalid JSON, or contains unknown fields |
-| `internal_error` | 500 | Unexpected server error |
+| Code                | Status | When                                                      |
+| ------------------- | ------ | --------------------------------------------------------- |
+| `validation_failed` | 422    | `email` field is missing from the request body            |
+| `bad_request`       | 400    | Body is missing, invalid JSON, or contains unknown fields |
+| `internal_error`    | 500    | Unexpected server error                                   |
 
 ## Typo Detection
 
@@ -160,7 +161,9 @@ Show a prompt when `suggestion` is non-null before the user submits the form.
 ```javascript
 const { data } = await validateEmail(userInput);
 if (data.suggestion) {
-  showPrompt(`Did you mean ${userInput.replace(data.domain, data.suggestion)}?`);
+  showPrompt(
+    `Did you mean ${userInput.replace(data.domain, data.suggestion)}?`,
+  );
 }
 ```
 

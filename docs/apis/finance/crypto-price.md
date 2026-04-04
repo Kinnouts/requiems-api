@@ -9,28 +9,28 @@ Prices are sourced from CoinGecko and cached for 5 minutes.
 
 ## Supported Symbols
 
-| Symbol  | Name           |
-| ------- | -------------- |
-| `BTC`   | Bitcoin        |
-| `ETH`   | Ethereum       |
-| `BNB`   | BNB            |
-| `XRP`   | XRP            |
-| `ADA`   | Cardano        |
-| `SOL`   | Solana         |
-| `DOGE`  | Dogecoin       |
-| `DOT`   | Polkadot       |
-| `MATIC` | Polygon        |
-| `AVAX`  | Avalanche      |
-| `LINK`  | Chainlink      |
-| `LTC`   | Litecoin       |
-| `UNI`   | Uniswap        |
-| `ATOM`  | Cosmos         |
-| `TRX`   | TRON           |
-| `XLM`   | Stellar        |
-| `ALGO`  | Algorand       |
-| `NEAR`  | NEAR Protocol  |
-| `FTM`   | Fantom         |
-| `SHIB`  | Shiba Inu      |
+| Symbol  | Name          |
+| ------- | ------------- |
+| `BTC`   | Bitcoin       |
+| `ETH`   | Ethereum      |
+| `BNB`   | BNB           |
+| `XRP`   | XRP           |
+| `ADA`   | Cardano       |
+| `SOL`   | Solana        |
+| `DOGE`  | Dogecoin      |
+| `DOT`   | Polkadot      |
+| `MATIC` | Polygon       |
+| `AVAX`  | Avalanche     |
+| `LINK`  | Chainlink     |
+| `LTC`   | Litecoin      |
+| `UNI`   | Uniswap       |
+| `ATOM`  | Cosmos        |
+| `TRX`   | TRON          |
+| `XLM`   | Stellar       |
+| `ALGO`  | Algorand      |
+| `NEAR`  | NEAR Protocol |
+| `FTM`   | Fantom        |
+| `SHIB`  | Shiba Inu     |
 
 Symbols are case-insensitive — `btc` and `BTC` both work.
 

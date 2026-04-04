@@ -6,9 +6,9 @@
 
 ## Overview
 
-Detect if an IP address belongs to a VPN, proxy, Tor exit node, or hosting provider.
-Returns threat scores and fraud indicators for fraud prevention, risk assessment, and
-bot detection.
+Detect if an IP address belongs to a VPN, proxy, Tor exit node, or hosting
+provider. Returns threat scores and fraud indicators for fraud prevention, risk
+assessment, and bot detection.
 
 ## Endpoint
 
@@ -45,38 +45,38 @@ bot detection.
 
 ### Detection Types
 
-| Field       | Description                                              |
-| ----------- | -------------------------------------------------------- |
-| `is_vpn`    | True when the IP belongs to a known VPN provider         |
-| `is_proxy`  | True when the IP is a known public or web proxy          |
-| `is_tor`    | True when the IP is a known Tor exit node                |
+| Field        | Description                                                         |
+| ------------ | ------------------------------------------------------------------- |
+| `is_vpn`     | True when the IP belongs to a known VPN provider                    |
+| `is_proxy`   | True when the IP is a known public or web proxy                     |
+| `is_tor`     | True when the IP is a known Tor exit node                           |
 | `is_hosting` | True when the IP belongs to a data-centre or hosting provider (DCH) |
 
 ### Threat Scoring
 
-| Field   | Type   | Description                                                                                     |
-| ------- | ------ | ---------------------------------------------------------------------------------------------- |
-| `score` | int    | Raw threat score (0-9+). Tor contributes 3, VPN or Proxy each contribute 2, Hosting contributes 1 |
-| `threat` | string | Threat level derived from score: none, low, medium, high, or critical                           |
-| `fraud_score` | int | Fraud risk score from 0 (no risk) to 100 (high risk). Available with IP2Proxy PX5+ database   |
-| `asn_org` | string | Organization name owning the Autonomous System containing the IP (e.g., "DIGITALOCEAN-ASN")     |
+| Field         | Type   | Description                                                                                       |
+| ------------- | ------ | ------------------------------------------------------------------------------------------------- |
+| `score`       | int    | Raw threat score (0-9+). Tor contributes 3, VPN or Proxy each contribute 2, Hosting contributes 1 |
+| `threat`      | string | Threat level derived from score: none, low, medium, high, or critical                             |
+| `fraud_score` | int    | Fraud risk score from 0 (no risk) to 100 (high risk). Available with IP2Proxy PX5+ database       |
+| `asn_org`     | string | Organization name owning the Autonomous System containing the IP (e.g., "DIGITALOCEAN-ASN")       |
 
 ### Threat Levels
 
-| Level    | Score Range | Interpretation                          |
-| -------- | ----------- | -------------------------------------- |
-| `none`   | 0           | No threat indicators detected          |
-| `low`    | 1           | Minimal risk (e.g., hosting provider)  |
-| `medium` | 2-3         | Moderate risk (VPN/proxy detected)     |
-| `high`   | 4-5         | Elevated risk (multiple indicators)     |
-| `critical` | 6+        | High risk (Tor + VPN/proxy combined)   |
+| Level      | Score Range | Interpretation                        |
+| ---------- | ----------- | ------------------------------------- |
+| `none`     | 0           | No threat indicators detected         |
+| `low`      | 1           | Minimal risk (e.g., hosting provider) |
+| `medium`   | 2-3         | Moderate risk (VPN/proxy detected)    |
+| `high`     | 4-5         | Elevated risk (multiple indicators)   |
+| `critical` | 6+          | High risk (Tor + VPN/proxy combined)  |
 
 ### Error Codes
 
-| Code             | Status | When                              |
-| ---------------- | ------ | --------------------------------- |
-| `bad_request`    | 400    | IP address is missing or invalid  |
-| `internal_error` | 500    | Unexpected server error           |
+| Code             | Status | When                             |
+| ---------------- | ------ | -------------------------------- |
+| `bad_request`    | 400    | IP address is missing or invalid |
+| `internal_error` | 500    | Unexpected server error          |
 
 ## Code Examples
 
@@ -107,9 +107,12 @@ print(f"Fraud Score: {result['fraud_score']}")
 ### JavaScript
 
 ```javascript
-const response = await fetch('https://api.requiems.xyz/v1/tech/ip/vpn/8.8.8.8', {
-  headers: { "requiems-api-key": "YOUR_API_KEY" },
-});
+const response = await fetch(
+  "https://api.requiems.xyz/v1/tech/ip/vpn/8.8.8.8",
+  {
+    headers: { "requiems-api-key": "YOUR_API_KEY" },
+  },
+);
 
 const { data } = await response.json();
 console.log(`IP: ${data.ip}`);
@@ -141,24 +144,28 @@ puts "Fraud Score: #{data['fraud_score']}"
 
 ## Use Cases
 
-- **Fraud Prevention** - Identify high-risk IP addresses in e-commerce and fintech
+- **Fraud Prevention** - Identify high-risk IP addresses in e-commerce and
+  fintech
 - **Risk Scoring** - Assess user authentication risk based on IP reputation
 - **Bot Detection** - Detect users hiding behind VPNs, proxies, or Tor
 - **Compliance** - Meet regulatory requirements for IP intelligence
-- **Geo-blocking Circumvention** - Identify users attempting to bypass restrictions
+- **Geo-blocking Circumvention** - Identify users attempting to bypass
+  restrictions
 
 ## FAQ
 
-**What databases are used for detection?** The API uses the IP2Proxy database for VPN,
-proxy, Tor, and hosting detection. ASN information is retrieved from a separate MaxMind
-ASN database.
+**What databases are used for detection?** The API uses the IP2Proxy database
+for VPN, proxy, Tor, and hosting detection. ASN information is retrieved from a
+separate MaxMind ASN database.
 
-**Why is fraud_score 0 for some IPs?** The fraud_score is only available when using
-IP2Proxy database tier PX5 or higher. Lower tiers return 0, indicating the value is
-unavailable for the current database.
+**Why is fraud_score 0 for some IPs?** The fraud_score is only available when
+using IP2Proxy database tier PX5 or higher. Lower tiers return 0, indicating the
+value is unavailable for the current database.
 
-**Does this support IPv6?** Yes, both IPv4 and IPv6 addresses are fully supported.
+**Does this support IPv6?** Yes, both IPv4 and IPv6 addresses are fully
+supported.
 
-**What does is_hosting mean?** When `is_hosting` is true, the IP belongs to a data-centre
-or cloud hosting provider (DCH in IP2Proxy terminology). This is often an indicator of
-automated traffic or server-based access rather than a residential user.
+**What does is_hosting mean?** When `is_hosting` is true, the IP belongs to a
+data-centre or cloud hosting provider (DCH in IP2Proxy terminology). This is
+often an indicator of automated traffic or server-based access rather than a
+residential user.
