@@ -7,8 +7,13 @@ RUN go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
-    go build -o /out/api .
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /out/api . && \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /out/seed-bins ./cmd/seed-bins && \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /out/seed-inflation ./cmd/seed-inflation && \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /out/seed-iban ./cmd/seed-iban && \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /out/seed-commodities ./cmd/seed-commodities && \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /out/seed-swift ./cmd/seed-swift && \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /out/seed-exercises ./cmd/seed-exercises
 
 FROM alpine:3.20
 
@@ -18,6 +23,7 @@ WORKDIR /app
 ENV PORT=8080
 
 COPY --from=build /out/api /app/api
+COPY --from=build /out/seed-* /app/
 COPY migrations /app/migrations
 COPY dbs /app/dbs
 

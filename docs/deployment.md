@@ -474,34 +474,39 @@ Some endpoints require data to be seeded after the first deploy. Migrations
 create the tables automatically on startup, but the data must be populated
 manually once.
 
+Seed binaries are compiled into the production image at `/app/seed-*`. The
+production image does not include the Go toolchain, so `go run` will not work.
+
 **Run all seeds in order:**
 
 ```bash
 cd infra/docker
 
 # BIN/IIN card data (~700k records — takes ~5 min)
-docker compose exec api go run ./cmd/seed-bins \
-  --db-url "$DATABASE_URL"
+docker compose exec api sh -c '/app/seed-bins --db-url "$DATABASE_URL"'
 
 # Inflation data (World Bank CPI, ~241 countries × 30 years)
-docker compose exec api go run ./cmd/seed-inflation \
-  --db-url "$DATABASE_URL"
+docker compose exec api sh -c '/app/seed-inflation --db-url "$DATABASE_URL"'
 
 # IBAN country data
-docker compose exec api go run ./cmd/seed-iban \
-  --db-url "$DATABASE_URL"
+docker compose exec api sh -c '/app/seed-iban --db-url "$DATABASE_URL"'
 
 # Commodity prices (FRED + Yahoo Finance, 16 commodities × ~30 years)
-docker compose exec api go run ./cmd/seed-commodities \
-  --db-url "$DATABASE_URL"
+docker compose exec api sh -c '/app/seed-commodities --db-url "$DATABASE_URL"'
 
 # SWIFT/BIC codes (~100k+ bank records)
-docker compose exec api go run ./cmd/seed-swift \
-  --db-url "$DATABASE_URL"
+docker compose exec api sh -c '/app/seed-swift --db-url "$DATABASE_URL"'
 ```
 
-`DATABASE_URL` is already set in `infra/docker/.env` — the shell picks it up
-automatically when you run these commands from the `infra/docker` directory.
+`DATABASE_URL` is set inside the container via `env_file: .env`. The `sh -c`
+wrapper ensures the variable is expanded inside the container, not on the host.
+
+**Seeding exercises** — requires uploading the JSON data file first:
+
+```bash
+docker cp ~/exercises.json requiem-backend-api-1:/tmp/exercises.json
+docker exec requiem-backend-api-1 sh -c '/app/seed-exercises --data-dir /tmp --db-url "$DATABASE_URL"'
+```
 
 **Re-seeding is safe** — all seed commands use
 `INSERT ... ON CONFLICT DO UPDATE`, so running them again only updates changed
@@ -512,8 +517,7 @@ FRED and Yahoo Finance. Re-run the commodity seed once per year (or whenever you
 want fresh data):
 
 ```bash
-docker compose exec api go run ./cmd/seed-commodities \
-  --db-url "$DATABASE_URL"
+docker compose exec api sh -c '/app/seed-commodities --db-url "$DATABASE_URL"'
 ```
 
 ---
