@@ -24,6 +24,8 @@ node_modules
 .wrangler
 .playwright-mcp/
 .pnpm-store/
+coverage/
+.nyc_output/
 apps/workers/shared/package-lock.json
 vendor/
 apps/dashboard/vendor/

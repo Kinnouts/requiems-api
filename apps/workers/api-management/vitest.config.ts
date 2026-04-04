@@ -14,6 +14,8 @@ export default defineConfig({
     exclude: ["node_modules", "dist"],
     coverage: {
       provider: "v8",
+      all: false,
+      allowExternal: true,
       reporter: ["text", "json", "html", "lcov"],
       exclude: ["node_modules/", "dist/", "**/*.config.ts", "**/*.d.ts"],
     },
