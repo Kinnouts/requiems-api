@@ -20,6 +20,14 @@ type RawSWIFTRecord struct {
 	CountryName  string
 }
 
+// colIndices holds the resolved column positions from the CSV header.
+type colIndices struct {
+	swift       int
+	bankName    int
+	city        int
+	countryName int
+}
+
 // fetchAndParse downloads the SWIFT/BIC CSV from url and returns parsed records.
 //
 // The CSV header row is read to build a column-name-to-index map, making the
@@ -32,7 +40,7 @@ type RawSWIFTRecord struct {
 func fetchAndParse(url string) ([]RawSWIFTRecord, error) {
 	client := &http.Client{Timeout: 30 * time.Second}
 
-	resp, err := client.Get(url)
+	resp, err := client.Get(url) //nolint:gosec // url comes from a trusted CLI flag or hardcoded default, not user HTTP input
 	if err != nil {
 		return nil, fmt.Errorf("download: %w", err)
 	}
@@ -42,73 +50,21 @@ func fetchAndParse(url string) ([]RawSWIFTRecord, error) {
 		return nil, fmt.Errorf("download: HTTP %d", resp.StatusCode)
 	}
 
-	reader := csv.NewReader(resp.Body)
-	reader.TrimLeadingSpace = true
-
-	// Read header row and build column index map.
-	header, err := reader.Read()
+	cols, reader, err := readHeader(resp)
 	if err != nil {
-		return nil, fmt.Errorf("read header: %w", err)
+		return nil, err
 	}
-
-	colIdx := make(map[string]int, len(header))
-	for i, h := range header {
-		colIdx[strings.ToLower(strings.TrimSpace(h))] = i
-	}
-
-	// Resolve SWIFT code column — try common names.
-	swiftCol, ok := resolveCol(colIdx, "swift_code", "bic", "swiftcode", "swift")
-	if !ok {
-		return nil, fmt.Errorf("could not find SWIFT code column in header: %v", header)
-	}
-
-	bankNameCol, _ := resolveCol(colIdx, "bank_name", "name", "institution_name", "institution")
-	cityCol, _ := resolveCol(colIdx, "city", "branch_city", "branch_address")
-	countryNameCol, _ := resolveCol(colIdx, "country_name", "country")
 
 	var records []RawSWIFTRecord
-
 	for {
 		row, err := reader.Read()
 		if err != nil {
-			break // EOF or error — stop reading
+			break // EOF or read error — stop
 		}
-
-		if swiftCol >= len(row) {
-			continue
+		rec, ok := parseRow(row, cols)
+		if ok {
+			records = append(records, rec)
 		}
-
-		raw := strings.ToUpper(strings.TrimSpace(row[swiftCol]))
-		if len(raw) != 8 && len(raw) != 11 {
-			continue
-		}
-		if !isValidBIC(raw) {
-			continue
-		}
-
-		if len(raw) == 8 {
-			raw += "XXX"
-		}
-
-		rec := RawSWIFTRecord{
-			SwiftCode:    raw,
-			BankCode:     raw[0:4],
-			CountryCode:  raw[4:6],
-			LocationCode: raw[6:8],
-			BranchCode:   raw[8:11],
-		}
-
-		if bankNameCol >= 0 && bankNameCol < len(row) {
-			rec.BankName = strings.TrimSpace(row[bankNameCol])
-		}
-		if cityCol >= 0 && cityCol < len(row) {
-			rec.City = strings.TrimSpace(row[cityCol])
-		}
-		if countryNameCol >= 0 && countryNameCol < len(row) {
-			rec.CountryName = strings.TrimSpace(row[countryNameCol])
-		}
-
-		records = append(records, rec)
 	}
 
 	if len(records) == 0 {
@@ -116,6 +72,72 @@ func fetchAndParse(url string) ([]RawSWIFTRecord, error) {
 	}
 
 	return records, nil
+}
+
+// readHeader reads the CSV header and returns the resolved column indices.
+func readHeader(resp *http.Response) (colIndices, *csv.Reader, error) {
+	reader := csv.NewReader(resp.Body)
+	reader.TrimLeadingSpace = true
+
+	header, err := reader.Read()
+	if err != nil {
+		return colIndices{}, nil, fmt.Errorf("read header: %w", err)
+	}
+
+	idx := make(map[string]int, len(header))
+	for i, h := range header {
+		idx[strings.ToLower(strings.TrimSpace(h))] = i
+	}
+
+	swiftCol, ok := resolveCol(idx, "swift_code", "bic", "swiftcode", "swift")
+	if !ok {
+		return colIndices{}, nil, fmt.Errorf("could not find SWIFT code column in header: %v", header)
+	}
+
+	bankNameCol, _ := resolveCol(idx, "bank_name", "name", "institution_name", "institution")
+	cityCol, _ := resolveCol(idx, "city", "branch_city", "branch_address")
+	countryNameCol, _ := resolveCol(idx, "country_name", "country")
+
+	return colIndices{
+		swift:       swiftCol,
+		bankName:    bankNameCol,
+		city:        cityCol,
+		countryName: countryNameCol,
+	}, reader, nil
+}
+
+// parseRow converts one CSV row into a RawSWIFTRecord. Returns false if the
+// row should be skipped (missing or malformed SWIFT code).
+func parseRow(row []string, cols colIndices) (RawSWIFTRecord, bool) {
+	if cols.swift >= len(row) {
+		return RawSWIFTRecord{}, false
+	}
+
+	raw := strings.ToUpper(strings.TrimSpace(row[cols.swift]))
+	if !isValidBIC(raw) {
+		return RawSWIFTRecord{}, false
+	}
+	if len(raw) == 8 {
+		raw += "XXX"
+	}
+
+	rec := RawSWIFTRecord{
+		SwiftCode:    raw,
+		BankCode:     raw[0:4],
+		CountryCode:  raw[4:6],
+		LocationCode: raw[6:8],
+		BranchCode:   raw[8:11],
+	}
+	if cols.bankName >= 0 && cols.bankName < len(row) {
+		rec.BankName = strings.TrimSpace(row[cols.bankName])
+	}
+	if cols.city >= 0 && cols.city < len(row) {
+		rec.City = strings.TrimSpace(row[cols.city])
+	}
+	if cols.countryName >= 0 && cols.countryName < len(row) {
+		rec.CountryName = strings.TrimSpace(row[cols.countryName])
+	}
+	return rec, true
 }
 
 // resolveCol returns the index of the first matching column name (case-insensitive)
@@ -136,32 +158,29 @@ func isValidBIC(bic string) bool {
 	if len(bic) != 8 && len(bic) != 11 {
 		return false
 	}
-	// Positions 0-3: letters only (bank code)
-	for i := range 4 {
+	return allAlpha(bic, 0, 4) && // bank code: letters only
+		allAlpha(bic, 4, 6) && // country code: letters only
+		allAlphanumeric(bic, 6, 8) && // location code: alphanumeric
+		(len(bic) == 8 || allAlphanumeric(bic, 8, 11)) // branch code: alphanumeric if present
+}
+
+// allAlpha reports whether every byte in bic[from:to] is an uppercase ASCII letter.
+func allAlpha(bic string, from, to int) bool {
+	for i := from; i < to; i++ {
 		if bic[i] < 'A' || bic[i] > 'Z' {
 			return false
 		}
 	}
-	// Positions 4-5: letters only (country code)
-	for i := 4; i < 6; i++ {
-		if bic[i] < 'A' || bic[i] > 'Z' {
-			return false
-		}
-	}
-	// Positions 6-7: alphanumeric (location code)
-	for i := 6; i < 8; i++ {
+	return true
+}
+
+// allAlphanumeric reports whether every byte in bic[from:to] is an uppercase
+// ASCII letter or decimal digit.
+func allAlphanumeric(bic string, from, to int) bool {
+	for i := from; i < to; i++ {
 		b := bic[i]
-		if !((b >= 'A' && b <= 'Z') || (b >= '0' && b <= '9')) {
+		if (b < 'A' || b > 'Z') && (b < '0' || b > '9') {
 			return false
-		}
-	}
-	// Positions 8-10: alphanumeric (branch code, only for 11-char)
-	if len(bic) == 11 {
-		for i := 8; i < 11; i++ {
-			b := bic[i]
-			if !((b >= 'A' && b <= 'Z') || (b >= '0' && b <= '9')) {
-				return false
-			}
 		}
 	}
 	return true

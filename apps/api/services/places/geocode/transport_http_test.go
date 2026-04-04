@@ -21,7 +21,7 @@ func setupRouter(mockServer *httptest.Server) chi.Router {
 func TestGeocode_HappyPath(t *testing.T) {
 	mock := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(`[{"lat":"38.8976763","lon":"-77.0365298","display_name":"White House, Washington, DC","address":{"city":"Washington","country_code":"us"}}]`)) //nolint:errcheck
+		w.Write([]byte(`[{"lat":"38.8976763","lon":"-77.0365298","display_name":"White House, Washington, DC","address":{"city":"Washington","country_code":"us"}}]`)) //nolint:errcheck // test helper, write error is inconsequential
 	}))
 	defer mock.Close()
 
@@ -51,7 +51,7 @@ func TestGeocode_HappyPath(t *testing.T) {
 
 func TestGeocode_MissingAddress(t *testing.T) {
 	mock := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
-		w.Write([]byte(`[]`)) //nolint:errcheck
+		w.Write([]byte(`[]`)) //nolint:errcheck // test helper, write error is inconsequential
 	}))
 	defer mock.Close()
 
@@ -67,7 +67,7 @@ func TestGeocode_MissingAddress(t *testing.T) {
 func TestGeocode_NoResults(t *testing.T) {
 	mock := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(`[]`)) //nolint:errcheck
+		w.Write([]byte(`[]`)) //nolint:errcheck // test helper, write error is inconsequential
 	}))
 	defer mock.Close()
 
@@ -98,7 +98,7 @@ func TestGeocode_UpstreamError(t *testing.T) {
 func TestReverseGeocode_HappyPath(t *testing.T) {
 	mock := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		w.Write([]byte(`{"display_name":"White House, Washington, DC","address":{"city":"Washington","country_code":"us"}}`)) //nolint:errcheck
+		w.Write([]byte(`{"display_name":"White House, Washington, DC","address":{"city":"Washington","country_code":"us"}}`)) //nolint:errcheck // test helper, write error is inconsequential
 	}))
 	defer mock.Close()
 

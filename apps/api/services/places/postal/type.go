@@ -1,7 +1,7 @@
 package postal
 
 // PostalCode is the response returned for a postal code lookup.
-type PostalCode struct {
+type PostalCode struct { //nolint:revive // established public API type name
 	PostalCode string  `json:"postal_code"`
 	City       string  `json:"city"`
 	State      string  `json:"state"`

@@ -1,7 +1,7 @@
 package geocode
 
 // GeocodeResponse is returned for address-to-coordinates lookups.
-type GeocodeResponse struct {
+type GeocodeResponse struct { //nolint:revive // established public API type name
 	Address string  `json:"address"`
 	City    string  `json:"city"`
 	Country string  `json:"country"`

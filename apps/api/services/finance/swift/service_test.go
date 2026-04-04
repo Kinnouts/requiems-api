@@ -1,7 +1,6 @@
 package swift
 
 import (
-	"net/http"
 	"testing"
 
 	"requiems-api/platform/httpx"
@@ -70,42 +69,42 @@ func TestSanitizeSWIFT_AlphanumericLocation(t *testing.T) {
 
 func TestSanitizeSWIFT_TooShort(t *testing.T) {
 	_, err := sanitizeSWIFT("DEUTDE")
-	assertAppError(t, err, http.StatusBadRequest, "bad_request")
+	assertAppError(t, err, "bad_request")
 }
 
 func TestSanitizeSWIFT_TooLong(t *testing.T) {
 	_, err := sanitizeSWIFT("DEUTDEDB001X")
-	assertAppError(t, err, http.StatusBadRequest, "bad_request")
+	assertAppError(t, err, "bad_request")
 }
 
 func TestSanitizeSWIFT_9Chars(t *testing.T) {
 	_, err := sanitizeSWIFT("DEUTDEDB0")
-	assertAppError(t, err, http.StatusBadRequest, "bad_request")
+	assertAppError(t, err, "bad_request")
 }
 
 func TestSanitizeSWIFT_10Chars(t *testing.T) {
 	_, err := sanitizeSWIFT("DEUTDEDB01")
-	assertAppError(t, err, http.StatusBadRequest, "bad_request")
+	assertAppError(t, err, "bad_request")
 }
 
 func TestSanitizeSWIFT_Empty(t *testing.T) {
 	_, err := sanitizeSWIFT("")
-	assertAppError(t, err, http.StatusBadRequest, "bad_request")
+	assertAppError(t, err, "bad_request")
 }
 
 func TestSanitizeSWIFT_DigitInBankCode(t *testing.T) {
 	_, err := sanitizeSWIFT("1EUTDEDB")
-	assertAppError(t, err, http.StatusBadRequest, "bad_request")
+	assertAppError(t, err, "bad_request")
 }
 
 func TestSanitizeSWIFT_DigitInCountryCode(t *testing.T) {
 	_, err := sanitizeSWIFT("DEUT1EDB")
-	assertAppError(t, err, http.StatusBadRequest, "bad_request")
+	assertAppError(t, err, "bad_request")
 }
 
 func TestSanitizeSWIFT_InvalidBranchCode(t *testing.T) {
 	_, err := sanitizeSWIFT("DEUTDEDB0-1")
-	assertAppError(t, err, http.StatusBadRequest, "bad_request")
+	assertAppError(t, err, "bad_request")
 }
 
 func TestSanitizeSWIFT_8Char_AppendXXX(t *testing.T) {
@@ -121,9 +120,9 @@ func TestSanitizeSWIFT_8Char_AppendXXX(t *testing.T) {
 	}
 }
 
-// assertAppError verifies that err is an *httpx.AppError with the expected
-// HTTP status and error code.
-func assertAppError(t *testing.T, err error, status int, code string) {
+// assertAppError verifies that err is an *httpx.AppError with a 400 status
+// and the expected error code. All sanitizeSWIFT errors are 400 bad_request.
+func assertAppError(t *testing.T, err error, code string) {
 	t.Helper()
 	if err == nil {
 		t.Fatal("expected an error, got nil")
@@ -132,8 +131,8 @@ func assertAppError(t *testing.T, err error, status int, code string) {
 	if !ok {
 		t.Fatalf("expected *httpx.AppError, got %T: %v", err, err)
 	}
-	if ae.Status != status {
-		t.Errorf("expected status %d, got %d", status, ae.Status)
+	if ae.Status != 400 {
+		t.Errorf("expected status 400, got %d", ae.Status)
 	}
 	if ae.Code != code {
 		t.Errorf("expected code %q, got %q", code, ae.Code)

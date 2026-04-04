@@ -20,7 +20,7 @@ type Service struct {
 func NewService(dbPath string) *Service {
 	s := &Service{index: make(map[string]PostalCode)}
 
-	f, err := os.Open(dbPath) //nolint:gosec
+	f, err := os.Open(dbPath) //nolint:gosec // path comes from application config, not user input
 	if err != nil {
 		log.Printf("postal: failed to open database %q: %v (all lookups will return not_found)", dbPath, err)
 		return s
