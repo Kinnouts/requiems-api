@@ -1,0 +1,219 @@
+package geocode
+
+import (
+	"context"
+	"encoding/json"
+	"fmt"
+	"io"
+	"net/http"
+	"net/url"
+	"strconv"
+	"strings"
+	"time"
+
+	"github.com/redis/go-redis/v9"
+
+	"requiems-api/platform/httpx"
+)
+
+const (
+	cacheTTL    = 24 * time.Hour
+	httpTimeout = 10 * time.Second
+	userAgent   = "requiems-api/1.0 (https://requiems.xyz)"
+)
+
+// Service performs geocoding and reverse geocoding via the Nominatim API,
+// caching results in Redis.
+type Service struct {
+	baseURL    string
+	httpClient *http.Client
+	rdb        *redis.Client
+}
+
+// NewService creates a Service backed by the Nominatim API.
+func NewService(baseURL string, httpClient *http.Client, rdb *redis.Client) *Service {
+	if httpClient == nil {
+		httpClient = &http.Client{Timeout: httpTimeout}
+	}
+	return &Service{
+		baseURL:    strings.TrimRight(baseURL, "/"),
+		httpClient: httpClient,
+		rdb:        rdb,
+	}
+}
+
+// Geocode converts a free-text address into coordinates.
+func (s *Service) Geocode(ctx context.Context, address string) (GeocodeResponse, error) {
+	cacheKey := "geocode:" + url.QueryEscape(strings.ToLower(strings.TrimSpace(address)))
+
+	if s.rdb != nil {
+		if cached, ok := s.fromCache(ctx, cacheKey); ok {
+			var r GeocodeResponse
+			if err := json.Unmarshal([]byte(cached), &r); err == nil {
+				return r, nil
+			}
+		}
+	}
+
+	apiURL := fmt.Sprintf("%s/search?format=json&q=%s&limit=1&addressdetails=1",
+		s.baseURL, url.QueryEscape(address))
+
+	body, err := s.doRequest(ctx, apiURL)
+	if err != nil {
+		return GeocodeResponse{}, err
+	}
+
+	var results []nominatimSearchResult
+	if err := json.Unmarshal(body, &results); err != nil || len(results) == 0 {
+		return GeocodeResponse{}, &httpx.AppError{
+			Status:  http.StatusNotFound,
+			Code:    "not_found",
+			Message: "no results found for the given address",
+		}
+	}
+
+	first := results[0]
+	lat, _ := strconv.ParseFloat(first.Lat, 64)
+	lon, _ := strconv.ParseFloat(first.Lon, 64)
+
+	resp := GeocodeResponse{
+		Address: first.DisplayName,
+		City:    first.Address.resolveCity(),
+		Country: strings.ToUpper(first.Address.CountryCode),
+		Lat:     lat,
+		Lon:     lon,
+	}
+
+	s.toCache(ctx, cacheKey, resp)
+	return resp, nil
+}
+
+// ReverseGeocode converts coordinates into a human-readable address.
+func (s *Service) ReverseGeocode(ctx context.Context, lat, lon float64) (ReverseGeocodeResponse, error) {
+	cacheKey := fmt.Sprintf("revgeocode:%.4f:%.4f", lat, lon)
+
+	if s.rdb != nil {
+		if cached, ok := s.fromCache(ctx, cacheKey); ok {
+			var r ReverseGeocodeResponse
+			if err := json.Unmarshal([]byte(cached), &r); err == nil {
+				return r, nil
+			}
+		}
+	}
+
+	apiURL := fmt.Sprintf("%s/reverse?format=json&lat=%f&lon=%f&addressdetails=1",
+		s.baseURL, lat, lon)
+
+	body, err := s.doRequest(ctx, apiURL)
+	if err != nil {
+		return ReverseGeocodeResponse{}, err
+	}
+
+	var result nominatimReverseResult
+	if err := json.Unmarshal(body, &result); err != nil || result.DisplayName == "" {
+		return ReverseGeocodeResponse{}, &httpx.AppError{
+			Status:  http.StatusNotFound,
+			Code:    "not_found",
+			Message: "no results found for the given coordinates",
+		}
+	}
+
+	resp := ReverseGeocodeResponse{
+		Lat:     lat,
+		Lon:     lon,
+		Address: result.DisplayName,
+		City:    result.Address.resolveCity(),
+		Country: strings.ToUpper(result.Address.CountryCode),
+	}
+
+	s.toCache(ctx, cacheKey, resp)
+	return resp, nil
+}
+
+func (s *Service) doRequest(ctx context.Context, apiURL string) ([]byte, error) {
+	req, err := http.NewRequestWithContext(ctx, http.MethodGet, apiURL, http.NoBody)
+	if err != nil {
+		return nil, fmt.Errorf("geocode: build request: %w", err)
+	}
+	req.Header.Set("User-Agent", userAgent)
+
+	resp, err := s.httpClient.Do(req) //nolint:gosec // URL is built from a trusted base URL + encoded user input
+	if err != nil {
+		return nil, &httpx.AppError{
+			Status:  http.StatusServiceUnavailable,
+			Code:    "upstream_error",
+			Message: "geocoding service unavailable",
+		}
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusOK {
+		return nil, &httpx.AppError{
+			Status:  http.StatusServiceUnavailable,
+			Code:    "upstream_error",
+			Message: "geocoding service unavailable",
+		}
+	}
+
+	buf, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, &httpx.AppError{
+			Status:  http.StatusServiceUnavailable,
+			Code:    "upstream_error",
+			Message: "geocoding service unavailable",
+		}
+	}
+
+	return buf, nil
+}
+
+func (s *Service) fromCache(ctx context.Context, key string) (string, bool) {
+	val, err := s.rdb.Get(ctx, key).Result()
+	if err != nil {
+		return "", false
+	}
+	return val, true
+}
+
+func (s *Service) toCache(ctx context.Context, key string, v any) {
+	b, err := json.Marshal(v)
+	if err != nil {
+		return
+	}
+	s.rdb.Set(ctx, key, string(b), cacheTTL)
+}
+
+// nominatimAddress is the address detail block in Nominatim responses.
+type nominatimAddress struct {
+	City        string `json:"city"`
+	Town        string `json:"town"`
+	Village     string `json:"village"`
+	County      string `json:"county"`
+	CountryCode string `json:"country_code"`
+}
+
+// resolveCity returns the most specific city-level place name available.
+func (a nominatimAddress) resolveCity() string {
+	if a.City != "" {
+		return a.City
+	}
+	if a.Town != "" {
+		return a.Town
+	}
+	if a.Village != "" {
+		return a.Village
+	}
+	return a.County
+}
+
+type nominatimSearchResult struct {
+	Lat         string           `json:"lat"`
+	Lon         string           `json:"lon"`
+	DisplayName string           `json:"display_name"`
+	Address     nominatimAddress `json:"address"`
+}
+
+type nominatimReverseResult struct {
+	DisplayName string           `json:"display_name"`
+	Address     nominatimAddress `json:"address"`
+}

@@ -10,6 +10,9 @@ type Config struct {
 	VPNDatabasePath    string
 	VPNASNDatabasePath string
 	IPCityDatabasePath string
+	NominatimURL       string
+	PostalCodeDBPath   string
+	CitiesDBPath       string
 }
 
 func Load() Config {
@@ -21,6 +24,9 @@ func Load() Config {
 		VPNDatabasePath:    envOrDefault("VPN_DATABASE_PATH", "dbs/IP2PROXY-LITE-PX2.BIN"),
 		VPNASNDatabasePath: envOrDefault("VPN_ASN_DATABASE_PATH", "dbs/GeoLite2-ASN.mmdb"),
 		IPCityDatabasePath: envOrDefault("IP_CITY_DATABASE_PATH", "dbs/GeoLite2-City.mmdb"),
+		NominatimURL:       envOrDefault("NOMINATIM_URL", "https://nominatim.openstreetmap.org"),
+		PostalCodeDBPath:   envOrDefault("POSTAL_CODE_DB_PATH", "dbs/postal_codes.txt"),
+		CitiesDBPath:       envOrDefault("CITIES_DB_PATH", "dbs/cities15000.txt"),
 	}
 }
 
