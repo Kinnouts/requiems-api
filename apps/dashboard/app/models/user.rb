@@ -30,8 +30,7 @@ class User < ApplicationRecord
 
   scope :with_plan, ->(plan) {
     if plan == "free"
-      left_joins(:subscription)
-        .where(subscriptions: { id: nil })
+      where.missing(:subscription)
         .or(left_joins(:subscription).where(subscriptions: { plan_name: "free" }))
     else
       joins(:subscription).where(subscriptions: { plan_name: plan })

@@ -84,6 +84,27 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_16_170000) do
     t.index ["scheme"], name: "idx_bin_data_scheme"
   end
 
+  create_table "commodity_price_history", primary_key: ["slug", "year"], force: :cascade do |t|
+    t.string "currency", limit: 3, default: "USD", null: false
+    t.text "name", null: false
+    t.decimal "price", precision: 14, scale: 4, null: false
+    t.string "slug", limit: 50, null: false
+    t.text "source", default: "fred", null: false
+    t.string "unit", limit: 50, null: false
+    t.timestamptz "updated_at", default: -> { "now()" }, null: false
+    t.integer "year", limit: 2, null: false
+    t.index ["slug", "year"], name: "idx_commodity_price_history_slug_year", order: { year: :desc }
+  end
+
+  create_table "commodity_prices", primary_key: "slug", id: { type: :string, limit: 50 }, force: :cascade do |t|
+    t.decimal "change_24h", precision: 8, scale: 4, default: "0.0", null: false
+    t.string "currency", limit: 3, default: "USD", null: false
+    t.text "name", null: false
+    t.decimal "price", precision: 14, scale: 4, null: false
+    t.string "unit", limit: 50, null: false
+    t.timestamptz "updated_at", default: -> { "now()" }, null: false
+  end
+
   create_table "counters", primary_key: "namespace", id: :text, force: :cascade do |t|
     t.bigint "total", default: 0, null: false
     t.datetime "updated_at", precision: nil, null: false
@@ -109,6 +130,29 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_16_170000) do
     t.bigint "user_id", null: false
     t.index ["user_id", "date"], name: "index_daily_usage_on_user_and_date"
     t.index ["user_id"], name: "index_daily_usage_summaries_on_user_id"
+  end
+
+  create_table "iban_countries", primary_key: "country_code", id: { type: :string, limit: 2 }, force: :cascade do |t|
+    t.integer "account_length", limit: 2, default: 0, null: false
+    t.integer "account_offset", limit: 2, default: 0, null: false
+    t.integer "bank_length", limit: 2, default: 0, null: false
+    t.integer "bank_offset", limit: 2, default: 0, null: false
+    t.text "bban_format", default: "", null: false
+    t.text "country_name", null: false
+    t.integer "iban_length", limit: 2, null: false
+    t.timestamptz "last_updated", default: -> { "now()" }, null: false
+    t.boolean "sepa_member", default: false, null: false
+    t.index ["sepa_member"], name: "iban_countries_sepa_idx", where: "(sepa_member = true)"
+  end
+
+  create_table "inflation_data", primary_key: ["country_code", "year"], force: :cascade do |t|
+    t.string "country_code", limit: 2, null: false
+    t.text "country_name", default: "", null: false
+    t.timestamptz "last_updated", default: -> { "now()" }, null: false
+    t.decimal "rate", precision: 8, scale: 4, null: false
+    t.text "source", default: "world_bank", null: false
+    t.integer "year", limit: 2, null: false
+    t.index ["country_code", "year"], name: "idx_inflation_data_country_year", order: { year: :desc }
   end
 
   create_table "quotes", id: :serial, force: :cascade do |t|

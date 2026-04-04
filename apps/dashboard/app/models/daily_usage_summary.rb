@@ -3,6 +3,6 @@
 class DailyUsageSummary < ApplicationRecord
   belongs_to :user
 
-  validates :user_id, :date, presence: true
+  validates :date, presence: true
   validates :date, uniqueness: { scope: :user_id }
 end

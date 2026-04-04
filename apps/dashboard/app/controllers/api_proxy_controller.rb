@@ -54,7 +54,7 @@ class ApiProxyController < ApplicationController
     request_params = request_params.to_unsafe_h if request_params.respond_to?(:to_unsafe_h)
 
     internal_url = ::AppConfig.internal_api_url
-    Rails.logger.debug("Playground proxy: #{method} #{internal_url}#{endpoint} params=#{request_params.inspect}")
+    Rails.logger.debug { "Playground proxy: #{method} #{internal_url}#{endpoint} params=#{request_params.inspect}" }
 
     uri = URI(internal_url)
     uri.path = endpoint

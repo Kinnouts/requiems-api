@@ -68,7 +68,7 @@ class ApiDocsSchemaTest < ActiveSupport::TestCase
           assert param.key?("location"),
             "#{plabel}: must use 'location:' (not 'in:'). " \
             "Valid values: #{VALID_LOCATIONS.join(", ")}"
-          refute param.key?("in"),
+          assert_not param.key?("in"),
             "#{plabel}: found 'in:' key — use 'location:' instead"
         end
 

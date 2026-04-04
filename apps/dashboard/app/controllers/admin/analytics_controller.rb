@@ -16,7 +16,7 @@ class Admin::AnalyticsController < ApplicationController
     # Requests per day (for chart)
     @requests_by_day = UsageLog
       .where(used_at: @start_date..@end_date)
-      .group("DATE(used_at)")
+      .group(Arel.sql("DATE(used_at)"))
       .count
       .transform_keys { |date| date.to_s }
 
@@ -96,9 +96,9 @@ class Admin::AnalyticsController < ApplicationController
       .where(used_at: @start_time..Time.current)
       .where.not(response_time_ms: nil)
       .pick(
-        "percentile_cont(0.50) WITHIN GROUP (ORDER BY response_time_ms)",
-        "percentile_cont(0.95) WITHIN GROUP (ORDER BY response_time_ms)",
-        "percentile_cont(0.99) WITHIN GROUP (ORDER BY response_time_ms)"
+        Arel.sql("percentile_cont(0.50) WITHIN GROUP (ORDER BY response_time_ms)"),
+        Arel.sql("percentile_cont(0.95) WITHIN GROUP (ORDER BY response_time_ms)"),
+        Arel.sql("percentile_cont(0.99) WITHIN GROUP (ORDER BY response_time_ms)")
       )
 
     if p50
@@ -136,13 +136,41 @@ class Admin::AnalyticsController < ApplicationController
     if @time_range == "1h"
       @requests_per_minute = UsageLog
         .where(used_at: 1.hour.ago..Time.current)
-        .group("DATE_TRUNC('minute', used_at)")
+        .group(Arel.sql("DATE_TRUNC('minute', used_at)"))
         .count
         .transform_keys { |time| time.strftime("%H:%M") }
     end
   end
 
   private
+
+  def build_error_rate_trend(start_time, time_range)
+    trunc_unit = case time_range
+    when "1h"  then "minute"
+    when "24h" then "hour"
+    else             "day"
+    end
+
+    rows = UsageLog
+      .where(used_at: start_time..Time.current)
+      .group(Arel.sql("DATE_TRUNC('#{trunc_unit}', used_at)"))
+      .select(
+        Arel.sql("DATE_TRUNC('#{trunc_unit}', used_at) AS bucket"),
+        Arel.sql("COUNT(*) AS total"),
+        Arel.sql("COUNT(*) FILTER (WHERE status_code >= 400) AS error_count")
+      )
+
+    rows.each_with_object({}) do |row, hash|
+      label = case time_range
+      when "1h"  then row.bucket.strftime("%H:%M")
+      when "24h" then row.bucket.strftime("%H:00")
+      else            row.bucket.strftime("%Y-%m-%d")
+      end
+
+      rate = row.total > 0 ? ((row.error_count.to_f / row.total) * 100).round(2) : 0.0
+      hash[label] = rate
+    end
+  end
 
   def require_admin!
     unless current_user.admin?

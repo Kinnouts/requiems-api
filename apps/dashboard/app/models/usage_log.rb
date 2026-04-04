@@ -11,7 +11,7 @@ class UsageLog < ApplicationRecord
   scope :last_7_days, -> { where("used_at >= ?", 7.days.ago) }
   scope :with_response_time, -> { where.not(response_time_ms: nil) }
   scope :recent, ->(limit = 10) { order(used_at: :desc).limit(limit).includes(:api_key) }
-  validates :user_id, :used_at, :endpoint, presence: true
+  validates :used_at, :endpoint, presence: true
 
   def self.error_rate_for(scope)
     total = scope.count
