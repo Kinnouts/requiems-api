@@ -52,7 +52,7 @@ class Admin::AnalyticsController < ApplicationController
       .joins(:user)
       .group("users.id", "users.email")
       .select("users.id, users.email, COUNT(*) as request_count, SUM(credits_used) as total_requests")
-      .order("request_count DESC")
+      .order(Arel.sql("request_count DESC"))
       .limit(10)
   end
 
