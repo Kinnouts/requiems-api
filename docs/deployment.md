@@ -494,6 +494,10 @@ docker compose exec api go run ./cmd/seed-iban \
 # Commodity prices (FRED + Yahoo Finance, 16 commodities × ~30 years)
 docker compose exec api go run ./cmd/seed-commodities \
   --db-url "$DATABASE_URL"
+
+# SWIFT/BIC codes (~100k+ bank records)
+docker compose exec api go run ./cmd/seed-swift \
+  --db-url "$DATABASE_URL"
 ```
 
 `DATABASE_URL` is already set in `infra/docker/.env` — the shell picks it up

@@ -2,8 +2,11 @@ package exercises
 
 import (
 	"context"
+	"errors"
+	"fmt"
 	"net/http"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
 	"requiems-api/platform/httpx"
@@ -84,10 +87,17 @@ func (s *Service) Get(ctx context.Context, id int) (Exercise, error) {
 		&e.TargetMuscles, &e.SecondaryMuscles, &e.Instructions,
 	)
 	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return Exercise{}, &httpx.AppError{
+				Status:  http.StatusNotFound,
+				Code:    "not_found",
+				Message: "exercise not found",
+			}
+		}
 		return Exercise{}, &httpx.AppError{
-			Status:  http.StatusNotFound,
-			Code:    "not_found",
-			Message: "exercise not found",
+			Status:  http.StatusInternalServerError,
+			Code:    "internal_error",
+			Message: fmt.Sprintf("failed to fetch exercise: %v", err),
 		}
 	}
 	return e, nil
@@ -112,10 +122,17 @@ func (s *Service) Random(ctx context.Context, p ListParams) (Exercise, error) {
 		&e.TargetMuscles, &e.SecondaryMuscles, &e.Instructions,
 	)
 	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return Exercise{}, &httpx.AppError{
+				Status:  http.StatusNotFound,
+				Code:    "not_found",
+				Message: "no exercises found matching the given filters",
+			}
+		}
 		return Exercise{}, &httpx.AppError{
-			Status:  http.StatusNotFound,
-			Code:    "not_found",
-			Message: "no exercises found matching the given filters",
+			Status:  http.StatusInternalServerError,
+			Code:    "internal_error",
+			Message: fmt.Sprintf("failed to fetch random exercise: %v", err),
 		}
 	}
 	return e, nil

@@ -80,16 +80,16 @@ func TestStringList_ItemsAndTotal(t *testing.T) {
 	}
 }
 
-func TestListParams_Defaults(t *testing.T) {
-	p := ListParams{Page: 1, PerPage: 20}
+// TestListParams_ZeroValue verifies the zero value of ListParams has empty
+// filter fields. The page/per_page defaults (1/20) are applied by the HTTP
+// handler before binding, not by the struct itself.
+func TestListParams_ZeroValue(t *testing.T) {
+	var p ListParams
 
-	if p.Page != 1 {
-		t.Errorf("expected default page 1, got %d", p.Page)
-	}
-	if p.PerPage != 20 {
-		t.Errorf("expected default per_page 20, got %d", p.PerPage)
-	}
 	if p.BodyPart != "" || p.Equipment != "" || p.Muscle != "" || p.Search != "" {
-		t.Error("expected all filter params to be empty by default")
+		t.Error("expected all filter fields to be empty on zero value")
+	}
+	if p.Page != 0 || p.PerPage != 0 {
+		t.Error("expected page and per_page to be zero on zero value")
 	}
 }

@@ -70,7 +70,7 @@ func loadExercises(dataDir string) ([]ExerciseRecord, error) {
 			Equipment:        normalise(item.Equipments),
 			TargetMuscles:    normalise(item.TargetMuscles),
 			SecondaryMuscles: normalise(item.SecondaryMuscles),
-			Instructions:     instructions,
+			Instructions:     normalise(instructions),
 		})
 	}
 

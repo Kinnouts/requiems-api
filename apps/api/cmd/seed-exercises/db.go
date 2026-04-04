@@ -16,8 +16,8 @@ func openDB(ctx context.Context, dbURL string) (*pgx.Conn, error) {
 	return conn, nil
 }
 
-// upsertRecords inserts or updates all records in the exercises table.
-// Returns the number of inserted and updated rows.
+// upsertRecords inserts or updates all records in the exercises table using a
+// single batched round trip. Returns the number of inserted and updated rows.
 func upsertRecords(ctx context.Context, conn *pgx.Conn, records []ExerciseRecord) (inserted, updated int, err error) {
 	tx, err := conn.Begin(ctx)
 	if err != nil {
@@ -42,9 +42,9 @@ func upsertRecords(ctx context.Context, conn *pgx.Conn, records []ExerciseRecord
 		RETURNING (xmax = 0) AS is_insert
 	`
 
+	batch := &pgx.Batch{}
 	for _, r := range records {
-		var isInsert bool
-		row := tx.QueryRow(ctx, query,
+		batch.Queue(query,
 			r.ExternalID,
 			r.Name,
 			r.BodyParts,
@@ -53,7 +53,13 @@ func upsertRecords(ctx context.Context, conn *pgx.Conn, records []ExerciseRecord
 			r.SecondaryMuscles,
 			r.Instructions,
 		)
-		if scanErr := row.Scan(&isInsert); scanErr != nil {
+	}
+
+	br := tx.SendBatch(ctx, batch)
+	for _, r := range records {
+		var isInsert bool
+		if scanErr := br.QueryRow().Scan(&isInsert); scanErr != nil {
+			_ = br.Close()
 			return 0, 0, fmt.Errorf("upsert (%s): %w", r.ExternalID, scanErr)
 		}
 		if isInsert {
@@ -61,6 +67,9 @@ func upsertRecords(ctx context.Context, conn *pgx.Conn, records []ExerciseRecord
 		} else {
 			updated++
 		}
+	}
+	if closeErr := br.Close(); closeErr != nil {
+		return 0, 0, fmt.Errorf("close batch: %w", closeErr)
 	}
 
 	if err = tx.Commit(ctx); err != nil {
