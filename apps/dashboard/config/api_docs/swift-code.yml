@@ -1,0 +1,150 @@
+api_id: swift-code
+api_name: SWIFT Code
+description: Validate and look up bank information by SWIFT/BIC code. Returns bank name, city, country, and parsed code components.
+base_url: https://api.requiems.xyz
+
+overview:
+  use_cases:
+    - Verify international transfer routing details before payment submission
+    - Autofill bank metadata in treasury and reconciliation workflows
+    - Improve KYB and compliance checks with bank location context
+    - Reduce manual investigation in payment support operations
+
+  features:
+    - ISO 9362 SWIFT/BIC format validation (8 or 11 chars)
+    - 8-character codes auto-resolve to primary office (XXX)
+    - Structured code components (bank, country, location, branch)
+    - Bank metadata (bank name, city, country)
+    - Fast lookup by full SWIFT/BIC code
+
+endpoints:
+  - name: Get SWIFT Code
+    method: GET
+    path: /v1/finance/swift/{code}
+    description: Look up bank metadata for a SWIFT/BIC code.
+
+    parameters:
+      - name: code
+        type: string
+        required: true
+        location: path
+        description: SWIFT/BIC code (8 or 11 alphanumeric characters)
+        example: DEUTDEDB
+
+    response_example: |
+      {
+        "data": {
+          "swift_code": "DEUTDEDBXXX",
+          "bank_code": "DEUT",
+          "country_code": "DE",
+          "location_code": "DB",
+          "branch_code": "XXX",
+          "bank_name": "Deutsche Bank AG",
+          "city": "Frankfurt am Main",
+          "country_name": "Germany",
+          "is_primary": true
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: swift_code
+        type: string
+        description: Full 11-character SWIFT/BIC code
+      - name: bank_code
+        type: string
+        description: Institution code (characters 1-4)
+      - name: country_code
+        type: string
+        description: ISO 3166-1 alpha-2 country code (characters 5-6)
+      - name: location_code
+        type: string
+        description: Location code (characters 7-8)
+      - name: branch_code
+        type: string
+        description: Branch code (characters 9-11), XXX for primary office
+      - name: bank_name
+        type: string
+        description: Bank or institution name
+      - name: city
+        type: string
+        description: City of the branch or primary office
+      - name: country_name
+        type: string
+        description: Full country name
+      - name: is_primary
+        type: boolean
+        description: true when branch_code is XXX
+
+    errors:
+      - code: bad_request
+        status: 400
+        description: Invalid SWIFT/BIC format (must be 8 or 11 valid characters).
+      - code: not_found
+        status: 404
+        description: SWIFT/BIC code not found in the dataset.
+      - code: internal_error
+        status: 500
+        description: Unexpected server error.
+
+    code_examples:
+      curl: |
+        curl https://api.requiems.xyz/v1/finance/swift/DEUTDEDB \
+          -H "requiems-api-key: YOUR_API_KEY"
+
+      python: |
+        import requests
+
+        code = "DEUTDEDB"
+        url = f"https://api.requiems.xyz/v1/finance/swift/{code}"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+
+        response = requests.get(url, headers=headers)
+        data = response.json()["data"]
+
+        print(data["swift_code"])
+        print(data["bank_name"])
+        print(data["country_name"])
+
+      javascript: |
+        const code = 'DEUTDEDB';
+        const response = await fetch(`https://api.requiems.xyz/v1/finance/swift/${code}`, {
+          headers: {
+            'requiems-api-key': 'YOUR_API_KEY'
+          }
+        });
+
+        const { data } = await response.json();
+        console.log(data.swift_code);
+        console.log(data.bank_name);
+        console.log(data.country_name);
+
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        code = 'DEUTDEDB'
+        uri = URI("https://api.requiems.xyz/v1/finance/swift/#{code}")
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        data = JSON.parse(response.body)['data']
+        puts data['swift_code']
+        puts data['bank_name']
+        puts data['country_name']
+
+faq:
+  - question: What is the difference between 8 and 11 character SWIFT codes?
+    answer: 8-character codes identify a bank's primary office. 11-character codes include a branch identifier. This API normalizes 8-character input by appending XXX.
+
+  - question: Does this endpoint validate if a bank is currently active?
+    answer: The endpoint validates SWIFT/BIC format and returns records from the seeded dataset. It does not guarantee operational bank status in real time.
+
+  - question: Can I send lowercase codes?
+    answer: Yes. Input is normalized to uppercase before lookup.

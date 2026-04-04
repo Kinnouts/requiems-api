@@ -41,7 +41,6 @@ categories:
     short_description: Fun, low-stakes content that makes your app feel alive without building a content team.
     description: Not every endpoint needs to be serious. Horoscopes, quotes, puzzles, and emoji add personality to apps and keep users engaged between the moments that matter. These are the APIs that make a product feel human.
 
-
   - id: finance
     name: Finance
     icon: "💰"
@@ -650,7 +649,7 @@ apis:
     tags:
       - Quiz
       - Trivia
-      
+
   - id: chuck-norris
     name: Chuck Norris Facts
     categories:
@@ -821,6 +820,21 @@ apis:
       - Fraud Prevention
       - Fintech
 
+  - id: swift-code
+    name: SWIFT Code
+    categories:
+      - finance
+    description: Validate and look up bank information by SWIFT/BIC code, including institution, location, and branch metadata.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/swift-code
+    tags:
+      - SWIFT
+      - BIC
+      - Banking
+      - Finance
+
   - id: crypto
     name: Crypto Prices
     categories:
@@ -835,7 +849,6 @@ apis:
       - Bitcoin
       - Finance
       - Prices
-
 
   - id: fitness-exercises
     name: Fitness Exercises

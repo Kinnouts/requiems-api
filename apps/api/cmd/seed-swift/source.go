@@ -3,7 +3,9 @@ package main
 import (
 	"encoding/csv"
 	"fmt"
+	"io"
 	"net/http"
+	"os"
 	"strings"
 	"time"
 )
@@ -37,20 +39,14 @@ type colIndices struct {
 //
 // 8-character codes are expanded to 11 characters by appending "XXX".
 // Rows with malformed or missing SWIFT codes are skipped.
-func fetchAndParse(url string) ([]RawSWIFTRecord, error) {
-	client := &http.Client{Timeout: 30 * time.Second}
-
-	resp, err := client.Get(url) //nolint:gosec // url comes from a trusted CLI flag or hardcoded default, not user HTTP input
+func fetchAndParse(source string) ([]RawSWIFTRecord, error) {
+	body, err := openSource(source)
 	if err != nil {
-		return nil, fmt.Errorf("download: %w", err)
+		return nil, err
 	}
-	defer resp.Body.Close()
+	defer body.Close()
 
-	if resp.StatusCode != http.StatusOK {
-		return nil, fmt.Errorf("download: HTTP %d", resp.StatusCode)
-	}
-
-	cols, reader, err := readHeader(resp)
+	cols, reader, err := readHeader(body)
 	if err != nil {
 		return nil, err
 	}
@@ -74,9 +70,34 @@ func fetchAndParse(url string) ([]RawSWIFTRecord, error) {
 	return records, nil
 }
 
+func openSource(source string) (io.ReadCloser, error) {
+	if strings.HasPrefix(source, "http://") || strings.HasPrefix(source, "https://") {
+		client := &http.Client{Timeout: 30 * time.Second}
+
+		resp, err := client.Get(source) //nolint:gosec // source comes from trusted CLI flags, not user HTTP input
+		if err != nil {
+			return nil, fmt.Errorf("download: %w", err)
+		}
+
+		if resp.StatusCode != http.StatusOK {
+			resp.Body.Close()
+			return nil, fmt.Errorf("download: HTTP %d", resp.StatusCode)
+		}
+
+		return resp.Body, nil
+	}
+
+	f, err := os.Open(source)
+	if err != nil {
+		return nil, fmt.Errorf("open file %q: %w", source, err)
+	}
+
+	return f, nil
+}
+
 // readHeader reads the CSV header and returns the resolved column indices.
-func readHeader(resp *http.Response) (colIndices, *csv.Reader, error) {
-	reader := csv.NewReader(resp.Body)
+func readHeader(r io.Reader) (colIndices, *csv.Reader, error) {
+	reader := csv.NewReader(r)
 	reader.TrimLeadingSpace = true
 
 	header, err := reader.Read()

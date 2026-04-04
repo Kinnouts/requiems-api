@@ -19,9 +19,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// defaultDataURL is a community-maintained CSV of SWIFT/BIC codes.
-// The --url flag lets operators substitute any compatible CSV source.
-const defaultDataURL = "https://raw.githubusercontent.com/ardislu/swift-codes/main/swift-codes.csv"
+// defaultDataSource points to the vendored SWIFT/BIC CSV snapshot in this
+// repository. Use --source to override this path, or --url to download from
+// an alternate remote dataset.
+const defaultDataSource = "dbs/swift_codes.csv"
 
 func main() {
 	if err := newRootCmd().Execute(); err != nil {
@@ -31,16 +32,17 @@ func main() {
 
 func newRootCmd() *cobra.Command {
 	var (
-		dbURL   string
-		dryRun  bool
-		verbose bool
-		url     string
+		dbURL      string
+		dryRun     bool
+		verbose    bool
+		sourcePath string
+		url        string
 	)
 
 	cmd := &cobra.Command{
 		Use:   "seed-swift",
-		Short: "Seed the swift_codes table from an open-source SWIFT/BIC dataset",
-		Long: `Downloads a CSV of SWIFT/BIC codes and upserts the bank records into
+		Short: "Seed the swift_codes table from a vendored SWIFT/BIC dataset",
+		Long: `Loads a CSV of SWIFT/BIC codes and upserts the bank records into
 the swift_codes PostgreSQL table.
 
 Each record includes the full 11-character BIC, component fields (bank code,
@@ -48,9 +50,9 @@ country code, location code, branch code), bank name, city, and country name.
 
 Run inside the API Docker container so the db hostname resolves:
 
-  docker exec requiem-dev-api-1 go run ./cmd/seed-swift
-  docker exec requiem-dev-api-1 go run ./cmd/seed-swift --dry-run
-  docker exec requiem-dev-api-1 go run ./cmd/seed-swift --verbose`,
+	docker compose exec api /app/seed-swift
+	docker compose exec api /app/seed-swift --dry-run
+	docker compose exec api /app/seed-swift --verbose`,
 		SilenceUsage: true,
 		RunE: func(cmd *cobra.Command, args []string) error {
 			if dbURL == "" && !dryRun {
@@ -60,10 +62,15 @@ Run inside the API Docker container so the db hostname resolves:
 			ctx := context.Background()
 			start := time.Now()
 
-			log.Printf("downloading SWIFT codes from %s", url)
-			records, err := fetchAndParse(url)
+			effectiveSource := sourcePath
+			if url != "" {
+				effectiveSource = url
+			}
+
+			log.Printf("loading SWIFT codes from %s", effectiveSource)
+			records, err := fetchAndParse(effectiveSource)
 			if err != nil {
-				return fmt.Errorf("fetch failed: %w", err)
+				return fmt.Errorf("load failed: %w", err)
 			}
 			log.Printf("parsed %d SWIFT code records", len(records))
 
@@ -100,7 +107,8 @@ Run inside the API Docker container so the db hostname resolves:
 	cmd.Flags().StringVar(&dbURL, "db-url", os.Getenv("DATABASE_URL"), "PostgreSQL connection string (required unless --dry-run)")
 	cmd.Flags().BoolVar(&dryRun, "dry-run", false, "Parse and print records without writing to the database")
 	cmd.Flags().BoolVar(&verbose, "verbose", false, "Log each SWIFT code record as it is processed")
-	cmd.Flags().StringVar(&url, "url", defaultDataURL, "Override the SWIFT codes CSV URL")
+	cmd.Flags().StringVar(&sourcePath, "source", defaultDataSource, "Path to a local SWIFT codes CSV file")
+	cmd.Flags().StringVar(&url, "url", "", "Optional SWIFT codes CSV URL (overrides --source)")
 
 	return cmd
 }

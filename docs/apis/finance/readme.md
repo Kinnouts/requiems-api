@@ -217,12 +217,12 @@ Get current and historical stock prices
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/finance/stock-price`
 
-### [SWIFT Code](./swift-code.md) - ⏳ Planned
+### [SWIFT Code](./swift-code.md) - ✅ Live
 
-Validate and get SWIFT codes
+Validate and look up bank metadata by SWIFT/BIC code
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/swift-code`
+- **Status:** live
+- **Endpoint:** `GET /v1/finance/swift/{code}`
 
 ### [Ticker](./ticker.md) - ⏳ Planned
 
