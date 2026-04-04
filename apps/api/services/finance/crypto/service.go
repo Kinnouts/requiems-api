@@ -1,4 +1,4 @@
-package crypto
+package cryptocoin
 
 import (
 	"context"
@@ -14,9 +14,9 @@ import (
 )
 
 const (
-	cacheTTL      = 5 * time.Minute
-	coinGeckoURL  = "https://api.coingecko.com/api/v3"
-	httpTimeout   = 10 * time.Second
+	cacheTTL     = 5 * time.Minute
+	coinGeckoURL = "https://api.coingecko.com/api/v3"
+	httpTimeout  = 10 * time.Second
 )
 
 type coinInfo struct {
@@ -50,7 +50,7 @@ var coinMap = map[string]coinInfo{
 
 // Getter is the interface used by the HTTP transport layer.
 type Getter interface {
-	GetPrice(ctx context.Context, symbol string) (CryptoPrice, error)
+	GetPrice(ctx context.Context, symbol string) (Price, error)
 }
 
 // Service fetches cryptocurrency prices from CoinGecko and caches them in Redis.
@@ -70,15 +70,15 @@ func NewService(rdb *redis.Client) *Service {
 }
 
 // newServiceWithClient is used in tests to inject a custom HTTP client and base URL.
-func newServiceWithClient(rdb *redis.Client, client *http.Client, baseURL string) *Service {
-	return &Service{rdb: rdb, httpClient: client, baseURL: baseURL}
+func newServiceWithClient(client *http.Client, baseURL string) *Service {
+	return &Service{httpClient: client, baseURL: baseURL}
 }
 
 // GetPrice returns current price data for the given ticker symbol.
-func (s *Service) GetPrice(ctx context.Context, symbol string) (CryptoPrice, error) {
+func (s *Service) GetPrice(ctx context.Context, symbol string) (Price, error) {
 	coin, ok := coinMap[symbol]
 	if !ok {
-		return CryptoPrice{}, &httpx.AppError{
+		return Price{}, &httpx.AppError{
 			Status:  http.StatusUnprocessableEntity,
 			Code:    "unknown_symbol",
 			Message: fmt.Sprintf("unsupported symbol: %s", symbol),
@@ -93,7 +93,7 @@ func (s *Service) GetPrice(ctx context.Context, symbol string) (CryptoPrice, err
 
 	price, err := s.fetchPrice(ctx, coin.id, symbol, coin.name)
 	if err != nil {
-		return CryptoPrice{}, err
+		return Price{}, err
 	}
 
 	if s.rdb != nil {
@@ -103,21 +103,21 @@ func (s *Service) GetPrice(ctx context.Context, symbol string) (CryptoPrice, err
 	return price, nil
 }
 
-func (s *Service) fromCache(ctx context.Context, symbol string) (CryptoPrice, bool) {
+func (s *Service) fromCache(ctx context.Context, symbol string) (Price, bool) {
 	val, err := s.rdb.Get(ctx, cacheKey(symbol)).Result()
 	if err != nil {
-		return CryptoPrice{}, false
+		return Price{}, false
 	}
 
-	var p CryptoPrice
+	var p Price
 	if err := json.Unmarshal([]byte(val), &p); err != nil {
-		return CryptoPrice{}, false
+		return Price{}, false
 	}
 
 	return p, true
 }
 
-func (s *Service) toCache(ctx context.Context, symbol string, p CryptoPrice) {
+func (s *Service) toCache(ctx context.Context, symbol string, p Price) {
 	b, err := json.Marshal(p)
 	if err != nil {
 		return
@@ -133,7 +133,7 @@ type coinGeckoResponse map[string]struct {
 	USD24hVol    float64 `json:"usd_24h_vol"`
 }
 
-func (s *Service) fetchPrice(ctx context.Context, coinID, symbol, name string) (CryptoPrice, error) {
+func (s *Service) fetchPrice(ctx context.Context, coinID, symbol, name string) (Price, error) {
 	url := fmt.Sprintf(
 		"%s/simple/price?ids=%s&vs_currencies=usd&include_market_cap=true&include_24hr_vol=true&include_24hr_change=true",
 		s.baseURL, coinID,
@@ -141,12 +141,12 @@ func (s *Service) fetchPrice(ctx context.Context, coinID, symbol, name string) (
 
 	req, err := http.NewRequestWithContext(ctx, http.MethodGet, url, http.NoBody)
 	if err != nil {
-		return CryptoPrice{}, fmt.Errorf("crypto: build request: %w", err)
+		return Price{}, fmt.Errorf("crypto: build request: %w", err)
 	}
 
-	resp, err := s.httpClient.Do(req)
+	resp, err := s.httpClient.Do(req) //nolint:gosec
 	if err != nil {
-		return CryptoPrice{}, &httpx.AppError{
+		return Price{}, &httpx.AppError{
 			Status:  http.StatusServiceUnavailable,
 			Code:    "upstream_error",
 			Message: "crypto price service unavailable",
@@ -155,7 +155,7 @@ func (s *Service) fetchPrice(ctx context.Context, coinID, symbol, name string) (
 	defer resp.Body.Close()
 
 	if resp.StatusCode != http.StatusOK {
-		return CryptoPrice{}, &httpx.AppError{
+		return Price{}, &httpx.AppError{
 			Status:  http.StatusServiceUnavailable,
 			Code:    "upstream_error",
 			Message: "crypto price service unavailable",
@@ -164,7 +164,7 @@ func (s *Service) fetchPrice(ctx context.Context, coinID, symbol, name string) (
 
 	var body coinGeckoResponse
 	if err := json.NewDecoder(resp.Body).Decode(&body); err != nil {
-		return CryptoPrice{}, &httpx.AppError{
+		return Price{}, &httpx.AppError{
 			Status:  http.StatusServiceUnavailable,
 			Code:    "upstream_error",
 			Message: "crypto price service unavailable",
@@ -173,14 +173,14 @@ func (s *Service) fetchPrice(ctx context.Context, coinID, symbol, name string) (
 
 	data, ok := body[coinID]
 	if !ok {
-		return CryptoPrice{}, &httpx.AppError{
+		return Price{}, &httpx.AppError{
 			Status:  http.StatusServiceUnavailable,
 			Code:    "upstream_error",
 			Message: "crypto price service unavailable",
 		}
 	}
 
-	return CryptoPrice{
+	return Price{
 		Symbol:    strings.ToUpper(symbol),
 		Name:      name,
 		PriceUSD:  data.USD,

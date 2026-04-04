@@ -1,4 +1,4 @@
-package crypto
+package cryptocoin
 
 import (
 	"encoding/json"
@@ -17,13 +17,6 @@ func setupRouter(svc *Service) chi.Router {
 	return r
 }
 
-func newTestService(handler http.Handler) *Service {
-	srv := httptest.NewServer(handler)
-	// Note: caller must close srv — for tests using this helper,
-	// the server is embedded and closed via t.Cleanup.
-	return newServiceWithClient(nil, srv.Client(), srv.URL)
-}
-
 func TestCrypto_GetPrice_ValidSymbol(t *testing.T) {
 	upstream := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		body := coinGeckoResponse{
@@ -39,7 +32,7 @@ func TestCrypto_GetPrice_ValidSymbol(t *testing.T) {
 	}))
 	defer upstream.Close()
 
-	svc := newServiceWithClient(nil, upstream.Client(), upstream.URL)
+	svc := newServiceWithClient(upstream.Client(), upstream.URL)
 	r := setupRouter(svc)
 
 	req := httptest.NewRequest(http.MethodGet, "/crypto/BTC", http.NoBody)
@@ -50,7 +43,7 @@ func TestCrypto_GetPrice_ValidSymbol(t *testing.T) {
 		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
 	}
 
-	var resp httpx.Response[CryptoPrice]
+	var resp httpx.Response[Price]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("decode error: %v", err)
 	}
@@ -76,7 +69,7 @@ func TestCrypto_GetPrice_UppercaseNormalization(t *testing.T) {
 	}))
 	defer upstream.Close()
 
-	svc := newServiceWithClient(nil, upstream.Client(), upstream.URL)
+	svc := newServiceWithClient(upstream.Client(), upstream.URL)
 	r := setupRouter(svc)
 
 	// lowercase symbol should be normalized
@@ -90,7 +83,7 @@ func TestCrypto_GetPrice_UppercaseNormalization(t *testing.T) {
 }
 
 func TestCrypto_GetPrice_UnknownSymbol(t *testing.T) {
-	svc := newServiceWithClient(nil, http.DefaultClient, "http://unused")
+	svc := newServiceWithClient(http.DefaultClient, "http://unused")
 	r := setupRouter(svc)
 
 	req := httptest.NewRequest(http.MethodGet, "/crypto/FAKE", http.NoBody)
@@ -108,7 +101,7 @@ func TestCrypto_GetPrice_UpstreamDown(t *testing.T) {
 	}))
 	defer upstream.Close()
 
-	svc := newServiceWithClient(nil, upstream.Client(), upstream.URL)
+	svc := newServiceWithClient(upstream.Client(), upstream.URL)
 	r := setupRouter(svc)
 
 	req := httptest.NewRequest(http.MethodGet, "/crypto/ETH", http.NoBody)

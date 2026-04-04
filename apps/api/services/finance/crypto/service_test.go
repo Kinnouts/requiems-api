@@ -1,4 +1,4 @@
-package crypto
+package cryptocoin
 
 import (
 	"context"
@@ -25,7 +25,7 @@ func TestGetPrice_ValidSymbol(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	svc := newServiceWithClient(nil, srv.Client(), srv.URL)
+	svc := newServiceWithClient(srv.Client(), srv.URL)
 	p, err := svc.GetPrice(context.Background(), "BTC")
 	if err != nil {
 		t.Fatalf("unexpected error: %v", err)
@@ -46,7 +46,7 @@ func TestGetPrice_ValidSymbol(t *testing.T) {
 }
 
 func TestGetPrice_UnknownSymbol(t *testing.T) {
-	svc := newServiceWithClient(nil, http.DefaultClient, "http://unused")
+	svc := newServiceWithClient(http.DefaultClient, "http://unused")
 	_, err := svc.GetPrice(context.Background(), "FAKE")
 	if err == nil {
 		t.Fatal("expected error for unknown symbol")
@@ -70,7 +70,7 @@ func TestGetPrice_UpstreamError(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	svc := newServiceWithClient(nil, srv.Client(), srv.URL)
+	svc := newServiceWithClient(srv.Client(), srv.URL)
 	_, err := svc.GetPrice(context.Background(), "BTC")
 	if err == nil {
 		t.Fatal("expected error for upstream 500")
@@ -97,7 +97,7 @@ func TestGetPrice_NoRedis_CallsUpstream(t *testing.T) {
 	}))
 	defer srv.Close()
 
-	svc := newServiceWithClient(nil, srv.Client(), srv.URL)
+	svc := newServiceWithClient(srv.Client(), srv.URL)
 
 	for i := 0; i < 2; i++ {
 		if _, err := svc.GetPrice(context.Background(), "BTC"); err != nil {

@@ -1,7 +1,7 @@
-package crypto
+package cryptocoin
 
-// CryptoPrice is the response payload for GET /v1/finance/crypto/{symbol}.
-type CryptoPrice struct {
+// Price is the response payload for GET /v1/finance/crypto/{symbol}.
+type Price struct {
 	Symbol    string  `json:"symbol"`
 	Name      string  `json:"name"`
 	PriceUSD  float64 `json:"price_usd"`
@@ -10,4 +10,4 @@ type CryptoPrice struct {
 	Volume24h float64 `json:"volume_24h"`
 }
 
-func (CryptoPrice) IsData() {}
+func (Price) IsData() {}

@@ -8,7 +8,7 @@ type Record struct {
 
 // LookupResponse is the JSON payload returned by the MX lookup endpoint.
 type LookupResponse struct {
-	Domain  string     `json:"domain"`
+	Domain  string   `json:"domain"`
 	Records []Record `json:"records"`
 }
 
