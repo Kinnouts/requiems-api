@@ -5,7 +5,7 @@ class LocaleController < ApplicationController
     locale = params[:locale].presence
     locale = nil unless I18n.available_locales.map(&:to_s).include?(locale)
 
-    current_user.update(locale: locale) if user_signed_in?
+    current_user.update!(locale: locale) if user_signed_in?
 
     I18n.locale = locale&.to_sym || I18n.default_locale
 

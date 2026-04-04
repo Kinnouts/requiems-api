@@ -15,7 +15,7 @@ class CreditAdjustmentTest < ActiveSupport::TestCase
   test "requires user_id" do
     adjustment = CreditAdjustment.new(amount: 10, adjustment_type: "bonus")
     assert_not adjustment.valid?
-    assert_includes adjustment.errors[:user_id], "can't be blank"
+    assert_includes adjustment.errors[:user], "must exist"
   end
 
   test "requires amount" do

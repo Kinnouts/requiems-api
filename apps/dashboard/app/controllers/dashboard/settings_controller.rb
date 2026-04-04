@@ -67,13 +67,13 @@ class Dashboard::SettingsController < ApplicationController
 
     # Cancel subscription if exists
     if current_user.subscription
-      current_user.subscription.update(
+      current_user.subscription.update!(
         cancel_at_period_end: true,
         canceled_at: Time.current
       )
     end
 
-    current_user.destroy
+    current_user.destroy!
     sign_out current_user
 
     redirect_to root_path, notice: "Your account has been permanently deleted. We're sorry to see you go."

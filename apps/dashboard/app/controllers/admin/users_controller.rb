@@ -51,7 +51,7 @@ class Admin::UsersController < ApplicationController
 
       # Cancel subscription
       if @user.subscription
-        @user.subscription.update(
+        @user.subscription.update!(
           cancel_at_period_end: true,
           canceled_at: Time.current
         )

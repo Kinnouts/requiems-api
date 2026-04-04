@@ -28,6 +28,25 @@ module Dashboard
     config.i18n.fallbacks = true
     config.i18n.load_path += Dir[Rails.root.join("config/locales/**/*.yml")]
 
+    # Exclude Go-managed tables from the Rails schema dump.
+    # These tables are created and owned by the Go API (apps/api/migrations/).
+    # Rails and Go share one PostgreSQL database, so without this the schema
+    # dumper would include all tables on every db:test:load_schema run.
+    initializer "schema_dumper.ignore_go_tables" do
+      ActiveRecord::SchemaDumper.ignore_tables = %w[
+        advice
+        bin_data
+        commodity_price_history
+        commodity_prices
+        counters
+        iban_countries
+        inflation_data
+        quotes
+        schema_migrations
+        words
+      ]
+    end
+
     # Fixed effective date for legal documents (Privacy Policy, Terms of Service).
     # Update this when the documents are materially revised.
     config.x.legal_effective_date = Date.new(2026, 2, 17)
