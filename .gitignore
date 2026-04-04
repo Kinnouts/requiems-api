@@ -27,3 +27,4 @@ node_modules
 apps/workers/shared/package-lock.json
 vendor/
 apps/dashboard/vendor/
+temp/
