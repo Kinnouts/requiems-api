@@ -88,11 +88,12 @@ jobs:
           BACKEND_SECRET: test_secret_min_32_chars_long_for_testing_only
         run: go test -v -race -coverprofile=coverage.out ./...
 
-      - name: Upload coverage
-        uses: actions/upload-artifact@v7
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
         with:
-          name: go-coverage
-          path: apps/api/coverage.out
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: apps/api/coverage.out
+          flags: go
 
   go-lint:
     name: Go Lint (Advisory)
@@ -182,6 +183,13 @@ jobs:
           REDIS_URL: redis://localhost:6379
           BACKEND_SECRET: test_secret_min_32_chars_long_for_testing_only
         run: bin/rails test
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: apps/dashboard/coverage/lcov/dashboard.lcov
+          flags: rails
 
   rails-security:
     name: Rails Security Scans
@@ -312,19 +320,16 @@ jobs:
         working-directory: apps/workers/auth-gateway
         run: pnpm install --frozen-lockfile
 
-      - name: Run tests
+      - name: Run tests with coverage
         working-directory: apps/workers/auth-gateway
-        run: pnpm exec vitest run
+        run: pnpm exec vitest run --coverage
 
-      - name: Generate coverage
-        working-directory: apps/workers/auth-gateway
-        run: pnpm exec vitest run --coverage.enabled --coverage.reporter=text
-
-      - name: Upload coverage
-        uses: actions/upload-artifact@v7
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
         with:
-          name: worker-coverage
-          path: apps/workers/auth-gateway/coverage/
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: apps/workers/auth-gateway/coverage/lcov.info
+          flags: auth-gateway
 
   worker-lint:
     name: Worker Lint (Advisory)
@@ -426,9 +431,16 @@ jobs:
         working-directory: apps/workers/api-management
         run: pnpm install --frozen-lockfile
 
-      - name: Run tests
+      - name: Run tests with coverage
         working-directory: apps/workers/api-management
-        run: pnpm exec vitest run
+        run: pnpm exec vitest run --coverage
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: apps/workers/api-management/coverage/lcov.info
+          flags: api-management
 
   ci-success:
     name: CI Success

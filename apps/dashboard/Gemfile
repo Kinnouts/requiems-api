@@ -81,6 +81,11 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
 end
 
+group :test do
+  gem "simplecov", require: false
+  gem "simplecov-lcov", require: false
+end
+
 group :development do
   gem "web-console"
   gem "letter_opener_web", "~> 3.0"
