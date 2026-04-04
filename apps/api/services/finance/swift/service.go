@@ -3,6 +3,7 @@ package swift
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 	"strings"
 
@@ -45,6 +46,82 @@ func (s *Service) Lookup(ctx context.Context, raw string) (LookupResponse, error
 
 	result.IsPrimary = result.BranchCode == "XXX"
 	return result, nil
+}
+
+// List returns paginated SWIFT records filtered by optional country code,
+// bank code, and free-text query.
+func (s *Service) List(ctx context.Context, filter ListFilter) (ListResponse, error) {
+	if filter.CountryCode != "" {
+		cc, err := sanitizeAlphaCode(filter.CountryCode, 2, "country code")
+		if err != nil {
+			return ListResponse{}, err
+		}
+		filter.CountryCode = cc
+	}
+
+	if filter.BankCode != "" {
+		bc, err := sanitizeAlphaCode(filter.BankCode, 4, "bank code")
+		if err != nil {
+			return ListResponse{}, err
+		}
+		filter.BankCode = bc
+	}
+
+	if filter.Limit <= 0 {
+		filter.Limit = 50
+	}
+	if filter.Limit > 200 {
+		filter.Limit = 200
+	}
+	if filter.Offset < 0 {
+		filter.Offset = 0
+	}
+
+	q := strings.TrimSpace(filter.Query)
+
+	rows, err := s.db.Query(ctx, `
+		SELECT
+			swift_code, bank_code, country_code, location_code, branch_code,
+			bank_name, city, country_name
+		FROM swift_codes
+		WHERE ($1 = '' OR country_code = $1)
+		  AND ($2 = '' OR bank_code = $2)
+		  AND (
+			$3 = ''
+			OR swift_code ILIKE $3 || '%'
+			OR bank_name ILIKE '%' || $3 || '%'
+			OR city ILIKE '%' || $3 || '%'
+		  )
+		ORDER BY swift_code
+		LIMIT $4 OFFSET $5
+	`, filter.CountryCode, filter.BankCode, q, filter.Limit, filter.Offset)
+	if err != nil {
+		return ListResponse{}, err
+	}
+	defer rows.Close()
+
+	items := make([]LookupResponse, 0, filter.Limit)
+	for rows.Next() {
+		var r LookupResponse
+		if err := rows.Scan(
+			&r.SwiftCode, &r.BankCode, &r.CountryCode, &r.LocationCode, &r.BranchCode,
+			&r.BankName, &r.City, &r.CountryName,
+		); err != nil {
+			return ListResponse{}, err
+		}
+		r.IsPrimary = r.BranchCode == "XXX"
+		items = append(items, r)
+	}
+	if err := rows.Err(); err != nil {
+		return ListResponse{}, err
+	}
+
+	return ListResponse{
+		Items:    items,
+		Limit:    filter.Limit,
+		Offset:   filter.Offset,
+		Returned: len(items),
+	}, nil
 }
 
 // querySwift executes a point-lookup against swift_codes by exact swift_code.
@@ -135,4 +212,27 @@ func sanitizeSWIFT(raw string) (string, error) {
 // isAlphanumeric reports whether b is an ASCII letter or digit.
 func isAlphanumeric(b byte) bool {
 	return (b >= 'A' && b <= 'Z') || (b >= '0' && b <= '9')
+}
+
+func sanitizeAlphaCode(raw string, expectedLen int, label string) (string, error) {
+	value := strings.ToUpper(strings.TrimSpace(raw))
+	if len(value) != expectedLen {
+		return "", &httpx.AppError{
+			Status:  http.StatusBadRequest,
+			Code:    "bad_request",
+			Message: fmt.Sprintf("%s must be %d letters", label, expectedLen),
+		}
+	}
+
+	for i := range expectedLen {
+		if value[i] < 'A' || value[i] > 'Z' {
+			return "", &httpx.AppError{
+				Status:  http.StatusBadRequest,
+				Code:    "bad_request",
+				Message: fmt.Sprintf("%s must contain letters only", label),
+			}
+		}
+	}
+
+	return value, nil
 }

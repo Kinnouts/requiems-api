@@ -17,6 +17,7 @@ import (
 // or a fixed error on every call, keeping tests DB-free and fast.
 type stubService struct {
 	result LookupResponse
+	list   ListResponse
 	err    error
 }
 
@@ -27,6 +28,13 @@ func (s *stubService) Lookup(_ context.Context, code string) (LookupResponse, er
 	r := s.result
 	r.SwiftCode = code
 	return r, nil
+}
+
+func (s *stubService) List(_ context.Context, _ ListFilter) (ListResponse, error) {
+	if s.err != nil {
+		return ListResponse{}, s.err
+	}
+	return s.list, nil
 }
 
 // setupRouter wires up a stub service into a chi router for handler testing.
@@ -76,6 +84,65 @@ func TestSWIFT_KnownCode_Returns200(t *testing.T) {
 	}
 	if resp.Data.BankName != "Deutsche Bank" {
 		t.Errorf("expected bank_name Deutsche Bank, got %q", resp.Data.BankName)
+	}
+}
+
+func TestSWIFT_List_Returns200(t *testing.T) {
+	svc := &stubService{list: ListResponse{
+		Items: []LookupResponse{
+			{SwiftCode: "DEUTDEDBXXX", BankCode: "DEUT", CountryCode: "DE", BankName: "Deutsche Bank"},
+			{SwiftCode: "CHASUS33XXX", BankCode: "CHAS", CountryCode: "US", BankName: "JPMorgan Chase"},
+		},
+		Limit:    50,
+		Offset:   0,
+		Returned: 2,
+	}}
+
+	r := setupRouter(svc)
+	req := httptest.NewRequest(http.MethodGet, "/swift?country_code=DE&limit=50&offset=0", http.NoBody)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
+	}
+
+	var resp httpx.Response[ListResponse]
+	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
+		t.Fatalf("failed to decode response: %v", err)
+	}
+
+	if resp.Data.Returned != 2 {
+		t.Fatalf("expected returned=2, got %d", resp.Data.Returned)
+	}
+}
+
+func TestSWIFT_ListByCountryPath_Returns200(t *testing.T) {
+	svc := &stubService{list: ListResponse{
+		Items: []LookupResponse{{SwiftCode: "DEUTDEDBXXX", CountryCode: "DE"}},
+		Limit: 50, Offset: 0, Returned: 1,
+	}}
+
+	r := setupRouter(svc)
+	req := httptest.NewRequest(http.MethodGet, "/swift/country/DE?limit=10", http.NoBody)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusOK {
+		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
+	}
+}
+
+func TestSWIFT_List_InvalidLimit_Returns400(t *testing.T) {
+	svc := &stubService{}
+	r := setupRouter(svc)
+
+	req := httptest.NewRequest(http.MethodGet, "/swift?limit=abc", http.NoBody)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d: %s", w.Code, w.Body.String())
 	}
 }
 

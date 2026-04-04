@@ -89,3 +89,45 @@ curl https://api.requiems.xyz/v1/finance/swift/DEUTDEDB001 \
 - Characters 5–6 (country code): letters only
 - Characters 7–8 (location code): alphanumeric
 - Characters 9–11 (branch code, 11-char only): alphanumeric
+
+### List SWIFT Codes
+
+**Endpoint:** `GET /v1/finance/swift`
+
+List SWIFT records with optional filters and pagination.
+
+#### Query Parameters
+
+| Parameter      | Type    | Required | Description                                          |
+| -------------- | ------- | -------- | ---------------------------------------------------- |
+| `country_code` | string  | No       | 2-letter country code filter (e.g. `DE`)             |
+| `bank_code`    | string  | No       | 4-letter bank code filter (e.g. `DEUT`)              |
+| `q`            | string  | No       | Search term for `swift_code`, `bank_name`, or `city` |
+| `limit`        | integer | No       | Max rows to return (default `50`, max `200`)         |
+| `offset`       | integer | No       | Rows to skip (default `0`)                           |
+
+#### Example Request
+
+```bash
+curl "https://api.requiems.xyz/v1/finance/swift?country_code=DE&limit=3" \
+  -H "requiems-api-key: YOUR_API_KEY"
+```
+
+### List SWIFT Codes By Country
+
+**Endpoint:** `GET /v1/finance/swift/country/{country_code}`
+
+List SWIFT records for a country with optional search/pagination.
+
+#### Path Parameters
+
+| Parameter      | Type   | Required | Description          |
+| -------------- | ------ | -------- | -------------------- |
+| `country_code` | string | Yes      | 2-letter country code |
+
+#### Example Request
+
+```bash
+curl "https://api.requiems.xyz/v1/finance/swift/country/US?q=chase&limit=2" \
+  -H "requiems-api-key: YOUR_API_KEY"
+```

@@ -825,7 +825,7 @@ apis:
     categories:
       - finance
     description: Validate and look up bank information by SWIFT/BIC code, including institution, location, and branch metadata.
-    endpoints_count: 1
+    endpoints_count: 3
     status: live
     popular: false
     documentation_url: /apis/swift-code

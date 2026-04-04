@@ -120,6 +120,26 @@ func TestSanitizeSWIFT_8Char_AppendXXX(t *testing.T) {
 	}
 }
 
+func TestSanitizeAlphaCode_Valid(t *testing.T) {
+	got, err := sanitizeAlphaCode("de", 2, "country code")
+	if err != nil {
+		t.Fatalf("unexpected error: %v", err)
+	}
+	if got != "DE" {
+		t.Fatalf("expected DE, got %q", got)
+	}
+}
+
+func TestSanitizeAlphaCode_InvalidLength(t *testing.T) {
+	_, err := sanitizeAlphaCode("D", 2, "country code")
+	assertAppError(t, err)
+}
+
+func TestSanitizeAlphaCode_InvalidChars(t *testing.T) {
+	_, err := sanitizeAlphaCode("D1", 2, "country code")
+	assertAppError(t, err)
+}
+
 // assertAppError verifies that err is a 400 bad_request *httpx.AppError.
 // All sanitizeSWIFT validation errors return this exact status and code.
 func assertAppError(t *testing.T, err error) {
