@@ -24,7 +24,7 @@ class Admin::AnalyticsController < ApplicationController
     @requests_by_endpoint = UsageLog
       .where(used_at: @start_date..@end_date)
       .group(:endpoint)
-      .order("COUNT(*) DESC")
+      .order(Arel.sql("COUNT(*) DESC"))
       .limit(10)
       .count
 
@@ -41,7 +41,7 @@ class Admin::AnalyticsController < ApplicationController
       .where(used_at: @start_date..@end_date)
       .where.not(response_time_ms: nil)
       .group(:endpoint)
-      .order("AVG(response_time_ms) DESC")
+      .order(Arel.sql("AVG(response_time_ms) DESC"))
       .limit(10)
       .average(:response_time_ms)
       .transform_values { |v| v.round(2) }
