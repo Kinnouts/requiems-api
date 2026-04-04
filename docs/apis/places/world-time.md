@@ -7,8 +7,8 @@
 ## Overview
 
 Get the current time for any location in the world by specifying an IANA
-timezone identifier. Returns the timezone name, UTC offset, current time,
-and DST status.
+timezone identifier. Returns the timezone name, UTC offset, current time, and
+DST status.
 
 ## Live Endpoints
 
@@ -20,8 +20,8 @@ Returns the current time for the given IANA timezone identifier.
 
 #### Path Parameters
 
-| Parameter  | Type   | Required | Description                                                     |
-| ---------- | ------ | -------- | --------------------------------------------------------------- |
+| Parameter  | Type   | Required | Description                                                      |
+| ---------- | ------ | -------- | ---------------------------------------------------------------- |
 | `timezone` | string | Yes      | IANA timezone identifier (e.g. `America/New_York`, `Asia/Tokyo`) |
 
 #### Example Request
@@ -44,10 +44,9 @@ curl "https://api.requiems.xyz/v1/places/time/America/New_York" \
 
 #### Response Fields
 
-| Field          | Type    | Description                                              |
-| -------------- | ------- | -------------------------------------------------------- |
-| `timezone`     | string  | IANA timezone identifier                                 |
-| `offset`       | string  | UTC offset in `+HH:MM` or `-HH:MM` format               |
-| `current_time` | string  | Current UTC time in RFC 3339 format                      |
-| `is_dst`       | boolean | Whether the timezone is observing daylight saving time   |
-
+| Field          | Type    | Description                                            |
+| -------------- | ------- | ------------------------------------------------------ |
+| `timezone`     | string  | IANA timezone identifier                               |
+| `offset`       | string  | UTC offset in `+HH:MM` or `-HH:MM` format              |
+| `current_time` | string  | Current UTC time in RFC 3339 format                    |
+| `is_dst`       | boolean | Whether the timezone is observing daylight saving time |

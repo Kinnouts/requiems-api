@@ -17,8 +17,8 @@ servers, status flags, registration dates, and DNSSEC information.
 
 Returns WHOIS information for a domain.
 
-| Parameter | Type   | Required | Description                     |
-| --------- | ------ | -------- | ------------------------------- |
+| Parameter | Type   | Required | Description                                 |
+| --------- | ------ | -------- | ------------------------------------------- |
 | `domain`  | string | Yes      | Domain name to look up (e.g. `example.com`) |
 
 ## Response

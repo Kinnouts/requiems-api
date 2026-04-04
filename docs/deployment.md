@@ -285,13 +285,14 @@ Wait for DNS propagation (5-30 minutes).
 
 In Cloudflare DNS settings, create these A records:
 
-| Type | Name           | Content     | Proxy Status | TTL  |
-| ---- | -------------- | ----------- | ------------ | ---- |
-| A    | @              | YOUR_VPS_IP | ☁️ Proxied   | Auto |
-| A    | internal       | YOUR_VPS_IP | ☁️ Proxied   | Auto |
+| Type | Name     | Content     | Proxy Status | TTL  |
+| ---- | -------- | ----------- | ------------ | ---- |
+| A    | @        | YOUR_VPS_IP | ☁️ Proxied   | Auto |
+| A    | internal | YOUR_VPS_IP | ☁️ Proxied   | Auto |
 
-The Workers custom domains (`api.requiems.xyz`, `api-management.requiems.xyz`) are
-configured in `wrangler.toml` and created automatically when you deploy each Worker.
+The Workers custom domains (`api.requiems.xyz`, `api-management.requiems.xyz`)
+are configured in `wrangler.toml` and created automatically when you deploy each
+Worker.
 
 **Important:**
 
@@ -318,7 +319,8 @@ nslookup internal.requiems.xyz
 
 ## Part 5: Deploy Cloudflare Workers
 
-Both workers share the same KV namespace and D1 database, so you only create those once.
+Both workers share the same KV namespace and D1 database, so you only create
+those once.
 
 ### 5.1 Setup Wrangler
 
@@ -369,8 +371,8 @@ pnpm run deploy:prod
 
 ### 5.4 Deploy API Management Worker
 
-The API Management Worker is the internal service used only by the Rails dashboard.
-It is reachable at `api-management.requiems.xyz`.
+The API Management Worker is the internal service used only by the Rails
+dashboard. It is reachable at `api-management.requiems.xyz`.
 
 ```bash
 cd apps/workers/api-management
@@ -400,12 +402,15 @@ docker compose restart dashboard sidekiq
 
 ### 5.5 Verify Worker Routes
 
-Both workers use `custom_domain = true` in `wrangler.toml` — Cloudflare registers
-the hostnames automatically on first deploy. Confirm in the Cloudflare Dashboard:
+Both workers use `custom_domain = true` in `wrangler.toml` — Cloudflare
+registers the hostnames automatically on first deploy. Confirm in the Cloudflare
+Dashboard:
 
-1. Workers & Pages → `requiem-auth-gateway-production` → Settings → Domains & Routes
+1. Workers & Pages → `requiem-auth-gateway-production` → Settings → Domains &
+   Routes
    - Should show: `api.requiems.xyz`
-2. Workers & Pages → `requiem-api-management-production` → Settings → Domains & Routes
+2. Workers & Pages → `requiem-api-management-production` → Settings → Domains &
+   Routes
    - Should show: `api-management.requiems.xyz`
 
 ---
@@ -465,7 +470,9 @@ done
 
 ### 7.1 Seed Static Data
 
-Some endpoints require data to be seeded after the first deploy. Migrations create the tables automatically on startup, but the data must be populated manually once.
+Some endpoints require data to be seeded after the first deploy. Migrations
+create the tables automatically on startup, but the data must be populated
+manually once.
 
 **Run all seeds in order:**
 
@@ -489,11 +496,16 @@ docker compose exec api go run ./cmd/seed-commodities \
   --db-url "$DATABASE_URL"
 ```
 
-`DATABASE_URL` is already set in `infra/docker/.env` — the shell picks it up automatically when you run these commands from the `infra/docker` directory.
+`DATABASE_URL` is already set in `infra/docker/.env` — the shell picks it up
+automatically when you run these commands from the `infra/docker` directory.
 
-**Re-seeding is safe** — all seed commands use `INSERT ... ON CONFLICT DO UPDATE`, so running them again only updates changed records.
+**Re-seeding is safe** — all seed commands use
+`INSERT ... ON CONFLICT DO UPDATE`, so running them again only updates changed
+records.
 
-**Keeping commodity prices current** — commodity prices are annual averages from FRED and Yahoo Finance. Re-run the commodity seed once per year (or whenever you want fresh data):
+**Keeping commodity prices current** — commodity prices are annual averages from
+FRED and Yahoo Finance. Re-run the commodity seed once per year (or whenever you
+want fresh data):
 
 ```bash
 docker compose exec api go run ./cmd/seed-commodities \
@@ -686,7 +698,9 @@ docker compose ps
 docker compose logs -f
 ```
 
-**If the update adds a new seeded table** (e.g. a new commodity, inflation country set, or BIN dataset), re-run the relevant seed command after deploy. See [Section 7.1](#71-seed-static-data).
+**If the update adds a new seeded table** (e.g. a new commodity, inflation
+country set, or BIN dataset), re-run the relevant seed command after deploy. See
+[Section 7.1](#71-seed-static-data).
 
 ### Clean Deployment (Wipe Database)
 

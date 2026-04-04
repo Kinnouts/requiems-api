@@ -10,13 +10,13 @@ package.
 
 ## What Normalization Does
 
-| Transformation | Example |
-| --- | --- |
-| Lowercase the full address | `User@Example.COM` → `user@example.com` |
-| Trim leading/trailing whitespace | `  user@example.com  ` → `user@example.com` |
-| Remove dots from Gmail local part | `te.st.user@gmail.com` → `testuser@gmail.com` |
-| Strip plus tag (supported providers) | `user+spam@gmail.com` → `user@gmail.com` |
-| Resolve alias domains | `user@googlemail.com` → `user@gmail.com` |
+| Transformation                       | Example                                       |
+| ------------------------------------ | --------------------------------------------- |
+| Lowercase the full address           | `User@Example.COM` → `user@example.com`       |
+| Trim leading/trailing whitespace     | `user@example.com` → `user@example.com`       |
+| Remove dots from Gmail local part    | `te.st.user@gmail.com` → `testuser@gmail.com` |
+| Strip plus tag (supported providers) | `user+spam@gmail.com` → `user@gmail.com`      |
+| Resolve alias domains                | `user@googlemail.com` → `user@gmail.com`      |
 
 Normalizations are applied in order. The `changes` array in the response lists
 every transformation that was applied.
@@ -45,29 +45,29 @@ All responses are wrapped in the standard envelope:
 
 ## Response Fields
 
-| Field | Type | Description |
-| --- | --- | --- |
-| `original` | string | Exact input supplied by the caller |
-| `normalized` | string | Canonical address after all transformations |
-| `local` | string | Local part (before `@`) of the normalized address |
-| `domain` | string | Domain part (after `@`) of the normalized address |
-| `changes` | array | Ordered list of transformations applied (empty when none) |
+| Field        | Type   | Description                                               |
+| ------------ | ------ | --------------------------------------------------------- |
+| `original`   | string | Exact input supplied by the caller                        |
+| `normalized` | string | Canonical address after all transformations               |
+| `local`      | string | Local part (before `@`) of the normalized address         |
+| `domain`     | string | Domain part (after `@`) of the normalized address         |
+| `changes`    | array  | Ordered list of transformations applied (empty when none) |
 
 ### `changes` Values
 
-| Value | When applied |
-| --- | --- |
-| `trimmed_whitespace` | Leading or trailing whitespace was present |
-| `removed_trailing_dot` | One or more trailing dots were stripped from the raw input |
-| `lowercase` | Any uppercase characters were found |
-| `removed_dots` | Dots were removed from the local part (e.g. Gmail, Protonmail) |
-| `removed_underscores` | Underscores were removed from the local part (Protonmail) |
-| `removed_hyphens` | Hyphens were removed from the local part (Protonmail) |
-| `replaced_hyphens_with_dots` | Hyphens in the local part were replaced with dots (Yandex) |
-| `removed_plus_tag` | A plus-sign subaddress (`+tag`) was stripped (e.g. Gmail, Apple, Fastmail) |
-| `removed_plus_signs` | All plus signs were removed regardless of position (e.g. Microsoft, Yahoo, Zoho) |
-| `removed_subaddress` | A dash-delimited subaddress (`-tag`) was stripped (Yahoo) |
-| `canonicalized_domain` | An alias domain was resolved (e.g. googlemail.com → gmail.com) |
+| Value                        | When applied                                                                     |
+| ---------------------------- | -------------------------------------------------------------------------------- |
+| `trimmed_whitespace`         | Leading or trailing whitespace was present                                       |
+| `removed_trailing_dot`       | One or more trailing dots were stripped from the raw input                       |
+| `lowercase`                  | Any uppercase characters were found                                              |
+| `removed_dots`               | Dots were removed from the local part (e.g. Gmail, Protonmail)                   |
+| `removed_underscores`        | Underscores were removed from the local part (Protonmail)                        |
+| `removed_hyphens`            | Hyphens were removed from the local part (Protonmail)                            |
+| `replaced_hyphens_with_dots` | Hyphens in the local part were replaced with dots (Yandex)                       |
+| `removed_plus_tag`           | A plus-sign subaddress (`+tag`) was stripped (e.g. Gmail, Apple, Fastmail)       |
+| `removed_plus_signs`         | All plus signs were removed regardless of position (e.g. Microsoft, Yahoo, Zoho) |
+| `removed_subaddress`         | A dash-delimited subaddress (`-tag`) was stripped (Yahoo)                        |
+| `canonicalized_domain`       | An alias domain was resolved (e.g. googlemail.com → gmail.com)                   |
 
 ## Example
 
@@ -102,11 +102,11 @@ Response:
 
 ## Error Codes
 
-| Code | Status | When |
-| --- | --- | --- |
-| `validation_failed` | 422 | `email` field is missing or not a valid address |
-| `bad_request` | 400 | Body is missing, invalid JSON, or contains unknown fields |
-| `internal_error` | 500 | Unexpected server error |
+| Code                | Status | When                                                      |
+| ------------------- | ------ | --------------------------------------------------------- |
+| `validation_failed` | 422    | `email` field is missing or not a valid address           |
+| `bad_request`       | 400    | Body is missing, invalid JSON, or contains unknown fields |
+| `internal_error`    | 500    | Unexpected server error                                   |
 
 ## Use Cases
 
@@ -127,8 +127,8 @@ await db.users.create({ email: userInput, email_normalized: data.normalized });
 
 ### Detect plus-tag abuse
 
-If `changes` includes `removed_plus_tag`, the user is using a plus tag — often
-a signal of throwaway signup attempts.
+If `changes` includes `removed_plus_tag`, the user is using a plus tag — often a
+signal of throwaway signup attempts.
 
 ```javascript
 const { data } = await normalizeEmail(userInput);

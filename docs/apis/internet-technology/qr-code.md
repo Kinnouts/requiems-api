@@ -6,8 +6,8 @@
 
 ## Overview
 
-Generate QR codes from text or URLs. The endpoint supports PNG image output
-or base64-encoded JSON response.
+Generate QR codes from text or URLs. The endpoint supports PNG image output or
+base64-encoded JSON response.
 
 ## Endpoint
 
@@ -15,14 +15,13 @@ or base64-encoded JSON response.
 
 `GET /v1/tech/qr`
 
-
 ### Query Parameters
 
-| Parameter | Required | Default | Description                                         |
-| --------- | -------- | ------- | --------------------------------------------------- |
-| `data`    | Yes      | —       | The text or URL to encode in the QR code            |
-| `size`    | No       | `256`   | Image size in pixels (min: 50, max: 1000)           |
-| `format`  | No       | `png`   | Response format: `png` (image) or `base64` (JSON)   |
+| Parameter | Required | Default | Description                                       |
+| --------- | -------- | ------- | ------------------------------------------------- |
+| `data`    | Yes      | —       | The text or URL to encode in the QR code          |
+| `size`    | No       | `256`   | Image size in pixels (min: 50, max: 1000)         |
+| `format`  | No       | `png`   | Response format: `png` (image) or `base64` (JSON) |
 
 ### Response
 
@@ -54,4 +53,3 @@ GET /v1/tech/qr?data=https://example.com&size=200&format=base64
   }
 }
 ```
-

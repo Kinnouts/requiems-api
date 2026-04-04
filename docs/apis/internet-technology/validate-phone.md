@@ -5,10 +5,10 @@ or virtual risk using only phone metadata. No external lookups.
 
 ## Endpoints
 
-| Method | Path                              | Description              |
-| ------ | --------------------------------- | ------------------------ |
-| GET    | `/v1/tech/validate/phone`         | Validate a single number |
-| POST   | `/v1/tech/validate/phone/batch`   | Validate up to 50 numbers |
+| Method | Path                            | Description               |
+| ------ | ------------------------------- | ------------------------- |
+| GET    | `/v1/tech/validate/phone`       | Validate a single number  |
+| POST   | `/v1/tech/validate/phone/batch` | Validate up to 50 numbers |
 
 ---
 
@@ -16,8 +16,8 @@ or virtual risk using only phone metadata. No external lookups.
 
 ### Query Parameters
 
-| Parameter | Type   | Required | Description                                        |
-| --------- | ------ | -------- | -------------------------------------------------- |
+| Parameter | Type   | Required | Description                                         |
+| --------- | ------ | -------- | --------------------------------------------------- |
 | `number`  | string | Yes      | Phone number in E.164 format (e.g. `+447400123456`) |
 
 ### Response
@@ -75,9 +75,9 @@ order as the input.
 }
 ```
 
-| Field     | Type     | Required | Description                               |
-| --------- | -------- | -------- | ----------------------------------------- |
-| `numbers` | string[] | Yes      | Array of phone numbers (min: 1, max: 50)  |
+| Field     | Type     | Required | Description                              |
+| --------- | -------- | -------- | ---------------------------------------- |
+| `numbers` | string[] | Yes      | Array of phone numbers (min: 1, max: 50) |
 
 ### Response
 
@@ -138,26 +138,26 @@ order as the input.
 
 ## Response Fields
 
-| Field             | Type    | Description                                                                              |
-| ----------------- | ------- | ---------------------------------------------------------------------------------------- |
-| `number`          | string  | The original number as supplied in the request                                           |
-| `valid`           | boolean | Whether the number is a valid, dialable phone number                                     |
-| `country`         | string  | ISO 3166-1 alpha-2 country code (omitted when valid is false)                            |
-| `type`            | string  | Number type (see table above, omitted when valid is false)                               |
-| `formatted`       | string  | International format of the number (omitted when valid is false)                         |
-| `carrier.name`    | string  | Carrier name from prefix metadata (omitted when carrier cannot be determined)            |
-| `carrier.source`  | string  | How the carrier was determined. Always `"metadata"` when present                         |
-| `risk.is_voip`    | boolean | `true` when the number type is `voip`                                                    |
+| Field             | Type    | Description                                                                                              |
+| ----------------- | ------- | -------------------------------------------------------------------------------------------------------- |
+| `number`          | string  | The original number as supplied in the request                                                           |
+| `valid`           | boolean | Whether the number is a valid, dialable phone number                                                     |
+| `country`         | string  | ISO 3166-1 alpha-2 country code (omitted when valid is false)                                            |
+| `type`            | string  | Number type (see table above, omitted when valid is false)                                               |
+| `formatted`       | string  | International format of the number (omitted when valid is false)                                         |
+| `carrier.name`    | string  | Carrier name from prefix metadata (omitted when carrier cannot be determined)                            |
+| `carrier.source`  | string  | How the carrier was determined. Always `"metadata"` when present                                         |
+| `risk.is_voip`    | boolean | `true` when the number type is `voip`                                                                    |
 | `risk.is_virtual` | boolean | `true` for types not tied to a physical SIM or fixed line (voip, personal_number, uan, pager, voicemail) |
 
 ---
 
 ## Error Codes
 
-| Code                | Status | When                                                        |
-| ------------------- | ------ | ----------------------------------------------------------- |
-| `bad_request`       | 400    | The `number` query parameter is missing (single endpoint)   |
-| `validation_failed` | 422    | The `numbers` array is missing, empty, or exceeds 50 items  |
+| Code                | Status | When                                                       |
+| ------------------- | ------ | ---------------------------------------------------------- |
+| `bad_request`       | 400    | The `number` query parameter is missing (single endpoint)  |
+| `validation_failed` | 422    | The `numbers` array is missing, empty, or exceeds 50 items |
 
 ---
 
@@ -215,7 +215,9 @@ const headers = { "requiems-api-key": "YOUR_API_KEY" };
 
 // Single
 const single = await fetch(
-  `https://api.requiems.xyz/v1/tech/validate/phone?number=${encodeURIComponent("+447400123456")}`,
+  `https://api.requiems.xyz/v1/tech/validate/phone?number=${
+    encodeURIComponent("+447400123456")
+  }`,
   { headers },
 );
 const { data } = await single.json();

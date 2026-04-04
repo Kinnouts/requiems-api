@@ -23,23 +23,23 @@ Look up bank metadata for a SWIFT/BIC code.
 
 #### Path Parameters
 
-| Parameter | Type   | Required | Description                                      |
-| --------- | ------ | -------- | ------------------------------------------------ |
+| Parameter | Type   | Required | Description                                                              |
+| --------- | ------ | -------- | ------------------------------------------------------------------------ |
 | `code`    | string | Yes      | SWIFT/BIC code — 8 characters (primary office) or 11 characters (branch) |
 
 #### Response Fields
 
-| Field          | Type    | Description                                              |
-| -------------- | ------- | -------------------------------------------------------- |
-| `swift_code`   | string  | Full 11-character BIC (8-char input expanded with `XXX`) |
-| `bank_code`    | string  | Institution code (characters 1–4)                        |
-| `country_code` | string  | ISO 3166-1 alpha-2 country code (characters 5–6)         |
-| `location_code`| string  | Location code (characters 7–8)                           |
-| `branch_code`  | string  | Branch code (characters 9–11); `XXX` = primary office    |
-| `bank_name`    | string  | Full name of the bank or institution                     |
-| `city`         | string  | City of the branch                                       |
-| `country_name` | string  | Country name                                             |
-| `is_primary`   | boolean | `true` if this is the primary office (`branch_code = XXX`) |
+| Field           | Type    | Description                                                |
+| --------------- | ------- | ---------------------------------------------------------- |
+| `swift_code`    | string  | Full 11-character BIC (8-char input expanded with `XXX`)   |
+| `bank_code`     | string  | Institution code (characters 1–4)                          |
+| `country_code`  | string  | ISO 3166-1 alpha-2 country code (characters 5–6)           |
+| `location_code` | string  | Location code (characters 7–8)                             |
+| `branch_code`   | string  | Branch code (characters 9–11); `XXX` = primary office      |
+| `bank_name`     | string  | Full name of the bank or institution                       |
+| `city`          | string  | City of the branch                                         |
+| `country_name`  | string  | Country name                                               |
+| `is_primary`    | boolean | `true` if this is the primary office (`branch_code = XXX`) |
 
 #### Example Request
 
@@ -76,11 +76,11 @@ curl https://api.requiems.xyz/v1/finance/swift/DEUTDEDB001 \
 
 #### Error Responses
 
-| Status | Code          | Description                                          |
-| ------ | ------------- | ---------------------------------------------------- |
-| 400    | `bad_request` | Invalid SWIFT code format (wrong length or characters) |
-| 404    | `not_found`   | SWIFT code not found in the database                 |
-| 500    | `internal_error` | Internal server error                             |
+| Status | Code             | Description                                            |
+| ------ | ---------------- | ------------------------------------------------------ |
+| 400    | `bad_request`    | Invalid SWIFT code format (wrong length or characters) |
+| 404    | `not_found`      | SWIFT code not found in the database                   |
+| 500    | `internal_error` | Internal server error                                  |
 
 #### Validation Rules
 

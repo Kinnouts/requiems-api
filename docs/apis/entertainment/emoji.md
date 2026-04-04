@@ -26,8 +26,8 @@ Searches for emojis whose name or category contains the given query string
 
 **Query Parameters:**
 
-| Parameter | Required | Description                        |
-| --------- | -------- | ---------------------------------- |
+| Parameter | Required | Description                            |
+| --------- | -------- | -------------------------------------- |
 | `q`       | Yes      | Term to match against names/categories |
 
 ### Get Emoji by Name
@@ -66,21 +66,20 @@ For the search endpoint the response wraps a list:
 
 ## Categories
 
-| Category             | Example emojis                    |
-| -------------------- | --------------------------------- |
-| Smileys & Emotion    | 😀 😂 ❤️ 💀                     |
-| People & Body        | 👋 👍 💪 🙏                     |
-| Animals & Nature     | 🐶 🦁 🌹 🍄                     |
-| Food & Drink         | 🍕 🍔 ☕ 🍺                     |
-| Travel & Places      | 🚗 ✈️ 🏠 🌍                     |
-| Activities           | ⚽ 🎮 🏆 🎨                     |
-| Objects              | 💻 📷 🔑 💡                     |
-| Symbols              | ✅ ❌ ♻️ ❓                     |
+| Category          | Example emojis |
+| ----------------- | -------------- |
+| Smileys & Emotion | 😀 😂 ❤️ 💀    |
+| People & Body     | 👋 👍 💪 🙏    |
+| Animals & Nature  | 🐶 🦁 🌹 🍄    |
+| Food & Drink      | 🍕 🍔 ☕ 🍺    |
+| Travel & Places   | 🚗 ✈️ 🏠 🌍    |
+| Activities        | ⚽ 🎮 🏆 🎨    |
+| Objects           | 💻 📷 🔑 💡    |
+| Symbols           | ✅ ❌ ♻️ ❓    |
 
 ## Error Codes
 
-| Code          | Status | When                                  |
-| ------------- | ------ | ------------------------------------- |
-| `bad_request` | 400    | Missing or empty `q` query parameter  |
+| Code          | Status | When                                   |
+| ------------- | ------ | -------------------------------------- |
+| `bad_request` | 400    | Missing or empty `q` query parameter   |
 | `not_found`   | 404    | No emoji found with the requested name |
-

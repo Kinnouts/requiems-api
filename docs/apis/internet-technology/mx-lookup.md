@@ -18,9 +18,9 @@ per RFC 5321).
 
 Look up MX records for a domain.
 
-| Parameter | Type   | Required | Description             |
-|-----------|--------|----------|-------------------------|
-| `domain`  | string | Yes      | Domain name to look up  |
+| Parameter | Type   | Required | Description            |
+| --------- | ------ | -------- | ---------------------- |
+| `domain`  | string | Yes      | Domain name to look up |
 
 ### Response
 
@@ -41,9 +41,8 @@ Look up MX records for a domain.
 
 ### Errors
 
-| Code            | Status | Description                              |
-|-----------------|--------|------------------------------------------|
-| `bad_request`   | 400    | Invalid domain name format               |
-| `not_found`     | 404    | No MX records found for the domain       |
-| `internal_error`| 500    | DNS lookup failed unexpectedly           |
-
+| Code             | Status | Description                        |
+| ---------------- | ------ | ---------------------------------- |
+| `bad_request`    | 400    | Invalid domain name format         |
+| `not_found`      | 404    | No MX records found for the domain |
+| `internal_error` | 500    | DNS lookup failed unexpectedly     |

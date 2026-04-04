@@ -16,7 +16,6 @@ reading throughout the day.
 
 **Endpoint:** `GET /v1/entertainment/horoscope/:sign`
 
-
 Returns a daily horoscope reading for the given zodiac sign.
 
 #### Path Parameters

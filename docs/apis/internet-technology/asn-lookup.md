@@ -1,6 +1,7 @@
 # ASN Lookup API
 
-Look up Autonomous System Number (ASN), organization, ISP, and network route information for any IP address.
+Look up Autonomous System Number (ASN), organization, ISP, and network route
+information for any IP address.
 
 ## Endpoints
 
@@ -8,7 +9,9 @@ Look up Autonomous System Number (ASN), organization, ISP, and network route inf
 
 `GET /v1/tech/ip/asn`
 
-Returns ASN information for the requesting client's IP address. Useful when you want information about the user making the request without specifying an IP explicitly.
+Returns ASN information for the requesting client's IP address. Useful when you
+want information about the user making the request without specifying an IP
+explicitly.
 
 **Parameters:** None
 
@@ -18,9 +21,9 @@ Returns ASN information for the requesting client's IP address. Useful when you 
 
 Returns ASN information for a specific IP address.
 
-| Name | Type | Required | Description |
-|------|------|----------|-------------|
-| `ip` | string | Yes | IP address to look up (IPv4 or IPv6) |
+| Name | Type   | Required | Description                          |
+| ---- | ------ | -------- | ------------------------------------ |
+| `ip` | string | Yes      | IP address to look up (IPv4 or IPv6) |
 
 ## Response Envelope
 
@@ -45,22 +48,22 @@ All responses are wrapped in the standard envelope:
 
 ## Response Fields
 
-| Field | Type | Description |
-|-------|------|-------------|
-| `ip` | string | The IP address that was looked up |
-| `asn` | string | Autonomous System Number (e.g., "AS15169") |
-| `org` | string | Organization name owning the IP range |
-| `isp` | string | Internet Service Provider |
-| `domain` | string | Domain name associated with the IP |
-| `route` | string | CIDR notation of the network route |
-| `type` | string | Type of network (hosting, isp, business, cdn) |
+| Field    | Type   | Description                                   |
+| -------- | ------ | --------------------------------------------- |
+| `ip`     | string | The IP address that was looked up             |
+| `asn`    | string | Autonomous System Number (e.g., "AS15169")    |
+| `org`    | string | Organization name owning the IP range         |
+| `isp`    | string | Internet Service Provider                     |
+| `domain` | string | Domain name associated with the IP            |
+| `route`  | string | CIDR notation of the network route            |
+| `type`   | string | Type of network (hosting, isp, business, cdn) |
 
 ## Error Codes
 
-| Code | Status | When |
-|------|--------|------|
-| `bad_request` | 400 | Invalid IP address |
-| `internal_error` | 500 | Unexpected failure |
+| Code             | Status | When               |
+| ---------------- | ------ | ------------------ |
+| `bad_request`    | 400    | Invalid IP address |
+| `internal_error` | 500    | Unexpected failure |
 
 ## Examples
 
@@ -95,7 +98,8 @@ print(response.json())
 
 **What is an ASN?**
 
-An Autonomous System Number (ASN) is a unique identifier assigned to a group of IP networks and routers that operate under a common administration.
+An Autonomous System Number (ASN) is a unique identifier assigned to a group of
+IP networks and routers that operate under a common administration.
 
 **Does this support IPv6?**
 
@@ -103,4 +107,5 @@ Yes, both IPv4 and IPv6 addresses are fully supported.
 
 **What happens with private IP addresses?**
 
-Private IP addresses (192.168.x.x, 10.x.x.x, 172.16-31.x.x) do not have ASN information. The API returns the IP with empty ASN fields.
+Private IP addresses (192.168.x.x, 10.x.x.x, 172.16-31.x.x) do not have ASN
+information. The API returns the IP with empty ASN fields.

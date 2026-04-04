@@ -7,8 +7,8 @@
 ## Overview
 
 Generate random fake user profiles for testing and prototyping. Each call
-returns a unique name, email address, phone number, mailing address, and
-avatar URL.
+returns a unique name, email address, phone number, mailing address, and avatar
+URL.
 
 ## Base URL
 

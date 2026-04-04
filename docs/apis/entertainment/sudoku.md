@@ -19,17 +19,17 @@ Generate a random Sudoku puzzle.
 
 #### Query Parameters
 
-| Parameter    | Type   | Required | Description                                        |
-| ------------ | ------ | -------- | -------------------------------------------------- |
+| Parameter    | Type   | Required | Description                                                           |
+| ------------ | ------ | -------- | --------------------------------------------------------------------- |
 | `difficulty` | string | No       | Puzzle difficulty: `easy`, `medium`, or `hard`. Defaults to `medium`. |
 
 #### Response Fields
 
-| Field        | Type          | Description                                         |
-| ------------ | ------------- | --------------------------------------------------- |
-| `difficulty` | string        | The difficulty level of the returned puzzle.        |
-| `puzzle`     | array[array]  | 9×9 grid — `0` represents an empty cell to fill in. |
-| `solution`   | array[array]  | 9×9 grid containing the complete solution.          |
+| Field        | Type         | Description                                         |
+| ------------ | ------------ | --------------------------------------------------- |
+| `difficulty` | string       | The difficulty level of the returned puzzle.        |
+| `puzzle`     | array[array] | 9×9 grid — `0` represents an empty cell to fill in. |
+| `solution`   | array[array] | 9×9 grid containing the complete solution.          |
 
 #### Example Response
 

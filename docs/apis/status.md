@@ -52,7 +52,8 @@ All 36 endpoints are currently planned. This category includes:
 - [User Agent](./internet-technology/user-agent.md) - ✅ mvp
 - [Validate Phone](./internet-technology/validate-phone.md) - ✅ mvp
 - [Barcode](./internet-technology/barcode.md) - ⏳ planned
-- [Disposable Email Checker](./internet-technology/disposable-email-checker.md) - ⏳ planned
+- [Disposable Email Checker](./internet-technology/disposable-email-checker.md) -
+  ⏳ planned
 - [DNS Lookup](./internet-technology/dns-lookup.md) - ⏳ planned
 - [Domain](./internet-technology/domain.md) - ⏳ planned
 - [IP Lookup](./internet-technology/ip-lookup.md) - ⏳ planned
@@ -167,20 +168,20 @@ All 9 endpoints are currently planned. This category includes:
 
 ## Progress Overview
 
-| Category              | Total   | Live  | Planned |
-| --------------------- | ------- | ----- | ------- |
-| Entertainment         | 15      | 3     | 12      |
-| Finance               | 36      | 0     | 36      |
-| Internet / Technology | 16      | 4     | 12      |
-| AI / Computer Vision  | 6       | 0     | 6       |
-| Animals               | 3       | 0     | 3       |
-| Health / Wellness     | 7       | 0     | 7       |
-| Miscellaneous         | 13      | 2     | 11      |
-| Places                | 15      | 2     | 13      |
-| Text                  | 8       | 3     | 5       |
-| Transportation        | 9       | 0     | 9       |
-| Email                 | 1       | 1     | 0       |
-| Weather               | 1       | 0     | 1       |
+| Category              | Total   | Live   | Planned |
+| --------------------- | ------- | ------ | ------- |
+| Entertainment         | 15      | 3      | 12      |
+| Finance               | 36      | 0      | 36      |
+| Internet / Technology | 16      | 4      | 12      |
+| AI / Computer Vision  | 6       | 0      | 6       |
+| Animals               | 3       | 0      | 3       |
+| Health / Wellness     | 7       | 0      | 7       |
+| Miscellaneous         | 13      | 2      | 11      |
+| Places                | 15      | 2      | 13      |
+| Text                  | 8       | 3      | 5       |
+| Transportation        | 9       | 0      | 9       |
+| Email                 | 1       | 1      | 0       |
+| Weather               | 1       | 0      | 1       |
 | **TOTAL**             | **130** | **15** | **115** |
 
 ## Live APIs
@@ -188,7 +189,8 @@ All 9 endpoints are currently planned. This category includes:
 Currently live and production-ready:
 
 - Entertainment: Advice, Quotes, Horoscope
-- Internet / Technology: Base64 Encode / Decode, Password Generator, User Agent, Validate Phone
+- Internet / Technology: Base64 Encode / Decode, Password Generator, User Agent,
+  Validate Phone
 - Miscellaneous: Counter, Unit Conversion
 - Places: Timezone, Working Days
 - Text: Lorem Ipsum, Profanity Filter, Random Word

@@ -8,8 +8,8 @@ above 15,000 from the [GeoNames dataset](https://www.geonames.org/).
 
 `GET /v1/places/cities/{city}`
 
-| Parameter | Location | Required | Description |
-|-----------|----------|----------|-------------|
+| Parameter | Location | Required | Description                  |
+| --------- | -------- | -------- | ---------------------------- |
 | `city`    | path     | Yes      | City name (case-insensitive) |
 
 ```bash
@@ -38,7 +38,8 @@ curl "https://api.requiems.xyz/v1/places/cities/london" \
 ## Name Resolution
 
 - Lookup is case-insensitive: `london`, `London`, and `LONDON` all work.
-- When multiple cities share the same name the most populous one is returned (e.g. `london` → London, UK not London, Ontario).
+- When multiple cities share the same name the most populous one is returned
+  (e.g. `london` → London, UK not London, Ontario).
 - Multi-word names work: `/v1/places/cities/new%20york%20city`.
 
 ## Timezone
@@ -49,10 +50,10 @@ The `timezone` field is an IANA timezone identifier compatible with the
 
 ## Error Codes
 
-| Code             | Status | When |
-|------------------|--------|------|
+| Code             | Status | When                                  |
+| ---------------- | ------ | ------------------------------------- |
 | `not_found`      | 404    | No city with that name in the dataset |
-| `internal_error` | 500    | Unexpected failure |
+| `internal_error` | 500    | Unexpected failure                    |
 
 ## Coverage
 

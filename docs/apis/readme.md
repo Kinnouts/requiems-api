@@ -44,7 +44,10 @@ There are 5 places that track API status. They must be kept in sync:
 When an API goes from planned → live, update all 5 locations in order:
 
 1. **Go router** — register the route in `apps/api/services/{domain}/router.go`
-2. **`api_catalog.yml`** — add entry with `status: live` (and remove `coming_soon: true` from the category if needed)
+2. **`api_catalog.yml`** — add entry with `status: live` (and remove
+   `coming_soon: true` from the category if needed)
 3. **`docs/apis/status.md`** — update status emoji and progress counts
-4. **`docs/apis/{category}/readme.md`** — update the individual entry and category statistics
-5. **`docs/apis/{category}/{api}.md`** — update the individual API doc status field
+4. **`docs/apis/{category}/readme.md`** — update the individual entry and
+   category statistics
+5. **`docs/apis/{category}/{api}.md`** — update the individual API doc status
+   field

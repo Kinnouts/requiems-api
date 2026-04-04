@@ -6,8 +6,8 @@
 
 ## Overview
 
-Get classic dad jokes. Groan-worthy puns and wholesome humor that only dads
-seem to enjoy.
+Get classic dad jokes. Groan-worthy puns and wholesome humor that only dads seem
+to enjoy.
 
 ## Endpoints
 
@@ -33,8 +33,7 @@ Get a random dad joke.
 
 #### Fields
 
-| Field  | Type   | Description                     |
-| ------ | ------ | ------------------------------- |
-| `id`   | string | Unique identifier for the joke  |
-| `joke` | string | The dad joke text               |
-
+| Field  | Type   | Description                    |
+| ------ | ------ | ------------------------------ |
+| `id`   | string | Unique identifier for the joke |
+| `joke` | string | The dad joke text              |

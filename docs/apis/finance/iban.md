@@ -1,7 +1,7 @@
 # IBAN Validator API
 
-Validate IBAN numbers and extract the bank code and account number.
-Supports all countries in the official SWIFT IBAN Registry (~80 countries).
+Validate IBAN numbers and extract the bank code and account number. Supports all
+countries in the official SWIFT IBAN Registry (~80 countries).
 
 ## Endpoint
 
@@ -65,13 +65,13 @@ ISO 13616 mod-97 checksum:
 2. Replace each letter with its numeric equivalent (`A=10` … `Z=35`).
 3. Compute the integer mod 97. A remainder of **1** means valid.
 
-Length is also validated against the country's expected IBAN length from
-the SWIFT IBAN Registry.
+Length is also validated against the country's expected IBAN length from the
+SWIFT IBAN Registry.
 
 ## Data Source
 
-Country format data (expected IBAN length, bank code position, account
-number position) is seeded from the
+Country format data (expected IBAN length, bank code position, account number
+position) is seeded from the
 [php-iban project](https://github.com/globalcitizen/php-iban), a maintained
 mirror of the official SWIFT IBAN Registry (ISO 13616).
 
@@ -79,6 +79,6 @@ Re-run `cmd/seed-iban` to refresh when new countries join or formats change.
 
 ## Error Codes
 
-| Code             | Status | When                  |
-| ---------------- | ------ | --------------------- |
-| `internal_error` | 500    | Database unreachable  |
+| Code             | Status | When                 |
+| ---------------- | ------ | -------------------- |
+| `internal_error` | 500    | Database unreachable |

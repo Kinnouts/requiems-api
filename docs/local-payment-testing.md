@@ -1,14 +1,16 @@
 # Local Payment Testing with ngrok
 
-This guide covers testing the LemonSqueezy payment integration locally using ngrok.
-LemonSqueezy needs a public URL to deliver webhooks — ngrok tunnels that to your local Rails instance.
+This guide covers testing the LemonSqueezy payment integration locally using
+ngrok. LemonSqueezy needs a public URL to deliver webhooks — ngrok tunnels that
+to your local Rails instance.
 
 ## How it works
 
-`LEMONSQUEEZY_TEST_MODE=true` is set by default in `.env.example`, so the dev stack always
-runs in test mode. `AppConfig` loads all `_TEST` suffixed env vars (variant IDs, checkout UUIDs,
-signing secret) when the flag is `true`. To temporarily disable test mode locally, override
-with `LEMONSQUEEZY_TEST_MODE=false` in `infra/docker/.env.local`.
+`LEMONSQUEEZY_TEST_MODE=true` is set by default in `.env.example`, so the dev
+stack always runs in test mode. `AppConfig` loads all `_TEST` suffixed env vars
+(variant IDs, checkout UUIDs, signing secret) when the flag is `true`. To
+temporarily disable test mode locally, override with
+`LEMONSQUEEZY_TEST_MODE=false` in `infra/docker/.env.local`.
 
 ## One-time setup
 
@@ -16,7 +18,8 @@ with `LEMONSQUEEZY_TEST_MODE=false` in `infra/docker/.env.local`.
 
 1. Enable test mode in LemonSqueezy (toggle in the top bar)
 2. Go to Settings > Webhooks > Add webhook
-3. Set the URL to: `https://goblin-mature-annually.ngrok-free.app/webhooks/lemonsqueezy`
+3. Set the URL to:
+   `https://goblin-mature-annually.ngrok-free.app/webhooks/lemonsqueezy`
 4. Select all subscription events:
    - `subscription_created`
    - `subscription_updated`
@@ -32,11 +35,11 @@ with `LEMONSQUEEZY_TEST_MODE=false` in `infra/docker/.env.local`.
 LEMONSQUEEZY_SIGNING_SECRET_TEST=<signing secret from step 2>
 ```
 
-This is a separate secret from the production webhook — each webhook in LemonSqueezy
-has its own signing secret.
+This is a separate secret from the production webhook — each webhook in
+LemonSqueezy has its own signing secret.
 
-Since the ngrok domain is static (`goblin-mature-annually.ngrok-free.app`), you only
-need to do this webhook setup once.
+Since the ngrok domain is static (`goblin-mature-annually.ngrok-free.app`), you
+only need to do this webhook setup once.
 
 ---
 
@@ -55,7 +58,8 @@ docker compose -f docker-compose.dev.yml up
 ngrok http --domain=goblin-mature-annually.ngrok-free.app 3000
 ```
 
-Confirm the tunnel is live: `https://goblin-mature-annually.ngrok-free.app` → `http://localhost:3000`
+Confirm the tunnel is live: `https://goblin-mature-annually.ngrok-free.app` →
+`http://localhost:3000`
 
 Test mode is already `true` by default — nothing to toggle.
 
@@ -108,21 +112,26 @@ Should return the updated plan.
 
 The signing secret doesn't match.
 
-1. Verify `LEMONSQUEEZY_SIGNING_SECRET_TEST` matches the one shown in LemonSqueezy > Settings > Webhooks
-2. Check logs: `docker compose -f docker-compose.dev.yml logs dashboard | grep "Invalid signature"`
+1. Verify `LEMONSQUEEZY_SIGNING_SECRET_TEST` matches the one shown in
+   LemonSqueezy > Settings > Webhooks
+2. Check logs:
+   `docker compose -f docker-compose.dev.yml logs dashboard | grep "Invalid signature"`
 3. If needed, regenerate the signing secret in LemonSqueezy and update `.env`
 
 ### Webhook not being delivered
 
-1. Confirm ngrok is running: `https://goblin-mature-annually.ngrok-free.app/healthz` should return 200
-2. Check delivery attempts in LemonSqueezy > Settings > Webhooks > (your webhook) > Recent deliveries
+1. Confirm ngrok is running:
+   `https://goblin-mature-annually.ngrok-free.app/healthz` should return 200
+2. Check delivery attempts in LemonSqueezy > Settings > Webhooks > (your
+   webhook) > Recent deliveries
 3. Make sure LemonSqueezy test mode is ON when triggering test checkouts
 
 ### User not found in webhook
 
-The webhook includes `custom_data.user_id` to identify the buyer. This is automatically
-set by `billing_controller.rb` when building the checkout URL. Make sure you're logged in
-as a real user in the Rails dashboard before clicking Upgrade.
+The webhook includes `custom_data.user_id` to identify the buyer. This is
+automatically set by `billing_controller.rb` when building the checkout URL.
+Make sure you're logged in as a real user in the Rails dashboard before clicking
+Upgrade.
 
 ### ngrok tunnel not working
 
@@ -132,10 +141,11 @@ Re-run:
 ngrok http --domain=goblin-mature-annually.ngrok-free.app 3000
 ```
 
-No need to reconfigure the LemonSqueezy webhook — the static domain stays the same.
+No need to reconfigure the LemonSqueezy webhook — the static domain stays the
+same.
 
 ### Missing `_TEST` env vars on startup
 
-If Rails fails to start with `MissingConfigError`, check that all `_TEST` vars are filled in
-`infra/docker/.env`. With `LEMONSQUEEZY_TEST_MODE=true`, the app requires all `_TEST` variants
-to be present.
+If Rails fails to start with `MissingConfigError`, check that all `_TEST` vars
+are filled in `infra/docker/.env`. With `LEMONSQUEEZY_TEST_MODE=true`, the app
+requires all `_TEST` variants to be present.

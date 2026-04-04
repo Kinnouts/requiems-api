@@ -15,7 +15,6 @@ system, device type, and bot detection.
 
 `GET /v1/tech/useragent?ua=<encoded-ua-string>`
 
-
 ### Query Parameters
 
 | Parameter | Required | Description                   |

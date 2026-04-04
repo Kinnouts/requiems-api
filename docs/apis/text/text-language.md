@@ -6,8 +6,8 @@
 
 ## Overview
 
-Detect language of text. This endpoint identifies the language of provided
-text, returning the full language name, ISO 639-1 code, and a confidence score.
+Detect language of text. This endpoint identifies the language of provided text,
+returning the full language name, ISO 639-1 code, and a confidence score.
 
 ## Endpoint
 
@@ -43,10 +43,10 @@ Portuguese, Dutch, Russian, Chinese, Japanese, Arabic, and many more.
 
 ## Response Fields
 
-| Field        | Type   | Description                                                              |
-| ------------ | ------ | ------------------------------------------------------------------------ |
-| `language`   | string | Full name of the detected language                                       |
-| `code`       | string | ISO 639-1 two-letter language code. Empty string when unreliable.        |
+| Field        | Type   | Description                                                             |
+| ------------ | ------ | ----------------------------------------------------------------------- |
+| `language`   | string | Full name of the detected language                                      |
+| `code`       | string | ISO 639-1 two-letter language code. Empty string when unreliable.       |
 | `confidence` | float  | Confidence score between 0.0 and 1.0. 0.0 when detection is unreliable. |
 
 ## Error Codes

@@ -19,7 +19,8 @@ Generate and validate barcodes
 Encode and decode Base64 strings
 
 - **Status:** mvp
-- **Endpoints:** `POST /v1/convert/base64/encode`, `POST /v1/convert/base64/decode`
+- **Endpoints:** `POST /v1/convert/base64/encode`,
+  `POST /v1/convert/base64/decode`
 - **Credit Cost:** 1
 
 ### [Disposable Email Checker](./disposable-email-checker.md) - ⏳ Planned
@@ -45,7 +46,8 @@ Get domain information and availability
 
 ### [ASN Lookup](./asn-lookup.md) - ✅ MVP
 
-Look up Autonomous System Number (ASN), organization, ISP, and network route information for any IP address.
+Look up Autonomous System Number (ASN), organization, ISP, and network route
+information for any IP address.
 
 - **Status:** mvp
 - **Endpoint:** `GET /v1/tech/ip/asn/{ip}`
@@ -55,7 +57,8 @@ Look up Autonomous System Number (ASN), organization, ISP, and network route inf
 Get IP geolocation data including country, city, ISP, and VPN detection.
 
 - **Status:** mvp
-- **Endpoints:** `GET /v1/tech/ip` (caller IP), `GET /v1/tech/ip/{ip}` (specific IP)
+- **Endpoints:** `GET /v1/tech/ip` (caller IP), `GET /v1/tech/ip/{ip}` (specific
+  IP)
 
 ### [MX Lookup](./mx-lookup.md) - ✅ MVP
 
