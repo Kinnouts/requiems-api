@@ -69,42 +69,42 @@ func TestSanitizeSWIFT_AlphanumericLocation(t *testing.T) {
 
 func TestSanitizeSWIFT_TooShort(t *testing.T) {
 	_, err := sanitizeSWIFT("DEUTDE")
-	assertAppError(t, err, "bad_request")
+	assertAppError(t, err)
 }
 
 func TestSanitizeSWIFT_TooLong(t *testing.T) {
 	_, err := sanitizeSWIFT("DEUTDEDB001X")
-	assertAppError(t, err, "bad_request")
+	assertAppError(t, err)
 }
 
 func TestSanitizeSWIFT_9Chars(t *testing.T) {
 	_, err := sanitizeSWIFT("DEUTDEDB0")
-	assertAppError(t, err, "bad_request")
+	assertAppError(t, err)
 }
 
 func TestSanitizeSWIFT_10Chars(t *testing.T) {
 	_, err := sanitizeSWIFT("DEUTDEDB01")
-	assertAppError(t, err, "bad_request")
+	assertAppError(t, err)
 }
 
 func TestSanitizeSWIFT_Empty(t *testing.T) {
 	_, err := sanitizeSWIFT("")
-	assertAppError(t, err, "bad_request")
+	assertAppError(t, err)
 }
 
 func TestSanitizeSWIFT_DigitInBankCode(t *testing.T) {
 	_, err := sanitizeSWIFT("1EUTDEDB")
-	assertAppError(t, err, "bad_request")
+	assertAppError(t, err)
 }
 
 func TestSanitizeSWIFT_DigitInCountryCode(t *testing.T) {
 	_, err := sanitizeSWIFT("DEUT1EDB")
-	assertAppError(t, err, "bad_request")
+	assertAppError(t, err)
 }
 
 func TestSanitizeSWIFT_InvalidBranchCode(t *testing.T) {
 	_, err := sanitizeSWIFT("DEUTDEDB0-1")
-	assertAppError(t, err, "bad_request")
+	assertAppError(t, err)
 }
 
 func TestSanitizeSWIFT_8Char_AppendXXX(t *testing.T) {
@@ -120,9 +120,9 @@ func TestSanitizeSWIFT_8Char_AppendXXX(t *testing.T) {
 	}
 }
 
-// assertAppError verifies that err is an *httpx.AppError with a 400 status
-// and the expected error code. All sanitizeSWIFT errors are 400 bad_request.
-func assertAppError(t *testing.T, err error, code string) {
+// assertAppError verifies that err is a 400 bad_request *httpx.AppError.
+// All sanitizeSWIFT validation errors return this exact status and code.
+func assertAppError(t *testing.T, err error) {
 	t.Helper()
 	if err == nil {
 		t.Fatal("expected an error, got nil")
@@ -134,7 +134,7 @@ func assertAppError(t *testing.T, err error, code string) {
 	if ae.Status != 400 {
 		t.Errorf("expected status 400, got %d", ae.Status)
 	}
-	if ae.Code != code {
-		t.Errorf("expected code %q, got %q", code, ae.Code)
+	if ae.Code != "bad_request" {
+		t.Errorf("expected code %q, got %q", "bad_request", ae.Code)
 	}
 }
