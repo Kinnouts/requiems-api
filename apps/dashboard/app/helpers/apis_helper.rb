@@ -1,22 +1,18 @@
 # frozen_string_literal: true
 
 module ApisHelper
-  # Load the API catalog from YAML config
   def api_catalog
     @api_catalog ||= YAML.load_file(Rails.root.join("config", "api_catalog.yml"))
   end
 
-  # Get all categories
   def api_categories
     api_catalog["categories"]
   end
 
-  # Get all APIs
   def all_apis
     api_catalog["apis"]
   end
 
-  # Get APIs by category
   def apis_by_category(category_id)
     all_apis.select { |api| Array(api["categories"]).include?(category_id) }
   end
