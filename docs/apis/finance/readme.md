@@ -2,251 +2,81 @@
 
 ## Overview
 
-Financial data endpoints providing access to market data, currency information,
-tax calculators, and investment-related data.
+Financial data endpoints for payment card validation, currency exchange, banking
+reference data, and macroeconomic indicators.
 
 ## Endpoints
 
-### [BIN](./bin.md) - ⏳ Planned
+### [Exchange Rate](./exchange-rate.md) - ✅ MVP
 
-Get information about Bank Identification Numbers
+Get live currency exchange rates and convert amounts between currencies.
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/bin`
+- **Status:** mvp
+- **Endpoints:** `GET /v1/finance/exchange`, `GET /v1/finance/convert`
+- **Credit Cost:** 1
 
-### [Bitcoin](./bitcoin.md) - ⏳ Planned
+### [Crypto Prices](./crypto-price.md) - ✅ MVP
 
-Get Bitcoin price and information
+Get live cryptocurrency prices, 24h change, market cap, and volume for 20+ major
+coins.
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/bitcoin`
+- **Status:** mvp
+- **Endpoint:** `GET /v1/finance/crypto`
+- **Credit Cost:** 1
 
-### [Commodity Price](./commodity-price.md) - ⏳ Planned
+### [BIN Lookup](./bin.md) - ✅ MVP
 
-Get commodity prices (oil, gold, etc.)
+Look up issuing bank, card network, type, and country from the first 6–8 digits
+of a payment card.
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/commodity-price`
+- **Status:** mvp
+- **Endpoint:** `GET /v1/finance/bin/{bin}`
+- **Credit Cost:** 1
 
-### [Convert Currency](./convert-currency.md) - ⏳ Planned
+### [IBAN Validator](./iban.md) - ✅ MVP
 
-Convert between different currencies
+Validate IBAN numbers and extract bank code and account number.
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/convert-currency`
+- **Status:** mvp
+- **Endpoint:** `GET /v1/finance/iban/{iban}`
+- **Credit Cost:** 1
 
-### [Crypto Price](./crypto-price.md) - ⏳ Planned
+### [SWIFT Code](./swift-code.md) - ✅ MVP
 
-Get cryptocurrency prices
+Validate and look up bank metadata by SWIFT/BIC code.
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/crypto-price`
+- **Status:** mvp
+- **Endpoints:** `GET /v1/finance/swift/{code}`, `GET /v1/finance/swift`,
+  `GET /v1/finance/swift/search`
+- **Credit Cost:** 1
 
-### [Earnings](./earnings.md) - ⏳ Planned
+### [Mortgage Calculator](./mortgage.md) - ✅ MVP
 
-Get company earnings information
+Calculate monthly mortgage payments and full amortization schedules.
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/earnings`
+- **Status:** mvp
+- **Endpoint:** `POST /v1/finance/mortgage`
+- **Credit Cost:** 1
 
-### [Earnings Calendar](./earnings-calendar.md) - ⏳ Planned
+### [Commodity Prices](./commodities.md) - ✅ MVP
 
-Get earnings calendar data
+Historical and current annual average prices for 16 major commodities sourced
+from FRED.
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/earnings-calendar`
+- **Status:** mvp
+- **Endpoint:** `GET /v1/finance/commodities`
+- **Credit Cost:** 1
 
-### [Earnings Call Transcript](./earnings-call-transcript.md) - ⏳ Planned
+### [Inflation](./inflation.md) - ✅ MVP
 
-Get company earnings call transcripts
+Historical and current CPI inflation rates for 241 countries, sourced from the
+World Bank.
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/earnings-call-transcript`
-
-### [ETF](./etf.md) - ⏳ Planned
-
-Get Exchange Traded Fund information
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/etf`
-
-### [Exchange Rate](./exchange-rate.md) - ⏳ Planned
-
-Get exchange rates between currencies
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/exchange-rate`
-
-### [Gold Price](./gold-price.md) - ⏳ Planned
-
-Get current gold prices
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/gold-price`
-
-### [IBAN](./iban.md) - ⏳ Planned
-
-Validate and get information about IBAN codes
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/iban`
-
-### [Income Tax](./income-tax.md) - ⏳ Planned
-
-Get income tax information by location
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/income-tax`
-
-### [Income Tax Calculator](./income-tax-calculator.md) - ⏳ Planned
-
-Calculate income tax liability
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/income-tax-calculator`
-
-### [Inflation](./inflation.md) - ⏳ Planned
-
-Get inflation data and rates
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/inflation`
-
-### [Insider Trading](./insider-trading.md) - ⏳ Planned
-
-Get insider trading information
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/insider-trading`
-
-### [Interest Rate](./interest-rate.md) - ⏳ Planned
-
-Get interest rate data
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/interest-rate`
-
-### [LIBOR](./libor.md) - ⏳ Planned
-
-Get LIBOR rates
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/libor`
-
-### [Market Cap](./market-cap.md) - ⏳ Planned
-
-Get market capitalization data
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/market-cap`
-
-### [Mortgage Calculator](./mortgage-calculator.md) - ⏳ Planned
-
-Calculate mortgage payments
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/mortgage-calculator`
-
-### [Mortgage Rate](./mortgage-rate.md) - ⏳ Planned
-
-Get current mortgage rates
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/mortgage-rate`
-
-### [Mutual Fund](./mutual-fund.md) - ⏳ Planned
-
-Get mutual fund information
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/mutual-fund`
-
-### [Property Tax](./property-tax.md) - ⏳ Planned
-
-Get property tax information
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/property-tax`
-
-### [Routing Number](./routing-number.md) - ⏳ Planned
-
-Validate and get bank routing numbers
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/routing-number`
-
-### [S&P 500](./sp-500.md) - ⏳ Planned
-
-Get S&P 500 index data
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/sp-500`
-
-### [Sales Tax](./sales-tax.md) - ⏳ Planned
-
-Get sales tax rates by location
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/sales-tax`
-
-### [Sales Tax Calculator](./sales-tax-calculator.md) - ⏳ Planned
-
-Calculate sales tax on purchases
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/sales-tax-calculator`
-
-### [SEC](./sec.md) - ⏳ Planned
-
-Get SEC filings and data
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/sec`
-
-### [Stock Exchange](./stock-exchange.md) - ⏳ Planned
-
-Get stock exchange information
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/stock-exchange`
-
-### [Stock Price](./stock-price.md) - ⏳ Planned
-
-Get current and historical stock prices
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/stock-price`
-
-### [SWIFT Code](./swift-code.md) - ✅ Live
-
-Validate and look up bank metadata by SWIFT/BIC code
-
-- **Status:** live
-- **Endpoint:** `GET /v1/finance/swift/{code}`
-
-### [Ticker](./ticker.md) - ⏳ Planned
-
-Get stock ticker symbols and information
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/ticker`
-
-### [Unemployment](./unemployment.md) - ⏳ Planned
-
-Get unemployment rates and data
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/unemployment`
-
-### [VAT](./vat.md) - ⏳ Planned
-
-Get VAT rates and information
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/finance/vat`
+- **Status:** mvp
+- **Endpoint:** `GET /v1/finance/inflation`
+- **Credit Cost:** 1
 
 ## Category Statistics
 
-- Total Endpoints: 36
-- Live: 0
-- Planned: 36
+- Total Endpoints: 8
+- Live: 8

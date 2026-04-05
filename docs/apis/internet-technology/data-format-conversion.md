@@ -62,13 +62,13 @@ curl -X POST https://api.requiems.xyz/v1/convert/format \
 
 ## Supported Formats
 
-| Format | `from`/`to` value | Notes                                                        |
-| ------ | ----------------- | ------------------------------------------------------------ |
-| JSON   | `json`            | RFC 8259. Numbers preserve int/float types.                  |
-| YAML   | `yaml`            | YAML 1.2 via `gopkg.in/yaml.v3`.                             |
+| Format | `from`/`to` value | Notes                                                          |
+| ------ | ----------------- | -------------------------------------------------------------- |
+| JSON   | `json`            | RFC 8259. Numbers preserve int/float types.                    |
+| YAML   | `yaml`            | YAML 1.2 via `gopkg.in/yaml.v3`.                               |
 | CSV    | `csv`             | First row is the header. Requires array of objects for output. |
-| XML    | `xml`             | Input parsed to map; output wrapped in `<root>` element.     |
-| TOML   | `toml`            | Top-level value must be an object (no bare arrays/scalars).  |
+| XML    | `xml`             | Input parsed to map; output wrapped in `<root>` element.       |
+| TOML   | `toml`            | Top-level value must be an object (no bare arrays/scalars).    |
 
 ---
 
@@ -81,7 +81,8 @@ curl -X POST https://api.requiems.xyz/v1/convert/format \
   columns than the header return a `422 invalid_csv` error.
 - **Output (to: csv):** The input must be a JSON array of objects with
   consistent string keys. The keys of the first object are used as headers
-  (sorted alphabetically). Non-object array elements return a `422
+  (sorted alphabetically). Non-object array elements return a
+  `422
   conversion_error`.
 
 ### XML
@@ -94,8 +95,8 @@ curl -X POST https://api.requiems.xyz/v1/convert/format \
 
 ### TOML
 
-- **Output (to: toml):** TOML requires a top-level table (object). Attempting
-  to convert a JSON array or scalar to TOML returns a `422 conversion_error`.
+- **Output (to: toml):** TOML requires a top-level table (object). Attempting to
+  convert a JSON array or scalar to TOML returns a `422 conversion_error`.
 
 ---
 
@@ -108,17 +109,17 @@ The `content` field is capped at **512 KB**. Requests exceeding this return
 
 ## Error Responses
 
-| HTTP Status | Error Code          | When                                                       |
-| ----------- | ------------------- | ---------------------------------------------------------- |
-| 413         | `content_too_large` | `content` exceeds 512 KB                                   |
-| 422         | `validation_failed` | Missing or invalid `from`/`to`/`content` field             |
-| 422         | `invalid_json`      | `content` is not valid JSON (when `from=json`)             |
-| 422         | `invalid_yaml`      | `content` is not valid YAML (when `from=yaml`)             |
-| 422         | `invalid_csv`       | `content` is not valid CSV or row/header column mismatch   |
-| 422         | `invalid_xml`       | `content` is not valid XML (when `from=xml`)               |
-| 422         | `invalid_toml`      | `content` is not valid TOML (when `from=toml`)             |
-| 422         | `conversion_error`  | Data structure is incompatible with the target format      |
-| 500         | `internal_error`    | Unexpected failure during serialization                    |
+| HTTP Status | Error Code          | When                                                     |
+| ----------- | ------------------- | -------------------------------------------------------- |
+| 413         | `content_too_large` | `content` exceeds 512 KB                                 |
+| 422         | `validation_failed` | Missing or invalid `from`/`to`/`content` field           |
+| 422         | `invalid_json`      | `content` is not valid JSON (when `from=json`)           |
+| 422         | `invalid_yaml`      | `content` is not valid YAML (when `from=yaml`)           |
+| 422         | `invalid_csv`       | `content` is not valid CSV or row/header column mismatch |
+| 422         | `invalid_xml`       | `content` is not valid XML (when `from=xml`)             |
+| 422         | `invalid_toml`      | `content` is not valid TOML (when `from=toml`)           |
+| 422         | `conversion_error`  | Data structure is incompatible with the target format    |
+| 500         | `internal_error`    | Unexpected failure during serialization                  |
 
 ---
 
@@ -179,20 +180,20 @@ print(response.json()["data"]["result"])
 ### JavaScript
 
 ```javascript
-const url = 'https://api.requiems.xyz/v1/convert/format';
+const url = "https://api.requiems.xyz/v1/convert/format";
 const headers = {
-  'requiems-api-key': 'YOUR_API_KEY',
-  'Content-Type': 'application/json',
+  "requiems-api-key": "YOUR_API_KEY",
+  "Content-Type": "application/json",
 };
 
 // JSON → XML
 const res = await fetch(url, {
-  method: 'POST',
+  method: "POST",
   headers,
   body: JSON.stringify({
-    from: 'json',
-    to: 'xml',
-    content: JSON.stringify({ name: 'Alice', age: 30 }),
+    from: "json",
+    to: "xml",
+    content: JSON.stringify({ name: "Alice", age: 30 }),
   }),
 });
 

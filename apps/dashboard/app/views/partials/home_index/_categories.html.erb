@@ -9,8 +9,8 @@
       </p>
     </div>
 
-    <div class="grid gap-3 mb-16 grid-cols-2 sm:grid-cols-4 md:grid-cols-7">
-      <% @categories.first(14).each do |category| %>
+    <div class="grid gap-3 mb-16 grid-cols-2 sm:grid-cols-4">
+      <% @categories.first(8).each do |category| %>
         <%= link_to category_path(category["id"]),
             class: "group bg-gray-50 dark:bg-gray-700 rounded-xl p-4 text-center transition-all duration-200 hover:bg-blue-50 dark:hover:bg-gray-600 hover:shadow-md #{category['coming_soon'] ? 'opacity-60' : ''}" do %>
           <div class="inline-flex items-center justify-center w-10 h-10 rounded-full mb-2 transition-colors <%= category_color_classes(category["id"], hover: true) %>">

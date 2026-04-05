@@ -2,21 +2,100 @@
 
 ## Overview
 
-Technology and internet-focused endpoints for domain validation, network
-lookups, code generation, and web utilities.
+Network intelligence, domain lookups, developer utilities, and code generation
+tools. This directory covers both the **Networking & Internet** and **Developer
+Tools** categories from the public API catalog.
 
-## Endpoints
+## Networking & Internet
 
-### [Barcode](./barcode.md) - ⏳ Planned
+### [IP Geolocation](./ip-lookup.md) - ✅ MVP
 
-Generate and validate barcodes
+Get geolocation data for any IP address including country, city, ISP, and VPN
+detection.
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/internet-technology/barcode`
+- **Status:** mvp
+- **Endpoints:** `GET /v1/tech/ip` (caller IP), `GET /v1/tech/ip/{ip}`
+- **Credit Cost:** 1
+
+### [ASN Lookup](./asn-lookup.md) - ✅ MVP
+
+Look up ASN, organization, ISP, and network route information for any IP
+address.
+
+- **Status:** mvp
+- **Endpoint:** `GET /v1/tech/ip/asn/{ip}`
+- **Credit Cost:** 1
+
+### [VPN & Proxy Detection](./vpn-detection.md) - ✅ MVP
+
+Detect if an IP belongs to a VPN, proxy, Tor exit node, or hosting provider.
+
+- **Status:** mvp
+- **Endpoint:** `GET /v1/tech/ip/vpn/{ip}`
+- **Credit Cost:** 1
+
+### [WHOIS Lookup](./whois.md) - ✅ MVP
+
+Get domain registration details including registrar, name servers, and expiry
+dates.
+
+- **Status:** mvp
+- **Endpoint:** `GET /v1/tech/whois/{domain}`
+- **Credit Cost:** 1
+
+### [Domain Info](./domain.md) - ✅ MVP
+
+Look up DNS records and check domain availability.
+
+- **Status:** mvp
+- **Endpoint:** `GET /v1/tech/domain/{domain}`
+- **Credit Cost:** 1
+
+### [MX Lookup](./mx-lookup.md) - ✅ MVP
+
+Look up MX records for any domain, sorted by priority.
+
+- **Status:** mvp
+- **Endpoint:** `GET /v1/tech/mx/{domain}`
+- **Credit Cost:** 1
+
+## Developer Tools
+
+### [QR Code Generator](./qr-code.md) - ✅ MVP
+
+Generate QR codes from any text or URL, returned as PNG or base64.
+
+- **Status:** mvp
+- **Endpoints:** `GET /v1/tech/qr`, `GET /v1/tech/qr/base64`
+- **Credit Cost:** 1
+
+### [Barcode Generator](./barcode.md) - ✅ MVP
+
+Generate barcodes in multiple formats, returned as PNG or base64.
+
+- **Status:** mvp
+- **Endpoints:** `GET /v1/tech/barcode`, `GET /v1/tech/barcode/base64`
+- **Credit Cost:** 1
+
+### [Password Generator](./password-generator.md) - ✅ MVP
+
+Generate cryptographically secure random passwords.
+
+- **Status:** mvp
+- **Endpoint:** `GET /v1/tech/password`
+- **Credit Cost:** 1
+
+### [User Agent Parser](./user-agent.md) - ✅ MVP
+
+Parse user agent strings to extract browser, OS, device type, and bot detection.
+
+- **Status:** mvp
+- **Endpoint:** `GET /v1/tech/useragent`
+- **Credit Cost:** 1
 
 ### [Base64 Encode / Decode](./base64.md) - ✅ MVP
 
-Encode and decode Base64 strings
+Encode strings to Base64 and decode Base64 back to plain text.
 
 - **Status:** mvp
 - **Endpoints:** `POST /v1/convert/base64/encode`,
@@ -25,121 +104,30 @@ Encode and decode Base64 strings
 
 ### [Number Base Conversion](./number-base-conversion.md) - ✅ MVP
 
-Convert integers between binary, octal, decimal, and hexadecimal
+Convert integers between binary, octal, decimal, and hexadecimal.
 
 - **Status:** mvp
 - **Endpoint:** `GET /v1/convert/base`
 - **Credit Cost:** 1
 
-### [Disposable Email Checker](./disposable-email-checker.md) - ⏳ Planned
+### [Color Format Conversion](./color-conversion.md) - ✅ MVP
 
-Check if an email is from a disposable email service
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/internet-technology/disposable-email-checker`
-
-### [DNS Lookup](./dns-lookup.md) - ⏳ Planned
-
-Perform DNS lookups for domains
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/internet-technology/dns-lookup`
-
-### [Domain](./domain.md) - ⏳ Planned
-
-Get domain information and availability
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/internet-technology/domain`
-
-### [ASN Lookup](./asn-lookup.md) - ✅ MVP
-
-Look up Autonomous System Number (ASN), organization, ISP, and network route
-information for any IP address.
+Convert color values between HEX, RGB, HSL, and CMYK.
 
 - **Status:** mvp
-- **Endpoint:** `GET /v1/tech/ip/asn/{ip}`
+- **Endpoint:** `GET /v1/tech/color`
+- **Credit Cost:** 1
 
-### [IP Geolocation](./ip-lookup.md) - ✅ MVP
+### [Data Format Conversion](./data-format-conversion.md) - ✅ MVP
 
-Get IP geolocation data including country, city, ISP, and VPN detection.
-
-- **Status:** mvp
-- **Endpoints:** `GET /v1/tech/ip` (caller IP), `GET /v1/tech/ip/{ip}` (specific
-  IP)
-
-### [MX Lookup](./mx-lookup.md) - ✅ MVP
-
-Perform MX record lookups
+Convert structured data between JSON, YAML, CSV, XML, and TOML.
 
 - **Status:** mvp
-- **Endpoint:** `GET /v1/tech/mx/{domain}`
-
-### [Password Generator](./password-generator.md) - ✅ MVP
-
-Generate secure passwords
-
-- **Status:** mvp
-- **Endpoint:** `GET /v1/tech/password`
-
-### [QR Code](./qr-code.md) - ✅ MVP
-
-Generate QR codes
-
-- **Status:** mvp
-- **Endpoint:** `GET /v1/tech/qr`
-
-### [URL Lookup](./url-lookup.md) - ⏳ Planned
-
-Get information about URLs
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/internet-technology/url-lookup`
-
-### [User Agent](./user-agent.md) - ✅ MVP
-
-Parse and analyze user agent strings
-
-- **Status:** mvp
-- **Endpoint:** `GET /v1/tech/useragent`
-
-### [Validate Phone](./validate-phone.md) - ✅ MVP
-
-Validate phone numbers
-
-- **Status:** mvp
-- **Endpoint:** `GET /v1/tech/validate/phone`
-
-### [Validate Email](./validate-email.md) - ⏳ Planned
-
-Validate email addresses
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/internet-technology/validate-email`
-
-### [Webpage](./webpage.md) - ⏳ Planned
-
-Get webpage information and metadata
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/internet-technology/webpage`
-
-### [Web Scraper](./web-scraper.md) - ⏳ Planned
-
-Scrape web pages for content
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/internet-technology/web-scraper`
-
-### [Whois](./whois.md) - ✅ MVP
-
-Get WHOIS information for domains
-
-- **Status:** mvp
-- **Endpoint:** `GET /v1/tech/whois/{domain}`
+- **Endpoint:** `POST /v1/convert/data`
+- **Credit Cost:** 1
 
 ## Category Statistics
 
-- Total Endpoints: 19
-- Live: 8
-- Planned: 11
+- Networking & Internet: 6 live
+- Developer Tools: 8 live
+- **Total: 14 live**
