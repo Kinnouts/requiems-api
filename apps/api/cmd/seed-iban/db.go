@@ -10,7 +10,6 @@ import (
 	"requiems-api/cmd/internal/seedutil"
 )
 
-
 func upsertRecords(ctx context.Context, conn *pgx.Conn, countries []RawIBANCountry) (inserted, updated int, err error) {
 	// 1. Create staging table and clear any rows from a prior run in this session.
 	_, err = conn.Exec(ctx, `

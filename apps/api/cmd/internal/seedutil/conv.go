@@ -14,7 +14,7 @@ func OpenDB(ctx context.Context, dsn string) (*pgx.Conn, error) {
 	if err != nil {
 		return nil, fmt.Errorf("pgx.Connect: %w", err)
 	}
-	
+
 	return conn, nil
 }
 
