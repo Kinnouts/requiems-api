@@ -41,6 +41,7 @@ class ApiProxyController < ApplicationController
 
   def valid_endpoint?(endpoint)
     return false if endpoint.blank?
+    return false if endpoint.include?("..")
 
     endpoint.match?(/\A\/v1\/[a-zA-Z0-9\/\-_.]+\z/)
   end
@@ -49,12 +50,12 @@ class ApiProxyController < ApplicationController
     # Convert ActionController::Parameters to a plain hash
     request_params = request_params.to_unsafe_h if request_params.respond_to?(:to_unsafe_h)
 
-    internal_url = ::AppConfig.internal_api_url
-    Rails.logger.debug { "Playground proxy: #{method} #{internal_url}#{endpoint} params=#{request_params.inspect}" }
-
-    uri = URI(internal_url)
-    uri.path = endpoint
-    uri.query = nil
+    # Build URI from fixed config components — host/scheme/port never sourced from user input.
+    # This prevents SSRF: even if endpoint is malformed, the request can only go to the
+    # configured internal API host.
+    base = URI(::AppConfig.internal_api_url)
+    uri = URI::Generic.build(scheme: base.scheme, host: base.host, port: base.port, path: endpoint)
+    Rails.logger.debug { "Playground proxy: #{method} #{base.host}#{endpoint} params=#{request_params.inspect}" }
 
     # CF-Connecting-IP is set by Cloudflare with the real client IP.
     # request.remote_ip alone returns Cloudflare's edge node IP because the
