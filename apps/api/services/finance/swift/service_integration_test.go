@@ -101,12 +101,12 @@ func TestServiceLookupAndList_DBBacked(t *testing.T) {
 		t.Fatalf("expected at least 2 DE records, got %d", list.Returned)
 	}
 
-	filtered, err := svc.List(ctx, ListFilter{CountryCode: "US", Query: "new", Limit: 10, Offset: 0})
+	filtered, err := svc.List(ctx, ListFilter{CountryCode: "US", BankCode: "TSTB", Limit: 10, Offset: 0})
 	if err != nil {
 		t.Fatalf("List filtered: %v", err)
 	}
 	if filtered.Returned != 1 {
-		t.Fatalf("expected 1 US/New York record, got %d", filtered.Returned)
+		t.Fatalf("expected 1 US/TSTB fixture record, got %d", filtered.Returned)
 	}
 }
 

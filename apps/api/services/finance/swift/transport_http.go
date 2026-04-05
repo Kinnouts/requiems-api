@@ -38,29 +38,6 @@ func registerSWIFTRoutes(r chi.Router, l Looker) {
 		httpx.JSON(w, http.StatusOK, result)
 	})
 
-	// GET /swift/country/{country_code} — list SWIFT records for a country.
-	r.Get("/swift/country/{country_code}", func(w http.ResponseWriter, r *http.Request) {
-		filter := ListFilter{Limit: 50}
-		if err := httpx.BindQuery(r, &filter); err != nil {
-			httpx.Error(w, http.StatusBadRequest, "bad_request", err.Error())
-			return
-		}
-
-		filter.CountryCode = chi.URLParam(r, "country_code")
-
-		result, err := l.List(r.Context(), filter)
-		if err != nil {
-			if ae, ok := err.(*httpx.AppError); ok {
-				httpx.Error(w, ae.Status, ae.Code, ae.Message)
-				return
-			}
-			httpx.Error(w, http.StatusInternalServerError, "internal_error", "internal server error")
-			return
-		}
-
-		httpx.JSON(w, http.StatusOK, result)
-	})
-
 	// GET /swift/{code} — look up bank metadata for a SWIFT/BIC code
 	r.Get("/swift/{code}", func(w http.ResponseWriter, r *http.Request) {
 		rawCode := chi.URLParam(r, "code")

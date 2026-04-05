@@ -117,21 +117,6 @@ func TestSWIFT_List_Returns200(t *testing.T) {
 	}
 }
 
-func TestSWIFT_ListByCountryPath_Returns200(t *testing.T) {
-	svc := &stubService{list: ListResponse{
-		Items: []LookupResponse{{SwiftCode: "DEUTDEDBXXX", CountryCode: "DE"}},
-		Limit: 50, Offset: 0, Returned: 1,
-	}}
-
-	r := setupRouter(svc)
-	req := httptest.NewRequest(http.MethodGet, "/swift/country/DE?limit=10", http.NoBody)
-	w := httptest.NewRecorder()
-	r.ServeHTTP(w, req)
-
-	if w.Code != http.StatusOK {
-		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
-	}
-}
 
 func TestSWIFT_List_InvalidLimit_Returns400(t *testing.T) {
 	svc := &stubService{}
