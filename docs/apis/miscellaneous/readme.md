@@ -14,6 +14,13 @@ Get baby name ideas and suggestions
 - **Status:** planned
 - **Planned Endpoint:** `GET /v1/miscellaneous/baby-names`
 
+### [Color Format Conversion](./color-conversion.md) - ✅ Live
+
+Convert color values between HEX, RGB, HSL, and CMYK
+
+- **Status:** live
+- **Endpoint:** `GET /v1/convert/color`
+
 ### [Counter](./counter.md) - ✅ Live
 
 Atomic, namespace-isolated hit counter
@@ -101,6 +108,6 @@ Get university information
 
 ## Category Statistics
 
-- Total Endpoints: 13
-- Live: 3
+- Total Endpoints: 14
+- Live: 4
 - Planned: 10

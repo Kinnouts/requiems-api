@@ -709,6 +709,22 @@ apis:
       - Conversion
       - Utilities
 
+  - id: color-conversion
+    name: Color Format Conversion
+    categories:
+      - technology
+    description: Convert color values between HEX, RGB, HSL, and CMYK. Every response includes all four representations.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/color-conversion
+    tags:
+      - Color
+      - Conversion
+      - Design
+      - CSS
+      - Utilities
+
   - id: unit-conversion
     name: Unit Conversion
     categories:

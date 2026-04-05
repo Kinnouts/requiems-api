@@ -5,6 +5,7 @@ import (
 
 	"requiems-api/services/convert/base64"
 	"requiems-api/services/convert/format"
+	"requiems-api/services/convert/color"
 	"requiems-api/services/convert/markdown"
 )
 
@@ -17,4 +18,7 @@ func RegisterRoutes(r chi.Router) {
 
 	formatSvc := format.NewService()
 	format.RegisterRoutes(r, formatSvc)
+  
+	colorSvc := color.NewService()
+	color.RegisterRoutes(r, colorSvc)
 }
