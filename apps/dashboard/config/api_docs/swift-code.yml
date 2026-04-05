@@ -159,45 +159,6 @@ endpoints:
         status: 500
         description: Unexpected server error.
 
-  - name: List SWIFT Codes By Country
-    method: GET
-    path: /v1/finance/swift/country/{country_code}
-    description: List SWIFT records for one country with optional search and pagination.
-
-    parameters:
-      - name: country_code
-        type: string
-        required: true
-        location: path
-        description: 2-letter country code
-        example: US
-      - name: q
-        type: string
-        required: false
-        location: query
-        description: Optional text search across swift_code, bank_name, and city
-        example: chase
-      - name: limit
-        type: integer
-        required: false
-        location: query
-        description: Max rows to return (default 50, max 200)
-        example: 20
-      - name: offset
-        type: integer
-        required: false
-        location: query
-        description: Number of rows to skip (default 0)
-        example: 0
-
-    errors:
-      - code: bad_request
-        status: 400
-        description: Invalid country code or pagination parameter.
-      - code: internal_error
-        status: 500
-        description: Unexpected server error.
-
     code_examples:
       curl: |
         curl https://api.requiems.xyz/v1/finance/swift/DEUTDEDB \
