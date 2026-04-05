@@ -11,7 +11,7 @@ Rails.application.configure do
   config.log_tags = [ :request_id ]
   config.logger   = ActiveSupport::TaggedLogging.logger(STDOUT)
   config.log_level = ENV.fetch("RAILS_LOG_LEVEL", "info")
-  config.silence_healthcheck_path = "/up"
+  config.silence_healthcheck_path = [ "/up", "/favicon.ico" ]
   config.active_support.report_deprecations = false
 
   config.cache_store = :redis_cache_store, { url: ENV["REDIS_URL"], namespace: "rails_cache" }
