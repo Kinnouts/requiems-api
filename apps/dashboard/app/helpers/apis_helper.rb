@@ -17,22 +17,18 @@ module ApisHelper
     all_apis.select { |api| Array(api["categories"]).include?(category_id) }
   end
 
-  # Get category by ID
   def find_category(category_id)
     api_categories.find { |cat| cat["id"] == category_id }
   end
 
-  # Get API by ID
   def find_api(api_id)
     all_apis.find { |api| api["id"] == api_id }
   end
 
-  # Get live APIs only
   def live_apis
     all_apis.select { |api| api["status"] == "live" }
   end
 
-  # Get status badge variant
   def api_status_variant(status)
     case status
     when "live"
@@ -46,7 +42,6 @@ module ApisHelper
     end
   end
 
-  # Get status badge text
   def api_status_text(status)
     case status
     when "live"
@@ -60,21 +55,19 @@ module ApisHelper
     end
   end
 
-  # Load API documentation from YAML
   def api_documentation(api_id)
     doc_path = Rails.root.join("config", "api_docs", "#{api_id}.yml")
+
     return nil unless File.exist?(doc_path)
 
     @api_docs ||= {}
     @api_docs[api_id] ||= YAML.load_file(doc_path)
   end
 
-  # Get popular APIs (for "Most Popular" section)
   def popular_apis
     live_apis.select { |api| api["popular"] == true }
   end
 
-  # Group live APIs by category (returns hash; an API appears under each of its categories)
   def apis_grouped_by_category
     live_apis.each_with_object({}) do |api, hash|
       Array(api["categories"]).each do |cat|
@@ -83,7 +76,6 @@ module ApisHelper
     end
   end
 
-  # Get categories that have live APIs
   def categories_with_apis
     api_categories.select do |category|
       !category["coming_soon"] && apis_by_category(category["id"]).any?
@@ -92,6 +84,7 @@ module ApisHelper
 
   def api_documentation_as_text(doc)
     lines = []
+
     lines << doc["api_name"]
     lines << "=" * doc["api_name"].length
     lines << ""

@@ -1,33 +1,21 @@
 categories:
+  - id: finance
+    name: Finance
+    icon: "💰"
+    short_description: Payment card data, exchange rates, and financial reference APIs for fintech apps.
+    description: Financial APIs for payment processing, card validation, and financial reference data. Look up BIN/IIN card metadata, validate payment instruments, and access financial reference datasets. Built for fintech apps, payment processors, and fraud detection systems.
+
   - id: validation
     name: Validation
     icon: "✓"
     short_description: Stop bad data at the door. Fake emails, bad phone numbers, and toxic content cause real problems downstream.
     description: Bad data compounds. A fake email means a wasted send. A bad phone number means a failed delivery. Profanity in a user submission means a moderation incident. These APIs let you reject garbage at the point of entry, so it never reaches your database in the first place.
 
-  - id: text
-    name: Text
-    icon: "📝"
-    short_description: Text utilities that cover the full lifecycle, from design scaffolding to production content moderation.
-    description: Some text APIs help you ship faster during development. Placeholder copy, random words for testing, a thesaurus when you're stuck. Others run in production on every user submission. This category covers both sides.
-
-  - id: technology
-    name: Developer Tools
-    icon: "💻"
-    short_description: The boring-but-essential utilities every app eventually needs, already built.
-    description: At some point every app needs a password generator, a way to detect bots, some fake data for tests, or a hit counter for analytics. These are the utilities developers end up reinventing across every project. They're already here.
-
-  - id: media
-    name: Media Generation
-    icon: "🖼️"
-    short_description: Add scannable codes to any product in one API call. No image libraries, no infrastructure.
-    description: QR codes and barcodes seem simple until you're managing dependencies, output formats, and edge cases across multiple platforms. These APIs return a ready-to-use PNG or base64 payload. Drop it wherever you need it.
-
-  - id: ai_vision
-    name: AI & Computer Vision
-    icon: "🤖"
-    short_description: Machine learning capabilities without the model management. Call an endpoint, get an answer.
-    description: Language detection, semantic similarity, image analysis, object recognition. Capabilities that used to require your own ML infrastructure are now available as REST endpoints. No model hosting, no GPU costs, no versioning headaches.
+  - id: networking
+    name: Networking & Internet
+    icon: "🌐"
+    short_description: IP intelligence, domain data, and network lookup tools for security and infrastructure work.
+    description: Understand the network behind any request. Look up IP geolocation, detect VPNs and proxies, inspect ASN data, query WHOIS and DNS records, and check MX configuration — all the tools you need to validate, investigate, and secure traffic at the network layer.
 
   - id: places
     name: Places
@@ -35,55 +23,155 @@ categories:
     short_description: Build for a global audience without timezone and holiday edge cases biting you.
     description: Shipping to users in multiple countries means dealing with timezones, local holidays, and business calendars that vary by region. Getting these wrong means missed deadlines, broken scheduling flows, and confused users. These APIs handle the edge cases so you don't have to.
 
+  - id: text
+    name: Text & Language
+    icon: "📝"
+    short_description: Text utilities that cover the full lifecycle, from design scaffolding to production content moderation.
+    description: Some text APIs help you ship faster during development. Placeholder copy, random words for testing, a thesaurus when you're stuck. Others run in production on every user submission — sentiment analysis, language detection, spell checking. This category covers both sides.
+
+  - id: technology
+    name: Developer Tools
+    icon: "💻"
+    short_description: The boring-but-essential utilities every app eventually needs, already built.
+    description: At some point every app needs a password generator, a way to detect bots, some fake data for tests, or a hit counter for analytics. These are the utilities developers end up reinventing across every project. They're already here.
+
   - id: entertainment
     name: Entertainment
     icon: "🎬"
     short_description: Fun, low-stakes content that makes your app feel alive without building a content team.
     description: Not every endpoint needs to be serious. Horoscopes, quotes, puzzles, and emoji add personality to apps and keep users engaged between the moments that matter. These are the APIs that make a product feel human.
 
-  - id: finance
-    name: Finance
-    icon: "💰"
-    short_description: Payment card data, exchange rates, and financial reference APIs for fintech apps.
-    description: Financial APIs for payment processing, card validation, and financial reference data. Look up BIN/IIN card metadata, validate payment instruments, and access financial reference datasets. Built for fintech apps, payment processors, and fraud detection systems.
-
-  - id: security
-    name: Security & Privacy
-    icon: "🔒"
-    short_description: Password strength analysis, breach detection, and advanced data validation for robust apps.
-    description: Go beyond basic validation with research-grade APIs for password strength analysis, data breach detection, IP reputation checks, and advanced input validation. Build more reliable products by integrating deep validation intelligence directly into your workflows.
-
   - id: health
-    name: Health/Wellness
+    name: Health
     icon: "🏥"
     short_description: Nutrition data, fitness metrics, and wellness insights for healthcare platforms and fitness apps.
     description: Power health and wellness applications with reliable data on nutrition, fitness metrics, medical information, and wellness insights. Designed for healthcare platforms, fitness trackers, diet apps, and any product that helps people make informed decisions about their health.
 
-  - id: tax
-    name: Tax
-    icon: "📋"
-    short_description: VAT, sales tax, GST, and income tax calculations for e-commerce and invoicing systems.
-    description: Simplify tax calculations with accurate, jurisdiction-aware APIs for VAT, sales tax, GST, and income tax. Integrate seamlessly into e-commerce checkouts, invoicing systems, and financial applications that operate across multiple countries and complex tax regimes.
-
-  - id: transportation
-    name: Transportation
-    icon: "🚗"
-    short_description: Flight status, route info, carrier lookups, and tracking data for travel and logistics apps.
-    description: Access transportation and logistics data including flight status, route information, carrier lookups, and tracking details. Designed for travel applications, e-commerce platforms, and logistics management systems that depend on accurate, real-time movement data.
-
-  - id: data
-    name: Data
-    icon: "📊"
-    short_description: Curated structured datasets — country info, public records, and reference tables ready to integrate.
-    description: Access curated, structured datasets across dozens of domains. From country information and public records to reference data and lookup tables, these APIs save you the time of building and maintaining your own data pipelines — so you can focus on what matters.
-
-  - id: nature
-    name: Nature
-    icon: "🐾"
-    short_description: Species facts, habitat data, and behavioral traits for educational and wildlife applications.
-    description: Explore the animal kingdom with rich datasets covering species facts, habitat information, behavioral traits, and high-quality imagery. Ideal for educational platforms, wildlife apps, trivia games, and any project that brings the natural world to life for your users.
-
 apis:
+  # Finance APIs
+  - id: exchange-rate
+    name: Exchange Rate
+    categories:
+      - finance
+    description: "Get live currency exchange rates and convert amounts between currencies. Rates are sourced from the ECB and cached for up to one hour."
+    endpoints_count: 2
+    status: live
+    popular: false
+    documentation_url: /apis/exchange-rate
+    tags:
+      - Currency
+      - Exchange Rate
+      - Finance
+      - Conversion
+      - Forex
+
+  - id: crypto
+    name: Crypto Prices
+    categories:
+      - finance
+    description: "Get live cryptocurrency prices, 24h change, market cap, and trading volume for 20+ major coins including BTC, ETH, SOL, and more."
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/crypto
+    tags:
+      - Crypto
+      - Bitcoin
+      - Finance
+      - Prices
+
+  - id: bin-lookup
+    name: BIN Lookup
+    categories:
+      - finance
+    description: Pass the first 6–8 digits of any payment card and get back the issuing bank, card network, type, and country
+    endpoints_count: 1
+    status: live
+    popular: true
+    documentation_url: /apis/bin-lookup
+    tags:
+      - BIN
+      - Payment Cards
+      - Fraud Prevention
+      - Fintech
+
+  - id: iban
+    name: IBAN Validator
+    categories:
+      - finance
+    description: Validate IBAN numbers and extract the bank code and account number. Supports all countries in the official SWIFT IBAN Registry (~80 countries).
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/iban
+    tags:
+      - IBAN
+      - Banking
+      - Validation
+      - Finance
+
+  - id: swift-code
+    name: SWIFT Code
+    categories:
+      - finance
+    description: Validate and look up bank information by SWIFT/BIC code, including institution, location, and branch metadata.
+    endpoints_count: 3
+    status: live
+    popular: false
+    documentation_url: /apis/swift-code
+    tags:
+      - SWIFT
+      - BIC
+      - Banking
+      - Finance
+
+  - id: mortgage
+    name: Mortgage Calculator
+    categories:
+      - finance
+    description: Calculate monthly mortgage payments and full amortization schedules. Pass principal, annual interest rate, and loan term in years.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/mortgage
+    tags:
+      - Mortgage
+      - Finance
+      - Calculator
+      - Amortization
+
+  - id: commodities
+    name: Commodity Prices
+    categories:
+      - finance
+    description: Historical and current annual average prices for 16 major commodities — precious metals, energy, and agricultural goods. Sourced from FRED (Federal Reserve Economic Data).
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/commodities
+    tags:
+      - Commodities
+      - Metals
+      - Energy
+      - Agriculture
+      - Finance
+
+  - id: inflation
+    name: Inflation
+    categories:
+      - finance
+    description: Historical and current CPI inflation rates for 241 countries, sourced from the World Bank. Includes up to 30 years of annual data.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/inflation
+    tags:
+      - Inflation
+      - CPI
+      - Economics
+      - Macroeconomics
+      - World Bank
+
   # Validation APIs
   - id: email-validate
     name: Email Validator
@@ -99,41 +187,10 @@ apis:
       - Validation
       - Data Quality
 
-  - id: disposable-email
-    name: Disposable Domain Checker
-    categories:
-      - technology
-      - data
-    description: Check whether an email domain belongs to a known disposable or temporary email provider. Use this for targeted domain lookups. For full email validation including syntax, MX records, and normalization, see the Email Validator.
-    endpoints_count: 5
-    status: live
-    popular: false
-    documentation_url: /apis/disposable-email
-    tags:
-      - Email
-      - Fraud Prevention
-      - Data Quality
-
-  - id: email-normalize
-    name: Email Normalizer
-    categories:
-      - text
-    description: Normalize email addresses to their canonical form. Lowercased, trimmed, and canonicalized with provider-specific rules including alias-domain resolution. Also available as part of the full Email Validator.
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/email-normalize
-    tags:
-      - Email
-      - Normalization
-      - Data Quality
-
   - id: phone-validation
     name: Phone Validation
     categories:
       - validation
-      - technology
-      - data
     description: Validate phone numbers globally. Detect carrier, country, type, and VOIP or virtual risk using only phone metadata.
     endpoints_count: 2
     status: live
@@ -159,7 +216,213 @@ apis:
       - Text Analysis
       - Safety
 
-  # Text APIs
+  # Networking & Internet APIs
+  - id: ip-info
+    name: IP Geolocation
+    categories:
+      - networking
+    description: Get geolocation data for any IP address including country, city, ISP, and VPN detection.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/ip-info
+    tags:
+      - IP
+      - Geolocation
+      - Location
+      - VPN
+
+  - id: ip-asn
+    name: ASN Lookup
+    categories:
+      - networking
+    description: Look up Autonomous System Number (ASN), organization, ISP, and network route information for any IP address.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/ip-asn
+    tags:
+      - ASN
+      - IP
+      - Network
+      - Lookup
+
+  - id: vpn-detection
+    name: VPN & Proxy Detection
+    categories:
+      - networking
+    description: Detect if an IP address belongs to a VPN, proxy, Tor exit node, or hosting provider. Returns threat scores and fraud indicators for fraud prevention and risk assessment.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/vpn-detection
+    tags:
+      - VPN
+      - Proxy
+      - Tor
+      - Security
+      - Fraud Prevention
+      - IP Intelligence
+
+  - id: whois
+    name: WHOIS Lookup
+    categories:
+      - networking
+    description: Get domain registration details including registrar, name servers, status, creation and expiry dates, and DNSSEC information.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/whois
+    tags:
+      - WHOIS
+      - Domain
+      - DNS
+      - Registration
+
+  - id: domain-info
+    name: Domain Info
+    categories:
+      - networking
+    description: Look up DNS records and check domain availability. Returns A, AAAA, MX, NS, TXT, and CNAME records alongside a registration availability flag.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/domain-info
+    tags:
+      - Domain
+      - DNS
+      - Availability
+      - WHOIS
+
+  - id: mx-lookup
+    name: MX Lookup
+    categories:
+      - networking
+    description: Look up MX (Mail Exchange) records for any domain. Returns all mail server hostnames with their priorities, sorted from highest to lowest priority.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/mx-lookup
+    tags:
+      - MX
+      - DNS
+      - Email
+      - Mail Server
+      - Lookup
+
+  - id: disposable-email
+    name: Disposable Domain Checker
+    categories:
+      - networking
+    description: Check whether an email domain belongs to a known disposable or temporary email provider. Use this for targeted domain lookups. For full email validation including syntax, MX records, and normalization, see the Email Validator.
+    endpoints_count: 5
+    status: live
+    popular: false
+    documentation_url: /apis/disposable-email
+    tags:
+      - Email
+      - Fraud Prevention
+      - Data Quality
+
+  # Places APIs
+  - id: timezone
+    name: Timezone
+    categories:
+      - places
+    description: Get timezone information for any location by coordinates or city name
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/timezone
+    tags:
+      - Timezone
+      - Location
+      - Geography
+
+  - id: world-time
+    name: World Time
+    categories:
+      - places
+    description: Get the current time for any IANA timezone by name
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/world-time
+    tags:
+      - Time
+      - Timezone
+      - World Clock
+
+  - id: working-days
+    name: Working Days Calculator
+    categories:
+      - places
+    description: Calculate the number of working days between two dates with optional country-specific holidays
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/working-days
+    tags:
+      - Business Days
+      - Calendar
+      - Holidays
+
+  - id: holidays
+    name: Holidays
+    categories:
+      - places
+    description: Get a list of holidays for a specific country and year
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/holidays
+    tags:
+      - Calendar
+      - Holidays
+
+  - id: geocode
+    name: Geocoding
+    categories:
+      - places
+    description: Convert addresses to coordinates and coordinates back to addresses
+    endpoints_count: 2
+    status: live
+    popular: false
+    documentation_url: /apis/geocode
+    tags:
+      - Geocoding
+      - Coordinates
+      - Address
+
+  - id: postal-code
+    name: Postal Code
+    categories:
+      - places
+    description: Look up city, state, and coordinates for any postal code worldwide
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/postal-code
+    tags:
+      - Postal Code
+      - Zip Code
+      - Location
+
+  - id: cities
+    name: Cities
+    categories:
+      - places
+    description: Look up city metadata including population, timezone, and coordinates
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/cities
+    tags:
+      - Cities
+      - Population
+      - Timezone
+
+  # Text & Language APIs
   - id: spell-check
     name: Spell Check
     categories:
@@ -203,6 +466,65 @@ apis:
       - Vocabulary
       - Education
 
+  - id: sentiment
+    name: Sentiment Analysis
+    categories:
+      - text
+    description: Analyze the sentiment of any text and get a positive, negative, or neutral classification with a confidence score and full class breakdown.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/sentiment
+    tags:
+      - Sentiment
+      - NLP
+      - AI
+      - Text Analysis
+
+  - id: detect-language
+    name: Language Detection
+    categories:
+      - text
+    description: Detect the language of any text with confidence scoring
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/detect-language
+    tags:
+      - Language Detection
+      - NLP
+      - AI
+
+  - id: text-similarity
+    name: Text Similarity
+    categories:
+      - text
+    description: Compare two texts and get a cosine similarity score between 0 and 1
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/text-similarity
+    tags:
+      - Text Analysis
+      - NLP
+      - Similarity
+
+  - id: markdown
+    name: Markdown to HTML
+    categories:
+      - text
+      - technology
+    description: Convert Markdown to HTML in a single API call. Optionally sanitize the output to strip unsafe tags and prevent XSS.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/markdown
+    tags:
+      - Markdown
+      - HTML
+      - Conversion
+      - Utilities
+
   - id: lorem-ipsum
     name: Lorem Ipsum Generator
     categories:
@@ -231,12 +553,53 @@ apis:
       - Testing
       - Games
 
+  - id: email-normalize
+    name: Email Normalizer
+    categories:
+      - text
+    description: Normalize email addresses to their canonical form. Lowercased, trimmed, and canonicalized with provider-specific rules including alias-domain resolution. Also available as part of the full Email Validator.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/email-normalize
+    tags:
+      - Email
+      - Normalization
+      - Data Quality
+
   # Developer Tools APIs
+  - id: qr-code
+    name: QR Code Generator
+    categories:
+      - technology
+    description: Generate QR codes from any text or URL, returned as a PNG image or base64-encoded JSON
+    endpoints_count: 2
+    status: live
+    popular: true
+    documentation_url: /apis/qr-code
+    tags:
+      - QR Code
+      - Image
+      - Barcode
+
+  - id: barcode
+    name: Barcode Generator
+    categories:
+      - technology
+    description: Generate barcodes in multiple formats (Code 128, Code 93, Code 39, EAN-8, EAN-13), returned as a PNG image or base64-encoded JSON
+    endpoints_count: 2
+    status: live
+    popular: true
+    documentation_url: /apis/barcode
+    tags:
+      - Barcode
+      - Image
+      - Code 128
+
   - id: password-generator
     name: Password Generator
     categories:
       - technology
-      - security
     description: Generate cryptographically secure random passwords with customizable length and character sets
     endpoints_count: 1
     status: live
@@ -317,270 +680,53 @@ apis:
       - Conversion
       - Utilities
 
-  - id: ip-asn
-    name: ASN Lookup
+  - id: color-conversion
+    name: Color Format Conversion
     categories:
       - technology
-    description: Look up Autonomous System Number (ASN), organization, ISP, and network route information for any IP address.
+    description: Convert color values between HEX, RGB, HSL, and CMYK. Every response includes all four representations.
     endpoints_count: 1
     status: live
     popular: false
-    documentation_url: /apis/ip-asn
+    documentation_url: /apis/color-conversion
     tags:
-      - ASN
-      - IP
-      - Network
-      - Lookup
+      - Color
+      - Conversion
+      - Design
+      - CSS
+      - Utilities
 
-  - id: ip-info
-    name: IP Geolocation
+  - id: unit-conversion
+    name: Unit Conversion
     categories:
       - technology
-    description: Get geolocation data for any IP address including country, city, ISP, and VPN detection.
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/ip-info
-    tags:
-      - IP
-      - Geolocation
-      - Location
-      - VPN
-
-  - id: vpn-detection
-    name: VPN & Proxy Detection
-    categories:
-      - technology
-      - security
-    description: Detect if an IP address belongs to a VPN, proxy, Tor exit node, or hosting provider. Returns threat scores and fraud indicators for fraud prevention and risk assessment.
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/vpn-detection
-    tags:
-      - VPN
-      - Proxy
-      - Tor
-      - Security
-      - Fraud Prevention
-      - IP Intelligence
-
-  - id: whois
-    name: WHOIS Lookup
-    categories:
-      - technology
-    description: Get domain registration details including registrar, name servers, status, creation and expiry dates, and DNSSEC information.
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/whois
-    tags:
-      - WHOIS
-      - Domain
-      - DNS
-      - Registration
-  - id: domain-info
-    name: Domain Info
-    categories:
-      - technology
-    description: Look up DNS records and check domain availability. Returns A, AAAA, MX, NS, TXT, and CNAME records alongside a registration availability flag.
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/domain-info
-    tags:
-      - Domain
-      - DNS
-      - Availability
-      - WHOIS
-  - id: mx-lookup
-    name: MX Lookup
-    categories:
-      - technology
-    description: Look up MX (Mail Exchange) records for any domain. Returns all mail server hostnames with their priorities, sorted from highest to lowest priority.
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/mx-lookup
-    tags:
-      - MX
-      - DNS
-      - Email
-      - Mail Server
-      - Lookup
-
-  # Media Generation APIs
-  - id: qr-code
-    name: QR Code Generator
-    categories:
-      - media
-    description: Generate QR codes from any text or URL, returned as a PNG image or base64-encoded JSON
-    endpoints_count: 2
-    status: live
-    popular: true
-    documentation_url: /apis/qr-code
-    tags:
-      - QR Code
-      - Image
-      - Barcode
-
-  - id: barcode
-    name: Barcode Generator
-    categories:
-      - media
-    description: Generate barcodes in multiple formats (Code 128, Code 93, Code 39, EAN-8, EAN-13), returned as a PNG image or base64-encoded JSON
-    endpoints_count: 2
-    status: live
-    popular: true
-    documentation_url: /apis/barcode
-    tags:
-      - Barcode
-      - Image
-      - Code 128
-
-  # AI/Computer Vision APIs
-  - id: sentiment
-    name: Sentiment Analysis
-    categories:
-      - ai_vision
-      - text
-    description: Analyze the sentiment of any text and get a positive, negative, or neutral classification with a confidence score and full class breakdown.
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/sentiment
-    tags:
-      - Sentiment
-      - NLP
-      - AI
-      - Text Analysis
-
-  - id: detect-language
-    name: Language Detection
-    categories:
-      - ai_vision
-      - text
-    description: Detect the language of any text with confidence scoring
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/detect-language
-    tags:
-      - Language Detection
-      - NLP
-      - AI
-
-  - id: text-similarity
-    name: Text Similarity
-    categories:
-      - ai_vision
-    description: Compare two texts and get a cosine similarity score between 0 and 1
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/text-similarity
-    tags:
-      - Text Analysis
-      - NLP
-      - Similarity
-
-  # Places APIs
-  - id: timezone
-    name: Timezone
-    categories:
-      - places
-    description: Get timezone information for any location by coordinates or city name
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/timezone
-    tags:
-      - Timezone
-      - Location
-      - Geography
-
-  - id: working-days
-    name: Working Days Calculator
-    categories:
-      - places
-    description: Calculate the number of working days between two dates with optional country-specific holidays
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/working-days
-    tags:
-      - Business Days
-      - Calendar
-      - Holidays
-
-  - id: holidays
-    name: Holidays
-    categories:
-      - places
-    description: Get a list of holidays for a specific country and year
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/holidays
-    tags:
-      - Calendar
-      - Holidays
-
-  - id: world-time
-    name: World Time
-    categories:
-      - places
-    description: Get the current time for any IANA timezone by name
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/world-time
-    tags:
-      - Time
-      - Timezone
-      - World Clock
-
-  - id: postal-code
-    name: Postal Code
-    categories:
-      - places
-    description: Look up city, state, and coordinates for any postal code worldwide
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/postal-code
-    tags:
-      - Postal Code
-      - Zip Code
-      - Location
-
-  - id: geocode
-    name: Geocoding
-    categories:
-      - places
-    description: Convert addresses to coordinates and coordinates back to addresses
+    description: Convert between units of measurement — length, weight, volume, temperature, area, and speed
     endpoints_count: 2
     status: live
     popular: false
-    documentation_url: /apis/geocode
+    documentation_url: /apis/unit-conversion
     tags:
-      - Geocoding
-      - Coordinates
-      - Address
+      - Conversion
+      - Utilities
+      - Measurement
 
-  - id: cities
-    name: Cities
+  - id: data-format-conversion
+    name: Data Format Conversion
     categories:
-      - places
-    description: Look up city metadata including population, timezone, and coordinates
+      - technology
+    description: Convert structured data between JSON, YAML, CSV, XML, and TOML in a single API call.
     endpoints_count: 1
     status: live
     popular: false
-    documentation_url: /apis/cities
+    documentation_url: /apis/data-format-conversion
     tags:
-      - Cities
-      - Population
-      - Timezone
+      - JSON
+      - YAML
+      - CSV
+      - XML
+      - TOML
+      - Conversion
+      - Utilities
 
   # Entertainment APIs
   - id: quotes
@@ -597,18 +743,47 @@ apis:
       - Inspiration
       - Literature
 
-  - id: advice
-    name: Random Advice
+  - id: trivia
+    name: Trivia
     categories:
       - entertainment
-    description: Get random pieces of advice and wisdom for inspiration
+    description: Get random trivia questions with multiple-choice answers. Filter by category (science, history, geography, sports, music, movies, literature, math, technology, nature) and difficulty (easy, medium, hard).
     endpoints_count: 1
     status: live
     popular: false
-    documentation_url: /apis/advice
+    documentation_url: /apis/trivia
     tags:
-      - Random
-      - Inspiration
+      - Quiz
+      - Trivia
+
+  - id: facts
+    name: Random Facts
+    categories:
+      - entertainment
+    description: Get random interesting facts from a curated database. Filter by category — science, history, technology, nature, space, or food. Includes source attribution.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/facts
+    tags:
+      - Facts
+      - Education
+      - Trivia
+      - Entertainment
+
+  - id: emoji
+    name: Emoji
+    categories:
+      - entertainment
+    description: Look up emoji by name, search by keyword, or get a random emoji with full Unicode metadata.
+    endpoints_count: 3
+    status: live
+    popular: false
+    documentation_url: /apis/emoji
+    tags:
+      - Emoji
+      - Unicode
+      - Entertainment
 
   - id: horoscope
     name: Horoscope
@@ -637,32 +812,19 @@ apis:
       - Puzzle
       - Game
 
-  - id: emoji
-    name: Emoji
+  - id: dad-jokes
+    name: Dad Jokes
     categories:
       - entertainment
-    description: Look up emoji by name, search by keyword, or get a random emoji with full Unicode metadata.
-    endpoints_count: 3
-    status: live
-    popular: false
-    documentation_url: /apis/emoji
-    tags:
-      - Emoji
-      - Unicode
-      - Entertainment
-
-  - id: trivia
-    name: Trivia
-    categories:
-      - entertainment
-    description: Get random trivia questions with multiple-choice answers. Filter by category (science, history, geography, sports, music, movies, literature, math, technology, nature) and difficulty (easy, medium, hard).
+    description: Get a random dad joke. Classic groan-worthy puns and wholesome humor, served one at a time.
     endpoints_count: 1
     status: live
     popular: false
-    documentation_url: /apis/trivia
+    documentation_url: /apis/dad-jokes
     tags:
-      - Quiz
-      - Trivia
+      - Jokes
+      - Humor
+      - Entertainment
 
   - id: chuck-norris
     name: Chuck Norris Facts
@@ -678,227 +840,20 @@ apis:
       - Humor
       - Entertainment
 
-  - id: facts
-    name: Random Facts
+  - id: advice
+    name: Random Advice
     categories:
       - entertainment
-    description: Get random interesting facts from a curated database. Filter by category — science, history, technology, nature, space, or food. Includes source attribution.
+    description: Get random pieces of advice and wisdom for inspiration
     endpoints_count: 1
     status: live
     popular: false
-    documentation_url: /apis/facts
+    documentation_url: /apis/advice
     tags:
-      - Facts
-      - Education
-      - Trivia
-      - Entertainment
+      - Random
+      - Inspiration
 
-  - id: dad-jokes
-    name: Dad Jokes
-    categories:
-      - entertainment
-    description: Get a random dad joke. Classic groan-worthy puns and wholesome humor, served one at a time.
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/dad-jokes
-    tags:
-      - Jokes
-      - Humor
-      - Entertainment
-
-  - id: markdown
-    name: Markdown to HTML
-    categories:
-      - technology
-      - text
-    description: Convert Markdown to HTML in a single API call. Optionally sanitize the output to strip unsafe tags and prevent XSS.
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/markdown
-    tags:
-      - Markdown
-      - HTML
-      - Conversion
-      - Utilities
-
-  - id: color-conversion
-    name: Color Format Conversion
-    categories:
-      - technology
-    description: Convert color values between HEX, RGB, HSL, and CMYK. Every response includes all four representations.
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/color-conversion
-    tags:
-      - Color
-      - Conversion
-      - Design
-      - CSS
-      - Utilities
-
-  - id: unit-conversion
-    name: Unit Conversion
-    categories:
-      - technology
-      - health
-      - transportation
-    description: Convert between units of measurement — length, weight, volume, temperature, area, and speed
-    endpoints_count: 2
-    status: live
-    popular: false
-    documentation_url: /apis/unit-conversion
-    tags:
-      - Conversion
-      - Utilities
-      - Measurement
-
-  - id: data-format-conversion
-    name: Data Format Conversion
-    categories:
-      - technology
-      - data
-    description: Convert structured data between JSON, YAML, CSV, XML, and TOML in a single API call.
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/data-format-conversion
-    tags:
-      - JSON
-      - YAML
-      - CSV
-      - XML
-      - TOML
-      - Conversion
-      - Utilities
-
-  # Finance APIs
-  - id: inflation
-    name: Inflation
-    categories:
-      - finance
-    description: Historical and current CPI inflation rates for 241 countries, sourced from the World Bank. Includes up to 30 years of annual data.
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/inflation
-    tags:
-      - Inflation
-      - CPI
-      - Economics
-      - Macroeconomics
-      - World Bank
-
-  - id: iban
-    name: IBAN Validator
-    categories:
-      - finance
-    description: Validate IBAN numbers and extract the bank code and account number. Supports all countries in the official SWIFT IBAN Registry (~80 countries).
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/iban
-    tags:
-      - IBAN
-      - Banking
-      - Validation
-      - Finance
-
-  - id: mortgage
-    name: Mortgage Calculator
-    categories:
-      - finance
-    description: Calculate monthly mortgage payments and full amortization schedules. Pass principal, annual interest rate, and loan term in years.
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/mortgage
-    tags:
-      - Mortgage
-      - Finance
-      - Calculator
-      - Amortization
-
-  - id: commodities
-    name: Commodity Prices
-    categories:
-      - finance
-    description: Historical and current annual average prices for 16 major commodities — precious metals, energy, and agricultural goods. Sourced from FRED (Federal Reserve Economic Data).
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/commodities
-    tags:
-      - Commodities
-      - Metals
-      - Energy
-      - Agriculture
-      - Finance
-
-  - id: exchange-rate
-    name: Exchange Rate
-    categories:
-      - finance
-    description: "Get live currency exchange rates and convert amounts between currencies. Rates are sourced from the ECB and cached for up to one hour."
-    endpoints_count: 2
-    status: live
-    popular: false
-    documentation_url: /apis/exchange-rate
-    tags:
-      - Currency
-      - Exchange Rate
-      - Finance
-      - Conversion
-      - Forex
-
-  - id: bin-lookup
-    name: BIN Lookup
-    categories:
-      - finance
-      - tax
-    description: Pass the first 6–8 digits of any payment card and get back the issuing bank, card network, type, and country
-    endpoints_count: 1
-    status: live
-    popular: true
-    documentation_url: /apis/bin-lookup
-    tags:
-      - BIN
-      - Payment Cards
-      - Fraud Prevention
-      - Fintech
-
-  - id: swift-code
-    name: SWIFT Code
-    categories:
-      - finance
-    description: Validate and look up bank information by SWIFT/BIC code, including institution, location, and branch metadata.
-    endpoints_count: 3
-    status: live
-    popular: false
-    documentation_url: /apis/swift-code
-    tags:
-      - SWIFT
-      - BIC
-      - Banking
-      - Finance
-
-  - id: crypto
-    name: Crypto Prices
-    categories:
-      - finance
-    description: "Get live cryptocurrency prices, 24h change, market cap, and trading volume for 20+ major coins including BTC, ETH, SOL, and more."
-    endpoints_count: 1
-    status: live
-    popular: false
-    documentation_url: /apis/crypto
-    tags:
-      - Crypto
-      - Bitcoin
-      - Finance
-      - Prices
-
+  # Health APIs
   - id: fitness-exercises
     name: Fitness Exercises
     categories:
