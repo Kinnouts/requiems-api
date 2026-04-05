@@ -173,7 +173,14 @@ func parseCSV(content string) (any, error) {
 
 	headers := records[0]
 	rows := make([]any, 0, len(records)-1)
-	for _, record := range records[1:] {
+	for rowIdx, record := range records[1:] {
+		if len(record) > len(headers) {
+			return nil, &httpx.AppError{
+				Status:  http.StatusUnprocessableEntity,
+				Code:    "invalid_csv",
+				Message: fmt.Sprintf("row %d has %d columns but header defines %d", rowIdx+2, len(record), len(headers)),
+			}
+		}
 		row := make(map[string]any, len(headers))
 		for i, h := range headers {
 			if i < len(record) {
@@ -508,6 +515,11 @@ func toTOML(v any) (string, error) {
 // UseNumber()) to int64 (when the number has no fractional part) or float64,
 // so that downstream serializers (YAML, TOML, XML) emit proper numeric values
 // rather than quoted strings.
+//
+// Numbers with no fractional part are converted to int64. Numbers that exceed
+// int64 range fall through to float64, which may lose precision for very large
+// integers (e.g. values > 2^53). In the rare case both conversions fail the
+// original string representation is preserved.
 func normalizeNumbers(v any) any {
 	switch val := v.(type) {
 	case json.Number:
