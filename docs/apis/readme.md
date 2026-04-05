@@ -20,16 +20,16 @@ category structure. The canonical category groupings are defined in
 
 ## Current Categories
 
-| Category              | APIs | Directory                                |
-| --------------------- | ---- | ---------------------------------------- |
-| Finance               | 8    | `finance/`                               |
-| Validation            | 3    | `email/`, `internet-technology/`         |
-| Networking & Internet | 7    | `internet-technology/`                   |
-| Places                | 7    | `places/`                                |
-| Text & Language       | 10   | `text/`, `ai-computer-vision/`           |
-| Developer Tools       | 11   | `internet-technology/`, `miscellaneous/` |
-| Entertainment         | 9    | `entertainment/`                         |
-| Health                | 1    | `fitness/`                               |
+| Category              | APIs | Directory        |
+| --------------------- | ---- | ---------------- |
+| Finance               | 8    | `finance/`       |
+| Validation            | 3    | `validation/`    |
+| Networking & Internet | 7    | `networking/`    |
+| Places                | 7    | `places/`        |
+| Text & Language       | 9    | `text/`          |
+| Developer Tools       | 11   | `technology/`    |
+| Entertainment         | 9    | `entertainment/` |
+| Health                | 1    | `health/`        |
 
 ## API Status — Where to Look
 
