@@ -7,6 +7,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"net/http"
+	"sort"
 	"strings"
 
 	"github.com/BurntSushi/toml"
@@ -215,7 +216,7 @@ func toCSV(v any) (string, error) {
 	for k := range firstRow {
 		headers = append(headers, k)
 	}
-	sortStrings(headers)
+	sort.Strings(headers)
 
 	var buf strings.Builder
 	w := csv.NewWriter(&buf)
@@ -402,7 +403,7 @@ func encodeXMLValue(enc *xml.Encoder, v any) error {
 		for k := range val {
 			keys = append(keys, k)
 		}
-		sortStrings(keys)
+		sort.Strings(keys)
 		for _, k := range keys {
 			elem := xml.StartElement{Name: xml.Name{Local: sanitizeXMLName(k)}}
 			if err := enc.EncodeToken(elem); err != nil {
@@ -502,22 +503,6 @@ func toTOML(v any) (string, error) {
 }
 
 // --- helpers ---
-
-// sortStrings sorts a slice of strings in place using a simple insertion sort.
-// The standard library sort package is not imported to keep dependencies minimal;
-// for the small slices that appear in format conversion (JSON keys, CSV headers)
-// this is perfectly efficient.
-func sortStrings(s []string) {
-	for i := 1; i < len(s); i++ {
-		key := s[i]
-		j := i - 1
-		for j >= 0 && s[j] > key {
-			s[j+1] = s[j]
-			j--
-		}
-		s[j+1] = key
-	}
-}
 
 // normalizeNumbers converts json.Number values (produced by json.Decoder with
 // UseNumber()) to int64 (when the number has no fractional part) or float64,
