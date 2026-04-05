@@ -303,6 +303,20 @@ apis:
       - Encoding
       - Utilities
 
+  - id: number-base-conversion
+    name: Number Base Conversion
+    categories:
+      - technology
+    description: Convert integers between binary, octal, decimal, and hexadecimal. Accepts optional 0x, 0b, and 0o prefixes.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/number-base-conversion
+    tags:
+      - Numbers
+      - Conversion
+      - Utilities
+
   - id: ip-asn
     name: ASN Lookup
     categories:
