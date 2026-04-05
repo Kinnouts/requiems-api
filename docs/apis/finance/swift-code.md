@@ -121,8 +121,8 @@ List SWIFT records for a country with optional search/pagination.
 
 #### Path Parameters
 
-| Parameter      | Type   | Required | Description          |
-| -------------- | ------ | -------- | -------------------- |
+| Parameter      | Type   | Required | Description           |
+| -------------- | ------ | -------- | --------------------- |
 | `country_code` | string | Yes      | 2-letter country code |
 
 #### Example Request

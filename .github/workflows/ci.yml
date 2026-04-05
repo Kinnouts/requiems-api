@@ -329,7 +329,14 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: apps/workers/auth-gateway/coverage/lcov.info
-          flags: auth-gateway,shared
+          flags: auth-gateway
+
+      - name: Upload shared coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: apps/workers/auth-gateway/coverage/lcov.info
+          flags: shared
 
   worker-lint:
     name: Worker Lint (Advisory)
@@ -440,7 +447,14 @@ jobs:
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: apps/workers/api-management/coverage/lcov.info
-          flags: api-management,shared
+          flags: api-management
+
+      - name: Upload shared coverage to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          files: apps/workers/api-management/coverage/lcov.info
+          flags: shared
 
   ci-success:
     name: CI Success

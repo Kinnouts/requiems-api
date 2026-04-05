@@ -146,6 +146,45 @@ func TestSWIFT_List_InvalidLimit_Returns400(t *testing.T) {
 	}
 }
 
+func TestSWIFT_List_InvalidOffset_Returns400(t *testing.T) {
+	svc := &stubService{}
+	r := setupRouter(svc)
+
+	req := httptest.NewRequest(http.MethodGet, "/swift?offset=abc", http.NoBody)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d: %s", w.Code, w.Body.String())
+	}
+}
+
+func TestSWIFT_List_ServiceAppError_Returns400(t *testing.T) {
+	svc := &stubService{err: &httpx.AppError{Status: http.StatusBadRequest, Code: "bad_request", Message: "invalid filter"}}
+	r := setupRouter(svc)
+
+	req := httptest.NewRequest(http.MethodGet, "/swift?country_code=D1", http.NoBody)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusBadRequest {
+		t.Fatalf("expected 400, got %d: %s", w.Code, w.Body.String())
+	}
+}
+
+func TestSWIFT_List_ServiceGenericError_Returns500(t *testing.T) {
+	svc := &stubService{err: errors.New("db down")}
+	r := setupRouter(svc)
+
+	req := httptest.NewRequest(http.MethodGet, "/swift", http.NoBody)
+	w := httptest.NewRecorder()
+	r.ServeHTTP(w, req)
+
+	if w.Code != http.StatusInternalServerError {
+		t.Fatalf("expected 500, got %d: %s", w.Code, w.Body.String())
+	}
+}
+
 func TestSWIFT_ResponseEnvelope(t *testing.T) {
 	svc := &stubService{result: LookupResponse{BankCode: "DEUT"}}
 	r := setupRouter(svc)
