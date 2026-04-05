@@ -19,6 +19,8 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
+
+	"requiems-api/cmd/internal/seedutil"
 )
 
 // defaultRegistryURL is the php-iban project's IBAN registry file, which is
@@ -89,7 +91,7 @@ Run inside the API Docker container so the db hostname resolves:
 				return nil
 			}
 
-			conn, err := openDB(ctx, dbURL)
+			conn, err := seedutil.OpenDB(ctx, dbURL)
 			if err != nil {
 				return fmt.Errorf("database connection failed: %w", err)
 			}

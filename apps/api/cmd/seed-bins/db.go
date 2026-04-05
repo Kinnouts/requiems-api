@@ -6,17 +6,9 @@ import (
 	"log"
 
 	"github.com/jackc/pgx/v5"
+
+	"requiems-api/cmd/internal/seedutil"
 )
-
-func openDB(ctx context.Context, dsn string) (*pgx.Conn, error) {
-	conn, err := pgx.Connect(ctx, dsn)
-
-	if err != nil {
-		return nil, fmt.Errorf("pgx.Connect: %w", err)
-	}
-
-	return conn, nil
-}
 
 func upsertRecords(ctx context.Context, conn *pgx.Conn, records map[string]RawBINRecord) (inserted, updated int, err error) {
 	// 1. Create staging table and clear any rows from a prior run in this session.
@@ -40,9 +32,14 @@ func upsertRecords(ctx context.Context, conn *pgx.Conn, records map[string]RawBI
 
 	rows := make([][]any, 0, len(records))
 	for _, r := range records {
+		prefixLen, convErr := seedutil.ToInt16(len(r.BINPrefix), "prefix_length")
+		if convErr != nil {
+			return 0, 0, convErr
+		}
+
 		rows = append(rows, []any{
 			r.BINPrefix,
-			int16(len(r.BINPrefix)), //nolint:gosec // BIN length is always 6 or 8, safe conversion
+			prefixLen,
 			r.Scheme,
 			r.CardType,
 			r.CardLevel,

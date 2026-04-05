@@ -7,15 +7,6 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-// openDB opens a single PostgreSQL connection for the seed operation.
-func openDB(ctx context.Context, dbURL string) (*pgx.Conn, error) {
-	conn, err := pgx.Connect(ctx, dbURL)
-	if err != nil {
-		return nil, fmt.Errorf("connect: %w", err)
-	}
-	return conn, nil
-}
-
 // upsertRecords inserts or updates all records in the exercises table using a
 // single batched round trip. Returns the number of inserted and updated rows.
 func upsertRecords(ctx context.Context, conn *pgx.Conn, records []ExerciseRecord) (inserted, updated int, err error) {

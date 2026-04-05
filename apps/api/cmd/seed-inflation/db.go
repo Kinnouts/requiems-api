@@ -6,23 +6,10 @@ import (
 	"log"
 
 	"github.com/jackc/pgx/v5"
+
+	"requiems-api/cmd/internal/seedutil"
 )
 
-func openDB(ctx context.Context, dsn string) (*pgx.Conn, error) {
-	conn, err := pgx.Connect(ctx, dsn)
-	if err != nil {
-		return nil, fmt.Errorf("pgx.Connect: %w", err)
-	}
-	return conn, nil
-}
-
-func toInt16(v int, field string) (int16, error) {
-	if v < -32768 || v > 32767 {
-		return 0, fmt.Errorf("%s out of int16 range: %d", field, v)
-	}
-
-	return int16(v), nil
-}
 
 func upsertRecords(ctx context.Context, conn *pgx.Conn, records []RawInflationRecord) (inserted, updated int, err error) {
 	// 1. Create staging table and clear any rows from a prior run in this session.
@@ -41,7 +28,7 @@ func upsertRecords(ctx context.Context, conn *pgx.Conn, records []RawInflationRe
 
 	rows := make([][]any, 0, len(records))
 	for _, r := range records {
-		year, convErr := toInt16(r.Year, "year")
+		year, convErr := seedutil.ToInt16(r.Year, "year")
 		if convErr != nil {
 			return 0, 0, convErr
 		}

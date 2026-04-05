@@ -6,23 +6,10 @@ import (
 	"log"
 
 	"github.com/jackc/pgx/v5"
+
+	"requiems-api/cmd/internal/seedutil"
 )
 
-func openDB(ctx context.Context, dsn string) (*pgx.Conn, error) {
-	conn, err := pgx.Connect(ctx, dsn)
-	if err != nil {
-		return nil, fmt.Errorf("pgx.Connect: %w", err)
-	}
-	return conn, nil
-}
-
-func toInt16(v int, field string) (int16, error) {
-	if v < -32768 || v > 32767 {
-		return 0, fmt.Errorf("%s out of int16 range: %d", field, v)
-	}
-
-	return int16(v), nil
-}
 
 func upsertRecords(ctx context.Context, conn *pgx.Conn, countries []RawIBANCountry) (inserted, updated int, err error) {
 	// 1. Create staging table and clear any rows from a prior run in this session.
@@ -45,27 +32,27 @@ func upsertRecords(ctx context.Context, conn *pgx.Conn, countries []RawIBANCount
 
 	rows := make([][]any, 0, len(countries))
 	for _, c := range countries {
-		ibanLength, convErr := toInt16(c.IBANLength, "iban_length")
+		ibanLength, convErr := seedutil.ToInt16(c.IBANLength, "iban_length")
 		if convErr != nil {
 			return 0, 0, convErr
 		}
 
-		bankOffset, convErr := toInt16(c.BankOffset(), "bank_offset")
+		bankOffset, convErr := seedutil.ToInt16(c.BankOffset(), "bank_offset")
 		if convErr != nil {
 			return 0, 0, convErr
 		}
 
-		bankLength, convErr := toInt16(c.BankLength(), "bank_length")
+		bankLength, convErr := seedutil.ToInt16(c.BankLength(), "bank_length")
 		if convErr != nil {
 			return 0, 0, convErr
 		}
 
-		accountOffset, convErr := toInt16(c.AccountOffset(), "account_offset")
+		accountOffset, convErr := seedutil.ToInt16(c.AccountOffset(), "account_offset")
 		if convErr != nil {
 			return 0, 0, convErr
 		}
 
-		accountLength, convErr := toInt16(c.AccountLength(), "account_length")
+		accountLength, convErr := seedutil.ToInt16(c.AccountLength(), "account_length")
 		if convErr != nil {
 			return 0, 0, convErr
 		}

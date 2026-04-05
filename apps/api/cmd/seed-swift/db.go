@@ -8,14 +8,6 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-func openDB(ctx context.Context, dsn string) (*pgx.Conn, error) {
-	conn, err := pgx.Connect(ctx, dsn)
-	if err != nil {
-		return nil, fmt.Errorf("pgx.Connect: %w", err)
-	}
-	return conn, nil
-}
-
 func upsertRecords(ctx context.Context, conn *pgx.Conn, records []RawSWIFTRecord) (inserted, updated int, err error) {
 	// 1. Create staging table and clear any rows from a prior run in this session.
 	_, err = conn.Exec(ctx, `
