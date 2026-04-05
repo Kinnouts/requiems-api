@@ -1,56 +1,32 @@
 # AI / Computer Vision APIs
 
-## Overview
+> **Note:** This category has been dissolved. Live NLP APIs (Sentiment, Language
+> Detection, Text Similarity) are now grouped under **Text & Language** in the
+> public catalog. The remaining planned endpoints (Embeddings, Face Detection,
+> Image to Text, Object Detection) have been removed from the roadmap.
 
-Artificial intelligence and computer vision endpoints for image analysis, text
-processing, and machine learning capabilities.
+## Live Endpoints (moved to Text & Language)
 
-## Endpoints
+### [Sentiment Analysis](./sentiment.md) - ✅ MVP
 
-### [Embeddings](./embeddings.md) - ⏳ Planned
+Analyze sentiment (positive/negative/neutral) with confidence score.
 
-Generate text embeddings for semantic analysis
+- **Status:** mvp
+- **Endpoint:** `POST /v1/text/sentiment`
+- **Credit Cost:** 1
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/ai-computer-vision/embeddings`
+### [Language Detection](./text-similarity.md) - ✅ MVP
 
-### [Face Detect](./face-detect.md) - ⏳ Planned
+Detect the language of any text with confidence scoring.
 
-Detect faces in images
+- **Status:** mvp
+- **Endpoint:** `POST /v1/text/language`
+- **Credit Cost:** 1
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/ai-computer-vision/face-detect`
+### [Text Similarity](./text-similarity.md) - ✅ MVP
 
-### [Image to Text](./image-to-text.md) - ⏳ Planned
+Compare two texts and get a cosine similarity score between 0 and 1.
 
-Extract text from images using OCR
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/ai-computer-vision/image-to-text`
-
-### [Object Detection](./object-detection.md) - ⏳ Planned
-
-Detect objects in images
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/ai-computer-vision/object-detection`
-
-### [Sentiment](./sentiment.md) - ⏳ Planned
-
-Analyze sentiment of text
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/ai-computer-vision/sentiment`
-
-### [Text Similarity](./text-similarity.md) - ⏳ Planned
-
-Compare text documents for similarity
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/ai-computer-vision/text-similarity`
-
-## Category Statistics
-
-- Total Endpoints: 6
-- Live: 0
-- Planned: 6
+- **Status:** mvp
+- **Endpoint:** `POST /v1/text/similarity`
+- **Credit Cost:** 1

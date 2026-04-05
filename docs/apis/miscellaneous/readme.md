@@ -1,113 +1,45 @@
 # Miscellaneous APIs
 
-## Overview
+> **Note:** Live APIs from this directory are now grouped under **Developer
+> Tools** in the public catalog. See `apps/dashboard/config/api_catalog.yml`.
 
-Miscellaneous endpoints covering general-purpose utilities and diverse data
-sources.
+## Live Endpoints
 
-## Endpoints
+### [Counter](./counter.md) - ✅ MVP
 
-### [Baby Names](./baby-names.md) - ⏳ Planned
+Atomic, namespace-isolated hit counter.
 
-Get baby name ideas and suggestions
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/miscellaneous/baby-names`
-
-### [Color Format Conversion](./color-conversion.md) - ✅ Live
-
-Convert color values between HEX, RGB, HSL, and CMYK
-
-- **Status:** live
-- **Endpoint:** `GET /v1/convert/color`
-
-### [Counter](./counter.md) - ✅ Live
-
-Atomic, namespace-isolated hit counter
-
-- **Status:** live
+- **Status:** mvp
 - **Endpoints:** `POST /v1/misc/counter/{namespace}`,
   `GET /v1/misc/counter/{namespace}`
+- **Credit Cost:** 1
 
-### [Historical Events](./historical-events.md) - ⏳ Planned
+### [Unit Conversion](./unit-conversion.md) - ✅ MVP
 
-Get information about historical events
+Convert between units of measurement — length, weight, volume, temperature,
+area, speed.
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/miscellaneous/historical-events`
-
-### [Historical Figures](./historical-figures.md) - ⏳ Planned
-
-Get information about historical figures
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/miscellaneous/historical-figures`
-
-### [Holidays](./holidays.md) - ⏳ Planned
-
-Get holiday information and calendars
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/miscellaneous/holidays`
-
-### [Logo](./logo.md) - ⏳ Planned
-
-Get company logos and brand images
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/miscellaneous/logo`
-
-### [Planets](./planets.md) - ⏳ Planned
-
-Get information about planets
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/miscellaneous/planets`
-
-### [Public Holidays](./public-holidays.md) - ⏳ Planned
-
-Get public holiday information by location
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/miscellaneous/public-holidays`
-
-### [Random Image](./random-image.md) - ⏳ Planned
-
-Get random images
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/miscellaneous/random-image`
-
-### [Random User](./random-user.md) - ✅ Live
-
-Get random user profiles
-
-- **Status:** live
-- **Endpoint:** `GET /v1/misc/random-user`
-
-### [Stars](./stars.md) - ⏳ Planned
-
-Get information about stars and constellations
-
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/miscellaneous/stars`
-
-### [Unit Conversion](./unit-conversion.md) - ✅ Live
-
-Convert between different units of measurement
-
-- **Status:** live
+- **Status:** mvp
 - **Endpoint:** `GET /v1/misc/convert`
+- **Credit Cost:** 1
 
-### [University](./university.md) - ⏳ Planned
+### [Random User](./random-user.md) - ✅ MVP
 
-Get university information
+Generate random fake user profiles for testing and prototyping.
 
-- **Status:** planned
-- **Planned Endpoint:** `GET /v1/miscellaneous/university`
+- **Status:** mvp
+- **Endpoint:** `GET /v1/misc/random-user`
+- **Credit Cost:** 1
+
+### [Color Format Conversion](./color-conversion.md) - ✅ MVP
+
+Convert color values between HEX, RGB, HSL, and CMYK.
+
+- **Status:** mvp
+- **Endpoint:** `GET /v1/convert/color`
+- **Credit Cost:** 1
 
 ## Category Statistics
 
-- Total Endpoints: 14
+- Total Endpoints: 4
 - Live: 4
-- Planned: 10
