@@ -1,0 +1,196 @@
+api_id: data-format-conversion
+api_name: Data Format Conversion
+description: Convert structured data between JSON, YAML, CSV, XML, and TOML in a single API call. Accepts any supported format as input and returns the content serialized in the target format.
+base_url: https://api.requiems.xyz
+
+overview:
+  use_cases:
+    - Transform configuration files between formats (TOML → YAML, JSON → TOML)
+    - Convert exported data for downstream tools that only accept specific formats
+    - Normalize API responses into CSV for spreadsheet ingestion
+    - Build developer tools and data pipeline utilities
+
+  features:
+    - Supports JSON, YAML, CSV, XML, and TOML as both input and output
+    - Input capped at 512 KB
+    - Descriptive parse errors with the problematic format identified
+    - Numbers preserved with correct types (integers stay integers, floats stay floats)
+    - CSV headers derived from JSON object keys (alphabetically sorted)
+
+endpoints:
+  - name: Convert Format
+    method: POST
+    path: /v1/convert/format
+    description: "Convert content from one structured data format to another. Supported formats: json, yaml, csv, xml, toml."
+
+    parameters:
+      - name: from
+        type: string
+        required: true
+        location: body
+        description: "Source format. One of: json, yaml, csv, xml, toml"
+        example: json
+      - name: to
+        type: string
+        required: true
+        location: body
+        description: "Target format. One of: json, yaml, csv, xml, toml"
+        example: yaml
+      - name: content
+        type: string
+        required: true
+        location: body
+        description: The content to convert, serialized as a string in the source format.
+        example: '{"name":"Alice","age":30}'
+
+    request_example: |
+      {
+        "from": "json",
+        "to": "yaml",
+        "content": "{\"name\": \"Alice\", \"age\": 30}"
+      }
+
+    response_example: |
+      {
+        "data": {
+          "result": "age: 30\nname: Alice\n"
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: result
+        type: string
+        description: The converted content serialized in the target format.
+
+    errors:
+      - code: validation_failed
+        status: 422
+        description: "One of from, to, or content is missing, or from/to is not one of the supported format values."
+      - code: invalid_json
+        status: 422
+        description: The content field is not valid JSON (when from is json).
+      - code: invalid_yaml
+        status: 422
+        description: The content field is not valid YAML (when from is yaml).
+      - code: invalid_csv
+        status: 422
+        description: "The content field is not valid CSV, or a row has more columns than the header (when from is csv)."
+      - code: invalid_xml
+        status: 422
+        description: The content field is not valid XML (when from is xml).
+      - code: invalid_toml
+        status: 422
+        description: The content field is not valid TOML (when from is toml).
+      - code: conversion_error
+        status: 422
+        description: "The data structure is incompatible with the target format (e.g. converting a JSON array to TOML, which requires a top-level object)."
+      - code: content_too_large
+        status: 413
+        description: The content field exceeds the 512 KB limit.
+
+    code_examples:
+      curl: |
+        # JSON → YAML
+        curl -X POST https://api.requiems.xyz/v1/convert/format \
+          -H "requiems-api-key: YOUR_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d '{"from":"json","to":"yaml","content":"{\"name\":\"Alice\",\"age\":30}"}'
+
+        # CSV → JSON
+        curl -X POST https://api.requiems.xyz/v1/convert/format \
+          -H "requiems-api-key: YOUR_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d '{"from":"csv","to":"json","content":"name,age\nAlice,30\nBob,25"}'
+
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/convert/format"
+        headers = {
+            "requiems-api-key": "YOUR_API_KEY",
+            "Content-Type": "application/json",
+        }
+
+        # JSON → YAML
+        payload = {
+            "from": "json",
+            "to": "yaml",
+            "content": '{"name": "Alice", "age": 30}',
+        }
+        response = requests.post(url, json=payload, headers=headers)
+        print(response.json()["data"]["result"])
+        # age: 30
+        # name: Alice
+
+        # CSV → JSON
+        csv_payload = {
+            "from": "csv",
+            "to": "json",
+            "content": "name,age\nAlice,30\nBob,25",
+        }
+        response = requests.post(url, json=csv_payload, headers=headers)
+        print(response.json()["data"]["result"])
+
+      javascript: |
+        const url = 'https://api.requiems.xyz/v1/convert/format';
+        const headers = {
+          'requiems-api-key': 'YOUR_API_KEY',
+          'Content-Type': 'application/json',
+        };
+
+        // JSON → YAML
+        const res = await fetch(url, {
+          method: 'POST',
+          headers,
+          body: JSON.stringify({
+            from: 'json',
+            to: 'yaml',
+            content: JSON.stringify({ name: 'Alice', age: 30 }),
+          }),
+        });
+
+        const { data } = await res.json();
+        console.log(data.result);
+        // age: 30
+        // name: Alice
+
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/convert/format')
+        request = Net::HTTP::Post.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+        request['Content-Type'] = 'application/json'
+        request.body = {
+          from: 'json',
+          to: 'yaml',
+          content: '{"name":"Alice","age":30}'
+        }.to_json
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        puts JSON.parse(response.body)['data']['result']
+        # age: 30
+        # name: Alice
+
+faq:
+  - question: Which format combinations are supported?
+    answer: All five formats (json, yaml, csv, xml, toml) can be used as both input and output. The only restriction is that TOML output requires a top-level object — it cannot represent a bare array or scalar.
+
+  - question: Why does converting a JSON array to TOML return an error?
+    answer: TOML requires a top-level table (object). Arrays and scalar values at the root level are not valid TOML documents. If you need to store an array, wrap it in an object first.
+
+  - question: What are the CSV rules?
+    answer: "The first row is always treated as the header. Each subsequent row becomes a JSON object keyed by the headers. When converting to CSV the input must be a JSON array of objects with consistent keys. Rows with more columns than the header row return a 422 error."
+
+  - question: How is XML structured for output?
+    answer: All JSON/YAML output is wrapped in a <root> element. Nested objects become child elements; arrays of items are each wrapped in an <item> element.
+
+  - question: Is there a size limit?
+    answer: The content field is capped at 512 KB. Requests exceeding this limit return a 413 content_too_large error.
