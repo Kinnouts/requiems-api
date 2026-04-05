@@ -114,12 +114,12 @@ func fetchAndParse(url string) ([]RawIBANCountry, error) {
 			continue
 		}
 
-		ibanLen, err := strconv.Atoi(strings.TrimSpace(fields[10]))
+		ibanLen, err := strconv.ParseInt(strings.TrimSpace(fields[10]), 10, 16)
 		if err != nil || ibanLen < 5 {
 			continue
 		}
 
-		bbanLen, err := strconv.Atoi(strings.TrimSpace(fields[6]))
+		bbanLen, err := strconv.ParseInt(strings.TrimSpace(fields[6]), 10, 16)
 		if err != nil || bbanLen < 1 {
 			continue
 		}
@@ -127,8 +127,8 @@ func fetchAndParse(url string) ([]RawIBANCountry, error) {
 		countries = append(countries, RawIBANCountry{
 			CountryCode:   strings.ToUpper(strings.TrimSpace(fields[0])),
 			CountryName:   strings.TrimSpace(fields[1]),
-			IBANLength:    ibanLen,
-			BBANLength:    bbanLen,
+			IBANLength:    int(ibanLen),
+			BBANLength:    int(bbanLen),
 			BBANFormat:    strings.TrimSpace(fields[4]),
 			BankIDStart:   parseOptInt(fields[11]),
 			BankIDEnd:     parseOptInt(fields[12]),
@@ -149,15 +149,16 @@ func fetchAndParse(url string) ([]RawIBANCountry, error) {
 	return countries, nil
 }
 
-// parseOptInt parses s as an integer, returning 0 for empty, "N/A", or
-// unparseable values.
+// parseOptInt parses s as an integer within int16 range, returning 0 for
+// empty, "N/A", unparseable, or out-of-range values. Using int16 bit size
+// keeps the result safe for the int16 DB columns these values populate.
 func parseOptInt(s string) int {
 	s = strings.TrimSpace(s)
 	if s == "" || s == "N/A" || s == "-" {
 		return 0
 	}
-	n, _ := strconv.Atoi(s)
-	return n
+	n, _ := strconv.ParseInt(s, 10, 16)
+	return int(n)
 }
 
 // printStats prints a summary of the parsed IBAN dataset to stdout.

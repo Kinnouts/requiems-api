@@ -1,4 +1,4 @@
-package format
+package convformat
 
 import (
 	"bytes"
@@ -273,33 +273,6 @@ func toCSV(v any) (string, error) {
 
 // --- XML ---
 
-// xmlNode is used to build and traverse a generic XML tree.
-type xmlNode struct {
-	XMLName  xml.Name
-	Attrs    []xml.Attr
-	Children []*xmlNode
-	Content  string
-}
-
-func (n *xmlNode) MarshalXML(e *xml.Encoder, _ xml.StartElement) error {
-	start := xml.StartElement{Name: n.XMLName, Attr: n.Attrs}
-	if err := e.EncodeToken(start); err != nil {
-		return err
-	}
-	if len(n.Children) > 0 {
-		for _, child := range n.Children {
-			if err := e.EncodeElement(child, xml.StartElement{Name: child.XMLName}); err != nil {
-				return err
-			}
-		}
-	} else if n.Content != "" {
-		if err := e.EncodeToken(xml.CharData(n.Content)); err != nil {
-			return err
-		}
-	}
-	return e.EncodeToken(xml.EndElement{Name: n.XMLName})
-}
-
 // parseXML parses XML content into a generic map structure.
 func parseXML(content string) (any, error) {
 	dec := xml.NewDecoder(strings.NewReader(content))
@@ -324,7 +297,7 @@ func xmlDecodeElement(dec *xml.Decoder) (any, error) {
 		}
 		switch t := tok.(type) {
 		case xml.StartElement:
-			return xmlReadElement(dec, t)
+			return xmlReadElement(dec)
 		case xml.CharData:
 			s := strings.TrimSpace(string(t))
 			if s != "" {
@@ -334,7 +307,7 @@ func xmlDecodeElement(dec *xml.Decoder) (any, error) {
 	}
 }
 
-func xmlReadElement(dec *xml.Decoder, start xml.StartElement) (map[string]any, error) {
+func xmlReadElement(dec *xml.Decoder) (map[string]any, error) {
 	result := make(map[string]any)
 	var textContent strings.Builder
 
@@ -345,7 +318,7 @@ func xmlReadElement(dec *xml.Decoder, start xml.StartElement) (map[string]any, e
 		}
 		switch t := tok.(type) {
 		case xml.StartElement:
-			child, err := xmlReadElement(dec, t)
+			child, err := xmlReadElement(dec)
 			if err != nil {
 				return nil, err
 			}
@@ -385,19 +358,19 @@ func toXML(v any) (string, error) {
 
 	root := xml.StartElement{Name: xml.Name{Local: "root"}}
 	if err := enc.EncodeToken(root); err != nil {
-		return "", conversionError("XML")
+		return "", conversionError()
 	}
 	if err := encodeXMLValue(enc, v); err != nil {
 		if ae, ok := err.(*httpx.AppError); ok {
 			return "", ae
 		}
-		return "", conversionError("XML")
+		return "", conversionError()
 	}
 	if err := enc.EncodeToken(root.End()); err != nil {
-		return "", conversionError("XML")
+		return "", conversionError()
 	}
 	if err := enc.Flush(); err != nil {
-		return "", conversionError("XML")
+		return "", conversionError()
 	}
 
 	return buf.String(), nil
@@ -466,11 +439,11 @@ func sanitizeXMLName(name string) string {
 	return b.String()
 }
 
-func conversionError(target string) *httpx.AppError {
+func conversionError() *httpx.AppError {
 	return &httpx.AppError{
 		Status:  http.StatusInternalServerError,
 		Code:    "conversion_error",
-		Message: fmt.Sprintf("failed to serialize to %s", target),
+		Message: "failed to serialize to XML",
 	}
 }
 

@@ -62,7 +62,7 @@ func fetchAndParse(url string) ([]RawInflationRecord, error) {
 			continue // no data for this country/year
 		}
 
-		year, err := strconv.Atoi(e.Date)
+		year, err := strconv.ParseInt(e.Date, 10, 16)
 		if err != nil || year == 0 {
 			continue // malformed date field
 		}
@@ -70,7 +70,7 @@ func fetchAndParse(url string) ([]RawInflationRecord, error) {
 		records = append(records, RawInflationRecord{
 			CountryCode: e.Country.ID,
 			CountryName: e.Country.Value,
-			Year:        year,
+			Year:        int(year),
 			Rate:        *e.Value,
 			Source:      "world_bank",
 		})

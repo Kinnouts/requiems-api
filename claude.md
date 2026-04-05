@@ -72,6 +72,12 @@ Run specific test:
 docker exec requiem-dev-api-1 go test ./services/text/advice -v -run TestGetAdvice
 ```
 
+Run lint:
+
+```bash
+docker exec requiem-dev-api-1 sh -lc 'export PATH=/usr/local/go/bin:$PATH; cd /app; /app/bin/golangci-lint run'
+```
+
 ### Rails Dashboard (apps/dashboard)
 
 **Note:** Commands assume containers are running. Container:
@@ -182,7 +188,7 @@ Run these commands locally to catch issues before CI.
 ```bash
 # Go Backend
 docker exec requiem-dev-api-1 go test ./...                    # Tests (must pass)
-docker exec requiem-dev-api-1 golangci-lint run                # Linting (advisory)
+docker exec requiem-dev-api-1 sh -lc 'export PATH=/usr/local/go/bin:$PATH; cd /app; /app/bin/golangci-lint run'  # Linting (advisory)
 
 # Rails Dashboard
 docker exec requiem-dev-dashboard-1 bin/rails test             # Tests (must pass)

@@ -1,4 +1,4 @@
-package format
+package convformat_test
 
 import (
 	"encoding/json"
@@ -10,11 +10,12 @@ import (
 	"github.com/go-chi/chi/v5"
 
 	"requiems-api/platform/httpx"
+	convformat "requiems-api/services/convert/format"
 )
 
 func setupRouter() chi.Router {
 	r := chi.NewRouter()
-	RegisterRoutes(r, NewService())
+	convformat.RegisterRoutes(r, convformat.NewService())
 	return r
 }
 
@@ -32,7 +33,7 @@ func TestFormat_HappyPath_JSONToYAML(t *testing.T) {
 		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
 	}
 
-	var resp httpx.Response[Response]
+	var resp httpx.Response[convformat.Response]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
@@ -56,7 +57,7 @@ func TestFormat_HappyPath_CSVToJSON(t *testing.T) {
 		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
 	}
 
-	var resp httpx.Response[Response]
+	var resp httpx.Response[convformat.Response]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}

@@ -16,6 +16,14 @@ func openDB(ctx context.Context, dsn string) (*pgx.Conn, error) {
 	return conn, nil
 }
 
+func toInt16(v int, field string) (int16, error) {
+	if v < -32768 || v > 32767 {
+		return 0, fmt.Errorf("%s out of int16 range: %d", field, v)
+	}
+
+	return int16(v), nil
+}
+
 func upsertRecords(ctx context.Context, conn *pgx.Conn, records []RawInflationRecord) (inserted, updated int, err error) {
 	// 1. Create staging table and clear any rows from a prior run in this session.
 	_, err = conn.Exec(ctx, `
@@ -33,10 +41,15 @@ func upsertRecords(ctx context.Context, conn *pgx.Conn, records []RawInflationRe
 
 	rows := make([][]any, 0, len(records))
 	for _, r := range records {
+		year, convErr := toInt16(r.Year, "year")
+		if convErr != nil {
+			return 0, 0, convErr
+		}
+
 		rows = append(rows, []any{
 			r.CountryCode,
 			r.CountryName,
-			int16(r.Year), //nolint:gosec // Year is always a 4-digit year, safe conversion
+			year,
 			r.Rate,
 			r.Source,
 		})

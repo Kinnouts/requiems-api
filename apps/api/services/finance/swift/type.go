@@ -19,11 +19,11 @@ func (LookupResponse) IsData() {}
 
 // ListFilter describes optional filters and pagination for SWIFT listings.
 type ListFilter struct {
-	CountryCode string
-	BankCode    string
-	Query       string
-	Limit       int
-	Offset      int
+	CountryCode string `query:"country_code"`
+	BankCode    string `query:"bank_code"`
+	Query       string `query:"q"`
+	Limit       int    `query:"limit"  validate:"min=1,max=100"`
+	Offset      int    `query:"offset" validate:"min=0"`
 }
 
 // ListResponse is the response payload for SWIFT listings.

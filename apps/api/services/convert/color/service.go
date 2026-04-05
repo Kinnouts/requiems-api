@@ -196,24 +196,24 @@ func toHSL(c rgb) string {
 	g := float64(c.g) / 255
 	b := float64(c.b) / 255
 
-	max := math.Max(r, math.Max(g, b))
-	min := math.Min(r, math.Min(g, b))
-	delta := max - min
+	maxVal := math.Max(r, math.Max(g, b))
+	minVal := math.Min(r, math.Min(g, b))
+	delta := maxVal - minVal
 
-	l := (max + min) / 2
+	l := (maxVal + minVal) / 2
 
 	var s float64
 	if delta != 0 {
 		if l < 0.5 {
-			s = delta / (max + min)
+			s = delta / (maxVal + minVal)
 		} else {
-			s = delta / (2 - max - min)
+			s = delta / (2 - maxVal - minVal)
 		}
 	}
 
 	var h float64
 	if delta != 0 {
-		switch max {
+		switch maxVal {
 		case r:
 			h = math.Mod((g-b)/delta, 6)
 		case g:

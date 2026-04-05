@@ -2,7 +2,6 @@ package swift
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/go-chi/chi/v5"
 
@@ -20,13 +19,9 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 func registerSWIFTRoutes(r chi.Router, l Looker) {
 	// GET /swift — list SWIFT records with optional filters.
 	r.Get("/swift", func(w http.ResponseWriter, r *http.Request) {
-		filter, err := buildListFilter(r)
-		if err != nil {
-			if ae, ok := err.(*httpx.AppError); ok {
-				httpx.Error(w, ae.Status, ae.Code, ae.Message)
-				return
-			}
-			httpx.Error(w, http.StatusBadRequest, "bad_request", "invalid query parameters")
+		filter := ListFilter{Limit: 50}
+		if err := httpx.BindQuery(r, &filter); err != nil {
+			httpx.Error(w, http.StatusBadRequest, "bad_request", err.Error())
 			return
 		}
 
@@ -45,13 +40,9 @@ func registerSWIFTRoutes(r chi.Router, l Looker) {
 
 	// GET /swift/country/{country_code} — list SWIFT records for a country.
 	r.Get("/swift/country/{country_code}", func(w http.ResponseWriter, r *http.Request) {
-		filter, err := buildListFilter(r)
-		if err != nil {
-			if ae, ok := err.(*httpx.AppError); ok {
-				httpx.Error(w, ae.Status, ae.Code, ae.Message)
-				return
-			}
-			httpx.Error(w, http.StatusBadRequest, "bad_request", "invalid query parameters")
+		filter := ListFilter{Limit: 50}
+		if err := httpx.BindQuery(r, &filter); err != nil {
+			httpx.Error(w, http.StatusBadRequest, "bad_request", err.Error())
 			return
 		}
 
@@ -86,33 +77,4 @@ func registerSWIFTRoutes(r chi.Router, l Looker) {
 
 		httpx.JSON(w, http.StatusOK, result)
 	})
-}
-
-func buildListFilter(r *http.Request) (ListFilter, error) {
-	q := r.URL.Query()
-	filter := ListFilter{
-		CountryCode: q.Get("country_code"),
-		BankCode:    q.Get("bank_code"),
-		Query:       q.Get("q"),
-		Limit:       50,
-		Offset:      0,
-	}
-
-	if raw := q.Get("limit"); raw != "" {
-		v, err := strconv.Atoi(raw)
-		if err != nil {
-			return ListFilter{}, &httpx.AppError{Status: http.StatusBadRequest, Code: "bad_request", Message: "limit must be an integer"}
-		}
-		filter.Limit = v
-	}
-
-	if raw := q.Get("offset"); raw != "" {
-		v, err := strconv.Atoi(raw)
-		if err != nil {
-			return ListFilter{}, &httpx.AppError{Status: http.StatusBadRequest, Code: "bad_request", Message: "offset must be an integer"}
-		}
-		filter.Offset = v
-	}
-
-	return filter, nil
 }

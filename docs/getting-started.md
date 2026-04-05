@@ -86,3 +86,12 @@ Seeded dev API keys (available automatically after stack starts):
 
 > **Tip:** You can also hit the Go backend directly on port 8080 without auth,
 > useful for quick endpoint testing without going through the gateway.
+
+### Go API lint in Docker
+
+When running lint from the dev API container, use the repository binary and
+ensure Go is on PATH inside the shell command:
+
+```bash
+docker exec requiem-dev-api-1 sh -lc 'export PATH=/usr/local/go/bin:$PATH; cd /app; /app/bin/golangci-lint run'
+```

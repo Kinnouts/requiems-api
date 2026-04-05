@@ -9,12 +9,12 @@ func TestService_Convert(t *testing.T) {
 	svc := NewService()
 
 	tests := []struct {
-		name      string
-		value     string
-		fromBase  int
-		toBase    int
-		want      string
-		wantErr   error
+		name     string
+		value    string
+		fromBase int
+		toBase   int
+		want     string
+		wantErr  error
 	}{
 		{
 			name:     "decimal to hex",
@@ -108,32 +108,32 @@ func TestService_Convert(t *testing.T) {
 			want:     "42",
 		},
 		{
-			name:    "invalid from base",
-			value:   "255",
+			name:     "invalid from base",
+			value:    "255",
 			fromBase: 3,
-			toBase:  10,
-			wantErr: ErrInvalidBase,
+			toBase:   10,
+			wantErr:  ErrInvalidBase,
 		},
 		{
-			name:    "invalid to base",
-			value:   "255",
+			name:     "invalid to base",
+			value:    "255",
 			fromBase: 10,
-			toBase:  5,
-			wantErr: ErrInvalidBase,
+			toBase:   5,
+			wantErr:  ErrInvalidBase,
 		},
 		{
-			name:    "invalid value for base",
-			value:   "xyz",
+			name:     "invalid value for base",
+			value:    "xyz",
 			fromBase: 10,
-			toBase:  16,
-			wantErr: ErrInvalidValue,
+			toBase:   16,
+			wantErr:  ErrInvalidValue,
 		},
 		{
-			name:    "binary value with decimal digits",
-			value:   "29",
+			name:     "binary value with decimal digits",
+			value:    "29",
 			fromBase: 2,
-			toBase:  10,
-			wantErr: ErrInvalidValue,
+			toBase:   10,
+			wantErr:  ErrInvalidValue,
 		},
 	}
 

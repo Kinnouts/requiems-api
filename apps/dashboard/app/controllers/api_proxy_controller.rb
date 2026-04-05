@@ -41,12 +41,8 @@ class ApiProxyController < ApplicationController
 
   def valid_endpoint?(endpoint)
     return false if endpoint.blank?
-    return false unless endpoint.start_with?("/v1/")
-    # Reject anything that could manipulate URI parsing (schemes, fragments, newlines, path traversal)
-    return false if endpoint.match?(/[#\r\n]|:\/\//)
-    return false if endpoint.include?("..")
 
-    true
+    endpoint.match?(/\A\/v1\/[a-zA-Z0-9\/\-_.]+\z/)
   end
 
   def make_api_request(endpoint, method, request_params)

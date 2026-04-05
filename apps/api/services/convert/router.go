@@ -4,8 +4,8 @@ import (
 	"github.com/go-chi/chi/v5"
 
 	"requiems-api/services/convert/base64"
-	"requiems-api/services/convert/format"
 	"requiems-api/services/convert/color"
+	convformat "requiems-api/services/convert/format"
 	"requiems-api/services/convert/markdown"
 	"requiems-api/services/convert/numbase"
 )
@@ -19,10 +19,10 @@ func RegisterRoutes(r chi.Router) {
 
 	numbaseSvc := numbase.NewService()
 	numbase.RegisterRoutes(r, numbaseSvc)
-  
-	formatSvc := format.NewService()
-	format.RegisterRoutes(r, formatSvc)
-  
+
+	formatSvc := convformat.NewService()
+	convformat.RegisterRoutes(r, formatSvc)
+
 	colorSvc := color.NewService()
 	color.RegisterRoutes(r, colorSvc)
 }

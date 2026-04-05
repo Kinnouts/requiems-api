@@ -1,4 +1,4 @@
-package format
+package convformat
 
 // Request is the input for the format conversion endpoint.
 type Request struct {

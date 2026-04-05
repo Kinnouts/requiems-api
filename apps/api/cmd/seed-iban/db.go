@@ -16,6 +16,14 @@ func openDB(ctx context.Context, dsn string) (*pgx.Conn, error) {
 	return conn, nil
 }
 
+func toInt16(v int, field string) (int16, error) {
+	if v < -32768 || v > 32767 {
+		return 0, fmt.Errorf("%s out of int16 range: %d", field, v)
+	}
+
+	return int16(v), nil
+}
+
 func upsertRecords(ctx context.Context, conn *pgx.Conn, countries []RawIBANCountry) (inserted, updated int, err error) {
 	// 1. Create staging table and clear any rows from a prior run in this session.
 	_, err = conn.Exec(ctx, `
@@ -37,15 +45,40 @@ func upsertRecords(ctx context.Context, conn *pgx.Conn, countries []RawIBANCount
 
 	rows := make([][]any, 0, len(countries))
 	for _, c := range countries {
+		ibanLength, convErr := toInt16(c.IBANLength, "iban_length")
+		if convErr != nil {
+			return 0, 0, convErr
+		}
+
+		bankOffset, convErr := toInt16(c.BankOffset(), "bank_offset")
+		if convErr != nil {
+			return 0, 0, convErr
+		}
+
+		bankLength, convErr := toInt16(c.BankLength(), "bank_length")
+		if convErr != nil {
+			return 0, 0, convErr
+		}
+
+		accountOffset, convErr := toInt16(c.AccountOffset(), "account_offset")
+		if convErr != nil {
+			return 0, 0, convErr
+		}
+
+		accountLength, convErr := toInt16(c.AccountLength(), "account_length")
+		if convErr != nil {
+			return 0, 0, convErr
+		}
+
 		rows = append(rows, []any{
 			c.CountryCode,
 			c.CountryName,
-			int16(c.IBANLength), //nolint:gosec // IBAN lengths are small positive integers
+			ibanLength,
 			c.BBANFormat,
-			int16(c.BankOffset()),    //nolint:gosec // bank offsets are small positive integers
-			int16(c.BankLength()),    //nolint:gosec // bank lengths are small positive integers
-			int16(c.AccountOffset()), //nolint:gosec // account offsets are small positive integers
-			int16(c.AccountLength()), //nolint:gosec // account lengths are small positive integers
+			bankOffset,
+			bankLength,
+			accountOffset,
+			accountLength,
 			c.SEPAMember,
 		})
 	}
