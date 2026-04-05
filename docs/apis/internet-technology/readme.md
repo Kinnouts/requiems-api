@@ -23,6 +23,14 @@ Encode and decode Base64 strings
   `POST /v1/convert/base64/decode`
 - **Credit Cost:** 1
 
+### [Number Base Conversion](./number-base-conversion.md) - ✅ MVP
+
+Convert integers between binary, octal, decimal, and hexadecimal
+
+- **Status:** mvp
+- **Endpoint:** `GET /v1/convert/base`
+- **Credit Cost:** 1
+
 ### [Disposable Email Checker](./disposable-email-checker.md) - ⏳ Planned
 
 Check if an email is from a disposable email service
@@ -132,6 +140,6 @@ Get WHOIS information for domains
 
 ## Category Statistics
 
-- Total Endpoints: 18
-- Live: 7
+- Total Endpoints: 19
+- Live: 8
 - Planned: 11
