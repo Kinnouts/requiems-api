@@ -145,6 +145,7 @@ class AppConfig
 
   def validate_config
     validate_url(@api_base_url, "API_BASE_URL")
+    validate_url(@internal_api_url, "INTERNAL_API_URL")
 
     unless @lemonsqueezy_store_id.match?(/^\d+$/)
       raise InvalidConfigError, "LEMONSQUEEZY_STORE_ID must be numeric"

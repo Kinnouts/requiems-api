@@ -53,8 +53,11 @@ class ApiProxyController < ApplicationController
     # Build URI from fixed config components — host/scheme/port never sourced from user input.
     # This prevents SSRF: even if endpoint is malformed, the request can only go to the
     # configured internal API host.
+    # URI::Generic.build always returns URI::Generic regardless of scheme, which Net::HTTP
+    # rejects. Use URI::HTTP/HTTPS.build instead to get the right subclass.
     base = URI(::AppConfig.internal_api_url)
-    uri = URI::Generic.build(scheme: base.scheme, host: base.host, port: base.port, path: endpoint)
+    uri_class = base.is_a?(URI::HTTPS) ? URI::HTTPS : URI::HTTP
+    uri = uri_class.build(host: base.host, port: base.port, path: endpoint)
     Rails.logger.debug { "Playground proxy: #{method} #{base.host}#{endpoint} params=#{request_params.inspect}" }
 
     # CF-Connecting-IP is set by Cloudflare with the real client IP.
