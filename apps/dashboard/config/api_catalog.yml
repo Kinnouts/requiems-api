@@ -741,6 +741,25 @@ apis:
       - Utilities
       - Measurement
 
+  - id: data-format-conversion
+    name: Data Format Conversion
+    categories:
+      - technology
+      - data
+    description: Convert structured data between JSON, YAML, CSV, XML, and TOML in a single API call.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/data-format-conversion
+    tags:
+      - JSON
+      - YAML
+      - CSV
+      - XML
+      - TOML
+      - Conversion
+      - Utilities
+
   # Finance APIs
   - id: inflation
     name: Inflation
