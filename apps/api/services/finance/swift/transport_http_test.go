@@ -117,7 +117,6 @@ func TestSWIFT_List_Returns200(t *testing.T) {
 	}
 }
 
-
 func TestSWIFT_List_InvalidLimit_Returns400(t *testing.T) {
 	svc := &stubService{}
 	r := setupRouter(svc)
