@@ -10,3 +10,7 @@ production:
   aggregate_daily_usage:
     class: AggregateDailyUsageJob
     schedule: every day at 00:05
+
+  expire_promotional_subscriptions:
+    class: ExpirePromotionalSubscriptionsJob
+    schedule: every hour at minute 30

@@ -77,6 +77,8 @@ Rails.application.routes.draw do
             post :remove_admin
           end
 
+          resource :promotion, only: [ :create, :destroy ],
+                               controller: "promotions"
           resources :credit_adjustments, only: [ :new, :create ]
         end
 

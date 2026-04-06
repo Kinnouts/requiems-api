@@ -306,6 +306,18 @@ es:
       copied_btn: "¡Copiado!"
       browse_apis: "Ver Todas las APIs"
     mailers:
+      promotion:
+        upgrade_notification:
+          subject: "Tu plan de Requiems ha sido actualizado a %{plan}"
+          header_title: "Actualización de plan"
+          header_subtitle: "Requiems API — Has sido actualizado"
+          greeting_html: "Hola <strong>%{email}</strong>,"
+          intro: "¡Buenas noticias! Tu plan de Requiems API ha sido actualizado."
+          plan_label: "Tu nuevo plan"
+          expires_label: "Acceso hasta"
+          cta_btn: "Ir al panel"
+          expiry_notice_html: "Tu acceso mejorado es válido hasta el <strong>%{expires_at}</strong>. Después de esa fecha, tu cuenta volverá automáticamente al plan gratuito."
+          contact_notice_html: "¿Preguntas? Contáctanos en %{email_link}."
       account_deletion:
         subject: "Confirma la eliminación de tu cuenta"
         header_title: "Eliminación de cuenta solicitada"

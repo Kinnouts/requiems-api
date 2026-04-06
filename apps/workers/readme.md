@@ -14,7 +14,8 @@ analytics — all running at the edge without a traditional server.
 
 ## Architecture
 
-Refer to [docs/architecture.md](../../docs/architecture.md) for the overall system architecture and how the workers fit into the ecosystem.
+Refer to [docs/core/architecture.md](../../docs/core/architecture.md) for the
+overall system architecture and how the workers fit into the ecosystem.
 
 ## Data Storage
 
@@ -31,11 +32,15 @@ Refer to [docs/architecture.md](../../docs/architecture.md) for the overall syst
 
 ## Plan Limits
 
-Refer to [docs/business.md](../../docs/business.md) for detailed plan limits.
+Refer to [docs/core/business.md](../../docs/core/business.md) for detailed plan
+limits.
 
 ## Development
 
-Refer to [docs/getting-starter.md](../../docs/getting-started.md) for Docker Compose setup and development workflow instructions. The workers are included in the `docker-compose.dev.yml` configuration and will be built and run alongside the Go API, Rails Dashboard, PostgreSQL, and Redis services.
+Refer to [docs/core/getting-started.md](../../docs/core/getting-started.md) for
+Docker Compose setup and development workflow instructions. The workers are
+included in the `docker-compose.dev.yml` configuration and will be built and run
+alongside the Go API, Rails Dashboard, PostgreSQL, and Redis services.
 
 ## Tech Stack
 

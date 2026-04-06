@@ -48,7 +48,7 @@ export const PLANS = {
 
 /**
  * Plan names
- * https://github.com/bobadilla-tech/requiems-api/docs/business.md
+ * https://github.com/bobadilla-tech/requiems-api/docs/core/business.md
  */
 export type PlanName = keyof typeof PLANS;
 

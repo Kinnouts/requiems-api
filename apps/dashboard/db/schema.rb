@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_03_16_170000) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_06_000000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -104,6 +104,9 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_16_170000) do
     t.string "lemonsqueezy_subscription_id"
     t.string "plan"
     t.string "plan_name"
+    t.bigint "promoted_by_id"
+    t.datetime "promotion_expires_at"
+    t.text "promotion_reason"
     t.string "status"
     t.string "stripe_customer_id"
     t.string "stripe_subscription_id"
@@ -113,6 +116,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_16_170000) do
     t.index ["lemonsqueezy_customer_id"], name: "index_subscriptions_on_lemonsqueezy_customer_id"
     t.index ["lemonsqueezy_subscription_id"], name: "index_subscriptions_on_lemonsqueezy_subscription_id", unique: true
     t.index ["plan_name"], name: "index_subscriptions_on_plan_name"
+    t.index ["promotion_expires_at"], name: "index_subscriptions_on_promotion_expires_at"
     t.index ["user_id"], name: "index_subscriptions_on_user_id"
   end
 
@@ -184,6 +188,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_03_16_170000) do
   add_foreign_key "credit_adjustments", "users"
   add_foreign_key "daily_usage_summaries", "users"
   add_foreign_key "subscriptions", "users"
+  add_foreign_key "subscriptions", "users", column: "promoted_by_id"
   add_foreign_key "usage_logs", "api_keys"
   add_foreign_key "usage_logs", "users"
 end

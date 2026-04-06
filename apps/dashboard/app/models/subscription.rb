@@ -2,6 +2,7 @@
 
 class Subscription < ApplicationRecord
   belongs_to :user
+  belongs_to :promoted_by, class_name: "User", optional: true
 
   # Validations
   validates :plan_name, presence: true, inclusion: { in: %w[free developer business professional] }
@@ -13,6 +14,11 @@ class Subscription < ApplicationRecord
   scope :cancelled, -> { where(status: "cancelled") }
   scope :paid, -> { where.not(plan_name: "free") }
   scope :paying, -> { paid.where(cancel_at_period_end: [ false, nil ]) }
+  scope :promotional, -> { where.not(promoted_by_id: nil) }
+
+  def promoted?
+    promoted_by_id.present?
+  end
 
   # Callbacks
   after_create :sync_to_cloudflare
