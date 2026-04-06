@@ -18,15 +18,15 @@ configured domains — no certbot, no cron jobs, no manual renewal.
 
 ### 2. Reverse Proxy
 
-| Domain                  | Target           | Notes                   |
-| ----------------------- | ---------------- | ----------------------- |
-| `requiems.xyz`          | `dashboard:80`   | Rails app               |
-| `internal.requiems.xyz` | `api:8080`       | Go API (secret-guarded) |
+| Domain                  | Target         | Notes                   |
+| ----------------------- | -------------- | ----------------------- |
+| `requiems.xyz`          | `dashboard:80` | Rails app               |
+| `internal.requiems.xyz` | `api:8080`     | Go API (secret-guarded) |
 
 ### 3. Backend Secret Guard
 
-`internal.requiems.xyz` enforces the `X-Backend-Secret` header before
-forwarding to the Go API:
+`internal.requiems.xyz` enforces the `X-Backend-Secret` header before forwarding
+to the Go API:
 
 ```caddyfile
 @authorized {
@@ -53,11 +53,11 @@ though `internal.requiems.xyz` is a public domain.
 Caddy is **not** used in local development. Services are accessed directly via
 localhost ports:
 
-| Service    | Local URL                     |
-| ---------- | ----------------------------- |
-| Dashboard  | http://localhost:3000         |
-| Go API     | http://localhost:8080/healthz |
-| Auth GW    | http://localhost:4455         |
+| Service   | Local URL                     |
+| --------- | ----------------------------- |
+| Dashboard | http://localhost:3000         |
+| Go API    | http://localhost:8080/healthz |
+| Auth GW   | http://localhost:4455         |
 
 ## Production Setup
 
@@ -68,4 +68,5 @@ DNS records in Cloudflare must point both `requiems.xyz` and
 `internal.requiems.xyz` to the VPS IP. Both should be **proxied (orange cloud)**
 for DDoS protection.
 
-See [deployment guide](../../docs/deployment.md) for full setup instructions.
+See [deployment guide](../../docs/core/deployment.md) for full setup
+instructions.
