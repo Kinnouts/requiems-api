@@ -9,7 +9,7 @@ import (
 )
 
 func RegisterRoutes(r chi.Router, svc *Service) {
-	r.Post("/convert/markdown", httpx.Handle(
+	r.Post("/markdown", httpx.Handle(
 		func(_ context.Context, req Request) (Response, error) {
 			return svc.Convert(req.Markdown, req.Sanitize)
 		},

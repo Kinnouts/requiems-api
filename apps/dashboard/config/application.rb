@@ -39,10 +39,12 @@ module Dashboard
         commodity_price_history
         commodity_prices
         counters
+        exercises
         iban_countries
         inflation_data
         quotes
         schema_migrations
+        swift_codes
         words
       ]
     end
