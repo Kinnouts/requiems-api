@@ -2,7 +2,7 @@
 
 # Background job to sync usage data from Cloudflare D1 to PostgreSQL
 #
-# This job runs every 5 minutes via Solid Queue recurring tasks.
+# This job runs every 5 minutes via Sidekiq Cron.
 # It fetches new usage records from D1 and inserts them into the usage_logs table.
 #
 # Usage:

@@ -2,7 +2,7 @@
 
 # Background job to expire admin-granted promotional plan upgrades.
 #
-# Runs hourly via Solid Queue recurring tasks. Finds all subscriptions where
+# Runs hourly via Sidekiq Cron. Finds all subscriptions where
 # a promotion has passed its expiry date and downgrades them back to the free
 # plan, syncing Cloudflare and writing an audit log entry.
 #
