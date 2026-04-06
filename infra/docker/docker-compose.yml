@@ -66,7 +66,7 @@ services:
       sh -c "./bin/rails db:prepare &&
              ./bin/thrust ./bin/rails server"
 
-  sidekiq:
+  worker:
     build:
       context: ../../apps/dashboard
       dockerfile: ../../infra/docker/dashboard.Dockerfile
@@ -79,7 +79,7 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-    command: bundle exec ruby bin/jobs start
+    command: bundle exec sidekiq
 
   caddy:
     image: caddy:2-alpine
