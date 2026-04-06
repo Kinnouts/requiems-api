@@ -96,6 +96,8 @@ class Webhooks::LemonsqueezyController < ApplicationController
       Cloudflare::ApiManagementService.new.sync_user_plan(user, plan_name)
     end
 
+    SubscriptionMailer.upgrade_notification(user, plan_name).deliver_later if plan_name != "free"
+
     Rails.logger.info "[LemonSqueezy] Subscription created for user #{user.id}: #{plan_name}"
   end
 
@@ -109,6 +111,7 @@ class Webhooks::LemonsqueezyController < ApplicationController
     end
 
     plan_name = determine_plan_name(data[:variant_id])
+    previous_plan = subscription.plan_name
 
     ActiveRecord::Base.transaction do
       subscription.update!(
@@ -120,6 +123,10 @@ class Webhooks::LemonsqueezyController < ApplicationController
 
       # Sync to Cloudflare KV — inside transaction so a failure rolls back the DB save
       Cloudflare::ApiManagementService.new.sync_user_plan(subscription.user, plan_name)
+    end
+
+    if plan_name != "free" && plan_name != previous_plan
+      SubscriptionMailer.upgrade_notification(subscription.user, plan_name).deliver_later
     end
 
     Rails.logger.info "[LemonSqueezy] Subscription updated: #{subscription.id}"

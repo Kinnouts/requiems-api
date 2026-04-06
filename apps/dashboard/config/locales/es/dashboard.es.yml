@@ -306,6 +306,16 @@ es:
       copied_btn: "¡Copiado!"
       browse_apis: "Ver Todas las APIs"
     mailers:
+      subscription:
+        upgrade_notification:
+          subject: "Ahora estás en el plan %{plan}"
+          header_title: "Suscripción activada"
+          header_subtitle: "Requiems API — Bienvenido a tu nuevo plan"
+          greeting_html: "Hola <strong>%{email}</strong>,"
+          intro: "Tu suscripción está ahora activa. Tienes acceso completo a todas las funciones incluidas en tu plan."
+          plan_label: "Tu plan"
+          cta_btn: "Ir al panel"
+          contact_notice_html: "¿Preguntas? Contáctanos en %{email_link}."
       promotion:
         upgrade_notification:
           subject: "Tu plan de Requiems ha sido actualizado a %{plan}"
