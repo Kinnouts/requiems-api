@@ -18,21 +18,21 @@ Before writing any code, read the doc for the area you are working in:
 
 | Task                                            | Read first                                      |
 | ----------------------------------------------- | ----------------------------------------------- |
-| Add a Go endpoint (new feature, new domain)     | `docs/adding-go-endpoints.md`                   |
-| Work on the Go backend (architecture, patterns) | `docs/backend.md`                               |
-| Work on the Auth Gateway worker                 | `docs/auth-gateway.md`                          |
-| Work on the API Management worker               | `docs/api-management.md`                        |
-| Work on the Rails dashboard                     | `docs/rails-app.md`                             |
-| Infrastructure / deployment                     | `docs/infrastructure.md` / `docs/deployment.md` |
-| Dev environment setup                           | `docs/getting-started.md`                       |
+| Add a Go endpoint (new feature, new domain)     | `docs/core/adding-go-endpoints.md`                   |
+| Work on the Go backend (architecture, patterns) | `docs/core/backend.md`                               |
+| Work on the Auth Gateway worker                 | `docs/core/auth-gateway.md`                          |
+| Work on the API Management worker               | `docs/core/api-management.md`                        |
+| Work on the Rails dashboard                     | `docs/core/rails-app.md`                             |
+| Infrastructure / deployment                     | `docs/core/infrastructure.md` / `docs/core/deployment.md` |
+| Dev environment setup                           | `docs/core/getting-started.md`                       |
 
-All docs are in `docs/` — see `docs/readme.md` for the full index.
+All docs are in `docs/` — see `docs/core/readme.md` for the full index.
 
 ## Development Commands
 
 ### Full Stack Development
 
-See [docs/getting-started.md](docs/getting-started.md) for environment setup and
+See [docs/core/getting-started.md](docs/core/getting-started.md) for environment setup and
 local development configuration.
 
 Start all services with hot reload:
@@ -426,7 +426,7 @@ Usage tracking:
 
 ### Adding New Go Endpoints
 
-See `docs/adding-go-endpoints.md` for the full step-by-step guide including code
+See `docs/core/adding-go-endpoints.md` for the full step-by-step guide including code
 patterns, testing, documentation YAML, and the pre-merge checklist.
 
 ### Go Backend Security

@@ -9,7 +9,8 @@ creates the table runs automatically on API startup.
 
 ## Usage
 
-**Production** — run from `infra/docker/` as a one-off container on the compose network:
+**Production** — run from `infra/docker/` as a one-off container on the compose
+network:
 
 ```bash
 docker run --rm \

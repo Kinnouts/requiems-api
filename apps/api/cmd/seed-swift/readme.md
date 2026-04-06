@@ -1,7 +1,7 @@
 # seed-swift
 
-Downloads and normalises a full SWIFT/BIC dataset, then upserts records into
-the `swift_codes` PostgreSQL table.
+Downloads and normalises a full SWIFT/BIC dataset, then upserts records into the
+`swift_codes` PostgreSQL table.
 
 ## Usage
 
@@ -66,5 +66,6 @@ by appending `XXX`.
 
 - New codes are inserted.
 - Existing codes update `bank_name`, `city`, `country_name`, and `last_updated`.
-- Structural fields (`bank_code`, `country_code`, `location_code`, `branch_code`)
-  are derived from the BIC itself and are not updated on conflict.
+- Structural fields (`bank_code`, `country_code`, `location_code`,
+  `branch_code`) are derived from the BIC itself and are not updated on
+  conflict.

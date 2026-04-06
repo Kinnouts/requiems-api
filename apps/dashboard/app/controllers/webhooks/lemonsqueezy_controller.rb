@@ -85,7 +85,11 @@ class Webhooks::LemonsqueezyController < ApplicationController
         current_period_start: data[:renews_at] ? Time.zone.parse(data[:renews_at]) - 1.month : Time.current,
         current_period_end: data[:renews_at],
         trial_ends_at: data[:trial_ends_at],
-        cancel_at_period_end: false
+        cancel_at_period_end: false,
+        # Clear any active admin promotion — the paid subscription supersedes it
+        promoted_by_id: nil,
+        promotion_reason: nil,
+        promotion_expires_at: nil
       )
 
       # Sync to Cloudflare KV — inside transaction so a failure rolls back the DB save

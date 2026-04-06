@@ -93,10 +93,15 @@
         <div class="space-y-4">
           <div>
             <label class="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Plan</label>
-            <%= render "partials/shared/badge",
-              text: h(@user.subscription.plan_name.titleize),
-              variant: @user.subscription.plan_name == "free" ? "default" : "primary",
-              size: "sm" %>
+            <div class="flex items-center gap-2 flex-wrap">
+              <%= render "partials/shared/badge",
+                text: h(@user.subscription.plan_name.titleize),
+                variant: @user.subscription.plan_name == "free" ? "default" : "primary",
+                size: "sm" %>
+              <% if @user.subscription.promoted? %>
+                <%= render "partials/shared/badge", text: "Promotional", variant: "warning", size: "xs" %>
+              <% end %>
+            </div>
           </div>
           <div>
             <label class="block text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Billing Cycle</label>
@@ -130,6 +135,8 @@
     </div>
   </div>
 </div>
+
+<%= render "partials/admin_users/show/promotion_section", user: @user %>
 
 <!-- Usage Statistics -->
 <div class="bg-white dark:bg-gray-800 rounded-lg shadow mb-8">
