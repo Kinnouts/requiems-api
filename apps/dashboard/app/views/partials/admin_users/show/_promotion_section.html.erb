@@ -60,7 +60,7 @@
 
     <% else %>
       <%# No active promotion — show grant form %>
-      <%= form_with url: admin_user_promotion_path(user), method: :post, class: "space-y-5" do |f| %>
+      <%= form_with url: admin_user_promotion_path(user), method: :post, scope: :promotion, class: "space-y-5" do |f| %>
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
             <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Plan</label>
