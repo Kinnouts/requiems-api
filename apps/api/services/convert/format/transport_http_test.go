@@ -23,7 +23,7 @@ func TestFormat_HappyPath_JSONToYAML(t *testing.T) {
 	r := setupRouter()
 
 	body := `{"from":"json","to":"yaml","content":"{\"name\":\"Alice\",\"age\":30}"}`
-	req := httptest.NewRequest(http.MethodPost, "/convert/format", strings.NewReader(body))
+	req := httptest.NewRequest(http.MethodPost, "/format", strings.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -47,7 +47,7 @@ func TestFormat_HappyPath_CSVToJSON(t *testing.T) {
 	r := setupRouter()
 
 	body := `{"from":"csv","to":"json","content":"name,age\nAlice,30\n"}`
-	req := httptest.NewRequest(http.MethodPost, "/convert/format", strings.NewReader(body))
+	req := httptest.NewRequest(http.MethodPost, "/format", strings.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -71,7 +71,7 @@ func TestFormat_InvalidFromFormat(t *testing.T) {
 	r := setupRouter()
 
 	body := `{"from":"txt","to":"json","content":"hello"}`
-	req := httptest.NewRequest(http.MethodPost, "/convert/format", strings.NewReader(body))
+	req := httptest.NewRequest(http.MethodPost, "/format", strings.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -85,7 +85,7 @@ func TestFormat_InvalidFromFormat(t *testing.T) {
 func TestFormat_MissingBody(t *testing.T) {
 	r := setupRouter()
 
-	req := httptest.NewRequest(http.MethodPost, "/convert/format", http.NoBody)
+	req := httptest.NewRequest(http.MethodPost, "/format", http.NoBody)
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -100,7 +100,7 @@ func TestFormat_MalformedInput(t *testing.T) {
 	r := setupRouter()
 
 	body := `{"from":"json","to":"yaml","content":"{invalid json"}`
-	req := httptest.NewRequest(http.MethodPost, "/convert/format", strings.NewReader(body))
+	req := httptest.NewRequest(http.MethodPost, "/format", strings.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -115,7 +115,7 @@ func TestFormat_MissingFields(t *testing.T) {
 	r := setupRouter()
 
 	body := `{"from":"json","to":"yaml"}`
-	req := httptest.NewRequest(http.MethodPost, "/convert/format", strings.NewReader(body))
+	req := httptest.NewRequest(http.MethodPost, "/format", strings.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 

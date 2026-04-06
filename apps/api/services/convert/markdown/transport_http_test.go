@@ -22,7 +22,7 @@ func TestMarkdown_HappyPath(t *testing.T) {
 	r := setupRouter()
 
 	body := `{"markdown":"# Hello\n\nThis is **bold** text."}`
-	req := httptest.NewRequest(http.MethodPost, "/convert/markdown", strings.NewReader(body))
+	req := httptest.NewRequest(http.MethodPost, "/markdown", strings.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -47,7 +47,7 @@ func TestMarkdown_Sanitize(t *testing.T) {
 	r := setupRouter()
 
 	body := `{"markdown":"Hello <script>alert('xss')</script>","sanitize":true}`
-	req := httptest.NewRequest(http.MethodPost, "/convert/markdown", strings.NewReader(body))
+	req := httptest.NewRequest(http.MethodPost, "/markdown", strings.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -70,7 +70,7 @@ func TestMarkdown_Sanitize(t *testing.T) {
 func TestMarkdown_MissingBody(t *testing.T) {
 	r := setupRouter()
 
-	req := httptest.NewRequest(http.MethodPost, "/convert/markdown", http.NoBody)
+	req := httptest.NewRequest(http.MethodPost, "/markdown", http.NoBody)
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -85,7 +85,7 @@ func TestMarkdown_EmptyMarkdown(t *testing.T) {
 	r := setupRouter()
 
 	body := `{"markdown":""}`
-	req := httptest.NewRequest(http.MethodPost, "/convert/markdown", strings.NewReader(body))
+	req := httptest.NewRequest(http.MethodPost, "/markdown", strings.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
