@@ -3,7 +3,7 @@
 Maintainer trick:
 
 ```sh
-cd server/requiems-api/ && git pull && cd infra/docker && docker compose up -d --build
+cd ~/server/requiems-api/ && git pull && cd infra/docker && docker compose up -d --build
 ```
 
 ## Overview
