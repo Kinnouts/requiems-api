@@ -3,11 +3,16 @@ FROM golang:1.26-alpine AS build
 WORKDIR /app
 
 COPY go.mod go.sum ./
-RUN go mod download
+
+RUN --mount=type=cache,id=go-mod,target=/go/pkg/mod \
+    --mount=type=cache,id=go-build,target=/root/.cache/go-build \
+    go mod download
 
 COPY . .
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /out/api . && \
+RUN --mount=type=cache,id=go-mod,target=/go/pkg/mod \
+    --mount=type=cache,id=go-build,target=/root/.cache/go-build \
+    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /out/api . && \
     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /out/seed-bins ./cmd/seed-bins && \
     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /out/seed-inflation ./cmd/seed-inflation && \
     CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o /out/seed-iban ./cmd/seed-iban && \
@@ -32,5 +37,3 @@ USER appuser
 EXPOSE 8080
 
 CMD ["/app/api"]
-
-

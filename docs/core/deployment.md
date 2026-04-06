@@ -236,7 +236,7 @@ docker compose logs -f
 - ✅ db (PostgreSQL)
 - ✅ redis (Redis)
 - ✅ dashboard (Rails)
-- ✅ sidekiq (background jobs)
+- ✅ worker (Sidekiq background jobs)
 - ✅ caddy (reverse proxy with auto-HTTPS)
 
 **Note:** Migrations run automatically:
@@ -397,7 +397,7 @@ Then restart the dashboard and sidekiq:
 
 ```bash
 cd infra/docker
-docker compose restart dashboard sidekiq
+docker compose restart dashboard worker
 ```
 
 ### 5.5 Verify Worker Routes
@@ -608,6 +608,7 @@ crontab -e
 - `CLOUDFLARE_API_TOKEN` - Cloudflare API token
 - `API_MANAGEMENT_URL` - `https://api-management.requiems.xyz`
 - `API_MANAGEMENT_API_KEY` - Must match the api-management worker secret
+- `SMTP_FROM_EMAIL` - Sender address for all outgoing mail (must use the verified Resend domain, e.g. `noreply@mail.requiems.xyz`). Used by both Devise and ApplicationMailer.
 
 ### Auth Gateway Worker (Wrangler secrets)
 
@@ -654,16 +655,6 @@ docker compose logs dashboard
 # - Missing SECRET_KEY_BASE
 # - Missing RAILS_MASTER_KEY
 # - Database migration needed
-# - Missing database configs (Rails 8 Solid* gems)
-
-# If you see "The `cache` database is not configured":
-# Rails 8 uses Solid Cache, Solid Queue, and Solid Cable
-# Each needs a database config in config/database.yml:
-#   - primary (main app)
-#   - cable (Action Cable)
-#   - queue (Solid Queue)
-#   - cache (Solid Cache)
-# All should point to the same DATABASE_URL
 
 # After fixing, rebuild without cache:
 docker builder prune -a -f
