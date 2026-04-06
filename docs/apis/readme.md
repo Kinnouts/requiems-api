@@ -1,5 +1,7 @@
 Please refer to [requiems.xyz/docs](https://requiems.xyz/docs) for the full
-documentation. This document is mainly for feature tracking and statuses.
+documentation.
+
+This document is mainly for feature tracking and statuses.
 
 For developers:
 
@@ -8,7 +10,6 @@ For developers:
 ```
 docs/apis/
 ├── readme.md                   # This file — index and sync guide
-├── status.md                   # Overall status dashboard (all APIs, all categories)
 └── {category}/
     ├── readme.md               # Per-category status list with routes and credit costs
     └── {api}.md                # Individual API documentation

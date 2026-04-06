@@ -656,4 +656,4 @@ Both auth-gateway and api-management share:
 
 - [Auth Gateway](./auth-gateway.md) - Public API gateway documentation
 - [Architecture](./architecture.md) - System architecture overview
-- [CLAUDE.md](../CLAUDE.md) - Full project development guide
+- [CLAUDE.md](../../CLAUDE.md) - Full project development guide

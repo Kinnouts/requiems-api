@@ -781,5 +781,5 @@ docker compose restart api
 ## Related Documentation
 
 - [Infrastructure Guide](./infrastructure.md)
-- [Local Development](../infra/readme.md)
-- [Docker Setup](../infra/docker/README.md)
+- [Local Development](../../infra/readme.md)
+- [Docker Setup](../../infra/docker/README.md)

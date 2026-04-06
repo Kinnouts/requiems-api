@@ -62,7 +62,7 @@ All backend services run in Docker containers managed by Docker Compose.
 ### Development Environment
 
 **File:**
-[infra/docker/docker-compose.dev.yml](../infra/docker/docker-compose.dev.yml)
+[infra/docker/docker-compose.dev.yml](../../infra/docker/docker-compose.dev.yml)
 
 **Services:**
 
@@ -83,7 +83,7 @@ All backend services run in Docker containers managed by Docker Compose.
 
 ### Production Environment
 
-**File:** [infra/docker/docker-compose.yml](../infra/docker/docker-compose.yml)
+**File:** [infra/docker/docker-compose.yml](../../infra/docker/docker-compose.yml)
 
 **Services:**
 
@@ -154,7 +154,7 @@ Sidekiq and real-time counter storage for the Go API
 ## Caddy Reverse Proxy
 
 **Version:** 2 (Alpine) **Ports:** 80 (HTTP), 443 (HTTPS) **Configuration:**
-[infra/caddy/Caddyfile](../infra/caddy/Caddyfile)
+[infra/caddy/Caddyfile](../../infra/caddy/Caddyfile)
 
 ### Features
 
@@ -345,6 +345,6 @@ Never commit secrets to git. Use:
 
 ## Related Documentation
 
-- [Local Development Setup](../infra/readme.md)
-- [Docker Compose README](../infra/docker/README.md)
+- [Local Development Setup](../../infra/readme.md)
+- [Docker Compose README](../../infra/docker/README.md)
 - [Deployment Guide](./deployment.md)
