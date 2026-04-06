@@ -48,7 +48,11 @@ class Admin::PromotionsController < ApplicationController
       )
     end
 
-    PromotionMailer.upgrade_notification(@user, plan_name, expires_at, reason).deliver_later
+    begin
+      PromotionMailer.upgrade_notification(@user, plan_name, expires_at, reason).deliver_later
+    rescue StandardError => e
+      Rails.logger.error "[PromotionsController] Failed to enqueue upgrade email for user #{@user.id}: #{e.message}"
+    end
 
     redirect_to admin_user_path(@user),
                 notice: "#{@user.email} has been upgraded to the #{plan_name.titleize} plan until #{expires_at.strftime('%B %d, %Y')}."

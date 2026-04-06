@@ -19,8 +19,8 @@ class Admin::DashboardController < ApplicationController
       total_requests_30d = UsageLog.where("used_at >= ?", 30.days.ago).count
       total_requests_today = UsageLog.where("used_at >= ?", Time.current.beginning_of_day).count
 
-      # Revenue Statistics
-      active_subscriptions = Subscription.paying.count
+      # Revenue Statistics (exclude admin-granted promotional upgrades)
+      active_subscriptions = Subscription.paying.where(promoted_by_id: nil).count
       mrr = calculate_mrr
 
       # System Health
@@ -55,7 +55,7 @@ class Admin::DashboardController < ApplicationController
     # Recent Activity
     @recent_users = User.order(created_at: :desc).limit(5)
     @recent_api_keys = ApiKey.order(created_at: :desc).limit(5)
-    @recent_subscriptions = Subscription.paid.order(created_at: :desc).limit(5)
+    @recent_subscriptions = Subscription.paid.where(promoted_by_id: nil).order(created_at: :desc).limit(5)
 
     # Chart data (for AJAX loading)
     # Will be loaded via separate endpoints
@@ -78,6 +78,7 @@ class Admin::DashboardController < ApplicationController
     }
 
     Subscription.paying
+      .where(promoted_by_id: nil)
       .group(:plan_name)
       .count
       .sum { |plan, count| (plan_prices[plan] || 0) * count }
