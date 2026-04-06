@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require "sidekiq/web"
+require "sidekiq/cron/web"
+
 Rails.application.routes.draw do
   # Non-locale routes: health check, sitemaps, webhooks, API proxy, dev tools
   get "up" => "rails/health#show", as: :rails_health_check
@@ -12,6 +15,10 @@ Rails.application.routes.draw do
 
   namespace :webhooks do
     post "lemonsqueezy", to: "lemonsqueezy#create"
+  end
+
+  authenticate :user, ->(u) { u.admin? } do
+    mount Sidekiq::Web => "/sidekiq"
   end
 
   if Rails.env.development?

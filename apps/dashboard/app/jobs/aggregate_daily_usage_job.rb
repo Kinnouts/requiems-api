@@ -2,7 +2,7 @@
 
 # Background job to aggregate daily usage summaries
 #
-# This job runs once per day at 00:05 UTC via Solid Queue recurring tasks.
+# This job runs once per day at 00:05 UTC via Sidekiq Cron.
 # It aggregates usage_logs data into daily_usage_summaries for faster analytics queries.
 #
 # Usage:

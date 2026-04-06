@@ -27,8 +27,9 @@ gem "jbuilder"
 # Windows and Alpine Linux do not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data"
 
-# Database-backed job queue
-gem "solid_queue"
+# Background job processing
+gem "sidekiq", "~> 7.0"
+gem "sidekiq-cron", "~> 1.12"
 
 # Reduces boot times through caching; required in config/boot.rb
 gem "bootsnap", require: false
