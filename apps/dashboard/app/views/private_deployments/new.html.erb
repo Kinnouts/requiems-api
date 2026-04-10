@@ -124,31 +124,16 @@
             <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">2. Select API Services</h2>
             <p class="text-sm text-gray-500 dark:text-gray-400 mb-5">Only selected services will be mounted on your instance. Others return 404.</p>
 
-            <%
-              service_groups = {
-                "email"         => { icon: "✉", desc: "Validation, disposable check, normalization" },
-                "text"          => { icon: "T", desc: "Quotes, dictionary, lorem ipsum, advice, profanity, spellcheck" },
-                "tech"          => { icon: "⚙", desc: "IP/VPN info, phone, QR codes, domain, WHOIS, MX lookup" },
-                "places"        => { icon: "⊕", desc: "Cities, geocoding, timezone, holidays, postal codes" },
-                "finance"       => { icon: "$", desc: "BIN lookup, crypto, exchange rates, IBAN, SWIFT, mortgage" },
-                "entertainment" => { icon: "♟", desc: "Jokes, facts, horoscope, trivia, emoji, sudoku" },
-                "ai"            => { icon: "◈", desc: "Similarity, sentiment analysis, language detection" },
-                "convert"       => { icon: "⇄", desc: "Base64, color, markdown, number base, format conversion" },
-                "fitness"       => { icon: "♡", desc: "Exercise database by body part, equipment, muscle" },
-                "misc"          => { icon: "⊞", desc: "Counter, random user, unit conversion" }
-              }
-            %>
-
             <div class="grid sm:grid-cols-2 gap-3">
               <% PrivateDeploymentRequest::VALID_SERVICES.each do |svc| %>
-                <% meta = service_groups[svc] %>
+                <% desc = PrivateDeploymentRequest::SERVICE_META[svc] %>
                 <label class="relative flex items-start gap-3 p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/40 transition-colors has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 dark:has-[:checked]:bg-blue-900/20 has-[:checked]:ring-1 has-[:checked]:ring-blue-500">
                   <%= check_box_tag "private_deployment_request[selected_services][]", svc,
                       (@deployment_request.selected_services.include?(svc) || @deployment_request.new_record?),
                       class: "mt-0.5 h-4 w-4 text-blue-600 border-gray-300 rounded flex-shrink-0 cursor-pointer" %>
                   <div class="min-w-0 flex-1">
                     <p class="font-semibold text-sm text-gray-900 dark:text-gray-100 capitalize"><%= svc %></p>
-                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-relaxed"><%= meta[:desc] %></p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-relaxed"><%= desc %></p>
                   </div>
                 </label>
               <% end %>
@@ -175,17 +160,14 @@
               <svg class="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
               </svg>
-              <p class="text-sm text-amber-800 dark:text-amber-300">
-                You'll be redirected to our secure checkout on LemonSqueezy to complete your subscription.
-                Deployment starts after payment is confirmed, usually within <strong>24–48 hours</strong>.
-              </p>
+              <p class="text-sm text-amber-800 dark:text-amber-300"><%= t("dashboard.private_deployments.new.checkout_notice") %></p>
             </div>
 
             <div class="flex items-center justify-between">
-              <%= link_to "← Back to pricing", pricing_path, class: "text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors" %>
-              <%= f.submit "Continue to Payment →",
+              <%= link_to t("dashboard.private_deployments.new.back_to_pricing"), pricing_path, class: "text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors" %>
+              <%= f.submit t("dashboard.private_deployments.new.submit"),
                 class: "px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm cursor-pointer",
-                data: { disable_with: "Redirecting..." } %>
+                data: { disable_with: t("dashboard.private_deployments.new.redirecting") } %>
             </div>
           </div>
 

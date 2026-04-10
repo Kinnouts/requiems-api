@@ -344,3 +344,10 @@ en:
         consequence_3: "Permanently delete all usage data and history"
         ignore_notice: "If you didn't request this, you can safely ignore this email. Your account will not be deleted."
         contact_notice_html: "If you have concerns, contact us at %{email_link}."
+
+    private_deployments:
+      new:
+        back_to_pricing: "← Back to pricing"
+        checkout_notice: "You'll be redirected to our secure checkout on LemonSqueezy to complete your subscription."
+        submit: "Continue to Payment →"
+        redirecting: "Redirecting..."

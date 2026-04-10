@@ -4,14 +4,12 @@ class PrivateDeploymentsController < ApplicationController
   before_action :authenticate_user!
 
   def new
-    @deployment_request = PrivateDeploymentRequest.new(
-      company: current_user.company,
-      billing_cycle: "monthly"
-    )
+    @deployment_request = PrivateDeploymentRequest.new(billing_cycle: "monthly")
   end
 
   def create
     @deployment_request = current_user.private_deployment_requests.build(deployment_params)
+    @deployment_request.company       = current_user.company.presence
     @deployment_request.contact_name  = current_user.name.presence || current_user.email
     @deployment_request.contact_email = current_user.email
     @deployment_request.monthly_price_cents = price_cents_for(@deployment_request)
@@ -29,7 +27,7 @@ class PrivateDeploymentsController < ApplicationController
 
   def deployment_params
     params.require(:private_deployment_request).permit(
-      :company, :server_tier, :billing_cycle, :admin_notes,
+      :server_tier, :billing_cycle, :admin_notes,
       selected_services: []
     )
   end

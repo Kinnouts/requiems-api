@@ -7,19 +7,32 @@ class PrivateDeploymentRequest < ApplicationRecord
   VALID_TIERS = %w[starter growth scale enterprise].freeze
   VALID_SERVICES = %w[email text tech places finance entertainment ai convert fitness misc].freeze
 
-  TIER_PRICES_MONTHLY = {
-    "starter"    => 12000,
-    "growth"     => 22000,
-    "scale"      => 42000,
-    "enterprise" => 85000
+  SERVICE_META = {
+    "email"         => "Validation, disposable check, normalization",
+    "text"          => "Quotes, dictionary, lorem ipsum, advice, profanity, spellcheck",
+    "tech"          => "IP/VPN info, phone, QR codes, domain, WHOIS, MX lookup",
+    "places"        => "Cities, geocoding, timezone, holidays, postal codes",
+    "finance"       => "BIN lookup, crypto, exchange rates, IBAN, SWIFT, mortgage",
+    "entertainment" => "Jokes, facts, horoscope, trivia, emoji, sudoku",
+    "ai"            => "Similarity, sentiment analysis, language detection",
+    "convert"       => "Base64, color, markdown, number base, format conversion",
+    "fitness"       => "Exercise database by body part, equipment, muscle",
+    "misc"          => "Counter, random user, unit conversion"
   }.freeze
 
-  # ~15% yearly discount, billed as one annual charge
+  TIER_PRICES_MONTHLY = {
+    "starter"    => 20000,
+    "growth"     => 30000,
+    "scale"      => 50000,
+    "enterprise" => 100000
+  }.freeze
+
+  # 15% yearly discount, billed as one annual charge
   TIER_PRICES_YEARLY = {
-    "starter"    => 122400,   # $1,224/yr  ($102/mo)
-    "growth"     => 224400,   # $2,244/yr  ($187/mo)
-    "scale"      => 428400,   # $4,284/yr  ($357/mo)
-    "enterprise" => 867000    # $8,670/yr  ($722/mo)
+    "starter"    => 204000,   # $2,040/yr  ($170/mo)
+    "growth"     => 306000,   # $3,060/yr  ($255/mo)
+    "scale"      => 510000,   # $5,100/yr  ($425/mo)
+    "enterprise" => 1020000   # $10,200/yr ($850/mo)
   }.freeze
 
   TIER_SPECS = {
@@ -29,7 +42,7 @@ class PrivateDeploymentRequest < ApplicationRecord
     "enterprise" => { hetzner: "CPX51", vcpu: 16, ram: "32 GB", ssd: "360 GB" }
   }.freeze
 
-  validates :company, :contact_name, :contact_email, :server_tier, :billing_cycle, presence: true
+  validates :contact_name, :contact_email, :server_tier, :billing_cycle, presence: true
   validates :server_tier, inclusion: { in: VALID_TIERS }
   validates :billing_cycle, inclusion: { in: %w[monthly yearly] }
   validates :status, inclusion: { in: VALID_STATUSES }

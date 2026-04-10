@@ -379,6 +379,22 @@ es:
             - "Opciones de residencia de datos en la UE"
             - "SLAs y soporte personalizados"
             - "Soporte para despliegue en local"
+        private_deployment:
+          badge: "Despliegue Privado"
+          heading: "Tu propia instancia dedicada de API"
+          description: "Un VPS privado en Hetzner con solo los servicios que elijas, accesible en yourcompany.requiems.xyz. Facturación mensual o anual. Sin cargos por exceso, solicitudes ilimitadas."
+          yearly_note: "o $%{price}/mes facturado anualmente"
+          features:
+            - "VPS dedicado en Hetzner"
+            - "Solo las APIs que necesitas"
+            - "HTTPS directo, sin capa de Cloudflare"
+            - "Tu subdominio en requiems.xyz"
+            - "Solicitudes ilimitadas"
+            - "Suscripción mensual o anual"
+            - "Listo en 24-48 horas"
+            - "15% de descuento con facturación anual"
+          cta: "Configurar y desplegar"
+          checkout_note: "Pago a través de LemonSqueezy"
       table:
         heading: "Comparar planes"
         feature_col: "Característica"

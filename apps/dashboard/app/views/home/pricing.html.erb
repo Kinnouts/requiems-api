@@ -90,47 +90,31 @@
         popular: false %>
     </div>
 
-    <!-- Private Deployment / Enterprise -->
+    <!-- Private Deployment -->
     <div class="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl text-white p-8 md:p-12 mb-16">
       <div class="text-center mb-10">
-        <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-white/80 mb-4">Private Deployment</div>
-        <h3 class="text-3xl font-bold mb-3">Your own dedicated API instance</h3>
-        <p class="text-gray-300 max-w-2xl mx-auto">
-          A private Hetzner VPS running only the services you choose, accessible at
-          <span class="font-mono text-sm bg-white/10 px-1.5 py-0.5 rounded">yourcompany.requiems.xyz</span>.
-          Flat monthly or yearly billing — zero overage fees, unlimited requests.
-        </p>
+        <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-white/80 mb-4"><%= t("home.pricing.plans.private_deployment.badge") %></div>
+        <h3 class="text-3xl font-bold mb-3"><%= t("home.pricing.plans.private_deployment.heading") %></h3>
+        <p class="text-gray-300 max-w-2xl mx-auto"><%= t("home.pricing.plans.private_deployment.description") %></p>
       </div>
 
-      <!-- Tier cards -->
+      <!-- Tier cards — pulled from model constants, no hardcoding -->
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-10">
-        <% [
-          { tier: "Starter",    hetzner: "CPX21", vcpu: 3,  ram: "4 GB",  ssd: "80 GB",  mo: 120,  yr: 102  },
-          { tier: "Growth",     hetzner: "CPX31", vcpu: 4,  ram: "8 GB",  ssd: "160 GB", mo: 220,  yr: 187  },
-          { tier: "Scale",      hetzner: "CPX41", vcpu: 8,  ram: "16 GB", ssd: "240 GB", mo: 420,  yr: 357  },
-          { tier: "Enterprise", hetzner: "CPX51", vcpu: 16, ram: "32 GB", ssd: "360 GB", mo: 850,  yr: 722  }
-        ].each do |t| %>
+        <% PrivateDeploymentRequest::TIER_SPECS.each do |tier_key, specs| %>
+          <% mo = PrivateDeploymentRequest::TIER_PRICES_MONTHLY[tier_key] / 100 %>
+          <% yr = (PrivateDeploymentRequest::TIER_PRICES_YEARLY[tier_key] / 100.0 / 12).round %>
           <div class="bg-white/5 border border-white/10 rounded-lg p-5">
-            <p class="font-bold text-white mb-1"><%= t[:tier] %></p>
-            <p class="text-xs text-gray-400 mb-3"><%= t[:hetzner] %> · <%= t[:vcpu] %> vCPU · <%= t[:ram] %> RAM · <%= t[:ssd] %> SSD</p>
-            <p class="text-2xl font-bold text-white">$<%= t[:mo] %><span class="text-sm font-normal text-gray-400">/mo</span></p>
-            <p class="text-xs text-green-400 mt-0.5">or $<%= t[:yr] %>/mo billed yearly</p>
+            <p class="font-bold text-white mb-1 capitalize"><%= tier_key %></p>
+            <p class="text-xs text-gray-400 mb-3"><%= specs[:hetzner] %> · <%= specs[:vcpu] %> vCPU · <%= specs[:ram] %> RAM · <%= specs[:ssd] %> SSD</p>
+            <p class="text-2xl font-bold text-white">$<%= mo %><span class="text-sm font-normal text-gray-400">/mo</span></p>
+            <p class="text-xs text-green-400 mt-0.5"><%= t("home.pricing.plans.private_deployment.yearly_note", price: yr) %></p>
           </div>
         <% end %>
       </div>
 
       <!-- Feature bullets -->
       <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mb-10 text-sm text-gray-300">
-        <% [
-          "Dedicated Hetzner VPS",
-          "Select only the APIs you need",
-          "Direct HTTPS — no Cloudflare layer",
-          "Your subdomain on requiems.xyz",
-          "Unlimited requests",
-          "Monthly or yearly subscription",
-          "Ready in 24–48 hours",
-          "~15% off with yearly billing"
-        ].each do |feat| %>
+        <% t("home.pricing.plans.private_deployment.features").each do |feat| %>
           <div class="flex items-center gap-2">
             <svg class="h-4 w-4 text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
             <%= feat %>
@@ -139,16 +123,10 @@
       </div>
 
       <div class="text-center">
-        <% if user_signed_in? %>
-          <%= link_to "Configure &amp; Deploy →".html_safe,
-            new_private_deployment_path,
-            class: "inline-flex items-center px-10 py-4 bg-white text-gray-900 font-bold rounded-lg hover:bg-gray-100 transition-colors text-lg" %>
-        <% else %>
-          <%= link_to "Configure &amp; Deploy →".html_safe,
-            new_user_registration_path,
-            class: "inline-flex items-center px-10 py-4 bg-white text-gray-900 font-bold rounded-lg hover:bg-gray-100 transition-colors text-lg" %>
-        <% end %>
-        <p class="mt-3 text-sm text-gray-400">Pay via Stripe or card · Deployment starts after payment</p>
+        <%= link_to "#{t("home.pricing.plans.private_deployment.cta")} →",
+          user_signed_in? ? new_private_deployment_path : new_user_registration_path,
+          class: "inline-flex items-center px-10 py-4 bg-white text-gray-900 font-bold rounded-lg hover:bg-gray-100 transition-colors text-lg" %>
+        <p class="mt-3 text-sm text-gray-400"><%= t("home.pricing.plans.private_deployment.checkout_note") %></p>
       </div>
     </div>
 
