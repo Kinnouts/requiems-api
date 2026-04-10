@@ -55,12 +55,12 @@ otherwise identical.
 
 Priced against Hetzner AMD VPS nodes with a healthy margin:
 
-| Tier       | Hetzner Node | vCPU   | RAM   | SSD    | Monthly Price |
-| ---------- | ------------ | ------ | ----- | ------ | ------------- |
-| Starter    | CPX21        | 3 AMD  | 4 GB  | 80 GB  | $120/mo       |
-| Growth     | CPX31        | 4 AMD  | 8 GB  | 160 GB | $220/mo       |
-| Scale      | CPX41        | 8 AMD  | 16 GB | 240 GB | $420/mo       |
-| Enterprise | CPX51        | 16 AMD | 32 GB | 360 GB | $850/mo       |
+| Tier       | Hetzner Node | vCPU   | RAM   | SSD    | Monthly | Yearly (÷12) |
+| ---------- | ------------ | ------ | ----- | ------ | ------- | ------------ |
+| Starter    | CPX21        | 3 AMD  | 4 GB  | 80 GB  | $120/mo | $102/mo      |
+| Growth     | CPX31        | 4 AMD  | 8 GB  | 160 GB | $220/mo | $187/mo      |
+| Scale      | CPX41        | 8 AMD  | 16 GB | 240 GB | $420/mo | $357/mo      |
+| Enterprise | CPX51        | 16 AMD | 32 GB | 360 GB | $850/mo | $722/mo      |
 
 ---
 
@@ -92,19 +92,26 @@ simply return 404.
 
 ```
 1. Customer logs in → visits /private-deployment
-2. Selects: server tier + endpoint checkboxes + contact/company info
+2. Selects: billing cycle (monthly/yearly) + server tier + endpoint checkboxes + contact info
 3. Submits form
-      ├─ DB: PrivateDeploymentRequest created (status: pending)
-      ├─ Email → customer: "Request received, ready in 24–48h"
-      └─ Email → admin (OBSERVER_EMAILS): "New deployment request from {company}"
+      └─ DB: PrivateDeploymentRequest created (status: pending_payment)
+      └─ Redirect → LemonSqueezy checkout
+            custom_data: { private_deployment_request_id, user_id }
 
-4. [Manual] Admin provisions Hetzner VPS:
+4. Customer pays on LemonSqueezy
+      └─ Webhook: subscription_created fires
+            ├─ Detects private_deployment_request_id in custom_data
+            ├─ status → pending, lemonsqueezy_subscription_id saved
+            ├─ Email → customer: "Request received, deployment starting soon"
+            └─ Email → admin (OBSERVER_EMAILS): "New paid deployment — action required"
+
+5. [Manual] Admin provisions Hetzner VPS:
       - docker compose: Go API + Postgres + Redis + Caddy
       - ENABLED_SERVICES="{selected services}"
       - BACKEND_SECRET="{generated unique secret}"
       - DNS: {slug}.requiems.xyz → VPS IP
 
-5. Admin visits /admin/private_deployments/{id}
+6. Admin visits /admin/private_deployments/{id}
       - Enters: subdomain_slug + tenant_secret + optional notes
       - Clicks "Mark as Deployed"
             ├─ status → active, deployed_at → now

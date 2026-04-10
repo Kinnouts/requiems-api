@@ -27,6 +27,16 @@ class AppConfig
               :lemonsqueezy_professional_monthly_checkout_uuid,
               :lemonsqueezy_professional_yearly_checkout_uuid
 
+  # Private deployment tier checkout UUIDs (monthly + yearly per tier)
+  attr_reader :lemonsqueezy_private_starter_monthly_checkout_uuid,
+              :lemonsqueezy_private_starter_yearly_checkout_uuid,
+              :lemonsqueezy_private_growth_monthly_checkout_uuid,
+              :lemonsqueezy_private_growth_yearly_checkout_uuid,
+              :lemonsqueezy_private_scale_monthly_checkout_uuid,
+              :lemonsqueezy_private_scale_yearly_checkout_uuid,
+              :lemonsqueezy_private_enterprise_monthly_checkout_uuid,
+              :lemonsqueezy_private_enterprise_yearly_checkout_uuid
+
   attr_reader :api_base_url,
               :playground_api_key,
               :internal_api_url,
@@ -100,6 +110,13 @@ class AppConfig
     end
   end
 
+  def private_deployment_checkout_uuid_for(tier:, billing_cycle:)
+    key = "lemonsqueezy_private_#{tier}_#{billing_cycle}_checkout_uuid"
+    value = public_send(key)
+    raise InvalidConfigError, "Unknown private deployment tier/cycle: #{tier}/#{billing_cycle}" if value.nil?
+    value
+  end
+
   def smtp_configured?
     smtp_address.present? && smtp_username.present? && smtp_password.present?
   end
@@ -129,6 +146,16 @@ class AppConfig
     @lemonsqueezy_business_yearly_checkout_uuid = require_env("LEMONSQUEEZY_BUSINESS_YEARLY_CHECKOUT_UUID#{suffix}")
     @lemonsqueezy_professional_monthly_checkout_uuid = require_env("LEMONSQUEEZY_PROFESSIONAL_MONTHLY_CHECKOUT_UUID#{suffix}")
     @lemonsqueezy_professional_yearly_checkout_uuid = require_env("LEMONSQUEEZY_PROFESSIONAL_YEARLY_CHECKOUT_UUID#{suffix}")
+
+    # Private deployment tier checkout UUIDs
+    @lemonsqueezy_private_starter_monthly_checkout_uuid    = optional_env("LEMONSQUEEZY_PRIVATE_STARTER_MONTHLY_CHECKOUT_UUID#{suffix}")
+    @lemonsqueezy_private_starter_yearly_checkout_uuid     = optional_env("LEMONSQUEEZY_PRIVATE_STARTER_YEARLY_CHECKOUT_UUID#{suffix}")
+    @lemonsqueezy_private_growth_monthly_checkout_uuid     = optional_env("LEMONSQUEEZY_PRIVATE_GROWTH_MONTHLY_CHECKOUT_UUID#{suffix}")
+    @lemonsqueezy_private_growth_yearly_checkout_uuid      = optional_env("LEMONSQUEEZY_PRIVATE_GROWTH_YEARLY_CHECKOUT_UUID#{suffix}")
+    @lemonsqueezy_private_scale_monthly_checkout_uuid      = optional_env("LEMONSQUEEZY_PRIVATE_SCALE_MONTHLY_CHECKOUT_UUID#{suffix}")
+    @lemonsqueezy_private_scale_yearly_checkout_uuid       = optional_env("LEMONSQUEEZY_PRIVATE_SCALE_YEARLY_CHECKOUT_UUID#{suffix}")
+    @lemonsqueezy_private_enterprise_monthly_checkout_uuid = optional_env("LEMONSQUEEZY_PRIVATE_ENTERPRISE_MONTHLY_CHECKOUT_UUID#{suffix}")
+    @lemonsqueezy_private_enterprise_yearly_checkout_uuid  = optional_env("LEMONSQUEEZY_PRIVATE_ENTERPRISE_YEARLY_CHECKOUT_UUID#{suffix}")
 
     @api_base_url = optional_env("API_BASE_URL", default: "https://api.requiems.xyz")
     @playground_api_key = optional_env("PLAYGROUND_API_KEY", default: "rq_test_playground_demo_key")

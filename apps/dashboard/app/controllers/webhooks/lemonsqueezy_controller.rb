@@ -67,6 +67,12 @@ class Webhooks::LemonsqueezyController < ApplicationController
     data = params[:data][:attributes]
     custom_data = params[:meta][:custom_data] || {}
 
+    # Private deployment payment — completely separate product from shared plans
+    if custom_data[:private_deployment_request_id].present?
+      handle_private_deployment_payment(params[:data][:id], custom_data)
+      return
+    end
+
     user = User.find_by(id: custom_data[:user_id])
     unless user
       Rails.logger.error "[LemonSqueezy] User not found: #{custom_data[:user_id]}"
@@ -99,6 +105,26 @@ class Webhooks::LemonsqueezyController < ApplicationController
     SubscriptionMailer.upgrade_notification(user, plan_name).deliver_later if plan_name != "free"
 
     Rails.logger.info "[LemonSqueezy] Subscription created for user #{user.id}: #{plan_name}"
+  end
+
+  def handle_private_deployment_payment(lemonsqueezy_subscription_id, custom_data)
+    request_id = custom_data[:private_deployment_request_id]
+    deployment_request = PrivateDeploymentRequest.find_by(id: request_id)
+
+    unless deployment_request
+      Rails.logger.error "[LemonSqueezy] PrivateDeploymentRequest not found: #{request_id}"
+      return
+    end
+
+    deployment_request.update!(
+      status: "pending",
+      lemonsqueezy_subscription_id: lemonsqueezy_subscription_id
+    )
+
+    PrivateDeploymentMailer.request_received(deployment_request).deliver_later
+    PrivateDeploymentMailer.admin_notification(deployment_request).deliver_later
+
+    Rails.logger.info "[LemonSqueezy] Private deployment payment received for request #{request_id}"
   end
 
   def handle_subscription_updated
