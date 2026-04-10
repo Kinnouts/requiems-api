@@ -608,7 +608,9 @@ crontab -e
 - `CLOUDFLARE_API_TOKEN` - Cloudflare API token
 - `API_MANAGEMENT_URL` - `https://api-management.requiems.xyz`
 - `API_MANAGEMENT_API_KEY` - Must match the api-management worker secret
-- `SMTP_FROM_EMAIL` - Sender address for all outgoing mail (must use the verified Resend domain, e.g. `noreply@mail.requiems.xyz`). Used by both Devise and ApplicationMailer.
+- `SMTP_FROM_EMAIL` - Sender address for all outgoing mail (must use the
+  verified Resend domain, e.g. `noreply@mail.requiems.xyz`). Used by both Devise
+  and ApplicationMailer.
 
 ### Auth Gateway Worker (Wrangler secrets)
 

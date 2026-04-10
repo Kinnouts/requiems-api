@@ -2,6 +2,7 @@ package app
 
 import (
 	"context"
+	"strings"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
@@ -20,44 +21,81 @@ import (
 	"requiems-api/services/text"
 )
 
+// serviceEnabled reports whether a named service should be mounted.
+// When EnabledServices is empty (the default), all services are mounted —
+// preserving the existing shared-deployment behaviour unchanged.
+// For private deployments, set ENABLED_SERVICES="email,text,tech" to mount
+// only the services the tenant purchased.
+func serviceEnabled(cfg config.Config, key string) bool {
+	if cfg.EnabledServices == "" {
+		return true
+	}
+	for _, s := range strings.Split(cfg.EnabledServices, ",") {
+		if strings.TrimSpace(s) == key {
+			return true
+		}
+	}
+	return false
+}
+
 func registerV1Routes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb *redis.Client, cfg config.Config) {
-	convertRouter := chi.NewRouter()
-	convert.RegisterRoutes(convertRouter)
-	r.Mount("/convert", convertRouter)
+	if serviceEnabled(cfg, "convert") {
+		convertRouter := chi.NewRouter()
+		convert.RegisterRoutes(convertRouter)
+		r.Mount("/convert", convertRouter)
+	}
 
-	textRouter := chi.NewRouter()
-	text.RegisterRoutes(textRouter, pool)
-	r.Mount("/text", textRouter)
+	if serviceEnabled(cfg, "text") {
+		textRouter := chi.NewRouter()
+		text.RegisterRoutes(textRouter, pool)
+		r.Mount("/text", textRouter)
+	}
 
-	aiRouter := chi.NewRouter()
-	ai.RegisterRoutes(aiRouter)
-	r.Mount("/ai", aiRouter)
+	if serviceEnabled(cfg, "ai") {
+		aiRouter := chi.NewRouter()
+		ai.RegisterRoutes(aiRouter)
+		r.Mount("/ai", aiRouter)
+	}
 
-	emailRouter := chi.NewRouter()
-	email.RegisterRoutes(emailRouter)
-	r.Mount("/email", emailRouter)
+	if serviceEnabled(cfg, "email") {
+		emailRouter := chi.NewRouter()
+		email.RegisterRoutes(emailRouter)
+		r.Mount("/email", emailRouter)
+	}
 
-	entertainmentRouter := chi.NewRouter()
-	entertainment.RegisterRoutes(entertainmentRouter)
-	r.Mount("/entertainment", entertainmentRouter)
+	if serviceEnabled(cfg, "entertainment") {
+		entertainmentRouter := chi.NewRouter()
+		entertainment.RegisterRoutes(entertainmentRouter)
+		r.Mount("/entertainment", entertainmentRouter)
+	}
 
-	miscRouter := chi.NewRouter()
-	misc.RegisterRoutes(ctx, miscRouter, pool, rdb)
-	r.Mount("/misc", miscRouter)
+	if serviceEnabled(cfg, "misc") {
+		miscRouter := chi.NewRouter()
+		misc.RegisterRoutes(ctx, miscRouter, pool, rdb)
+		r.Mount("/misc", miscRouter)
+	}
 
-	placesRouter := chi.NewRouter()
-	places.RegisterRoutes(placesRouter, cfg, rdb)
-	r.Mount("/places", placesRouter)
+	if serviceEnabled(cfg, "places") {
+		placesRouter := chi.NewRouter()
+		places.RegisterRoutes(placesRouter, cfg, rdb)
+		r.Mount("/places", placesRouter)
+	}
 
-	techRouter := chi.NewRouter()
-	tech.RegisterRoutes(techRouter, cfg)
-	r.Mount("/tech", techRouter)
+	if serviceEnabled(cfg, "tech") {
+		techRouter := chi.NewRouter()
+		tech.RegisterRoutes(techRouter, cfg)
+		r.Mount("/tech", techRouter)
+	}
 
-	financeRouter := chi.NewRouter()
-	finance.RegisterRoutes(financeRouter, pool, rdb)
-	r.Mount("/finance", financeRouter)
+	if serviceEnabled(cfg, "finance") {
+		financeRouter := chi.NewRouter()
+		finance.RegisterRoutes(financeRouter, pool, rdb)
+		r.Mount("/finance", financeRouter)
+	}
 
-	fitnessRouter := chi.NewRouter()
-	fitness.RegisterRoutes(fitnessRouter, pool)
-	r.Mount("/fitness", fitnessRouter)
+	if serviceEnabled(cfg, "fitness") {
+		fitnessRouter := chi.NewRouter()
+		fitness.RegisterRoutes(fitnessRouter, pool)
+		r.Mount("/fitness", fitnessRouter)
+	}
 }

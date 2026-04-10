@@ -1,14 +1,16 @@
 # Sidekiq Migration Design Plan
 
-Rails 8 ships with Solid Queue as the default background job backend. Solid Queue
-stores jobs in PostgreSQL using a dedicated schema loaded via `db:schema:load:queue`.
-This schema was never loaded in the production database, which meant:
+Rails 8 ships with Solid Queue as the default background job backend. Solid
+Queue stores jobs in PostgreSQL using a dedicated schema loaded via
+`db:schema:load:queue`. This schema was never loaded in the production database,
+which meant:
 
 - `deliver_later` calls silently failed (no worker to process the queue)
 - Recurring jobs (`SyncD1UsageJob`, `AggregateDailyUsageJob`,
   `ExpirePromotionalSubscriptionsJob`) never ran
-- The `sidekiq` Docker service was already defined in `docker-compose.yml` but was
-  running the Solid Queue CLI (`bin/jobs start`) — a name/implementation mismatch
+- The `sidekiq` Docker service was already defined in `docker-compose.yml` but
+  was running the Solid Queue CLI (`bin/jobs start`) — a name/implementation
+  mismatch
 
 Similarly, Solid Cable (ActionCable backed by PostgreSQL) was configured in
 `cable.yml` but the cable schema tables were also absent in production.
@@ -25,17 +27,20 @@ Similarly, Solid Cable (ActionCable backed by PostgreSQL) was configured in
 
 ## Decision
 
-Migrate from Solid Queue + Solid Cable to **Sidekiq** (jobs) + **Redis** (cable).
+Migrate from Solid Queue + Solid Cable to **Sidekiq** (jobs) + **Redis**
+(cable).
 
 ### Why Sidekiq over fixing Solid Queue
 
-1. **Redis is already running** — used for Rails cache. No new infrastructure needed.
+1. **Redis is already running** — used for Rails cache. No new infrastructure
+   needed.
 2. **Zero schema maintenance** — Sidekiq uses Redis, not PostgreSQL. The missing
    schema problem goes away entirely.
 3. **Proven reliability** — Sidekiq is the industry standard, with years of
    production hardening.
-4. **Better observability** — Sidekiq ships with a web UI (`/sidekiq`) that shows
-   queue depth, failed jobs, retries, and cron schedule — Solid Queue has no UI.
+4. **Better observability** — Sidekiq ships with a web UI (`/sidekiq`) that
+   shows queue depth, failed jobs, retries, and cron schedule — Solid Queue has
+   no UI.
 5. **sidekiq-cron** replaces `recurring.yml` cleanly with the same schedule
    semantics.
 
@@ -125,8 +130,8 @@ Solid Cable, and Solid Cache.
 
 Removed: `plugin :solid_queue if ENV["SOLID_QUEUE_IN_PUMA"]`
 
-This line would have launched Solid Queue inline with the web process — no longer
-needed.
+This line would have launched Solid Queue inline with the web process — no
+longer needed.
 
 ### Sidekiq Web UI (`config/routes.rb`)
 
@@ -147,7 +152,8 @@ retries, and the cron job schedule.
 ### Docker worker service (`infra/docker/docker-compose.yml`)
 
 - Renamed service from `sidekiq` to `worker` (was running Solid Queue CLI)
-- Command changed from `bundle exec ruby bin/jobs start` to `bundle exec sidekiq`
+- Command changed from `bundle exec ruby bin/jobs start` to
+  `bundle exec sidekiq`
 - Removed `db:schema:load:queue` from dashboard startup sequence
 
 ### Deleted files
