@@ -24,7 +24,7 @@
             </tr>
             <tr>
               <td style="padding: 12px 20px; font-size: 13px; font-weight: 600; color: #6b7280; border-bottom: 1px solid #e5e7eb;">Server Tier</td>
-              <td style="padding: 12px 20px; font-size: 13px; color: #374151; text-align: right; border-bottom: 1px solid #e5e7eb;"><%= @deployment_request.server_tier.capitalize %> — $<%= "%.0f" % @deployment_request.monthly_price_dollars %>/mo</td>
+              <td style="padding: 12px 20px; font-size: 13px; color: #374151; text-align: right; border-bottom: 1px solid #e5e7eb;"><%= @deployment_request.server_tier.capitalize %> ($<%= "%.0f" % @deployment_request.monthly_price_dollars %>/mo)</td>
             </tr>
             <tr>
               <td style="padding: 12px 20px; font-size: 13px; font-weight: 600; color: #6b7280; vertical-align: top;">Services</td>

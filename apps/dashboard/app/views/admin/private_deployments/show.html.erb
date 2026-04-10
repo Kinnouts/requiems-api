@@ -54,7 +54,7 @@
           <dt class="text-gray-500 dark:text-gray-400">Server Tier</dt>
           <dd class="font-medium text-gray-900 dark:text-gray-100 capitalize">
             <%= @deployment_request.server_tier %>
-            <span class="text-gray-500 font-normal">(<%= @deployment_request.tier_specs[:hetzner] %> — <%= @deployment_request.tier_specs[:vcpu] %> vCPU / <%= @deployment_request.tier_specs[:ram] %> RAM)</span>
+            <span class="text-gray-500 font-normal">(<%= @deployment_request.tier_specs[:hetzner] %>, <%= @deployment_request.tier_specs[:vcpu] %> vCPU, <%= @deployment_request.tier_specs[:ram] %> RAM)</span>
           </dd>
         </div>
         <div class="flex justify-between text-sm">

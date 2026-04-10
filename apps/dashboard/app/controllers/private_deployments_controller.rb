@@ -5,8 +5,7 @@ class PrivateDeploymentsController < ApplicationController
 
   def new
     @deployment_request = PrivateDeploymentRequest.new(
-      contact_name: current_user.name,
-      contact_email: current_user.email,
+      company: current_user.company,
       billing_cycle: "monthly"
     )
   end
@@ -30,7 +29,7 @@ class PrivateDeploymentsController < ApplicationController
 
   def deployment_params
     params.require(:private_deployment_request).permit(
-      :company, :contact_name, :contact_email, :server_tier, :billing_cycle, :admin_notes,
+      :company, :server_tier, :billing_cycle, :admin_notes,
       selected_services: []
     )
   end

@@ -6,50 +6,19 @@
     <!-- Header -->
     <div class="text-center mb-10">
       <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">Private Deployment</h1>
-      <p class="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
-        Your own dedicated API instance on a private Hetzner VPS — unlimited requests,
-        only the endpoints you need, your own subdomain.
+      <p class="text-lg text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+        Your own dedicated API instance with unlimited requests, only the endpoints you need,
+        your own subdomain at <span class="font-mono text-sm bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded">yourcompany.requiems.xyz</span>.
       </p>
     </div>
 
-    <!-- Feature Highlights -->
-    <div class="grid md:grid-cols-3 gap-6 mb-12">
-      <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-        <div class="flex items-center mb-3">
-          <svg class="h-7 w-7 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/>
-          </svg>
-          <h3 class="font-bold text-gray-900 dark:text-gray-100">Dedicated Infrastructure</h3>
-        </div>
-        <p class="text-sm text-gray-600 dark:text-gray-400">Your own VPS — no shared resources, no noisy neighbours, consistent performance.</p>
-      </div>
-      <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-        <div class="flex items-center mb-3">
-          <svg class="h-7 w-7 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
-          </svg>
-          <h3 class="font-bold text-gray-900 dark:text-gray-100">Unlimited Requests</h3>
-        </div>
-        <p class="text-sm text-gray-600 dark:text-gray-400">Flat monthly fee, zero overage. Process as much as your server can handle.</p>
-      </div>
-      <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-        <div class="flex items-center mb-3">
-          <svg class="h-7 w-7 text-purple-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-          </svg>
-          <h3 class="font-bold text-gray-900 dark:text-gray-100">Your Own Subdomain</h3>
-        </div>
-        <p class="text-sm text-gray-600 dark:text-gray-400">Access your API at <span class="font-mono text-xs bg-gray-100 dark:bg-gray-700 px-1 rounded">yourcompany.requiems.xyz</span> — direct, no Cloudflare proxy.</p>
-      </div>
-    </div>
-
-    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 md:p-12">
+    <div class="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden">
 
       <!-- Validation errors -->
       <% if @deployment_request.errors.any? %>
-        <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-8">
-          <p class="text-sm font-semibold text-red-800 dark:text-red-300 mb-2">Please fix the following errors:</p>
-          <ul class="list-disc list-inside text-sm text-red-700 dark:text-red-400 space-y-1">
+        <div class="bg-red-50 dark:bg-red-900/20 border-b border-red-200 dark:border-red-800 px-8 py-4">
+          <p class="text-sm font-semibold text-red-800 dark:text-red-300 mb-1">Please fix the following:</p>
+          <ul class="list-disc list-inside text-sm text-red-700 dark:text-red-400 space-y-0.5">
             <% @deployment_request.errors.full_messages.each do |msg| %>
               <li><%= msg %></li>
             <% end %>
@@ -57,150 +26,172 @@
         </div>
       <% end %>
 
+      <!-- Account info banner -->
+      <div class="flex items-start gap-3 bg-gray-50 dark:bg-gray-700/50 border-b border-gray-200 dark:border-gray-700 px-8 py-4">
+        <svg class="h-5 w-5 text-gray-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+        </svg>
+        <div class="text-sm text-gray-600 dark:text-gray-400 space-y-0.5">
+          <p>Deploying as <strong class="text-gray-900 dark:text-gray-100"><%= current_user.name.presence || current_user.email %></strong></p>
+          <p>Confirmation sent to <strong class="text-gray-900 dark:text-gray-100"><%= current_user.email %></strong></p>
+          <p><%= link_to "Update account details →", edit_user_registration_path, class: "text-blue-600 dark:text-blue-400 hover:underline" %></p>
+        </div>
+      </div>
+
       <%= form_with model: @deployment_request, url: private_deployments_path, local: true, data: { turbo: false, controller: "billing-cycle" } do |f| %>
 
-        <!-- Section 1: Billing Cycle + Server Tier -->
-        <div class="mb-10">
-          <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">1. Choose Your Plan</h2>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mb-5">All tiers include Go API + PostgreSQL + Redis + Caddy (HTTPS) on AMD dedicated vCPUs.</p>
+        <div class="p-8 md:p-10 space-y-10">
 
-          <!-- Billing cycle toggle -->
-          <div class="flex justify-center mb-6">
-            <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-1 inline-flex">
-              <label class="cursor-pointer">
-                <%= f.radio_button :billing_cycle, "monthly",
-                    class: "sr-only peer/monthly",
-                    data: { action: "change->billing-cycle#toggle" },
-                    checked: @deployment_request.billing_cycle == "monthly" %>
-                <span class="px-5 py-2 rounded-md text-sm font-medium transition-colors peer-checked/monthly:bg-white dark:peer-checked/monthly:bg-gray-800 peer-checked/monthly:shadow text-gray-700 dark:text-gray-300 peer-checked/monthly:text-gray-900 dark:peer-checked/monthly:text-gray-100">Monthly</span>
-              </label>
-              <label class="cursor-pointer">
-                <%= f.radio_button :billing_cycle, "yearly",
-                    class: "sr-only peer/yearly",
-                    data: { action: "change->billing-cycle#toggle" },
-                    checked: @deployment_request.billing_cycle == "yearly" %>
-                <span class="px-5 py-2 rounded-md text-sm font-medium transition-colors peer-checked/yearly:bg-white dark:peer-checked/yearly:bg-gray-800 peer-checked/yearly:shadow text-gray-700 dark:text-gray-300 peer-checked/yearly:text-gray-900 dark:peer-checked/yearly:text-gray-100">
-                  Yearly
-                  <span class="ml-1 text-xs font-semibold text-green-600 dark:text-green-400">~15% off</span>
-                </span>
-              </label>
+          <!-- Section 1: Billing Cycle + Server Tier -->
+          <div>
+            <div class="flex items-baseline justify-between mb-5">
+              <div>
+                <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100">1. Choose Your Plan</h2>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">Dedicated AMD vCPUs · PostgreSQL · Redis · Caddy (HTTPS)</p>
+              </div>
+
+              <!-- Billing cycle toggle -->
+              <div class="bg-gray-100 dark:bg-gray-700 rounded-lg p-1 inline-flex flex-shrink-0">
+                <label class="cursor-pointer">
+                  <%= f.radio_button :billing_cycle, "monthly",
+                      class: "sr-only peer/monthly",
+                      data: { action: "change->billing-cycle#toggle" },
+                      checked: @deployment_request.billing_cycle == "monthly" %>
+                  <span class="block px-4 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer peer-checked/monthly:bg-white dark:peer-checked/monthly:bg-gray-600 peer-checked/monthly:shadow peer-checked/monthly:text-gray-900 dark:peer-checked/monthly:text-white text-gray-500 dark:text-gray-400">Monthly</span>
+                </label>
+                <label class="cursor-pointer">
+                  <%= f.radio_button :billing_cycle, "yearly",
+                      class: "sr-only peer/yearly",
+                      data: { action: "change->billing-cycle#toggle" },
+                      checked: @deployment_request.billing_cycle == "yearly" %>
+                  <span class="block px-4 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer peer-checked/yearly:bg-white dark:peer-checked/yearly:bg-gray-600 peer-checked/yearly:shadow peer-checked/yearly:text-gray-900 dark:peer-checked/yearly:text-white text-gray-500 dark:text-gray-400">
+                    Yearly <span class="text-green-600 dark:text-green-400 font-semibold">−15%</span>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              <% PrivateDeploymentRequest::TIER_SPECS.each do |tier_key, specs| %>
+                <% mo_price = PrivateDeploymentRequest::TIER_PRICES_MONTHLY[tier_key] / 100 %>
+                <% yr_price = (PrivateDeploymentRequest::TIER_PRICES_YEARLY[tier_key] / 100.0 / 12).round %>
+                <label class="relative cursor-pointer group/card">
+                  <%= f.radio_button :server_tier, tier_key, class: "sr-only peer", required: true %>
+                  <div class="h-full border-2 border-gray-200 dark:border-gray-700 rounded-xl p-4 peer-checked:border-blue-600 peer-checked:ring-1 peer-checked:ring-blue-600 dark:peer-checked:border-blue-500 dark:peer-checked:ring-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 group-hover/card:border-gray-300 dark:group-hover/card:border-gray-600 transition-all">
+
+                    <!-- Header row: name + info tooltip -->
+                    <div class="flex items-center justify-between mb-3">
+                      <p class="font-bold text-gray-900 dark:text-gray-100 capitalize"><%= tier_key %></p>
+
+                      <!-- Spec tooltip -->
+                      <div class="relative group/tip">
+                        <span class="flex items-center justify-center h-5 w-5 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-400 dark:text-gray-500 cursor-default hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors">
+                          <svg class="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
+                            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/>
+                          </svg>
+                        </span>
+                        <div class="pointer-events-none absolute bottom-full right-0 mb-2 z-10 w-44 opacity-0 group-hover/tip:opacity-100 transition-opacity duration-150">
+                          <div class="bg-gray-900 dark:bg-gray-700 text-white text-xs rounded-lg px-3 py-2 shadow-lg space-y-1">
+                            <p class="font-semibold text-gray-300"><%= specs[:hetzner] %> VPS</p>
+                            <p><%= specs[:vcpu] %> AMD vCPU</p>
+                            <p><%= specs[:ram] %> RAM</p>
+                            <p><%= specs[:ssd] %> NVMe SSD</p>
+                          </div>
+                          <div class="absolute right-2 top-full w-2 h-2 bg-gray-900 dark:bg-gray-700 rotate-45 -translate-y-1"></div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <!-- Monthly price -->
+                    <p class="text-2xl font-bold text-blue-700 dark:text-blue-400" data-billing-cycle-target="monthlyPrice">
+                      $<%= mo_price %><span class="text-xs font-normal text-gray-500 dark:text-gray-400">/mo</span>
+                    </p>
+                    <!-- Yearly price (per-month equivalent) -->
+                    <p class="text-2xl font-bold text-green-600 dark:text-green-400 hidden" data-billing-cycle-target="yearlyPrice">
+                      $<%= yr_price %><span class="text-xs font-normal text-gray-500 dark:text-gray-400">/mo</span>
+                    </p>
+
+                    <p class="text-xs text-gray-400 dark:text-gray-500 mt-1" data-billing-cycle-target="monthlyPrice">billed monthly</p>
+                    <p class="text-xs text-green-600 dark:text-green-500 mt-1 hidden" data-billing-cycle-target="yearlyPrice">billed yearly</p>
+                  </div>
+                </label>
+              <% end %>
             </div>
           </div>
 
-          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <% PrivateDeploymentRequest::TIER_SPECS.each do |tier_key, specs| %>
-              <% mo_price = PrivateDeploymentRequest::TIER_PRICES_MONTHLY[tier_key] / 100 %>
-              <% yr_price = PrivateDeploymentRequest::TIER_PRICES_YEARLY[tier_key] / 100 / 12 %>
-              <label class="relative cursor-pointer">
-                <%= f.radio_button :server_tier, tier_key, class: "sr-only peer", required: true %>
-                <div class="border-2 border-gray-200 dark:border-gray-700 rounded-lg p-4 peer-checked:border-blue-600 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 hover:border-gray-300 dark:hover:border-gray-600 transition-colors">
-                  <p class="font-bold text-gray-900 dark:text-gray-100 text-sm capitalize mb-1"><%= tier_key %></p>
-                  <p class="text-xs text-gray-500 dark:text-gray-400 mb-3"><%= specs[:hetzner] %> · <%= specs[:vcpu] %> vCPU · <%= specs[:ram] %> · <%= specs[:ssd] %></p>
-                  <p class="text-xl font-bold text-blue-700 dark:text-blue-400" data-billing-cycle-target="monthlyPrice">$<%= mo_price %><span class="text-xs font-normal text-gray-500">/mo</span></p>
-                  <p class="text-xl font-bold text-green-600 dark:text-green-400 hidden" data-billing-cycle-target="yearlyPrice">$<%= yr_price.round %><span class="text-xs font-normal text-gray-500">/mo</span></p>
-                </div>
-              </label>
-            <% end %>
-          </div>
-        </div>
+          <!-- Section 2: Endpoint Selection -->
+          <div>
+            <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-1">2. Select API Services</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400 mb-5">Only selected services will be mounted on your instance. Others return 404.</p>
 
-        <!-- Section 2: Endpoint Selection -->
-        <div class="mb-10">
-          <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">2. Select API Services</h2>
-          <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Only selected services will be mounted on your instance. Unselected ones simply won't exist.</p>
+            <%
+              service_groups = {
+                "email"         => { icon: "✉", desc: "Validation, disposable check, normalization" },
+                "text"          => { icon: "T", desc: "Quotes, dictionary, lorem ipsum, advice, profanity, spellcheck" },
+                "tech"          => { icon: "⚙", desc: "IP/VPN info, phone, QR codes, domain, WHOIS, MX lookup" },
+                "places"        => { icon: "⊕", desc: "Cities, geocoding, timezone, holidays, postal codes" },
+                "finance"       => { icon: "$", desc: "BIN lookup, crypto, exchange rates, IBAN, SWIFT, mortgage" },
+                "entertainment" => { icon: "♟", desc: "Jokes, facts, horoscope, trivia, emoji, sudoku" },
+                "ai"            => { icon: "◈", desc: "Similarity, sentiment analysis, language detection" },
+                "convert"       => { icon: "⇄", desc: "Base64, color, markdown, number base, format conversion" },
+                "fitness"       => { icon: "♡", desc: "Exercise database by body part, equipment, muscle" },
+                "misc"          => { icon: "⊞", desc: "Counter, random user, unit conversion" }
+              }
+            %>
 
-          <%
-            service_descriptions = {
-              "email"         => "Validate, disposable check, normalize",
-              "text"          => "Quotes, dictionary, lorem ipsum, advice, profanity, spellcheck",
-              "tech"          => "IP info/VPN, phone, password gen, QR/barcode, domain, WHOIS, MX",
-              "places"        => "Cities, geocoding, timezone, holidays, postal codes",
-              "finance"       => "BIN lookup, crypto, exchange rates, inflation, IBAN, SWIFT",
-              "entertainment" => "Jokes, facts, horoscope, trivia, emoji, sudoku",
-              "ai"            => "Similarity, sentiment, language detection",
-              "convert"       => "Base64, color, markdown, numbase, format conversion",
-              "fitness"       => "Exercise database by body part, equipment, muscle",
-              "misc"          => "Counter, random-user, unit conversion"
-            }
-          %>
-
-          <div class="grid sm:grid-cols-2 gap-3">
-            <% PrivateDeploymentRequest::VALID_SERVICES.each do |svc| %>
-              <label class="flex items-start gap-3 p-4 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 dark:has-[:checked]:bg-blue-900/20">
-                <%= check_box_tag "private_deployment_request[selected_services][]", svc,
-                    (@deployment_request.selected_services.include?(svc) || @deployment_request.new_record?),
-                    class: "mt-0.5 h-4 w-4 text-blue-600 border-gray-300 rounded flex-shrink-0" %>
-                <div>
-                  <p class="font-semibold text-sm text-gray-900 dark:text-gray-100 capitalize"><%= svc %></p>
-                  <p class="text-xs text-gray-500 dark:text-gray-400"><%= service_descriptions[svc] %></p>
-                </div>
-              </label>
-            <% end %>
-          </div>
-        </div>
-
-        <!-- Section 3: Contact Info -->
-        <div class="mb-8">
-          <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">3. Your Details</h2>
-
-          <div class="grid md:grid-cols-2 gap-6">
-            <div>
-              <%= f.label :company, "Company", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
-              <%= f.text_field :company,
-                placeholder: "Acme Corp",
-                class: "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-500",
-                required: true %>
+            <div class="grid sm:grid-cols-2 gap-3">
+              <% PrivateDeploymentRequest::VALID_SERVICES.each do |svc| %>
+                <% meta = service_groups[svc] %>
+                <label class="relative flex items-start gap-3 p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/40 transition-colors has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 dark:has-[:checked]:bg-blue-900/20 has-[:checked]:ring-1 has-[:checked]:ring-blue-500">
+                  <%= check_box_tag "private_deployment_request[selected_services][]", svc,
+                      (@deployment_request.selected_services.include?(svc) || @deployment_request.new_record?),
+                      class: "mt-0.5 h-4 w-4 text-blue-600 border-gray-300 rounded flex-shrink-0 cursor-pointer" %>
+                  <div class="min-w-0 flex-1">
+                    <p class="font-semibold text-sm text-gray-900 dark:text-gray-100 capitalize"><%= svc %></p>
+                    <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5 leading-relaxed"><%= meta[:desc] %></p>
+                  </div>
+                </label>
+              <% end %>
             </div>
 
-            <div>
-              <%= f.label :contact_name, "Your Name", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
-              <%= f.text_field :contact_name,
-                placeholder: "Jane Smith",
-                class: "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-500",
-                required: true %>
-            </div>
-
-            <div class="md:col-span-2">
-              <%= f.label :contact_email, "Contact Email", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
-              <%= f.email_field :contact_email,
-                placeholder: "jane@acme.com",
-                class: "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-500",
-                required: true %>
-              <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">We'll send deployment status updates here.</p>
-            </div>
-
-            <div class="md:col-span-2">
-              <%= f.label :admin_notes, "Anything else we should know?", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
-              <%= f.text_area :admin_notes,
-                placeholder: "Preferred subdomain slug, specific data-centre requirements, expected request volume, etc.",
-                rows: 4,
-                class: "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none bg-white dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-500" %>
-              <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Optional.</p>
-            </div>
-          </div>
-        </div>
-
-        <!-- Notice -->
-        <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-lg p-4 mb-8">
-          <div class="flex items-start">
-            <svg class="h-5 w-5 text-amber-500 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
-            </svg>
-            <p class="text-sm text-amber-800 dark:text-amber-300">
-              You'll be redirected to our payment page to complete your subscription. Deployment starts after payment is confirmed — usually ready within <strong>24–48 hours</strong>.
+            <p class="mt-3 text-xs text-gray-400 dark:text-gray-500">
+              All 10 services are selected by default. Uncheck any you don't need to keep your instance lean.
             </p>
           </div>
-        </div>
 
-        <!-- Actions -->
-        <div class="flex items-center justify-end space-x-4">
-          <%= link_to "Cancel", pricing_path, class: "px-6 py-3 text-gray-700 dark:text-gray-300 font-medium hover:text-gray-900 dark:hover:text-gray-100 transition-colors" %>
-          <%= f.submit "Continue to Payment →",
-            class: "px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm hover:shadow-md",
-            data: { disable_with: "Redirecting to payment..." } %>
-        </div>
+          <!-- Section 3: Notes -->
+          <div>
+            <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100 mb-2">3. Anything we should know?</h2>
+            <%= f.text_area :admin_notes,
+              placeholder: "Preferred subdomain (e.g. acme), data-centre preference, expected traffic volume, anything else...",
+              rows: 3,
+              class: "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none bg-white dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-500" %>
+            <p class="mt-1 text-xs text-gray-400">Optional.</p>
+          </div>
 
+          <!-- Payment notice + submit -->
+          <div class="pt-2">
+            <div class="flex items-start gap-3 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl p-4 mb-6">
+              <svg class="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>
+              </svg>
+              <p class="text-sm text-amber-800 dark:text-amber-300">
+                You'll be redirected to our secure checkout on LemonSqueezy to complete your subscription.
+                Deployment starts after payment is confirmed, usually within <strong>24–48 hours</strong>.
+              </p>
+            </div>
+
+            <div class="flex items-center justify-between">
+              <%= link_to "← Back to pricing", pricing_path, class: "text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors" %>
+              <%= f.submit "Continue to Payment →",
+                class: "px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm cursor-pointer",
+                data: { disable_with: "Redirecting..." } %>
+            </div>
+          </div>
+
+        </div>
       <% end %>
     </div>
+
   </div>
 </div>

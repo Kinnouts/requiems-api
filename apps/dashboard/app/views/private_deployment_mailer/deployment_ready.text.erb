@@ -1,4 +1,4 @@
-Your Private API is Live — Requiems
+Your Private API is Live
 
 Hi <%= @deployment_request.contact_name %>,
 
@@ -11,7 +11,7 @@ AUTHENTICATION
 Include this header in every request:
   X-Backend-Secret: <%= @deployment_request.tenant_secret %>
 
-Keep this value private — it's the only authentication for your instance.
+Keep this value private. It's the only authentication for your instance.
 
 QUICK START
   curl -H "X-Backend-Secret: <your-secret>" \
@@ -25,4 +25,4 @@ API DOCUMENTATION
 
 Questions? Reply to this email or reach us at eliaz@bobadilla.tech.
 
-— The Requiems Team
+The Requiems Team
