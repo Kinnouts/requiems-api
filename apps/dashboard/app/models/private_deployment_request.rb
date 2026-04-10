@@ -3,6 +3,8 @@
 class PrivateDeploymentRequest < ApplicationRecord
   belongs_to :user
 
+  encrypts :tenant_secret
+
   VALID_STATUSES = %w[pending_payment pending deploying active cancelled].freeze
   VALID_TIERS = %w[starter growth scale enterprise].freeze
   VALID_SERVICES = %w[email text tech places finance entertainment ai convert fitness misc].freeze
@@ -47,6 +49,7 @@ class PrivateDeploymentRequest < ApplicationRecord
   validates :billing_cycle, inclusion: { in: %w[monthly yearly] }
   validates :status, inclusion: { in: VALID_STATUSES }
   validates :lemonsqueezy_subscription_id, uniqueness: true, allow_nil: true
+  validates :tenant_secret, length: { minimum: 32 }, if: -> { status == "active" }
   validate :at_least_one_service_selected
   validates :subdomain_slug, uniqueness: true, allow_nil: true,
             format: { with: /\A[a-z0-9\-]{2,40}\z/, message: "must be lowercase letters, numbers, and hyphens only (2–40 chars)" }
@@ -58,10 +61,8 @@ class PrivateDeploymentRequest < ApplicationRecord
   scope :cancelled,  -> { where(status: "cancelled") }
 
   def monthly_price_dollars
-    monthly_prices = TIER_PRICES_MONTHLY.fetch(server_tier, 0) / 100.0
-    return monthly_prices if billing_cycle == "monthly"
-    # For yearly, show the effective per-month rate
-    TIER_PRICES_YEARLY.fetch(server_tier, 0) / 100.0 / 12.0
+    cents = monthly_price_cents || TIER_PRICES_MONTHLY.fetch(server_tier, 0)
+    cents / 100.0
   end
 
   def total_price_dollars
@@ -82,6 +83,10 @@ class PrivateDeploymentRequest < ApplicationRecord
   def at_least_one_service_selected
     if selected_services.blank? || selected_services.empty?
       errors.add(:selected_services, "must include at least one service")
+      return
     end
+
+    invalid = selected_services.reject { |s| VALID_SERVICES.include?(s) }
+    errors.add(:selected_services, "contains invalid services: #{invalid.join(', ')}") if invalid.any?
   end
 end

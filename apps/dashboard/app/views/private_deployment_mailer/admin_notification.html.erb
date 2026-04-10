@@ -46,7 +46,7 @@
           </div>
 
           <p style="font-size: 13px; color: #9ca3af; margin: 0; text-align: center;">
-            Submitted <%= @deployment_request.created_at.strftime("%B %d, %Y at %H:%M UTC") %>
+            Submitted <%= @deployment_request.created_at.utc.strftime("%B %d, %Y at %H:%M UTC") %>
           </p>
         </div>
 

@@ -49,6 +49,17 @@ module Dashboard
       ]
     end
 
+    # ActiveRecord Encryption for sensitive columns (tenant_secret on PrivateDeploymentRequest).
+    # Keys are loaded from environment variables. Generate with: SecureRandom.base64(32)
+    #   AR_ENCRYPTION_PRIMARY_KEY
+    #   AR_ENCRYPTION_DETERMINISTIC_KEY
+    #   AR_ENCRYPTION_KEY_DERIVATION_SALT
+    if ENV["AR_ENCRYPTION_PRIMARY_KEY"].present?
+      config.active_record.encryption.primary_key          = ENV["AR_ENCRYPTION_PRIMARY_KEY"]
+      config.active_record.encryption.deterministic_key    = ENV["AR_ENCRYPTION_DETERMINISTIC_KEY"]
+      config.active_record.encryption.key_derivation_salt  = ENV["AR_ENCRYPTION_KEY_DERIVATION_SALT"]
+    end
+
     # Fixed effective date for legal documents (Privacy Policy, Terms of Service).
     # Update this when the documents are materially revised.
     config.x.legal_effective_date = Date.new(2026, 2, 17)

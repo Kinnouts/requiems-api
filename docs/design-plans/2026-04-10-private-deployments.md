@@ -135,9 +135,9 @@ simply return 404.
 
 **`app/routes_v1.go`**
 
-- Add `enabled(cfg, key string) bool` helper — returns true when
+- Add `serviceEnabled(cfg config.Config, key string) bool` helper — returns true when
   `EnabledServices` is empty or contains the key
-- Wrap each of the 10 `r.Mount()` calls with `if enabled(cfg, "email") { ... }`
+- Wrap each of the 10 `r.Mount()` calls with `if serviceEnabled(cfg, "email") { ... }`
 
 No auth changes. `BackendSecretAuth` middleware is unchanged; tenants just
 supply their own unique `BACKEND_SECRET`.

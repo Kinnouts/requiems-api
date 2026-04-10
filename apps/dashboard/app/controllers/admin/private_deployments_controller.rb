@@ -35,10 +35,12 @@ class Admin::PrivateDeploymentsController < ApplicationController
       redirect_to admin_private_deployment_path(@deployment_request), alert: "Tenant secret is required." and return
     end
 
+    merged_notes = [ @deployment_request.admin_notes, admin_notes.presence ].compact.join("\n\n---\n\n")
+
     @deployment_request.update!(
       subdomain_slug: subdomain_slug,
       tenant_secret: tenant_secret,
-      admin_notes: admin_notes.presence,
+      admin_notes: merged_notes.presence,
       status: "active",
       deployed_at: Time.current
     )

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_10_000001) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_10_000002) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -96,7 +96,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_10_000001) do
     t.string "server_tier", null: false
     t.string "status", default: "pending", null: false
     t.string "subdomain_slug"
-    t.string "tenant_secret"
+    t.text "tenant_secret"
     t.datetime "updated_at", null: false
     t.bigint "user_id", null: false
     t.index ["lemonsqueezy_subscription_id"], name: "idx_on_lemonsqueezy_subscription_id_852c953af6", unique: true, where: "(lemonsqueezy_subscription_id IS NOT NULL)"

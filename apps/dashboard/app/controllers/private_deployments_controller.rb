@@ -4,7 +4,10 @@ class PrivateDeploymentsController < ApplicationController
   before_action :authenticate_user!
 
   def new
-    @deployment_request = PrivateDeploymentRequest.new(billing_cycle: "monthly")
+    @deployment_request = PrivateDeploymentRequest.new(
+      billing_cycle: "monthly",
+      selected_services: PrivateDeploymentRequest::VALID_SERVICES
+    )
   end
 
   def create
