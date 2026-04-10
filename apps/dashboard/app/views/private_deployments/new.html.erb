@@ -1,0 +1,181 @@
+<% content_for :title, "Private Deployment — Requiems API" %>
+
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+    <!-- Header -->
+    <div class="text-center mb-10">
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">Private Deployment</h1>
+      <p class="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
+        Your own dedicated API instance on a private Hetzner VPS — unlimited requests,
+        only the endpoints you need, your own subdomain.
+      </p>
+    </div>
+
+    <!-- Feature Highlights -->
+    <div class="grid md:grid-cols-3 gap-6 mb-12">
+      <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+        <div class="flex items-center mb-3">
+          <svg class="h-7 w-7 text-blue-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+          <h3 class="font-bold text-gray-900 dark:text-gray-100">Dedicated Infrastructure</h3>
+        </div>
+        <p class="text-sm text-gray-600 dark:text-gray-400">Your own VPS — no shared resources, no noisy neighbours, consistent performance.</p>
+      </div>
+      <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+        <div class="flex items-center mb-3">
+          <svg class="h-7 w-7 text-green-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          <h3 class="font-bold text-gray-900 dark:text-gray-100">Unlimited Requests</h3>
+        </div>
+        <p class="text-sm text-gray-600 dark:text-gray-400">Flat monthly fee, zero overage. Process as much as your server can handle.</p>
+      </div>
+      <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+        <div class="flex items-center mb-3">
+          <svg class="h-7 w-7 text-purple-600 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+          </svg>
+          <h3 class="font-bold text-gray-900 dark:text-gray-100">Your Own Subdomain</h3>
+        </div>
+        <p class="text-sm text-gray-600 dark:text-gray-400">Access your API at <span class="font-mono text-xs bg-gray-100 dark:bg-gray-700 px-1 rounded">yourcompany.requiems.xyz</span> — direct, no Cloudflare proxy.</p>
+      </div>
+    </div>
+
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 md:p-12">
+
+      <!-- Validation errors -->
+      <% if @deployment_request.errors.any? %>
+        <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4 mb-8">
+          <p class="text-sm font-semibold text-red-800 dark:text-red-300 mb-2">Please fix the following errors:</p>
+          <ul class="list-disc list-inside text-sm text-red-700 dark:text-red-400 space-y-1">
+            <% @deployment_request.errors.full_messages.each do |msg| %>
+              <li><%= msg %></li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+
+      <%= form_with model: @deployment_request, url: private_deployments_path, local: true, data: { turbo: false } do |f| %>
+
+        <!-- Section 1: Server Tier -->
+        <div class="mb-10">
+          <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">1. Choose Your Server Tier</h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">All tiers include Go API + PostgreSQL + Redis + Caddy (HTTPS) on AMD dedicated vCPUs.</p>
+
+          <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <% PrivateDeploymentRequest::TIER_SPECS.each do |tier_key, specs| %>
+              <% price = PrivateDeploymentRequest::TIER_PRICES[tier_key] / 100 %>
+              <label class="relative cursor-pointer">
+                <%= f.radio_button :server_tier, tier_key, class: "sr-only peer", required: true %>
+                <div class="border-2 border-gray-200 dark:border-gray-700 rounded-lg p-4 peer-checked:border-blue-600 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 hover:border-gray-300 dark:hover:border-gray-600 transition-colors">
+                  <p class="font-bold text-gray-900 dark:text-gray-100 text-sm capitalize mb-1"><%= tier_key %></p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 mb-3"><%= specs[:hetzner] %> — <%= specs[:vcpu] %> vCPU / <%= specs[:ram] %> RAM / <%= specs[:ssd] %> SSD</p>
+                  <p class="text-xl font-bold text-blue-700 dark:text-blue-400">$<%= price %><span class="text-xs font-normal text-gray-500">/mo</span></p>
+                </div>
+              </label>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Section 2: Endpoint Selection -->
+        <div class="mb-10">
+          <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">2. Select API Services</h2>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mb-6">Only selected services will be mounted on your instance. Unselected ones simply won't exist.</p>
+
+          <%
+            service_descriptions = {
+              "email"         => "Validate, disposable check, normalize",
+              "text"          => "Quotes, dictionary, lorem ipsum, advice, profanity, spellcheck",
+              "tech"          => "IP info/VPN, phone, password gen, QR/barcode, domain, WHOIS, MX",
+              "places"        => "Cities, geocoding, timezone, holidays, postal codes",
+              "finance"       => "BIN lookup, crypto, exchange rates, inflation, IBAN, SWIFT",
+              "entertainment" => "Jokes, facts, horoscope, trivia, emoji, sudoku",
+              "ai"            => "Similarity, sentiment, language detection",
+              "convert"       => "Base64, color, markdown, numbase, format conversion",
+              "fitness"       => "Exercise database by body part, equipment, muscle",
+              "misc"          => "Counter, random-user, unit conversion"
+            }
+          %>
+
+          <div class="grid sm:grid-cols-2 gap-3">
+            <% PrivateDeploymentRequest::VALID_SERVICES.each do |svc| %>
+              <label class="flex items-start gap-3 p-4 border border-gray-200 dark:border-gray-700 rounded-lg cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 dark:has-[:checked]:bg-blue-900/20">
+                <%= check_box_tag "private_deployment_request[selected_services][]", svc,
+                    (@deployment_request.selected_services.include?(svc) || @deployment_request.new_record?),
+                    class: "mt-0.5 h-4 w-4 text-blue-600 border-gray-300 rounded flex-shrink-0" %>
+                <div>
+                  <p class="font-semibold text-sm text-gray-900 dark:text-gray-100 capitalize"><%= svc %></p>
+                  <p class="text-xs text-gray-500 dark:text-gray-400"><%= service_descriptions[svc] %></p>
+                </div>
+              </label>
+            <% end %>
+          </div>
+        </div>
+
+        <!-- Section 3: Contact Info -->
+        <div class="mb-8">
+          <h2 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-6">3. Your Details</h2>
+
+          <div class="grid md:grid-cols-2 gap-6">
+            <div>
+              <%= f.label :company, "Company", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+              <%= f.text_field :company,
+                placeholder: "Acme Corp",
+                class: "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-500",
+                required: true %>
+            </div>
+
+            <div>
+              <%= f.label :contact_name, "Your Name", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+              <%= f.text_field :contact_name,
+                placeholder: "Jane Smith",
+                class: "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-500",
+                required: true %>
+            </div>
+
+            <div class="md:col-span-2">
+              <%= f.label :contact_email, "Contact Email", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+              <%= f.email_field :contact_email,
+                placeholder: "jane@acme.com",
+                class: "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-500",
+                required: true %>
+              <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">We'll send deployment status updates here.</p>
+            </div>
+
+            <div class="md:col-span-2">
+              <%= f.label :admin_notes, "Anything else we should know?", class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+              <%= f.text_area :admin_notes,
+                placeholder: "Preferred subdomain slug, specific data-centre requirements, expected request volume, etc.",
+                rows: 4,
+                class: "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none bg-white dark:bg-gray-700 dark:text-gray-100 dark:placeholder-gray-500" %>
+              <p class="mt-1 text-xs text-gray-500 dark:text-gray-400">Optional.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Notice -->
+        <div class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4 mb-8">
+          <div class="flex items-start">
+            <svg class="h-5 w-5 text-blue-500 mr-3 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <p class="text-sm text-blue-800 dark:text-blue-300">
+              <strong>No payment upfront.</strong> We'll provision your environment within 24–48 hours and reach out to confirm billing before charging anything.
+            </p>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end space-x-4">
+          <%= link_to "Cancel", pricing_path, class: "px-6 py-3 text-gray-700 dark:text-gray-300 font-medium hover:text-gray-900 dark:hover:text-gray-100 transition-colors" %>
+          <%= f.submit "Request Deployment",
+            class: "px-8 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm hover:shadow-md",
+            data: { disable_with: "Submitting..." } %>
+        </div>
+
+      <% end %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+Your Private API is Live — Requiems
+
+Hi <%= @deployment_request.contact_name %>,
+
+Your private Requiems API environment for <%= @deployment_request.company %> is deployed and ready.
+
+YOUR ENDPOINT
+  <%= @deployment_request.live_url %>
+
+AUTHENTICATION
+Include this header in every request:
+  X-Backend-Secret: <%= @deployment_request.tenant_secret %>
+
+Keep this value private — it's the only authentication for your instance.
+
+QUICK START
+  curl -H "X-Backend-Secret: <your-secret>" \
+    <%= @deployment_request.live_url %>/v1/<%= @deployment_request.selected_services.first %>
+
+MOUNTED SERVICES
+  <%= @deployment_request.selected_services.join(", ") %>
+
+API DOCUMENTATION
+  <%= @docs_url %>
+
+Questions? Reply to this email or reach us at eliaz@bobadilla.tech.
+
+— The Requiems Team

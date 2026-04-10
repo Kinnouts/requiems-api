@@ -57,10 +57,10 @@ Priced against Hetzner AMD VPS nodes with a healthy margin:
 
 | Tier       | Hetzner Node | vCPU   | RAM   | SSD    | Monthly Price |
 | ---------- | ------------ | ------ | ----- | ------ | ------------- |
-| Starter    | CPX21        | 3 AMD  | 4 GB  | 80 GB  | $99/mo        |
-| Growth     | CPX31        | 4 AMD  | 8 GB  | 160 GB | $199/mo       |
-| Scale      | CPX41        | 8 AMD  | 16 GB | 240 GB | $399/mo       |
-| Enterprise | CPX51        | 16 AMD | 32 GB | 360 GB | $749/mo       |
+| Starter    | CPX21        | 3 AMD  | 4 GB  | 80 GB  | $120/mo       |
+| Growth     | CPX31        | 4 AMD  | 8 GB  | 160 GB | $220/mo       |
+| Scale      | CPX41        | 8 AMD  | 16 GB | 240 GB | $420/mo       |
+| Enterprise | CPX51        | 16 AMD | 32 GB | 360 GB | $850/mo       |
 
 ---
 

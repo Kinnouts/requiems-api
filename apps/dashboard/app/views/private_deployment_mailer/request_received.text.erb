@@ -1,0 +1,20 @@
+Request Received — Requiems Private Deployment
+
+Hi <%= @deployment_request.contact_name %>,
+
+We've received your private deployment request for <%= @deployment_request.company %>.
+Your dedicated API environment will be ready within 24–48 hours.
+
+ORDER SUMMARY
+  Server tier:       <%= @deployment_request.server_tier.capitalize %>
+  Monthly price:     $<%= "%.0f" % @deployment_request.monthly_price_dollars %>/mo
+  Selected services: <%= @deployment_request.selected_services.join(", ") %>
+
+WHAT HAPPENS NEXT
+We'll provision your Hetzner VPS, deploy your private Go API with only the services
+you selected, and configure your subdomain at yourcompany.requiems.xyz.
+Once live you'll receive a second email with your URL and authentication details.
+
+Questions? Reply to this email or reach us at eliaz@bobadilla.tech.
+
+— The Requiems Team

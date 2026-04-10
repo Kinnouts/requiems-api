@@ -119,6 +119,50 @@
       </div>
     </div>
 
+    <!-- Private Deployment Callout -->
+    <div class="bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-8 mb-16">
+      <div class="flex flex-col lg:flex-row items-center justify-between gap-8">
+        <div>
+          <div class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 mb-3">Private Deployment</div>
+          <h3 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">Need your own dedicated instance?</h3>
+          <p class="text-gray-600 dark:text-gray-400 mb-4 max-w-xl">
+            Get a private VPS on Hetzner running only the API services you choose, accessible at <span class="font-mono text-sm bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded">yourcompany.requiems.xyz</span>.
+            Flat monthly price, zero overage fees, unlimited requests.
+          </p>
+          <ul class="grid sm:grid-cols-2 gap-x-8 gap-y-2 text-sm text-gray-700 dark:text-gray-300">
+            <li class="flex items-center gap-2">
+              <svg class="h-4 w-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              Dedicated Hetzner VPS
+            </li>
+            <li class="flex items-center gap-2">
+              <svg class="h-4 w-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              Choose only the endpoints you need
+            </li>
+            <li class="flex items-center gap-2">
+              <svg class="h-4 w-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              Direct HTTPS, no shared infrastructure
+            </li>
+            <li class="flex items-center gap-2">
+              <svg class="h-4 w-4 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+              Starting at $99/mo
+            </li>
+          </ul>
+        </div>
+        <div class="flex-shrink-0 text-center">
+          <% if user_signed_in? %>
+            <%= link_to "Request a Private Deployment",
+              new_private_deployment_path,
+              class: "inline-flex items-center px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-semibold rounded-lg hover:bg-gray-700 dark:hover:bg-gray-100 transition-colors" %>
+          <% else %>
+            <%= link_to "Request a Private Deployment",
+              new_user_registration_path,
+              class: "inline-flex items-center px-8 py-4 bg-gray-900 dark:bg-white text-white dark:text-gray-900 font-semibold rounded-lg hover:bg-gray-700 dark:hover:bg-gray-100 transition-colors" %>
+          <% end %>
+          <p class="mt-2 text-xs text-gray-500 dark:text-gray-400">No payment upfront · Ready in 24–48h</p>
+        </div>
+      </div>
+    </div>
+
     <!-- Feature Comparison Table -->
     <div class="bg-white dark:bg-gray-800 rounded-lg shadow overflow-hidden mb-16">
       <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
