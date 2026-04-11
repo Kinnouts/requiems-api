@@ -121,8 +121,12 @@ class Webhooks::LemonsqueezyController < ApplicationController
       lemonsqueezy_subscription_id: lemonsqueezy_subscription_id
     )
 
-    PrivateDeploymentMailer.request_received(deployment_request).deliver_later
-    PrivateDeploymentMailer.admin_notification(deployment_request).deliver_later
+    begin
+      PrivateDeploymentMailer.request_received(deployment_request).deliver_later
+      PrivateDeploymentMailer.admin_notification(deployment_request).deliver_later
+    rescue StandardError => e
+      Rails.logger.error "[LemonSqueezy] Failed to enqueue private deployment emails for request #{request_id}: #{e.message}"
+    end
 
     Rails.logger.info "[LemonSqueezy] Private deployment payment received for request #{request_id}"
   end

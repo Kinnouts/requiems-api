@@ -105,10 +105,10 @@
           <% yr_interval = PrivateDeploymentRequest::TIER_YEARLY_BILLING_MONTHS[tier_key] %>
           <% yr          = (PrivateDeploymentRequest::TIER_PRICES_YEARLY[tier_key] / 100.0 / yr_interval).round %>
           <% yr_total    = PrivateDeploymentRequest::TIER_PRICES_YEARLY[tier_key] / 100 %>
-          <% yr_charge_label = yr_interval == 12 ? "$#{number_with_delimiter(yr_total)}/yr" : "$#{number_with_delimiter(yr_total)} per 6 mo" %>
+          <% yr_charge_label = yr_interval == 12 ? t("home.pricing.plans.private_deployment.charge_annual", amount: number_with_delimiter(yr_total)) : t("home.pricing.plans.private_deployment.charge_semiannual", amount: number_with_delimiter(yr_total)) %>
           <div class="bg-white/5 border border-white/10 rounded-lg p-5">
             <p class="font-bold text-white mb-1 capitalize"><%= tier_key %></p>
-            <p class="text-xs text-gray-400 mb-3"><%= specs[:hetzner] %> · <%= specs[:vcpu] %> vCPU · <%= specs[:ram] %> RAM · <%= specs[:ssd] %> SSD</p>
+            <p class="text-xs text-gray-400 mb-3"><%= specs[:hetzner] %> · <%= specs[:vcpu] %> <%= t("home.pricing.plans.private_deployment.units.vcpu") %> · <%= specs[:ram] %> <%= t("home.pricing.plans.private_deployment.units.ram") %> · <%= specs[:ssd] %> <%= t("home.pricing.plans.private_deployment.units.ssd") %></p>
             <p class="text-2xl font-bold text-white">$<%= mo %><span class="text-sm font-normal text-gray-400">/mo</span></p>
             <p class="text-xs text-green-400 mt-0.5"><%= t("home.pricing.plans.private_deployment.yearly_note", price: yr) %></p>
             <p class="text-xs text-green-500 font-medium mt-0.5"><%= yr_charge_label %></p>

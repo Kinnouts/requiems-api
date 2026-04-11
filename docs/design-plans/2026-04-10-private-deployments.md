@@ -28,7 +28,7 @@ call.
 
 **Shared (current):**
 
-```
+```text
 Client → Cloudflare Auth Gateway (api.requiems.xyz)
            ├─ validates API key (KV)
            ├─ checks rate limits (KV counters)
@@ -38,7 +38,7 @@ Client → Cloudflare Auth Gateway (api.requiems.xyz)
 
 **Private Deployment (new):**
 
-```
+```text
 Client → Caddy (HTTPS, {slug}.requiems.xyz)
               └─ reverse-proxies to → Go backend (port 8080)
                                          X-Backend-Secret: {tenant-secret}
@@ -93,7 +93,7 @@ simply return 404.
 
 ## Customer Flow
 
-```
+```text
 1. Customer logs in → visits /private-deployment
 2. Selects: billing cycle (monthly/yearly) + server tier + endpoint checkboxes + contact info
 3. Submits form
@@ -165,7 +165,7 @@ New table: `private_deployment_requests`
 | `selected_services`   | jsonb      | `["email","text"]`                 |
 | `subdomain_slug`      | string     | set by admin, unique               |
 | `tenant_secret`       | string     | set by admin                       |
-| `status`              | string     | pending/deploying/active/cancelled |
+| `status`              | string     | pending_payment/pending/deploying/active/cancelled |
 | `admin_notes`         | text       | optional                           |
 | `deployed_at`         | datetime   | set on activate                    |
 | `timestamps`          |            |                                    |

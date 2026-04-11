@@ -384,6 +384,12 @@ es:
           heading: "Tu propia instancia dedicada de API"
           description: "Un VPS privado en Hetzner con solo los servicios que elijas, accesible en yourcompany.requiems.xyz. Facturación mensual o anual. Sin cargos por exceso, solicitudes ilimitadas."
           yearly_note: "o $%{price}/mes facturado anualmente"
+          charge_annual: "$%{amount}/año"
+          charge_semiannual: "$%{amount} cada 6 meses"
+          units:
+            vcpu: "vCPU"
+            ram: "RAM"
+            ssd: "SSD"
           features:
             - "VPS dedicado en Hetzner"
             - "Solo las APIs que necesitas"

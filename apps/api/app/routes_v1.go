@@ -27,10 +27,10 @@ import (
 // For private deployments, set ENABLED_SERVICES="email,text,tech" to mount
 // only the services the tenant purchased.
 func serviceEnabled(cfg config.Config, key string) bool {
-	if cfg.EnabledServices == "" {
+	if strings.TrimSpace(cfg.EnabledServices) == "" {
 		return true
 	}
-	for _, s := range strings.Split(cfg.EnabledServices, ",") {
+	for s := range strings.SplitSeq(cfg.EnabledServices, ",") {
 		if strings.TrimSpace(s) == key {
 			return true
 		}

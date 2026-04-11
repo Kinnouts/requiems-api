@@ -4,9 +4,16 @@ import { Controller } from "@hotwired/stimulus"
 export default class extends Controller {
   static targets = ["monthlyPrice", "yearlyPrice"]
 
-  toggle(event) {
-    const isYearly = event.target.value === "yearly"
+  connect() {
+    const selected = this.element.querySelector("input[name$='[billing_cycle]']:checked")
+    this.#applyVisibility(selected?.value === "yearly")
+  }
 
+  toggle(event) {
+    this.#applyVisibility(event.target.value === "yearly")
+  }
+
+  #applyVisibility(isYearly) {
     this.monthlyPriceTargets.forEach(el => el.classList.toggle("hidden", isYearly))
     this.yearlyPriceTargets.forEach(el => el.classList.toggle("hidden", !isYearly))
   }

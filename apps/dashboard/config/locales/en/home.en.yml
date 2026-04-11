@@ -384,6 +384,12 @@ en:
           heading: "Your own dedicated API instance"
           description: "A private Hetzner VPS running only the services you choose, accessible at yourcompany.requiems.xyz. Flat monthly or yearly billing. Zero overage fees, unlimited requests."
           yearly_note: "or $%{price}/mo billed yearly"
+          charge_annual: "$%{amount}/yr"
+          charge_semiannual: "$%{amount} per 6 mo"
+          units:
+            vcpu: "vCPU"
+            ram: "RAM"
+            ssd: "SSD"
           features:
             - "Dedicated Hetzner VPS"
             - "Select only the APIs you need"

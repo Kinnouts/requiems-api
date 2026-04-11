@@ -3,7 +3,7 @@
 class Admin::PrivateDeploymentsController < ApplicationController
   before_action :authenticate_user!
   before_action :require_admin!
-  before_action :set_deployment_request, only: [:show, :activate, :cancel]
+  before_action :set_deployment_request, only: [ :show, :activate, :cancel ]
   layout "admin"
 
   def index
