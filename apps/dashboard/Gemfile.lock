@@ -202,7 +202,7 @@ GEM
     nokogiri (1.19.2-x86_64-linux-musl)
       racc (~> 1.4)
     orm_adapter (0.5.0)
-    pagy (43.4.4)
+    pagy (43.5.0)
       json
       uri
       yaml
@@ -412,7 +412,7 @@ DEPENDENCIES
   jbuilder
   letter_opener_web (~> 3.0)
   nanoid (~> 2.0)
-  pagy (~> 43.4)
+  pagy (~> 43.5)
   pg (~> 1.1)
   propshaft
   puma (>= 5.0)
