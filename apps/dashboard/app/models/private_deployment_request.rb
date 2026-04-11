@@ -26,15 +26,25 @@ class PrivateDeploymentRequest < ApplicationRecord
     "starter"    => 20000,
     "growth"     => 30000,
     "scale"      => 50000,
-    "enterprise" => 100000
+    "enterprise" => 96000   # $960/mo — $1,000 was too high for semi-annual LemonSqueezy limit
   }.freeze
 
-  # 15% yearly discount, billed as one annual charge
+  # LemonSqueezy per-charge amount for the "yearly" plan (~15% off).
+  # Starter + Growth: billed once per year.
+  # Scale + Enterprise: billed every 6 months (semi-annual) to stay under LemonSqueezy's $5,000 cap.
   TIER_PRICES_YEARLY = {
-    "starter"    => 204000,   # $2,040/yr  ($170/mo)
-    "growth"     => 306000,   # $3,060/yr  ($255/mo)
-    "scale"      => 510000,   # $5,100/yr  ($425/mo)
-    "enterprise" => 1020000   # $10,200/yr ($850/mo)
+    "starter"    => 204000,  # $2,040  — annual charge    ($170/mo effective)
+    "growth"     => 306000,  # $3,060  — annual charge    ($255/mo effective)
+    "scale"      => 255000,  # $2,550  — semi-annual charge ($425/mo effective)
+    "enterprise" => 489600   # $4,896  — semi-annual charge ($816/mo effective)
+  }.freeze
+
+  # How many months each "yearly" LemonSqueezy charge covers.
+  TIER_YEARLY_BILLING_MONTHS = {
+    "starter"    => 12,
+    "growth"     => 12,
+    "scale"      => 6,
+    "enterprise" => 6
   }.freeze
 
   TIER_SPECS = {

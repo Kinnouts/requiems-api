@@ -73,8 +73,12 @@
 
             <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
               <% PrivateDeploymentRequest::TIER_SPECS.each do |tier_key, specs| %>
-                <% mo_price = PrivateDeploymentRequest::TIER_PRICES_MONTHLY[tier_key] / 100 %>
-                <% yr_price = (PrivateDeploymentRequest::TIER_PRICES_YEARLY[tier_key] / 100.0 / 12).round %>
+                <% mo_price    = PrivateDeploymentRequest::TIER_PRICES_MONTHLY[tier_key] / 100 %>
+                <% yr_interval = PrivateDeploymentRequest::TIER_YEARLY_BILLING_MONTHS[tier_key] %>
+                <% yr_price    = (PrivateDeploymentRequest::TIER_PRICES_YEARLY[tier_key] / 100.0 / yr_interval).round %>
+                <% yr_total    = PrivateDeploymentRequest::TIER_PRICES_YEARLY[tier_key] / 100 %>
+                <% yr_label    = yr_interval == 12 ? "billed yearly" : "billed every 6 months" %>
+                <% yr_total_label = yr_interval == 12 ? "$#{number_with_delimiter(yr_total)}/yr total" : "$#{number_with_delimiter(yr_total)} per 6 months" %>
                 <label class="relative cursor-pointer group/card">
                   <%= f.radio_button :server_tier, tier_key, class: "sr-only peer", required: true %>
                   <div class="h-full border-2 border-gray-200 dark:border-gray-700 rounded-xl p-4 peer-checked:border-blue-600 peer-checked:ring-1 peer-checked:ring-blue-600 dark:peer-checked:border-blue-500 dark:peer-checked:ring-blue-500 peer-checked:bg-blue-50 dark:peer-checked:bg-blue-900/20 group-hover/card:border-gray-300 dark:group-hover/card:border-gray-600 transition-all">
@@ -112,7 +116,8 @@
                     </p>
 
                     <p class="text-xs text-gray-400 dark:text-gray-500 mt-1" data-billing-cycle-target="monthlyPrice">billed monthly</p>
-                    <p class="text-xs text-green-600 dark:text-green-500 mt-1 hidden" data-billing-cycle-target="yearlyPrice">billed yearly</p>
+                    <p class="text-xs text-green-600 dark:text-green-500 mt-0.5 hidden" data-billing-cycle-target="yearlyPrice"><%= yr_label %></p>
+                    <p class="text-xs text-green-700 dark:text-green-600 font-medium hidden" data-billing-cycle-target="yearlyPrice"><%= yr_total_label %></p>
                   </div>
                 </label>
               <% end %>

@@ -37,7 +37,8 @@ class PrivateDeploymentsController < ApplicationController
 
   def price_cents_for(request)
     if request.billing_cycle == "yearly"
-      PrivateDeploymentRequest::TIER_PRICES_YEARLY[request.server_tier] || 0
+      interval = PrivateDeploymentRequest::TIER_YEARLY_BILLING_MONTHS[request.server_tier] || 12
+      (PrivateDeploymentRequest::TIER_PRICES_YEARLY[request.server_tier] || 0) / interval
     else
       PrivateDeploymentRequest::TIER_PRICES_MONTHLY[request.server_tier] || 0
     end

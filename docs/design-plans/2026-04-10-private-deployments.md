@@ -55,12 +55,15 @@ otherwise identical.
 
 Priced against Hetzner AMD VPS nodes with a healthy margin:
 
-| Tier       | Hetzner Node | vCPU   | RAM   | SSD    | Monthly   | Yearly (÷12) |
-| ---------- | ------------ | ------ | ----- | ------ | --------- | ------------ |
-| Starter    | CPX21        | 3 AMD  | 4 GB  | 80 GB  | $200/mo   | $170/mo      |
-| Growth     | CPX31        | 4 AMD  | 8 GB  | 160 GB | $300/mo   | $255/mo      |
-| Scale      | CPX41        | 8 AMD  | 16 GB | 240 GB | $500/mo   | $425/mo      |
-| Enterprise | CPX51        | 16 AMD | 32 GB | 360 GB | $1,000/mo | $850/mo      |
+| Tier       | Hetzner Node | vCPU   | RAM   | SSD    | Monthly | Yearly (eff/mo) | LemonSqueezy charge   |
+| ---------- | ------------ | ------ | ----- | ------ | ------- | --------------- | --------------------- |
+| Starter    | CPX21        | 3 AMD  | 4 GB  | 80 GB  | $200/mo | $170/mo         | $2,040 once/year      |
+| Growth     | CPX31        | 4 AMD  | 8 GB  | 160 GB | $300/mo | $255/mo         | $3,060 once/year      |
+| Scale      | CPX41        | 8 AMD  | 16 GB | 240 GB | $500/mo | $425/mo         | $2,550 every 6 months |
+| Enterprise | CPX51        | 16 AMD | 32 GB | 360 GB | $960/mo | $816/mo         | $4,896 every 6 months |
+
+> Scale and Enterprise use semi-annual billing to stay under LemonSqueezy's
+> $5,000 product price cap.
 
 ---
 
@@ -135,9 +138,10 @@ simply return 404.
 
 **`app/routes_v1.go`**
 
-- Add `serviceEnabled(cfg config.Config, key string) bool` helper — returns true when
-  `EnabledServices` is empty or contains the key
-- Wrap each of the 10 `r.Mount()` calls with `if serviceEnabled(cfg, "email") { ... }`
+- Add `serviceEnabled(cfg config.Config, key string) bool` helper — returns true
+  when `EnabledServices` is empty or contains the key
+- Wrap each of the 10 `r.Mount()` calls with
+  `if serviceEnabled(cfg, "email") { ... }`
 
 No auth changes. `BackendSecretAuth` middleware is unchanged; tenants just
 supply their own unique `BACKEND_SECRET`.
