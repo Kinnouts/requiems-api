@@ -45,9 +45,9 @@ class PrivateDeploymentsControllerTest < ActionDispatch::IntegrationTest
     params = Rack::Utils.parse_nested_query(redirect_uri.query)
 
     assert_equal "00000000-0000-0000-0000-000000000023", redirect_uri.path.split("/").last
-    assert_equal @user.email, params["checkout[email]"]
-    assert_equal @user.id.to_s, params["checkout[custom][user_id]"]
-    assert_equal request.id.to_s, params["checkout[custom][private_deployment_request_id]"]
+    assert_equal @user.email, params.dig("checkout", "email")
+    assert_equal @user.id.to_s, params.dig("checkout", "custom", "user_id")
+    assert_equal request.id.to_s, params.dig("checkout", "custom", "private_deployment_request_id")
   end
 
   test "create derives effective monthly price for yearly billing" do
@@ -63,17 +63,21 @@ class PrivateDeploymentsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "create falls back to talk to sales when checkout config is missing" do
-    AppConfig.stub(:private_deployment_checkout_uuid_for, ->(tier:, billing_cycle:) { raise AppConfig::InvalidConfigError, "#{tier}-#{billing_cycle}" }) do
-      post private_deployments_path, params: {
-        private_deployment_request: {
-          server_tier: "starter",
-          billing_cycle: "monthly",
-          selected_services: %w[email]
-        }
+    config = AppConfig.instance
+    original = config.instance_variable_get(:@lemonsqueezy_private_starter_monthly_checkout_uuid)
+    config.instance_variable_set(:@lemonsqueezy_private_starter_monthly_checkout_uuid, nil)
+
+    post private_deployments_path, params: {
+      private_deployment_request: {
+        server_tier: "starter",
+        billing_cycle: "monthly",
+        selected_services: %w[email]
       }
-    end
+    }
 
     assert_redirected_to talk_to_sales_url(locale: I18n.default_locale)
+  ensure
+    config.instance_variable_set(:@lemonsqueezy_private_starter_monthly_checkout_uuid, original)
   end
 
   test "create re-renders form for invalid request" do

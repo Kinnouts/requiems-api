@@ -8,7 +8,7 @@ class Webhooks::LemonsqueezyControllerTest < ActionDispatch::IntegrationTest
 
   def setup
     @user = create_user(email: "payer@example.com")
-    @request = PrivateDeploymentRequest.create!(
+    @pdr = PrivateDeploymentRequest.create!(
       user: @user,
       company: "Acme Corp",
       contact_name: "Sam",
@@ -38,9 +38,9 @@ class Webhooks::LemonsqueezyControllerTest < ActionDispatch::IntegrationTest
 
     assert_response :ok
 
-    @request.reload
-    assert_equal "pending", @request.status
-    assert_equal "sub_123", @request.lemonsqueezy_subscription_id
+    @pdr.reload
+    assert_equal "pending", @pdr.status
+    assert_equal "sub_123", @pdr.lemonsqueezy_subscription_id
   end
 
   test "returns ok for unknown private deployment request id" do
@@ -55,7 +55,7 @@ class Webhooks::LemonsqueezyControllerTest < ActionDispatch::IntegrationTest
 
   private
 
-  def webhook_payload(private_deployment_request_id: @request.id.to_s)
+  def webhook_payload(private_deployment_request_id: @pdr.id.to_s)
     {
       meta: {
         event_name: "subscription_created",

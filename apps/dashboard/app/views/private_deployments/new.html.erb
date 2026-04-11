@@ -135,6 +135,7 @@
                 <label class="relative flex items-start gap-3 p-4 border border-gray-200 dark:border-gray-700 rounded-xl cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700/40 transition-colors has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50 dark:has-[:checked]:bg-blue-900/20 has-[:checked]:ring-1 has-[:checked]:ring-blue-500">
                   <%= check_box_tag "private_deployment_request[selected_services][]", svc,
                       @deployment_request.selected_services.include?(svc),
+                      id: "private_deployment_request_selected_services_#{svc}",
                       class: "mt-0.5 h-4 w-4 text-blue-600 border-gray-300 rounded flex-shrink-0 cursor-pointer" %>
                   <div class="min-w-0 flex-1">
                     <p class="font-semibold text-sm text-gray-900 dark:text-gray-100 capitalize"><%= svc %></p>
