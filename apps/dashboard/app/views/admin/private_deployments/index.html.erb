@@ -63,7 +63,7 @@
               </td>
               <td class="px-6 py-4 whitespace-nowrap">
                 <div class="text-sm font-medium text-gray-900 dark:text-gray-100 capitalize"><%= dr.server_tier %></div>
-                <div class="text-xs text-gray-500 dark:text-gray-400">$<%= "%.0f" % dr.monthly_price_dollars %>/mo</div>
+                <div class="text-xs text-gray-500 dark:text-gray-400">$<%= format("%.0f", dr.monthly_price_dollars) %>/mo</div>
               </td>
               <td class="px-6 py-4">
                 <div class="flex flex-wrap gap-1 max-w-xs">
