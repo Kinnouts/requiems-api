@@ -83,7 +83,8 @@ All backend services run in Docker containers managed by Docker Compose.
 
 ### Production Environment
 
-**File:** [infra/docker/docker-compose.yml](../../infra/docker/docker-compose.yml)
+**File:**
+[infra/docker/docker-compose.yml](../../infra/docker/docker-compose.yml)
 
 **Services:**
 

@@ -102,6 +102,13 @@ Rails.application.routes.draw do
           end
         end
 
+        resources :private_deployments, only: [ :index, :show ] do
+          member do
+            patch :activate
+            patch :cancel
+          end
+        end
+
         namespace :analytics do
           get :usage
           get :revenue
@@ -131,6 +138,8 @@ Rails.application.routes.draw do
     post "suggest-an-api", to: "suggestions#create"
     get "talk-to-sales", to: "sales_inquiries#new", as: "talk_to_sales"
     post "talk-to-sales", to: "sales_inquiries#create"
+    get "private-deployment", to: "private_deployments#new", as: "new_private_deployment"
+    post "private-deployment", to: "private_deployments#create", as: "private_deployments"
 
     get "examples", to: "examples#index"
     get "apis/:id/index.md", to: "sitemap#api_doc", defaults: { format: :text }

@@ -379,6 +379,28 @@ en:
             - "EU data residency options"
             - "Custom SLAs & support"
             - "On-premise deployment support"
+        private_deployment:
+          badge: "Private Deployment"
+          heading: "Your own dedicated API instance"
+          description: "A private Hetzner VPS running only the services you choose, accessible at yourcompany.requiems.xyz. Flat monthly or yearly billing. Zero overage fees, unlimited requests."
+          yearly_note: "or $%{price}/mo billed yearly"
+          charge_annual: "$%{amount}/yr"
+          charge_semiannual: "$%{amount} per 6 mo"
+          units:
+            vcpu: "vCPU"
+            ram: "RAM"
+            ssd: "SSD"
+          features:
+            - "Dedicated Hetzner VPS"
+            - "Select only the APIs you need"
+            - "Direct HTTPS, no Cloudflare layer"
+            - "Your subdomain on requiems.xyz"
+            - "Unlimited requests"
+            - "Monthly or yearly subscription"
+            - "Ready in 24-48 hours"
+            - "15% off with yearly billing"
+          cta: "Configure & Deploy"
+          checkout_note: "Checkout via LemonSqueezy"
       table:
         heading: "Compare Plans"
         feature_col: "Feature"

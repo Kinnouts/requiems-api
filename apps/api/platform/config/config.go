@@ -13,6 +13,7 @@ type Config struct {
 	NominatimURL       string
 	PostalCodeDBPath   string
 	CitiesDBPath       string
+	EnabledServices    string // comma-separated list of services to mount; empty = all
 }
 
 func Load() Config {
@@ -27,6 +28,7 @@ func Load() Config {
 		NominatimURL:       envOrDefault("NOMINATIM_URL", "https://nominatim.openstreetmap.org"),
 		PostalCodeDBPath:   envOrDefault("POSTAL_CODE_DB_PATH", "dbs/postal_codes.txt"),
 		CitiesDBPath:       envOrDefault("CITIES_DB_PATH", "dbs/cities15000.txt"),
+		EnabledServices:    envOrDefault("ENABLED_SERVICES", ""),
 	}
 }
 

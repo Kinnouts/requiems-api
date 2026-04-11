@@ -12,6 +12,7 @@ class User < ApplicationRecord
   has_many :credit_adjustments, dependent: :destroy
   has_many :audit_logs, dependent: :destroy
   has_many :abuse_reports, dependent: :destroy
+  has_many :private_deployment_requests, dependent: :destroy
 
   PLAN_LIMITS = PlanConfig::PLANS.transform_values { |v| v[:requests_per_month] }.freeze
   SUPPORTED_LOCALES = %w[en es].freeze

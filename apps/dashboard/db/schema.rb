@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2026_04_06_000000) do
+ActiveRecord::Schema[8.1].define(version: 2026_04_10_000003) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
   enable_extension "pg_trgm"
@@ -80,6 +80,30 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_000000) do
     t.bigint "user_id", null: false
     t.index ["user_id", "date"], name: "index_daily_usage_on_user_and_date"
     t.index ["user_id"], name: "index_daily_usage_summaries_on_user_id"
+  end
+
+  create_table "private_deployment_requests", force: :cascade do |t|
+    t.text "admin_notes"
+    t.string "billing_cycle", default: "monthly", null: false
+    t.string "company", null: false
+    t.string "contact_email", null: false
+    t.string "contact_name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "deployed_at"
+    t.string "lemonsqueezy_subscription_id"
+    t.integer "monthly_price_cents", null: false
+    t.jsonb "selected_services", default: [], null: false
+    t.string "server_tier", null: false
+    t.string "status", default: "pending", null: false
+    t.string "subdomain_slug"
+    t.text "tenant_secret"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["lemonsqueezy_subscription_id"], name: "idx_on_lemonsqueezy_subscription_id_852c953af6", unique: true, where: "(lemonsqueezy_subscription_id IS NOT NULL)"
+    t.index ["status"], name: "index_private_deployment_requests_on_status"
+    t.index ["subdomain_slug"], name: "index_private_deployment_requests_on_subdomain_slug", unique: true, where: "(subdomain_slug IS NOT NULL)"
+    t.index ["user_id"], name: "index_private_deployment_requests_on_user_id"
+    t.check_constraint "status::text = ANY (ARRAY['pending_payment'::character varying, 'pending'::character varying, 'deploying'::character varying, 'active'::character varying, 'cancelled'::character varying]::text[])", name: "private_deployment_requests_status_check"
   end
 
   create_table "solid_cache_entries", force: :cascade do |t|
@@ -187,6 +211,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_06_000000) do
   add_foreign_key "audit_logs", "users"
   add_foreign_key "credit_adjustments", "users"
   add_foreign_key "daily_usage_summaries", "users"
+  add_foreign_key "private_deployment_requests", "users"
   add_foreign_key "subscriptions", "users"
   add_foreign_key "subscriptions", "users", column: "promoted_by_id"
   add_foreign_key "usage_logs", "api_keys"
