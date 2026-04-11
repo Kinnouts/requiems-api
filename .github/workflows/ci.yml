@@ -89,7 +89,7 @@ jobs:
         run: go test -v -race -coverprofile=coverage.out ./...
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: apps/api/coverage.out
@@ -185,7 +185,7 @@ jobs:
         run: bin/rails test
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: apps/dashboard/coverage/lcov/dashboard.lcov
@@ -325,14 +325,14 @@ jobs:
         run: pnpm exec vitest run --coverage
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: apps/workers/auth-gateway/coverage/lcov.info
           flags: auth-gateway
 
       - name: Upload shared coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: apps/workers/auth-gateway/coverage/lcov.info
@@ -443,14 +443,14 @@ jobs:
         run: pnpm exec vitest run --coverage
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: apps/workers/api-management/coverage/lcov.info
           flags: api-management
 
       - name: Upload shared coverage to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: apps/workers/api-management/coverage/lcov.info
