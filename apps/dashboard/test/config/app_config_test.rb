@@ -15,6 +15,8 @@ class AppConfigTest < ActiveSupport::TestCase
   end
 
   test "private deployment checkout uuid lookup raises when config is missing" do
+    config = nil
+    original = nil
     config = AppConfig.instance
     original = config.instance_variable_get(:@lemonsqueezy_private_starter_monthly_checkout_uuid)
 
@@ -24,6 +26,6 @@ class AppConfigTest < ActiveSupport::TestCase
       config.private_deployment_checkout_uuid_for(tier: "starter", billing_cycle: "monthly")
     end
   ensure
-    config.instance_variable_set(:@lemonsqueezy_private_starter_monthly_checkout_uuid, original)
+    config&.instance_variable_set(:@lemonsqueezy_private_starter_monthly_checkout_uuid, original)
   end
 end
