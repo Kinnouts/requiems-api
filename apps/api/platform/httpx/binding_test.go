@@ -1,6 +1,7 @@
 package httpx_test
 
 import (
+	"net/http"
 	"net/http/httptest"
 	"strings"
 	"testing"
@@ -82,7 +83,7 @@ type queryReq struct {
 }
 
 func TestBindQuery_StringField(t *testing.T) {
-	r := httptest.NewRequest("GET", "/?name=alice", nil)
+	r := httptest.NewRequest("GET", "/?name=alice", http.NoBody)
 
 	var req queryReq
 	if err := httpx.BindQuery(r, &req); err != nil {
@@ -94,7 +95,7 @@ func TestBindQuery_StringField(t *testing.T) {
 }
 
 func TestBindQuery_IntField(t *testing.T) {
-	r := httptest.NewRequest("GET", "/?name=x&age=30", nil)
+	r := httptest.NewRequest("GET", "/?name=x&age=30", http.NoBody)
 
 	var req queryReq
 	if err := httpx.BindQuery(r, &req); err != nil {
@@ -106,7 +107,7 @@ func TestBindQuery_IntField(t *testing.T) {
 }
 
 func TestBindQuery_FloatField(t *testing.T) {
-	r := httptest.NewRequest("GET", "/?name=x&score=9.5", nil)
+	r := httptest.NewRequest("GET", "/?name=x&score=9.5", http.NoBody)
 
 	var req queryReq
 	if err := httpx.BindQuery(r, &req); err != nil {
@@ -118,7 +119,7 @@ func TestBindQuery_FloatField(t *testing.T) {
 }
 
 func TestBindQuery_BoolField(t *testing.T) {
-	r := httptest.NewRequest("GET", "/?name=x&active=true", nil)
+	r := httptest.NewRequest("GET", "/?name=x&active=true", http.NoBody)
 
 	var req queryReq
 	if err := httpx.BindQuery(r, &req); err != nil {
@@ -130,7 +131,7 @@ func TestBindQuery_BoolField(t *testing.T) {
 }
 
 func TestBindQuery_TimeField(t *testing.T) {
-	r := httptest.NewRequest("GET", "/?name=x&since=2024-06-15", nil)
+	r := httptest.NewRequest("GET", "/?name=x&since=2024-06-15", http.NoBody)
 
 	var req queryReq
 	if err := httpx.BindQuery(r, &req); err != nil {
@@ -144,7 +145,7 @@ func TestBindQuery_TimeField(t *testing.T) {
 }
 
 func TestBindQuery_InvalidInt(t *testing.T) {
-	r := httptest.NewRequest("GET", "/?name=x&age=notanint", nil)
+	r := httptest.NewRequest("GET", "/?name=x&age=notanint", http.NoBody)
 
 	var req queryReq
 	if err := httpx.BindQuery(r, &req); err == nil {
@@ -153,7 +154,7 @@ func TestBindQuery_InvalidInt(t *testing.T) {
 }
 
 func TestBindQuery_InvalidFloat(t *testing.T) {
-	r := httptest.NewRequest("GET", "/?name=x&score=notafloat", nil)
+	r := httptest.NewRequest("GET", "/?name=x&score=notafloat", http.NoBody)
 
 	var req queryReq
 	if err := httpx.BindQuery(r, &req); err == nil {
@@ -162,7 +163,7 @@ func TestBindQuery_InvalidFloat(t *testing.T) {
 }
 
 func TestBindQuery_InvalidBool(t *testing.T) {
-	r := httptest.NewRequest("GET", "/?name=x&active=notabool", nil)
+	r := httptest.NewRequest("GET", "/?name=x&active=notabool", http.NoBody)
 
 	var req queryReq
 	if err := httpx.BindQuery(r, &req); err == nil {
@@ -171,7 +172,7 @@ func TestBindQuery_InvalidBool(t *testing.T) {
 }
 
 func TestBindQuery_InvalidTime(t *testing.T) {
-	r := httptest.NewRequest("GET", "/?name=x&since=not-a-date", nil)
+	r := httptest.NewRequest("GET", "/?name=x&since=not-a-date", http.NoBody)
 
 	var req queryReq
 	if err := httpx.BindQuery(r, &req); err == nil {
@@ -181,7 +182,7 @@ func TestBindQuery_InvalidTime(t *testing.T) {
 
 func TestBindQuery_ValidationFailure(t *testing.T) {
 	// name is required but missing
-	r := httptest.NewRequest("GET", "/", nil)
+	r := httptest.NewRequest("GET", "/", http.NoBody)
 
 	var req queryReq
 	err := httpx.BindQuery(r, &req)
@@ -195,7 +196,7 @@ func TestBindQuery_ValidationFailure(t *testing.T) {
 }
 
 func TestBindQuery_NonPointerDst(t *testing.T) {
-	r := httptest.NewRequest("GET", "/", nil)
+	r := httptest.NewRequest("GET", "/", http.NoBody)
 
 	var req queryReq
 	if err := httpx.BindQuery(r, req); err == nil {
