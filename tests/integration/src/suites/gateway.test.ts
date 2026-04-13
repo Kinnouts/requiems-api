@@ -10,8 +10,6 @@
 import { describe, it, expect } from "vitest";
 import { getConfig } from "../config.js";
 
-const SUITE = "gateway";
-
 /** Issue a request with no API key */
 async function unauthenticated(path: string): Promise<Response> {
   const cfg = getConfig();
