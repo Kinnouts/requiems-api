@@ -49,9 +49,9 @@ func TestLoadExercises_SkipsMissingIDOrName(t *testing.T) {
 	t.Parallel()
 
 	exercises := []map[string]interface{}{
-		{"exerciseId": "", "name": "No ID Exercise"},                  // missing ID
-		{"exerciseId": "ex002", "name": ""},                          // missing name
-		{"exerciseId": "ex003", "name": "Valid", "bodyParts": nil},   // valid — nil fields normalised
+		{"exerciseId": "", "name": "No ID Exercise"},               // missing ID
+		{"exerciseId": "ex002", "name": ""},                        // missing name
+		{"exerciseId": "ex003", "name": "Valid", "bodyParts": nil}, // valid — nil fields normalised
 	}
 
 	dir := writeExercisesJSON(t, exercises)

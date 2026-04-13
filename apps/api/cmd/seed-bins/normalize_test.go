@@ -104,7 +104,7 @@ func TestDetectScheme(t *testing.T) {
 		bin  string
 		want string
 	}{
-		{"411111", "visa"},       // Visa starts with 4
+		{"411111", "visa"}, // Visa starts with 4
 		{"412345", "visa"},
 		{"510000", "mastercard"}, // Mastercard 51-55
 		{"555555", "mastercard"},
@@ -212,9 +212,9 @@ func TestCombineSources(t *testing.T) {
 		a, b string
 		want string
 	}{
-		{"src-a", "src-a", "src-a"},               // same → no duplicate
-		{"src-a", "src-b", "src-a,src-b"},          // two distinct sources
-		{"src-a,src-b", "src-b", "src-a,src-b"},   // already contains src-b
+		{"src-a", "src-a", "src-a"},             // same → no duplicate
+		{"src-a", "src-b", "src-a,src-b"},       // two distinct sources
+		{"src-a,src-b", "src-b", "src-a,src-b"}, // already contains src-b
 	}
 
 	for _, tt := range tests {

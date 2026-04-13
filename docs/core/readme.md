@@ -3,7 +3,8 @@
 This folder contains developer-focused documentation for Requiem API.
 
 1. [Getting started](./getting-started.md)
-2. [Architecture](./architecture.md)
+2. [Code Quality](./code-quality.md)
+3. [Architecture](./architecture.md)
 3. [Business](./business.md)
 4. [The Go Backend](./backend.md)
    - [Adding endpoints to the Go backend](./adding-go-endpoints.md)

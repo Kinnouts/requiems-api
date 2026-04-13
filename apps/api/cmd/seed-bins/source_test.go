@@ -12,13 +12,13 @@ func TestIsValidBINPrefix(t *testing.T) {
 		bin  string
 		want bool
 	}{
-		{"411111", true},   // 6-digit valid
-		{"41111111", true}, // 8-digit valid
-		{"4111", false},    // too short
+		{"411111", true},      // 6-digit valid
+		{"41111111", true},    // 8-digit valid
+		{"4111", false},       // too short
 		{"4111111111", false}, // 10 digits — neither 6 nor 8
-		{"41111A", false},  // non-numeric
-		{"", false},        // empty
-		{"ABCDEF", false},  // all letters
+		{"41111A", false},     // non-numeric
+		{"", false},           // empty
+		{"ABCDEF", false},     // all letters
 	}
 
 	for _, tt := range tests {
