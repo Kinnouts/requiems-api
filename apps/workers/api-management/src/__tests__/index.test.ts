@@ -1,13 +1,19 @@
 import { describe, expect, it } from "vitest";
+import worker from "../index";
+import { makeBindings, makeCtx } from "./helpers";
 
-// Basic smoke test to ensure TypeScript compiles
-describe("api-management setup", () => {
-  it("should pass basic test", () => {
-    expect(true).toBe(true);
+describe("worker smoke tests", () => {
+  it("responds to requests without throwing", async () => {
+    const req = new Request("http://localhost/healthz");
+    const res = await worker.fetch(req, makeBindings(), makeCtx());
+
+    expect(res).toBeInstanceOf(Response);
   });
 
-  it("should have correct environment", () => {
-    // This will be expanded with actual tests later
-    expect(process.env.NODE_ENV).toBeDefined();
+  it("serves JSON responses", async () => {
+    const req = new Request("http://localhost/healthz");
+    const res = await worker.fetch(req, makeBindings(), makeCtx());
+
+    expect(res.headers.get("Content-Type")).toBe("application/json");
   });
 });
