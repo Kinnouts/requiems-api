@@ -89,9 +89,6 @@ Seeded dev API keys (available automatically after stack starts):
 
 ### Go API lint in Docker
 
-When running lint from the dev API container, use the repository binary and
-ensure Go is on PATH inside the shell command:
-
 ```bash
-docker exec requiem-dev-api-1 sh -lc 'export PATH=/usr/local/go/bin:$PATH; cd /app; /app/bin/golangci-lint run'
+docker exec requiem-dev-api-1 sh -lc 'cd /app; /app/bin/golangci-lint run'
 ```

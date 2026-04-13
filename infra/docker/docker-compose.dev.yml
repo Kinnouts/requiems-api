@@ -32,6 +32,8 @@ services:
   api:
     image: golang:1.26-alpine
     working_dir: /app
+    environment:
+      - PATH=/usr/local/go/bin:$PATH
     command: >
       sh -c "
         apk update &&

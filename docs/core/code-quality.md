@@ -4,30 +4,16 @@ Commands for maintaining code quality across the monorepo.
 
 ## Go API (apps/api)
 
-All commands run inside the Docker container:
-
 ```bash
-docker exec requiem-dev-api-1 sh -lc 'export PATH=/usr/local/go/bin:$PATH; cd /app; go fmt ./... && /app/bin/golangci-lint run --fix'
-```
+# Format and lint (auto-fix)
+docker exec requiem-dev-api-1 sh -lc 'cd /app; go fmt ./... && /app/bin/golangci-lint run --fix'
 
-This runs:
-- `go fmt` - Formats all Go files
-- `golangci-lint run --fix` - Lints and auto-fixes issues
-
-Run tests before pushing:
-
-```bash
+# Run tests
 docker exec requiem-dev-api-1 go test ./...
-```
 
-Run tests with coverage:
-
-```bash
+# Run tests with coverage
 docker exec requiem-dev-api-1 go test -race -coverprofile=coverage.out ./...
-```
 
-Run specific test:
-
-```bash
+# Run specific test
 docker exec requiem-dev-api-1 go test ./services/text/advice -v -run TestGetAdvice
 ```
