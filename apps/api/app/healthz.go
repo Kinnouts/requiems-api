@@ -5,10 +5,12 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/jackc/pgx/v5/pgxpool"
-
 	"requiems-api/platform/httpx"
 )
+
+type dbPinger interface {
+	Ping(ctx context.Context) error
+}
 
 type healthzResponse struct {
 	Status string `json:"status"`
@@ -16,7 +18,7 @@ type healthzResponse struct {
 
 func (healthzResponse) IsData() {}
 
-func Healthz(pool *pgxpool.Pool) http.HandlerFunc {
+func Healthz(pool dbPinger) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		ctx, cancel := context.WithTimeout(r.Context(), 2*time.Second)
 		defer cancel()
