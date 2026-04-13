@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import worker from "../index";
-import { API_MANAGEMENT_KEY, authedRequest, makeBindings, makeCtx } from "./helpers";
+import { authedRequest, makeBindings, makeCtx } from "./helpers";
 
 const PROTECTED_PATH = "/api-keys";
 
