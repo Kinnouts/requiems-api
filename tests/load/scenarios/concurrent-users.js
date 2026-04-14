@@ -41,7 +41,6 @@ import { Trend, Rate, Counter } from "k6/metrics";
 import {
   BASE_URL,
   API_KEYS,
-  authParams,
   DEFAULT_THRESHOLDS,
   SAMPLE_ENDPOINTS,
 } from "../config.js";
