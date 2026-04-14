@@ -1,5 +1,5 @@
 /**
- * Concurrent User Simulation — tests/load/scenarios/concurrent-users.js
+ * Concurrent User Simulation — tests/load/scenarios/concurrent-users.ts
  *
  * Purpose
  * -------
@@ -28,22 +28,24 @@
  *
  * Usage
  * -----
- *   k6 run tests/load/scenarios/concurrent-users.js
+ *   k6 run tests/load/scenarios/concurrent-users.ts
  *
  *   # Override concurrency
- *   PEAK_VUS=100 k6 run tests/load/scenarios/concurrent-users.js
+ *   PEAK_VUS=100 k6 run tests/load/scenarios/concurrent-users.ts
  */
 
 import http from "k6/http";
 import { check, sleep } from "k6";
 import { Trend, Rate, Counter } from "k6/metrics";
+import { Options } from "k6/options";
 
 import {
   BASE_URL,
   API_KEYS,
   DEFAULT_THRESHOLDS,
   SAMPLE_ENDPOINTS,
-} from "../config.js";
+  SummaryData,
+} from "../config.ts";
 
 // ---------------------------------------------------------------------------
 // Custom metrics
@@ -58,14 +60,14 @@ const totalRequests = new Counter("total_requests");
 // ---------------------------------------------------------------------------
 
 /** Maximum (peak) virtual users.  Override with PEAK_VUS env var. */
-const PEAK_VUS = parseInt(__ENV.PEAK_VUS || "50", 10);
+const PEAK_VUS = parseInt(__ENV["PEAK_VUS"] ?? "50", 10);
 
 /**
  * Round-robin through plan keys so the load is spread across multiple users,
  * preventing any single key from exhausting its monthly quota during tests.
  * All keys used here should be developer-tier or above (high rate limits).
  */
-const PLAN_KEYS = [
+const PLAN_KEYS: string[] = [
   API_KEYS.developer,
   API_KEYS.business,
   API_KEYS.professional,
@@ -75,17 +77,17 @@ const PLAN_KEYS = [
 // k6 options
 // ---------------------------------------------------------------------------
 
-export const options = {
+export const options: Options = {
   scenarios: {
     concurrent_users: {
       executor: "ramping-vus",
       startVUs: 0,
       stages: [
-        { duration: "30s", target: 10 },           // ramp-up
-        { duration: "1m", target: 10 },             // steady
-        { duration: "30s", target: PEAK_VUS },      // spike
-        { duration: "1m", target: PEAK_VUS },       // peak hold
-        { duration: "30s", target: 0 },             // ramp-down
+        { duration: "30s", target: 10 }, // ramp-up
+        { duration: "1m", target: 10 }, // steady
+        { duration: "30s", target: PEAK_VUS }, // spike
+        { duration: "1m", target: PEAK_VUS }, // peak hold
+        { duration: "30s", target: 0 }, // ramp-down
       ],
       gracefulRampDown: "15s",
     },
@@ -101,7 +103,7 @@ export const options = {
 // Default function
 // ---------------------------------------------------------------------------
 
-export default function () {
+export default function (): void {
   // Pick an endpoint at random for realistic diverse traffic
   const endpoint =
     SAMPLE_ENDPOINTS[Math.floor(Math.random() * SAMPLE_ENDPOINTS.length)];
@@ -120,12 +122,10 @@ export default function () {
 
   const url = `${BASE_URL}${endpoint.path}`;
 
-  let res;
-  if (endpoint.method === "POST") {
-    res = http.post(url, endpoint.body || null, params);
-  } else {
-    res = http.get(url, params);
-  }
+  const res =
+    endpoint.method === "POST"
+      ? http.post(url, endpoint.body ?? null, params)
+      : http.get(url, params);
 
   totalRequests.add(1);
   endpointDuration.add(res.timings.duration, {
@@ -135,7 +135,7 @@ export default function () {
   const ok = check(res, {
     "status 2xx": (r) => r.status >= 200 && r.status < 300,
     "no server error": (r) => r.status < 500,
-    "response body present": (r) => r.body && r.body.length > 0,
+    "response body present": (r) => (r.body as string).length > 0,
   });
 
   successRate.add(ok ? 1 : 0);
@@ -144,7 +144,7 @@ export default function () {
     // Only log non-5xx details to avoid flooding output on expected 4xx
     if (res.status >= 500) {
       console.error(
-        `[concurrent] Server error ${res.status} on ${endpoint.method} ${endpoint.path}: ${res.body.substring(0, 300)}`,
+        `[concurrent] Server error ${res.status} on ${endpoint.method} ${endpoint.path}: ${(res.body as string).substring(0, 300)}`,
       );
     } else if (res.status === 429) {
       // Rate limiting is tracked but not unexpected for high-concurrency tests
@@ -163,21 +163,23 @@ export default function () {
 // Summary
 // ---------------------------------------------------------------------------
 
-export function handleSummary(data) {
+export function handleSummary(data: SummaryData): Record<string, string> {
   const m = data.metrics;
 
-  const p95 = m.http_req_duration?.values?.["p(95)"] ?? "N/A";
-  const p99 = m.http_req_duration?.values?.["p(99)"] ?? "N/A";
-  const rps = m.http_reqs?.values?.rate ?? "N/A";
-  const failRate = ((m.http_req_failed?.values?.rate ?? 0) * 100).toFixed(2);
+  const p95 = m["http_req_duration"]?.values["p(95)"] ?? "N/A";
+  const p99 = m["http_req_duration"]?.values["p(99)"] ?? "N/A";
+  const rps = m["http_reqs"]?.values["rate"] ?? "N/A";
+  const failRate = ((m["http_req_failed"]?.values["rate"] ?? 0) * 100).toFixed(
+    2,
+  );
   const successRateVal = (
-    (m.success_rate?.values?.rate ?? 0) * 100
+    (m["success_rate"]?.values["rate"] ?? 0) * 100
   ).toFixed(2);
-  const total = m.total_requests?.values?.count ?? "N/A";
+  const total = m["total_requests"]?.values["count"] ?? "N/A";
 
-  const fmtMs = (v) =>
+  const fmtMs = (v: number | string): string =>
     typeof v === "number" ? v.toFixed(2) + " ms" : v;
-  const fmtRps = (v) =>
+  const fmtRps = (v: number | string): string =>
     typeof v === "number" ? v.toFixed(2) + " req/s" : v;
 
   const summary = [

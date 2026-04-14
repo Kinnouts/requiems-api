@@ -59,7 +59,7 @@ echo ""
 
 run_scenario() {
   local name="$1"
-  local file="$SCRIPT_DIR/scenarios/${name}.js"
+  local file="$SCRIPT_DIR/scenarios/${name}.ts"
 
   if [[ ! -f "$file" ]]; then
     echo "ERROR: Scenario file not found: $file"

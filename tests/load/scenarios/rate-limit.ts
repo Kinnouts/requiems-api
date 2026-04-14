@@ -1,5 +1,5 @@
 /**
- * Rate Limit Validation — tests/load/scenarios/rate-limit.js
+ * Rate Limit Validation — tests/load/scenarios/rate-limit.ts
  *
  * Purpose
  * -------
@@ -21,7 +21,7 @@
  *
  * Usage
  * -----
- *   k6 run tests/load/scenarios/rate-limit.js
+ *   k6 run tests/load/scenarios/rate-limit.ts
  *
  * The scenario is deliberately short (≈ 3 minutes total) so it fits in a
  * typical CI pipeline step.
@@ -30,8 +30,9 @@
 import http from "k6/http";
 import { check, sleep, group } from "k6";
 import { Counter, Rate } from "k6/metrics";
+import { Options } from "k6/options";
 
-import { BASE_URL, API_KEYS, RATE_LIMITS } from "../config.js";
+import { BASE_URL, API_KEYS, RATE_LIMITS, SummaryData } from "../config.ts";
 
 // ---------------------------------------------------------------------------
 // Custom metrics
@@ -53,7 +54,7 @@ const blockedRate = new Rate("requests_blocked");
 // k6 options
 // ---------------------------------------------------------------------------
 
-export const options = {
+export const options: Options = {
   /**
    * Three sequential scenarios:
    *  1. free_burst     — 1 VU, 35 iterations in ≤10 s  (expect 429 after ~30)
@@ -101,8 +102,8 @@ const PROBE_PATH = "/v1/text/advice";
 // Default function
 // ---------------------------------------------------------------------------
 
-export default function () {
-  const scenario = __ENV.K6_SCENARIO_NAME;
+export default function (): void {
+  const scenario = __ENV["K6_SCENARIO_NAME"];
 
   if (scenario === "free_burst") {
     runFreeBurst();
@@ -124,7 +125,7 @@ export default function () {
  * Send 35 rapid requests using the free-plan key.
  * The first ~30 should return 2xx; the rest should return 429.
  */
-function runFreeBurst() {
+function runFreeBurst(): void {
   group("free_plan_burst", () => {
     const url = `${BASE_URL}${PROBE_PATH}`;
     const params = {
@@ -141,13 +142,14 @@ function runFreeBurst() {
       const ok = check(res, {
         "429 has rate-limit error body": (r) => {
           try {
-            const body = JSON.parse(r.body);
+            const body = JSON.parse(r.body as string) as { error?: string };
             return (
-              body.error === "rate_limit_exceeded" || body.error === "too_many_requests"
+              body.error === "rate_limit_exceeded" ||
+              body.error === "too_many_requests"
             );
           } catch {
             // Some gateways return a plain string — still a valid 429
-            return r.body.length > 0;
+            return (r.body as string).length > 0;
           }
         },
         "Retry-After or X-RateLimit headers present": (r) =>
@@ -170,7 +172,7 @@ function runFreeBurst() {
     } else {
       unexpectedErrors.add(1);
       console.error(
-        `[rate-limit/free_burst] Unexpected status ${res.status}: ${res.body.substring(0, 200)}`,
+        `[rate-limit/free_burst] Unexpected status ${res.status}: ${(res.body as string).substring(0, 200)}`,
       );
     }
 
@@ -182,7 +184,7 @@ function runFreeBurst() {
  * Send 60 rapid requests using the developer-plan key (5 000 req/min).
  * Every response should be 2xx — no rate limiting expected at this volume.
  */
-function runDeveloperSafe() {
+function runDeveloperSafe(): void {
   group("developer_plan_safe", () => {
     const url = `${BASE_URL}${PROBE_PATH}`;
     const params = {
@@ -194,8 +196,7 @@ function runDeveloperSafe() {
 
     const ok = check(res, {
       "developer plan not rate-limited": (r) => r.status !== 429,
-      "developer plan returns 2xx": (r) =>
-        r.status >= 200 && r.status < 300,
+      "developer plan returns 2xx": (r) => r.status >= 200 && r.status < 300,
     });
 
     if (!ok) {
@@ -207,7 +208,7 @@ function runDeveloperSafe() {
       } else {
         unexpectedErrors.add(1);
         console.error(
-          `[rate-limit/developer_safe] Unexpected status ${res.status}: ${res.body.substring(0, 200)}`,
+          `[rate-limit/developer_safe] Unexpected status ${res.status}: ${(res.body as string).substring(0, 200)}`,
         );
       }
     } else {
@@ -220,7 +221,7 @@ function runDeveloperSafe() {
  * After ~65 seconds the 60-second rate-limit window for the free plan resets.
  * These requests should succeed again (2xx).
  */
-function runRecovery() {
+function runRecovery(): void {
   group("free_plan_recovery", () => {
     const url = `${BASE_URL}${PROBE_PATH}`;
     const params = {
@@ -240,7 +241,7 @@ function runRecovery() {
     } else {
       unexpectedErrors.add(1);
       console.error(
-        `[rate-limit/recovery] Expected 2xx after window reset but got ${res.status}: ${res.body.substring(0, 200)}`,
+        `[rate-limit/recovery] Expected 2xx after window reset but got ${res.status}: ${(res.body as string).substring(0, 200)}`,
       );
     }
 
@@ -252,13 +253,12 @@ function runRecovery() {
 // Summary
 // ---------------------------------------------------------------------------
 
-export function handleSummary(data) {
+export function handleSummary(data: SummaryData): Record<string, string> {
   const m = data.metrics;
 
-  const hits = m.rate_limit_hits?.values?.count ?? 0;
-  const unexpected = m.unexpected_errors?.values?.count ?? 0;
-  const allowed =
-    (m.requests_allowed?.values?.rate ?? 0) * 100;
+  const hits = m["rate_limit_hits"]?.values["count"] ?? 0;
+  const unexpected = m["unexpected_errors"]?.values["count"] ?? 0;
+  const allowed = (m["requests_allowed"]?.values["rate"] ?? 0) * 100;
   const freeLimit = RATE_LIMITS.free;
 
   const summary = [

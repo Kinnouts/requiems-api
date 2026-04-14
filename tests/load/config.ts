@@ -8,14 +8,47 @@
  * when the dev stack is running.
  */
 
+import { Params } from "k6/http";
+
+/** Plan tier names */
+export type PlanKey = "free" | "developer" | "business" | "professional";
+
+/** A single API endpoint descriptor used across scenarios */
+export interface SampleEndpoint {
+  method: "GET" | "POST";
+  path: string;
+  body?: string;
+}
+
+/**
+ * Shape of a single metric's values in the handleSummary data object.
+ * k6 exposes named statistics (rate, count, avg, p(95), etc.) as plain numbers.
+ */
+export interface MetricValues {
+  [key: string]: number;
+}
+
+/** A single metric entry in the handleSummary data object. */
+export interface MetricData {
+  values: MetricValues;
+}
+
+/**
+ * Data object passed to handleSummary() at the end of a k6 run.
+ * Only the `metrics` field is typed here — k6 also provides `rootGroup`, etc.
+ */
+export interface SummaryData {
+  metrics: Record<string, MetricData | undefined>;
+}
+
 /** Base URL of the Auth Gateway (edge proxy). Override with BASE_URL env var. */
-export const BASE_URL = __ENV.BASE_URL || "http://localhost:4455";
+export const BASE_URL: string = __ENV.BASE_URL || "http://localhost:4455";
 
 /**
  * Dev API keys — one per plan tier.
  * Matches the keys written by seed-dev.ts.
  */
-export const API_KEYS = {
+export const API_KEYS: Record<PlanKey, string> = {
   free: __ENV.API_KEY_FREE || "rq_free_000001",
   developer: __ENV.API_KEY_DEVELOPER || "rq_devl_000001",
   business: __ENV.API_KEY_BUSINESS || "rq_bizz_000001",
@@ -26,7 +59,7 @@ export const API_KEYS = {
  * Per-plan rate limits (requests per minute).
  * Values match PLANS in apps/workers/shared/src/config.ts.
  */
-export const RATE_LIMITS = {
+export const RATE_LIMITS: Record<PlanKey, number> = {
   free: 30,
   developer: 5000,
   business: 10000,
@@ -35,10 +68,8 @@ export const RATE_LIMITS = {
 
 /**
  * Returns k6 request params that authenticate as the given plan tier.
- *
- * @param {keyof API_KEYS} plan - "free" | "developer" | "business" | "professional"
  */
-export function authParams(plan = "developer") {
+export function authParams(plan: PlanKey = "developer"): Params {
   return {
     headers: {
       "requiems-api-key": API_KEYS[plan],
@@ -54,7 +85,7 @@ export function authParams(plan = "developer") {
  * - http_req_duration p(95): 95 % of requests must complete within 500 ms.
  * - http_req_duration p(99): 99 % of requests must complete within 1 000 ms.
  */
-export const DEFAULT_THRESHOLDS = {
+export const DEFAULT_THRESHOLDS: Record<string, string[]> = {
   http_req_failed: ["rate<0.01"],
   http_req_duration: ["p(95)<500", "p(99)<1000"],
 };
@@ -75,7 +106,7 @@ export const DEFAULT_THRESHOLDS = {
  *   /v1/fitness       → fitness services
  *   /v1/convert       → unit / format conversion
  */
-export const SAMPLE_ENDPOINTS = [
+export const SAMPLE_ENDPOINTS: SampleEndpoint[] = [
   // health check (no auth required)
   { method: "GET", path: "/healthz" },
 

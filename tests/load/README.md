@@ -1,6 +1,6 @@
 # Load Testing Suite
 
-Performance tests for the Requiem API using [k6](https://k6.io/).
+Performance tests for the Requiem API using [k6](https://k6.io/), written in TypeScript.
 
 ## Overview
 
@@ -8,15 +8,16 @@ The suite covers four tasks from the original issue:
 
 | Script | Purpose |
 |---|---|
-| [`scenarios/baseline.js`](./scenarios/baseline.js) | Baseline benchmarks — single VU, all service groups |
-| [`scenarios/rate-limit.js`](./scenarios/rate-limit.js) | Rate limit validation — enforces per-plan req/min caps |
-| [`scenarios/concurrent-users.js`](./scenarios/concurrent-users.js) | Concurrent user simulation — ramping VUs up to 50 (peak) |
+| [`scenarios/baseline.ts`](./scenarios/baseline.ts) | Baseline benchmarks — single VU, all service groups |
+| [`scenarios/rate-limit.ts`](./scenarios/rate-limit.ts) | Rate limit validation — enforces per-plan req/min caps |
+| [`scenarios/concurrent-users.ts`](./scenarios/concurrent-users.ts) | Concurrent user simulation — ramping VUs up to 50 (peak) |
 
-Configuration shared across all scripts lives in [`config.js`](./config.js).
+Configuration shared across all scripts lives in [`config.ts`](./config.ts).
 
 ## Prerequisites
 
 1. **k6** — `brew install k6` (macOS) or see [k6 installation docs](https://k6.io/docs/get-started/installation/).
+   k6 v0.46+ supports TypeScript natively via its built-in esbuild bundler.
 2. **Dev stack running** — the Auth Gateway must be reachable at `localhost:4455`:
 
 ```bash
@@ -56,7 +57,7 @@ PEAK_VUS=100 ./tests/load/run.sh concurrent-users
 Or call k6 directly:
 
 ```bash
-BASE_URL=http://localhost:4455 k6 run tests/load/scenarios/baseline.js
+BASE_URL=http://localhost:4455 k6 run tests/load/scenarios/baseline.ts
 ```
 
 ## Environment Variables
@@ -72,7 +73,7 @@ BASE_URL=http://localhost:4455 k6 run tests/load/scenarios/baseline.js
 
 ## Scenarios
 
-### `baseline.js` — Baseline Benchmarks
+### `baseline.ts` — Baseline Benchmarks
 
 - **Executor:** `constant-vus`, 1 VU, 2 minutes
 - **Coverage:** All API service groups (text, ai, email, entertainment, misc,
@@ -86,7 +87,7 @@ BASE_URL=http://localhost:4455 k6 run tests/load/scenarios/baseline.js
 
 Use this output as the reference number when comparing future releases.
 
-### `rate-limit.js` — Rate Limit Validation
+### `rate-limit.ts` — Rate Limit Validation
 
 Tests three behaviours in sequence:
 
@@ -100,7 +101,7 @@ Tests three behaviours in sequence:
 - `rate_limit_hits > 0` — the free burst must have triggered at least one 429
 - `unexpected_errors == 0` — no non-429 errors
 
-### `concurrent-users.js` — Concurrent User Simulation
+### `concurrent-users.ts` — Concurrent User Simulation
 
 Traffic shape:
 

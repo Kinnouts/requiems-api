@@ -1,5 +1,5 @@
 /**
- * Baseline Benchmark — tests/load/scenarios/baseline.js
+ * Baseline Benchmark — tests/load/scenarios/baseline.ts
  *
  * Purpose
  * -------
@@ -10,30 +10,32 @@
  *
  * What it tests
  * -------------
- * - Each sample endpoint defined in config.js is exercised in sequence.
+ * - Each sample endpoint defined in config.ts is exercised in sequence.
  * - HTTP status codes and response shapes are validated.
  * - Response-time histograms (p95 / p99) and failure rate are recorded.
  *
  * Usage
  * -----
- *   k6 run tests/load/scenarios/baseline.js
+ *   k6 run tests/load/scenarios/baseline.ts
  *
  * Override defaults:
  *   BASE_URL=https://api.example.com \
  *   API_KEY_DEVELOPER=rq_devl_xxx \
- *   k6 run tests/load/scenarios/baseline.js
+ *   k6 run tests/load/scenarios/baseline.ts
  */
 
 import http from "k6/http";
 import { check, sleep } from "k6";
 import { Trend, Rate, Counter } from "k6/metrics";
+import { Options } from "k6/options";
 
 import {
   BASE_URL,
   authParams,
   DEFAULT_THRESHOLDS,
   SAMPLE_ENDPOINTS,
-} from "../config.js";
+  SummaryData,
+} from "../config.ts";
 
 // ---------------------------------------------------------------------------
 // Custom metrics
@@ -55,7 +57,7 @@ const checkSuccessRate = new Rate("check_success_rate");
 // k6 scenario options
 // ---------------------------------------------------------------------------
 
-export const options = {
+export const options: Options = {
   /**
    * Single VU, low-frequency sweep of all endpoints.
    * Runs for 2 minutes to produce stable p95/p99 measurements.
@@ -78,18 +80,15 @@ export const options = {
 // Default function (VU entry point)
 // ---------------------------------------------------------------------------
 
-export default function () {
+export default function (): void {
   for (const endpoint of SAMPLE_ENDPOINTS) {
     const url = `${BASE_URL}${endpoint.path}`;
     const params = authParams("developer");
 
-    let res;
-
-    if (endpoint.method === "POST") {
-      res = http.post(url, endpoint.body || null, params);
-    } else {
-      res = http.get(url, params);
-    }
+    const res =
+      endpoint.method === "POST"
+        ? http.post(url, endpoint.body ?? null, params)
+        : http.get(url, params);
 
     // ------------------------------------------------------------------
     // Validate response
@@ -102,10 +101,10 @@ export default function () {
 
     const ok = check(res, {
       "status is 2xx": (r) => r.status >= 200 && r.status < 300,
-      "response has body": (r) => r.body && r.body.length > 0,
+      "response has body": (r) => (r.body as string).length > 0,
       "response is JSON": (r) => {
         try {
-          JSON.parse(r.body);
+          JSON.parse(r.body as string);
           return true;
         } catch {
           return false;
@@ -120,7 +119,7 @@ export default function () {
       failedChecks.add(1);
       checkSuccessRate.add(0);
       console.error(
-        `[baseline] FAIL ${endpoint.method} ${endpoint.path} → HTTP ${res.status}: ${res.body.substring(0, 200)}`,
+        `[baseline] FAIL ${endpoint.method} ${endpoint.path} → HTTP ${res.status}: ${(res.body as string).substring(0, 200)}`,
       );
     }
 
@@ -136,16 +135,16 @@ export default function () {
 // Summary hook — printed after the run
 // ---------------------------------------------------------------------------
 
-export function handleSummary(data) {
+export function handleSummary(data: SummaryData): Record<string, string> {
   const metrics = data.metrics;
 
-  const p95 = metrics.http_req_duration?.values?.["p(95)"] ?? "N/A";
-  const p99 = metrics.http_req_duration?.values?.["p(99)"] ?? "N/A";
+  const p95 = metrics["http_req_duration"]?.values["p(95)"] ?? "N/A";
+  const p99 = metrics["http_req_duration"]?.values["p(99)"] ?? "N/A";
   const failRate = (
-    (metrics.http_req_failed?.values?.rate ?? 0) * 100
+    (metrics["http_req_failed"]?.values["rate"] ?? 0) * 100
   ).toFixed(2);
   const checkRate = (
-    (metrics.check_success_rate?.values?.rate ?? 0) * 100
+    (metrics["check_success_rate"]?.values["rate"] ?? 0) * 100
   ).toFixed(2);
 
   const summary = [
