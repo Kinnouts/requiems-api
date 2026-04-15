@@ -9,13 +9,16 @@
  *   https://vitest.dev/advanced/reporters.html
  */
 
-import type { Reporter, File } from "vitest";
+import type { File, Reporter } from "vitest";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { Stats } from "./stats.js";
 
-const REPORT_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../reports");
+const REPORT_DIR = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../reports",
+);
 
 export default class PerformanceReporter implements Reporter {
   onFinished(_files?: File[]): void {

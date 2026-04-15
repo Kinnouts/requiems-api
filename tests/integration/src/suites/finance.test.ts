@@ -35,7 +35,9 @@ describe("Finance API", () => {
   describe("GET /v1/finance/inflation", () => {
     it("returns inflation data for US", async () => {
       await repeat(async () => {
-        const { response } = await client.get("/v1/finance/inflation", { country: "US" });
+        const { response } = await client.get("/v1/finance/inflation", {
+          country: "US",
+        });
         const { data } = await assertEnvelope(response, SUITE, "inflation_us");
         const d = data as Record<string, unknown>;
         expect(typeof d["rate"]).toBe("number");
@@ -56,7 +58,7 @@ describe("Finance API", () => {
         expect(d["from"]).toBe("USD");
         expect(d["to"]).toBe("EUR");
         expect(typeof d["rate"]).toBe("number");
-        expect((d["rate"] as number)).toBeGreaterThan(0);
+        expect(d["rate"] as number).toBeGreaterThan(0);
       });
     });
   });
@@ -73,7 +75,7 @@ describe("Finance API", () => {
       expect(d["from"]).toBe("USD");
       expect(d["to"]).toBe("GBP");
       expect(typeof d["converted"]).toBe("number");
-      expect((d["converted"] as number)).toBeGreaterThan(0);
+      expect(d["converted"] as number).toBeGreaterThan(0);
     });
   });
 
@@ -84,7 +86,7 @@ describe("Finance API", () => {
         const { data } = await assertEnvelope(response, SUITE, "crypto_btc");
         const d = data as Record<string, unknown>;
         expect(typeof d["price"]).toBe("number");
-        expect((d["price"] as number)).toBeGreaterThan(0);
+        expect(d["price"] as number).toBeGreaterThan(0);
       });
     });
   });
@@ -93,10 +95,14 @@ describe("Finance API", () => {
     it("returns price for gold", async () => {
       await repeat(async () => {
         const { response } = await client.get("/v1/finance/commodities/gold");
-        const { data } = await assertEnvelope(response, SUITE, "commodities_gold");
+        const { data } = await assertEnvelope(
+          response,
+          SUITE,
+          "commodities_gold",
+        );
         const d = data as Record<string, unknown>;
         expect(typeof d["price"]).toBe("number");
-        expect((d["price"] as number)).toBeGreaterThan(0);
+        expect(d["price"] as number).toBeGreaterThan(0);
       });
     });
   });

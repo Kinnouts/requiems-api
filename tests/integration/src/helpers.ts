@@ -20,7 +20,9 @@ export async function assertEnvelope(
   const body = (await response.json()) as Record<string, unknown>;
 
   expect(body, "Response must have a 'data' key").toHaveProperty("data");
-  expect(body, "Response must have a 'metadata' key").toHaveProperty("metadata");
+  expect(body, "Response must have a 'metadata' key").toHaveProperty(
+    "metadata",
+  );
 
   assertShape(snapshotName, endpointKey, body);
 

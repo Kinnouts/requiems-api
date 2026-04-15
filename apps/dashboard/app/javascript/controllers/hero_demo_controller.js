@@ -11,10 +11,18 @@ export default class extends Controller {
   static targets = ["urlPath", "demoLabel", "responseArea", "dot"];
 
   // Inline-style span helpers
-  _k(v) { return `<span style="color:#7dd3fc">${v}</span>`; }  // key
-  _s(v) { return `<span style="color:#fcd34d">${v}</span>`; }  // string
-  _b(v) { return `<span style="color:#c084fc">${v}</span>`; }  // bool/number
-  _p(v) { return `<span style="color:#6b7280">${v}</span>`; }  // punctuation
+  _k(v) {
+    return `<span style="color:#7dd3fc">${v}</span>`;
+  } // key
+  _s(v) {
+    return `<span style="color:#fcd34d">${v}</span>`;
+  } // string
+  _b(v) {
+    return `<span style="color:#c084fc">${v}</span>`;
+  } // bool/number
+  _p(v) {
+    return `<span style="color:#6b7280">${v}</span>`;
+  } // punctuation
 
   get demos() {
     const k = this._k.bind(this);
@@ -26,7 +34,8 @@ export default class extends Controller {
       {
         label: "Email Validation",
         method: "POST",
-        methodStyle: "background-color:#1e3a5f;color:#93c5fd;min-width:42px;text-align:center;",
+        methodStyle:
+          "background-color:#1e3a5f;color:#93c5fd;min-width:42px;text-align:center;",
         path: "email/validate",
         lines: [
           p("{"),
@@ -35,7 +44,9 @@ export default class extends Controller {
           `  ${k('"syntax_valid"')}${p(":")} ${b("true")}${p(",")}`,
           `  ${k('"mx_valid"')}${p(":")} ${b("false")}${p(",")}`,
           `  ${k('"disposable"')}${p(":")} ${b("true")}${p(",")}`,
-          `  ${k('"normalized"')}${p(":")} ${s('"jane@discardmail.con"')}${p(",")}`,
+          `  ${k('"normalized"')}${p(":")} ${s('"jane@discardmail.con"')}${
+            p(",")
+          }`,
           `  ${k('"domain"')}${p(":")} ${s('"discardmail.con"')}${p(",")}`,
           `  ${k('"suggestion"')}${p(":")} ${s('"discardmail.com"')}`,
           p("}"),
@@ -44,7 +55,8 @@ export default class extends Controller {
       {
         label: "Phone Validation",
         method: "GET",
-        methodStyle: "background-color:#14532d;color:#86efac;min-width:42px;text-align:center;",
+        methodStyle:
+          "background-color:#14532d;color:#86efac;min-width:42px;text-align:center;",
         path: "tech/validate/phone",
         lines: [
           p("{"),
@@ -67,7 +79,8 @@ export default class extends Controller {
       {
         label: "BIN Lookup",
         method: "GET",
-        methodStyle: "background-color:#14532d;color:#86efac;min-width:42px;text-align:center;",
+        methodStyle:
+          "background-color:#14532d;color:#86efac;min-width:42px;text-align:center;",
         path: "finance/bin/453980",
         lines: [
           p("{"),
@@ -76,8 +89,12 @@ export default class extends Controller {
           `  ${k('"card_type"')}${p(":")} ${s('"credit"')}${p(",")}`,
           `  ${k('"card_level"')}${p(":")} ${s('"platinum"')}${p(",")}`,
           `  ${k('"issuer_name"')}${p(":")} ${s('"Chase Bank"')}${p(",")}`,
-          `  ${k('"issuer_url"')}${p(":")} ${s('"https://www.chase.com"')}${p(",")}`,
-          `  ${k('"issuer_phone"')}${p(":")} ${s('"+1-800-432-3117"')}${p(",")}`,
+          `  ${k('"issuer_url"')}${p(":")} ${s('"https://www.chase.com"')}${
+            p(",")
+          }`,
+          `  ${k('"issuer_phone"')}${p(":")} ${s('"+1-800-432-3117"')}${
+            p(",")
+          }`,
           `  ${k('"country_code"')}${p(":")} ${s('"US"')}${p(",")}`,
           `  ${k('"country_name"')}${p(":")} ${s('"United States"')}${p(",")}`,
           `  ${k('"prepaid"')}${p(":")} ${b("false")}${p(",")}`,
@@ -153,7 +170,10 @@ export default class extends Controller {
 
   async _rewritePath(oldPath, newPath) {
     let common = 0;
-    while (common < oldPath.length && common < newPath.length && oldPath[common] === newPath[common]) {
+    while (
+      common < oldPath.length && common < newPath.length &&
+      oldPath[common] === newPath[common]
+    ) {
       common++;
     }
     let current = oldPath;
@@ -183,7 +203,8 @@ export default class extends Controller {
     const el = document.createElement("div");
     el.innerHTML = html;
     // white-space:pre preserves the leading spaces used for JSON indentation
-    el.style.cssText = "font-family:ui-monospace,monospace;font-size:13px;line-height:1.65;white-space:pre;color:#9ca3af;";
+    el.style.cssText =
+      "font-family:ui-monospace,monospace;font-size:13px;line-height:1.65;white-space:pre;color:#9ca3af;";
     return el;
   }
 

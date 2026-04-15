@@ -65,8 +65,14 @@ describe("Text API", () => {
     });
 
     it("returns correct paragraph count when requested", async () => {
-      const { response } = await client.get("/v1/text/lorem", { paragraphs: "2" });
-      const { data } = await assertEnvelope(response, SUITE, "lorem_2_paragraphs");
+      const { response } = await client.get("/v1/text/lorem", {
+        paragraphs: "2",
+      });
+      const { data } = await assertEnvelope(
+        response,
+        SUITE,
+        "lorem_2_paragraphs",
+      );
       // Two paragraphs are separated by a newline or double-newline
       const paragraphs = (data as string).trim().split(/\n+/);
       expect(paragraphs.length).toBeGreaterThanOrEqual(2);
@@ -77,7 +83,11 @@ describe("Text API", () => {
     it("returns a definition for a known word", async () => {
       await repeat(async () => {
         const { response } = await client.get("/v1/text/dictionary/eloquent");
-        const { data } = await assertEnvelope(response, SUITE, "dictionary_word");
+        const { data } = await assertEnvelope(
+          response,
+          SUITE,
+          "dictionary_word",
+        );
         const d = data as Record<string, unknown>;
         expect(typeof d["word"]).toBe("string");
       });
@@ -88,7 +98,11 @@ describe("Text API", () => {
     it("returns synonyms and antonyms for a known word", async () => {
       await repeat(async () => {
         const { response } = await client.get("/v1/text/thesaurus/happy");
-        const { data } = await assertEnvelope(response, SUITE, "thesaurus_word");
+        const { data } = await assertEnvelope(
+          response,
+          SUITE,
+          "thesaurus_word",
+        );
         const d = data as Record<string, unknown>;
         expect(typeof d["word"]).toBe("string");
       });
@@ -97,7 +111,9 @@ describe("Text API", () => {
 
   describe("POST /v1/text/profanity", () => {
     it("detects clean text", async () => {
-      const { response } = await client.post("/v1/text/profanity", { text: "Hello, world!" });
+      const { response } = await client.post("/v1/text/profanity", {
+        text: "Hello, world!",
+      });
       const { data } = await assertEnvelope(response, SUITE, "profanity_clean");
       const d = data as Record<string, unknown>;
       expect(d["is_profane"]).toBe(false);
@@ -109,7 +125,11 @@ describe("Text API", () => {
       const { response } = await client.post("/v1/text/spellcheck", {
         text: "The quick brown fox jumps over the lazy dog.",
       });
-      const { data } = await assertEnvelope(response, SUITE, "spellcheck_correct");
+      const { data } = await assertEnvelope(
+        response,
+        SUITE,
+        "spellcheck_correct",
+      );
       const d = data as Record<string, unknown>;
       expect(Array.isArray(d["errors"])).toBe(true);
     });

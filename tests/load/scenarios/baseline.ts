@@ -26,12 +26,12 @@
 
 import http from "k6/http";
 import { check, sleep } from "k6";
-import { Trend, Rate, Counter } from "k6/metrics";
+import { Counter, Rate, Trend } from "k6/metrics";
 import { Options } from "k6/options";
 
 import {
-  BASE_URL,
   authParams,
+  BASE_URL,
   DEFAULT_THRESHOLDS,
   SAMPLE_ENDPOINTS,
   SummaryData,
@@ -85,10 +85,9 @@ export default function (): void {
     const url = `${BASE_URL}${endpoint.path}`;
     const params = authParams("developer");
 
-    const res =
-      endpoint.method === "POST"
-        ? http.post(url, endpoint.body ?? null, params)
-        : http.get(url, params);
+    const res = endpoint.method === "POST"
+      ? http.post(url, endpoint.body ?? null, params)
+      : http.get(url, params);
 
     // ------------------------------------------------------------------
     // Validate response
@@ -119,7 +118,9 @@ export default function (): void {
       failedChecks.add(1);
       checkSuccessRate.add(0);
       console.error(
-        `[baseline] FAIL ${endpoint.method} ${endpoint.path} → HTTP ${res.status}: ${(res.body as string).substring(0, 200)}`,
+        `[baseline] FAIL ${endpoint.method} ${endpoint.path} → HTTP ${res.status}: ${
+          (res.body as string).substring(0, 200)
+        }`,
       );
     }
 
@@ -152,8 +153,12 @@ export function handleSummary(data: SummaryData): Record<string, string> {
     "  BASELINE BENCHMARK RESULTS",
     "=".repeat(60),
     `  Target URL   : ${BASE_URL}`,
-    `  p95 latency  : ${typeof p95 === "number" ? p95.toFixed(2) + " ms" : p95}`,
-    `  p99 latency  : ${typeof p99 === "number" ? p99.toFixed(2) + " ms" : p99}`,
+    `  p95 latency  : ${
+      typeof p95 === "number" ? p95.toFixed(2) + " ms" : p95
+    }`,
+    `  p99 latency  : ${
+      typeof p99 === "number" ? p99.toFixed(2) + " ms" : p99
+    }`,
     `  Error rate   : ${failRate} %`,
     `  Check pass   : ${checkRate} %`,
     "=".repeat(60),

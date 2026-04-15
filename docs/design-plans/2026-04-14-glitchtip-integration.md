@@ -1,9 +1,5 @@
 # GlitchTip Error Monitoring — Design Plan
 
-**Date:** 2026-04-14
-
-## Overview
-
 This document describes the integration of [GlitchTip](https://glitchtip.com)
 (self-hosted, Sentry-compatible error monitoring) across all four services in
 the Requiems API monorepo.
@@ -14,7 +10,7 @@ the Requiems API monorepo.
 
 The platform previously had no centralised error tracking. Unhandled exceptions
 in the Go backend, Rails dashboard, and Cloudflare Workers were only visible via
-container logs — requiring SSH access to diagnose production issues. GlitchTip
+container logs, requiring SSH access to diagnose production issues. GlitchTip
 provides a single UI for all four services with stack traces, request context,
 and event history.
 
@@ -95,26 +91,3 @@ configuration:
 | Rails          | `enabled_environments` gates on `RAILS_ENV` | `RAILS_ENV=production` already set  |
 | Auth Gateway   | `SENTRY_DSN = ""` in `[vars]`               | DSN set in `[env.production.vars]`  |
 | API Management | Same                                        | Same                                |
-
----
-
-## Files Changed
-
-| File                                           | Change                                                 |
-| ---------------------------------------------- | ------------------------------------------------------ |
-| `apps/api/go.mod`                              | Added `github.com/getsentry/sentry-go`                 |
-| `apps/api/platform/config/config.go`           | Added `Environment`, `SentryDSN` fields                |
-| `apps/api/main.go`                             | Sentry init gated by environment                       |
-| `apps/api/platform/httpx/handler.go`           | `CaptureException` on 500 errors                       |
-| `apps/dashboard/Gemfile`                       | Added `sentry-ruby`, `sentry-rails`                    |
-| `apps/dashboard/Gemfile.lock`                  | Updated with resolved gem versions                     |
-| `apps/dashboard/config/initializers/sentry.rb` | New — Sentry init for Rails                            |
-| `apps/workers/auth-gateway/package.json`       | Added `@sentry/cloudflare`                             |
-| `apps/workers/auth-gateway/src/env.ts`         | Added optional `SENTRY_DSN` binding                    |
-| `apps/workers/auth-gateway/src/index.ts`       | `wrapRequestHandler` + `captureException` in `onError` |
-| `apps/workers/auth-gateway/wrangler.toml`      | `SENTRY_DSN` in dev and production vars                |
-| `apps/workers/api-management/package.json`     | Added `@sentry/cloudflare`                             |
-| `apps/workers/api-management/src/env.ts`       | Added optional `SENTRY_DSN` binding                    |
-| `apps/workers/api-management/src/index.ts`     | `wrapRequestHandler` + `captureException` in `onError` |
-| `apps/workers/api-management/wrangler.toml`    | `SENTRY_DSN` in dev and production vars                |
-| `infra/docker/docker-compose.yml`              | Added `ENVIRONMENT=production` to `api` service        |

@@ -14,7 +14,10 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
-const SNAPSHOT_DIR = path.join(path.dirname(fileURLToPath(import.meta.url)), "../../snapshots");
+const SNAPSHOT_DIR = path.join(
+  path.dirname(fileURLToPath(import.meta.url)),
+  "../../snapshots",
+);
 
 /** Maps a JSON value to a human-readable type token */
 function typeOf(value: unknown): string {
@@ -47,7 +50,9 @@ export function deriveShape(value: unknown): string {
 }
 
 /** Derive the shape of every key in the top-level object independently */
-export function deriveTopLevelShapes(obj: Record<string, unknown>): Record<string, string> {
+export function deriveTopLevelShapes(
+  obj: Record<string, unknown>,
+): Record<string, string> {
   const result: Record<string, string> = {};
   for (const [k, v] of Object.entries(obj)) {
     result[k] = typeOf(v);
@@ -76,7 +81,10 @@ export function loadSnapshot(name: string): SnapshotFile | undefined {
 }
 
 /** Write (or update) a snapshot file */
-export function saveSnapshot(name: string, shapes: Record<string, string>): void {
+export function saveSnapshot(
+  name: string,
+  shapes: Record<string, string>,
+): void {
   fs.mkdirSync(SNAPSHOT_DIR, { recursive: true });
 
   const existing = loadSnapshot(name);
@@ -88,7 +96,11 @@ export function saveSnapshot(name: string, shapes: Record<string, string>): void
     shapes: { ...(existing?.shapes ?? {}), ...shapes },
   };
 
-  fs.writeFileSync(snapshotPath(name), JSON.stringify(file, null, 2) + "\n", "utf8");
+  fs.writeFileSync(
+    snapshotPath(name),
+    JSON.stringify(file, null, 2) + "\n",
+    "utf8",
+  );
 }
 
 /**

@@ -62,11 +62,15 @@ export default class extends Controller {
         this.counterTarget.className = "text-xs mt-1.5";
       } else if (!ready) {
         const remaining = MIN_REASON_LENGTH - length;
-        this.counterTarget.textContent = `${remaining} more character${remaining === 1 ? "" : "s"} needed`;
-        this.counterTarget.className = "text-xs text-amber-600 dark:text-amber-400 mt-1.5";
+        this.counterTarget.textContent = `${remaining} more character${
+          remaining === 1 ? "" : "s"
+        } needed`;
+        this.counterTarget.className =
+          "text-xs text-amber-600 dark:text-amber-400 mt-1.5";
       } else {
         this.counterTarget.textContent = `${length} characters`;
-        this.counterTarget.className = "text-xs text-green-600 dark:text-green-400 mt-1.5";
+        this.counterTarget.className =
+          "text-xs text-green-600 dark:text-green-400 mt-1.5";
       }
     }
   }
@@ -74,7 +78,9 @@ export default class extends Controller {
   // — Private —
 
   _onEscape(event) {
-    if (event.key === "Escape" && !this.modalTarget.classList.contains("hidden")) {
+    if (
+      event.key === "Escape" && !this.modalTarget.classList.contains("hidden")
+    ) {
       this.close();
     }
   }

@@ -1,24 +1,27 @@
 # Load Testing Suite
 
-Performance tests for the Requiem API using [k6](https://k6.io/), written in TypeScript.
+Performance tests for the Requiem API using [k6](https://k6.io/), written in
+TypeScript.
 
 ## Overview
 
 The suite covers four tasks from the original issue:
 
-| Script | Purpose |
-|---|---|
-| [`scenarios/baseline.ts`](./scenarios/baseline.ts) | Baseline benchmarks — single VU, all service groups |
-| [`scenarios/rate-limit.ts`](./scenarios/rate-limit.ts) | Rate limit validation — enforces per-plan req/min caps |
+| Script                                                             | Purpose                                                  |
+| ------------------------------------------------------------------ | -------------------------------------------------------- |
+| [`scenarios/baseline.ts`](./scenarios/baseline.ts)                 | Baseline benchmarks — single VU, all service groups      |
+| [`scenarios/rate-limit.ts`](./scenarios/rate-limit.ts)             | Rate limit validation — enforces per-plan req/min caps   |
 | [`scenarios/concurrent-users.ts`](./scenarios/concurrent-users.ts) | Concurrent user simulation — ramping VUs up to 50 (peak) |
 
 Configuration shared across all scripts lives in [`config.ts`](./config.ts).
 
 ## Prerequisites
 
-1. **k6** — `brew install k6` (macOS) or see [k6 installation docs](https://k6.io/docs/get-started/installation/).
-   k6 v0.46+ supports TypeScript natively via its built-in esbuild bundler.
-2. **Dev stack running** — the Auth Gateway must be reachable at `localhost:4455`:
+1. **k6** — `brew install k6` (macOS) or see
+   [k6 installation docs](https://k6.io/docs/get-started/installation/). k6
+   v0.46+ supports TypeScript natively via its built-in esbuild bundler.
+2. **Dev stack running** — the Auth Gateway must be reachable at
+   `localhost:4455`:
 
 ```bash
 cd infra/docker
@@ -62,14 +65,14 @@ BASE_URL=http://localhost:4455 k6 run tests/load/scenarios/baseline.ts
 
 ## Environment Variables
 
-| Variable | Default | Description |
-|---|---|---|
-| `BASE_URL` | `http://localhost:4455` | Auth Gateway base URL |
-| `API_KEY_FREE` | `rq_free_000001` | Free-plan dev key |
-| `API_KEY_DEVELOPER` | `rq_devl_000001` | Developer-plan dev key |
-| `API_KEY_BUSINESS` | `rq_bizz_000001` | Business-plan dev key |
-| `API_KEY_PROFESSIONAL` | `rq_prof_000001` | Professional-plan dev key |
-| `PEAK_VUS` | `50` | Peak concurrent users in `concurrent-users` |
+| Variable               | Default                 | Description                                 |
+| ---------------------- | ----------------------- | ------------------------------------------- |
+| `BASE_URL`             | `http://localhost:4455` | Auth Gateway base URL                       |
+| `API_KEY_FREE`         | `rq_free_000001`        | Free-plan dev key                           |
+| `API_KEY_DEVELOPER`    | `rq_devl_000001`        | Developer-plan dev key                      |
+| `API_KEY_BUSINESS`     | `rq_bizz_000001`        | Business-plan dev key                       |
+| `API_KEY_PROFESSIONAL` | `rq_prof_000001`        | Professional-plan dev key                   |
+| `PEAK_VUS`             | `50`                    | Peak concurrent users in `concurrent-users` |
 
 ## Scenarios
 
@@ -91,13 +94,14 @@ Use this output as the reference number when comparing future releases.
 
 Tests three behaviours in sequence:
 
-| Stage | Key | Requests | Expected |
-|---|---|---|---|
-| `free_burst` (0–20 s) | free (30 req/min) | 35 rapid | First ~30 → 2xx, then 429 |
-| `developer_safe` (25–45 s) | developer (5 000 req/min) | 60 rapid | All 2xx, no 429 |
-| `recovery` (95–115 s) | free (window reset) | 5 | All 2xx again |
+| Stage                      | Key                       | Requests | Expected                  |
+| -------------------------- | ------------------------- | -------- | ------------------------- |
+| `free_burst` (0–20 s)      | free (30 req/min)         | 35 rapid | First ~30 → 2xx, then 429 |
+| `developer_safe` (25–45 s) | developer (5 000 req/min) | 60 rapid | All 2xx, no 429           |
+| `recovery` (95–115 s)      | free (window reset)       | 5        | All 2xx again             |
 
 **Thresholds:**
+
 - `rate_limit_hits > 0` — the free burst must have triggered at least one 429
 - `unexpected_errors == 0` — no non-429 errors
 
@@ -123,14 +127,14 @@ VUs
 
 ## Interpreting Results
 
-k6 prints a summary table after each run.  Key metrics to watch:
+k6 prints a summary table after each run. Key metrics to watch:
 
-| Metric | Good | Investigate |
-|---|---|---|
-| `http_req_failed` | < 1 % | ≥ 1 % |
-| `http_req_duration p(95)` | < 500 ms | ≥ 500 ms |
-| `http_req_duration p(99)` | < 1 000 ms | ≥ 1 000 ms |
-| `rate_limit_hits` | > 0 (rate-limit scenario) | 0 (gateway not enforcing) |
+| Metric                    | Good                      | Investigate               |
+| ------------------------- | ------------------------- | ------------------------- |
+| `http_req_failed`         | < 1 %                     | ≥ 1 %                     |
+| `http_req_duration p(95)` | < 500 ms                  | ≥ 500 ms                  |
+| `http_req_duration p(99)` | < 1 000 ms                | ≥ 1 000 ms                |
+| `rate_limit_hits`         | > 0 (rate-limit scenario) | 0 (gateway not enforcing) |
 
 ## Architecture Context
 
@@ -144,6 +148,6 @@ Auth Gateway :4455  (Cloudflare Worker — auth, rate limit, usage)
 Go API :8080         (business logic, PostgreSQL, Redis)
 ```
 
-Rate limits are enforced in the Auth Gateway before the request reaches the
-Go backend.  See [`docs/core/auth-gateway.md`](../../docs/core/auth-gateway.md)
-for details.
+Rate limits are enforced in the Auth Gateway before the request reaches the Go
+backend. See [`docs/core/auth-gateway.md`](../../docs/core/auth-gateway.md) for
+details.

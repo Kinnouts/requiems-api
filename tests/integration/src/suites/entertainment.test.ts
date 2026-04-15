@@ -86,8 +86,14 @@ describe("Entertainment API", () => {
   describe("GET /v1/entertainment/horoscope/{sign}", () => {
     it("returns a horoscope for aries", async () => {
       await repeat(async () => {
-        const { response } = await client.get("/v1/entertainment/horoscope/aries");
-        const { data } = await assertEnvelope(response, SUITE, "horoscope_aries");
+        const { response } = await client.get(
+          "/v1/entertainment/horoscope/aries",
+        );
+        const { data } = await assertEnvelope(
+          response,
+          SUITE,
+          "horoscope_aries",
+        );
         const d = data as Record<string, unknown>;
         expect(typeof d["horoscope"]).toBe("string");
       });

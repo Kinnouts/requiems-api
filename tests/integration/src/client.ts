@@ -22,7 +22,10 @@ export interface TimedResponse {
  * @param path   API path (e.g. "/v1/text/advice")
  * @param params Optional query-string parameters
  */
-export async function get(path: string, params?: Record<string, string>): Promise<TimedResponse> {
+export async function get(
+  path: string,
+  params?: Record<string, string>,
+): Promise<TimedResponse> {
   return request("GET", path, undefined, params);
 }
 
@@ -32,7 +35,10 @@ export async function get(path: string, params?: Record<string, string>): Promis
  * @param path API path (e.g. "/v1/email/validate")
  * @param body JSON-serialisable request body
  */
-export async function post(path: string, body: unknown): Promise<TimedResponse> {
+export async function post(
+  path: string,
+  body: unknown,
+): Promise<TimedResponse> {
   return request("POST", path, body);
 }
 

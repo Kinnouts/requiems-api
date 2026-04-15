@@ -61,7 +61,11 @@ describe("Convert API", () => {
           to: "rgb",
           value: "#FF5733",
         });
-        const { data } = await assertEnvelope(response, SUITE, "color_hex_to_rgb");
+        const { data } = await assertEnvelope(
+          response,
+          SUITE,
+          "color_hex_to_rgb",
+        );
         expect(data).toBeTruthy();
       });
     });
@@ -73,7 +77,11 @@ describe("Convert API", () => {
         const { response } = await client.post("/v1/convert/markdown", {
           markdown: "# Hello\n\nThis is **bold**.",
         });
-        const { data } = await assertEnvelope(response, SUITE, "markdown_to_html");
+        const { data } = await assertEnvelope(
+          response,
+          SUITE,
+          "markdown_to_html",
+        );
         const d = data as Record<string, unknown>;
         expect(typeof d["html"]).toBe("string");
         expect(d["html"] as string).toContain("<h1");

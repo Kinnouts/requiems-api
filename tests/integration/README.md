@@ -9,15 +9,15 @@ genuine API key and are designed to:
 - Track **response-time regressions** (min / avg / p95 / p99 / max per endpoint)
 - Snapshot **response body shapes** so structural API changes are caught early
 
-> **These tests are not part of CI.** Run them locally when you want to
-> validate a change against production.
+> **These tests are not part of CI.** Run them locally when you want to validate
+> a change against production.
 
 ## Prerequisites
 
-| Requirement | Notes |
-|---|---|
-| Node.js ≥ 20 | Any LTS release |
-| pnpm ≥ 10 | `npm i -g pnpm` |
+| Requirement           | Notes                                            |
+| --------------------- | ------------------------------------------------ |
+| Node.js ≥ 20          | Any LTS release                                  |
+| pnpm ≥ 10             | `npm i -g pnpm`                                  |
 | A `rq_live_*` API key | Obtain from [requiems.xyz](https://requiems.xyz) |
 
 ## Setup
@@ -50,14 +50,14 @@ pnpm test:ui
 
 All settings live in `.env` (see `.env.example` for defaults):
 
-| Variable | Default | Description |
-|---|---|---|
-| `REQUIEMS_API_KEY` | *(required)* | Your production API key |
-| `API_BASE_URL` | `https://api.requiems.xyz` | Gateway URL to test against |
-| `INTEGRATION_RUNS` | `3` | How many times each scenario is repeated for timing data |
+| Variable           | Default                    | Description                                              |
+| ------------------ | -------------------------- | -------------------------------------------------------- |
+| `REQUIEMS_API_KEY` | _(required)_               | Your production API key                                  |
+| `API_BASE_URL`     | `https://api.requiems.xyz` | Gateway URL to test against                              |
+| `INTEGRATION_RUNS` | `3`                        | How many times each scenario is repeated for timing data |
 
-Set `API_BASE_URL=http://localhost:4455` to test against a local
-`wrangler dev` instance instead of production.
+Set `API_BASE_URL=http://localhost:4455` to test against a local `wrangler dev`
+instance instead of production.
 
 ## Output
 
@@ -93,8 +93,8 @@ runs programmatically.
 ### Response shape snapshots
 
 The first time each endpoint is called its response shape (key names + JSON
-types) is written to `tests/integration/snapshots/`. Subsequent runs compare
-the live shape against the snapshot and fail if they differ:
+types) is written to `tests/integration/snapshots/`. Subsequent runs compare the
+live shape against the snapshot and fail if they differ:
 
 ```
 Response shape mismatch for "advice":

@@ -7,7 +7,7 @@
  * key).
  */
 
-import { describe, it, expect } from "vitest";
+import { describe, expect, it } from "vitest";
 import { getConfig } from "../config.js";
 
 /** Issue a request with no API key */
@@ -63,20 +63,25 @@ describe("Gateway", () => {
   describe("Usage headers on successful requests", () => {
     it("response includes X-Requests-Used header", async () => {
       const res = await authenticated("/v1/text/advice");
-      expect(res.headers.has("x-requests-used") || res.headers.has("X-Requests-Used")).toBe(true);
+      expect(
+        res.headers.has("x-requests-used") ||
+          res.headers.has("X-Requests-Used"),
+      ).toBe(true);
     });
 
     it("response includes X-Requests-Remaining header", async () => {
       const res = await authenticated("/v1/text/advice");
       expect(
-        res.headers.has("x-requests-remaining") || res.headers.has("X-Requests-Remaining"),
+        res.headers.has("x-requests-remaining") ||
+          res.headers.has("X-Requests-Remaining"),
       ).toBe(true);
     });
 
     it("response includes X-RateLimit-Remaining header", async () => {
       const res = await authenticated("/v1/text/advice");
       expect(
-        res.headers.has("x-ratelimit-remaining") || res.headers.has("X-RateLimit-Remaining"),
+        res.headers.has("x-ratelimit-remaining") ||
+          res.headers.has("X-RateLimit-Remaining"),
       ).toBe(true);
     });
 

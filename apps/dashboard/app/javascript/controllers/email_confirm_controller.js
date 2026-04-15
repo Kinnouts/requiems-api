@@ -90,7 +90,8 @@ export default class extends Controller {
     } else if (value.length > 0) {
       this.hintTarget.textContent =
         "Doesn't match — type your exact email address";
-      this.hintTarget.className = "text-xs text-red-500 dark:text-red-400 mt-1.5";
+      this.hintTarget.className =
+        "text-xs text-red-500 dark:text-red-400 mt-1.5";
     } else {
       this.hintTarget.textContent = "";
       this.hintTarget.className = "text-xs mt-1.5";
@@ -100,7 +101,9 @@ export default class extends Controller {
   // — Private —
 
   _onEscape(event) {
-    if (event.key === "Escape" && !this.modalTarget.classList.contains("hidden")) {
+    if (
+      event.key === "Escape" && !this.modalTarget.classList.contains("hidden")
+    ) {
       this.close();
     }
   }

@@ -24,7 +24,10 @@ export interface EndpointStats {
 }
 
 /** Temp file where the worker process writes its timing data */
-export const STATS_TEMP_FILE = path.join(os.tmpdir(), "requiem-integration-stats.json");
+export const STATS_TEMP_FILE = path.join(
+  os.tmpdir(),
+  "requiem-integration-stats.json",
+);
 
 export class Stats {
   private readonly _data = new Map<string, number[]>();
@@ -77,7 +80,9 @@ export class Stats {
   static load(): EndpointStats[] {
     if (!fs.existsSync(STATS_TEMP_FILE)) return [];
     try {
-      const raw = JSON.parse(fs.readFileSync(STATS_TEMP_FILE, "utf8")) as Record<string, number[]>;
+      const raw = JSON.parse(
+        fs.readFileSync(STATS_TEMP_FILE, "utf8"),
+      ) as Record<string, number[]>;
       const map = new Map(Object.entries(raw));
       return new Stats().summarise(map);
     } catch {

@@ -25,7 +25,11 @@ describe("Tech API", () => {
 
     it("returns IP info for a specific public IP", async () => {
       const { response } = await client.get("/v1/tech/ip/8.8.8.8");
-      const { data } = await assertEnvelope(response, SUITE, "ip_lookup_specific");
+      const { data } = await assertEnvelope(
+        response,
+        SUITE,
+        "ip_lookup_specific",
+      );
       const d = data as Record<string, unknown>;
       expect(d["ip"]).toBe("8.8.8.8");
     });
@@ -35,7 +39,11 @@ describe("Tech API", () => {
     it("generates a password of default length", async () => {
       await repeat(async () => {
         const { response } = await client.get("/v1/tech/password");
-        const { data } = await assertEnvelope(response, SUITE, "password_default");
+        const { data } = await assertEnvelope(
+          response,
+          SUITE,
+          "password_default",
+        );
         const d = data as Record<string, unknown>;
         expect(typeof d["password"]).toBe("string");
         // Default length is 16
@@ -44,7 +52,9 @@ describe("Tech API", () => {
     });
 
     it("generates a password of a custom length", async () => {
-      const { response } = await client.get("/v1/tech/password", { length: "24" });
+      const { response } = await client.get("/v1/tech/password", {
+        length: "24",
+      });
       const { data } = await assertEnvelope(response, SUITE, "password_custom");
       const d = data as Record<string, unknown>;
       expect((d["password"] as string).length).toBe(24);
@@ -53,10 +63,15 @@ describe("Tech API", () => {
 
   describe("GET /v1/tech/useragent", () => {
     it("parses a Chrome user agent string", async () => {
-      const ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
+      const ua =
+        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36";
       await repeat(async () => {
         const { response } = await client.get("/v1/tech/useragent", { ua });
-        const { data } = await assertEnvelope(response, SUITE, "useragent_chrome");
+        const { data } = await assertEnvelope(
+          response,
+          SUITE,
+          "useragent_chrome",
+        );
         const d = data as Record<string, unknown>;
         expect(typeof d["browser"]).toBe("string");
         expect(typeof d["os"]).toBe("string");

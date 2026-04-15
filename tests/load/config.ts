@@ -158,7 +158,10 @@ export const SAMPLE_ENDPOINTS: SampleEndpoint[] = [
   { method: "GET", path: "/v1/tech/password" },
 
   // finance
-  { method: "GET", path: "/v1/finance/mortgage?principal=300000&rate=6.5&years=30" },
+  {
+    method: "GET",
+    path: "/v1/finance/mortgage?principal=300000&rate=6.5&years=30",
+  },
   { method: "GET", path: "/v1/finance/exchange-rate?from=USD&to=EUR" },
 
   // fitness

@@ -36,12 +36,12 @@
 
 import http from "k6/http";
 import { check, sleep } from "k6";
-import { Trend, Rate, Counter } from "k6/metrics";
+import { Counter, Rate, Trend } from "k6/metrics";
 import { Options } from "k6/options";
 
 import {
-  BASE_URL,
   API_KEYS,
+  BASE_URL,
   DEFAULT_THRESHOLDS,
   SAMPLE_ENDPOINTS,
   SummaryData,
@@ -122,10 +122,9 @@ export default function (): void {
 
   const url = `${BASE_URL}${endpoint.path}`;
 
-  const res =
-    endpoint.method === "POST"
-      ? http.post(url, endpoint.body ?? null, params)
-      : http.get(url, params);
+  const res = endpoint.method === "POST"
+    ? http.post(url, endpoint.body ?? null, params)
+    : http.get(url, params);
 
   totalRequests.add(1);
   endpointDuration.add(res.timings.duration, {
@@ -144,7 +143,9 @@ export default function (): void {
     // Only log non-5xx details to avoid flooding output on expected 4xx
     if (res.status >= 500) {
       console.error(
-        `[concurrent] Server error ${res.status} on ${endpoint.method} ${endpoint.path}: ${(res.body as string).substring(0, 300)}`,
+        `[concurrent] Server error ${res.status} on ${endpoint.method} ${endpoint.path}: ${
+          (res.body as string).substring(0, 300)
+        }`,
       );
     } else if (res.status === 429) {
       // Rate limiting is tracked but not unexpected for high-concurrency tests

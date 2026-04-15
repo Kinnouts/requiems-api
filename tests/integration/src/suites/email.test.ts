@@ -17,7 +17,11 @@ describe("Email API", () => {
         const { response } = await client.post("/v1/email/disposable/check", {
           email: "test@mailinator.com",
         });
-        const { data } = await assertEnvelope(response, SUITE, "disposable_check");
+        const { data } = await assertEnvelope(
+          response,
+          SUITE,
+          "disposable_check",
+        );
         const d = data as Record<string, unknown>;
         expect(d["disposable"]).toBe(true);
       });
@@ -27,7 +31,11 @@ describe("Email API", () => {
       const { response } = await client.post("/v1/email/disposable/check", {
         email: "user@gmail.com",
       });
-      const { data } = await assertEnvelope(response, SUITE, "disposable_check_legit");
+      const { data } = await assertEnvelope(
+        response,
+        SUITE,
+        "disposable_check_legit",
+      );
       const d = data as Record<string, unknown>;
       expect(d["disposable"]).toBe(false);
     });
@@ -63,10 +71,14 @@ describe("Email API", () => {
   describe("GET /v1/email/disposable/stats", () => {
     it("returns disposable domain statistics", async () => {
       const { response } = await client.get("/v1/email/disposable/stats");
-      const { data } = await assertEnvelope(response, SUITE, "disposable_stats");
+      const { data } = await assertEnvelope(
+        response,
+        SUITE,
+        "disposable_stats",
+      );
       const d = data as Record<string, unknown>;
       expect(typeof d["total_domains"]).toBe("number");
-      expect((d["total_domains"] as number)).toBeGreaterThan(0);
+      expect(d["total_domains"] as number).toBeGreaterThan(0);
     });
   });
 });

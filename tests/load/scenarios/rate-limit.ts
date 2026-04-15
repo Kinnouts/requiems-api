@@ -28,11 +28,11 @@
  */
 
 import http from "k6/http";
-import { check, sleep, group } from "k6";
+import { check, group, sleep } from "k6";
 import { Counter, Rate } from "k6/metrics";
 import { Options } from "k6/options";
 
-import { BASE_URL, API_KEYS, RATE_LIMITS, SummaryData } from "../config.ts";
+import { API_KEYS, BASE_URL, RATE_LIMITS, SummaryData } from "../config.ts";
 
 // ---------------------------------------------------------------------------
 // Custom metrics
@@ -172,7 +172,9 @@ function runFreeBurst(): void {
     } else {
       unexpectedErrors.add(1);
       console.error(
-        `[rate-limit/free_burst] Unexpected status ${res.status}: ${(res.body as string).substring(0, 200)}`,
+        `[rate-limit/free_burst] Unexpected status ${res.status}: ${
+          (res.body as string).substring(0, 200)
+        }`,
       );
     }
 
@@ -208,7 +210,9 @@ function runDeveloperSafe(): void {
       } else {
         unexpectedErrors.add(1);
         console.error(
-          `[rate-limit/developer_safe] Unexpected status ${res.status}: ${(res.body as string).substring(0, 200)}`,
+          `[rate-limit/developer_safe] Unexpected status ${res.status}: ${
+            (res.body as string).substring(0, 200)
+          }`,
         );
       }
     } else {
@@ -241,7 +245,9 @@ function runRecovery(): void {
     } else {
       unexpectedErrors.add(1);
       console.error(
-        `[rate-limit/recovery] Expected 2xx after window reset but got ${res.status}: ${(res.body as string).substring(0, 200)}`,
+        `[rate-limit/recovery] Expected 2xx after window reset but got ${res.status}: ${
+          (res.body as string).substring(0, 200)
+        }`,
       );
     }
 
