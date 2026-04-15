@@ -31,7 +31,7 @@ async function main() {
   for (const file of docFiles) {
     const doc = await loadAPIDoc(file);
 
-    if (!doc || !doc?.api_id || !doc.endpoints?.length) continue;
+    if (!doc?.api_id || !doc.endpoints?.length) continue;
 
     const catalogEntry = catalogMap.get(doc.api_id);
 

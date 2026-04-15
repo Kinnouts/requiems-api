@@ -25,6 +25,7 @@ local_protocol = "http"
 
 [vars]
 ENVIRONMENT = "development"
+SENTRY_DSN = ""
 
 [env.production]
 name = "requiem-auth-gateway-production"
@@ -33,6 +34,7 @@ preview_urls = false
 
 [env.production.vars]
 ENVIRONMENT = "production"
+SENTRY_DSN = "https://704bd5e0a17440608c1e0eb04c2610d8@issues.bobadilla.tech/3"
 
 [[env.production.routes]]
 pattern = "api.requiems.xyz"

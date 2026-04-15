@@ -5,6 +5,8 @@ import (
 	"errors"
 	"net/http"
 	"strconv"
+
+	sentry "github.com/getsentry/sentry-go"
 )
 
 // Handle wraps an endpoint function with automatic JSON binding, validation,
@@ -51,6 +53,7 @@ func Handle[Req any, Res Data](
 				return
 			}
 
+			sentry.CaptureException(err)
 			Error(w, http.StatusInternalServerError, "internal_error", "internal server error")
 			return
 		}
@@ -84,6 +87,7 @@ func HandleBatch[Req any, Res Data](
 				Error(w, ae.Status, ae.Code, ae.Message)
 				return
 			}
+			sentry.CaptureException(err)
 			Error(w, http.StatusInternalServerError, "internal_error", "internal server error")
 			return
 		}

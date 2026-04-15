@@ -22,6 +22,7 @@ port = 5544
 
 [vars]
 ENVIRONMENT = "development"
+SENTRY_DSN = ""
 
 [env.production]
 name = "requiem-api-management-production"
@@ -34,6 +35,7 @@ custom_domain = true
 
 [env.production.vars]
 ENVIRONMENT = "production"
+SENTRY_DSN = "https://7cc16185263f4dbbb063e13969eaeccf@issues.bobadilla.tech/4"
 
 [[env.production.kv_namespaces]]
 binding = "KV"

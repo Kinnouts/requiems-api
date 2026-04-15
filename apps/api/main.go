@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"time"
 
+	sentry "github.com/getsentry/sentry-go"
+
 	"requiems-api/app"
 	"requiems-api/platform/config"
 )
@@ -15,6 +17,17 @@ func main() {
 	ctx := context.Background()
 
 	cfg := config.Load()
+
+	if cfg.Environment != "development" {
+		if err := sentry.Init(sentry.ClientOptions{
+			Dsn:              cfg.SentryDSN,
+			Environment:      cfg.Environment,
+			TracesSampleRate: 0.01,
+		}); err != nil {
+			log.Printf("sentry.Init: %s", err)
+		}
+		defer sentry.Flush(2 * time.Second)
+	}
 
 	appInstance, err := app.New(ctx, cfg)
 

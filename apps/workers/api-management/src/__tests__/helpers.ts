@@ -39,10 +39,7 @@ export function makeKV(store = new Map<string, string>()): KVNamespace {
  * Build a minimal D1 stub. `results` is returned from `.all()`, and
  * `firstResult` from `.first()`.  Override either per-test as needed.
  */
-export function makeDB(
-  results: unknown[] = [],
-  firstResult: unknown = null,
-): D1Database {
+export function makeDB(results: unknown[] = [], firstResult: unknown = null): D1Database {
   return {
     prepare: (_sql: string) => ({
       bind: (..._args: unknown[]) => ({
