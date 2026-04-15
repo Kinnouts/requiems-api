@@ -3,5 +3,5 @@ Sentry.init do |config|
   config.environment = Rails.env
   config.enabled_environments = %w[production staging]
   config.traces_sample_rate = 0.01
-  config.breadcrumbs_logger = [:active_support_logger, :http_logger]
+  config.breadcrumbs_logger = [ :active_support_logger, :http_logger ]
 end
