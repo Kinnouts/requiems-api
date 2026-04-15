@@ -154,21 +154,21 @@ supply their own unique `BACKEND_SECRET`.
 
 New table: `private_deployment_requests`
 
-| Column                | Type       | Notes                              |
-| --------------------- | ---------- | ---------------------------------- |
-| `user_id`             | references | FK to users, not null              |
-| `company`             | string     | not null                           |
-| `contact_name`        | string     | not null                           |
-| `contact_email`       | string     | not null                           |
-| `server_tier`         | string     | starter/growth/scale/enterprise    |
-| `monthly_price_cents` | integer    | set from tier on create            |
-| `selected_services`   | jsonb      | `["email","text"]`                 |
-| `subdomain_slug`      | string     | set by admin, unique               |
-| `tenant_secret`       | string     | set by admin                       |
+| Column                | Type       | Notes                                              |
+| --------------------- | ---------- | -------------------------------------------------- |
+| `user_id`             | references | FK to users, not null                              |
+| `company`             | string     | not null                                           |
+| `contact_name`        | string     | not null                                           |
+| `contact_email`       | string     | not null                                           |
+| `server_tier`         | string     | starter/growth/scale/enterprise                    |
+| `monthly_price_cents` | integer    | set from tier on create                            |
+| `selected_services`   | jsonb      | `["email","text"]`                                 |
+| `subdomain_slug`      | string     | set by admin, unique                               |
+| `tenant_secret`       | string     | set by admin                                       |
 | `status`              | string     | pending_payment/pending/deploying/active/cancelled |
-| `admin_notes`         | text       | optional                           |
-| `deployed_at`         | datetime   | set on activate                    |
-| `timestamps`          |            |                                    |
+| `admin_notes`         | text       | optional                                           |
+| `deployed_at`         | datetime   | set on activate                                    |
+| `timestamps`          |            |                                                    |
 
 #### Model — `app/models/private_deployment_request.rb`
 
