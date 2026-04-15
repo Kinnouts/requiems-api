@@ -7,6 +7,7 @@ export interface WorkerBindings extends BaseWorkerBindings {
   API_MANAGEMENT_API_KEY: string;
   SWAGGER_USERNAME?: string;
   SWAGGER_PASSWORD?: string;
+  SENTRY_DSN?: string;
 }
 
 const envSchema = z.object({
@@ -14,6 +15,7 @@ const envSchema = z.object({
   SWAGGER_USERNAME: z.string().optional(),
   SWAGGER_PASSWORD: z.string().optional(),
   ENVIRONMENT: z.enum(["development", "staging", "production"]).default("production"),
+  SENTRY_DSN: z.string().optional(),
 });
 
 export const validateEnv = createEnvValidator(envSchema);

@@ -14,6 +14,8 @@ type Config struct {
 	PostalCodeDBPath   string
 	CitiesDBPath       string
 	EnabledServices    string // comma-separated list of services to mount; empty = all
+	Environment        string // "development" | "staging" | "production"
+	SentryDSN          string
 }
 
 func Load() Config {
@@ -29,6 +31,8 @@ func Load() Config {
 		PostalCodeDBPath:   envOrDefault("POSTAL_CODE_DB_PATH", "dbs/postal_codes.txt"),
 		CitiesDBPath:       envOrDefault("CITIES_DB_PATH", "dbs/cities15000.txt"),
 		EnabledServices:    envOrDefault("ENABLED_SERVICES", ""),
+		Environment:        envOrDefault("ENVIRONMENT", "development"),
+		SentryDSN:          envOrDefault("SENTRY_DSN", "https://df9023edf98442d4887d1040de81b768@issues.bobadilla.tech/1"),
 	}
 }
 

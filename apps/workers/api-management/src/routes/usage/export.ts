@@ -1,6 +1,12 @@
 import { Hono } from "hono";
 import * as z from "zod";
-import { jsonError, jsonResponse, createLogger, internalError, USAGE_EXPORT_MAX_LIMIT } from "@requiem/workers-shared";
+import {
+  jsonError,
+  jsonResponse,
+  createLogger,
+  internalError,
+  USAGE_EXPORT_MAX_LIMIT,
+} from "@requiem/workers-shared";
 import type { WorkerBindings } from "../../env";
 import type { UsageExportResponse, UsageRecord } from "./types";
 
@@ -23,21 +29,19 @@ const exportQuerySchema = z.object({
  *
  * Auth: X-API-Management-Key header (only Rails dashboard has this)
  */
-app.get(
-  "/export",
-  async (c) => {
-    const log = createLogger(c.req.raw);
+app.get("/export", async (c) => {
+  const log = createLogger(c.req.raw);
 
-    const parsed = exportQuerySchema.safeParse(c.req.query());
-    if (!parsed.success) {
-      return jsonError(400, parsed.error.issues[0]?.message ?? "Validation error");
-    }
-    const { since, limit, cursor: afterId } = parsed.data;
+  const parsed = exportQuerySchema.safeParse(c.req.query());
+  if (!parsed.success) {
+    return jsonError(400, parsed.error.issues[0]?.message ?? "Validation error");
+  }
+  const { since, limit, cursor: afterId } = parsed.data;
 
-    try {
-      // Fetch usage records using keyset pagination on the autoincrement id.
-      // This is stable under concurrent inserts (unlike OFFSET which can skip rows).
-      const result = await c.env.DB.prepare(`
+  try {
+    // Fetch usage records using keyset pagination on the autoincrement id.
+    // This is stable under concurrent inserts (unlike OFFSET which can skip rows).
+    const result = await c.env.DB.prepare(`
         SELECT
           id,
           api_key,
@@ -50,43 +54,42 @@ app.get(
         ORDER BY id ASC
         LIMIT ?
       `)
-        .bind(since, afterId, limit)
-        .all<UsageRecord>();
+      .bind(since, afterId, limit)
+      .all<UsageRecord>();
 
-      if (!result.success) {
-        throw new Error("D1 query failed");
-      }
-      if (!Array.isArray(result.results)) {
-        throw new Error(`Unexpected D1 response shape: results is ${typeof result.results}`);
-      }
-      const records = result.results;
-      const hasMore = records.length === limit;
-      const nextCursor = hasMore ? records[records.length - 1].id.toString() : undefined;
-
-      log.info("Usage export successful", {
-        returned: records.length,
-        hasMore,
-      });
-
-      // Strip internal id field before returning to callers
-      const usage = records.map(({ id: _id, ...rest }) => rest);
-
-      const response: UsageExportResponse = {
-        usage,
-        hasMore,
-        nextCursor,
-      };
-
-      return jsonResponse(response);
-    } catch (error) {
-      log.error("Error exporting usage data", {
-        error,
-        params: { since, limit, afterId },
-      });
-
-      return internalError(error, "Failed to export usage data", c.env.ENVIRONMENT);
+    if (!result.success) {
+      throw new Error("D1 query failed");
     }
-  },
-);
+    if (!Array.isArray(result.results)) {
+      throw new Error(`Unexpected D1 response shape: results is ${typeof result.results}`);
+    }
+    const records = result.results;
+    const hasMore = records.length === limit;
+    const nextCursor = hasMore ? records[records.length - 1].id.toString() : undefined;
+
+    log.info("Usage export successful", {
+      returned: records.length,
+      hasMore,
+    });
+
+    // Strip internal id field before returning to callers
+    const usage = records.map(({ id: _id, ...rest }) => rest);
+
+    const response: UsageExportResponse = {
+      usage,
+      hasMore,
+      nextCursor,
+    };
+
+    return jsonResponse(response);
+  } catch (error) {
+    log.error("Error exporting usage data", {
+      error,
+      params: { since, limit, afterId },
+    });
+
+    return internalError(error, "Failed to export usage data", c.env.ENVIRONMENT);
+  }
+});
 
 export default app;

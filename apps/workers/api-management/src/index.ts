@@ -1,3 +1,4 @@
+import { captureException, wrapRequestHandler } from "@sentry/cloudflare";
 import { createWorkerFetch, errorHandler, notFoundHandler } from "@requiem/workers-shared";
 import { Hono } from "hono";
 
@@ -22,6 +23,27 @@ app.route("/usage", usageRoute);
 app.route("/analytics", analyticsRoute);
 
 app.notFound(notFoundHandler);
-app.onError(errorHandler);
 
-export default createWorkerFetch(app, validateEnv);
+// Capture Hono-handled errors (these are swallowed by onError and never rethrow)
+app.onError((err, c) => {
+  captureException(err);
+  return errorHandler(err, c);
+});
+
+const baseHandler = createWorkerFetch(app, validateEnv);
+
+export default {
+  fetch(request: Request, env: WorkerBindings, ctx: ExecutionContext): Promise<Response> {
+    return wrapRequestHandler(
+      {
+        options: {
+          dsn: env.SENTRY_DSN ?? "",
+          tracesSampleRate: 0.01,
+        },
+        request,
+        context: ctx,
+      },
+      () => baseHandler.fetch(request, env, ctx),
+    );
+  },
+} satisfies ExportedHandler<WorkerBindings>;
