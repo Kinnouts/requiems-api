@@ -10,6 +10,7 @@ This folder contains developer-focused documentation for Requiem API.
    - [Adding endpoints to the Go backend](./adding-go-endpoints.md)
 6. [The Auth Gateway](./auth-gateway.md)
 7. [The Ruby on Rails App](./rails-app.md)
+   - [Background Jobs](./background-jobs.md)
 8. [APIs](./apis/readme.md)
 9. [Infrastructure](./infrastructure.md)
 10. [Deployment](./deployment.md)
