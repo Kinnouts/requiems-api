@@ -1,60 +1,18 @@
-<style>
-  @keyframes marquee-scroll-reverse {
-    from { transform: translateX(-50%); }
-    to   { transform: translateX(0); }
-  }
-  .marquee-track-reverse {
-    display: flex;
-    width: max-content;
-    animation: marquee-scroll-reverse 32s linear infinite;
-  }
-  .marquee-track-reverse:hover { animation-play-state: paused; }
-  .marquee-outer-dark {
-    overflow: hidden;
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
-    mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
-  }
-  .logo-slot-dark {
-    width: 220px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 24px;
-  }
-  .logo-slot-dark img {
-    height: 36px;
-    width: auto;
-    max-width: 172px;
-    object-fit: contain;
-  }
-</style>
+<% logos = [
+  { file: "companies/verigeo.png",             alt: "Verigeo"          },
+  { file: "companies/shareweave.jpeg",          alt: "Shareweave"       },
+  { file: "companies/korealexa-whitebg.jpeg",   alt: "Korealexa"        },
+  { file: "companies/flyver-docs.png",          alt: "Flyver Docs"      },
+  { file: "companies/flyver.jpeg",              alt: "Fleyver"           },
+  { file: "companies/compile-strength.png",     alt: "Compile Strength" },
+  { file: "companies/bobadilla-tech.png",       alt: "Bobadilla Tech"   },
+] %>
 
-<div class="py-14 bg-gray-950 dark:bg-black">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <p class="text-center text-xs font-semibold tracking-widest uppercase text-gray-600 dark:text-gray-700 mb-10">
-      <%= t("home.index.social_proof.label") %>
-    </p>
-  </div>
-
-  <div class="marquee-outer-dark">
-    <div class="marquee-track-reverse">
-      <% logos = [
-        { file: "companies/verigeo.png",             alt: "Verigeo"          },
-        { file: "companies/korealexa-whitebg.jpeg",  alt: "Korealexa"        },
-        { file: "companies/flyver-docs.png",         alt: "Flyver Docs"      },
-        { file: "companies/flyver.jpeg",             alt: "Flyver"           },
-        { file: "companies/compile-strength.png",    alt: "Compile Strength" },
-        { file: "companies/bobadilla-tech.png",      alt: "Bobadilla Tech"   },
-      ] %>
-      <% 2.times do %>
-        <% logos.each do |logo| %>
-          <div class="logo-slot-dark">
-            <%= image_tag logo[:file], alt: logo[:alt],
-                  class: "opacity-40 hover:opacity-90 hover:brightness-110 hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.12)] transition-all duration-300" %>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
-</div>
+<%= render "partials/shared/logo_marquee",
+      logos:       logos,
+      label:       t("home.index.social_proof.label"),
+      reverse:     true,
+      speed:       "40s",
+      bg_class:    "bg-gray-950 dark:bg-black",
+      label_class: "text-gray-600 dark:text-gray-700",
+      logo_class:  "opacity-40 hover:opacity-90 hover:brightness-110 hover:drop-shadow-[0_0_12px_rgba(255,255,255,0.12)] transition-all duration-300" %>

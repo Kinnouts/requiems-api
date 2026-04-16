@@ -1,60 +1,14 @@
-<style>
-  @keyframes marquee-scroll {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-  .marquee-track {
-    display: flex;
-    width: max-content;
-    animation: marquee-scroll 28s linear infinite;
-  }
-  .marquee-track:hover { animation-play-state: paused; }
-  .marquee-outer {
-    overflow: hidden;
-    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
-    mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
-  }
-  .logo-slot {
-    width: 220px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 24px;
-  }
-  .logo-slot img {
-    height: 40px;
-    width: auto;
-    max-width: 172px;
-    object-fit: contain;
-  }
-</style>
+<% logos = [
+  { file: "companies/bobadilla-tech.png",    alt: "Bobadilla Tech"   },
+  { file: "companies/compile-strength.png",  alt: "Compile Strength" },
+  { file: "companies/flyver.jpeg",            alt: "Flyver"           },
+  { file: "companies/flyver-docs.png",        alt: "Flyver Docs"      },
+  { file: "companies/korealexa-whitebg.jpeg", alt: "Korealexa"        },
+  { file: "companies/shareweave.jpeg",        alt: "Shareweave"       },
+  { file: "companies/verigeo.png",            alt: "Verigeo"          },
+] %>
 
-<div class="py-14 bg-white dark:bg-gray-950 border-y border-gray-100 dark:border-gray-800">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <p class="text-center text-xs font-semibold tracking-widest uppercase text-gray-400 dark:text-gray-500 mb-10">
-      <%= t("home.index.trusted_by.label") %>
-    </p>
-  </div>
-
-  <div class="marquee-outer">
-    <div class="marquee-track">
-      <% logos = [
-        { file: "companies/bobadilla-tech.png",    alt: "Bobadilla Tech"   },
-        { file: "companies/compile-strength.png",  alt: "Compile Strength" },
-        { file: "companies/flyver.jpeg",            alt: "Flyver"           },
-        { file: "companies/flyver-docs.png",        alt: "Flyver Docs"      },
-        { file: "companies/korealexa-whitebg.jpeg", alt: "Korealexa"        },
-        { file: "companies/verigeo.png",            alt: "Verigeo"          },
-      ] %>
-      <% 2.times do %>
-        <% logos.each do |logo| %>
-          <div class="logo-slot">
-            <%= image_tag logo[:file], alt: logo[:alt],
-                  class: "opacity-60 hover:opacity-100 hover:brightness-110 hover:drop-shadow-[0_0_10px_rgba(99,102,241,0.2)] transition-all duration-300" %>
-          </div>
-        <% end %>
-      <% end %>
-    </div>
-  </div>
-</div>
+<%= render "partials/shared/logo_marquee",
+      logos:      logos,
+      label:      t("home.index.trusted_by.label"),
+      speed:      "34s" %>

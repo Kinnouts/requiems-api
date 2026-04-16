@@ -22,7 +22,9 @@ es:
         examples_title: "Ejemplos de codigo"
         examples_desc: "Ejemplos listos para copiar en cURL, Python, JavaScript, Go y mas. Cada ejemplo incluye version en Markdown lista para herramientas de IA y agentes."
         docs_title: "Documentacion precisa"
-        docs_desc: "Cada parametro, campo de respuesta y codigo de error documentado. Disenado para cargarse directamente en Claude, ChatGPT o cualquier asistente de IA."
+        docs_desc: "Cada parametro, campo de respuesta y codigo de error documentado. Sin adivinar."
+        ai_title: "Construido para agentes de IA"
+        ai_desc: "Cada API incluye llms.txt, documentacion completa en Markdown y ejemplos en formato AI-paste. Abre cualquier endpoint directamente en Claude o ChatGPT con un clic. Ideal para agentes, copilots y productos con LLMs."
       categories:
         heading: "Categorías de APIs"
         description: "Explora nuestra colección completa de APIs organizadas por categoría para encontrar exactamente lo que necesitas."

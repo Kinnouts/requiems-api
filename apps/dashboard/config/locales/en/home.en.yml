@@ -22,7 +22,9 @@ en:
         examples_title: "Code Examples"
         examples_desc: "Copy-paste examples in cURL, Python, JavaScript, Go, and more. Every example ships with a Markdown version ready for AI coding tools and agents."
         docs_title: "Precise Documentation"
-        docs_desc: "Every parameter, response field, and error code documented. Designed to be loaded directly into Claude, ChatGPT, or any AI assistant."
+        docs_desc: "Every parameter, response field, and error code documented. No guessing required."
+        ai_title: "Built for AI Agents"
+        ai_desc: "Every API ships with llms.txt, a full Markdown doc, and code examples in AI-paste format. Open any endpoint directly in Claude or ChatGPT with one click. Built for agents, copilots, and LLM-powered products."
       categories:
         heading: "API Categories"
         description: "Explore our comprehensive collection of APIs organized by category to find exactly what you need."
