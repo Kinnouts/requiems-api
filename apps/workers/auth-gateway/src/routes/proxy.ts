@@ -1,4 +1,3 @@
-import { Hono } from "hono";
 import {
   type ApiKeyData,
   createLogger,
@@ -8,6 +7,7 @@ import {
   type RateLimitResult,
   type RequestCheckResult,
 } from "@requiem/workers-shared";
+import { Hono } from "hono";
 
 import type { WorkerBindings } from "../env";
 import { addUsageHeaders, fetchBackend, filterHeaders } from "../http";
@@ -72,6 +72,8 @@ app.all("/*", async (c) => {
       status: backendResponse.status,
       path: url.pathname,
     });
+
+    log.debug("Backend Response", result);
 
     const response = addUsageHeaders(backendResponse, {
       requestsUsed: 0,

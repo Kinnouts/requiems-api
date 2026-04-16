@@ -45,24 +45,24 @@ describe("Gateway", () => {
 
   describe("Authentication", () => {
     it("returns 401 when no API key is provided", async () => {
-      const res = await unauthenticated("/v1/text/advice");
+      const res = await unauthenticated("/v1/entertainment/advice");
       expect(res.status).toBe(401);
     });
 
     it("returns 401 for an invalid API key", async () => {
-      const res = await withBadKey("/v1/text/advice");
+      const res = await withBadKey("/v1/entertainment/advice");
       expect(res.status).toBe(401);
     });
 
     it("returns 200 for a valid API key", async () => {
-      const res = await authenticated("/v1/text/advice");
+      const res = await authenticated("/v1/entertainment/advice");
       expect(res.status).toBe(200);
     });
   });
 
   describe("Usage headers on successful requests", () => {
     it("response includes X-Requests-Used header", async () => {
-      const res = await authenticated("/v1/text/advice");
+      const res = await authenticated("/v1/entertainment/advice");
       expect(
         res.headers.has("x-requests-used") ||
           res.headers.has("X-Requests-Used"),
@@ -70,7 +70,7 @@ describe("Gateway", () => {
     });
 
     it("response includes X-Requests-Remaining header", async () => {
-      const res = await authenticated("/v1/text/advice");
+      const res = await authenticated("/v1/entertainment/advice");
       expect(
         res.headers.has("x-requests-remaining") ||
           res.headers.has("X-Requests-Remaining"),
@@ -78,7 +78,7 @@ describe("Gateway", () => {
     });
 
     it("response includes X-RateLimit-Remaining header", async () => {
-      const res = await authenticated("/v1/text/advice");
+      const res = await authenticated("/v1/entertainment/advice");
       expect(
         res.headers.has("x-ratelimit-remaining") ||
           res.headers.has("X-RateLimit-Remaining"),
@@ -86,12 +86,12 @@ describe("Gateway", () => {
     });
 
     it("response includes X-Plan header", async () => {
-      const res = await authenticated("/v1/text/advice");
+      const res = await authenticated("/v1/entertainment/advice");
       expect(res.headers.has("x-plan") || res.headers.has("X-Plan")).toBe(true);
     });
 
     it("CORS header is present", async () => {
-      const res = await authenticated("/v1/text/advice");
+      const res = await authenticated("/v1/entertainment/advice");
       expect(res.headers.get("access-control-allow-origin")).toBe("*");
     });
   });

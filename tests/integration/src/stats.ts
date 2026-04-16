@@ -69,11 +69,37 @@ export class Stats {
     return result;
   }
 
-  /** Persist timing data to a temp file for the reporter to read */
+  /**
+   * Persist timing data to the temp file for the reporter to read.
+   *
+   * Merges with any data already in the file so that each test file's
+   * afterAll hook accumulates into a single shared record (vitest isolates
+   * modules per file even in singleFork mode, giving each file its own
+   * Stats instance).
+   */
   persist(): void {
-    const obj: Record<string, number[]> = {};
-    for (const [k, v] of this._data) obj[k] = v;
-    fs.writeFileSync(STATS_TEMP_FILE, JSON.stringify(obj), "utf8");
+    // Load previously written data from earlier test files in this run
+    const accumulated: Record<string, number[]> = {};
+    if (fs.existsSync(STATS_TEMP_FILE)) {
+      try {
+        const prior = JSON.parse(
+          fs.readFileSync(STATS_TEMP_FILE, "utf8"),
+        ) as Record<string, number[]>;
+        for (const [k, v] of Object.entries(prior)) {
+          accumulated[k] = v;
+        }
+      } catch {
+        // Corrupt file — start fresh
+      }
+    }
+
+    // Merge this file's data on top
+    for (const [k, v] of this._data) {
+      const existing = accumulated[k];
+      accumulated[k] = existing ? [...existing, ...v] : v;
+    }
+
+    fs.writeFileSync(STATS_TEMP_FILE, JSON.stringify(accumulated), "utf8");
   }
 
   /** Load timing data from the temp file (used by the reporter) */

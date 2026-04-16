@@ -38,7 +38,7 @@ describe("Technology — Utilities API", () => {
         const { response } = await client.get("/v1/technology/convert", {
           value: "5",
           from: "km",
-          to: "mi",
+          to: "miles",
         });
         const { data } = await assertEnvelope(response, SUITE, "convert_units");
         const d = data as Record<string, unknown>;

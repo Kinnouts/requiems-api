@@ -1,0 +1,7 @@
+{
+  "createdAt": "2026-04-16T02:04:58.371Z",
+  "updatedAt": "2026-04-16T02:04:58.371Z",
+  "shapes": {
+    "base64_encode": "{data:{result:string},metadata:{timestamp:string}}"
+  }
+}

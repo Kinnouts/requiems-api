@@ -16,6 +16,8 @@ export default defineConfig({
         singleFork: true,
       },
     },
+    // Clears the stats temp file once before all tests start
+    globalSetup: ["./src/globalSetup.ts"],
     // Loads .env and registers the afterAll timing-persistence hook
     setupFiles: ["./src/setup.ts"],
     // Custom reporters — default + our performance reporter
