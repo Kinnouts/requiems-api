@@ -128,9 +128,9 @@ faq:
       The text is generated using the Lorelai library, which creates varied Lorem Ipsum content based on the classic
       Lorem Ipsum corpus.
 performance:
-  p50_ms: 886
-  p95_ms: 1123
-  p99_ms: 1209
-  avg_ms: 919
+  p50_ms: 854
+  p95_ms: 1029
+  p99_ms: 1797
+  avg_ms: 918
   samples: 51
   measured_at: "2026-04-16"

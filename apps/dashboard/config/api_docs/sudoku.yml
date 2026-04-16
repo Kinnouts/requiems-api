@@ -127,9 +127,9 @@ faq:
       Three levels are supported: easy (45 given cells), medium (35 given cells), and hard (29 given cells). When the
       difficulty parameter is omitted, medium is used.
 performance:
-  p50_ms: 1095
-  p95_ms: 1095
-  p99_ms: 1095
-  avg_ms: 1095
+  p50_ms: 1208
+  p95_ms: 1208
+  p99_ms: 1208
+  avg_ms: 1208
   samples: 1
   measured_at: "2026-04-16"

@@ -3,8 +3,7 @@
  *
  * Covers: /v1/text/words/random, /v1/text/lorem,
  *         /v1/text/dictionary/{word}, /v1/text/thesaurus/{word},
- *         /v1/text/spellcheck, /v1/validation/profanity,
- *         /v1/entertainment/advice, /v1/entertainment/quotes/random
+ *         /v1/text/spellcheck, /v1/validation/profanity
  *
  * Each test is run `config.runs` times to produce stable timing samples and
  * surface flakiness.  Response body shapes are snapshotted on the first run
@@ -18,32 +17,6 @@ import { assertEnvelope, repeat } from "../helpers.js";
 const SUITE = "text";
 
 describe("Text API", () => {
-  describe("GET /v1/entertainment/advice", () => {
-    it("returns a random piece of advice", async () => {
-      await repeat(async () => {
-        const { response } = await client.get("/v1/entertainment/advice");
-        const { data } = await assertEnvelope(response, SUITE, "advice");
-        const d = data as Record<string, unknown>;
-        expect(typeof d["id"]).toBe("number");
-        expect(typeof d["advice"]).toBe("string");
-        expect((d["advice"] as string).length).toBeGreaterThan(0);
-      });
-    });
-  });
-
-  describe("GET /v1/entertainment/quotes/random", () => {
-    it("returns a random quote", async () => {
-      await repeat(async () => {
-        const { response } = await client.get("/v1/entertainment/quotes/random");
-        const { data } = await assertEnvelope(response, SUITE, "quotes_random");
-        const d = data as Record<string, unknown>;
-        expect(typeof d["id"]).toBe("number");
-        expect(typeof d["text"]).toBe("string");
-        expect(typeof d["author"]).toBe("string");
-      });
-    });
-  });
-
   describe("GET /v1/text/words/random", () => {
     it("returns a random word", async () => {
       await repeat(async () => {
@@ -68,17 +41,19 @@ describe("Text API", () => {
     });
 
     it("returns correct paragraph count when requested", async () => {
-      const { response } = await client.get("/v1/text/lorem", {
-        paragraphs: "2",
+      await repeat(async () => {
+        const { response } = await client.get("/v1/text/lorem", {
+          paragraphs: "2",
+        });
+        const { data } = await assertEnvelope(
+          response,
+          SUITE,
+          "lorem_2_paragraphs",
+        );
+        const d = data as Record<string, unknown>;
+        expect(typeof d["paragraphs"]).toBe("number");
+        expect(d["paragraphs"] as number).toBeGreaterThanOrEqual(2);
       });
-      const { data } = await assertEnvelope(
-        response,
-        SUITE,
-        "lorem_2_paragraphs",
-      );
-      const d = data as Record<string, unknown>;
-      expect(typeof d["paragraphs"]).toBe("number");
-      expect(d["paragraphs"] as number).toBeGreaterThanOrEqual(2);
     });
   });
 
@@ -114,27 +89,35 @@ describe("Text API", () => {
 
   describe("POST /v1/validation/profanity", () => {
     it("detects clean text", async () => {
-      const { response } = await client.post("/v1/validation/profanity", {
-        text: "Hello, world!",
+      await repeat(async () => {
+        const { response } = await client.post("/v1/validation/profanity", {
+          text: "Hello, world!",
+        });
+        const { data } = await assertEnvelope(
+          response,
+          SUITE,
+          "profanity_clean",
+        );
+        const d = data as Record<string, unknown>;
+        expect(d["has_profanity"]).toBe(false);
       });
-      const { data } = await assertEnvelope(response, SUITE, "profanity_clean");
-      const d = data as Record<string, unknown>;
-      expect(d["has_profanity"]).toBe(false);
     });
   });
 
   describe("POST /v1/text/spellcheck", () => {
     it("returns no errors for correctly spelled text", async () => {
-      const { response } = await client.post("/v1/text/spellcheck", {
-        text: "The quick brown fox jumps over the lazy dog.",
+      await repeat(async () => {
+        const { response } = await client.post("/v1/text/spellcheck", {
+          text: "The quick brown fox jumps over the lazy dog.",
+        });
+        const { data } = await assertEnvelope(
+          response,
+          SUITE,
+          "spellcheck_correct",
+        );
+        const d = data as Record<string, unknown>;
+        expect(Array.isArray(d["corrections"])).toBe(true);
       });
-      const { data } = await assertEnvelope(
-        response,
-        SUITE,
-        "spellcheck_correct",
-      );
-      const d = data as Record<string, unknown>;
-      expect(Array.isArray(d["corrections"])).toBe(true);
     });
   });
 });
