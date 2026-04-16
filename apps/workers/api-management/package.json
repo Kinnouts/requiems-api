@@ -25,12 +25,12 @@
     "@hono/swagger-ui": "^0.6.1",
     "@sentry/cloudflare": "^10.48.0",
     "hono": "4.12.14",
-    "nanoid": "^5.1.7",
+    "nanoid": "^5.1.9",
     "zod": "^4.0.0"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.4.12",
-    "@cloudflare/workers-types": "^4.20260409.1",
+    "@cloudflare/workers-types": "^4.20260416.2",
     "@edge-runtime/vm": "^5.0.0",
     "@standard-schema/spec": "^1.1.0",
     "@types/node": "^25.6.0",

@@ -16,13 +16,13 @@ importers:
         version: 0.6.1(hono@4.12.14)
       '@sentry/cloudflare':
         specifier: ^10.48.0
-        version: 10.48.0(@cloudflare/workers-types@4.20260409.1)
+        version: 10.48.0(@cloudflare/workers-types@4.20260416.2)
       hono:
         specifier: 4.12.14
         version: 4.12.14
       nanoid:
-        specifier: ^5.1.7
-        version: 5.1.7
+        specifier: ^5.1.9
+        version: 5.1.9
       zod:
         specifier: ^4.0.0
         version: 4.3.6
@@ -31,8 +31,8 @@ importers:
         specifier: ^2.4.12
         version: 2.4.12
       '@cloudflare/workers-types':
-        specifier: ^4.20260409.1
-        version: 4.20260409.1
+        specifier: ^4.20260416.2
+        version: 4.20260416.2
       '@edge-runtime/vm':
         specifier: ^5.0.0
         version: 5.0.0
@@ -177,8 +177,8 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@cloudflare/workers-types@4.20260409.1':
-    resolution: {integrity: sha512-0rGuppPeip6dqlI6013wC8tE+kbRK+tcaDfqCxKf9sEHDNfSWWUuKgIEDpt6IHHP2O0iYBQpngk5Siv4CL/HGQ==}
+  '@cloudflare/workers-types@4.20260416.2':
+    resolution: {integrity: sha512-f7VGuKsHckH5n9KATTPJQ6AGdc2q58eM2waGzzDoCKw+PBtw9j2TWdRz8tLkviv7XcjkcuKy181vQFffXJicrA==}
 
   '@cspotcode/source-map-support@0.8.1':
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -1056,8 +1056,8 @@ packages:
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
     hasBin: true
 
-  nanoid@5.1.7:
-    resolution: {integrity: sha512-ua3NDgISf6jdwezAheMOk4mbE1LXjm1DfMUDMuJf4AqxLFK3ccGpgWizwa5YV7Yz9EpXwEaWoRXSb/BnV0t5dQ==}
+  nanoid@5.1.9:
+    resolution: {integrity: sha512-ZUvP7KeBLe3OZ1ypw6dI/TzYJuvHP77IM4Ry73waSQTLn8/g8rpdjfyVAh7t1/+FjBtG4lCP42MEbDxOsRpBMw==}
     engines: {node: ^18 || >=20}
     hasBin: true
 
@@ -1405,7 +1405,7 @@ snapshots:
   '@cloudflare/workerd-windows-64@1.20260409.1':
     optional: true
 
-  '@cloudflare/workers-types@4.20260409.1': {}
+  '@cloudflare/workers-types@4.20260416.2': {}
 
   '@cspotcode/source-map-support@0.8.1':
     dependencies:
@@ -1788,12 +1788,12 @@ snapshots:
   '@rollup/rollup-win32-x64-msvc@4.59.0':
     optional: true
 
-  '@sentry/cloudflare@10.48.0(@cloudflare/workers-types@4.20260409.1)':
+  '@sentry/cloudflare@10.48.0(@cloudflare/workers-types@4.20260416.2)':
     dependencies:
       '@opentelemetry/api': 1.9.1
       '@sentry/core': 10.48.0
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20260409.1
+      '@cloudflare/workers-types': 4.20260416.2
 
   '@sentry/core@10.48.0': {}
 
@@ -2107,7 +2107,7 @@ snapshots:
 
   nanoid@3.3.11: {}
 
-  nanoid@5.1.7: {}
+  nanoid@5.1.9: {}
 
   npm-run-path@5.3.0:
     dependencies:
@@ -2372,7 +2372,7 @@ snapshots:
       unenv: 2.0.0-rc.24
       workerd: 1.20260409.1
     optionalDependencies:
-      '@cloudflare/workers-types': 4.20260409.1
+      '@cloudflare/workers-types': 4.20260416.2
       fsevents: 2.3.3
     transitivePeerDependencies:
       - bufferutil
