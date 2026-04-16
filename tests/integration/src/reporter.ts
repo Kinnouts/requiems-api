@@ -15,10 +15,12 @@ import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { Stats } from "./stats.js";
 
-const REPORT_DIR = path.join(
-  path.dirname(fileURLToPath(import.meta.url)),
-  "../../reports",
-);
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const REPORT_DIR = path.join(__dirname, "../../reports");
+
+/** Where the committed performance baseline lives (tests/integration/perf-baseline.json) */
+const PERF_BASELINE_PATH = path.join(__dirname, "../perf-baseline.json");
 
 export default class PerformanceReporter implements Reporter {
   onFinished(_files?: File[]): void {
@@ -71,29 +73,57 @@ export default class PerformanceReporter implements Reporter {
     console.log(sep);
     console.log();
 
-    // Write JSON report
+    const now = new Date().toISOString();
+    const baseUrl =
+      process.env["API_BASE_URL"] ?? "https://api.requiems.xyz";
+
+    // Write timestamped JSON report (always)
     try {
       fs.mkdirSync(REPORT_DIR, { recursive: true });
       const reportPath = path.join(
         REPORT_DIR,
-        `perf-${new Date().toISOString().replace(/[:.]/g, "-")}.json`,
+        `perf-${now.replace(/[:.]/g, "-")}.json`,
       );
       fs.writeFileSync(
         reportPath,
-        JSON.stringify(
-          {
-            generatedAt: new Date().toISOString(),
-            baseUrl: process.env["API_BASE_URL"] ?? "https://api.requiems.xyz",
-            endpoints: summary,
-          },
-          null,
-          2,
-        ) + "\n",
+        JSON.stringify({ generatedAt: now, baseUrl, endpoints: summary }, null, 2) +
+          "\n",
         "utf8",
       );
       console.log(`📁  Performance report saved to: ${reportPath}`);
     } catch {
       // Non-fatal — report printing to stdout is more important
+    }
+
+    // Optionally update the committed performance baseline (no raw[] field)
+    if (process.env["UPDATE_PERF_BASELINE"] === "true") {
+      try {
+        const runs = Number(process.env["INTEGRATION_RUNS"] ?? "20");
+        const baselineEndpoints = summary.map(
+          ({ path, samples, min, avg, p50, p95, p99, max }) => ({
+            path,
+            samples,
+            min,
+            avg,
+            p50,
+            p95,
+            p99,
+            max,
+          }),
+        );
+        fs.writeFileSync(
+          PERF_BASELINE_PATH,
+          JSON.stringify(
+            { generatedAt: now, baseUrl, runs, endpoints: baselineEndpoints },
+            null,
+            2,
+          ) + "\n",
+          "utf8",
+        );
+        console.log(`✅  Performance baseline updated: ${PERF_BASELINE_PATH}`);
+      } catch (err) {
+        console.error("⚠️  Failed to update perf baseline:", err);
+      }
     }
   }
 }

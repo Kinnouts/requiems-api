@@ -19,7 +19,7 @@ export function getConfig(): Config {
 
   const baseUrl = process.env["API_BASE_URL"] ?? "https://api.requiems.xyz";
   const apiKey = process.env["REQUIEMS_API_KEY"] ?? "";
-  const runs = Number(process.env["INTEGRATION_RUNS"] ?? "3");
+  const runs = Number(process.env["INTEGRATION_RUNS"] ?? "20");
 
   if (!apiKey) {
     throw new Error(

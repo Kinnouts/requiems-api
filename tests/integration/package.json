@@ -9,11 +9,14 @@
     "test": "vitest run",
     "test:watch": "vitest watch",
     "test:ui": "vitest --ui",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "docs:perf": "tsx scripts/inject-perf-docs.ts",
+    "benchmark": "INTEGRATION_RUNS=50 UPDATE_PERF_BASELINE=true vitest run && pnpm run docs:perf"
   },
   "dependencies": {},
   "devDependencies": {
     "@types/node": "^22.0.0",
+    "tsx": "^4.0.0",
     "typescript": "^5.5.4",
     "vitest": "^1.6.0"
   }
