@@ -13,7 +13,9 @@ import { getConfig } from "../config.js";
 /** Issue a request with no API key */
 async function unauthenticated(path: string): Promise<Response> {
   const cfg = getConfig();
-  return fetch(new URL(path, cfg.baseUrl).toString());
+  return fetch(new URL(path, cfg.baseUrl).toString(), {
+    signal: AbortSignal.timeout(cfg.requestTimeoutMs),
+  });
 }
 
 /** Issue a request with an obviously invalid key */
@@ -21,6 +23,7 @@ async function withBadKey(path: string): Promise<Response> {
   const cfg = getConfig();
   return fetch(new URL(path, cfg.baseUrl).toString(), {
     headers: { "requiems-api-key": "rq_live_obviously_invalid_key" },
+    signal: AbortSignal.timeout(cfg.requestTimeoutMs),
   });
 }
 
@@ -29,6 +32,7 @@ async function authenticated(path: string): Promise<Response> {
   const cfg = getConfig();
   return fetch(new URL(path, cfg.baseUrl).toString(), {
     headers: { "requiems-api-key": cfg.apiKey },
+    signal: AbortSignal.timeout(cfg.requestTimeoutMs),
   });
 }
 
@@ -36,7 +40,9 @@ describe("Gateway", () => {
   describe("Health check", () => {
     it("GET /healthz returns 200 without an API key", async () => {
       const cfg = getConfig();
-      const res = await fetch(new URL("/healthz", cfg.baseUrl).toString());
+      const res = await fetch(new URL("/healthz", cfg.baseUrl).toString(), {
+        signal: AbortSignal.timeout(cfg.requestTimeoutMs),
+      });
       expect(res.status).toBe(200);
       const body = (await res.json()) as Record<string, unknown>;
       expect(body["status"]).toBe("ok");

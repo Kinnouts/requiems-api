@@ -69,9 +69,9 @@ export async function recordRequestUsage(
   await withRetry(() =>
     bindings.DB.prepare(`
       INSERT INTO credit_usage (api_key, user_id, endpoint, credits_used, used_at)
-      VALUES (?, ?, ?, ?, datetime('now'))
+      VALUES (?, ?, ?, ?, ?)
     `)
-      .bind(apiKey, userId, endpoint, requests)
+      .bind(apiKey, userId, endpoint, requests, new Date().toISOString())
       .run(),
   );
 

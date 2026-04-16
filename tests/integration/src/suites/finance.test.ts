@@ -65,17 +65,19 @@ describe("Finance API", () => {
 
   describe("GET /v1/finance/convert", () => {
     it("converts 100 USD to GBP", async () => {
-      const { response } = await client.get("/v1/finance/convert", {
-        from: "USD",
-        to: "GBP",
-        amount: "100",
+      await repeat(async () => {
+        const { response } = await client.get("/v1/finance/convert", {
+          from: "USD",
+          to: "GBP",
+          amount: "100",
+        });
+        const { data } = await assertEnvelope(response, SUITE, "convert");
+        const d = data as Record<string, unknown>;
+        expect(d["from"]).toBe("USD");
+        expect(d["to"]).toBe("GBP");
+        expect(typeof d["converted"]).toBe("number");
+        expect(d["converted"] as number).toBeGreaterThan(0);
       });
-      const { data } = await assertEnvelope(response, SUITE, "convert");
-      const d = data as Record<string, unknown>;
-      expect(d["from"]).toBe("USD");
-      expect(d["to"]).toBe("GBP");
-      expect(typeof d["converted"]).toBe("number");
-      expect(d["converted"] as number).toBeGreaterThan(0);
     });
   });
 

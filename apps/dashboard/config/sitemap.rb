@@ -29,10 +29,10 @@ STATIC_PAGES = [
   { path: "/status",         changefreq: "always",  priority: 0.4 },
   { path: "/examples",       changefreq: "weekly",  priority: 0.6 },
   { path: "/suggest-an-api", changefreq: "monthly", priority: 0.4 },
-  { path: "/talk-to-sales",  changefreq: "monthly", priority: 0.4 },
+  { path: "/talk-to-sales",  changefreq: "monthly", priority: 0.4 }
 ].freeze
 
-SitemapGenerator::Sitemap.create do
+SitemapGenerator::Sitemap.create! do
   STATIC_PAGES.each do |page|
     %w[en es].each do |locale|
       add "/#{locale}#{page[:path]}",

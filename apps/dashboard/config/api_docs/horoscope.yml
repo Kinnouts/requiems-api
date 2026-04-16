@@ -100,9 +100,9 @@ faq:
       All 12 signs are supported — aries, taurus, gemini, cancer, leo, virgo, libra, scorpio, sagittarius, capricorn,
       aquarius, and pisces.
 performance:
-  p50_ms: 826
-  p95_ms: 1281
-  p99_ms: 1281
-  avg_ms: 1356
-  samples: 14
+  p50_ms: 880
+  p95_ms: 975
+  p99_ms: 1021
+  avg_ms: 898
+  samples: 50
   measured_at: "2026-04-16"

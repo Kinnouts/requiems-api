@@ -261,9 +261,9 @@ faq:
       number is flagged as VOIP when its type is voip, and as virtual when its type is voip, personal_number, uan,
       pager, or voicemail.
 performance:
-  p50_ms: 887
-  p95_ms: 1138
-  p99_ms: 1156
-  avg_ms: 924
+  p50_ms: 876
+  p95_ms: 923
+  p99_ms: 924
+  avg_ms: 881
   samples: 50
   measured_at: "2026-04-16"

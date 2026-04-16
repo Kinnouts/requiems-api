@@ -30,28 +30,43 @@ export async function assertEnvelope(
 }
 
 /**
- * Run an async action `runs` times (from config) and return successful results.
- * Network errors and timeouts are swallowed so a flaky backend doesn't abort
- * the entire benchmark run — partial data is still recorded in the stats table.
- * Throws only if every single attempt fails.
+ * Run an async action `runs` times (from config) and return results.
+ *
+ * Behaviour differs by mode:
+ *
+ * - **Test mode** (default): any error propagates immediately so the test
+ *   fails fast (~8 s with AbortSignal) rather than hanging for 30 s.
+ *
+ * - **Benchmark mode** (`UPDATE_PERF_BASELINE=true`): errors are caught so
+ *   partial data is still collected from a flaky backend.  However, the loop
+ *   bails out after MAX_CONSECUTIVE consecutive failures to avoid 50 × 8 s of
+ *   wasted retries when an endpoint is completely unreachable.
  */
+const MAX_CONSECUTIVE = 3;
+
 export async function repeat<T>(action: () => Promise<T>): Promise<T[]> {
   const { runs } = getConfig();
+  const isBenchmark = process.env["UPDATE_PERF_BASELINE"] === "true";
   const results: T[] = [];
-  let failures = 0;
+  let consecutiveFailures = 0;
 
   for (let i = 0; i < runs; i++) {
     try {
       results.push(await action());
+      consecutiveFailures = 0;
     } catch (err) {
-      failures++;
+      if (!isBenchmark) throw err;
+
+      consecutiveFailures++;
       const msg = err instanceof Error ? err.message : String(err);
       process.stderr.write(`    ⚠  attempt ${i + 1}/${runs} failed: ${msg}\n`);
+
+      if (consecutiveFailures >= MAX_CONSECUTIVE) break;
     }
   }
 
-  if (failures === runs) {
-    throw new Error(`All ${runs} attempts failed — backend may be down.`);
+  if (results.length === 0) {
+    throw new Error(`All attempts failed — backend may be down.`);
   }
 
   return results;

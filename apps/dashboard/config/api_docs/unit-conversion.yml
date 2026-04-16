@@ -311,9 +311,9 @@ faq:
       Yes, we periodically add new units based on user requests. If you need a specific unit that's not currently
       available, please contact support@requiems.xyz.
 performance:
-  p50_ms: 913
-  p95_ms: 1378
-  p99_ms: 2063
-  avg_ms: 1066
-  samples: 26
+  p50_ms: 893
+  p95_ms: 923
+  p99_ms: 959
+  avg_ms: 889
+  samples: 50
   measured_at: "2026-04-16"

@@ -80,8 +80,8 @@ faq:
     answer: Our collection contains over 200 pieces of curated advice and wisdom, and we're constantly adding more.
 performance:
   p50_ms: 873
-  p95_ms: 1111
-  p99_ms: 1597
-  avg_ms: 949
+  p95_ms: 928
+  p99_ms: 1107
+  avg_ms: 929
   samples: 50
   measured_at: "2026-04-16"
