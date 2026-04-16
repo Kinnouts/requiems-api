@@ -17,12 +17,12 @@ export const endpointYamlMap: Record<string, string> = {
   // ── Networking ─────────────────────────────────────────────────────────────
   "/v1/networking/disposable/check": "disposable-email",
   "/v1/networking/disposable/stats": "disposable-email",
-  "/v1/networking/ip": "ip-geolocation",
-  "/v1/networking/ip/8.8.8.8": "ip-geolocation",
+  "/v1/networking/ip": "ip-info",
+  "/v1/networking/ip/8.8.8.8": "ip-info",
   "/v1/networking/mx/gmail.com": "mx-lookup",
 
   // ── Text ───────────────────────────────────────────────────────────────────
-  "/v1/text/words/random": "random-word",
+  "/v1/text/words/random": "words",
   "/v1/text/lorem": "lorem-ipsum",
   "/v1/text/dictionary/eloquent": "dictionary",
   "/v1/text/thesaurus/happy": "thesaurus",
@@ -44,12 +44,12 @@ export const endpointYamlMap: Record<string, string> = {
   "/v1/finance/inflation": "inflation",
   "/v1/finance/exchange-rate": "exchange-rate",
   "/v1/finance/convert": "exchange-rate",
-  "/v1/finance/crypto/BTC": "crypto-price",
+  "/v1/finance/crypto/BTC": "crypto",
   "/v1/finance/commodities/gold": "commodities",
 
   // ── Technology ─────────────────────────────────────────────────────────────
   "/v1/technology/password": "password-generator",
-  "/v1/technology/useragent": "user-agent",
+  "/v1/technology/useragent": "useragent",
   "/v1/technology/base64/encode": "base64",
   "/v1/technology/base64/decode": "base64",
   "/v1/technology/base": "number-base-conversion",

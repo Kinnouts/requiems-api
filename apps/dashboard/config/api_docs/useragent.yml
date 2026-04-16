@@ -2,34 +2,31 @@ api_id: useragent
 api_name: User Agent Parser
 description: Parse user agent strings to extract browser name, version, operating system, device type, and bot detection.
 base_url: https://api.requiems.xyz
-
 overview:
   use_cases:
     - Analytics dashboards
     - Serving device-specific content
     - Bot filtering and traffic analysis
     - Browser compatibility reporting
-
   features:
     - Browser name and version detection
     - Operating system and version detection
     - Device classification (desktop, mobile, tablet, bot)
     - Bot/crawler detection
-
 endpoints:
   - name: Parse User Agent
     method: GET
     path: /v1/technology/useragent
     description: Parses a user agent string and returns structured information about the browser, OS, device, and bot status.
-
     parameters:
       - name: ua
         type: string
         required: true
         location: query
         description: The user agent string to parse.
-        example: "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
-
+        example: >-
+          Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0
+          Safari/537.36
     response_example: |
       {
         "data": {
@@ -44,7 +41,6 @@ endpoints:
           "timestamp": "2026-01-01T00:00:00Z"
         }
       }
-
     response_fields:
       - name: browser
         type: string
@@ -64,17 +60,15 @@ endpoints:
       - name: is_bot
         type: boolean
         description: True when the user agent matches a known bot or crawler pattern
-
     errors:
       - code: bad_request
         status: 400
         description: The ua query parameter is missing.
-
     code_examples:
-      curl: |
-        curl "https://api.requiems.xyz/v1/technology/useragent?ua=Mozilla%2F5.0+%28Windows+NT+10.0%29+Chrome%2F120.0.0.0" \
+      curl: >
+        curl
+        "https://api.requiems.xyz/v1/technology/useragent?ua=Mozilla%2F5.0+%28Windows+NT+10.0%29+Chrome%2F120.0.0.0" \
           -H "requiems-api-key: YOUR_API_KEY"
-
       python: |
         import requests
         from urllib.parse import quote
@@ -85,7 +79,6 @@ endpoints:
 
         response = requests.get(url, headers=headers)
         print(response.json())
-
       javascript: |
         const ua = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0";
         const url = `https://api.requiems.xyz/v1/technology/useragent?ua=${encodeURIComponent(ua)}`;
@@ -96,7 +89,6 @@ endpoints:
 
         const data = await response.json();
         console.log(data.data.browser);
-
       ruby: |
         require 'net/http'
         require 'json'
@@ -112,13 +104,19 @@ endpoints:
 
         data = JSON.parse(response.body)
         puts data['data']['browser']
-
 faq:
   - question: Which browsers are detected?
     answer: Chrome, Firefox, Safari, Edge, Opera, and Internet Explorer. Anything else returns "Other".
-
   - question: How is bot detection handled?
-    answer: The API checks for known bot/crawler keywords in the user agent string, including Googlebot, Bingbot, curl, wget, python-requests, and many others.
-
+    answer: >-
+      The API checks for known bot/crawler keywords in the user agent string, including Googlebot, Bingbot, curl, wget,
+      python-requests, and many others.
   - question: What device types are returned?
-    answer: "desktop, mobile, tablet, bot, or unknown. Tablets are identified by iPad or Android without 'Mobile' in the UA."
+    answer: desktop, mobile, tablet, bot, or unknown. Tablets are identified by iPad or Android without 'Mobile' in the UA.
+performance:
+  p50_ms: 818
+  p95_ms: 938
+  p99_ms: 1126
+  avg_ms: 829
+  samples: 50
+  measured_at: "2026-04-16"
