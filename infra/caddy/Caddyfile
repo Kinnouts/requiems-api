@@ -4,7 +4,7 @@
 
 # Main application (landing page, dashboard, admin, docs)
 requiems.xyz {
-  encode gzip
+#  encode gzip
 
   reverse_proxy dashboard:80
 }
