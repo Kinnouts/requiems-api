@@ -1,13 +1,7 @@
 # frozen_string_literal: true
 
 require "sidekiq/web"
-require "sidekiq/cron/job"
-
-if Sidekiq::VERSION.split(".").first.to_i < 8
-  require "sidekiq/cron/web_extension"
-  Sidekiq::Web.register Sidekiq::Cron::WebExtension
-  Sidekiq::Web.tabs["Cron"] = "cron"
-end
+require "sidekiq/cron/web"
 
 Rails.application.routes.draw do
   # Non-locale routes: health check, sitemaps, webhooks, API proxy, dev tools
