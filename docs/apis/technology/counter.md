@@ -126,10 +126,13 @@ curl -X POST https://api.requiems.xyz/v1/technology/counter/homepage-views \
 
 ```javascript
 // Increment whenever a feature is used
-await fetch("https://api.requiems.xyz/v1/technology/counter/dark-mode-enabled", {
-  method: "POST",
-  headers: { "requiems-api-key": "YOUR_API_KEY" },
-});
+await fetch(
+  "https://api.requiems.xyz/v1/technology/counter/dark-mode-enabled",
+  {
+    method: "POST",
+    headers: { "requiems-api-key": "YOUR_API_KEY" },
+  },
+);
 
 // Read the current count
 const res = await fetch(

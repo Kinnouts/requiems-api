@@ -65,11 +65,14 @@ print(f"Advice #{advice['id']}: {advice['advice']}")
 ### JavaScript
 
 ```javascript
-const response = await fetch("https://api.requiems.xyz/v1/entertainment/advice", {
-  headers: {
-    "requiems-api-key": "YOUR_API_KEY",
+const response = await fetch(
+  "https://api.requiems.xyz/v1/entertainment/advice",
+  {
+    headers: {
+      "requiems-api-key": "YOUR_API_KEY",
+    },
   },
-});
+);
 
 const { data } = await response.json();
 console.log(`Advice #${data.id}: ${data.advice}`);

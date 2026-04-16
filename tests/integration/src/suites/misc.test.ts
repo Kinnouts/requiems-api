@@ -1,7 +1,9 @@
 /**
- * Integration tests — Misc API endpoints
+ * Integration tests — Technology utility endpoints (formerly "misc")
  *
- * Covers: /v1/misc/random-user, /v1/misc/convert/units
+ * Covers:
+ *   /v1/technology/random-user
+ *   /v1/technology/convert   (unit conversion)
  */
 
 import { describe, it } from "vitest";
@@ -10,11 +12,11 @@ import { assertEnvelope, repeat } from "../helpers.js";
 
 const SUITE = "misc";
 
-describe("Misc API", () => {
-  describe("GET /v1/misc/random-user", () => {
+describe("Technology — Utilities API", () => {
+  describe("GET /v1/technology/random-user", () => {
     it("returns a randomly generated user", async () => {
       await repeat(async () => {
-        const { response } = await client.get("/v1/misc/random-user");
+        const { response } = await client.get("/v1/technology/random-user");
         const { data } = await assertEnvelope(response, SUITE, "random_user");
         const d = data as Record<string, unknown>;
         expect(typeof d["name"]).toBe("string");
@@ -30,10 +32,10 @@ describe("Misc API", () => {
     });
   });
 
-  describe("GET /v1/misc/convert", () => {
+  describe("GET /v1/technology/convert", () => {
     it("converts 5 kilometers to miles", async () => {
       await repeat(async () => {
-        const { response } = await client.get("/v1/misc/convert", {
+        const { response } = await client.get("/v1/technology/convert", {
           value: "5",
           from: "km",
           to: "mi",

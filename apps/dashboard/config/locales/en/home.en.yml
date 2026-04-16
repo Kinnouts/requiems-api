@@ -199,7 +199,7 @@ en:
           example: "Example: Requiems API provides a REST API for validating email addresses programmatically."
         - name: "Endpoint"
           definition: "A specific URL where an API can access the resources it needs. Each endpoint corresponds to a specific function or resource in the API."
-          example: 'Example: <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">POST /v1/email/disposable/check</code>'
+          example: 'Example: <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">POST /v1/networking/disposable/check</code>'
         - name: "Authentication"
           definition: "The process of verifying the identity of a user or application. APIs typically require authentication to ensure only authorized users can access the service."
           example: 'Example: Including your API key in the Authorization header: <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">Authorization: Bearer YOUR_API_KEY</code>'

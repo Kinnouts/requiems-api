@@ -85,14 +85,17 @@ print(f"Censored: {result['censored']}")
 ### JavaScript
 
 ```javascript
-const response = await fetch("https://api.requiems.xyz/v1/validation/profanity", {
-  method: "POST",
-  headers: {
-    "requiems-api-key": "YOUR_API_KEY",
-    "Content-Type": "application/json",
+const response = await fetch(
+  "https://api.requiems.xyz/v1/validation/profanity",
+  {
+    method: "POST",
+    headers: {
+      "requiems-api-key": "YOUR_API_KEY",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ text: "Some text to check" }),
   },
-  body: JSON.stringify({ text: "Some text to check" }),
-});
+);
 
 const { data } = await response.json();
 console.log(`Has profanity: ${data.has_profanity}`);

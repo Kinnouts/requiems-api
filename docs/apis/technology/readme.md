@@ -19,7 +19,8 @@ Generate QR codes from any text or URL, returned as PNG or base64.
 Generate barcodes in multiple formats (Code 128, 93, 39, EAN-8, EAN-13).
 
 - **Status:** mvp
-- **Endpoints:** `GET /v1/technology/barcode`, `GET /v1/technology/barcode/base64`
+- **Endpoints:** `GET /v1/technology/barcode`,
+  `GET /v1/technology/barcode/base64`
 - **Credit Cost:** 1
 
 ### [Password Generator](./password-generator.md) - ✅ MVP

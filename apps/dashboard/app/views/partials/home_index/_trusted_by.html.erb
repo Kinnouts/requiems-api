@@ -6,10 +6,27 @@
   .marquee-track {
     display: flex;
     width: max-content;
-    animation: marquee-scroll 30s linear infinite;
+    animation: marquee-scroll 28s linear infinite;
   }
-  .marquee-track:hover {
-    animation-play-state: paused;
+  .marquee-track:hover { animation-play-state: paused; }
+  .marquee-outer {
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+    mask-image: linear-gradient(to right, transparent 0%, black 15%, black 85%, transparent 100%);
+  }
+  .logo-slot {
+    width: 220px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 24px;
+  }
+  .logo-slot img {
+    height: 40px;
+    width: auto;
+    max-width: 172px;
+    object-fit: contain;
   }
 </style>
 
@@ -20,26 +37,24 @@
     </p>
   </div>
 
-  <div class="overflow-hidden">
+  <div class="marquee-outer">
     <div class="marquee-track">
-      <%# First set %>
-      <div class="flex items-center gap-16 px-8">
-        <%= image_tag "companies/bobadilla-tech.png",   alt: "Bobadilla Tech",    class: "h-9 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-default" %>
-        <%= image_tag "companies/compile-strength.png", alt: "Compile Strength",  class: "h-9 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-default" %>
-        <%= image_tag "companies/flyver.jpeg",          alt: "Flyver",            class: "h-9 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-default" %>
-        <%= image_tag "companies/flyver-docs.png",      alt: "Flyver Docs",       class: "h-9 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-default" %>
-        <%= image_tag "companies/korealexa.png",        alt: "Korealexa",         class: "h-9 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-default" %>
-        <%= image_tag "companies/verigeo.png",          alt: "Verigeo",           class: "h-9 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-default" %>
-      </div>
-      <%# Duplicate for seamless loop %>
-      <div class="flex items-center gap-16 px-8">
-        <%= image_tag "companies/bobadilla-tech.png",   alt: "", class: "h-9 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-default" %>
-        <%= image_tag "companies/compile-strength.png", alt: "", class: "h-9 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-default" %>
-        <%= image_tag "companies/flyver.jpeg",          alt: "", class: "h-9 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-default" %>
-        <%= image_tag "companies/flyver-docs.png",      alt: "", class: "h-9 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-default" %>
-        <%= image_tag "companies/korealexa.png",        alt: "", class: "h-9 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-default" %>
-        <%= image_tag "companies/verigeo.png",          alt: "", class: "h-9 w-auto object-contain grayscale opacity-50 hover:grayscale-0 hover:opacity-100 transition-all duration-300 cursor-default" %>
-      </div>
+      <% logos = [
+        { file: "companies/bobadilla-tech.png",    alt: "Bobadilla Tech"   },
+        { file: "companies/compile-strength.png",  alt: "Compile Strength" },
+        { file: "companies/flyver.jpeg",            alt: "Flyver"           },
+        { file: "companies/flyver-docs.png",        alt: "Flyver Docs"      },
+        { file: "companies/korealexa-whitebg.jpeg", alt: "Korealexa"        },
+        { file: "companies/verigeo.png",            alt: "Verigeo"          },
+      ] %>
+      <% 2.times do %>
+        <% logos.each do |logo| %>
+          <div class="logo-slot">
+            <%= image_tag logo[:file], alt: logo[:alt],
+                  class: "opacity-60 hover:opacity-100 hover:brightness-110 hover:drop-shadow-[0_0_10px_rgba(99,102,241,0.2)] transition-all duration-300" %>
+          </div>
+        <% end %>
+      <% end %>
     </div>
   </div>
 </div>

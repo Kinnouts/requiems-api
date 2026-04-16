@@ -5,8 +5,8 @@ equipment requirements, and body part filters.
 
 ## Endpoints
 
-| Method | Path                           | Description                           |
-| ------ | ------------------------------ | ------------------------------------- |
+| Method | Path                          | Description                           |
+| ------ | ----------------------------- | ------------------------------------- |
 | GET    | `/v1/health/exercises`        | Paginated list with optional filters  |
 | GET    | `/v1/health/exercises/{id}`   | Single exercise by ID                 |
 | GET    | `/v1/health/exercises/random` | Random exercise with optional filters |

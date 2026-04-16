@@ -5,8 +5,8 @@ or virtual risk using only phone metadata. No external lookups.
 
 ## Endpoints
 
-| Method | Path                            | Description               |
-| ------ | ------------------------------- | ------------------------- |
+| Method | Path                         | Description               |
+| ------ | ---------------------------- | ------------------------- |
 | GET    | `/v1/validation/phone`       | Validate a single number  |
 | POST   | `/v1/validation/phone/batch` | Validate up to 50 numbers |
 

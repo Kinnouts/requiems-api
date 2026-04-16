@@ -44,16 +44,16 @@ apps/api/
 
 Existing top-level domains and their `/v1` prefixes:
 
-| Domain folder               | URL prefix            |
-| --------------------------- | --------------------- |
-| `services/entertainment/`   | `/v1/entertainment`   |
-| `services/finance/`         | `/v1/finance`         |
-| `services/health/`          | `/v1/health`          |
-| `services/networking/`      | `/v1/networking`      |
-| `services/places/`          | `/v1/places`          |
-| `services/technology/`      | `/v1/technology`      |
-| `services/text/`            | `/v1/text`            |
-| `services/validation/`      | `/v1/validation`      |
+| Domain folder             | URL prefix          |
+| ------------------------- | ------------------- |
+| `services/entertainment/` | `/v1/entertainment` |
+| `services/finance/`       | `/v1/finance`       |
+| `services/health/`        | `/v1/health`        |
+| `services/networking/`    | `/v1/networking`    |
+| `services/places/`        | `/v1/places`        |
+| `services/technology/`    | `/v1/technology`    |
+| `services/text/`          | `/v1/text`          |
+| `services/validation/`    | `/v1/validation`    |
 
 ---
 

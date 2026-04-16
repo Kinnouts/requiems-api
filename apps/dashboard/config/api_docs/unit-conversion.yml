@@ -25,7 +25,7 @@ overview:
 endpoints:
   - name: Convert Units
     method: GET
-    path: /v1/misc/convert
+    path: /v1/technology/convert
     description: Convert a value from one unit to another
 
     parameters:
@@ -81,13 +81,13 @@ endpoints:
 
     code_examples:
       curl: |
-        curl "https://api.requiems.xyz/v1/misc/convert?from=miles&to=km&value=10" \
+        curl "https://api.requiems.xyz/v1/technology/convert?from=miles&to=km&value=10" \
           -H "requiems-api-key: YOUR_API_KEY"
 
       python: |
         import requests
 
-        url = "https://api.requiems.xyz/v1/misc/convert"
+        url = "https://api.requiems.xyz/v1/technology/convert"
         params = {"from": "miles", "to": "km", "value": 10}
         headers = {"requiems-api-key": "YOUR_API_KEY"}
 
@@ -96,7 +96,7 @@ endpoints:
 
       javascript: |
         const params = new URLSearchParams({ from: 'miles', to: 'km', value: 10 });
-        const response = await fetch(`https://api.requiems.xyz/v1/misc/convert?${params}`, {
+        const response = await fetch(`https://api.requiems.xyz/v1/technology/convert?${params}`, {
           headers: {
             'requiems-api-key': 'YOUR_API_KEY'
           }
@@ -109,7 +109,7 @@ endpoints:
         require 'net/http'
         require 'json'
 
-        uri = URI('https://api.requiems.xyz/v1/misc/convert')
+        uri = URI('https://api.requiems.xyz/v1/technology/convert')
         uri.query = URI.encode_www_form(from: 'miles', to: 'km', value: 10)
         request = Net::HTTP::Get.new(uri)
         request['requiems-api-key'] = 'YOUR_API_KEY'
@@ -123,7 +123,7 @@ endpoints:
 
   - name: List Available Units
     method: GET
-    path: /v1/misc/convert/units
+    path: /v1/technology/convert/units
     description: Returns all available unit conversion types grouped by measurement category
 
     parameters: []
@@ -165,13 +165,13 @@ endpoints:
 
     code_examples:
       curl: |
-        curl https://api.requiems.xyz/v1/misc/convert/units \
+        curl https://api.requiems.xyz/v1/technology/convert/units \
           -H "requiems-api-key: YOUR_API_KEY"
 
       python: |
         import requests
 
-        url = "https://api.requiems.xyz/v1/misc/convert/units"
+        url = "https://api.requiems.xyz/v1/technology/convert/units"
         headers = {"requiems-api-key": "YOUR_API_KEY"}
 
         response = requests.get(url, headers=headers)
@@ -181,7 +181,7 @@ endpoints:
         print("Length units:", units['length'])
 
       javascript: |
-        const response = await fetch('https://api.requiems.xyz/v1/misc/convert/units', {
+        const response = await fetch('https://api.requiems.xyz/v1/technology/convert/units', {
           headers: {
             'requiems-api-key': 'YOUR_API_KEY'
           }
@@ -198,7 +198,7 @@ endpoints:
         require 'net/http'
         require 'json'
 
-        uri = URI('https://api.requiems.xyz/v1/misc/convert/units')
+        uri = URI('https://api.requiems.xyz/v1/technology/convert/units')
         request = Net::HTTP::Get.new(uri)
         request['requiems-api-key'] = 'YOUR_API_KEY'
 
@@ -310,7 +310,7 @@ faq:
     answer: Yes. Unit keys must be lowercase exactly as shown in the supported units table (e.g. use "km" not "KM").
 
   - question: Do I need to call the units list endpoint every time I convert?
-    answer: No. Call the /v1/misc/convert/units endpoint once to discover available units, then cache the response. The list of available units changes very infrequently.
+    answer: No. Call the /v1/technology/convert/units endpoint once to discover available units, then cache the response. The list of available units changes very infrequently.
 
   - question: Can I convert between different categories (e.g., length to weight)?
     answer: No. You can only convert between units within the same category. For example, you can convert meters to feet (both length), but not meters to kilograms. The API will return a 400 error for incompatible units.

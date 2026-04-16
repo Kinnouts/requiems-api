@@ -199,7 +199,7 @@ es:
           example: "Ejemplo: Requiems API proporciona una API REST para validar direcciones de correo electrónico programáticamente."
         - name: "Endpoint"
           definition: "Una URL específica donde una API puede acceder a los recursos que necesita. Cada endpoint corresponde a una función o recurso específico en la API."
-          example: "Ejemplo: <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">POST /v1/email/disposable/check</code>"
+          example: "Ejemplo: <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">POST /v1/networking/disposable/check</code>"
         - name: "Autenticación"
           definition: "El proceso de verificar la identidad de un usuario o aplicación. Las APIs generalmente requieren autenticación para garantizar que solo los usuarios autorizados puedan acceder al servicio."
           example: "Ejemplo: Incluir tu clave API en el encabezado Authorization: <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">Authorization: Bearer TU_CLAVE_API</code>"

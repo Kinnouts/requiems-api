@@ -12,7 +12,8 @@ infrastructure work.
 Get geolocation data for any IP address: country, city, ISP, and VPN detection.
 
 - **Status:** mvp
-- **Endpoints:** `GET /v1/networking/ip` (caller IP), `GET /v1/networking/ip/{ip}`
+- **Endpoints:** `GET /v1/networking/ip` (caller IP),
+  `GET /v1/networking/ip/{ip}`
 - **Credit Cost:** 1
 
 ### [ASN Lookup](./asn-lookup.md) - ✅ MVP
