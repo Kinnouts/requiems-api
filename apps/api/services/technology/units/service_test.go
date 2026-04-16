@@ -2,6 +2,7 @@ package units
 
 import (
 	"errors"
+	"slices"
 	"testing"
 )
 
@@ -113,6 +114,25 @@ func TestService_Convert(t *testing.T) {
 			wantResult:  96.5604,
 			wantFormula: "mph × 1.60934",
 		},
+		// Temperature — remaining conversions
+		{
+			name: "fahrenheit to kelvin",
+			from: "f", to: "k", value: 32,
+			wantResult:  273.15,
+			wantFormula: "(°F − 32) × 5/9 + 273.15",
+		},
+		{
+			name: "kelvin to fahrenheit",
+			from: "k", to: "f", value: 373.15,
+			wantResult:  212,
+			wantFormula: "(K − 273.15) × 9/5 + 32",
+		},
+		{
+			name: "same temperature unit (c to c)",
+			from: "c", to: "c", value: 25,
+			wantResult:  25,
+			wantFormula: "c (no conversion needed)",
+		},
 		// Errors
 		{
 			name: "unknown from unit",
@@ -155,4 +175,50 @@ func TestService_Convert(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestService_Units(t *testing.T) {
+	svc := NewService()
+	got := svc.Units()
+
+	categories := map[string][]string{
+		"length":      got.Length,
+		"weight":      got.Weight,
+		"volume":      got.Volume,
+		"temperature": got.Temperature,
+		"area":        got.Area,
+		"speed":       got.Speed,
+	}
+
+	expectedMembers := map[string][]string{
+		"length":      {"m", "km", "miles", "ft", "in", "cm", "mm", "yd", "nmi"},
+		"weight":      {"g", "kg", "lb", "oz", "mg", "t", "stone"},
+		"volume":      {"ml", "l", "gal", "cup", "pt", "qt", "tsp", "tbsp", "fl_oz"},
+		"temperature": {"c", "f", "k"},
+		"area":        {"m2", "km2", "ft2", "in2", "cm2", "mm2", "yd2", "acre", "ha"},
+		"speed":       {"km_h", "mph", "knots", "m_s"},
+	}
+
+	for cat, members := range expectedMembers {
+		got := categories[cat]
+		if len(got) != len(members) {
+			t.Errorf("%s: got %d units, want %d", cat, len(got), len(members))
+		}
+		for _, key := range members {
+			if !slices.Contains(got, key) {
+				t.Errorf("%s: missing unit %q", cat, key)
+			}
+		}
+		// Verify sorted order.
+		for i := 1; i < len(got); i++ {
+			if got[i] < got[i-1] {
+				t.Errorf("%s: not sorted at index %d: %q before %q", cat, i, got[i-1], got[i])
+			}
+		}
+	}
+}
+
+func TestTypes_IsData(t *testing.T) {
+	Result{}.IsData()
+	Results{}.IsData()
 }
