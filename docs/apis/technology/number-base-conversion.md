@@ -59,3 +59,16 @@ Negative values are supported: `-255` in decimal converts to `-ff` in hex.
 | Code          | Status | When                                                                          |
 | ------------- | ------ | ----------------------------------------------------------------------------- |
 | `bad_request` | 400    | Missing parameter, unsupported base, or value not parseable in the given base |
+
+## Performance
+
+Measured against production (`https://api.requiems.xyz`) with 50 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 814 ms  |
+| p95     | 1221 ms |
+| p99     | 1433 ms |
+| Average | 870 ms  |
+
+_Last updated: 2026-04-16_

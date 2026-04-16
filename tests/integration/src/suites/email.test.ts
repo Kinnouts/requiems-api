@@ -30,7 +30,7 @@ describe("Email API", () => {
           "disposable_check",
         );
         const d = data as Record<string, unknown>;
-        expect(d["disposable"]).toBe(true);
+        expect(d["is_disposable"]).toBe(true);
       });
     });
 
@@ -47,7 +47,7 @@ describe("Email API", () => {
         "disposable_check_legit",
       );
       const d = data as Record<string, unknown>;
-      expect(d["disposable"]).toBe(false);
+      expect(d["is_disposable"]).toBe(false);
     });
   });
 

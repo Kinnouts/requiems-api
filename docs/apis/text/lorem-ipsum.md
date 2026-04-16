@@ -142,3 +142,16 @@ parameter to set how many sentences per paragraph (1-20).
 **Is the generated text always the same?** The text is generated using the
 Lorelai library, which creates varied Lorem Ipsum content based on the classic
 Lorem Ipsum corpus.
+
+## Performance
+
+Measured against production (`https://api.requiems.xyz`) with 51 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 802 ms  |
+| p95     | 959 ms  |
+| p99     | 1022 ms |
+| Average | 829 ms  |
+
+_Last updated: 2026-04-16_

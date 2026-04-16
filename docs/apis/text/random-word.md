@@ -125,3 +125,16 @@ of vocabulary levels.
 **Are the definitions from a specific dictionary?** The definitions are curated
 from reputable dictionary sources to provide clear, concise explanations
 suitable for general use.
+
+## Performance
+
+Measured against production (`https://api.requiems.xyz`) with 43 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 807 ms  |
+| p95     | 1009 ms |
+| p99     | 1092 ms |
+| Average | 834 ms  |
+
+_Last updated: 2026-04-16_

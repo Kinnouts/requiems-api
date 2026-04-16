@@ -1,10 +1,9 @@
-# Random Quotes API Documentation
-
 api_id: quotes
 api_name: Random Quotes
-description: Get random inspirational quotes from famous people, thinkers, and leaders. Perfect for daily motivation, content generation, or adding wisdom to your applications.
+description: >-
+  Get random inspirational quotes from famous people, thinkers, and leaders. Perfect for daily motivation, content
+  generation, or adding wisdom to your applications.
 base_url: https://api.requiems.xyz
-
 overview:
   use_cases:
     - Daily motivation apps and widgets
@@ -12,21 +11,17 @@ overview:
     - Quote of the day features
     - Inspirational dashboards
     - Content placeholders for design
-
   features:
     - Curated collection of inspirational quotes
     - Includes author attribution
     - Fast response times
     - No parameters required
-
 endpoints:
   - name: Get Random Quote
     method: GET
     path: /v1/text/quotes/random
     description: Returns a random inspirational quote with author attribution
-
     parameters: []
-
     response_example: |
       {
         "data": {
@@ -38,7 +33,6 @@ endpoints:
           "timestamp": "2026-01-01T00:00:00Z"
         }
       }
-
     response_fields:
       - name: id
         type: integer
@@ -49,17 +43,14 @@ endpoints:
       - name: author
         type: string
         description: Name of the person who said or wrote the quote
-
     errors:
       - code: 503
         message: service_unavailable
         description: No quotes available in the database
-
     code_examples:
       curl: |
         curl https://api.requiems.xyz/v1/text/quotes/random \
           -H "requiems-api-key: YOUR_API_KEY"
-
       python: |
         import requests
 
@@ -69,7 +60,6 @@ endpoints:
         response = requests.get(url, headers=headers)
         quote = response.json()['data']
         print(f"{quote['text']} - {quote['author']}")
-
       javascript: |
         const response = await fetch('https://api.requiems.xyz/v1/text/quotes/random', {
           headers: {
@@ -79,7 +69,6 @@ endpoints:
 
         const { data } = await response.json();
         console.log(`${data.text} - ${data.author}`);
-
       ruby: |
         require 'net/http'
         require 'json'
@@ -94,13 +83,21 @@ endpoints:
 
         data = JSON.parse(response.body)['data']
         puts "#{data['text']} - #{data['author']}"
-
 faq:
   - question: Can I request quotes from a specific author?
-    answer: Currently, the API returns random quotes from our entire collection. Author filtering is planned for a future update.
-
+    answer: >-
+      Currently, the API returns random quotes from our entire collection. Author filtering is planned for a future
+      update.
   - question: How many quotes are in the database?
-    answer: Our collection contains hundreds of curated inspirational quotes from famous thinkers, leaders, and innovators, and we're constantly adding more.
-
+    answer: >-
+      Our collection contains hundreds of curated inspirational quotes from famous thinkers, leaders, and innovators,
+      and we're constantly adding more.
   - question: Will I get the same quote if I call the endpoint multiple times?
     answer: No, quotes are selected randomly on each request, so consecutive calls will typically return different quotes.
+performance:
+  p50_ms: 817
+  p95_ms: 941
+  p99_ms: 1150
+  avg_ms: 868
+  samples: 50
+  measured_at: "2026-04-16"

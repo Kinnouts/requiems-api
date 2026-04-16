@@ -1,8 +1,9 @@
 api_id: exchange-rate
 api_name: Exchange Rate
-description: Get live currency exchange rates and convert amounts between currencies. Rates are sourced from the European Central Bank via Frankfurter and cached for up to one hour.
+description: >-
+  Get live currency exchange rates and convert amounts between currencies. Rates are sourced from the European Central
+  Bank via Frankfurter and cached for up to one hour.
 base_url: https://api.requiems.xyz
-
 overview:
   use_cases:
     - E-commerce multi-currency pricing
@@ -10,34 +11,29 @@ overview:
     - Travel and expense management tools
     - Financial dashboards and reporting
     - Invoice generation in foreign currencies
-
   features:
-    - "180+ currencies supported (ECB data via Frankfurter)"
+    - 180+ currencies supported (ECB data via Frankfurter)
     - Rates cached for 1 hour — fast responses, minimal latency
     - Combined convert endpoint returns rate and converted amount in one call
     - ISO 4217 three-letter currency codes (USD, EUR, GBP, JPY, etc.)
-
 endpoints:
   - name: Get Exchange Rate
     method: GET
     path: /v1/finance/exchange-rate
     description: Returns the current exchange rate between two currencies.
-
     parameters:
       - name: from
         type: string
         required: true
         location: query
-        description: "ISO 4217 source currency code (3 letters, e.g. USD)"
+        description: ISO 4217 source currency code (3 letters, e.g. USD)
         example: USD
-
       - name: to
         type: string
         required: true
         location: query
-        description: "ISO 4217 target currency code (3 letters, e.g. EUR)"
+        description: ISO 4217 target currency code (3 letters, e.g. EUR)
         example: EUR
-
     response_example: |
       {
         "data": {
@@ -50,7 +46,6 @@ endpoints:
           "timestamp": "2026-01-01T00:00:00Z"
         }
       }
-
     response_fields:
       - name: from
         type: string
@@ -64,23 +59,20 @@ endpoints:
       - name: timestamp
         type: string
         description: Date the rate was published by the ECB (ISO 8601)
-
     errors:
       - code: bad_request
         status: 400
-        description: "A required parameter is missing or the currency code is not exactly 3 alphabetic characters."
+        description: A required parameter is missing or the currency code is not exactly 3 alphabetic characters.
       - code: invalid_currency
         status: 422
         description: One or both currency codes are not recognised by the upstream data source.
       - code: upstream_error
         status: 503
         description: The exchange rate data source is temporarily unavailable.
-
     code_examples:
       curl: |
         curl "https://api.requiems.xyz/v1/finance/exchange-rate?from=USD&to=EUR" \
           -H "requiems-api-key: YOUR_API_KEY"
-
       python: |
         import requests
 
@@ -91,7 +83,6 @@ endpoints:
         response = requests.get(url, headers=headers, params=params)
         data = response.json()["data"]
         print(data["rate"])  # 0.92
-
       javascript: |
         const params = new URLSearchParams({ from: 'USD', to: 'EUR' });
         const response = await fetch(
@@ -101,7 +92,6 @@ endpoints:
 
         const { data } = await response.json();
         console.log(data.rate);  // 0.92
-
       ruby: |
         require 'net/http'
         require 'json'
@@ -118,34 +108,29 @@ endpoints:
 
         data = JSON.parse(response.body)['data']
         puts data['rate']  # 0.92
-
   - name: Convert Currency
     method: GET
     path: /v1/finance/convert
     description: Converts an amount from one currency to another and returns the rate alongside the converted value.
-
     parameters:
       - name: from
         type: string
         required: true
         location: query
-        description: "ISO 4217 source currency code (3 letters, e.g. USD)"
+        description: ISO 4217 source currency code (3 letters, e.g. USD)
         example: USD
-
       - name: to
         type: string
         required: true
         location: query
-        description: "ISO 4217 target currency code (3 letters, e.g. EUR)"
+        description: ISO 4217 target currency code (3 letters, e.g. EUR)
         example: EUR
-
       - name: amount
         type: number
         required: true
         location: query
-        description: "Amount to convert. Must be greater than 0."
+        description: Amount to convert. Must be greater than 0.
         example: 100
-
     response_example: |
       {
         "data": {
@@ -160,7 +145,6 @@ endpoints:
           "timestamp": "2026-01-01T00:00:00Z"
         }
       }
-
     response_fields:
       - name: from
         type: string
@@ -176,27 +160,26 @@ endpoints:
         description: The original amount passed in the request
       - name: converted
         type: number
-        description: "Result of amount × rate, rounded to 2 decimal places"
+        description: Result of amount × rate, rounded to 2 decimal places
       - name: timestamp
         type: string
         description: Date the rate was published by the ECB (ISO 8601)
-
     errors:
       - code: bad_request
         status: 400
-        description: "A required parameter is missing, the currency code is not 3 alphabetic characters, or the amount is 0 or negative."
+        description: >-
+          A required parameter is missing, the currency code is not 3 alphabetic characters, or the amount is 0 or
+          negative.
       - code: invalid_currency
         status: 422
         description: One or both currency codes are not recognised by the upstream data source.
       - code: upstream_error
         status: 503
         description: The exchange rate data source is temporarily unavailable.
-
     code_examples:
       curl: |
         curl "https://api.requiems.xyz/v1/finance/convert?from=USD&to=EUR&amount=100" \
           -H "requiems-api-key: YOUR_API_KEY"
-
       python: |
         import requests
 
@@ -208,7 +191,6 @@ endpoints:
         data = response.json()["data"]
         print(data["converted"])  # 92.0
         print(data["rate"])       # 0.92
-
       javascript: |
         const params = new URLSearchParams({ from: 'USD', to: 'EUR', amount: 100 });
         const response = await fetch(
@@ -219,7 +201,6 @@ endpoints:
         const { data } = await response.json();
         console.log(data.converted);  // 92
         console.log(data.rate);       // 0.92
-
       ruby: |
         require 'net/http'
         require 'json'
@@ -237,19 +218,29 @@ endpoints:
         data = JSON.parse(response.body)['data']
         puts data['converted']  # 92.0
         puts data['rate']       # 0.92
-
 faq:
   - question: How often are rates updated?
-    answer: Rates come from the European Central Bank and are published on business days, typically around 16:00 CET. The API caches each rate pair for 1 hour, so responses are fast and the cache stays fresh.
-
+    answer: >-
+      Rates come from the European Central Bank and are published on business days, typically around 16:00 CET. The API
+      caches each rate pair for 1 hour, so responses are fast and the cache stays fresh.
   - question: Which currencies are supported?
-    answer: "All currencies supported by the ECB via Frankfurter — approximately 170 currencies. If you pass an unsupported code you will receive a 422 invalid_currency error."
-
+    answer: >-
+      All currencies supported by the ECB via Frankfurter — approximately 170 currencies. If you pass an unsupported
+      code you will receive a 422 invalid_currency error.
   - question: Is the converted amount rounded?
-    answer: "Yes — the converted field is rounded to 2 decimal places. The rate itself is returned at full precision as provided by the ECB."
-
+    answer: >-
+      Yes — the converted field is rounded to 2 decimal places. The rate itself is returned at full precision as
+      provided by the ECB.
   - question: Can I convert between two non-USD/EUR currencies?
-    answer: "Yes. Any from/to combination is supported as long as both codes are in the ECB dataset."
-
+    answer: Yes. Any from/to combination is supported as long as both codes are in the ECB dataset.
   - question: Why did I get a 503?
-    answer: "The Frankfurter upstream service is temporarily unavailable. Rates are cached for 1 hour, so a 503 typically means the cache expired and the upstream could not be reached. Retry after a short delay."
+    answer: >-
+      The Frankfurter upstream service is temporarily unavailable. Rates are cached for 1 hour, so a 503 typically means
+      the cache expired and the upstream could not be reached. Retry after a short delay.
+performance:
+  p50_ms: 771
+  p95_ms: 1149
+  p99_ms: 1186
+  avg_ms: 831
+  samples: 50
+  measured_at: "2026-04-16"

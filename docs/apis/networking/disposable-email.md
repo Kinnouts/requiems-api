@@ -330,6 +330,17 @@ if (data.is_disposable) {
 
 ## Performance
 
+Measured against production (`https://api.requiems.xyz`) with 2 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 863 ms  |
+| p95     | 863 ms  |
+| p99     | 863 ms  |
+| Average | 1055 ms |
+
+_Last updated: 2026-04-16_
+
 - Single email check: ~120ns (O(1) hash map lookup)
 - Domain check: ~85ns (O(1) hash map lookup)
 - Batch operations scale linearly with the number of emails

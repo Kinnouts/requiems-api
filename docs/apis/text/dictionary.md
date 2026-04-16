@@ -58,3 +58,16 @@ writing assistants.
 | ------------- | ------ | ------------------------------------ |
 | `not_found`   | 404    | Word not found in dictionary dataset |
 | `bad_request` | 400    | Missing word path parameter          |
+
+## Performance
+
+Measured against production (`https://api.requiems.xyz`) with 50 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 773 ms  |
+| p95     | 873 ms  |
+| p99     | 1037 ms |
+| Average | 796 ms  |
+
+_Last updated: 2026-04-16_

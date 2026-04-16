@@ -1,27 +1,25 @@
 api_id: random-user
 api_name: Random User
-description: Generate random fake user profiles for testing and prototyping. Each call returns a unique name, email address, phone number, mailing address, and avatar URL.
+description: >-
+  Generate random fake user profiles for testing and prototyping. Each call returns a unique name, email address, phone
+  number, mailing address, and avatar URL.
 base_url: https://api.requiems.xyz
-
 overview:
   use_cases:
     - Populate test databases with realistic-looking user records
     - Demo and prototype applications without real user data
     - Load testing with varied user payloads
     - UI mockups and design previews
-
   features:
     - Realistic names, emails, and phone numbers via jaswdr/faker
     - Full mailing address including street, city, state, zip, and country
     - Unique avatar URL per generated user (DiceBear Identicon)
     - Every call returns a different random user
-
 endpoints:
   - name: Get Random User
     method: GET
     path: /v1/technology/random-user
     description: Returns a randomly generated fake user profile.
-
     response_example: |
       {
         "data": {
@@ -41,7 +39,6 @@ endpoints:
           "timestamp": "2026-01-01T00:00:00Z"
         }
       }
-
     response_fields:
       - name: name
         type: string
@@ -69,18 +66,15 @@ endpoints:
         description: Country name
       - name: avatar
         type: string
-        description: "URL to a unique identicon avatar for the generated user (DiceBear)"
-
+        description: URL to a unique identicon avatar for the generated user (DiceBear)
     errors:
       - code: 500
         message: internal_error
         description: Internal server error
-
     code_examples:
       curl: |
         curl https://api.requiems.xyz/v1/technology/random-user \
           -H "requiems-api-key: YOUR_API_KEY"
-
       python: |
         import requests
 
@@ -90,7 +84,6 @@ endpoints:
         response = requests.get(url, headers=headers)
         user = response.json()['data']
         print(f"Generated user: {user['name']} <{user['email']}>")
-
       javascript: |
         const response = await fetch(
           'https://api.requiems.xyz/v1/technology/random-user',
@@ -103,7 +96,6 @@ endpoints:
 
         const { data } = await response.json();
         console.log(`Generated user: ${data.name} <${data.email}>`);
-
       ruby: |
         require 'net/http'
         require 'json'
@@ -118,13 +110,23 @@ endpoints:
 
         user = JSON.parse(response.body)['data']
         puts "Generated user: #{user['name']} <#{user['email']}>"
-
 faq:
   - question: Is the generated data real?
-    answer: No. All data is entirely fake and randomly generated using the jaswdr/faker library. It is safe to use for testing and development without privacy concerns.
-
+    answer: >-
+      No. All data is entirely fake and randomly generated using the jaswdr/faker library. It is safe to use for testing
+      and development without privacy concerns.
   - question: Will the same user appear twice?
-    answer: Extremely unlikely. The generator draws from large pools of names, addresses, and other fields, so collisions are rare in practice.
-
+    answer: >-
+      Extremely unlikely. The generator draws from large pools of names, addresses, and other fields, so collisions are
+      rare in practice.
   - question: Can I use the avatar URL in my application?
-    answer: Yes. The avatar URL points to DiceBear's public identicon service, which generates a unique SVG based on the user's name. No API key is required.
+    answer: >-
+      Yes. The avatar URL points to DiceBear's public identicon service, which generates a unique SVG based on the
+      user's name. No API key is required.
+performance:
+  p50_ms: 875
+  p95_ms: 1016
+  p99_ms: 1057
+  avg_ms: 884
+  samples: 50
+  measured_at: "2026-04-16"

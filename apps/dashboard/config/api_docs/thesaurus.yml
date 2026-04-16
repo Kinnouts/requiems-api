@@ -1,10 +1,9 @@
-# Thesaurus API Documentation
-
 api_id: thesaurus
 api_name: Thesaurus
-description: Find synonyms and antonyms for any word. Perfect for vocabulary building, writing assistance, and educational applications.
+description: >-
+  Find synonyms and antonyms for any word. Perfect for vocabulary building, writing assistance, and educational
+  applications.
 base_url: https://api.requiems.xyz
-
 overview:
   use_cases:
     - Writing assistance and enrichment tools
@@ -12,19 +11,16 @@ overview:
     - Word game development
     - Educational platforms and flashcards
     - Content creation and SEO tools
-
   features:
     - Synonyms and antonyms in a single request
     - Case-insensitive lookup
     - Curated English word dataset
     - Fast, low-latency in-memory responses
-
 endpoints:
   - name: Thesaurus Lookup
     method: GET
     path: /v1/text/thesaurus/{word}
     description: Returns synonyms and antonyms for the given word.
-
     parameters:
       - name: word
         type: string
@@ -32,7 +28,6 @@ endpoints:
         location: path
         description: The word to look up in the thesaurus
         example: happy
-
     response_example: |
       {
         "data": {
@@ -44,7 +39,6 @@ endpoints:
           "timestamp": "2026-01-01T00:00:00Z"
         }
       }
-
     response_fields:
       - name: word
         type: string
@@ -55,7 +49,6 @@ endpoints:
       - name: antonyms
         type: array of strings
         description: List of words with opposite meaning
-
     errors:
       - code: not_found
         status: 404
@@ -63,12 +56,10 @@ endpoints:
       - code: bad_request
         status: 400
         description: The word path parameter is missing.
-
     code_examples:
       curl: |
         curl https://api.requiems.xyz/v1/text/thesaurus/happy \
           -H "requiems-api-key: YOUR_API_KEY"
-
       python: |
         import requests
 
@@ -79,7 +70,6 @@ endpoints:
         data = response.json()['data']
         print(f"Synonyms: {data['synonyms']}")
         print(f"Antonyms: {data['antonyms']}")
-
       javascript: |
         const response = await fetch('https://api.requiems.xyz/v1/text/thesaurus/happy', {
           headers: {
@@ -90,7 +80,6 @@ endpoints:
         const { data } = await response.json();
         console.log('Synonyms:', data.synonyms);
         console.log('Antonyms:', data.antonyms);
-
       ruby: |
         require 'net/http'
         require 'json'
@@ -106,16 +95,25 @@ endpoints:
         data = JSON.parse(response.body)['data']
         puts "Synonyms: #{data['synonyms'].join(', ')}"
         puts "Antonyms: #{data['antonyms'].join(', ')}"
-
 faq:
   - question: Is the lookup case-sensitive?
     answer: No, the lookup is case-insensitive. Searching for "Happy", "HAPPY", or "happy" all return the same result.
-
   - question: What happens if a word is not found?
-    answer: The API returns a 404 Not Found response with the error code "not_found" if the word is not in the thesaurus dataset.
-
+    answer: >-
+      The API returns a 404 Not Found response with the error code "not_found" if the word is not in the thesaurus
+      dataset.
   - question: How many words are in the dataset?
-    answer: The dataset contains over 50 curated common English words with their synonyms and antonyms, covering the most frequently used vocabulary.
-
+    answer: >-
+      The dataset contains over 50 curated common English words with their synonyms and antonyms, covering the most
+      frequently used vocabulary.
   - question: Can I get synonyms and antonyms separately?
-    answer: The endpoint returns both synonyms and antonyms in a single response for efficiency. Both fields are always present in the response.
+    answer: >-
+      The endpoint returns both synonyms and antonyms in a single response for efficiency. Both fields are always
+      present in the response.
+performance:
+  p50_ms: 834
+  p95_ms: 1074
+  p99_ms: 1122
+  avg_ms: 893
+  samples: 36
+  measured_at: "2026-04-16"

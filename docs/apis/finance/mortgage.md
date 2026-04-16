@@ -70,3 +70,16 @@ and `n` is the total number of payments (`years × 12`).
 | ---------------- | ------ | --------------------------------------------------------------------- |
 | `bad_request`    | 400    | Missing parameter, non-numeric value, rate ≤ 0, or years outside 1–50 |
 | `internal_error` | 500    | Unexpected failure                                                    |
+
+## Performance
+
+Measured against production (`https://api.requiems.xyz`) with 50 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 818 ms  |
+| p95     | 921 ms  |
+| p99     | 1300 ms |
+| Average | 833 ms  |
+
+_Last updated: 2026-04-16_

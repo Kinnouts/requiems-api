@@ -2,25 +2,21 @@ api_id: facts
 api_name: Random Facts
 description: Get random interesting facts from a curated database covering science, history, technology, nature, space, and food.
 base_url: https://api.requiems.xyz
-
 overview:
   use_cases:
     - Daily fact widgets and educational sidebars
     - Trivia games and quiz apps
     - Loading screen content and onboarding copy
     - Educational platforms and learning apps
-
   features:
     - Curated facts across 6 categories
     - Optional category filtering
     - Includes source attribution for each fact
-
 endpoints:
   - name: Get Random Fact
     method: GET
     path: /v1/entertainment/facts
     description: Returns a randomly selected fact, optionally filtered by category.
-
     parameters:
       - name: category
         type: string
@@ -28,7 +24,6 @@ endpoints:
         location: query
         description: "Filter by category. Valid values: science, history, technology, nature, space, food"
         example: science
-
     response_example: |
       {
         "data": {
@@ -40,7 +35,6 @@ endpoints:
           "timestamp": "2026-01-01T00:00:00Z"
         }
       }
-
     response_fields:
       - name: fact
         type: string
@@ -51,11 +45,9 @@ endpoints:
       - name: source
         type: string
         description: The source or publication the fact is attributed to
-
     errors:
       - code: 400
         message: bad_request
-
     code_examples:
       curl: |
         # Random fact from any category
@@ -65,7 +57,6 @@ endpoints:
         # Random science fact
         curl "https://api.requiems.xyz/v1/entertainment/facts?category=science" \
           -H "requiems-api-key: YOUR_API_KEY"
-
       python: |
         import requests
 
@@ -78,7 +69,6 @@ endpoints:
         response = requests.get(url, headers=headers, params=params)
         data = response.json()['data']
         print(f"[{data['category']}] {data['fact']} — {data['source']}")
-
       javascript: |
         const response = await fetch(
           'https://api.requiems.xyz/v1/entertainment/facts?category=history',
@@ -86,7 +76,6 @@ endpoints:
         );
         const { data } = await response.json();
         console.log(`[${data.category}] ${data.fact} — ${data.source}`);
-
       ruby: |
         require 'net/http'
         require 'json'
@@ -102,13 +91,17 @@ endpoints:
 
         data = JSON.parse(response.body)['data']
         puts "[#{data['category']}] #{data['fact']} — #{data['source']}"
-
 faq:
   - question: What categories are available?
     answer: "There are six categories: science, history, technology, nature, space, and food."
-
   - question: What happens if I pass an invalid category?
     answer: The API returns a 400 Bad Request error with a descriptive message.
-
   - question: Does every fact have a source?
     answer: Yes. Every fact in the database includes source attribution from a reputable publication or institution.
+performance:
+  p50_ms: 887
+  p95_ms: 1132
+  p99_ms: 1230
+  avg_ms: 901
+  samples: 50
+  measured_at: "2026-04-16"

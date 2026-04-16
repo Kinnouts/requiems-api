@@ -76,3 +76,16 @@ Each `corrections` entry:
 | `validation_failed` | 422    | `text` field is missing or empty    |
 | `bad_request`       | 400    | Request body is missing or not JSON |
 | `internal_error`    | 500    | Unexpected failure                  |
+
+## Performance
+
+Measured against production (`https://api.requiems.xyz`) with 1 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 1029 ms |
+| p95     | 1029 ms |
+| p99     | 1029 ms |
+| Average | 1029 ms |
+
+_Last updated: 2026-04-16_

@@ -67,3 +67,16 @@ GET /v1/entertainment/trivia?category=science&difficulty=medium
 | 404    | `not_found`    | No questions match the given filters.                     |
 | 401    | `unauthorized` | Missing API key.                                          |
 | 403    | `forbidden`    | Invalid or revoked API key.                               |
+
+## Performance
+
+Measured against production (`https://api.requiems.xyz`) with 50 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 814 ms  |
+| p95     | 1084 ms |
+| p99     | 1406 ms |
+| Average | 854 ms  |
+
+_Last updated: 2026-04-16_

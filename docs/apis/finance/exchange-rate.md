@@ -112,3 +112,16 @@ are served instantly from cache.
 Rates are provided by [Frankfurter](https://www.frankfurter.app/), an
 open-source API backed by the European Central Bank. Rates are updated on ECB
 business days, typically around 16:00 CET.
+
+## Performance
+
+Measured against production (`https://api.requiems.xyz`) with 50 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 771 ms  |
+| p95     | 1149 ms |
+| p99     | 1186 ms |
+| Average | 831 ms  |
+
+_Last updated: 2026-04-16_

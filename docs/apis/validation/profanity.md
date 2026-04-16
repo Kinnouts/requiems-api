@@ -130,3 +130,16 @@ puts "Censored: #{data['censored']}"
 | `validation_failed` | 422    | The `text` field is missing or empty     |
 | `bad_request`       | 400    | The request body is missing or malformed |
 | `internal_error`    | 500    | Unexpected server error                  |
+
+## Performance
+
+Measured against production (`https://api.requiems.xyz`) with 1 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 1142 ms |
+| p95     | 1142 ms |
+| p99     | 1142 ms |
+| Average | 1142 ms |
+
+_Last updated: 2026-04-16_

@@ -1,15 +1,15 @@
 api_id: phone-validation
 api_name: Phone Validation
-description: Validate phone numbers globally. Detect carrier, country, number type, and VOIP or virtual risk using only phone metadata. No external lookups.
+description: >-
+  Validate phone numbers globally. Detect carrier, country, number type, and VOIP or virtual risk using only phone
+  metadata. No external lookups.
 base_url: https://api.requiems.xyz
-
 overview:
   use_cases:
     - User registration forms that require a valid phone number
     - VOIP and virtual number screening before sending SMS or OTPs
     - Normalising phone numbers before storing in a database
     - Displaying consistently formatted numbers in a UI
-
   features:
     - Validates any E.164 phone number globally
     - Detects country (ISO 3166-1 alpha-2 code)
@@ -18,13 +18,13 @@ overview:
     - Detects carrier name from phone prefix metadata
     - Flags VOIP and virtual numbers for risk screening
     - Batch validation for up to 50 numbers per request
-
 endpoints:
   - name: Validate Phone Number
     method: GET
     path: /v1/validation/phone
-    description: Validates a single phone number and returns its country, type, formatted representation, carrier, and VOIP/virtual risk flags.
-
+    description: >-
+      Validates a single phone number and returns its country, type, formatted representation, carrier, and VOIP/virtual
+      risk flags.
     parameters:
       - name: number
         type: string
@@ -32,7 +32,6 @@ endpoints:
         location: query
         description: The phone number to validate. Must include the country calling code (e.g. +12015551234).
         example: "+447400123456"
-
     response_example: |
       {
         "data": {
@@ -54,7 +53,6 @@ endpoints:
           "timestamp": "2026-01-01T00:00:00Z"
         }
       }
-
     response_fields:
       - name: number
         type: string
@@ -67,7 +65,9 @@ endpoints:
         description: ISO 3166-1 alpha-2 country code (omitted when valid is false)
       - name: type
         type: string
-        description: "Number type: mobile, landline, landline_or_mobile, toll_free, voip, premium_rate, shared_cost, personal_number, pager, uan, voicemail, or unknown (omitted when valid is false)"
+        description: >-
+          Number type: mobile, landline, landline_or_mobile, toll_free, voip, premium_rate, shared_cost,
+          personal_number, pager, uan, voicemail, or unknown (omitted when valid is false)
       - name: formatted
         type: string
         description: International format of the number, e.g. +44 7400 123456 (omitted when valid is false)
@@ -82,18 +82,17 @@ endpoints:
         description: true when the number type is voip
       - name: risk.is_virtual
         type: boolean
-        description: "true when the number is not tied to a physical SIM or fixed line: voip, personal_number, uan, pager, or voicemail"
-
+        description: >-
+          true when the number is not tied to a physical SIM or fixed line: voip, personal_number, uan, pager, or
+          voicemail
     errors:
       - code: bad_request
         status: 400
         description: The number query parameter is missing.
-
     code_examples:
       curl: |
         curl "https://api.requiems.xyz/v1/validation/phone?number=%2B447400123456" \
           -H "requiems-api-key: YOUR_API_KEY"
-
       python: |
         import requests
 
@@ -103,7 +102,6 @@ endpoints:
 
         response = requests.get(url, headers=headers, params=params)
         print(response.json())
-
       javascript: |
         const number = encodeURIComponent('+447400123456');
         const response = await fetch(
@@ -113,7 +111,6 @@ endpoints:
 
         const { data } = await response.json();
         console.log(data.valid, data.carrier, data.risk);
-
       ruby: |
         require 'net/http'
         require 'json'
@@ -130,25 +127,21 @@ endpoints:
 
         data = JSON.parse(response.body)
         puts data['data']['valid']
-
   - name: Batch Validate Phone Numbers
     method: POST
     path: /v1/validation/phone/batch
     description: Validates up to 50 phone numbers in a single request. Results are returned in the same order as the input.
-
     parameters:
       - name: numbers
         type: array
         required: true
         location: body
         description: "Array of phone numbers to validate (min: 1, max: 50). Each must include the country calling code."
-        example: '["+447400123456", "+12015551234"]'
-
+        example: "[\"+447400123456\", \"+12015551234\"]"
     request_example: |
       {
         "numbers": ["+447400123456", "+12015551234", "12345"]
       }
-
     response_example: |
       {
         "data": {
@@ -181,27 +174,25 @@ endpoints:
           "timestamp": "2026-01-01T00:00:00Z"
         }
       }
-
     response_fields:
       - name: results
         type: array
-        description: Validation result for each number in the same order as the input. Each item has the same fields as the single validate endpoint.
+        description: >-
+          Validation result for each number in the same order as the input. Each item has the same fields as the single
+          validate endpoint.
       - name: total
         type: integer
         description: Number of results returned. Matches the length of the input array.
-
     errors:
       - code: validation_failed
         status: 422
         description: The numbers array is missing, empty, or contains more than 50 items.
-
     code_examples:
       curl: |
         curl -X POST "https://api.requiems.xyz/v1/validation/phone/batch" \
           -H "requiems-api-key: YOUR_API_KEY" \
           -H "Content-Type: application/json" \
           -d '{"numbers":["+447400123456","+12015551234"]}'
-
       python: |
         import requests
 
@@ -215,7 +206,6 @@ endpoints:
         response = requests.post(url, headers=headers, json=payload)
         for result in response.json()["data"]["results"]:
             print(result["number"], result["valid"])
-
       javascript: |
         const response = await fetch(
           'https://api.requiems.xyz/v1/validation/phone/batch',
@@ -231,7 +221,6 @@ endpoints:
 
         const { data } = await response.json();
         data.results.forEach(r => console.log(r.number, r.valid));
-
       ruby: |
         require 'net/http'
         require 'json'
@@ -249,19 +238,32 @@ endpoints:
         JSON.parse(response.body)['data']['results'].each do |r|
           puts "#{r['number']}: #{r['valid']}"
         end
-
 faq:
   - question: What format should I use for the phone number?
-    answer: Always include the country calling code prefixed with a plus sign (E.164 format), for example +12015551234 or +447400123456. Numbers without a country code cannot be validated reliably.
-
+    answer: >-
+      Always include the country calling code prefixed with a plus sign (E.164 format), for example +12015551234 or
+      +447400123456. Numbers without a country code cannot be validated reliably.
   - question: What does landline_or_mobile mean?
-    answer: Some numbering plans (notably the United States) do not distinguish between mobile and landline numbers at the format level. When the type cannot be determined more precisely, the API returns landline_or_mobile.
-
+    answer: >-
+      Some numbering plans (notably the United States) do not distinguish between mobile and landline numbers at the
+      format level. When the type cannot be determined more precisely, the API returns landline_or_mobile.
   - question: What happens when a number is invalid?
-    answer: The API returns HTTP 200 with valid set to false. The country, type, formatted, carrier, and risk fields are all omitted from that result.
-
+    answer: >-
+      The API returns HTTP 200 with valid set to false. The country, type, formatted, carrier, and risk fields are all
+      omitted from that result.
   - question: Will carrier always be present for valid numbers?
-    answer: No. Carrier detection relies on prefix metadata and coverage varies by country. When the carrier cannot be determined, the carrier object is omitted entirely.
-
+    answer: >-
+      No. Carrier detection relies on prefix metadata and coverage varies by country. When the carrier cannot be
+      determined, the carrier object is omitted entirely.
   - question: How is VOIP detection done?
-    answer: VOIP and virtual flags come from the phone number type in libphonenumber metadata. No external lookups are made. A number is flagged as VOIP when its type is voip, and as virtual when its type is voip, personal_number, uan, pager, or voicemail.
+    answer: >-
+      VOIP and virtual flags come from the phone number type in libphonenumber metadata. No external lookups are made. A
+      number is flagged as VOIP when its type is voip, and as virtual when its type is voip, personal_number, uan,
+      pager, or voicemail.
+performance:
+  p50_ms: 791
+  p95_ms: 879
+  p99_ms: 1132
+  avg_ms: 813
+  samples: 50
+  measured_at: "2026-04-16"

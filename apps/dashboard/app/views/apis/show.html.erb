@@ -126,6 +126,29 @@
               <a href="#faq" class="block px-3 py-2 text-sm font-medium text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg">FAQ</a>
             <% end %>
           </nav>
+
+          <% if @documentation["performance"].present? %>
+            <% perf = @documentation["performance"] %>
+            <div class="mt-6 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 p-4">
+              <div class="mb-3">
+                <span class="text-xs font-semibold uppercase tracking-wide text-gray-500 dark:text-gray-400">Performance</span>
+              </div>
+              <div class="space-y-2">
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-gray-500 dark:text-gray-400">p50 <span class="text-gray-400 dark:text-gray-500">&mdash; median</span></span>
+                  <span class="text-sm font-semibold text-gray-800 dark:text-gray-200"><%= perf["p50_ms"] %> <span class="text-xs font-normal text-gray-400">ms</span></span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-gray-500 dark:text-gray-400">p95</span>
+                  <span class="text-sm font-semibold text-gray-800 dark:text-gray-200"><%= perf["p95_ms"] %> <span class="text-xs font-normal text-gray-400">ms</span></span>
+                </div>
+                <div class="flex items-center justify-between">
+                  <span class="text-xs text-gray-500 dark:text-gray-400">p99 <span class="text-gray-400 dark:text-gray-500">&mdash; tail</span></span>
+                  <span class="text-sm font-semibold text-gray-800 dark:text-gray-200"><%= perf["p99_ms"] %> <span class="text-xs font-normal text-gray-400">ms</span></span>
+                </div>
+              </div>
+            </div>
+          <% end %>
         </div>
       </aside>
 

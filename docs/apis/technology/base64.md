@@ -217,3 +217,16 @@ puts encoded  # SGVsbG8sIHdvcmxkIQ==
 decoded = JSON.parse(base64_request('decode', { value: encoded }).body).dig('data', 'result')
 puts decoded  # Hello, world!
 ```
+
+## Performance
+
+Measured against production (`https://api.requiems.xyz`) with 50 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 772 ms  |
+| p95     | 1008 ms |
+| p99     | 1161 ms |
+| Average | 831 ms  |
+
+_Last updated: 2026-04-16_

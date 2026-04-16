@@ -1,6 +1,7 @@
-import { z } from "zod";
-import { createEnvValidator } from "@requiem/workers-shared";
 import type { BaseWorkerBindings } from "@requiem/workers-shared";
+import { createEnvValidator } from "@requiem/workers-shared";
+
+import { z } from "zod";
 
 export interface WorkerBindings extends BaseWorkerBindings {
   BACKEND_URL: string;

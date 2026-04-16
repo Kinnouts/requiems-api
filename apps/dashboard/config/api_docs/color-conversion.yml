@@ -1,10 +1,9 @@
-# Color Format Conversion API Documentation
-
 api_id: color-conversion
 api_name: Color Format Conversion
-description: Convert color values between HEX, RGB, HSL, and CMYK formats. Every response includes all four representations so you never need to call more than once.
+description: >-
+  Convert color values between HEX, RGB, HSL, and CMYK formats. Every response includes all four representations so you
+  never need to call more than once.
 base_url: https://api.requiems.xyz
-
 overview:
   use_cases:
     - Convert design tool color exports into CSS-ready values
@@ -12,20 +11,17 @@ overview:
     - Normalize color inputs from different user sources into a single format
     - Populate design system tokens from brand color values
     - Inspect color relationships between HEX codes and their HSL equivalents
-
   features:
     - Converts between HEX, RGB, HSL, and CMYK in a single call
     - Returns all four formats simultaneously — no need for multiple requests
     - Accepts shorthand HEX notation (e.g. "#f53" → "#ff5533")
     - Flexible input parsing — whitespace-tolerant for rgb() and hsl() strings
     - Zero external dependencies — fast, in-memory conversion
-
 endpoints:
   - name: Convert Color
     method: GET
     path: /v1/technology/color
     description: Convert a color value from one format to another. The response always includes all four formats.
-
     parameters:
       - name: from
         type: string
@@ -45,7 +41,6 @@ endpoints:
         location: query
         description: "Color value in the source format (e.g. #ff5733, rgb(255,87,51), hsl(11,100%,60%), cmyk(0%,66%,80%,0%))"
         example: "#ff5733"
-
     response_example: |
       {
         "data": {
@@ -62,7 +57,6 @@ endpoints:
           "timestamp": "2026-01-01T00:00:00Z"
         }
       }
-
     response_fields:
       - name: input
         type: string
@@ -72,28 +66,28 @@ endpoints:
         description: The color expressed in the requested to format
       - name: formats.hex
         type: string
-        description: "HEX representation (#rrggbb)"
+        description: HEX representation (#rrggbb)
       - name: formats.rgb
         type: string
-        description: "RGB representation (rgb(r, g, b))"
+        description: RGB representation (rgb(r, g, b))
       - name: formats.hsl
         type: string
-        description: "HSL representation (hsl(h, s%, l%))"
+        description: HSL representation (hsl(h, s%, l%))
       - name: formats.cmyk
         type: string
-        description: "CMYK representation (cmyk(c%, m%, y%, k%))"
-
+        description: CMYK representation (cmyk(c%, m%, y%, k%))
     errors:
       - code: bad_request
         status: 400
-        description: "One or more of from, to, or value parameters is missing or the from/to value is not one of: hex, rgb, hsl, cmyk."
+        description: >-
+          One or more of from, to, or value parameters is missing or the from/to value is not one of: hex, rgb, hsl,
+          cmyk.
       - code: invalid_color
         status: 422
         description: The value cannot be parsed in the specified from format.
       - code: internal_error
         status: 500
         description: Unexpected server error.
-
     code_examples:
       curl: |
         # HEX to HSL
@@ -107,7 +101,6 @@ endpoints:
         # HSL to HEX
         curl "https://api.requiems.xyz/v1/technology/color?from=hsl&to=hex&value=hsl(120%2C100%25%2C50%25)" \
           -H "requiems-api-key: YOUR_API_KEY"
-
       python: |
         import requests
 
@@ -120,7 +113,6 @@ endpoints:
 
         print(data["result"])          # hsl(11, 100%, 60%)
         print(data["formats"]["rgb"])  # rgb(255, 87, 51)
-
       javascript: |
         const params = new URLSearchParams({
           from: 'hex',
@@ -136,7 +128,6 @@ endpoints:
         const { data } = await response.json();
         console.log(data.result);           // hsl(11, 100%, 60%)
         console.log(data.formats.cmyk);     // cmyk(0%, 66%, 80%, 0%)
-
       ruby: |
         require 'net/http'
         require 'json'
@@ -154,16 +145,29 @@ endpoints:
         data = JSON.parse(response.body)['data']
         puts data['result']            # hsl(11, 100%, 60%)
         puts data['formats']['hex']    # #ff5733
-
 faq:
   - question: Does the endpoint return all formats even when I only ask for one?
-    answer: "Yes. The formats object always contains hex, rgb, hsl, and cmyk regardless of the to parameter. The to parameter only controls which format appears in the top-level result field."
-
+    answer: >-
+      Yes. The formats object always contains hex, rgb, hsl, and cmyk regardless of the to parameter. The to parameter
+      only controls which format appears in the top-level result field.
   - question: What is the accepted syntax for each format?
-    answer: "hex accepts #rrggbb or shorthand #rgb (which is expanded to #rrggbb). rgb accepts rgb(r, g, b) with or without spaces. hsl accepts hsl(h, s%, l%). cmyk accepts cmyk(c%, m%, y%, k%). All percentage signs are required for hsl and cmyk."
-
+    answer: >-
+      hex accepts #rrggbb or shorthand #rgb (which is expanded to #rrggbb). rgb accepts rgb(r, g, b) with or without
+      spaces. hsl accepts hsl(h, s%, l%). cmyk accepts cmyk(c%, m%, y%, k%). All percentage signs are required for hsl
+      and cmyk.
   - question: Is the conversion lossless?
-    answer: "Conversions that go through an RGB intermediate (all conversions here do) can have minor rounding differences on round-trips because RGB components are integers in [0, 255]. For example, converting a HEX value to HSL and back may produce a HEX value that differs in the last digit due to integer rounding."
-
+    answer: >-
+      Conversions that go through an RGB intermediate (all conversions here do) can have minor rounding differences on
+      round-trips because RGB components are integers in [0, 255]. For example, converting a HEX value to HSL and back
+      may produce a HEX value that differs in the last digit due to integer rounding.
   - question: Does it support alpha / transparency?
-    answer: "No. The current implementation supports opaque colors only (HEX, RGB, HSL, CMYK without an alpha channel). RGBA, HSLA, and HEX8 are not supported."
+    answer: >-
+      No. The current implementation supports opaque colors only (HEX, RGB, HSL, CMYK without an alpha channel). RGBA,
+      HSLA, and HEX8 are not supported.
+performance:
+  p50_ms: 798
+  p95_ms: 935
+  p99_ms: 1263
+  avg_ms: 830
+  samples: 50
+  measured_at: "2026-04-16"

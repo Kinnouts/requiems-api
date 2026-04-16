@@ -108,3 +108,16 @@ Yes, both IPv4 and IPv6 addresses are fully supported.
 
 Private IP addresses (192.168.x.x, 10.x.x.x, 172.16-31.x.x) do not have
 geolocation data. The API returns the IP with empty location fields.
+
+## Performance
+
+Measured against production (`https://api.requiems.xyz`) with 50 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 848 ms  |
+| p95     | 1027 ms |
+| p99     | 1096 ms |
+| Average | 902 ms  |
+
+_Last updated: 2026-04-16_

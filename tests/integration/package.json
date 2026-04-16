@@ -11,11 +11,14 @@
     "test:ui": "vitest --ui",
     "typecheck": "tsc --noEmit",
     "docs:perf": "tsx scripts/inject-perf-docs.ts",
-    "benchmark": "INTEGRATION_RUNS=50 UPDATE_PERF_BASELINE=true vitest run && pnpm run docs:perf"
+    "docs:perf:yaml": "tsx scripts/inject-perf-yaml.ts",
+    "benchmark": "INTEGRATION_RUNS=50 UPDATE_PERF_BASELINE=true vitest run; pnpm run docs:perf && pnpm run docs:perf:yaml"
   },
   "dependencies": {},
   "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
     "@types/node": "^22.0.0",
+    "js-yaml": "^4.1.0",
     "tsx": "^4.0.0",
     "typescript": "^5.5.4",
     "vitest": "^1.6.0"

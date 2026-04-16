@@ -93,6 +93,15 @@ module ApisHelper
     lines << "Base URL: #{doc["base_url"]}"
     lines << ""
 
+    if doc["performance"].present?
+      p = doc["performance"]
+      lines << "Performance (#{p["samples"]} samples, measured #{p["measured_at"]})"
+      lines << "  p50 (median): #{p["p50_ms"]} ms"
+      lines << "  p95:          #{p["p95_ms"]} ms"
+      lines << "  p99:          #{p["p99_ms"]} ms"
+      lines << ""
+    end
+
     doc["endpoints"]&.each do |ep|
       lines << "#{ep["method"]} #{ep["path"]}"
       lines << "-" * "#{ep["method"]} #{ep["path"]}".length
@@ -142,6 +151,20 @@ module ApisHelper
     lines << ""
     lines << "**Base URL:** `#{doc["base_url"]}`"
     lines << ""
+
+    if doc["performance"].present?
+      p = doc["performance"]
+      lines << "## Performance"
+      lines << ""
+      lines << "Measured against production with #{p["samples"]} samples (last updated #{p["measured_at"]})."
+      lines << ""
+      lines << "| Metric | Value |"
+      lines << "|--------|-------|"
+      lines << "| p50 (median) | #{p["p50_ms"]} ms |"
+      lines << "| p95 | #{p["p95_ms"]} ms |"
+      lines << "| p99 | #{p["p99_ms"]} ms |"
+      lines << ""
+    end
 
     doc["endpoints"]&.each do |ep|
       lines << "## `#{ep["method"]} #{ep["path"]}`"

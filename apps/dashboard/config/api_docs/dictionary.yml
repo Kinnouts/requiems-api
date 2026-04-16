@@ -1,10 +1,9 @@
-# Dictionary API Documentation
-
 api_id: dictionary
 api_name: Dictionary
-description: Get word definitions, IPA phonetics, usage examples, and synonyms in a single request. Perfect for vocabulary tools, writing assistants, and educational applications.
+description: >-
+  Get word definitions, IPA phonetics, usage examples, and synonyms in a single request. Perfect for vocabulary tools,
+  writing assistants, and educational applications.
 base_url: https://api.requiems.xyz
-
 overview:
   use_cases:
     - Vocabulary learning and flashcard apps
@@ -12,7 +11,6 @@ overview:
     - Educational platforms and language learning
     - Word game development
     - Content creation and SEO tools
-
   features:
     - IPA phonetic transcriptions
     - Multiple definitions per word (noun, adjective, verb, etc.)
@@ -20,13 +18,11 @@ overview:
     - Synonyms included in every response
     - Case-insensitive lookup
     - Fast, low-latency in-memory responses
-
 endpoints:
   - name: Dictionary Lookup
     method: GET
     path: /v1/text/dictionary/{word}
     description: Returns the definition, phonetics, examples, and synonyms for the given word.
-
     parameters:
       - name: word
         type: string
@@ -34,7 +30,6 @@ endpoints:
         location: path
         description: The word to look up in the dictionary
         example: ephemeral
-
     response_example: |
       {
         "data": {
@@ -53,7 +48,6 @@ endpoints:
           "timestamp": "2026-01-01T00:00:00Z"
         }
       }
-
     response_fields:
       - name: word
         type: string
@@ -76,7 +70,6 @@ endpoints:
       - name: synonyms
         type: array of strings
         description: List of words with similar meaning
-
     errors:
       - code: not_found
         status: 404
@@ -84,12 +77,10 @@ endpoints:
       - code: bad_request
         status: 400
         description: The word path parameter is missing.
-
     code_examples:
       curl: |
         curl https://api.requiems.xyz/v1/text/dictionary/ephemeral \
           -H "requiems-api-key: YOUR_API_KEY"
-
       python: |
         import requests
 
@@ -104,7 +95,6 @@ endpoints:
             if d.get('example'):
                 print(f"  Example: {d['example']}")
         print(f"Synonyms: {', '.join(data['synonyms'])}")
-
       javascript: |
         const response = await fetch('https://api.requiems.xyz/v1/text/dictionary/ephemeral', {
           headers: {
@@ -119,7 +109,6 @@ endpoints:
           if (d.example) console.log(`  Example: ${d.example}`);
         });
         console.log('Synonyms:', data.synonyms.join(', '));
-
       ruby: |
         require 'net/http'
         require 'json'
@@ -139,19 +128,32 @@ endpoints:
           puts "  Example: #{d['example']}" if d['example']
         end
         puts "Synonyms: #{data['synonyms'].join(', ')}"
-
 faq:
   - question: Is the lookup case-sensitive?
-    answer: No, the lookup is case-insensitive. Searching for "Ephemeral", "EPHEMERAL", or "ephemeral" all return the same result.
-
+    answer: >-
+      No, the lookup is case-insensitive. Searching for "Ephemeral", "EPHEMERAL", or "ephemeral" all return the same
+      result.
   - question: What happens if a word is not found?
-    answer: The API returns a 404 Not Found response with the error code "not_found" if the word is not in the dictionary dataset.
-
+    answer: >-
+      The API returns a 404 Not Found response with the error code "not_found" if the word is not in the dictionary
+      dataset.
   - question: Can a word have multiple definitions?
-    answer: Yes. Some words function as multiple parts of speech (e.g. both a noun and an adjective) and will have a separate definition entry for each.
-
+    answer: >-
+      Yes. Some words function as multiple parts of speech (e.g. both a noun and an adjective) and will have a separate
+      definition entry for each.
   - question: How many words are in the dataset?
-    answer: The dataset contains a curated set of common English words with full dictionary entries including phonetics, definitions, examples, and synonyms.
-
+    answer: >-
+      The dataset contains a curated set of common English words with full dictionary entries including phonetics,
+      definitions, examples, and synonyms.
   - question: Are phonetics always included?
-    answer: Phonetic transcriptions use the International Phonetic Alphabet (IPA) and are included for all words in the current dataset. The phonetic field may be absent for words added in the future if a transcription is not yet available.
+    answer: >-
+      Phonetic transcriptions use the International Phonetic Alphabet (IPA) and are included for all words in the
+      current dataset. The phonetic field may be absent for words added in the future if a transcription is not yet
+      available.
+performance:
+  p50_ms: 773
+  p95_ms: 873
+  p99_ms: 1037
+  avg_ms: 796
+  samples: 50
+  measured_at: "2026-04-16"

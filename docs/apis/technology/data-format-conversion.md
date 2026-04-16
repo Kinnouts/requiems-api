@@ -229,3 +229,16 @@ puts JSON.parse(response.body)['data']['result']
 # age: 30
 # name: Alice
 ```
+
+## Performance
+
+Measured against production (`https://api.requiems.xyz`) with 32 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 876 ms  |
+| p95     | 1204 ms |
+| p99     | 1235 ms |
+| Average | 915 ms  |
+
+_Last updated: 2026-04-16_

@@ -151,3 +151,16 @@ python-requests, and many others.
 
 **What device types are returned?** desktop, mobile, tablet, bot, or unknown.
 Tablets are identified by iPad or Android without 'Mobile' in the UA.
+
+## Performance
+
+Measured against production (`https://api.requiems.xyz`) with 50 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 818 ms  |
+| p95     | 938 ms  |
+| p99     | 1126 ms |
+| Average | 829 ms  |
+
+_Last updated: 2026-04-16_

@@ -83,3 +83,16 @@ For the search endpoint the response wraps a list:
 | ------------- | ------ | -------------------------------------- |
 | `bad_request` | 400    | Missing or empty `q` query parameter   |
 | `not_found`   | 404    | No emoji found with the requested name |
+
+## Performance
+
+Measured against production (`https://api.requiems.xyz`) with 50 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 797 ms  |
+| p95     | 1003 ms |
+| p99     | 1174 ms |
+| Average | 826 ms  |
+
+_Last updated: 2026-04-16_

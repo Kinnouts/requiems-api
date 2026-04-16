@@ -47,3 +47,16 @@ World Bank indicator `FP.CPI.TOTL.ZG`. Updated annually; re-run
 | `bad_request`    | 400    | Missing or invalid country code                |
 | `not_found`      | 404    | No data for that country in the World Bank set |
 | `internal_error` | 500    | Unexpected failure                             |
+
+## Performance
+
+Measured against production (`https://api.requiems.xyz`) with 50 samples.
+
+| Metric  | Value  |
+| ------- | ------ |
+| p50     | 770 ms |
+| p95     | 848 ms |
+| p99     | 904 ms |
+| Average | 782 ms |
+
+_Last updated: 2026-04-16_

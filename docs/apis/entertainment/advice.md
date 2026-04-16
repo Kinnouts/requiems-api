@@ -122,3 +122,16 @@ update.
 **Will I get the same advice on consecutive calls?** No, advice is selected
 randomly on each request, so consecutive calls will typically return different
 advice.
+
+## Performance
+
+Measured against production (`https://api.requiems.xyz`) with 50 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 846 ms  |
+| p95     | 1034 ms |
+| p99     | 1169 ms |
+| Average | 910 ms  |
+
+_Last updated: 2026-04-16_

@@ -1,7 +1,11 @@
 {
   "createdAt": "2026-04-16T02:04:58.371Z",
-  "updatedAt": "2026-04-16T02:04:58.371Z",
+  "updatedAt": "2026-04-16T02:27:40.495Z",
   "shapes": {
-    "base64_encode": "{data:{result:string},metadata:{timestamp:string}}"
+    "base64_encode": "{data:{result:string},metadata:{timestamp:string}}",
+    "base64_decode": "{data:{result:string},metadata:{timestamp:string}}",
+    "base_convert": "{data:{from:number,input:string,result:string,to:number},metadata:{timestamp:string}}",
+    "color_hex_to_rgb": "{data:{formats:{cmyk:string,hex:string,hsl:string,rgb:string},input:string,result:string},metadata:{timestamp:string}}",
+    "markdown_to_html": "{data:{html:string},metadata:{timestamp:string}}"
   }
 }

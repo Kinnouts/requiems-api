@@ -1,29 +1,25 @@
-# Lorem Ipsum Generator API Documentation
-
 api_id: lorem-ipsum
 api_name: Lorem Ipsum Generator
-description: Generate classic Lorem Ipsum placeholder text for design mockups, prototypes, and testing. Customize the number of paragraphs and sentences per paragraph.
+description: >-
+  Generate classic Lorem Ipsum placeholder text for design mockups, prototypes, and testing. Customize the number of
+  paragraphs and sentences per paragraph.
 base_url: https://api.requiems.xyz
-
 overview:
   use_cases:
     - Web design mockups and wireframes
     - Development testing with realistic-looking text
     - Content placeholders while waiting for final copy
     - Typography demonstrations
-
   features:
     - Customizable paragraphs (1-20)
     - Customizable sentences per paragraph (1-20)
     - Returns word count with each response
     - Built on the Lorelai library for consistent Lorem Ipsum text
-
 endpoints:
   - name: Generate Lorem Ipsum
     method: GET
     path: /v1/text/lorem
     description: Generate Lorem Ipsum placeholder text with customizable length and format
-
     parameters:
       - name: paragraphs
         type: integer
@@ -32,7 +28,6 @@ endpoints:
         description: Number of paragraphs to generate (1-20)
         example: 3
         default: 1
-
       - name: sentences
         type: integer
         required: false
@@ -40,7 +35,6 @@ endpoints:
         description: Number of sentences per paragraph (1-20)
         example: 5
         default: 5
-
     response_example: |
       {
         "data": {
@@ -52,7 +46,6 @@ endpoints:
           "timestamp": "2026-01-01T00:00:00Z"
         }
       }
-
     response_fields:
       - name: text
         type: string
@@ -63,7 +56,6 @@ endpoints:
       - name: wordCount
         type: integer
         description: Total number of words in generated text
-
     errors:
       - code: 400
         message: paragraphs must be between 1 and 20
@@ -71,7 +63,6 @@ endpoints:
       - code: 400
         message: sentences must be between 1 and 20
         description: The sentences parameter is out of valid range
-
     code_examples:
       curl: |
         # Generate 3 paragraphs with 5 sentences each
@@ -81,7 +72,6 @@ endpoints:
         # Generate 1 paragraph with 10 sentences
         curl "https://api.requiems.xyz/v1/text/lorem?sentences=10" \
           -H "requiems-api-key: YOUR_API_KEY"
-
       python: |
         import requests
 
@@ -91,7 +81,6 @@ endpoints:
 
         response = requests.get(url, headers=headers, params=params)
         print(response.json())
-
       javascript: |
         const params = new URLSearchParams({ paragraphs: 3, sentences: 5 });
         const response = await fetch(
@@ -105,7 +94,6 @@ endpoints:
 
         const data = await response.json();
         console.log(data.data.text);
-
       ruby: |
         require 'net/http'
         require 'json'
@@ -122,16 +110,27 @@ endpoints:
 
         data = JSON.parse(response.body)
         puts data['data']['text']
-
 faq:
   - question: What is Lorem Ipsum?
-    answer: Lorem Ipsum is dummy text used in the printing and typesetting industry since the 1500s. It's a scrambled version of Latin text that creates natural-looking placeholder content.
-
+    answer: >-
+      Lorem Ipsum is dummy text used in the printing and typesetting industry since the 1500s. It's a scrambled version
+      of Latin text that creates natural-looking placeholder content.
   - question: Why use Lorem Ipsum instead of 'Test test test'?
-    answer: Lorem Ipsum has a more natural distribution of letters and word lengths, making it better for testing typography and layout. It also looks more professional in mockups.
-
+    answer: >-
+      Lorem Ipsum has a more natural distribution of letters and word lengths, making it better for testing typography
+      and layout. It also looks more professional in mockups.
   - question: Can I control both paragraphs and sentences?
-    answer: Yes! Use the paragraphs parameter to set how many paragraphs you want (1-20), and the sentences parameter to set how many sentences per paragraph (1-20). Both parameters are optional with sensible defaults.
-
+    answer: >-
+      Yes! Use the paragraphs parameter to set how many paragraphs you want (1-20), and the sentences parameter to set
+      how many sentences per paragraph (1-20). Both parameters are optional with sensible defaults.
   - question: Is the generated text always the same?
-    answer: The text is generated using the Lorelai library, which creates varied Lorem Ipsum content based on the classic Lorem Ipsum corpus.
+    answer: >-
+      The text is generated using the Lorelai library, which creates varied Lorem Ipsum content based on the classic
+      Lorem Ipsum corpus.
+performance:
+  p50_ms: 802
+  p95_ms: 959
+  p99_ms: 1022
+  avg_ms: 829
+  samples: 51
+  measured_at: "2026-04-16"

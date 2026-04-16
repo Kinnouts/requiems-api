@@ -134,3 +134,16 @@ GET /v1/technology/convert?from=miles&to=km&value=10
 | 400         | `value` is not a valid number                       |
 | 400         | Unknown unit key                                    |
 | 400         | `from` and `to` belong to different unit categories |
+
+## Performance
+
+Measured against production (`https://api.requiems.xyz`) with 32 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 870 ms  |
+| p95     | 1001 ms |
+| p99     | 1114 ms |
+| Average | 911 ms  |
+
+_Last updated: 2026-04-16_

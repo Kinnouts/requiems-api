@@ -96,3 +96,16 @@ end
 result = JSON.parse(response.body)['data']
 puts "[#{result['id']}] #{result['fact']}"
 ```
+
+## Performance
+
+Measured against production (`https://api.requiems.xyz`) with 50 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 840 ms  |
+| p95     | 1126 ms |
+| p99     | 1132 ms |
+| Average | 876 ms  |
+
+_Last updated: 2026-04-16_

@@ -1,8 +1,9 @@
 api_id: mortgage
 api_name: Mortgage Calculator
-description: Calculate monthly mortgage payments and generate a full amortization schedule for any fixed-rate loan. Returns the monthly payment, total cost, total interest, and a month-by-month breakdown.
+description: >-
+  Calculate monthly mortgage payments and generate a full amortization schedule for any fixed-rate loan. Returns the
+  monthly payment, total cost, total interest, and a month-by-month breakdown.
 base_url: https://api.requiems.xyz
-
 overview:
   use_cases:
     - Mortgage calculators for real estate platforms
@@ -10,20 +11,17 @@ overview:
     - Personal finance dashboards
     - Amortization schedule exports for borrowers
     - Financial planning and budgeting apps
-
   features:
     - Standard fixed-rate amortization formula
     - Full month-by-month schedule (principal, interest, balance per payment)
     - Summary fields — monthly payment, total payment, total interest
     - Supports loan terms from 1 to 50 years
     - Any principal and annual interest rate
-
 endpoints:
   - name: Calculate Mortgage
     method: GET
     path: /v1/finance/mortgage
-    description: "Returns the monthly payment, total cost, and full amortization schedule for a fixed-rate mortgage."
-
+    description: Returns the monthly payment, total cost, and full amortization schedule for a fixed-rate mortgage.
     parameters:
       - name: principal
         type: number
@@ -31,21 +29,18 @@ endpoints:
         location: query
         description: Loan amount in your chosen currency (e.g. 300000 for $300,000)
         example: 300000
-
       - name: rate
         type: number
         required: true
         location: query
-        description: "Annual interest rate as a percentage (e.g. 6.5 for 6.5%). Must be greater than 0."
+        description: Annual interest rate as a percentage (e.g. 6.5 for 6.5%). Must be greater than 0.
         example: 6.5
-
       - name: years
         type: integer
         required: true
         location: query
-        description: "Loan term in years (1–50)"
+        description: Loan term in years (1–50)
         example: 30
-
     response_example: |
       {
         "data": {
@@ -76,7 +71,6 @@ endpoints:
           "timestamp": "2026-01-01T00:00:00Z"
         }
       }
-
     response_fields:
       - name: principal
         type: number
@@ -98,7 +92,7 @@ endpoints:
         description: Total interest paid (total_payment minus principal)
       - name: schedule
         type: array
-        description: "Full amortization schedule — one entry per month (years × 12 entries)"
+        description: Full amortization schedule — one entry per month (years × 12 entries)
       - name: schedule[].month
         type: integer
         description: Month number (1 to years × 12)
@@ -114,20 +108,17 @@ endpoints:
       - name: schedule[].balance
         type: number
         description: Remaining loan balance after this payment
-
     errors:
       - code: bad_request
         status: 400
-        description: "A required parameter is missing, not a valid number, or out of range (e.g. years > 50 or rate <= 0)."
+        description: A required parameter is missing, not a valid number, or out of range (e.g. years > 50 or rate <= 0).
       - code: internal_error
         status: 500
         description: Unexpected server error.
-
     code_examples:
       curl: |
         curl "https://api.requiems.xyz/v1/finance/mortgage?principal=300000&rate=6.5&years=30" \
           -H "requiems-api-key: YOUR_API_KEY"
-
       python: |
         import requests
 
@@ -140,7 +131,6 @@ endpoints:
         print(data["monthly_payment"])  # 1896.2
         print(data["total_interest"])   # 382632.0
         print(len(data["schedule"]))    # 360
-
       javascript: |
         const params = new URLSearchParams({ principal: 300000, rate: 6.5, years: 30 });
         const response = await fetch(
@@ -152,7 +142,6 @@ endpoints:
         console.log(data.monthly_payment);  // 1896.2
         console.log(data.total_interest);   // 382632.0
         console.log(data.schedule.length);  // 360
-
       ruby: |
         require 'net/http'
         require 'json'
@@ -170,19 +159,29 @@ endpoints:
         data = JSON.parse(response.body)['data']
         puts data['monthly_payment']  # 1896.2
         puts data['total_interest']   # 382632.0
-
 faq:
   - question: What formula is used?
-    answer: "Standard fixed-rate amortization: M = P × (r(1+r)^n) / ((1+r)^n − 1), where P is the principal, r is the monthly rate (annual rate / 12 / 100), and n is the total number of payments (years × 12)."
-
+    answer: >-
+      Standard fixed-rate amortization: M = P × (r(1+r)^n) / ((1+r)^n − 1), where P is the principal, r is the monthly
+      rate (annual rate / 12 / 100), and n is the total number of payments (years × 12).
   - question: Are the monetary values rounded?
-    answer: "Yes — all monetary values in the response (monthly_payment, total_payment, total_interest, and each schedule entry) are rounded to 2 decimal places."
-
+    answer: >-
+      Yes — all monetary values in the response (monthly_payment, total_payment, total_interest, and each schedule
+      entry) are rounded to 2 decimal places.
   - question: Why does the final balance show a small rounding difference?
-    answer: "Due to floating-point rounding on each monthly payment, the final balance may show $0.00–$0.99 rather than exactly $0. This is expected behaviour for fixed-payment amortization schedules."
-
+    answer: >-
+      Due to floating-point rounding on each monthly payment, the final balance may show $0.00–$0.99 rather than exactly
+      $0. This is expected behaviour for fixed-payment amortization schedules.
   - question: What currency does the API use?
-    answer: "The API is currency-agnostic. Pass your principal in any unit and interpret the results in that same unit. There is no currency conversion."
-
+    answer: >-
+      The API is currency-agnostic. Pass your principal in any unit and interpret the results in that same unit. There
+      is no currency conversion.
   - question: Does the API support variable or adjustable-rate mortgages?
-    answer: "Not currently. Only fixed-rate mortgages are supported. The rate is applied uniformly over the entire loan term."
+    answer: Not currently. Only fixed-rate mortgages are supported. The rate is applied uniformly over the entire loan term.
+performance:
+  p50_ms: 818
+  p95_ms: 921
+  p99_ms: 1300
+  avg_ms: 833
+  samples: 50
+  measured_at: "2026-04-16"
