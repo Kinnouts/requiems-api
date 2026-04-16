@@ -4,10 +4,7 @@
 
 # Main application (landing page, dashboard, admin, docs)
 requiems.xyz {
-  # Exclude sitemap/llms paths from gzip so HEAD requests return a real
-  # Content-Length (Caddy can't compute compressed size for streaming HEAD).
-  @compressible not path /sitemap.xml /llms.txt /llms-full.txt
-  encode @compressible gzip
+  encode gzip
 
   reverse_proxy dashboard:80
 }

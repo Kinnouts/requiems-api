@@ -103,7 +103,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_10_000003) do
     t.index ["status"], name: "index_private_deployment_requests_on_status"
     t.index ["subdomain_slug"], name: "index_private_deployment_requests_on_subdomain_slug", unique: true, where: "(subdomain_slug IS NOT NULL)"
     t.index ["user_id"], name: "index_private_deployment_requests_on_user_id"
-    t.check_constraint "status::text = ANY (ARRAY['pending_payment'::character varying, 'pending'::character varying, 'deploying'::character varying, 'active'::character varying, 'cancelled'::character varying]::text[])", name: "private_deployment_requests_status_check"
+    t.check_constraint "status::text = ANY (ARRAY['pending_payment'::character varying::text, 'pending'::character varying::text, 'deploying'::character varying::text, 'active'::character varying::text, 'cancelled'::character varying::text])", name: "private_deployment_requests_status_check"
   end
 
   create_table "solid_cache_entries", force: :cascade do |t|
