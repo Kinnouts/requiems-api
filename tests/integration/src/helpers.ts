@@ -30,14 +30,29 @@ export async function assertEnvelope(
 }
 
 /**
- * Run an async action `runs` times (from config) and return all results.
- * Useful for warming up timing samples and detecting flakiness.
+ * Run an async action `runs` times (from config) and return successful results.
+ * Network errors and timeouts are swallowed so a flaky backend doesn't abort
+ * the entire benchmark run — partial data is still recorded in the stats table.
+ * Throws only if every single attempt fails.
  */
 export async function repeat<T>(action: () => Promise<T>): Promise<T[]> {
   const { runs } = getConfig();
   const results: T[] = [];
+  let failures = 0;
+
   for (let i = 0; i < runs; i++) {
-    results.push(await action());
+    try {
+      results.push(await action());
+    } catch (err) {
+      failures++;
+      const msg = err instanceof Error ? err.message : String(err);
+      process.stderr.write(`    ⚠  attempt ${i + 1}/${runs} failed: ${msg}\n`);
+    }
   }
+
+  if (failures === runs) {
+    throw new Error(`All ${runs} attempts failed — backend may be down.`);
+  }
+
   return results;
 }
