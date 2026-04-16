@@ -3,19 +3,17 @@
 class SitemapController < ApplicationController
   include ApisHelper
 
-  before_action :set_response_content_type
-
   def sitemap
     expires_in 5.minutes, public: true
     @apis = live_apis
     @last_modified = Time.current.beginning_of_day
-    respond_to { |f| f.xml }
+    render "sitemap/sitemap", formats: [ :xml ], layout: false, content_type: "application/xml"
   end
 
   def llms
     expires_in 5.minutes, public: true
     @apis = live_apis
-    respond_to { |f| f.text }
+    render "sitemap/llms", formats: [ :text ], layout: false, content_type: "text/plain"
   end
 
   def llms_full
@@ -33,17 +31,6 @@ class SitemapController < ApplicationController
     @doc = api_documentation(params[:id])
     return head :not_found unless @doc
 
-    respond_to { |f| f.text }
-  end
-
-  private
-
-  def set_response_content_type
-    case action_name
-    when "sitemap"
-      response.content_type = "application/xml"
-    when "llms", "llms_full", "api_doc"
-      response.content_type = "text/plain"
-    end
+    render "sitemap/api_doc", formats: [ :text ], layout: false, content_type: "text/plain"
   end
 end
