@@ -8,6 +8,10 @@ class SitemapController < ApplicationController
     @apis = live_apis
     @last_modified = Time.current.beginning_of_day
     render "sitemap/sitemap", formats: [ :xml ], layout: false, content_type: "application/xml"
+    # Rails appends "; charset=utf-8" to application/xml — override to match
+    # the plain "application/xml" that sitemaps should serve (RFC 7303 §6.1
+    # states charset SHOULD NOT be used with application/xml).
+    response.headers["Content-Type"] = "application/xml"
   end
 
   def llms
