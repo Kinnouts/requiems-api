@@ -27,7 +27,6 @@ func main() {
 		}); err != nil {
 			log.Printf("sentry.Init: %s", err)
 		}
-		defer sentry.Flush(2 * time.Second)
 	}
 
 	appInstance, err := app.New(ctx, cfg)
@@ -52,6 +51,8 @@ func main() {
 	}
 
 	if err := server.ListenAndServe(); err != nil {
-		log.Fatalf("server error: %v", err)
+		sentry.Flush(2 * time.Second)
+		log.Printf("server error: %v", err)
+		os.Exit(1)
 	}
 }
