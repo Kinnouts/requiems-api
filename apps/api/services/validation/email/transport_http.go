@@ -10,9 +10,9 @@ import (
 
 // RegisterRoutes registers HTTP routes for the validate package on r.
 // It registers a POST "/validate" endpoint that accepts a Request containing an email
-// and responds with an EmailValidation produced by svc for the provided email.
+// and responds with a Validation produced by svc for the provided email.
 func RegisterRoutes(r chi.Router, svc *Service) {
-	r.Post("/email", httpx.Handle(func(ctx context.Context, req Request) (EmailValidation, error) {
+	r.Post("/email", httpx.Handle(func(ctx context.Context, req Request) (Validation, error) {
 		return svc.ValidateEmail(ctx, req.Email), nil
 	}))
 }

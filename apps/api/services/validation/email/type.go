@@ -5,8 +5,8 @@ type Request struct {
 	Email string `json:"email" validate:"required"`
 }
 
-// EmailValidation is the full validation result for an email address.
-type EmailValidation struct {
+// Validation is the full validation result for an email address.
+type Validation struct {
 	Email       *string `json:"email"`
 	Valid       bool    `json:"valid"`
 	SyntaxValid bool    `json:"syntax_valid"`
@@ -17,4 +17,4 @@ type EmailValidation struct {
 	Suggestion  *string `json:"suggestion"`
 }
 
-func (EmailValidation) IsData() {}
+func (Validation) IsData() {}

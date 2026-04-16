@@ -73,9 +73,9 @@ func NewService() *Service {
 
 // ValidateEmail performs full validation: syntax check, MX record lookup,
 // disposable-domain check, normalization, and typo suggestion.
-func (s *Service) ValidateEmail(ctx context.Context, email string) EmailValidation {
+func (s *Service) ValidateEmail(ctx context.Context, email string) Validation {
 	if !isValidSyntax(email) {
-		return EmailValidation{
+		return Validation{
 			Email:       nil,
 			Valid:       false,
 			SyntaxValid: false,
@@ -95,7 +95,7 @@ func (s *Service) ValidateEmail(ctx context.Context, email string) EmailValidati
 	isDisposable := disposable.IsDisposable(normalized)
 	suggestion := suggestDomain(domain)
 
-	return EmailValidation{
+	return Validation{
 		Email:       &email,
 		Valid:       mxValid,
 		SyntaxValid: true,

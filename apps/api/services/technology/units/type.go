@@ -10,8 +10,8 @@ type Result struct {
 
 func (Result) IsData() {}
 
-// UnitsResult maps each measurement category to its supported unit keys.
-type UnitsResult struct {
+// Results maps each measurement category to its supported unit keys.
+type Results struct {
 	Length      []string `json:"length"`
 	Weight      []string `json:"weight"`
 	Volume      []string `json:"volume"`
@@ -20,4 +20,4 @@ type UnitsResult struct {
 	Speed       []string `json:"speed"`
 }
 
-func (UnitsResult) IsData() {}
+func (Results) IsData() {}

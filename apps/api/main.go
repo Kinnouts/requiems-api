@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"time"
 
 	sentry "github.com/getsentry/sentry-go"
@@ -32,7 +33,9 @@ func main() {
 	appInstance, err := app.New(ctx, cfg)
 
 	if err != nil {
-		log.Fatalf("failed to initialise app: %v", err)
+		log.Printf("failed to initialise app: %v", err)
+		sentry.Flush(2 * time.Second)
+		os.Exit(1)
 	}
 
 	addr := fmt.Sprintf(":%s", cfg.Port)

@@ -85,8 +85,8 @@ func NewService() *Service {
 
 // Units returns all supported unit keys grouped by measurement category,
 // sorted alphabetically within each group.
-func (s *Service) Units() UnitsResult {
-	var result UnitsResult
+func (s *Service) Units() Results {
+	var result Results
 	for key, u := range units {
 		switch u.category {
 		case "length":

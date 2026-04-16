@@ -42,7 +42,7 @@ func TestValidate_InvalidSyntax(t *testing.T) {
 		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
 	}
 
-	var resp httpx.Response[EmailValidation]
+	var resp httpx.Response[Validation]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
@@ -62,7 +62,7 @@ func TestValidate_ValidEmail(t *testing.T) {
 		t.Fatalf("expected 200, got %d: %s", w.Code, w.Body.String())
 	}
 
-	var resp httpx.Response[EmailValidation]
+	var resp httpx.Response[Validation]
 	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
