@@ -46,26 +46,3 @@ Look up MX records for a domain.
 | `bad_request`    | 400    | Invalid domain name format         |
 | `not_found`      | 404    | No MX records found for the domain |
 | `internal_error` | 500    | DNS lookup failed unexpectedly     |
-
-## Performance
-
-Measured against production (`https://api.requiems.xyz`) with 31 samples.
-
-| Metric  | Value   |
-| ------- | ------- |
-| p50     | 925 ms  |
-| p95     | 1126 ms |
-| p99     | 1132 ms |
-| Average | 967 ms  |
-
-_Last updated: 2026-04-16_ Measured against production
-(`https://api.requiems.xyz`) with 36 samples.
-
-| Metric  | Value  |
-| ------- | ------ |
-| p50     | 815 ms |
-| p95     | 925 ms |
-| p99     | 928 ms |
-| Average | 818 ms |
-
-_Last updated: 2026-04-16_

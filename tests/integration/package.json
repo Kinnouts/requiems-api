@@ -10,9 +10,8 @@
     "test:watch": "vitest watch",
     "test:ui": "vitest --ui",
     "typecheck": "tsc --noEmit",
-    "docs:perf": "tsx scripts/inject-perf-docs.ts",
     "docs:perf:yaml": "tsx scripts/inject-perf-yaml.ts",
-    "benchmark": "INTEGRATION_RUNS=50 UPDATE_PERF_BASELINE=true vitest run; pnpm run docs:perf && pnpm run docs:perf:yaml"
+    "benchmark": "INTEGRATION_RUNS=50 UPDATE_PERF_BASELINE=true vitest run; pnpm run docs:perf:yaml"
   },
   "dependencies": {},
   "devDependencies": {

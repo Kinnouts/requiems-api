@@ -64,26 +64,3 @@ Symbols are case-insensitive — `btc` and `BTC` both work.
 Responses are cached in Redis with a 5-minute TTL. The `metadata.timestamp`
 reflects when the response was served, not when prices were last fetched from
 upstream.
-
-## Performance
-
-Measured against production (`https://api.requiems.xyz`) with 50 samples.
-
-| Metric  | Value  |
-| ------- | ------ |
-| p50     | 860 ms |
-| p95     | 959 ms |
-| p99     | 971 ms |
-| Average | 879 ms |
-
-_Last updated: 2026-04-16_ Measured against production
-(`https://api.requiems.xyz`) with 50 samples.
-
-| Metric  | Value   |
-| ------- | ------- |
-| p50     | 805 ms  |
-| p95     | 991 ms  |
-| p99     | 1021 ms |
-| Average | 827 ms  |
-
-_Last updated: 2026-04-16_

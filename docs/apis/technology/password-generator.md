@@ -175,26 +175,3 @@ shuffled using Fisher-Yates algorithm for randomness.
 character set diversity. Weak (≤1 point) - short with limited character sets.
 Medium (2-3 points) - reasonable length with some variety. Strong (≥4 points) -
 16+ characters with multiple character sets.
-
-## Performance
-
-Measured against production (`https://api.requiems.xyz`) with 51 samples.
-
-| Metric  | Value   |
-| ------- | ------- |
-| p50     | 889 ms  |
-| p95     | 1063 ms |
-| p99     | 1153 ms |
-| Average | 897 ms  |
-
-_Last updated: 2026-04-16_ Measured against production
-(`https://api.requiems.xyz`) with 51 samples.
-
-| Metric  | Value   |
-| ------- | ------- |
-| p50     | 845 ms  |
-| p95     | 1116 ms |
-| p99     | 1188 ms |
-| Average | 874 ms  |
-
-_Last updated: 2026-04-16_

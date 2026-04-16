@@ -302,26 +302,3 @@ cannot be determined, the `carrier` object is omitted entirely.
 number type in libphonenumber metadata. No external lookups are made. A number
 is flagged as VOIP when its type is `voip`, and as virtual when its type is
 `voip`, `personal_number`, `uan`, `pager`, or `voicemail`.
-
-## Performance
-
-Measured against production (`https://api.requiems.xyz`) with 50 samples.
-
-| Metric  | Value   |
-| ------- | ------- |
-| p50     | 915 ms  |
-| p95     | 1020 ms |
-| p99     | 1030 ms |
-| Average | 926 ms  |
-
-_Last updated: 2026-04-16_ Measured against production
-(`https://api.requiems.xyz`) with 50 samples.
-
-| Metric  | Value   |
-| ------- | ------- |
-| p50     | 791 ms  |
-| p95     | 879 ms  |
-| p99     | 1132 ms |
-| Average | 813 ms  |
-
-_Last updated: 2026-04-16_

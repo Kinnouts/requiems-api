@@ -159,9 +159,3 @@ track_event("checkout-completed")
 ```
 
 ---
-
-## Performance
-
-- Increment: O(1) Redis `INCR` — no database write in the request path
-- Read: O(1) Redis `GET`; O(1) PostgreSQL index lookup on cache miss
-- Background sync: batched pipeline writes every 60 seconds

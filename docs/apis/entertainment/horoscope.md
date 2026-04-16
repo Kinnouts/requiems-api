@@ -117,26 +117,3 @@ result = JSON.parse(response.body)['data']
 puts "#{result['sign']}: #{result['horoscope']}"
 puts "Lucky number: #{result['lucky_number']}, Mood: #{result['mood']}"
 ```
-
-## Performance
-
-Measured against production (`https://api.requiems.xyz`) with 31 samples.
-
-| Metric  | Value   |
-| ------- | ------- |
-| p50     | 925 ms  |
-| p95     | 1036 ms |
-| p99     | 1066 ms |
-| Average | 955 ms  |
-
-_Last updated: 2026-04-16_ Measured against production
-(`https://api.requiems.xyz`) with 36 samples.
-
-| Metric  | Value   |
-| ------- | ------- |
-| p50     | 798 ms  |
-| p95     | 1035 ms |
-| p99     | 1079 ms |
-| Average | 821 ms  |
-
-_Last updated: 2026-04-16_

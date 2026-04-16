@@ -98,26 +98,3 @@ latest FRED and Yahoo Finance data.
 See
 [`cmd/seed-commodities/readme.md`](../../../apps/api/cmd/seed-commodities/readme.md)
 for full CLI options.
-
-## Performance
-
-Measured against production (`https://api.requiems.xyz`) with 33 samples.
-
-| Metric  | Value   |
-| ------- | ------- |
-| p50     | 857 ms  |
-| p95     | 1011 ms |
-| p99     | 1229 ms |
-| Average | 905 ms  |
-
-_Last updated: 2026-04-16_ Measured against production
-(`https://api.requiems.xyz`) with 36 samples.
-
-| Metric  | Value   |
-| ------- | ------- |
-| p50     | 802 ms  |
-| p95     | 922 ms  |
-| p99     | 1010 ms |
-| Average | 811 ms  |
-
-_Last updated: 2026-04-16_

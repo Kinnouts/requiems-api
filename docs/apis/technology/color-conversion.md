@@ -77,26 +77,3 @@ GET /v1/technology/color?from=hex&to=hsl&value=%23ff5733
 | 400         | `bad_request`       | Missing or invalid `from`, `to`, or `value`       |
 | 422         | `invalid_color`     | The `value` cannot be parsed in the `from` format |
 | 422         | `validation_failed` | `from` or `to` is not one of the allowed values   |
-
-## Performance
-
-Measured against production (`https://api.requiems.xyz`) with 14 samples.
-
-| Metric  | Value   |
-| ------- | ------- |
-| p50     | 859 ms  |
-| p95     | 1380 ms |
-| p99     | 1380 ms |
-| Average | 986 ms  |
-
-_Last updated: 2026-04-16_ Measured against production
-(`https://api.requiems.xyz`) with 50 samples.
-
-| Metric  | Value   |
-| ------- | ------- |
-| p50     | 798 ms  |
-| p95     | 935 ms  |
-| p99     | 1263 ms |
-| Average | 830 ms  |
-
-_Last updated: 2026-04-16_

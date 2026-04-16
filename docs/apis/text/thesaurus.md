@@ -65,26 +65,3 @@ opposite words for the given input.
 | ------------- | ------ | ----------------------------------- |
 | `not_found`   | 404    | Word not found in thesaurus dataset |
 | `bad_request` | 400    | Missing word path parameter         |
-
-## Performance
-
-Measured against production (`https://api.requiems.xyz`) with 37 samples.
-
-| Metric  | Value  |
-| ------- | ------ |
-| p50     | 852 ms |
-| p95     | 958 ms |
-| p99     | 972 ms |
-| Average | 861 ms |
-
-_Last updated: 2026-04-16_ Measured against production
-(`https://api.requiems.xyz`) with 36 samples.
-
-| Metric  | Value   |
-| ------- | ------- |
-| p50     | 834 ms  |
-| p95     | 1074 ms |
-| p99     | 1122 ms |
-| Average | 893 ms  |
-
-_Last updated: 2026-04-16_

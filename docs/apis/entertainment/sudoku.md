@@ -65,26 +65,3 @@ Generate a random Sudoku puzzle.
   }
 }
 ```
-
-## Performance
-
-Measured against production (`https://api.requiems.xyz`) with 1 samples.
-
-| Metric  | Value   |
-| ------- | ------- |
-| p50     | 1095 ms |
-| p95     | 1095 ms |
-| p99     | 1095 ms |
-| Average | 1095 ms |
-
-_Last updated: 2026-04-16_ Measured against production
-(`https://api.requiems.xyz`) with 1 samples.
-
-| Metric  | Value  |
-| ------- | ------ |
-| p50     | 933 ms |
-| p95     | 933 ms |
-| p99     | 933 ms |
-| Average | 933 ms |
-
-_Last updated: 2026-04-16_

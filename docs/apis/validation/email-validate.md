@@ -186,26 +186,3 @@ if (data.disposable) {
   flagForReview(userInput);
 }
 ```
-
-## Performance
-
-Measured against production (`https://api.requiems.xyz`) with 1 samples.
-
-| Metric  | Value  |
-| ------- | ------ |
-| p50     | 896 ms |
-| p95     | 896 ms |
-| p99     | 896 ms |
-| Average | 896 ms |
-
-_Last updated: 2026-04-16_ Measured against production
-(`https://api.requiems.xyz`) with 35 samples.
-
-| Metric  | Value   |
-| ------- | ------- |
-| p50     | 912 ms  |
-| p95     | 1081 ms |
-| p99     | 1106 ms |
-| Average | 919 ms  |
-
-_Last updated: 2026-04-16_
