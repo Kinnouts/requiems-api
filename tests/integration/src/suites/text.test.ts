@@ -1,8 +1,10 @@
 /**
  * Integration tests — Text API endpoints
  *
- * Covers: /v1/text/advice, /v1/text/quotes/random, /v1/text/words/random,
- *         /v1/text/lorem, /v1/text/dictionary/{word}, /v1/text/thesaurus/{word}
+ * Covers: /v1/text/words/random, /v1/text/lorem,
+ *         /v1/text/dictionary/{word}, /v1/text/thesaurus/{word},
+ *         /v1/text/spellcheck, /v1/validation/profanity,
+ *         /v1/entertainment/advice, /v1/entertainment/quotes/random
  *
  * Each test is run `config.runs` times to produce stable timing samples and
  * surface flakiness.  Response body shapes are snapshotted on the first run
@@ -16,10 +18,10 @@ import { assertEnvelope, repeat } from "../helpers.js";
 const SUITE = "text";
 
 describe("Text API", () => {
-  describe("GET /v1/text/advice", () => {
+  describe("GET /v1/entertainment/advice", () => {
     it("returns a random piece of advice", async () => {
       await repeat(async () => {
-        const { response } = await client.get("/v1/text/advice");
+        const { response } = await client.get("/v1/entertainment/advice");
         const { data } = await assertEnvelope(response, SUITE, "advice");
         const d = data as Record<string, unknown>;
         expect(typeof d["id"]).toBe("number");
@@ -29,14 +31,14 @@ describe("Text API", () => {
     });
   });
 
-  describe("GET /v1/text/quotes/random", () => {
+  describe("GET /v1/entertainment/quotes/random", () => {
     it("returns a random quote", async () => {
       await repeat(async () => {
-        const { response } = await client.get("/v1/text/quotes/random");
+        const { response } = await client.get("/v1/entertainment/quotes/random");
         const { data } = await assertEnvelope(response, SUITE, "quotes_random");
         const d = data as Record<string, unknown>;
         expect(typeof d["id"]).toBe("number");
-        expect(typeof d["quote"]).toBe("string");
+        expect(typeof d["text"]).toBe("string");
         expect(typeof d["author"]).toBe("string");
       });
     });
@@ -59,8 +61,9 @@ describe("Text API", () => {
       await repeat(async () => {
         const { response } = await client.get("/v1/text/lorem");
         const { data } = await assertEnvelope(response, SUITE, "lorem_default");
-        expect(typeof data).toBe("string");
-        expect((data as string).length).toBeGreaterThan(0);
+        const d = data as Record<string, unknown>;
+        expect(typeof d["text"]).toBe("string");
+        expect((d["text"] as string).length).toBeGreaterThan(0);
       });
     });
 
@@ -73,9 +76,9 @@ describe("Text API", () => {
         SUITE,
         "lorem_2_paragraphs",
       );
-      // Two paragraphs are separated by a newline or double-newline
-      const paragraphs = (data as string).trim().split(/\n+/);
-      expect(paragraphs.length).toBeGreaterThanOrEqual(2);
+      const d = data as Record<string, unknown>;
+      expect(typeof d["paragraphs"]).toBe("number");
+      expect(d["paragraphs"] as number).toBeGreaterThanOrEqual(2);
     });
   });
 
@@ -109,14 +112,14 @@ describe("Text API", () => {
     });
   });
 
-  describe("POST /v1/text/profanity", () => {
+  describe("POST /v1/validation/profanity", () => {
     it("detects clean text", async () => {
-      const { response } = await client.post("/v1/text/profanity", {
+      const { response } = await client.post("/v1/validation/profanity", {
         text: "Hello, world!",
       });
       const { data } = await assertEnvelope(response, SUITE, "profanity_clean");
       const d = data as Record<string, unknown>;
-      expect(d["is_profane"]).toBe(false);
+      expect(d["has_profanity"]).toBe(false);
     });
   });
 
@@ -131,7 +134,7 @@ describe("Text API", () => {
         "spellcheck_correct",
       );
       const d = data as Record<string, unknown>;
-      expect(Array.isArray(d["errors"])).toBe(true);
+      expect(Array.isArray(d["corrections"])).toBe(true);
     });
   });
 });

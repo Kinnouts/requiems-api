@@ -20,8 +20,8 @@ describe("Entertainment API", () => {
         const { response } = await client.get("/v1/entertainment/chuck-norris");
         const { data } = await assertEnvelope(response, SUITE, "chuck_norris");
         const d = data as Record<string, unknown>;
-        expect(typeof d["joke"]).toBe("string");
-        expect((d["joke"] as string).length).toBeGreaterThan(0);
+        expect(typeof d["fact"]).toBe("string");
+        expect((d["fact"] as string).length).toBeGreaterThan(0);
       });
     });
   });

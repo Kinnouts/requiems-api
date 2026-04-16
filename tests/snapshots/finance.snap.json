@@ -1,0 +1,12 @@
+{
+  "createdAt": "2026-04-16T01:08:37.413Z",
+  "updatedAt": "2026-04-16T01:08:46.390Z",
+  "shapes": {
+    "mortgage": "{data:{monthly_payment:number,principal:number,rate:number,schedule:Array<{balance:number,interest:number,month:number,payment:number,principal:number}>,total_interest:number,total_payment:number,years:number},metadata:{timestamp:string}}",
+    "inflation_us": "{data:{country:string,historical:Array<{period:string,rate:number}>,period:string,rate:number},metadata:{timestamp:string}}",
+    "exchange_rate": "{data:{from:string,rate:number,timestamp:string,to:string},metadata:{timestamp:string}}",
+    "convert": "{data:{amount:number,converted:number,from:string,rate:number,timestamp:string,to:string},metadata:{timestamp:string}}",
+    "crypto_btc": "{data:{change_24h:number,market_cap:number,name:string,price_usd:number,symbol:string,volume_24h:number},metadata:{timestamp:string}}",
+    "commodities_gold": "{data:{change_24h:number,commodity:string,currency:string,historical:Array<{period:string,price:number}>,name:string,price:number,unit:string},metadata:{timestamp:string}}"
+  }
+}
