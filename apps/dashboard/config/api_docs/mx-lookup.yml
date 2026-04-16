@@ -128,9 +128,9 @@ faq:
       Yes. Records are always returned sorted by priority ascending (lowest number first), regardless of the order
       returned by the DNS resolver.
 performance:
-  p50_ms: 925
-  p95_ms: 1126
-  p99_ms: 1132
-  avg_ms: 967
-  samples: 31
+  p50_ms: 912
+  p95_ms: 1318
+  p99_ms: 1330
+  avg_ms: 1012
+  samples: 29
   measured_at: "2026-04-16"

@@ -170,9 +170,9 @@ faq:
       DNS lookups typically resolve in under 100ms for well-known domains. Obscure or misconfigured domains may take
       longer or time out, in which case mx_valid is false.
 performance:
-  p50_ms: 896
-  p95_ms: 896
-  p99_ms: 896
-  avg_ms: 896
-  samples: 1
+  p50_ms: 877
+  p95_ms: 1101
+  p99_ms: 1101
+  avg_ms: 1081
+  samples: 17
   measured_at: "2026-04-16"

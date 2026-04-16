@@ -129,8 +129,8 @@ faq:
       Lorem Ipsum corpus.
 performance:
   p50_ms: 886
-  p95_ms: 1028
-  p99_ms: 1118
-  avg_ms: 941
+  p95_ms: 1123
+  p99_ms: 1209
+  avg_ms: 919
   samples: 51
   measured_at: "2026-04-16"

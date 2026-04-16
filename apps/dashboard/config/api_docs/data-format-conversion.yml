@@ -191,9 +191,9 @@ faq:
   - question: Is there a size limit?
     answer: The content field is capped at 512 KB. Requests exceeding this limit return a 413 content_too_large error.
 performance:
-  p50_ms: 1085
-  p95_ms: 1085
-  p99_ms: 1085
-  avg_ms: 1085
-  samples: 1
+  p50_ms: 848
+  p95_ms: 1347
+  p99_ms: 1347
+  avg_ms: 945
+  samples: 16
   measured_at: "2026-04-16"

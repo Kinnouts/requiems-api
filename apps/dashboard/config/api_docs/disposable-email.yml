@@ -356,9 +356,9 @@ faq:
       bypass signup forms or avoid spam. Examples include services like tempmail.com, guerrillamail.com, and
       10minutemail.com.
 performance:
-  p50_ms: 859
-  p95_ms: 859
-  p99_ms: 859
-  avg_ms: 984
-  samples: 2
+  p50_ms: 876
+  p95_ms: 1199
+  p99_ms: 1292
+  avg_ms: 1010
+  samples: 46
   measured_at: "2026-04-16"

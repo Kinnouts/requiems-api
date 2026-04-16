@@ -95,9 +95,9 @@ faq:
   - question: Will I get the same quote if I call the endpoint multiple times?
     answer: No, quotes are selected randomly on each request, so consecutive calls will typically return different quotes.
 performance:
-  p50_ms: 865
-  p95_ms: 1092
-  p99_ms: 1540
-  avg_ms: 914
+  p50_ms: 911
+  p95_ms: 1176
+  p99_ms: 1203
+  avg_ms: 937
   samples: 50
   measured_at: "2026-04-16"

@@ -124,9 +124,9 @@ faq:
       Yes. The avatar URL points to DiceBear's public identicon service, which generates a unique SVG based on the
       user's name. No API key is required.
 performance:
-  p50_ms: 902
-  p95_ms: 902
-  p99_ms: 902
-  avg_ms: 902
-  samples: 1
+  p50_ms: 867
+  p95_ms: 1329
+  p99_ms: 2189
+  avg_ms: 1013
+  samples: 43
   measured_at: "2026-04-16"

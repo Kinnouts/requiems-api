@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-04-16T02:50:05.707Z",
+  "generatedAt": "2026-04-16T05:19:06.917Z",
   "baseUrl": "https://api.requiems.xyz",
   "runs": 50,
   "endpoints": [
@@ -7,104 +7,364 @@
       "path": "/v1/entertainment/advice",
       "samples": 50,
       "min": 836,
-      "avg": 931,
-      "p50": 871,
-      "p95": 983,
-      "p99": 1075,
-      "max": 2992
+      "avg": 949,
+      "p50": 873,
+      "p95": 1111,
+      "p99": 1597,
+      "max": 2929
     },
     {
       "path": "/v1/entertainment/chuck-norris",
-      "samples": 50,
-      "min": 871,
-      "avg": 950,
-      "p50": 910,
-      "p95": 1141,
-      "p99": 1248,
-      "max": 1284
+      "samples": 49,
+      "min": 825,
+      "avg": 1009,
+      "p50": 876,
+      "p95": 988,
+      "p99": 1033,
+      "max": 7079
     },
     {
       "path": "/v1/entertainment/emoji/random",
-      "samples": 50,
-      "min": 820,
-      "avg": 939,
-      "p50": 906,
-      "p95": 1094,
-      "p99": 1131,
-      "max": 1139
+      "samples": 34,
+      "min": 811,
+      "avg": 1036,
+      "p50": 827,
+      "p95": 968,
+      "p99": 1049,
+      "max": 7530
     },
     {
       "path": "/v1/entertainment/facts",
-      "samples": 50,
-      "min": 857,
-      "avg": 956,
-      "p50": 899,
-      "p95": 1150,
-      "p99": 1232,
-      "max": 1232
+      "samples": 49,
+      "min": 816,
+      "avg": 1045,
+      "p50": 875,
+      "p95": 1067,
+      "p99": 1146,
+      "max": 8439
     },
     {
       "path": "/v1/entertainment/horoscope/aries",
-      "samples": 31,
-      "min": 870,
-      "avg": 955,
-      "p50": 925,
-      "p95": 1036,
-      "p99": 1066,
-      "max": 1256
+      "samples": 14,
+      "min": 819,
+      "avg": 1356,
+      "p50": 826,
+      "p95": 1281,
+      "p99": 1281,
+      "max": 7734
     },
     {
       "path": "/v1/entertainment/jokes/dad",
-      "samples": 50,
-      "min": 876,
-      "avg": 955,
-      "p50": 921,
-      "p95": 1174,
-      "p99": 1232,
-      "max": 1232
+      "samples": 48,
+      "min": 788,
+      "avg": 1057,
+      "p50": 871,
+      "p95": 1062,
+      "p99": 2928,
+      "max": 7146
     },
     {
       "path": "/v1/entertainment/quotes/random",
       "samples": 50,
-      "min": 834,
-      "avg": 914,
-      "p50": 865,
-      "p95": 1092,
-      "p99": 1540,
-      "max": 1572
-    },
-    {
-      "path": "/v1/entertainment/sudoku",
-      "samples": 1,
-      "min": 1095,
-      "avg": 1095,
-      "p50": 1095,
-      "p95": 1095,
-      "p99": 1095,
-      "max": 1095
+      "min": 805,
+      "avg": 937,
+      "p50": 911,
+      "p95": 1176,
+      "p99": 1203,
+      "max": 1367
     },
     {
       "path": "/v1/entertainment/trivia",
-      "samples": 50,
-      "min": 866,
-      "avg": 966,
-      "p50": 910,
-      "p95": 1169,
-      "p99": 1369,
-      "max": 1582
+      "samples": 48,
+      "min": 310,
+      "avg": 1163,
+      "p50": 845,
+      "p95": 1167,
+      "p99": 7519,
+      "max": 8435
     },
     {
       "path": "/v1/finance/commodities/gold",
-      "samples": 33,
-      "min": 829,
-      "avg": 905,
-      "p50": 857,
-      "p95": 1011,
-      "p99": 1229,
-      "max": 1450
+      "samples": 26,
+      "min": 820,
+      "avg": 1118,
+      "p50": 849,
+      "p95": 1372,
+      "p99": 1585,
+      "max": 6473
     },
     {
       "path": "/v1/finance/convert",
+      "samples": 1,
+      "min": 1058,
+      "avg": 1058,
+      "p50": 1058,
+      "p95": 1058,
+      "p99": 1058,
+      "max": 1058
+    },
+    {
+      "path": "/v1/finance/crypto/BTC",
+      "samples": 43,
+      "min": 827,
+      "avg": 1034,
+      "p50": 853,
+      "p95": 1091,
+      "p99": 1100,
+      "max": 7391
+    },
+    {
+      "path": "/v1/finance/exchange-rate",
+      "samples": 49,
+      "min": 838,
+      "avg": 1178,
+      "p50": 866,
+      "p95": 1298,
+      "p99": 6649,
+      "max": 8170
+    },
+    {
+      "path": "/v1/finance/inflation",
+      "samples": 49,
+      "min": 325,
+      "avg": 1087,
+      "p50": 865,
+      "p95": 1301,
+      "p99": 2030,
+      "max": 8244
+    },
+    {
+      "path": "/v1/finance/mortgage",
+      "samples": 49,
+      "min": 829,
+      "avg": 1005,
+      "p50": 949,
+      "p95": 1293,
+      "p99": 1294,
+      "max": 1692
+    },
+    {
+      "path": "/v1/networking/disposable/check",
+      "samples": 46,
+      "min": 839,
+      "avg": 1010,
+      "p50": 876,
+      "p95": 1199,
+      "p99": 1292,
+      "max": 4989
+    },
+    {
+      "path": "/v1/networking/disposable/stats",
+      "samples": 1,
+      "min": 837,
+      "avg": 837,
+      "p50": 837,
+      "p95": 837,
+      "p99": 837,
+      "max": 837
+    },
+    {
+      "path": "/v1/networking/ip",
+      "samples": 50,
+      "min": 865,
+      "avg": 971,
+      "p50": 953,
+      "p95": 1104,
+      "p99": 1176,
+      "max": 1236
+    },
+    {
+      "path": "/v1/networking/ip/8.8.8.8",
+      "samples": 1,
+      "min": 1193,
+      "avg": 1193,
+      "p50": 1193,
+      "p95": 1193,
+      "p99": 1193,
+      "max": 1193
+    },
+    {
+      "path": "/v1/networking/mx/gmail.com",
+      "samples": 29,
+      "min": 850,
+      "avg": 1012,
+      "p50": 912,
+      "p95": 1318,
+      "p99": 1330,
+      "max": 1635
+    },
+    {
+      "path": "/v1/technology/base",
+      "samples": 49,
+      "min": 776,
+      "avg": 1038,
+      "p50": 831,
+      "p95": 1112,
+      "p99": 2526,
+      "max": 7834
+    },
+    {
+      "path": "/v1/technology/base64/decode",
+      "samples": 49,
+      "min": 807,
+      "avg": 875,
+      "p50": 828,
+      "p95": 945,
+      "p99": 1510,
+      "max": 1513
+    },
+    {
+      "path": "/v1/technology/base64/encode",
+      "samples": 48,
+      "min": 801,
+      "avg": 1151,
+      "p50": 824,
+      "p95": 1117,
+      "p99": 7843,
+      "max": 8147
+    },
+    {
+      "path": "/v1/technology/color",
+      "samples": 44,
+      "min": 812,
+      "avg": 1019,
+      "p50": 830,
+      "p95": 1118,
+      "p99": 1135,
+      "max": 7837
+    },
+    {
+      "path": "/v1/technology/convert",
+      "samples": 26,
+      "min": 845,
+      "avg": 1066,
+      "p50": 913,
+      "p95": 1378,
+      "p99": 2063,
+      "max": 3112
+    },
+    {
+      "path": "/v1/technology/markdown",
+      "samples": 16,
+      "min": 809,
+      "avg": 945,
+      "p50": 848,
+      "p95": 1347,
+      "p99": 1347,
+      "max": 1414
+    },
+    {
+      "path": "/v1/technology/password",
+      "samples": 51,
+      "min": 837,
+      "avg": 918,
+      "p50": 909,
+      "p95": 1022,
+      "p99": 1060,
+      "max": 1149
+    },
+    {
+      "path": "/v1/technology/random-user",
+      "samples": 43,
+      "min": 807,
+      "avg": 1013,
+      "p50": 867,
+      "p95": 1329,
+      "p99": 2189,
+      "max": 2220
+    },
+    {
+      "path": "/v1/technology/useragent",
+      "samples": 50,
+      "min": 424,
+      "avg": 939,
+      "p50": 914,
+      "p95": 1128,
+      "p99": 1149,
+      "max": 1741
+    },
+    {
+      "path": "/v1/text/dictionary/eloquent",
+      "samples": 50,
+      "min": 829,
+      "avg": 904,
+      "p50": 854,
+      "p95": 1085,
+      "p99": 1161,
+      "max": 1780
+    },
+    {
+      "path": "/v1/text/lorem",
+      "samples": 51,
+      "min": 816,
+      "avg": 919,
+      "p50": 886,
+      "p95": 1123,
+      "p99": 1209,
+      "max": 1217
+    },
+    {
+      "path": "/v1/text/normalize",
+      "samples": 1,
+      "min": 3884,
+      "avg": 3884,
+      "p50": 3884,
+      "p95": 3884,
+      "p99": 3884,
+      "max": 3884
+    },
+    {
+      "path": "/v1/text/spellcheck",
+      "samples": 1,
+      "min": 898,
+      "avg": 898,
+      "p50": 898,
+      "p95": 898,
+      "p99": 898,
+      "max": 898
+    },
+    {
+      "path": "/v1/text/thesaurus/happy",
+      "samples": 34,
+      "min": 797,
+      "avg": 911,
+      "p50": 876,
+      "p95": 1076,
+      "p99": 1109,
+      "max": 1206
+    },
+    {
+      "path": "/v1/text/words/random",
+      "samples": 50,
+      "min": 826,
+      "avg": 933,
+      "p50": 889,
+      "p95": 1143,
+      "p99": 1192,
+      "max": 1205
+    },
+    {
+      "path": "/v1/validation/email",
+      "samples": 17,
+      "min": 847,
+      "avg": 1081,
+      "p50": 877,
+      "p95": 1101,
+      "p99": 1101,
+      "max": 3898
+    },
+    {
+      "path": "/v1/validation/phone",
+      "samples": 50,
+      "min": 830,
+      "avg": 924,
+      "p50": 887,
+      "p95": 1138,
+      "p99": 1156,
+      "max": 1244
+    },
+    {
+      "path": "/v1/validation/profanity",
       "samples": 1,
       "min": 1008,
       "avg": 1008,
@@ -112,276 +372,6 @@
       "p95": 1008,
       "p99": 1008,
       "max": 1008
-    },
-    {
-      "path": "/v1/finance/crypto/BTC",
-      "samples": 50,
-      "min": 830,
-      "avg": 879,
-      "p50": 860,
-      "p95": 959,
-      "p99": 971,
-      "max": 1109
-    },
-    {
-      "path": "/v1/finance/exchange-rate",
-      "samples": 50,
-      "min": 842,
-      "avg": 900,
-      "p50": 868,
-      "p95": 1092,
-      "p99": 1168,
-      "max": 1226
-    },
-    {
-      "path": "/v1/finance/inflation",
-      "samples": 50,
-      "min": 836,
-      "avg": 908,
-      "p50": 885,
-      "p95": 1019,
-      "p99": 1080,
-      "max": 1151
-    },
-    {
-      "path": "/v1/finance/mortgage",
-      "samples": 50,
-      "min": 842,
-      "avg": 948,
-      "p50": 920,
-      "p95": 1140,
-      "p99": 1153,
-      "max": 1156
-    },
-    {
-      "path": "/v1/networking/disposable/check",
-      "samples": 2,
-      "min": 859,
-      "avg": 984,
-      "p50": 859,
-      "p95": 859,
-      "p99": 859,
-      "max": 1109
-    },
-    {
-      "path": "/v1/networking/disposable/stats",
-      "samples": 1,
-      "min": 918,
-      "avg": 918,
-      "p50": 918,
-      "p95": 918,
-      "p99": 918,
-      "max": 918
-    },
-    {
-      "path": "/v1/networking/ip",
-      "samples": 50,
-      "min": 705,
-      "avg": 908,
-      "p50": 896,
-      "p95": 1053,
-      "p99": 1209,
-      "max": 1255
-    },
-    {
-      "path": "/v1/networking/ip/8.8.8.8",
-      "samples": 1,
-      "min": 1977,
-      "avg": 1977,
-      "p50": 1977,
-      "p95": 1977,
-      "p99": 1977,
-      "max": 1977
-    },
-    {
-      "path": "/v1/networking/mx/gmail.com",
-      "samples": 31,
-      "min": 895,
-      "avg": 967,
-      "p50": 925,
-      "p95": 1126,
-      "p99": 1132,
-      "max": 1168
-    },
-    {
-      "path": "/v1/technology/base",
-      "samples": 50,
-      "min": 810,
-      "avg": 874,
-      "p50": 852,
-      "p95": 943,
-      "p99": 1141,
-      "max": 1169
-    },
-    {
-      "path": "/v1/technology/base64/decode",
-      "samples": 50,
-      "min": 823,
-      "avg": 927,
-      "p50": 911,
-      "p95": 1095,
-      "p99": 1105,
-      "max": 1139
-    },
-    {
-      "path": "/v1/technology/base64/encode",
-      "samples": 50,
-      "min": 863,
-      "avg": 934,
-      "p50": 897,
-      "p95": 1119,
-      "p99": 1133,
-      "max": 1680
-    },
-    {
-      "path": "/v1/technology/color",
-      "samples": 14,
-      "min": 830,
-      "avg": 986,
-      "p50": 859,
-      "p95": 1380,
-      "p99": 1380,
-      "max": 1583
-    },
-    {
-      "path": "/v1/technology/convert",
-      "samples": 1,
-      "min": 899,
-      "avg": 899,
-      "p50": 899,
-      "p95": 899,
-      "p99": 899,
-      "max": 899
-    },
-    {
-      "path": "/v1/technology/markdown",
-      "samples": 1,
-      "min": 1085,
-      "avg": 1085,
-      "p50": 1085,
-      "p95": 1085,
-      "p99": 1085,
-      "max": 1085
-    },
-    {
-      "path": "/v1/technology/password",
-      "samples": 51,
-      "min": 756,
-      "avg": 897,
-      "p50": 889,
-      "p95": 1063,
-      "p99": 1153,
-      "max": 1338
-    },
-    {
-      "path": "/v1/technology/random-user",
-      "samples": 1,
-      "min": 902,
-      "avg": 902,
-      "p50": 902,
-      "p95": 902,
-      "p99": 902,
-      "max": 902
-    },
-    {
-      "path": "/v1/technology/useragent",
-      "samples": 50,
-      "min": 803,
-      "avg": 906,
-      "p50": 894,
-      "p95": 1022,
-      "p99": 1133,
-      "max": 1135
-    },
-    {
-      "path": "/v1/text/dictionary/eloquent",
-      "samples": 8,
-      "min": 285,
-      "avg": 726,
-      "p50": 771,
-      "p95": 816,
-      "p99": 816,
-      "max": 844
-    },
-    {
-      "path": "/v1/text/lorem",
-      "samples": 51,
-      "min": 814,
-      "avg": 941,
-      "p50": 886,
-      "p95": 1028,
-      "p99": 1118,
-      "max": 2758
-    },
-    {
-      "path": "/v1/text/normalize",
-      "samples": 1,
-      "min": 896,
-      "avg": 896,
-      "p50": 896,
-      "p95": 896,
-      "p99": 896,
-      "max": 896
-    },
-    {
-      "path": "/v1/text/spellcheck",
-      "samples": 1,
-      "min": 1016,
-      "avg": 1016,
-      "p50": 1016,
-      "p95": 1016,
-      "p99": 1016,
-      "max": 1016
-    },
-    {
-      "path": "/v1/text/thesaurus/happy",
-      "samples": 37,
-      "min": 695,
-      "avg": 861,
-      "p50": 852,
-      "p95": 958,
-      "p99": 972,
-      "max": 1017
-    },
-    {
-      "path": "/v1/text/words/random",
-      "samples": 50,
-      "min": 833,
-      "avg": 915,
-      "p50": 864,
-      "p95": 1081,
-      "p99": 1303,
-      "max": 1909
-    },
-    {
-      "path": "/v1/validation/email",
-      "samples": 1,
-      "min": 915,
-      "avg": 915,
-      "p50": 915,
-      "p95": 915,
-      "p99": 915,
-      "max": 915
-    },
-    {
-      "path": "/v1/validation/phone",
-      "samples": 50,
-      "min": 838,
-      "avg": 926,
-      "p50": 915,
-      "p95": 1020,
-      "p99": 1030,
-      "max": 1237
-    },
-    {
-      "path": "/v1/validation/profanity",
-      "samples": 1,
-      "min": 1651,
-      "avg": 1651,
-      "p50": 1651,
-      "p95": 1651,
-      "p99": 1651,
-      "max": 1651
     }
   ]
 }

@@ -165,9 +165,9 @@ faq:
       No. The current implementation supports opaque colors only (HEX, RGB, HSL, CMYK without an alpha channel). RGBA,
       HSLA, and HEX8 are not supported.
 performance:
-  p50_ms: 859
-  p95_ms: 1380
-  p99_ms: 1380
-  avg_ms: 986
-  samples: 14
+  p50_ms: 830
+  p95_ms: 1118
+  p99_ms: 1135
+  avg_ms: 1019
+  samples: 44
   measured_at: "2026-04-16"

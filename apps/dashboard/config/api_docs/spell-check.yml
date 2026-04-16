@@ -127,9 +127,9 @@ faq:
       No. Spell checking is case-insensitive. The suggested correction mirrors the capitalisation of the original word:
       a capitalised misspelling produces a capitalised suggestion.
 performance:
-  p50_ms: 1016
-  p95_ms: 1016
-  p99_ms: 1016
-  avg_ms: 1016
+  p50_ms: 898
+  p95_ms: 898
+  p99_ms: 898
+  avg_ms: 898
   samples: 1
   measured_at: "2026-04-16"
