@@ -23,7 +23,7 @@ export function getConfig(): Config {
   const apiKey = process.env["REQUIEMS_API_KEY"] ?? "";
   const runs = Number(process.env["INTEGRATION_RUNS"] ?? "20");
   const requestTimeoutMs = Number(
-    process.env["REQUEST_TIMEOUT_MS"] ?? "10000",
+    process.env["REQUEST_TIMEOUT_MS"] ?? "8000",
   );
 
   if (!apiKey) {

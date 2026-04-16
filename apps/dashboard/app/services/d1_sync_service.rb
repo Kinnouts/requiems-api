@@ -133,7 +133,7 @@ class D1SyncService
 
   def parse_response(body)
     {
-      usage: body["usage"] || [],
+      usage: (body["usage"] || []).map { |r| r.transform_keys(&:to_sym) },
       total: body["total"] || 0,
       has_more: body["hasMore"] || false,
       next_cursor: body["nextCursor"]

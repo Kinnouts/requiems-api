@@ -3,8 +3,7 @@
  *
  * Covers: /v1/text/words/random, /v1/text/lorem,
  *         /v1/text/dictionary/{word}, /v1/text/thesaurus/{word},
- *         /v1/text/spellcheck, /v1/validation/profanity,
- *         /v1/entertainment/advice, /v1/entertainment/quotes/random
+ *         /v1/text/spellcheck, /v1/validation/profanity
  *
  * Each test is run `config.runs` times to produce stable timing samples and
  * surface flakiness.  Response body shapes are snapshotted on the first run
@@ -18,32 +17,6 @@ import { assertEnvelope, repeat } from "../helpers.js";
 const SUITE = "text";
 
 describe("Text API", () => {
-  describe("GET /v1/entertainment/advice", () => {
-    it("returns a random piece of advice", async () => {
-      await repeat(async () => {
-        const { response } = await client.get("/v1/entertainment/advice");
-        const { data } = await assertEnvelope(response, SUITE, "advice");
-        const d = data as Record<string, unknown>;
-        expect(typeof d["id"]).toBe("number");
-        expect(typeof d["advice"]).toBe("string");
-        expect((d["advice"] as string).length).toBeGreaterThan(0);
-      });
-    });
-  });
-
-  describe("GET /v1/entertainment/quotes/random", () => {
-    it("returns a random quote", async () => {
-      await repeat(async () => {
-        const { response } = await client.get("/v1/entertainment/quotes/random");
-        const { data } = await assertEnvelope(response, SUITE, "quotes_random");
-        const d = data as Record<string, unknown>;
-        expect(typeof d["id"]).toBe("number");
-        expect(typeof d["text"]).toBe("string");
-        expect(typeof d["author"]).toBe("string");
-      });
-    });
-  });
-
   describe("GET /v1/text/words/random", () => {
     it("returns a random word", async () => {
       await repeat(async () => {

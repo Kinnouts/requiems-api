@@ -2,8 +2,6 @@
   "createdAt": "2026-04-16T01:08:15.765Z",
   "updatedAt": "2026-04-16T01:08:29.318Z",
   "shapes": {
-    "advice": "{data:{advice:string,id:number},metadata:{timestamp:string}}",
-    "quotes_random": "{data:{author:string,id:number,text:string},metadata:{timestamp:string}}",
     "words_random": "{data:{definition:string,id:number,part_of_speech:string,word:string},metadata:{timestamp:string}}",
     "lorem_default": "{data:{paragraphs:number,text:string,wordCount:number},metadata:{timestamp:string}}",
     "lorem_2_paragraphs": "{data:{paragraphs:number,text:string,wordCount:number},metadata:{timestamp:string}}",

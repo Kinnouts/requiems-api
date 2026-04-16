@@ -1,7 +1,8 @@
 /**
  * Integration tests — Entertainment API endpoints
  *
- * Covers: /v1/entertainment/chuck-norris, /v1/entertainment/jokes/dad,
+ * Covers: /v1/entertainment/advice, /v1/entertainment/quotes/random,
+ *         /v1/entertainment/chuck-norris, /v1/entertainment/jokes/dad,
  *         /v1/entertainment/facts, /v1/entertainment/trivia,
  *         /v1/entertainment/emoji/random, /v1/entertainment/sudoku,
  *         /v1/entertainment/horoscope/{sign}
@@ -14,6 +15,34 @@ import { assertEnvelope, repeat } from "../helpers.js";
 const SUITE = "entertainment";
 
 describe("Entertainment API", () => {
+  describe("GET /v1/entertainment/advice", () => {
+    it("returns a random piece of advice", async () => {
+      await repeat(async () => {
+        const { response } = await client.get("/v1/entertainment/advice");
+        const { data } = await assertEnvelope(response, SUITE, "advice");
+        const d = data as Record<string, unknown>;
+        expect(typeof d["id"]).toBe("number");
+        expect(typeof d["advice"]).toBe("string");
+        expect((d["advice"] as string).length).toBeGreaterThan(0);
+      });
+    });
+  });
+
+  describe("GET /v1/entertainment/quotes/random", () => {
+    it("returns a random quote", async () => {
+      await repeat(async () => {
+        const { response } = await client.get(
+          "/v1/entertainment/quotes/random",
+        );
+        const { data } = await assertEnvelope(response, SUITE, "quotes_random");
+        const d = data as Record<string, unknown>;
+        expect(typeof d["id"]).toBe("number");
+        expect(typeof d["text"]).toBe("string");
+        expect(typeof d["author"]).toBe("string");
+      });
+    });
+  });
+
   describe("GET /v1/entertainment/chuck-norris", () => {
     it("returns a Chuck Norris joke", async () => {
       await repeat(async () => {
