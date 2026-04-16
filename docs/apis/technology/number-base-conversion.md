@@ -4,7 +4,7 @@ Convert integers between binary, octal, decimal, and hexadecimal.
 
 ## Endpoint
 
-`GET /v1/convert/base`
+`GET /v1/technology/base`
 
 ## Query Parameters
 

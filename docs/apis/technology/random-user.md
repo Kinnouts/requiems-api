@@ -12,7 +12,7 @@ URL.
 
 ## Base URL
 
-All endpoints are mounted under `/v1/misc`
+All endpoints are mounted under `/v1/technology`
 
 ## Endpoints
 
@@ -20,7 +20,7 @@ All endpoints are mounted under `/v1/misc`
 
 Returns a randomly generated fake user profile.
 
-**Endpoint:** `GET /v1/misc/random-user`
+**Endpoint:** `GET /v1/technology/random-user`
 
 **Response:** `200 OK`
 
@@ -43,7 +43,7 @@ Returns a randomly generated fake user profile.
 **Example:**
 
 ```bash
-curl https://api.requiems.xyz/v1/misc/random-user \
+curl https://api.requiems.xyz/v1/technology/random-user \
   -H "requiems-api-key: YOUR_API_KEY"
 ```
 

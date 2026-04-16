@@ -14,7 +14,7 @@ per RFC 5321).
 
 ### MX Lookup
 
-**Endpoint:** `GET /v1/tech/mx/{domain}`
+**Endpoint:** `GET /v1/networking/mx/{domain}`
 
 Look up MX records for a domain.
 

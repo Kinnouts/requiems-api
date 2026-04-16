@@ -7,7 +7,7 @@ detection.
 
 ### Lookup Caller IP
 
-`GET /v1/tech/ip`
+`GET /v1/networking/ip`
 
 Returns geolocation information for the requesting client's IP address. Useful
 when you want information about the user making the request without specifying
@@ -17,7 +17,7 @@ an IP explicitly.
 
 ### Lookup Specific IP
 
-`GET /v1/tech/ip/{ip}`
+`GET /v1/networking/ip/{ip}`
 
 Returns geolocation information for a specific IP address.
 
@@ -68,14 +68,14 @@ All responses are wrapped in the standard envelope:
 ### Lookup Caller IP
 
 ```bash
-curl "https://api.requiems.xyz/v1/tech/ip" \
+curl "https://api.requiems.xyz/v1/networking/ip" \
   -H "requiems-api-key: YOUR_API_KEY"
 ```
 
 ### Lookup Specific IP
 
 ```bash
-curl "https://api.requiems.xyz/v1/tech/ip/8.8.8.8" \
+curl "https://api.requiems.xyz/v1/networking/ip/8.8.8.8" \
   -H "requiems-api-key: YOUR_API_KEY"
 ```
 
@@ -85,7 +85,7 @@ curl "https://api.requiems.xyz/v1/tech/ip/8.8.8.8" \
 import requests
 
 # Lookup specific IP
-url = "https://api.requiems.xyz/v1/tech/ip/8.8.8.8"
+url = "https://api.requiems.xyz/v1/networking/ip/8.8.8.8"
 headers = {"requiems-api-key": "YOUR_API_KEY"}
 
 response = requests.get(url, headers=headers)

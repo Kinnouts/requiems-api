@@ -4,11 +4,11 @@ Detect and censor profanity in text for content moderation.
 
 ## Status
 
-✅ **Live** — Available at `POST /v1/text/profanity`
+✅ **Live** — Available at `POST /v1/validation/profanity`
 
 ## Endpoint
 
-`POST /v1/text/profanity`
+`POST /v1/validation/profanity`
 
 ## Request
 
@@ -58,7 +58,7 @@ Detect and censor profanity in text for content moderation.
 ### cURL
 
 ```bash
-curl -X POST https://api.requiems.xyz/v1/text/profanity \
+curl -X POST https://api.requiems.xyz/v1/validation/profanity \
   -H "requiems-api-key: YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{"text": "Some text to check"}'
@@ -69,7 +69,7 @@ curl -X POST https://api.requiems.xyz/v1/text/profanity \
 ```python
 import requests
 
-url = "https://api.requiems.xyz/v1/text/profanity"
+url = "https://api.requiems.xyz/v1/validation/profanity"
 headers = {
     "requiems-api-key": "YOUR_API_KEY",
     "Content-Type": "application/json"
@@ -85,7 +85,7 @@ print(f"Censored: {result['censored']}")
 ### JavaScript
 
 ```javascript
-const response = await fetch("https://api.requiems.xyz/v1/text/profanity", {
+const response = await fetch("https://api.requiems.xyz/v1/validation/profanity", {
   method: "POST",
   headers: {
     "requiems-api-key": "YOUR_API_KEY",
@@ -105,7 +105,7 @@ console.log(`Censored: ${data.censored}`);
 require 'net/http'
 require 'json'
 
-uri = URI('https://api.requiems.xyz/v1/text/profanity')
+uri = URI('https://api.requiems.xyz/v1/validation/profanity')
 request = Net::HTTP::Post.new(uri)
 request['requiems-api-key'] = 'YOUR_API_KEY'
 request['Content-Type'] = 'application/json'

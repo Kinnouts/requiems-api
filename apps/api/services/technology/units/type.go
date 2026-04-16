@@ -1,4 +1,4 @@
-package convert
+package units
 
 type Result struct {
 	From    string  `json:"from"`

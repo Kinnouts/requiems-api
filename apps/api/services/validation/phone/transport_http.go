@@ -10,7 +10,7 @@ import (
 )
 
 func RegisterRoutes(r chi.Router, svc *Service) {
-	r.Get("/validate/phone", func(w http.ResponseWriter, r *http.Request) {
+	r.Get("/phone", func(w http.ResponseWriter, r *http.Request) {
 		req := ValidateRequest{}
 
 		if err := httpx.BindQuery(r, &req); err != nil {
@@ -21,7 +21,7 @@ func RegisterRoutes(r chi.Router, svc *Service) {
 		httpx.JSON(w, http.StatusOK, svc.Validate(req.Number))
 	})
 
-	r.Post("/validate/phone/batch", httpx.HandleBatch(
+	r.Post("/phone/batch", httpx.HandleBatch(
 		func(_ context.Context, req BatchValidateRequest) (BatchValidateResponse, int, error) {
 			return svc.ValidateBatch(req.Numbers), len(req.Numbers), nil
 		},

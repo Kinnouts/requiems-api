@@ -2,7 +2,7 @@
 
 ## Status
 
-✅ **Live** - Available now at `GET /v1/convert/color`
+✅ **Live** - Available now at `GET /v1/technology/color`
 
 ## Overview
 
@@ -14,7 +14,7 @@ application that handles color inputs from different sources.
 
 ### Convert Color
 
-**Endpoint:** `GET /v1/convert/color`
+**Endpoint:** `GET /v1/technology/color`
 
 #### Query Parameters
 
@@ -36,7 +36,7 @@ application that handles color inputs from different sources.
 #### Example Request
 
 ```
-GET /v1/convert/color?from=hex&to=hsl&value=%23ff5733
+GET /v1/technology/color?from=hex&to=hsl&value=%23ff5733
 ```
 
 #### Example Response

@@ -4,33 +4,38 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/jackc/pgx/v5/pgxpool"
 
-	"requiems-api/services/text/advice"
+	"requiems-api/services/text/detectlanguage"
 	"requiems-api/services/text/lorem"
-	"requiems-api/services/text/profanity"
-	"requiems-api/services/text/quotes"
+	"requiems-api/services/text/normalize"
+	"requiems-api/services/text/sentiment"
+	"requiems-api/services/text/similarity"
 	"requiems-api/services/text/spellcheck"
 	"requiems-api/services/text/thesaurus"
 	"requiems-api/services/text/words"
 )
 
 func RegisterRoutes(r chi.Router, pool *pgxpool.Pool) {
-	adviceSvc := advice.NewService(pool)
-	advice.RegisterRoutes(r, adviceSvc)
-
-	quotesSvc := quotes.NewService(pool)
-	quotes.RegisterRoutes(r, quotesSvc)
-
 	wordsSvc := words.NewService(pool)
 	words.RegisterRoutes(r, wordsSvc)
 
 	loremSvc := lorem.NewService()
 	lorem.RegisterRoutes(r, loremSvc)
 
-	profanitySvc := profanity.NewService()
-	profanity.RegisterRoutes(r, profanitySvc)
-
 	spellcheckSvc := spellcheck.NewService()
 	spellcheck.RegisterRoutes(r, spellcheckSvc)
+
 	thesaurusSvc := thesaurus.NewService()
 	thesaurus.RegisterRoutes(r, thesaurusSvc)
+
+	detectlanguageSvc := detectlanguage.NewService()
+	detectlanguage.RegisterRoutes(r, detectlanguageSvc)
+
+	sentimentSvc := sentiment.NewService()
+	sentiment.RegisterRoutes(r, sentimentSvc)
+
+	similaritySvc := similarity.NewService()
+	similarity.RegisterRoutes(r, similaritySvc)
+
+	normalizeSvc := normalize.NewService()
+	normalize.RegisterRoutes(r, normalizeSvc)
 }

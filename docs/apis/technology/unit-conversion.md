@@ -13,7 +13,7 @@ temperature, area, and speed conversions.
 
 ### Convert Units
 
-**Endpoint:** `GET /v1/misc/convert`
+**Endpoint:** `GET /v1/technology/convert`
 
 Convert a value from one unit to another.
 
@@ -28,7 +28,7 @@ Convert a value from one unit to another.
 #### Example Request
 
 ```
-GET /v1/misc/convert?from=miles&to=km&value=10
+GET /v1/technology/convert?from=miles&to=km&value=10
 ```
 
 #### Example Response

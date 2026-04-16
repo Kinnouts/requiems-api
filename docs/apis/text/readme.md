@@ -61,7 +61,7 @@ Compare two texts and get a cosine similarity score between 0 and 1.
 Convert Markdown to HTML. Optionally sanitize output to prevent XSS.
 
 - **Status:** mvp
-- **Endpoint:** `POST /v1/convert/markdown`
+- **Endpoint:** `POST /v1/technology/markdown`
 - **Credit Cost:** 1
 
 ### [Lorem Ipsum Generator](./lorem-ipsum.md) - ✅ MVP
@@ -85,7 +85,7 @@ Generate random words for testing, games, and creative projects.
 Normalize email addresses to canonical form with provider-specific rules.
 
 - **Status:** mvp
-- **Endpoint:** `POST /v1/email/normalize`
+- **Endpoint:** `POST /v1/text/normalize`
 - **Credit Cost:** 1
 
 ## Category Statistics

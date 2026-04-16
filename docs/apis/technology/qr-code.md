@@ -13,7 +13,7 @@ base64-encoded JSON response.
 
 ### Generate QR Code
 
-`GET /v1/tech/qr`
+`GET /v1/technology/qr`
 
 ### Query Parameters
 
@@ -30,7 +30,7 @@ base64-encoded JSON response.
 Returns a raw PNG image with `Content-Type: image/png`.
 
 ```
-GET /v1/tech/qr?data=https://example.com&size=200
+GET /v1/technology/qr?data=https://example.com&size=200
 ```
 
 #### Base64 format
@@ -38,7 +38,7 @@ GET /v1/tech/qr?data=https://example.com&size=200
 Returns a JSON envelope containing a base64-encoded PNG image.
 
 ```
-GET /v1/tech/qr?data=https://example.com&size=200&format=base64
+GET /v1/technology/qr?data=https://example.com&size=200&format=base64
 ```
 
 ```json

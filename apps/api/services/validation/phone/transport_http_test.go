@@ -21,7 +21,7 @@ func setupRouter() chi.Router {
 func TestPhone_ValidUSNumber(t *testing.T) {
 	r := setupRouter()
 
-	req := httptest.NewRequest(http.MethodGet, "/validate/phone?number=%2B12015551234", http.NoBody)
+	req := httptest.NewRequest(http.MethodGet, "/phone?number=%2B12015551234", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -51,7 +51,7 @@ func TestPhone_ValidUSNumber(t *testing.T) {
 func TestPhone_InvalidNumber(t *testing.T) {
 	r := setupRouter()
 
-	req := httptest.NewRequest(http.MethodGet, "/validate/phone?number=12345", http.NoBody)
+	req := httptest.NewRequest(http.MethodGet, "/phone?number=12345", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -75,7 +75,7 @@ func TestPhone_InvalidNumber(t *testing.T) {
 func TestPhone_MissingNumber(t *testing.T) {
 	r := setupRouter()
 
-	req := httptest.NewRequest(http.MethodGet, "/validate/phone", http.NoBody)
+	req := httptest.NewRequest(http.MethodGet, "/phone", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -87,7 +87,7 @@ func TestPhone_MissingNumber(t *testing.T) {
 func TestPhone_UKMobile(t *testing.T) {
 	r := setupRouter()
 
-	req := httptest.NewRequest(http.MethodGet, "/validate/phone?number=%2B447400123456", http.NoBody)
+	req := httptest.NewRequest(http.MethodGet, "/phone?number=%2B447400123456", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -114,7 +114,7 @@ func TestPhone_UKMobile(t *testing.T) {
 func TestPhone_CarrierPresent(t *testing.T) {
 	r := setupRouter()
 
-	req := httptest.NewRequest(http.MethodGet, "/validate/phone?number=%2B447400123456", http.NoBody)
+	req := httptest.NewRequest(http.MethodGet, "/phone?number=%2B447400123456", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -184,7 +184,7 @@ func TestPhone_RiskMobile(t *testing.T) {
 func TestPhone_InvalidHasNoCarrierOrRisk(t *testing.T) {
 	r := setupRouter()
 
-	req := httptest.NewRequest(http.MethodGet, "/validate/phone?number=12345", http.NoBody)
+	req := httptest.NewRequest(http.MethodGet, "/phone?number=12345", http.NoBody)
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
@@ -208,7 +208,7 @@ func TestPhone_BatchValidate(t *testing.T) {
 	r := setupRouter()
 
 	body := `{"numbers":["+447400123456","+12015551234","12345"]}`
-	req := httptest.NewRequest(http.MethodPost, "/validate/phone/batch", strings.NewReader(body))
+	req := httptest.NewRequest(http.MethodPost, "/phone/batch", strings.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
@@ -242,7 +242,7 @@ func TestPhone_BatchValidate(t *testing.T) {
 func TestPhone_BatchValidate_EmptyBody(t *testing.T) {
 	r := setupRouter()
 
-	req := httptest.NewRequest(http.MethodPost, "/validate/phone/batch", strings.NewReader(`{"numbers":[]}`))
+	req := httptest.NewRequest(http.MethodPost, "/phone/batch", strings.NewReader(`{"numbers":[]}`))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
@@ -260,7 +260,7 @@ func TestPhone_BatchValidate_ExceedsLimit(t *testing.T) {
 		numbers[i] = `"+447400123456"`
 	}
 	body := `{"numbers":[` + strings.Join(numbers, ",") + `]}`
-	req := httptest.NewRequest(http.MethodPost, "/validate/phone/batch", strings.NewReader(body))
+	req := httptest.NewRequest(http.MethodPost, "/phone/batch", strings.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)

@@ -4,11 +4,11 @@ Generate cryptographically secure random passwords with customizable complexity.
 
 ## Status
 
-✅ **Live** - Available now at `GET /v1/tech/password`
+✅ **Live** - Available now at `GET /v1/technology/password`
 
 ## Endpoint
 
-`GET /v1/tech/password`
+`GET /v1/technology/password`
 
 ## Query Parameters
 
@@ -63,15 +63,15 @@ Scoring: 1 point for length ≥ 8, +1 for length ≥ 16, +1 per enabled charset
 
 ```bash
 # Generate 16-character password with all character types
-curl "https://api.requiems.xyz/v1/tech/password?length=16&uppercase=true&numbers=true&symbols=true" \
+curl "https://api.requiems.xyz/v1/technology/password?length=16&uppercase=true&numbers=true&symbols=true" \
   -H "requiems-api-key: YOUR_API_KEY"
 
 # Generate simple 12-character password (lowercase only)
-curl "https://api.requiems.xyz/v1/tech/password?length=12" \
+curl "https://api.requiems.xyz/v1/technology/password?length=12" \
   -H "requiems-api-key: YOUR_API_KEY"
 
 # Generate 20-character alphanumeric password
-curl "https://api.requiems.xyz/v1/tech/password?length=20&uppercase=true&numbers=true" \
+curl "https://api.requiems.xyz/v1/technology/password?length=20&uppercase=true&numbers=true" \
   -H "requiems-api-key: YOUR_API_KEY"
 ```
 
@@ -80,7 +80,7 @@ curl "https://api.requiems.xyz/v1/tech/password?length=20&uppercase=true&numbers
 ```python
 import requests
 
-url = "https://api.requiems.xyz/v1/tech/password"
+url = "https://api.requiems.xyz/v1/technology/password"
 headers = {"requiems-api-key": "YOUR_API_KEY"}
 params = {
     "length": 16,
@@ -106,7 +106,7 @@ const params = new URLSearchParams({
 });
 
 const response = await fetch(
-  `https://api.requiems.xyz/v1/tech/password?${params}`,
+  `https://api.requiems.xyz/v1/technology/password?${params}`,
   {
     headers: {
       "requiems-api-key": "YOUR_API_KEY",
@@ -125,7 +125,7 @@ console.log(`Strength: ${data.strength}`);
 require 'net/http'
 require 'json'
 
-uri = URI('https://api.requiems.xyz/v1/tech/password')
+uri = URI('https://api.requiems.xyz/v1/technology/password')
 uri.query = URI.encode_www_form(
   length: 16,
   uppercase: true,

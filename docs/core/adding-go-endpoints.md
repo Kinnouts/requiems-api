@@ -44,15 +44,16 @@ apps/api/
 
 Existing top-level domains and their `/v1` prefixes:
 
-| Domain folder             | URL prefix          |
-| ------------------------- | ------------------- |
-| `services/text/`          | `/v1/text`          |
-| `services/email/`         | `/v1/email`         |
-| `services/entertainment/` | `/v1/entertainment` |
-| `services/finance/`       | `/v1/finance`       |
-| `services/misc/`          | `/v1/misc`          |
-| `services/places/`        | `/v1/places`        |
-| `services/tech/`          | `/v1/tech`          |
+| Domain folder               | URL prefix            |
+| --------------------------- | --------------------- |
+| `services/entertainment/`   | `/v1/entertainment`   |
+| `services/finance/`         | `/v1/finance`         |
+| `services/health/`          | `/v1/health`          |
+| `services/networking/`      | `/v1/networking`      |
+| `services/places/`          | `/v1/places`          |
+| `services/technology/`      | `/v1/technology`      |
+| `services/text/`            | `/v1/text`            |
+| `services/validation/`      | `/v1/validation`      |
 
 ---
 
@@ -837,7 +838,7 @@ this clearly in the endpoint's API doc):
 ```ts
 // In ENDPOINT_MULTIPLIERS map:
 ["/v1/text/riddle/generate", 1],   // default — omit this line unless non-1
-["/v1/ai/summarize", 5],           // expensive AI call
+["/v1/text/summarize", 5],         // expensive AI call
 ["/v1/translate/text", 3],         // ML translation
 ```
 

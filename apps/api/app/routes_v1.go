@@ -9,16 +9,14 @@ import (
 	"github.com/redis/go-redis/v9"
 
 	"requiems-api/platform/config"
-	"requiems-api/services/ai"
-	"requiems-api/services/convert"
-	"requiems-api/services/email"
 	"requiems-api/services/entertainment"
 	"requiems-api/services/finance"
-	"requiems-api/services/fitness"
-	"requiems-api/services/misc"
+	"requiems-api/services/health"
+	"requiems-api/services/networking"
 	"requiems-api/services/places"
-	"requiems-api/services/tech"
+	"requiems-api/services/technology"
 	"requiems-api/services/text"
+	"requiems-api/services/validation"
 )
 
 // serviceEnabled reports whether a named service should be mounted.
@@ -39,52 +37,10 @@ func serviceEnabled(cfg config.Config, key string) bool {
 }
 
 func registerV1Routes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb *redis.Client, cfg config.Config) {
-	if serviceEnabled(cfg, "convert") {
-		convertRouter := chi.NewRouter()
-		convert.RegisterRoutes(convertRouter)
-		r.Mount("/convert", convertRouter)
-	}
-
-	if serviceEnabled(cfg, "text") {
-		textRouter := chi.NewRouter()
-		text.RegisterRoutes(textRouter, pool)
-		r.Mount("/text", textRouter)
-	}
-
-	if serviceEnabled(cfg, "ai") {
-		aiRouter := chi.NewRouter()
-		ai.RegisterRoutes(aiRouter)
-		r.Mount("/ai", aiRouter)
-	}
-
-	if serviceEnabled(cfg, "email") {
-		emailRouter := chi.NewRouter()
-		email.RegisterRoutes(emailRouter)
-		r.Mount("/email", emailRouter)
-	}
-
 	if serviceEnabled(cfg, "entertainment") {
 		entertainmentRouter := chi.NewRouter()
-		entertainment.RegisterRoutes(entertainmentRouter)
+		entertainment.RegisterRoutes(entertainmentRouter, pool)
 		r.Mount("/entertainment", entertainmentRouter)
-	}
-
-	if serviceEnabled(cfg, "misc") {
-		miscRouter := chi.NewRouter()
-		misc.RegisterRoutes(ctx, miscRouter, pool, rdb)
-		r.Mount("/misc", miscRouter)
-	}
-
-	if serviceEnabled(cfg, "places") {
-		placesRouter := chi.NewRouter()
-		places.RegisterRoutes(placesRouter, cfg, rdb)
-		r.Mount("/places", placesRouter)
-	}
-
-	if serviceEnabled(cfg, "tech") {
-		techRouter := chi.NewRouter()
-		tech.RegisterRoutes(techRouter, cfg)
-		r.Mount("/tech", techRouter)
 	}
 
 	if serviceEnabled(cfg, "finance") {
@@ -93,9 +49,39 @@ func registerV1Routes(ctx context.Context, r chi.Router, pool *pgxpool.Pool, rdb
 		r.Mount("/finance", financeRouter)
 	}
 
-	if serviceEnabled(cfg, "fitness") {
-		fitnessRouter := chi.NewRouter()
-		fitness.RegisterRoutes(fitnessRouter, pool)
-		r.Mount("/fitness", fitnessRouter)
+	if serviceEnabled(cfg, "health") {
+		healthRouter := chi.NewRouter()
+		health.RegisterRoutes(healthRouter, pool)
+		r.Mount("/health", healthRouter)
+	}
+
+	if serviceEnabled(cfg, "networking") {
+		networkingRouter := chi.NewRouter()
+		networking.RegisterRoutes(networkingRouter, cfg)
+		r.Mount("/networking", networkingRouter)
+	}
+
+	if serviceEnabled(cfg, "places") {
+		placesRouter := chi.NewRouter()
+		places.RegisterRoutes(placesRouter, cfg, rdb)
+		r.Mount("/places", placesRouter)
+	}
+
+	if serviceEnabled(cfg, "technology") {
+		technologyRouter := chi.NewRouter()
+		technology.RegisterRoutes(ctx, technologyRouter, pool, rdb)
+		r.Mount("/technology", technologyRouter)
+	}
+
+	if serviceEnabled(cfg, "text") {
+		textRouter := chi.NewRouter()
+		text.RegisterRoutes(textRouter, pool)
+		r.Mount("/text", textRouter)
+	}
+
+	if serviceEnabled(cfg, "validation") {
+		validationRouter := chi.NewRouter()
+		validation.RegisterRoutes(validationRouter)
+		r.Mount("/validation", validationRouter)
 	}
 }

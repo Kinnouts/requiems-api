@@ -10,15 +10,19 @@ en:
         cta_secondary: "Browse API Docs"
         try_badge: "✨ Try it now • No credit card required"
         api_request: "API Request"
+      trusted_by:
+        label: "Trusted by teams building production products"
+      social_proof:
+        label: "Powering products at companies like"
       features:
         heading: "Built for Developer Experience"
-        subheading: "Everything you need to integrate and ship fast"
+        subheading: "AI-native integrations, precise docs, and live playgrounds. Ship in minutes, not weeks."
         playground_title: "Live API Playground"
-        playground_desc: "Test every endpoint directly in the docs. See real responses instantly without writing code."
+        playground_desc: "Test every endpoint directly in the docs. See real responses instantly, no code required."
         examples_title: "Code Examples"
-        examples_desc: "Copy-paste examples in cURL, Python, JavaScript, Go, and more — or copy as Markdown for AI tools. Start in seconds."
+        examples_desc: "Copy-paste examples in cURL, Python, JavaScript, Go, and more. Every example ships with a Markdown version ready for AI coding tools and agents."
         docs_title: "Precise Documentation"
-        docs_desc: "Every parameter, response field, and error code documented. No guessing required."
+        docs_desc: "Every parameter, response field, and error code documented. Designed to be loaded directly into Claude, ChatGPT, or any AI assistant."
       categories:
         heading: "API Categories"
         description: "Explore our comprehensive collection of APIs organized by category to find exactly what you need."

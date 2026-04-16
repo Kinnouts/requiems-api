@@ -13,7 +13,7 @@ Full email validation: syntax check, MX record lookup, disposable domain
 detection, normalization, and typo suggestions.
 
 - **Status:** mvp
-- **Endpoint:** `POST /v1/email/validate`
+- **Endpoint:** `POST /v1/validation/email`
 - **Credit Cost:** 1
 
 ### [Phone Validation](./phone-validation.md) - ✅ MVP
@@ -21,7 +21,7 @@ detection, normalization, and typo suggestions.
 Validate phone numbers globally. Detect carrier, country, type, and VOIP risk.
 
 - **Status:** mvp
-- **Endpoints:** `GET /v1/tech/validate/phone`, `POST /v1/tech/validate/phone`
+- **Endpoints:** `GET /v1/validation/phone`, `POST /v1/validation/phone`
 - **Credit Cost:** 1
 
 ### [Profanity Filter](./profanity.md) - ✅ MVP

@@ -7,16 +7,16 @@ equipment requirements, and body part filters.
 
 | Method | Path                           | Description                           |
 | ------ | ------------------------------ | ------------------------------------- |
-| GET    | `/v1/fitness/exercises`        | Paginated list with optional filters  |
-| GET    | `/v1/fitness/exercises/{id}`   | Single exercise by ID                 |
-| GET    | `/v1/fitness/exercises/random` | Random exercise with optional filters |
-| GET    | `/v1/fitness/body-parts`       | All valid body part values            |
-| GET    | `/v1/fitness/equipment`        | All valid equipment values            |
-| GET    | `/v1/fitness/muscles`          | All valid muscle values               |
+| GET    | `/v1/health/exercises`        | Paginated list with optional filters  |
+| GET    | `/v1/health/exercises/{id}`   | Single exercise by ID                 |
+| GET    | `/v1/health/exercises/random` | Random exercise with optional filters |
+| GET    | `/v1/health/body-parts`       | All valid body part values            |
+| GET    | `/v1/health/equipment`        | All valid equipment values            |
+| GET    | `/v1/health/muscles`          | All valid muscle values               |
 
 ## Listing and Filtering
 
-`GET /v1/fitness/exercises`
+`GET /v1/health/exercises`
 
 All parameters are optional and combinable:
 
@@ -50,14 +50,14 @@ while True:
 
 ## Random Exercise
 
-`GET /v1/fitness/exercises/random`
+`GET /v1/health/exercises/random`
 
 Accepts the same filter parameters as the list endpoint. Returns 404 when no
 exercises match the given filters.
 
 ```bash
 # Random bodyweight back exercise
-curl "https://api.requiems.xyz/v1/fitness/exercises/random?body_part=back&equipment=body+weight" \
+curl "https://api.requiems.xyz/v1/health/exercises/random?body_part=back&equipment=body+weight" \
   -H "requiems-api-key: YOUR_API_KEY"
 ```
 
@@ -66,9 +66,9 @@ curl "https://api.requiems.xyz/v1/fitness/exercises/random?body_part=back&equipm
 Use these to discover all valid filter values before building filter UIs or
 validating user input:
 
-- `GET /v1/fitness/body-parts` — ~10 values (chest, back, upper legs, …)
-- `GET /v1/fitness/equipment` — ~28 values (barbell, dumbbell, cable, …)
-- `GET /v1/fitness/muscles` — ~51 values (biceps, glutes, pectorals, …)
+- `GET /v1/health/body-parts` — ~10 values (chest, back, upper legs, …)
+- `GET /v1/health/equipment` — ~28 values (barbell, dumbbell, cable, …)
+- `GET /v1/health/muscles` — ~51 values (biceps, glutes, pectorals, …)
 
 All return `{ items: string[], total: number }`.
 

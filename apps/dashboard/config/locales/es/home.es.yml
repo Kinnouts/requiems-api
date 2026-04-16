@@ -10,15 +10,19 @@ es:
         cta_secondary: "Ver documentación de APIs"
         try_badge: "✨ Pruébalo ahora • Sin tarjeta de crédito"
         api_request: "Solicitud API"
+      trusted_by:
+        label: "Usado por equipos que construyen productos en produccion"
+      social_proof:
+        label: "Impulsando productos en empresas como"
       features:
         heading: "Diseñado para la experiencia del desarrollador"
-        subheading: "Todo lo que necesitas para integrar y lanzar rápido"
+        subheading: "Integraciones nativas para IA, documentacion precisa y playgrounds en vivo. Lanza en minutos, no en semanas."
         playground_title: "Playground de APIs en vivo"
-        playground_desc: "Prueba cada endpoint directamente en la documentación. Ve respuestas reales al instante sin escribir código."
-        examples_title: "Ejemplos de código"
-        examples_desc: "Ejemplos listos para copiar en cURL, Python, JavaScript, Go y más — o copia como Markdown para herramientas de IA. Empieza en segundos."
-        docs_title: "Documentación precisa"
-        docs_desc: "Cada parámetro, campo de respuesta y código de error documentado. Sin adivinar."
+        playground_desc: "Prueba cada endpoint directamente en la documentacion. Ve respuestas reales al instante, sin escribir codigo."
+        examples_title: "Ejemplos de codigo"
+        examples_desc: "Ejemplos listos para copiar en cURL, Python, JavaScript, Go y mas. Cada ejemplo incluye version en Markdown lista para herramientas de IA y agentes."
+        docs_title: "Documentacion precisa"
+        docs_desc: "Cada parametro, campo de respuesta y codigo de error documentado. Disenado para cargarse directamente en Claude, ChatGPT o cualquier asistente de IA."
       categories:
         heading: "Categorías de APIs"
         description: "Explora nuestra colección completa de APIs organizadas por categoría para encontrar exactamente lo que necesitas."

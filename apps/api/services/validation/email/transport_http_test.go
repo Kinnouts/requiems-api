@@ -1,4 +1,4 @@
-package validate
+package email
 
 import (
 	"encoding/json"
@@ -19,7 +19,7 @@ func setupRouter() chi.Router {
 }
 
 func postValidate(body string) *httptest.ResponseRecorder {
-	req := httptest.NewRequest(http.MethodPost, "/validate", strings.NewReader(body))
+	req := httptest.NewRequest(http.MethodPost, "/email", strings.NewReader(body))
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 	setupRouter().ServeHTTP(w, req)

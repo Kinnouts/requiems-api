@@ -1,0 +1,45 @@
+<style>
+  @keyframes marquee-scroll-reverse {
+    from { transform: translateX(-50%); }
+    to   { transform: translateX(0); }
+  }
+  .marquee-track-reverse {
+    display: flex;
+    width: max-content;
+    animation: marquee-scroll-reverse 36s linear infinite;
+  }
+  .marquee-track-reverse:hover {
+    animation-play-state: paused;
+  }
+</style>
+
+<div class="py-16 bg-gray-950 dark:bg-black">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-10">
+    <p class="text-center text-xs font-semibold tracking-widest uppercase text-gray-500 dark:text-gray-600">
+      <%= t("home.index.social_proof.label") %>
+    </p>
+  </div>
+
+  <div class="overflow-hidden">
+    <div class="marquee-track-reverse">
+      <%# First set %>
+      <div class="flex items-center gap-20 px-10">
+        <%= image_tag "companies/verigeo.png",          alt: "Verigeo",          class: "h-7 w-auto object-contain opacity-30 hover:opacity-70 transition-opacity duration-300 cursor-default" %>
+        <%= image_tag "companies/korealexa.png",        alt: "Korealexa",        class: "h-7 w-auto object-contain opacity-30 hover:opacity-70 transition-opacity duration-300 cursor-default" %>
+        <%= image_tag "companies/flyver-docs.png",      alt: "Flyver Docs",      class: "h-7 w-auto object-contain opacity-30 hover:opacity-70 transition-opacity duration-300 cursor-default" %>
+        <%= image_tag "companies/flyver.jpeg",          alt: "Flyver",           class: "h-7 w-auto object-contain opacity-30 hover:opacity-70 transition-opacity duration-300 cursor-default" %>
+        <%= image_tag "companies/compile-strength.png", alt: "Compile Strength", class: "h-7 w-auto object-contain opacity-30 hover:opacity-70 transition-opacity duration-300 cursor-default" %>
+        <%= image_tag "companies/bobadilla-tech.png",   alt: "Bobadilla Tech",   class: "h-7 w-auto object-contain opacity-30 hover:opacity-70 transition-opacity duration-300 cursor-default" %>
+      </div>
+      <%# Duplicate for seamless loop %>
+      <div class="flex items-center gap-20 px-10">
+        <%= image_tag "companies/verigeo.png",          alt: "", class: "h-7 w-auto object-contain opacity-30 hover:opacity-70 transition-opacity duration-300 cursor-default" %>
+        <%= image_tag "companies/korealexa.png",        alt: "", class: "h-7 w-auto object-contain opacity-30 hover:opacity-70 transition-opacity duration-300 cursor-default" %>
+        <%= image_tag "companies/flyver-docs.png",      alt: "", class: "h-7 w-auto object-contain opacity-30 hover:opacity-70 transition-opacity duration-300 cursor-default" %>
+        <%= image_tag "companies/flyver.jpeg",          alt: "", class: "h-7 w-auto object-contain opacity-30 hover:opacity-70 transition-opacity duration-300 cursor-default" %>
+        <%= image_tag "companies/compile-strength.png", alt: "", class: "h-7 w-auto object-contain opacity-30 hover:opacity-70 transition-opacity duration-300 cursor-default" %>
+        <%= image_tag "companies/bobadilla-tech.png",   alt: "", class: "h-7 w-auto object-contain opacity-30 hover:opacity-70 transition-opacity duration-300 cursor-default" %>
+      </div>
+    </div>
+  </div>
+</div>

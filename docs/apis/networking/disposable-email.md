@@ -7,7 +7,7 @@ package.
 
 ## Base URL
 
-All endpoints are mounted under `/v1/email`
+All endpoints are mounted under `/v1/networking`
 
 ## Endpoints
 
@@ -15,7 +15,7 @@ All endpoints are mounted under `/v1/email`
 
 Check if a single email address is disposable.
 
-**Endpoint:** `POST /v1/email/disposable/check`
+**Endpoint:** `POST /v1/networking/disposable/check`
 
 **Request Body:**
 
@@ -44,7 +44,7 @@ Check if a single email address is disposable.
 
 ```bash
 # Production
-curl -X POST https://api.requiems.xyz/v1/email/disposable/check \
+curl -X POST https://api.requiems.xyz/v1/networking/disposable/check \
   -H "Content-Type: application/json" \
   -H "requiems-api-key: YOUR_API_KEY" \
   -d '{"email": "user@mailinator.com"}'
@@ -57,7 +57,7 @@ curl -X POST https://api.requiems.xyz/v1/email/disposable/check \
 Check multiple email addresses in a single request. Maximum 100 emails per
 batch.
 
-**Endpoint:** `POST /v1/email/disposable/check-batch`
+**Endpoint:** `POST /v1/networking/disposable/check-batch`
 
 **Request Body:**
 
@@ -101,7 +101,7 @@ batch.
 
 ```bash
 # Production
-curl -X POST https://api.requiems.xyz/v1/email/disposable/check-batch \
+curl -X POST https://api.requiems.xyz/v1/networking/disposable/check-batch \
   -H "Content-Type: application/json" \
   -H "requiems-api-key: YOUR_API_KEY" \
   -d '{
@@ -124,7 +124,7 @@ curl -X POST https://api.requiems.xyz/v1/email/disposable/check-batch \
 
 Check if a specific domain is in the disposable list.
 
-**Endpoint:** `GET /v1/email/disposable/domain/{domain}`
+**Endpoint:** `GET /v1/networking/disposable/domain/{domain}`
 
 **Path Parameters:**
 
@@ -148,7 +148,7 @@ Check if a specific domain is in the disposable list.
 
 ```bash
 # Production
-curl https://api.requiems.xyz/v1/email/disposable/domain/guerrillamail.com \
+curl https://api.requiems.xyz/v1/networking/disposable/domain/guerrillamail.com \
   -H "requiems-api-key: YOUR_API_KEY"
 ```
 
@@ -158,7 +158,7 @@ curl https://api.requiems.xyz/v1/email/disposable/domain/guerrillamail.com \
 
 Get a paginated list of all disposable email domains in the blocklist.
 
-**Endpoint:** `GET /v1/email/disposable/domains`
+**Endpoint:** `GET /v1/networking/disposable/domains`
 
 **Query Parameters:**
 
@@ -191,11 +191,11 @@ Get a paginated list of all disposable email domains in the blocklist.
 
 ```bash
 # Production - Get first page (default 100 results)
-curl https://api.requiems.xyz/v1/email/disposable/domains \
+curl https://api.requiems.xyz/v1/networking/disposable/domains \
   -H "requiems-api-key: YOUR_API_KEY"
 
 # Production - Get page 2 with 50 results per page
-curl "https://api.requiems.xyz/v1/email/disposable/domains?page=2&per_page=50" \
+curl "https://api.requiems.xyz/v1/networking/disposable/domains?page=2&per_page=50" \
   -H "requiems-api-key: YOUR_API_KEY"
 ```
 
@@ -211,7 +211,7 @@ curl "https://api.requiems.xyz/v1/email/disposable/domains?page=2&per_page=50" \
 
 Get statistics about the disposable domains blocklist.
 
-**Endpoint:** `GET /v1/email/disposable/stats`
+**Endpoint:** `GET /v1/networking/disposable/stats`
 
 **Response:** `200 OK`
 
@@ -230,7 +230,7 @@ Get statistics about the disposable domains blocklist.
 
 ```bash
 # Production
-curl https://api.requiems.xyz/v1/email/disposable/stats \
+curl https://api.requiems.xyz/v1/networking/disposable/stats \
   -H "requiems-api-key: YOUR_API_KEY"
 ```
 
@@ -262,7 +262,7 @@ Prevent users from signing up with disposable email addresses:
 
 ```javascript
 const response = await fetch(
-  "https://api.requiems.xyz/v1/email/disposable/check",
+  "https://api.requiems.xyz/v1/networking/disposable/check",
   {
     method: "POST",
     headers: {
@@ -290,7 +290,7 @@ const emails = [
 ];
 
 const response = await fetch(
-  "https://api.requiems.xyz/v1/email/disposable/check-batch",
+  "https://api.requiems.xyz/v1/networking/disposable/check-batch",
   {
     method: "POST",
     headers: {
@@ -314,7 +314,7 @@ Check if a domain should be blocked:
 ```javascript
 const domain = email.split("@")[1];
 const response = await fetch(
-  `https://api.requiems.xyz/v1/email/disposable/domain/${domain}`,
+  `https://api.requiems.xyz/v1/networking/disposable/domain/${domain}`,
   {
     headers: { "requiems-api-key": "YOUR_API_KEY" },
   },

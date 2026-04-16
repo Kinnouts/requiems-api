@@ -1,4 +1,4 @@
-package validate
+package email
 
 // Request holds the JSON body for email validation.
 type Request struct {

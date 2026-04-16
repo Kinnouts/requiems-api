@@ -12,7 +12,7 @@ PostgreSQL in the background every 60 seconds.
 
 ## Base URL
 
-All endpoints are mounted under `/v1/misc`
+All endpoints are mounted under `/v1/technology`
 
 ## Endpoints
 
@@ -20,7 +20,7 @@ All endpoints are mounted under `/v1/misc`
 
 Atomically increment a counter by 1 and return the updated value.
 
-**Endpoint:** `POST /v1/misc/counter/{namespace}`
+**Endpoint:** `POST /v1/technology/counter/{namespace}`
 
 **Path Parameters:**
 
@@ -39,7 +39,7 @@ Atomically increment a counter by 1 and return the updated value.
 **Example:**
 
 ```bash
-curl -X POST https://api.requiems.xyz/v1/misc/counter/page-views \
+curl -X POST https://api.requiems.xyz/v1/technology/counter/page-views \
   -H "requiems-api-key: YOUR_API_KEY"
 ```
 
@@ -50,7 +50,7 @@ curl -X POST https://api.requiems.xyz/v1/misc/counter/page-views \
 Retrieve the current value of a counter. Reads from Redis; falls back to
 PostgreSQL on a cache miss and re-hydrates the cache automatically.
 
-**Endpoint:** `GET /v1/misc/counter/{namespace}`
+**Endpoint:** `GET /v1/technology/counter/{namespace}`
 
 **Path Parameters:**
 
@@ -68,7 +68,7 @@ PostgreSQL on a cache miss and re-hydrates the cache automatically.
 **Example:**
 
 ```bash
-curl https://api.requiems.xyz/v1/misc/counter/page-views \
+curl https://api.requiems.xyz/v1/technology/counter/page-views \
   -H "requiems-api-key: YOUR_API_KEY"
 ```
 
@@ -118,7 +118,7 @@ Invalid namespaces return `400 Bad Request`.
 
 ```bash
 # Increment on every page load
-curl -X POST https://api.requiems.xyz/v1/misc/counter/homepage-views \
+curl -X POST https://api.requiems.xyz/v1/technology/counter/homepage-views \
   -H "requiems-api-key: YOUR_API_KEY"
 ```
 
@@ -126,14 +126,14 @@ curl -X POST https://api.requiems.xyz/v1/misc/counter/homepage-views \
 
 ```javascript
 // Increment whenever a feature is used
-await fetch("https://api.requiems.xyz/v1/misc/counter/dark-mode-enabled", {
+await fetch("https://api.requiems.xyz/v1/technology/counter/dark-mode-enabled", {
   method: "POST",
   headers: { "requiems-api-key": "YOUR_API_KEY" },
 });
 
 // Read the current count
 const res = await fetch(
-  "https://api.requiems.xyz/v1/misc/counter/dark-mode-enabled",
+  "https://api.requiems.xyz/v1/technology/counter/dark-mode-enabled",
   { headers: { "requiems-api-key": "YOUR_API_KEY" } },
 );
 const { value } = await res.json();
@@ -147,7 +147,7 @@ import httpx
 
 def track_event(event_name: str):
     httpx.post(
-        f"https://api.requiems.xyz/v1/misc/counter/{event_name}",
+        f"https://api.requiems.xyz/v1/technology/counter/{event_name}",
         headers={"requiems-api-key": "YOUR_API_KEY"},
     )
 

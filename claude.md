@@ -276,16 +276,19 @@ Domain-driven design with feature modules:
   - `httpx/` - HTTP utilities
   - `middleware/` - Auth middleware
   - `reqredis/` - Redis connection
-- `services/` - Self-contained business domain modules
-  - `email/` - Email-related endpoints (disposable checking, etc.)
-    - `disposable/service.go` - Business logic
-    - `disposable/transport_http.go` - HTTP handlers
-    - `disposable/type.go` - Types
-    - `router.go` - Routes for `/v1/email/*`
-  - `text/` - Text utility endpoints (advice, lorem, quotes, words)
-    - Each subdomain follows same pattern: service, transport_http, type
-    - `router.go` - Routes for `/v1/text/*`
-  - `tech/`, `places/`, `entertainment/`, `misc/` - Other service domains
+- `services/` - Self-contained business domain modules, one directory per API category
+  - `entertainment/` - Jokes, trivia, facts, horoscope, sudoku, emoji, quotes, advice (`/v1/entertainment/*`)
+  - `finance/` - Exchange rates, crypto, BIN, IBAN, SWIFT, mortgage, commodities, inflation (`/v1/finance/*`)
+  - `health/` - Fitness exercises (`/v1/health/*`)
+  - `networking/` - IP geolocation/ASN/VPN, WHOIS, domain info, MX lookup, disposable email (`/v1/networking/*`)
+  - `places/` - Timezone, working days, holidays, geocoding, postal codes, cities (`/v1/places/*`)
+  - `technology/` - QR/barcode, password, user agent, counter, random user, base64, number base, color, unit/format conversion, markdown (`/v1/technology/*`)
+  - `text/` - Words/dictionary, lorem ipsum, spell check, thesaurus, sentiment, language detection, text similarity, email normalize (`/v1/text/*`)
+  - `validation/` - Email validation, phone validation, profanity filter (`/v1/validation/*`)
+
+  Each subdomain follows the same pattern: `service.go` (business logic),
+  `transport_http.go` (HTTP handlers), `type.go` (data types), and parent
+  `router.go` (routes).
 
 **Pattern**: Each feature has `service.go` (business logic), `transport_http.go`
 (HTTP handlers), `type.go` (data types), and parent `router.go` (routes).

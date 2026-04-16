@@ -13,7 +13,7 @@ servers, status flags, registration dates, and DNSSEC information.
 
 ### WHOIS Lookup
 
-`GET /v1/tech/whois/{domain}`
+`GET /v1/networking/whois/{domain}`
 
 Returns WHOIS information for a domain.
 

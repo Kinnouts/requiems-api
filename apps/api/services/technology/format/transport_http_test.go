@@ -10,7 +10,7 @@ import (
 	"github.com/go-chi/chi/v5"
 
 	"requiems-api/platform/httpx"
-	convformat "requiems-api/services/convert/format"
+	convformat "requiems-api/services/technology/format"
 )
 
 func setupRouter() chi.Router {
