@@ -103,12 +103,14 @@ describe("Entertainment API", () => {
 
   describe("GET /v1/entertainment/sudoku", () => {
     it("returns a sudoku puzzle", async () => {
-      const { response } = await client.get("/v1/entertainment/sudoku");
-      const { data } = await assertEnvelope(response, SUITE, "sudoku");
-      const d = data as Record<string, unknown>;
-      expect(Array.isArray(d["puzzle"])).toBe(true);
-      // A standard sudoku board has 9 rows
-      expect((d["puzzle"] as unknown[]).length).toBe(9);
+      await repeat(async () => {
+        const { response } = await client.get("/v1/entertainment/sudoku");
+        const { data } = await assertEnvelope(response, SUITE, "sudoku");
+        const d = data as Record<string, unknown>;
+        expect(Array.isArray(d["puzzle"])).toBe(true);
+        // A standard sudoku board has 9 rows
+        expect((d["puzzle"] as unknown[]).length).toBe(9);
+      });
     });
   });
 

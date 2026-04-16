@@ -41,17 +41,19 @@ describe("Text API", () => {
     });
 
     it("returns correct paragraph count when requested", async () => {
-      const { response } = await client.get("/v1/text/lorem", {
-        paragraphs: "2",
+      await repeat(async () => {
+        const { response } = await client.get("/v1/text/lorem", {
+          paragraphs: "2",
+        });
+        const { data } = await assertEnvelope(
+          response,
+          SUITE,
+          "lorem_2_paragraphs",
+        );
+        const d = data as Record<string, unknown>;
+        expect(typeof d["paragraphs"]).toBe("number");
+        expect(d["paragraphs"] as number).toBeGreaterThanOrEqual(2);
       });
-      const { data } = await assertEnvelope(
-        response,
-        SUITE,
-        "lorem_2_paragraphs",
-      );
-      const d = data as Record<string, unknown>;
-      expect(typeof d["paragraphs"]).toBe("number");
-      expect(d["paragraphs"] as number).toBeGreaterThanOrEqual(2);
     });
   });
 
@@ -87,27 +89,35 @@ describe("Text API", () => {
 
   describe("POST /v1/validation/profanity", () => {
     it("detects clean text", async () => {
-      const { response } = await client.post("/v1/validation/profanity", {
-        text: "Hello, world!",
+      await repeat(async () => {
+        const { response } = await client.post("/v1/validation/profanity", {
+          text: "Hello, world!",
+        });
+        const { data } = await assertEnvelope(
+          response,
+          SUITE,
+          "profanity_clean",
+        );
+        const d = data as Record<string, unknown>;
+        expect(d["has_profanity"]).toBe(false);
       });
-      const { data } = await assertEnvelope(response, SUITE, "profanity_clean");
-      const d = data as Record<string, unknown>;
-      expect(d["has_profanity"]).toBe(false);
     });
   });
 
   describe("POST /v1/text/spellcheck", () => {
     it("returns no errors for correctly spelled text", async () => {
-      const { response } = await client.post("/v1/text/spellcheck", {
-        text: "The quick brown fox jumps over the lazy dog.",
+      await repeat(async () => {
+        const { response } = await client.post("/v1/text/spellcheck", {
+          text: "The quick brown fox jumps over the lazy dog.",
+        });
+        const { data } = await assertEnvelope(
+          response,
+          SUITE,
+          "spellcheck_correct",
+        );
+        const d = data as Record<string, unknown>;
+        expect(Array.isArray(d["corrections"])).toBe(true);
       });
-      const { data } = await assertEnvelope(
-        response,
-        SUITE,
-        "spellcheck_correct",
-      );
-      const d = data as Record<string, unknown>;
-      expect(Array.isArray(d["corrections"])).toBe(true);
     });
   });
 });

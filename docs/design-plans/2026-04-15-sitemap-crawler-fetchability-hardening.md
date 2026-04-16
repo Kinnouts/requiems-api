@@ -32,11 +32,10 @@ reporting "Unknown" type and "Couldn't fetch".
 
 ### Bug 3 — Dynamic controller approach was fragile
 
-The original controller used `respond_to { |f| f.xml }` with a
-`before_action` for content-type. Under proxy/CDN configurations MIME
-negotiation could override the intended header. The controller approach also
-left all content-type fighting to be solved at request time rather than
-eliminating it structurally.
+The original controller used `respond_to { |f| f.xml }` with a `before_action`
+for content-type. Under proxy/CDN configurations MIME negotiation could override
+the intended header. The controller approach also left all content-type fighting
+to be solved at request time rather than eliminating it structurally.
 
 ### Bug 4 — sitemap_generator minifies XML onto one line
 
@@ -50,7 +49,8 @@ regardless of formatting.
 
 ## Goals
 
-1. Serve `sitemap.xml` with exactly `Content-Type: application/xml` (no charset).
+1. Serve `sitemap.xml` with exactly `Content-Type: application/xml` (no
+   charset).
 2. Ensure HEAD requests return a real `Content-Length` for the sitemap path.
 3. Render the sitemap as a styled HTML page in browsers via XSLT.
 4. Eliminate all dynamic controller logic for the sitemap — static file only.
@@ -68,10 +68,10 @@ regardless of formatting.
 
 ### 1. Migrate sitemap to a pre-generated static file (`sitemap_generator` gem)
 
-Replaced the dynamic `SitemapController#sitemap` action and
-`GET /sitemap.xml` route with a static `public/sitemap.xml` served by
-`ActionDispatch::Static`. This eliminates charset fighting entirely — Rack's
-static file handler sets `application/xml` with no charset.
+Replaced the dynamic `SitemapController#sitemap` action and `GET /sitemap.xml`
+route with a static `public/sitemap.xml` served by `ActionDispatch::Static`.
+This eliminates charset fighting entirely — Rack's static file handler sets
+`application/xml` with no charset.
 
 The file is generated via a Rake task and committed to the repo. No database
 connection required — the data source is the static `config/api_catalog.yml`.
@@ -84,7 +84,8 @@ git commit -m "chore: regenerate sitemap"
 
 Gem added: `gem "sitemap_generator"` in `apps/dashboard/Gemfile`.
 
-Config: [apps/dashboard/config/sitemap.rb](../../apps/dashboard/config/sitemap.rb)
+Config:
+[apps/dashboard/config/sitemap.rb](../../apps/dashboard/config/sitemap.rb)
 
 ### 2. Post-process: pretty-print + inject XSLT stylesheet reference
 
@@ -112,7 +113,8 @@ Rake::Task["sitemap:refresh"].enhance do
 end
 ```
 
-Implementation: [apps/dashboard/lib/tasks/sitemap.rake](../../apps/dashboard/lib/tasks/sitemap.rake)
+Implementation:
+[apps/dashboard/lib/tasks/sitemap.rake](../../apps/dashboard/lib/tasks/sitemap.rake)
 
 ### 3. XSLT stylesheet (`public/sitemap.xsl`)
 
@@ -121,13 +123,14 @@ table in the browser. Chrome, Firefox, and Safari all apply XSLT client-side
 when the `<?xml-stylesheet?>` PI is present. The stylesheet sorts URLs by
 priority descending and trims `lastmod` to the date portion only.
 
-Implementation: [apps/dashboard/public/sitemap.xsl](../../apps/dashboard/public/sitemap.xsl)
+Implementation:
+[apps/dashboard/public/sitemap.xsl](../../apps/dashboard/public/sitemap.xsl)
 
 ### 4. Caddy — exclude `/sitemap.xml` from gzip
 
-The Caddyfile `encode` block uses an inline `match` to skip gzip for the
-sitemap path only. Everything else stays compressed. This lets Rails' static
-handler return a real `Content-Length` on both GET and HEAD:
+The Caddyfile `encode` block uses an inline `match` to skip gzip for the sitemap
+path only. Everything else stays compressed. This lets Rails' static handler
+return a real `Content-Length` on both GET and HEAD:
 
 ```caddy
 requiems.xyz {
@@ -218,9 +221,9 @@ reviewable step.
 ### Why XSLT instead of just pretty-printing?
 
 Pretty-printing alone only helps human readability of the source. Chrome still
-shows raw XML markup (syntax-highlighted source) regardless of indentation.
-XSLT causes the browser to apply a full transformation and render the result as
-HTML — the same technique used by Yoast/WordPress and other major sitemap
+shows raw XML markup (syntax-highlighted source) regardless of indentation. XSLT
+causes the browser to apply a full transformation and render the result as HTML
+— the same technique used by Yoast/WordPress and other major sitemap
 implementations. Google's crawler ignores the stylesheet PI and processes the
 raw XML directly, so this is purely a browser UX improvement with no impact on
 indexing.
@@ -236,7 +239,8 @@ Excluding only the sitemap path is a targeted, low-risk fix.
 
 ## Rollout
 
-1. Regenerate sitemap: `docker exec requiem-dev-dashboard-1 bin/rails sitemap:refresh`
+1. Regenerate sitemap:
+   `docker exec requiem-dev-dashboard-1 bin/rails sitemap:refresh`
 2. Commit `public/sitemap.xml` and `public/sitemap.xsl`.
 3. Deploy `infra/caddy/Caddyfile` (Caddy reload required).
 4. Deploy `apps/dashboard`.
@@ -247,13 +251,23 @@ Excluding only the sitemap path is a targeted, low-risk fix.
 
 ## Files Changed
 
-1. [apps/dashboard/Gemfile](../../apps/dashboard/Gemfile) — added `sitemap_generator`
-2. [apps/dashboard/config/sitemap.rb](../../apps/dashboard/config/sitemap.rb) — new generator config
-3. [apps/dashboard/lib/tasks/sitemap.rake](../../apps/dashboard/lib/tasks/sitemap.rake) — pretty-print + XSLT PI injection
-4. [apps/dashboard/public/sitemap.xml](../../apps/dashboard/public/sitemap.xml) — pre-generated static file
-5. [apps/dashboard/public/sitemap.xsl](../../apps/dashboard/public/sitemap.xsl) — XSLT browser stylesheet
-6. [apps/dashboard/app/controllers/sitemap_controller.rb](../../apps/dashboard/app/controllers/sitemap_controller.rb) — removed `sitemap` action
-7. [apps/dashboard/config/routes.rb](../../apps/dashboard/config/routes.rb) — removed `GET /sitemap.xml` route
-8. [apps/dashboard/test/controllers/sitemap_controller_test.rb](../../apps/dashboard/test/controllers/sitemap_controller_test.rb) — removed sitemap action test
-9. [apps/dashboard/app/views/sitemap/sitemap.xml.erb](../../apps/dashboard/app/views/sitemap/) — deleted
-10. [infra/caddy/Caddyfile](../../infra/caddy/Caddyfile) — exclude sitemap from gzip
+1. [apps/dashboard/Gemfile](../../apps/dashboard/Gemfile) — added
+   `sitemap_generator`
+2. [apps/dashboard/config/sitemap.rb](../../apps/dashboard/config/sitemap.rb) —
+   new generator config
+3. [apps/dashboard/lib/tasks/sitemap.rake](../../apps/dashboard/lib/tasks/sitemap.rake)
+   — pretty-print + XSLT PI injection
+4. [apps/dashboard/public/sitemap.xml](../../apps/dashboard/public/sitemap.xml)
+   — pre-generated static file
+5. [apps/dashboard/public/sitemap.xsl](../../apps/dashboard/public/sitemap.xsl)
+   — XSLT browser stylesheet
+6. [apps/dashboard/app/controllers/sitemap_controller.rb](../../apps/dashboard/app/controllers/sitemap_controller.rb)
+   — removed `sitemap` action
+7. [apps/dashboard/config/routes.rb](../../apps/dashboard/config/routes.rb) —
+   removed `GET /sitemap.xml` route
+8. [apps/dashboard/test/controllers/sitemap_controller_test.rb](../../apps/dashboard/test/controllers/sitemap_controller_test.rb)
+   — removed sitemap action test
+9. [apps/dashboard/app/views/sitemap/sitemap.xml.erb](../../apps/dashboard/app/views/sitemap/)
+   — deleted
+10. [infra/caddy/Caddyfile](../../infra/caddy/Caddyfile) — exclude sitemap from
+    gzip

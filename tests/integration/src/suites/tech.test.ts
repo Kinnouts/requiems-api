@@ -28,14 +28,16 @@ describe("Networking & Technology API", () => {
     });
 
     it("returns IP info for a specific public IP", async () => {
-      const { response } = await client.get("/v1/networking/ip/8.8.8.8");
-      const { data } = await assertEnvelope(
-        response,
-        SUITE,
-        "ip_lookup_specific",
-      );
-      const d = data as Record<string, unknown>;
-      expect(d["ip"]).toBe("8.8.8.8");
+      await repeat(async () => {
+        const { response } = await client.get("/v1/networking/ip/8.8.8.8");
+        const { data } = await assertEnvelope(
+          response,
+          SUITE,
+          "ip_lookup_specific",
+        );
+        const d = data as Record<string, unknown>;
+        expect(d["ip"]).toBe("8.8.8.8");
+      });
     });
   });
 
@@ -56,12 +58,18 @@ describe("Networking & Technology API", () => {
     });
 
     it("generates a password of a custom length", async () => {
-      const { response } = await client.get("/v1/technology/password", {
-        length: "24",
+      await repeat(async () => {
+        const { response } = await client.get("/v1/technology/password", {
+          length: "24",
+        });
+        const { data } = await assertEnvelope(
+          response,
+          SUITE,
+          "password_custom",
+        );
+        const d = data as Record<string, unknown>;
+        expect((d["password"] as string).length).toBe(24);
       });
-      const { data } = await assertEnvelope(response, SUITE, "password_custom");
-      const d = data as Record<string, unknown>;
-      expect((d["password"] as string).length).toBe(24);
     });
   });
 
