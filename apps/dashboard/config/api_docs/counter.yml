@@ -23,7 +23,7 @@ overview:
 endpoints:
   - name: Increment Counter
     method: POST
-    path: /v1/misc/counter/{namespace}
+    path: /v1/technology/counter/{namespace}
     description: Atomically increment a counter in the specified namespace and return the new value
 
     parameters:
@@ -63,13 +63,13 @@ endpoints:
 
     code_examples:
       curl: |
-        curl -X POST https://api.requiems.xyz/v1/misc/counter/page-views \
+        curl -X POST https://api.requiems.xyz/v1/technology/counter/page-views \
           -H "requiems-api-key: YOUR_API_KEY"
 
       python: |
         import requests
 
-        url = "https://api.requiems.xyz/v1/misc/counter/page-views"
+        url = "https://api.requiems.xyz/v1/technology/counter/page-views"
         headers = {"requiems-api-key": "YOUR_API_KEY"}
 
         response = requests.post(url, headers=headers)
@@ -78,7 +78,7 @@ endpoints:
 
       javascript: |
         const response = await fetch(
-          'https://api.requiems.xyz/v1/misc/counter/page-views',
+          'https://api.requiems.xyz/v1/technology/counter/page-views',
           {
             method: 'POST',
             headers: {
@@ -94,7 +94,7 @@ endpoints:
         require 'net/http'
         require 'json'
 
-        uri = URI('https://api.requiems.xyz/v1/misc/counter/page-views')
+        uri = URI('https://api.requiems.xyz/v1/technology/counter/page-views')
         request = Net::HTTP::Post.new(uri)
         request['requiems-api-key'] = 'YOUR_API_KEY'
 
@@ -107,7 +107,7 @@ endpoints:
 
   - name: Get Counter Value
     method: GET
-    path: /v1/misc/counter/{namespace}
+    path: /v1/technology/counter/{namespace}
     description: Get the current value of a counter without incrementing it
 
     parameters:
@@ -147,13 +147,13 @@ endpoints:
 
     code_examples:
       curl: |
-        curl https://api.requiems.xyz/v1/misc/counter/page-views \
+        curl https://api.requiems.xyz/v1/technology/counter/page-views \
           -H "requiems-api-key: YOUR_API_KEY"
 
       python: |
         import requests
 
-        url = "https://api.requiems.xyz/v1/misc/counter/page-views"
+        url = "https://api.requiems.xyz/v1/technology/counter/page-views"
         headers = {"requiems-api-key": "YOUR_API_KEY"}
 
         response = requests.get(url, headers=headers)
@@ -162,7 +162,7 @@ endpoints:
 
       javascript: |
         const response = await fetch(
-          'https://api.requiems.xyz/v1/misc/counter/page-views',
+          'https://api.requiems.xyz/v1/technology/counter/page-views',
           {
             headers: {
               'requiems-api-key': 'YOUR_API_KEY'
@@ -177,7 +177,7 @@ endpoints:
         require 'net/http'
         require 'json'
 
-        uri = URI('https://api.requiems.xyz/v1/misc/counter/page-views')
+        uri = URI('https://api.requiems.xyz/v1/technology/counter/page-views')
         request = Net::HTTP::Get.new(uri)
         request['requiems-api-key'] = 'YOUR_API_KEY'
 

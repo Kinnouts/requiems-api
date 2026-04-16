@@ -13,7 +13,7 @@ import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { stats } from "./stats.js";
 
-const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../../");
+const ROOT = join(dirname(fileURLToPath(import.meta.url)), "../");
 
 function loadDotenv(): void {
   const envPath = join(ROOT, ".env");

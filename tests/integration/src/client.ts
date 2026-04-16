@@ -19,7 +19,7 @@ export interface TimedResponse {
 /**
  * Perform a GET request against the production gateway.
  *
- * @param path   API path (e.g. "/v1/text/advice")
+ * @param path   API path (e.g. "/v1/entertainment/advice")
  * @param params Optional query-string parameters
  */
 export async function get(
@@ -32,7 +32,7 @@ export async function get(
 /**
  * Perform a POST request against the production gateway.
  *
- * @param path API path (e.g. "/v1/email/validate")
+ * @param path API path (e.g. "/v1/validation/email")
  * @param body JSON-serialisable request body
  */
 export async function post(

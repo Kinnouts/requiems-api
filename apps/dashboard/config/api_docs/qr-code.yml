@@ -22,7 +22,7 @@ overview:
 endpoints:
   - name: Generate QR Code (PNG)
     method: GET
-    path: /v1/tech/qr
+    path: /v1/technology/qr
     description: Returns a raw PNG image of the QR code. Ideal for direct embedding or file download.
 
     parameters:
@@ -68,19 +68,19 @@ endpoints:
     code_examples:
       curl: |
         # Save a 200px PNG with high error-correction
-        curl "https://api.requiems.xyz/v1/tech/qr?data=https://example.com&size=200&recovery=high" \
+        curl "https://api.requiems.xyz/v1/technology/qr?data=https://example.com&size=200&recovery=high" \
           -H "requiems-api-key: YOUR_API_KEY" \
           --output qrcode.png
 
         # Default size (256px), medium error-correction
-        curl "https://api.requiems.xyz/v1/tech/qr?data=https://example.com" \
+        curl "https://api.requiems.xyz/v1/technology/qr?data=https://example.com" \
           -H "requiems-api-key: YOUR_API_KEY" \
           --output qrcode.png
 
       python: |
         import requests
 
-        url = "https://api.requiems.xyz/v1/tech/qr"
+        url = "https://api.requiems.xyz/v1/technology/qr"
         headers = {"requiems-api-key": "YOUR_API_KEY"}
         params = {"data": "https://example.com", "size": 200, "recovery": "high"}
 
@@ -96,7 +96,7 @@ endpoints:
         });
 
         const response = await fetch(
-          `https://api.requiems.xyz/v1/tech/qr?${params}`,
+          `https://api.requiems.xyz/v1/technology/qr?${params}`,
           { headers: { 'requiems-api-key': 'YOUR_API_KEY' } }
         );
         const blob = await response.blob();
@@ -105,7 +105,7 @@ endpoints:
       ruby: |
         require 'net/http'
 
-        uri = URI('https://api.requiems.xyz/v1/tech/qr')
+        uri = URI('https://api.requiems.xyz/v1/technology/qr')
         uri.query = URI.encode_www_form(data: 'https://example.com', size: 200, recovery: 'high')
 
         request = Net::HTTP::Get.new(uri)
@@ -118,7 +118,7 @@ endpoints:
 
   - name: Generate QR Code (Base64 JSON)
     method: GET
-    path: /v1/tech/qr/base64
+    path: /v1/technology/qr/base64
     description: Returns a JSON envelope containing the QR code as a base64-encoded PNG string, along with its dimensions.
 
     parameters:
@@ -178,13 +178,13 @@ endpoints:
 
     code_examples:
       curl: |
-        curl "https://api.requiems.xyz/v1/tech/qr/base64?data=https://example.com&size=200&recovery=highest" \
+        curl "https://api.requiems.xyz/v1/technology/qr/base64?data=https://example.com&size=200&recovery=highest" \
           -H "requiems-api-key: YOUR_API_KEY"
 
       python: |
         import requests
 
-        url = "https://api.requiems.xyz/v1/tech/qr/base64"
+        url = "https://api.requiems.xyz/v1/technology/qr/base64"
         headers = {"requiems-api-key": "YOUR_API_KEY"}
         params = {"data": "https://example.com", "size": 200, "recovery": "highest"}
 
@@ -200,7 +200,7 @@ endpoints:
         });
 
         const response = await fetch(
-          `https://api.requiems.xyz/v1/tech/qr/base64?${params}`,
+          `https://api.requiems.xyz/v1/technology/qr/base64?${params}`,
           { headers: { 'requiems-api-key': 'YOUR_API_KEY' } }
         );
         const { data } = await response.json();
@@ -211,7 +211,7 @@ endpoints:
         require 'net/http'
         require 'json'
 
-        uri = URI('https://api.requiems.xyz/v1/tech/qr/base64')
+        uri = URI('https://api.requiems.xyz/v1/technology/qr/base64')
         uri.query = URI.encode_www_form(data: 'https://example.com', size: 200, recovery: 'highest')
 
         request = Net::HTTP::Get.new(uri)
@@ -234,7 +234,7 @@ faq:
     answer: "Use medium (default) for most digital use-cases. Choose high or highest for print materials where the QR code may be partially covered or damaged. Note that higher levels produce physically larger QR codes because they add more redundant data."
 
   - question: What is the difference between the two endpoints?
-    answer: "GET /v1/tech/qr returns a raw image/png binary — ideal for direct download or embedding with an <img> tag pointing at the API. GET /v1/tech/qr/base64 returns a JSON envelope containing the base64-encoded image — useful when you need to embed the image inline in a JSON response or store the data in a database."
+    answer: "GET /v1/technology/qr returns a raw image/png binary — ideal for direct download or embedding with an <img> tag pointing at the API. GET /v1/technology/qr/base64 returns a JSON envelope containing the base64-encoded image — useful when you need to embed the image inline in a JSON response or store the data in a database."
 
   - question: How do I display the PNG in an HTML page?
-    answer: "Use GET /v1/tech/qr/base64 and set the <img> src to data:image/png;base64,{image}, or point the src directly at the GET /v1/tech/qr endpoint URL (the browser will fetch and display it)."
+    answer: "Use GET /v1/technology/qr/base64 and set the <img> src to data:image/png;base64,{image}, or point the src directly at the GET /v1/technology/qr endpoint URL (the browser will fetch and display it)."

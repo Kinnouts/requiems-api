@@ -1,7 +1,11 @@
 /**
- * Integration tests — Email API endpoints
+ * Integration tests — Email-related endpoints
  *
- * Covers: /v1/email/disposable/check, /v1/email/validate, /v1/email/normalize
+ * Covers:
+ *   /v1/networking/disposable/check   (disposable domain detection)
+ *   /v1/networking/disposable/stats
+ *   /v1/validation/email              (full email validation)
+ *   /v1/text/normalize                (email normalization)
  */
 
 import { describe, it } from "vitest";
@@ -11,12 +15,15 @@ import { assertEnvelope, repeat } from "../helpers.js";
 const SUITE = "email";
 
 describe("Email API", () => {
-  describe("POST /v1/email/disposable/check", () => {
+  describe("POST /v1/networking/disposable/check", () => {
     it("identifies a disposable domain", async () => {
       await repeat(async () => {
-        const { response } = await client.post("/v1/email/disposable/check", {
-          email: "test@mailinator.com",
-        });
+        const { response } = await client.post(
+          "/v1/networking/disposable/check",
+          {
+            email: "test@mailinator.com",
+          },
+        );
         const { data } = await assertEnvelope(
           response,
           SUITE,
@@ -28,9 +35,12 @@ describe("Email API", () => {
     });
 
     it("identifies a legitimate domain", async () => {
-      const { response } = await client.post("/v1/email/disposable/check", {
-        email: "user@gmail.com",
-      });
+      const { response } = await client.post(
+        "/v1/networking/disposable/check",
+        {
+          email: "user@gmail.com",
+        },
+      );
       const { data } = await assertEnvelope(
         response,
         SUITE,
@@ -41,10 +51,10 @@ describe("Email API", () => {
     });
   });
 
-  describe("POST /v1/email/validate", () => {
+  describe("POST /v1/validation/email", () => {
     it("validates a well-formed email", async () => {
       await repeat(async () => {
-        const { response } = await client.post("/v1/email/validate", {
+        const { response } = await client.post("/v1/validation/email", {
           email: "user@example.com",
         });
         const { data } = await assertEnvelope(response, SUITE, "validate");
@@ -55,9 +65,9 @@ describe("Email API", () => {
     });
   });
 
-  describe("POST /v1/email/normalize", () => {
+  describe("POST /v1/text/normalize", () => {
     it("normalizes a gmail alias address", async () => {
-      const { response } = await client.post("/v1/email/normalize", {
+      const { response } = await client.post("/v1/text/normalize", {
         email: "User+alias@Gmail.com",
       });
       const { data } = await assertEnvelope(response, SUITE, "normalize");
@@ -68,9 +78,11 @@ describe("Email API", () => {
     });
   });
 
-  describe("GET /v1/email/disposable/stats", () => {
+  describe("GET /v1/networking/disposable/stats", () => {
     it("returns disposable domain statistics", async () => {
-      const { response } = await client.get("/v1/email/disposable/stats");
+      const { response } = await client.get(
+        "/v1/networking/disposable/stats",
+      );
       const { data } = await assertEnvelope(
         response,
         SUITE,

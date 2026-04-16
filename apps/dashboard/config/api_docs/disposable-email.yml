@@ -22,7 +22,7 @@ overview:
 endpoints:
   - name: Check Single Email
     method: POST
-    path: /v1/email/disposable/check
+    path: /v1/networking/disposable/check
     description: Validate whether an email address uses a disposable domain
 
     parameters:
@@ -71,7 +71,7 @@ endpoints:
 
     code_examples:
       curl: |
-        curl -X POST https://api.requiems.xyz/v1/email/disposable/check \
+        curl -X POST https://api.requiems.xyz/v1/networking/disposable/check \
           -H "requiems-api-key: YOUR_API_KEY" \
           -H "Content-Type: application/json" \
           -d '{"email": "user@tempmail.com"}'
@@ -79,7 +79,7 @@ endpoints:
       python: |
         import requests
 
-        url = "https://api.requiems.xyz/v1/email/disposable/check"
+        url = "https://api.requiems.xyz/v1/networking/disposable/check"
         headers = {
             "requiems-api-key": "YOUR_API_KEY",
             "Content-Type": "application/json"
@@ -90,7 +90,7 @@ endpoints:
         print(response.json())
 
       javascript: |
-        const response = await fetch('https://api.requiems.xyz/v1/email/disposable/check', {
+        const response = await fetch('https://api.requiems.xyz/v1/networking/disposable/check', {
           method: 'POST',
           headers: {
             'requiems-api-key': 'YOUR_API_KEY',
@@ -106,7 +106,7 @@ endpoints:
         require 'net/http'
         require 'json'
 
-        uri = URI('https://api.requiems.xyz/v1/email/disposable/check')
+        uri = URI('https://api.requiems.xyz/v1/networking/disposable/check')
         request = Net::HTTP::Post.new(uri)
         request['requiems-api-key'] = 'YOUR_API_KEY'
         request['Content-Type'] = 'application/json'
@@ -120,7 +120,7 @@ endpoints:
 
   - name: Check Batch Emails
     method: POST
-    path: /v1/email/disposable/check-batch
+    path: /v1/networking/disposable/check-batch
     description: Validate multiple email addresses in a single request (max 100 emails)
 
     parameters:
@@ -188,7 +188,7 @@ endpoints:
 
     code_examples:
       curl: |
-        curl -X POST https://api.requiems.xyz/v1/email/disposable/check-batch \
+        curl -X POST https://api.requiems.xyz/v1/networking/disposable/check-batch \
           -H "requiems-api-key: YOUR_API_KEY" \
           -H "Content-Type: application/json" \
           -d '{
@@ -198,7 +198,7 @@ endpoints:
       python: |
         import requests
 
-        url = "https://api.requiems.xyz/v1/email/disposable/check-batch"
+        url = "https://api.requiems.xyz/v1/networking/disposable/check-batch"
         headers = {
             "requiems-api-key": "YOUR_API_KEY",
             "Content-Type": "application/json"
@@ -211,7 +211,7 @@ endpoints:
         print(response.json())
 
       javascript: |
-        const response = await fetch('https://api.requiems.xyz/v1/email/disposable/check-batch', {
+        const response = await fetch('https://api.requiems.xyz/v1/networking/disposable/check-batch', {
           method: 'POST',
           headers: {
             'requiems-api-key': 'YOUR_API_KEY',
@@ -227,7 +227,7 @@ endpoints:
 
   - name: Check Domain
     method: GET
-    path: /v1/email/disposable/domain/{domain}
+    path: /v1/networking/disposable/domain/{domain}
     description: Check if a specific domain is in the disposable blocklist
 
     parameters:
@@ -264,14 +264,14 @@ endpoints:
 
     code_examples:
       curl: |
-        curl https://api.requiems.xyz/v1/email/disposable/domain/tempmail.com \
+        curl https://api.requiems.xyz/v1/networking/disposable/domain/tempmail.com \
           -H "requiems-api-key: YOUR_API_KEY"
 
       python: |
         import requests
 
         domain = "tempmail.com"
-        url = f"https://api.requiems.xyz/v1/email/disposable/domain/{domain}"
+        url = f"https://api.requiems.xyz/v1/networking/disposable/domain/{domain}"
         headers = {"requiems-api-key": "YOUR_API_KEY"}
 
         response = requests.get(url, headers=headers)
@@ -280,7 +280,7 @@ endpoints:
       javascript: |
         const domain = 'tempmail.com';
         const response = await fetch(
-          `https://api.requiems.xyz/v1/email/disposable/domain/${domain}`,
+          `https://api.requiems.xyz/v1/networking/disposable/domain/${domain}`,
           {
             headers: {
               'requiems-api-key': 'YOUR_API_KEY'
@@ -293,7 +293,7 @@ endpoints:
 
   - name: Get Statistics
     method: GET
-    path: /v1/email/disposable/stats
+    path: /v1/networking/disposable/stats
     description: Get statistics about the disposable email blocklist
 
     parameters: []
@@ -315,12 +315,12 @@ endpoints:
 
     code_examples:
       curl: |
-        curl https://api.requiems.xyz/v1/email/disposable/stats \
+        curl https://api.requiems.xyz/v1/networking/disposable/stats \
           -H "requiems-api-key: YOUR_API_KEY"
 
   - name: List Domains (Paginated)
     method: GET
-    path: /v1/email/disposable/domains
+    path: /v1/networking/disposable/domains
     description: Get a paginated list of all disposable domains in the blocklist
 
     parameters:
@@ -374,7 +374,7 @@ endpoints:
 
     code_examples:
       curl: |
-        curl "https://api.requiems.xyz/v1/email/disposable/domains?page=1&per_page=100" \
+        curl "https://api.requiems.xyz/v1/networking/disposable/domains?page=1&per_page=100" \
           -H "requiems-api-key: YOUR_API_KEY"
 
 faq:

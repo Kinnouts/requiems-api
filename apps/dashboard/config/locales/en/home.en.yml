@@ -10,15 +10,21 @@ en:
         cta_secondary: "Browse API Docs"
         try_badge: "✨ Try it now • No credit card required"
         api_request: "API Request"
+      trusted_by:
+        label: "Trusted by teams building production products"
+      social_proof:
+        label: "Powering products at companies like"
       features:
         heading: "Built for Developer Experience"
-        subheading: "Everything you need to integrate and ship fast"
+        subheading: "AI-native integrations, precise docs, and live playgrounds. Ship in minutes, not weeks."
         playground_title: "Live API Playground"
-        playground_desc: "Test every endpoint directly in the docs. See real responses instantly without writing code."
+        playground_desc: "Test every endpoint directly in the docs. See real responses instantly, no code required."
         examples_title: "Code Examples"
-        examples_desc: "Copy-paste examples in cURL, Python, JavaScript, Go, and more — or copy as Markdown for AI tools. Start in seconds."
+        examples_desc: "Copy-paste examples in cURL, Python, JavaScript, Go, and more. Every example ships with a Markdown version ready for AI coding tools and agents."
         docs_title: "Precise Documentation"
         docs_desc: "Every parameter, response field, and error code documented. No guessing required."
+        ai_title: "Built for AI Agents"
+        ai_desc: "Every API ships with llms.txt, a full Markdown doc, and code examples in AI-paste format. Open any endpoint directly in Claude or ChatGPT with one click. Built for agents, copilots, and LLM-powered products."
       categories:
         heading: "API Categories"
         description: "Explore our comprehensive collection of APIs organized by category to find exactly what you need."
@@ -195,7 +201,7 @@ en:
           example: "Example: Requiems API provides a REST API for validating email addresses programmatically."
         - name: "Endpoint"
           definition: "A specific URL where an API can access the resources it needs. Each endpoint corresponds to a specific function or resource in the API."
-          example: 'Example: <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">POST /v1/email/disposable/check</code>'
+          example: 'Example: <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">POST /v1/networking/disposable/check</code>'
         - name: "Authentication"
           definition: "The process of verifying the identity of a user or application. APIs typically require authentication to ensure only authorized users can access the service."
           example: 'Example: Including your API key in the Authorization header: <code class="bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">Authorization: Bearer YOUR_API_KEY</code>'

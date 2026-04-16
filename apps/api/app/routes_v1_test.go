@@ -13,13 +13,13 @@ import (
 
 func TestServiceEnabled(t *testing.T) {
 	t.Run("returns true when enabled services is blank", func(t *testing.T) {
-		if !serviceEnabled(config.Config{}, "email") {
+		if !serviceEnabled(config.Config{}, "text") {
 			t.Fatal("expected service to be enabled when config is blank")
 		}
 	})
 
 	t.Run("matches trimmed service names from config", func(t *testing.T) {
-		cfg := config.Config{EnabledServices: "email, text,tech"}
+		cfg := config.Config{EnabledServices: "text, validation,networking"}
 
 		if !serviceEnabled(cfg, "text") {
 			t.Fatal("expected text service to be enabled")
@@ -38,8 +38,8 @@ func TestRegisterV1Routes(t *testing.T) {
 
 		routes := walkRoutes(t, r)
 		for _, prefix := range []string{
-			"/convert", "/text", "/ai", "/email", "/entertainment",
-			"/misc", "/places", "/tech", "/finance", "/fitness",
+			"/entertainment", "/finance", "/health", "/networking",
+			"/places", "/technology", "/text", "/validation",
 		} {
 			if !hasRoutePrefix(routes, prefix) {
 				t.Fatalf("expected mounted routes to include prefix %s; got %v", prefix, routes)
@@ -50,11 +50,11 @@ func TestRegisterV1Routes(t *testing.T) {
 	t.Run("mounts only explicitly enabled services", func(t *testing.T) {
 		r := chi.NewRouter()
 
-		registerV1Routes(context.Background(), r, nil, nil, config.Config{EnabledServices: "email,text"})
+		registerV1Routes(context.Background(), r, nil, nil, config.Config{EnabledServices: "validation,text"})
 
 		routes := walkRoutes(t, r)
-		if !hasRoutePrefix(routes, "/email") {
-			t.Fatalf("expected email routes to be mounted; got %v", routes)
+		if !hasRoutePrefix(routes, "/validation") {
+			t.Fatalf("expected validation routes to be mounted; got %v", routes)
 		}
 		if !hasRoutePrefix(routes, "/text") {
 			t.Fatalf("expected text routes to be mounted; got %v", routes)
@@ -62,8 +62,8 @@ func TestRegisterV1Routes(t *testing.T) {
 		if hasRoutePrefix(routes, "/finance") {
 			t.Fatalf("expected finance routes to be absent; got %v", routes)
 		}
-		if hasRoutePrefix(routes, "/convert") {
-			t.Fatalf("expected convert routes to be absent; got %v", routes)
+		if hasRoutePrefix(routes, "/technology") {
+			t.Fatalf("expected technology routes to be absent; got %v", routes)
 		}
 	})
 }

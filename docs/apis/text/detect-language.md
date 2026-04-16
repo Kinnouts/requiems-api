@@ -2,7 +2,7 @@
 
 ## Status
 
-✅ **Live** - Implemented as `POST /v1/ai/detect-language`
+✅ **Live** - Implemented as `POST /v1/text/detect-language`
 
 ## Overview
 
@@ -11,7 +11,7 @@ returning the full language name, ISO 639-1 code, and a confidence score.
 
 ## Endpoint
 
-`POST /v1/ai/detect-language`
+`POST /v1/text/detect-language`
 
 ## Request
 

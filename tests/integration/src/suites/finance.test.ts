@@ -85,8 +85,8 @@ describe("Finance API", () => {
         const { response } = await client.get("/v1/finance/crypto/BTC");
         const { data } = await assertEnvelope(response, SUITE, "crypto_btc");
         const d = data as Record<string, unknown>;
-        expect(typeof d["price"]).toBe("number");
-        expect(d["price"] as number).toBeGreaterThan(0);
+        expect(typeof d["price_usd"]).toBe("number");
+        expect(d["price_usd"] as number).toBeGreaterThan(0);
       });
     });
   });

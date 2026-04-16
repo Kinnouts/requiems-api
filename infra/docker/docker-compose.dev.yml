@@ -39,7 +39,7 @@ services:
         apk update &&
         apk add --no-cache git &&
         go install github.com/cosmtrek/air@v1.52.0 &&
-        air
+        /go/bin/air
       "
     env_file:
       - .env.example

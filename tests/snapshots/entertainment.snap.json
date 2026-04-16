@@ -1,0 +1,13 @@
+{
+  "createdAt": "2026-04-16T01:08:49.019Z",
+  "updatedAt": "2026-04-16T01:09:00.977Z",
+  "shapes": {
+    "chuck_norris": "{data:{fact:string,id:string},metadata:{timestamp:string}}",
+    "dad_joke": "{data:{id:string,joke:string},metadata:{timestamp:string}}",
+    "fact": "{data:{category:string,fact:string,source:string},metadata:{timestamp:string}}",
+    "trivia": "{data:{answer:string,category:string,difficulty:string,options:Array<string>,question:string},metadata:{timestamp:string}}",
+    "emoji_random": "{data:{category:string,emoji:string,name:string,unicode:string},metadata:{timestamp:string}}",
+    "sudoku": "{data:{difficulty:string,puzzle:Array<Array<number>>,solution:Array<Array<number>>},metadata:{timestamp:string}}",
+    "horoscope_aries": "{data:{date:string,horoscope:string,lucky_number:number,mood:string,sign:string},metadata:{timestamp:string}}"
+  }
+}

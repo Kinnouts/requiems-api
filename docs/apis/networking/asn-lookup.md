@@ -7,7 +7,7 @@ information for any IP address.
 
 ### Lookup Caller IP
 
-`GET /v1/tech/ip/asn`
+`GET /v1/networking/ip/asn`
 
 Returns ASN information for the requesting client's IP address. Useful when you
 want information about the user making the request without specifying an IP
@@ -17,7 +17,7 @@ explicitly.
 
 ### Lookup Specific IP
 
-`GET /v1/tech/ip/asn/{ip}`
+`GET /v1/networking/ip/asn/{ip}`
 
 Returns ASN information for a specific IP address.
 
@@ -70,14 +70,14 @@ All responses are wrapped in the standard envelope:
 ### Lookup Caller IP
 
 ```bash
-curl "https://api.requiems.xyz/v1/tech/ip/asn" \
+curl "https://api.requiems.xyz/v1/networking/ip/asn" \
   -H "requiems-api-key: YOUR_API_KEY"
 ```
 
 ### Lookup Specific IP
 
 ```bash
-curl "https://api.requiems.xyz/v1/tech/ip/asn/8.8.8.8" \
+curl "https://api.requiems.xyz/v1/networking/ip/asn/8.8.8.8" \
   -H "requiems-api-key: YOUR_API_KEY"
 ```
 
@@ -87,7 +87,7 @@ curl "https://api.requiems.xyz/v1/tech/ip/asn/8.8.8.8" \
 import requests
 
 # Lookup specific IP
-url = "https://api.requiems.xyz/v1/tech/ip/asn/8.8.8.8"
+url = "https://api.requiems.xyz/v1/networking/ip/asn/8.8.8.8"
 headers = {"requiems-api-key": "YOUR_API_KEY"}
 
 response = requests.get(url, headers=headers)

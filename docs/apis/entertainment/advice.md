@@ -5,11 +5,11 @@ content generation.
 
 ## Status
 
-✅ **Live** - Available now at `GET /v1/text/advice`
+✅ **Live** - Available now at `GET /v1/entertainment/advice`
 
 ## Endpoint
 
-`GET /v1/text/advice`
+`GET /v1/entertainment/advice`
 
 ## Query Parameters
 
@@ -45,7 +45,7 @@ None required.
 ### cURL
 
 ```bash
-curl https://api.requiems.xyz/v1/text/advice \
+curl https://api.requiems.xyz/v1/entertainment/advice \
   -H "requiems-api-key: YOUR_API_KEY"
 ```
 
@@ -54,7 +54,7 @@ curl https://api.requiems.xyz/v1/text/advice \
 ```python
 import requests
 
-url = "https://api.requiems.xyz/v1/text/advice"
+url = "https://api.requiems.xyz/v1/entertainment/advice"
 headers = {"requiems-api-key": "YOUR_API_KEY"}
 
 response = requests.get(url, headers=headers)
@@ -65,11 +65,14 @@ print(f"Advice #{advice['id']}: {advice['advice']}")
 ### JavaScript
 
 ```javascript
-const response = await fetch("https://api.requiems.xyz/v1/text/advice", {
-  headers: {
-    "requiems-api-key": "YOUR_API_KEY",
+const response = await fetch(
+  "https://api.requiems.xyz/v1/entertainment/advice",
+  {
+    headers: {
+      "requiems-api-key": "YOUR_API_KEY",
+    },
   },
-});
+);
 
 const { data } = await response.json();
 console.log(`Advice #${data.id}: ${data.advice}`);
@@ -81,7 +84,7 @@ console.log(`Advice #${data.id}: ${data.advice}`);
 require 'net/http'
 require 'json'
 
-uri = URI('https://api.requiems.xyz/v1/text/advice')
+uri = URI('https://api.requiems.xyz/v1/entertainment/advice')
 request = Net::HTTP::Get.new(uri)
 request['requiems-api-key'] = 'YOUR_API_KEY'
 

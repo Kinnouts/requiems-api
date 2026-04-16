@@ -44,9 +44,9 @@ class Admin::AnalyticsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test "usage renders successfully with usage data" do
-    create_log(endpoint: "/v1/email/disposable", status_code: 200)
+    create_log(endpoint: "/v1/networking/disposable", status_code: 200)
     create_log(endpoint: "/v1/text/advice",      status_code: 200)
-    create_log(endpoint: "/v1/email/disposable", status_code: 429, used_at: 2.days.ago)
+    create_log(endpoint: "/v1/networking/disposable", status_code: 429, used_at: 2.days.ago)
 
     get admin_analytics_usage_path
     assert_response :success

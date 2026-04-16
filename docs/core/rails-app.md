@@ -275,7 +275,7 @@ that reaches Rails directly (e.g. internal health checks, Docker networking).
 **Affected code:**
 
 - `ApiProxyController` — forwards `X-Forwarded-For` to the Go backend so the IP
-  endpoint (`GET /v1/tech/ip`) returns the user's real IP instead of a
+  endpoint (`GET /v1/networking/ip`) returns the user's real IP instead of a
   Cloudflare datacenter IP.
 
 **Note:** The auth gateway (`apps/workers/auth-gateway/`) has the same

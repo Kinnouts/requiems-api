@@ -9,7 +9,7 @@
       </p>
     </div>
 
-    <div class="grid md:grid-cols-3 gap-8">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
       <!-- Feature 1: Live Demos -->
       <%= render "partials/shared/card", padding: true, hover: true do %>
         <div class="text-center">
@@ -52,6 +52,21 @@
           <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.index.features.docs_title") %></h3>
           <p class="text-gray-600 dark:text-gray-400">
             <%= t("home.index.features.docs_desc") %>
+          </p>
+        </div>
+      <% end %>
+
+      <!-- Feature 4: AI-Native -->
+      <%= render "partials/shared/card", padding: true, hover: true do %>
+        <div class="text-center">
+          <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-yellow-100 dark:bg-yellow-900 text-yellow-600 dark:text-yellow-300 mb-4">
+            <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.347.346A3.001 3.001 0 0112 21a3.001 3.001 0 01-2.121-.88l-.346-.347z" />
+            </svg>
+          </div>
+          <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.index.features.ai_title") %></h3>
+          <p class="text-gray-600 dark:text-gray-400">
+            <%= t("home.index.features.ai_desc") %>
           </p>
         </div>
       <% end %>

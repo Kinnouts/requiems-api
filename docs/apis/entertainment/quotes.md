@@ -13,6 +13,6 @@ motivational and thought-provoking quotes from various authors and sources.
 
 ### Get Random Quote
 
-**Endpoint:** `GET /v1/text/quotes/random`
+**Endpoint:** `GET /v1/entertainment/quotes/random`
 
 Get a random inspirational quote.

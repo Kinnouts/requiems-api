@@ -2,7 +2,7 @@
 
 ## Status
 
-✅ **Live** — Available at `GET /v1/tech/ip/vpn/{ip}`
+✅ **Live** — Available at `GET /v1/networking/ip/vpn/{ip}`
 
 ## Overview
 
@@ -14,7 +14,7 @@ assessment, and bot detection.
 
 ### Check IP Address
 
-`GET /v1/tech/ip/vpn/{ip}`
+`GET /v1/networking/ip/vpn/{ip}`
 
 ### Path Parameters
 
@@ -83,7 +83,7 @@ assessment, and bot detection.
 ### cURL
 
 ```bash
-curl "https://api.requiems.xyz/v1/tech/ip/vpn/8.8.8.8" \
+curl "https://api.requiems.xyz/v1/networking/ip/vpn/8.8.8.8" \
   -H "requiems-api-key: YOUR_API_KEY"
 ```
 
@@ -92,7 +92,7 @@ curl "https://api.requiems.xyz/v1/tech/ip/vpn/8.8.8.8" \
 ```python
 import requests
 
-url = "https://api.requiems.xyz/v1/tech/ip/vpn/8.8.8.8"
+url = "https://api.requiems.xyz/v1/networking/ip/vpn/8.8.8.8"
 headers = {"requiems-api-key": "YOUR_API_KEY"}
 
 response = requests.get(url, headers=headers)
@@ -108,7 +108,7 @@ print(f"Fraud Score: {result['fraud_score']}")
 
 ```javascript
 const response = await fetch(
-  "https://api.requiems.xyz/v1/tech/ip/vpn/8.8.8.8",
+  "https://api.requiems.xyz/v1/networking/ip/vpn/8.8.8.8",
   {
     headers: { "requiems-api-key": "YOUR_API_KEY" },
   },
@@ -127,7 +127,7 @@ console.log(`Fraud Score: ${data.fraud_score}`);
 require 'net/http'
 require 'json'
 
-uri = URI('https://api.requiems.xyz/v1/tech/ip/vpn/8.8.8.8')
+uri = URI('https://api.requiems.xyz/v1/networking/ip/vpn/8.8.8.8')
 request = Net::HTTP::Get.new(uri)
 request['requiems-api-key'] = 'YOUR_API_KEY'
 

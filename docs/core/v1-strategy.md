@@ -59,7 +59,7 @@ What we need to build:
 Use cases: fraud detection, geo-gating content, personalizing UX by country,
 blocking VPN abuse, analytics enrichment.
 
-**Backend path:** `services/tech/ip/` → `/v1/tech/ip/*`
+**Backend path:** `services/networking/ip/` → `/v1/networking/ip/*`
 
 ---
 

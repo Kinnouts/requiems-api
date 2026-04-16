@@ -2,7 +2,7 @@
 
 ## Status
 
-✅ **Live** - `/v1/ai/similarity`
+✅ **Live** - `/v1/text/similarity`
 
 ## Overview
 
@@ -14,7 +14,7 @@ word distribution).
 
 ### Compare Text Similarity
 
-**Endpoint:** `POST /v1/ai/similarity`
+**Endpoint:** `POST /v1/text/similarity`
 
 #### Request
 

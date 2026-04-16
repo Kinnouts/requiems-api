@@ -95,24 +95,20 @@ export const DEFAULT_THRESHOLDS: Record<string, string[]> = {
  * Each entry is { method, path, body? } relative to BASE_URL.
  *
  * Service mount points (from apps/api/app/routes_v1.go):
- *   /v1/text          → text services
- *   /v1/ai            → ai services
- *   /v1/email         → email services
  *   /v1/entertainment → entertainment services
- *   /v1/misc          → misc services
- *   /v1/places        → places services
- *   /v1/tech          → tech services
  *   /v1/finance       → finance services
- *   /v1/fitness       → fitness services
- *   /v1/convert       → unit / format conversion
+ *   /v1/health        → health / fitness services
+ *   /v1/networking    → IP, domain, MX, WHOIS, disposable email
+ *   /v1/places        → places services
+ *   /v1/technology    → conversion, QR, barcode, counter, random user, etc.
+ *   /v1/text          → text, AI, and email normalization
+ *   /v1/validation    → email validate, phone, profanity
  */
 export const SAMPLE_ENDPOINTS: SampleEndpoint[] = [
   // health check (no auth required)
   { method: "GET", path: "/healthz" },
 
   // text
-  { method: "GET", path: "/v1/text/advice" },
-  { method: "GET", path: "/v1/text/quotes/random" },
   { method: "GET", path: "/v1/text/lorem?paragraphs=1" },
   { method: "GET", path: "/v1/text/words/random" },
   {
@@ -120,42 +116,45 @@ export const SAMPLE_ENDPOINTS: SampleEndpoint[] = [
     path: "/v1/text/spellcheck",
     body: JSON.stringify({ text: "Ths sentence has erors." }),
   },
-
-  // ai
   {
     method: "POST",
-    path: "/v1/ai/sentiment",
+    path: "/v1/text/sentiment",
     body: JSON.stringify({ text: "I love this product!" }),
   },
 
-  // email
-  { method: "GET", path: "/v1/email/disposable/domain/mailinator.com" },
-  {
-    method: "POST",
-    path: "/v1/email/validate",
-    body: JSON.stringify({ email: "test@example.com" }),
-  },
-
   // entertainment
+  { method: "GET", path: "/v1/entertainment/advice" },
+  { method: "GET", path: "/v1/entertainment/quotes/random" },
   { method: "GET", path: "/v1/entertainment/facts" },
   { method: "GET", path: "/v1/entertainment/trivia" },
   { method: "GET", path: "/v1/entertainment/jokes/dad" },
 
-  // misc
-  { method: "GET", path: "/v1/misc/random-user" },
+  // networking
+  { method: "GET", path: "/v1/networking/disposable/domain/mailinator.com" },
+
+  // validation
+  {
+    method: "POST",
+    path: "/v1/validation/email",
+    body: JSON.stringify({ email: "test@example.com" }),
+  },
+
+  // technology
+  { method: "GET", path: "/v1/technology/random-user" },
   {
     method: "GET",
-    path: "/v1/misc/convert?from=km&to=mi&value=10",
+    path: "/v1/technology/convert?from=km&to=mi&value=10",
   },
+  { method: "GET", path: "/v1/technology/useragent" },
+  { method: "GET", path: "/v1/technology/password" },
+  { method: "GET", path: "/v1/technology/units" },
 
   // places
   { method: "GET", path: "/v1/places/cities/London" },
   { method: "GET", path: "/v1/places/postal/10001?country=US" },
 
-  // tech
-  { method: "GET", path: "/v1/tech/useragent" },
-  { method: "GET", path: "/v1/tech/ip" },
-  { method: "GET", path: "/v1/tech/password" },
+  // networking — IP
+  { method: "GET", path: "/v1/networking/ip" },
 
   // finance
   {
@@ -164,9 +163,6 @@ export const SAMPLE_ENDPOINTS: SampleEndpoint[] = [
   },
   { method: "GET", path: "/v1/finance/exchange-rate?from=USD&to=EUR" },
 
-  // fitness
-  { method: "GET", path: "/v1/fitness/exercises/random" },
-
-  // convert
-  { method: "GET", path: "/v1/convert/units" },
+  // health
+  { method: "GET", path: "/v1/health/exercises/random" },
 ];
