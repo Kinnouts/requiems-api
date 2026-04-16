@@ -72,6 +72,7 @@ async function request(
     method,
     headers,
     body: requestBody,
+    signal: AbortSignal.timeout(cfg.requestTimeoutMs),
   });
   const durationMs = Math.round(performance.now() - start);
 

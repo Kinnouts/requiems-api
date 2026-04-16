@@ -332,6 +332,16 @@ if (data.is_disposable) {
 
 Measured against production (`https://api.requiems.xyz`) with 2 samples.
 
+| Metric  | Value  |
+| ------- | ------ |
+| p50     | 859 ms |
+| p95     | 859 ms |
+| p99     | 859 ms |
+| Average | 984 ms |
+
+_Last updated: 2026-04-16_ Measured against production
+(`https://api.requiems.xyz`) with 2 samples.
+
 | Metric  | Value   |
 | ------- | ------- |
 | p50     | 863 ms  |

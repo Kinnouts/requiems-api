@@ -232,7 +232,17 @@ puts JSON.parse(response.body)['data']['result']
 
 ## Performance
 
-Measured against production (`https://api.requiems.xyz`) with 32 samples.
+Measured against production (`https://api.requiems.xyz`) with 1 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 1085 ms |
+| p95     | 1085 ms |
+| p99     | 1085 ms |
+| Average | 1085 ms |
+
+_Last updated: 2026-04-16_ Measured against production
+(`https://api.requiems.xyz`) with 32 samples.
 
 | Metric  | Value   |
 | ------- | ------- |

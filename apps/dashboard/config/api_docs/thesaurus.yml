@@ -111,9 +111,9 @@ faq:
       The endpoint returns both synonyms and antonyms in a single response for efficiency. Both fields are always
       present in the response.
 performance:
-  p50_ms: 834
-  p95_ms: 1074
-  p99_ms: 1122
-  avg_ms: 893
-  samples: 36
+  p50_ms: 852
+  p95_ms: 958
+  p99_ms: 972
+  avg_ms: 861
+  samples: 37
   measured_at: "2026-04-16"

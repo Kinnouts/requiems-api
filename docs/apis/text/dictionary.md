@@ -61,7 +61,17 @@ writing assistants.
 
 ## Performance
 
-Measured against production (`https://api.requiems.xyz`) with 50 samples.
+Measured against production (`https://api.requiems.xyz`) with 8 samples.
+
+| Metric  | Value  |
+| ------- | ------ |
+| p50     | 771 ms |
+| p95     | 816 ms |
+| p99     | 816 ms |
+| Average | 726 ms |
+
+_Last updated: 2026-04-16_ Measured against production
+(`https://api.requiems.xyz`) with 50 samples.
 
 | Metric  | Value   |
 | ------- | ------- |

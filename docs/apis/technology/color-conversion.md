@@ -80,7 +80,17 @@ GET /v1/technology/color?from=hex&to=hsl&value=%23ff5733
 
 ## Performance
 
-Measured against production (`https://api.requiems.xyz`) with 50 samples.
+Measured against production (`https://api.requiems.xyz`) with 14 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 859 ms  |
+| p95     | 1380 ms |
+| p99     | 1380 ms |
+| Average | 986 ms  |
+
+_Last updated: 2026-04-16_ Measured against production
+(`https://api.requiems.xyz`) with 50 samples.
 
 | Metric  | Value   |
 | ------- | ------- |

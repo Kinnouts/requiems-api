@@ -189,9 +189,9 @@ faq:
       Private IP addresses (like 192.168.x.x, 10.x.x.x, 172.16-31.x.x) do not have geolocation data publicly assigned.
       The API returns the IP with empty location fields for private addresses.
 performance:
-  p50_ms: 848
-  p95_ms: 1027
-  p99_ms: 1096
-  avg_ms: 902
+  p50_ms: 896
+  p95_ms: 1053
+  p99_ms: 1209
+  avg_ms: 908
   samples: 50
   measured_at: "2026-04-16"

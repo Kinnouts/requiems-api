@@ -122,9 +122,9 @@ faq:
       No. The flaggedWords array contains each detected word only once, regardless of how many times it appears in the
       input.
 performance:
-  p50_ms: 1142
-  p95_ms: 1142
-  p99_ms: 1142
-  avg_ms: 1142
+  p50_ms: 1651
+  p95_ms: 1651
+  p99_ms: 1651
+  avg_ms: 1651
   samples: 1
   measured_at: "2026-04-16"

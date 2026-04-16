@@ -179,9 +179,9 @@ faq:
   - question: Does the API support variable or adjustable-rate mortgages?
     answer: Not currently. Only fixed-rate mortgages are supported. The rate is applied uniformly over the entire loan term.
 performance:
-  p50_ms: 818
-  p95_ms: 921
-  p99_ms: 1300
-  avg_ms: 833
+  p50_ms: 920
+  p95_ms: 1140
+  p99_ms: 1153
+  avg_ms: 948
   samples: 50
   measured_at: "2026-04-16"

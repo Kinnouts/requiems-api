@@ -222,9 +222,9 @@ faq:
       Base64 encoding increases payload size by roughly 33%, input strings should be kept well under 750 KB to stay
       within that limit.
 performance:
-  p50_ms: 772
-  p95_ms: 1008
-  p99_ms: 1161
-  avg_ms: 831
+  p50_ms: 911
+  p95_ms: 1095
+  p99_ms: 1105
+  avg_ms: 927
   samples: 50
   measured_at: "2026-04-16"

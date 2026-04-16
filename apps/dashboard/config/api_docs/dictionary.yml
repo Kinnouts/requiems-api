@@ -151,9 +151,9 @@ faq:
       current dataset. The phonetic field may be absent for words added in the future if a transcription is not yet
       available.
 performance:
-  p50_ms: 773
-  p95_ms: 873
-  p99_ms: 1037
-  avg_ms: 796
-  samples: 50
+  p50_ms: 771
+  p95_ms: 816
+  p99_ms: 816
+  avg_ms: 726
+  samples: 8
   measured_at: "2026-04-16"

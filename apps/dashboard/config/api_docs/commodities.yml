@@ -158,9 +158,9 @@ faq:
       The database must be seeded before queries work. Run docker exec requiem-dev-api-1 go run ./cmd/seed-commodities
       --db-url ... to populate the table.
 performance:
-  p50_ms: 802
-  p95_ms: 922
-  p99_ms: 1010
-  avg_ms: 811
-  samples: 36
+  p50_ms: 857
+  p95_ms: 1011
+  p99_ms: 1229
+  avg_ms: 905
+  samples: 33
   measured_at: "2026-04-16"

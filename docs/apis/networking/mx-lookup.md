@@ -49,7 +49,17 @@ Look up MX records for a domain.
 
 ## Performance
 
-Measured against production (`https://api.requiems.xyz`) with 36 samples.
+Measured against production (`https://api.requiems.xyz`) with 31 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 925 ms  |
+| p95     | 1126 ms |
+| p99     | 1132 ms |
+| Average | 967 ms  |
+
+_Last updated: 2026-04-16_ Measured against production
+(`https://api.requiems.xyz`) with 36 samples.
 
 | Metric  | Value  |
 | ------- | ------ |

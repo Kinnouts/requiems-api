@@ -137,6 +137,16 @@ Measured against production (`https://api.requiems.xyz`) with 1 samples.
 
 | Metric  | Value   |
 | ------- | ------- |
+| p50     | 1651 ms |
+| p95     | 1651 ms |
+| p99     | 1651 ms |
+| Average | 1651 ms |
+
+_Last updated: 2026-04-16_ Measured against production
+(`https://api.requiems.xyz`) with 1 samples.
+
+| Metric  | Value   |
+| ------- | ------- |
 | p50     | 1142 ms |
 | p95     | 1142 ms |
 | p99     | 1142 ms |

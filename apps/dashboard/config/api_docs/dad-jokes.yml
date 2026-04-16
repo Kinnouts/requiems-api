@@ -84,9 +84,9 @@ faq:
       The id is a stable string identifier for the joke (e.g. "joke_7"). It can be used to reference or deduplicate
       specific jokes.
 performance:
-  p50_ms: 815
-  p95_ms: 1153
-  p99_ms: 1268
-  avg_ms: 888
+  p50_ms: 921
+  p95_ms: 1174
+  p99_ms: 1232
+  avg_ms: 955
   samples: 50
   measured_at: "2026-04-16"

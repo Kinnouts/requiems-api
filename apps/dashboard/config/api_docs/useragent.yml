@@ -114,9 +114,9 @@ faq:
   - question: What device types are returned?
     answer: desktop, mobile, tablet, bot, or unknown. Tablets are identified by iPad or Android without 'Mobile' in the UA.
 performance:
-  p50_ms: 818
-  p95_ms: 938
-  p99_ms: 1126
-  avg_ms: 829
+  p50_ms: 894
+  p95_ms: 1022
+  p99_ms: 1133
+  avg_ms: 906
   samples: 50
   measured_at: "2026-04-16"

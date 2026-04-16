@@ -115,9 +115,9 @@ faq:
       Yes, all prices are denominated in USD. For other currency conversions use the Exchange Rate API alongside this
       endpoint.
 performance:
-  p50_ms: 805
-  p95_ms: 991
-  p99_ms: 1021
-  avg_ms: 827
+  p50_ms: 860
+  p95_ms: 959
+  p99_ms: 971
+  avg_ms: 879
   samples: 50
   measured_at: "2026-04-16"

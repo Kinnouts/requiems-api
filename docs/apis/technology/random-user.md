@@ -58,7 +58,17 @@ curl https://api.requiems.xyz/v1/technology/random-user \
 
 ## Performance
 
-Measured against production (`https://api.requiems.xyz`) with 50 samples.
+Measured against production (`https://api.requiems.xyz`) with 1 samples.
+
+| Metric  | Value  |
+| ------- | ------ |
+| p50     | 902 ms |
+| p95     | 902 ms |
+| p99     | 902 ms |
+| Average | 902 ms |
+
+_Last updated: 2026-04-16_ Measured against production
+(`https://api.requiems.xyz`) with 50 samples.
 
 | Metric  | Value   |
 | ------- | ------- |

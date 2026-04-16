@@ -70,6 +70,16 @@ Generate a random Sudoku puzzle.
 
 Measured against production (`https://api.requiems.xyz`) with 1 samples.
 
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 1095 ms |
+| p95     | 1095 ms |
+| p99     | 1095 ms |
+| Average | 1095 ms |
+
+_Last updated: 2026-04-16_ Measured against production
+(`https://api.requiems.xyz`) with 1 samples.
+
 | Metric  | Value  |
 | ------- | ------ |
 | p50     | 933 ms |

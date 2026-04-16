@@ -238,9 +238,9 @@ faq:
       The Frankfurter upstream service is temporarily unavailable. Rates are cached for 1 hour, so a 503 typically means
       the cache expired and the upstream could not be reached. Retry after a short delay.
 performance:
-  p50_ms: 771
-  p95_ms: 1149
-  p99_ms: 1186
-  avg_ms: 831
+  p50_ms: 868
+  p95_ms: 1092
+  p99_ms: 1168
+  avg_ms: 900
   samples: 50
   measured_at: "2026-04-16"

@@ -137,7 +137,17 @@ GET /v1/technology/convert?from=miles&to=km&value=10
 
 ## Performance
 
-Measured against production (`https://api.requiems.xyz`) with 32 samples.
+Measured against production (`https://api.requiems.xyz`) with 1 samples.
+
+| Metric  | Value  |
+| ------- | ------ |
+| p50     | 899 ms |
+| p95     | 899 ms |
+| p99     | 899 ms |
+| Average | 899 ms |
+
+_Last updated: 2026-04-16_ Measured against production
+(`https://api.requiems.xyz`) with 32 samples.
 
 | Metric  | Value   |
 | ------- | ------- |

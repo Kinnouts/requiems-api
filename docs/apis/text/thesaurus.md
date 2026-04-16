@@ -68,7 +68,17 @@ opposite words for the given input.
 
 ## Performance
 
-Measured against production (`https://api.requiems.xyz`) with 36 samples.
+Measured against production (`https://api.requiems.xyz`) with 37 samples.
+
+| Metric  | Value  |
+| ------- | ------ |
+| p50     | 852 ms |
+| p95     | 958 ms |
+| p99     | 972 ms |
+| Average | 861 ms |
+
+_Last updated: 2026-04-16_ Measured against production
+(`https://api.requiems.xyz`) with 36 samples.
 
 | Metric  | Value   |
 | ------- | ------- |

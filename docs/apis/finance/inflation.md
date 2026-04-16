@@ -52,6 +52,16 @@ World Bank indicator `FP.CPI.TOTL.ZG`. Updated annually; re-run
 
 Measured against production (`https://api.requiems.xyz`) with 50 samples.
 
+| Metric  | Value   |
+| ------- | ------- |
+| p50     | 885 ms  |
+| p95     | 1019 ms |
+| p99     | 1080 ms |
+| Average | 908 ms  |
+
+_Last updated: 2026-04-16_ Measured against production
+(`https://api.requiems.xyz`) with 50 samples.
+
 | Metric  | Value  |
 | ------- | ------ |
 | p50     | 770 ms |

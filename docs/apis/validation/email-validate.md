@@ -189,7 +189,17 @@ if (data.disposable) {
 
 ## Performance
 
-Measured against production (`https://api.requiems.xyz`) with 35 samples.
+Measured against production (`https://api.requiems.xyz`) with 1 samples.
+
+| Metric  | Value  |
+| ------- | ------ |
+| p50     | 896 ms |
+| p95     | 896 ms |
+| p99     | 896 ms |
+| Average | 896 ms |
+
+_Last updated: 2026-04-16_ Measured against production
+(`https://api.requiems.xyz`) with 35 samples.
 
 | Metric  | Value   |
 | ------- | ------- |

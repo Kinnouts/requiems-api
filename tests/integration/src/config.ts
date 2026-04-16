@@ -10,6 +10,8 @@ export interface Config {
   apiKey: string;
   /** How many times each endpoint is exercised to compute timing stats */
   runs: number;
+  /** Per-request fetch timeout in milliseconds (default 10 000) */
+  requestTimeoutMs: number;
 }
 
 let _config: Config | undefined;
@@ -20,6 +22,9 @@ export function getConfig(): Config {
   const baseUrl = process.env["API_BASE_URL"] ?? "https://api.requiems.xyz";
   const apiKey = process.env["REQUIEMS_API_KEY"] ?? "";
   const runs = Number(process.env["INTEGRATION_RUNS"] ?? "20");
+  const requestTimeoutMs = Number(
+    process.env["REQUEST_TIMEOUT_MS"] ?? "10000",
+  );
 
   if (!apiKey) {
     throw new Error(
@@ -34,6 +39,6 @@ export function getConfig(): Config {
     );
   }
 
-  _config = { baseUrl, apiKey, runs };
+  _config = { baseUrl, apiKey, runs, requestTimeoutMs };
   return _config;
 }
