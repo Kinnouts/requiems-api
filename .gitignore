@@ -30,3 +30,4 @@ apps/workers/shared/package-lock.json
 vendor/
 apps/dashboard/vendor/
 temp/
+.mcp.json
