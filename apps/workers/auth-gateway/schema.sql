@@ -6,6 +6,9 @@ CREATE TABLE IF NOT EXISTS credit_usage (
   user_id TEXT NOT NULL,
   endpoint TEXT NOT NULL,
   credits_used INTEGER NOT NULL,
+  request_method TEXT NOT NULL,
+  status_code INTEGER NOT NULL,
+  response_time_ms INTEGER NOT NULL,
   used_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 

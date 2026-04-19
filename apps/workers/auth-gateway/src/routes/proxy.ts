@@ -30,6 +30,7 @@ const app = new Hono<{ Bindings: WorkerBindings; Variables: Variables }>();
 app.all("/*", async (c) => {
   const log = createLogger(c.req.raw);
   const url = new URL(c.req.url);
+  const startedAt = Date.now();
 
   // Get auth context from middleware
   const apiKey = c.get("apiKey");
@@ -59,6 +60,8 @@ app.all("/*", async (c) => {
     body,
   });
 
+  const responseTimeMs = Date.now() - startedAt;
+
   if (!result.ok) {
     log.error("Backend fetch failed", { error: result.error });
     return jsonError(result.status, result.error);
@@ -66,7 +69,7 @@ app.all("/*", async (c) => {
 
   const backendResponse = result.response;
 
-  // If backend returned an error, don't record usage
+  // If backend returned an error, record a zero-credit telemetry entry (for observability)
   if (!backendResponse.ok) {
     log.warn("Backend error response", {
       status: backendResponse.status,
@@ -83,6 +86,27 @@ app.all("/*", async (c) => {
       rateLimitLimit: plan.ratePerMinute,
       rateLimitRemaining: rateLimit.remaining,
     });
+
+    c.executionCtx.waitUntil(
+      recordRequestUsage(
+        c.env,
+        apiKey,
+        keyData.userId,
+        url.pathname,
+        0,
+        backendResponse.status,
+        responseTimeMs,
+        c.req.method,
+        keyData.billingCycleStart,
+        log,
+      ).catch((err) => {
+        log.error("Failed to record backend error usage after retries", {
+          error: err,
+          path: url.pathname,
+          userId: keyData.userId,
+        });
+      }),
+    );
 
     return response;
   }
@@ -103,6 +127,9 @@ app.all("/*", async (c) => {
       keyData.userId,
       url.pathname,
       effectiveMultiplier,
+      backendResponse.status,
+      responseTimeMs,
+      c.req.method,
       keyData.billingCycleStart,
       log,
     ).catch((err) => {

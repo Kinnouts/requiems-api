@@ -27,6 +27,9 @@ describe("GET /usage/export", () => {
       user_id: "u1",
       endpoint: "/v1/text/validate",
       credits_used: 1,
+      request_method: "POST",
+      status_code: 200,
+      response_time_ms: 82,
       used_at: "2024-06-01T10:00:00Z",
     };
     const bindings = makeBindings({ DB: makeDbWithResults([record]) });
@@ -42,6 +45,9 @@ describe("GET /usage/export", () => {
     expect(body.usage).toHaveLength(1);
     expect(body.usage[0].user_id).toBe("u1");
     expect(body.usage[0].endpoint).toBe("/v1/text/validate");
+    expect(body.usage[0].request_method).toBe("POST");
+    expect(body.usage[0].status_code).toBe(200);
+    expect(body.usage[0].response_time_ms).toBe(82);
     // Internal id must not be exposed
     expect((body.usage[0] as Record<string, unknown>).id).toBeUndefined();
   });
@@ -64,6 +70,9 @@ describe("GET /usage/export", () => {
       user_id: "u1",
       endpoint: "/v1/text/validate",
       credits_used: 1,
+      request_method: "GET",
+      status_code: 200,
+      response_time_ms: 11,
       used_at: "2024-06-01T10:00:00Z",
     }));
     const bindings = makeBindings({ DB: makeDbWithResults(records) });

@@ -70,13 +70,30 @@ class D1SyncService
       key_info = key_cache[record[:api_key][0...12]]
       next unless key_info # skip records for unknown or revoked keys
 
+      # Defensively normalize telemetry fields from D1 export
+      request_method = record[:request_method].presence&.to_s || "UNKNOWN"
+      status_code = record[:status_code].presence&.to_i
+      response_time_ms = record[:response_time_ms].presence&.to_i
+
+      # Log when fields are missing for observability
+      if record[:request_method].blank?
+        Rails.logger.debug("D1SyncService: request_method missing for record", endpoint: record[:endpoint], api_key: record[:api_key][0...12])
+      end
+      if record[:status_code].blank?
+        Rails.logger.debug("D1SyncService: status_code missing for record", endpoint: record[:endpoint], api_key: record[:api_key][0...12])
+      end
+      if record[:response_time_ms].blank?
+        Rails.logger.debug("D1SyncService: response_time_ms missing for record", endpoint: record[:endpoint], api_key: record[:api_key][0...12])
+      end
+
       {
         api_key_id: key_info[:id],
         user_id: key_info[:user_id],
         endpoint: record[:endpoint],
         credits_used: record[:credits_used],
-        status_code: 200, # D1 only records successful requests
-        response_time_ms: nil, # Not tracked in D1
+        request_method: request_method,
+        status_code: status_code,
+        response_time_ms: response_time_ms,
         used_at: Time.parse(record[:used_at]),
         usage_date: Date.parse(record[:used_at]),
         created_at: Time.current,

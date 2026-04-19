@@ -7,7 +7,7 @@ import { jsonResponse } from "../http";
  * Handles all unhandled errors in the application.
  * Logs errors for debugging and returns appropriate error responses.
  */
-export const errorHandler: ErrorHandler = (err, c: Context) => {
+export const errorHandler: ErrorHandler = (err, _c: Context) => {
   console.error("Unhandled error:", {
     message: err.message,
     name: err.name,
