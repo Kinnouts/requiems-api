@@ -13,8 +13,7 @@ class AggregateDailyUsageJob < ApplicationJob
 
   retry_on StandardError, attempts: 3, wait: :polynomially_longer do |job, error|
     Rails.logger.error(
-      "AggregateDailyUsageJob permanently failed after retries: #{error.message}",
-      job_id: job.job_id
+      "AggregateDailyUsageJob permanently failed after retries: #{error.message} (job_id=#{job.job_id})"
     )
   end
 
@@ -61,10 +60,7 @@ class AggregateDailyUsageJob < ApplicationJob
     duration = (Time.current - start_time).round(2)
 
     Rails.logger.info(
-      "Daily aggregation completed",
-      date: date,
-      summaries_created: inserted_count,
-      duration_seconds: duration
+      "Daily aggregation completed: date=#{date} summaries_created=#{inserted_count} duration_seconds=#{duration}"
     )
 
     inserted_count
