@@ -61,6 +61,9 @@ export async function recordRequestUsage(
   userId: string,
   endpoint: string,
   requests: number,
+  statusCode: number,
+  responseTimeMs: number,
+  requestMethod: string,
   billingCycleStart?: string,
   logger?: Logger,
 ): Promise<void> {
@@ -68,10 +71,10 @@ export async function recordRequestUsage(
   // The KV cache update below remains best-effort — D1 is the source of truth.
   await withRetry(() =>
     bindings.DB.prepare(`
-      INSERT INTO credit_usage (api_key, user_id, endpoint, credits_used, used_at)
-      VALUES (?, ?, ?, ?, ?)
+      INSERT INTO credit_usage (api_key, user_id, endpoint, credits_used, request_method, status_code, response_time_ms, used_at)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `)
-      .bind(apiKey, userId, endpoint, requests, new Date().toISOString())
+      .bind(apiKey, userId, endpoint, requests, requestMethod, statusCode, responseTimeMs, new Date().toISOString())
       .run(),
   );
 

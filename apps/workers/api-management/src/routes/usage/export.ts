@@ -48,6 +48,9 @@ app.get("/export", async (c) => {
           user_id,
           endpoint,
           credits_used,
+          request_method,
+          status_code,
+          response_time_ms,
           used_at
         FROM credit_usage
         WHERE used_at >= ? AND id > ?

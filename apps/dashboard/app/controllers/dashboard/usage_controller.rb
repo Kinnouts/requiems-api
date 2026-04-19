@@ -163,7 +163,7 @@ class Dashboard::UsageController < ApplicationController
         csv << [
           log.used_at.iso8601,
           log.endpoint,
-          log.attributes["method"].presence || "POST",
+          log.request_method.presence || "POST",
           log.status_code,
           log.response_time_ms,
           log.credits_used || 1,

@@ -149,6 +149,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_10_000003) do
     t.datetime "created_at", null: false
     t.integer "credits_used"
     t.string "endpoint"
+    t.string "request_method"
     t.integer "response_time_ms"
     t.integer "status_code"
     t.datetime "updated_at", null: false

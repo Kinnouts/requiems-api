@@ -194,8 +194,8 @@
               </td>
               <td class="px-6 py-4 text-sm">
                 <code class="text-xs bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded"><%= log.endpoint %></code>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm">
+                <td class="px-6 py-4 whitespace-nowrap text-sm">
+                  <%= render "partials/shared/badge", text: log.request_method.presence || "POST", variant: "default", size: "xs" %>
                 <%= render "partials/shared/badge", text: log.attributes["method"].presence || "POST", variant: "default", size: "xs" %>
               </td>
               <td class="px-6 py-4 whitespace-nowrap text-sm">

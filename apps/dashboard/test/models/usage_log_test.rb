@@ -13,6 +13,7 @@ class UsageLogTest < ActiveSupport::TestCase
       user: @user,
       api_key: @api_key,
       endpoint: "/v1/test",
+      request_method: "POST",
       status_code: status_code,
       used_at: used_at
     )

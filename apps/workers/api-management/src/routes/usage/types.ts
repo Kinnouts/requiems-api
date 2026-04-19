@@ -8,6 +8,9 @@ export interface UsageRecord {
   user_id: string;
   endpoint: string;
   credits_used: number;
+  request_method: string;
+  status_code: number;
+  response_time_ms: number;
   used_at: string;
 }
 

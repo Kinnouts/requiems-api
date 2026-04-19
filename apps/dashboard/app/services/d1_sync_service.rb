@@ -75,8 +75,9 @@ class D1SyncService
         user_id: key_info[:user_id],
         endpoint: record[:endpoint],
         credits_used: record[:credits_used],
-        status_code: 200, # D1 only records successful requests
-        response_time_ms: nil, # Not tracked in D1
+        request_method: record[:request_method],
+        status_code: record[:status_code],
+        response_time_ms: record[:response_time_ms],
         used_at: Time.parse(record[:used_at]),
         usage_date: Date.parse(record[:used_at]),
         created_at: Time.current,
