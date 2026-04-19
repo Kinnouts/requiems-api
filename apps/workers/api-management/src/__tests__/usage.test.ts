@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import worker from "../index";
-import { authedRequest, makeBindings, makeCtx } from "./helpers";
 import type { UsageRecord } from "../routes/usage/types";
+import { authedRequest, makeBindings, makeCtx } from "./helpers";
 
 const SINCE = "2024-01-01T00:00:00.000Z";
 
