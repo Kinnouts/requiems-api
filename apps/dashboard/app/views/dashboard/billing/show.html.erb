@@ -257,16 +257,23 @@
             </svg>
           </div>
           <div class="ml-4">
-            <p class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= t("dashboard.billing.payment.managed_by") %></p>
-            <p class="text-xs text-gray-600 dark:text-gray-400"><%= t("dashboard.billing.payment.secure_processing") %></p>
+            <% if @subscription.promoted? %>
+              <p class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= t("dashboard.billing.payment.promoted_heading") %></p>
+              <p class="text-xs text-gray-600 dark:text-gray-400"><%= t("dashboard.billing.payment.promoted_subheading") %></p>
+            <% else %>
+              <p class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= t("dashboard.billing.payment.managed_by") %></p>
+              <p class="text-xs text-gray-600 dark:text-gray-400"><%= t("dashboard.billing.payment.secure_processing") %></p>
+            <% end %>
           </div>
         </div>
 
-        <%= button_to dashboard_portal_billing_path,
-          method: :post,
-          data: { turbo: false },
-          class: "block w-full text-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" do %>
-          <%= t("dashboard.billing.payment.update_btn") %>
+        <% unless @subscription.promoted? %>
+          <%= button_to dashboard_portal_billing_path,
+            method: :post,
+            data: { turbo: false },
+            class: "block w-full text-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" do %>
+            <%= t("dashboard.billing.payment.update_btn") %>
+          <% end %>
         <% end %>
       <% else %>
         <div class="text-center py-8">
@@ -296,7 +303,7 @@
           <div class="flex items-center justify-between py-3">
             <span class="text-sm text-gray-600 dark:text-gray-400"><%= t("dashboard.billing.history.status_label") %></span>
             <span class="text-sm font-medium <%= @subscription.status == 'active' ? 'text-green-600 dark:text-green-400' : 'text-yellow-600 dark:text-yellow-400' %>">
-              <%= @subscription.status&.titleize %>
+              <%= @subscription.promoted? ? t("dashboard.billing.history.promoted_status") : @subscription.status&.titleize %>
             </span>
           </div>
           <% if @subscription.current_period_start %>
@@ -307,12 +314,12 @@
           <% end %>
           <% if @subscription.current_period_end %>
             <div class="flex items-center justify-between py-3">
-              <span class="text-sm text-gray-600 dark:text-gray-400"><%= @subscription.cancel_at_period_end? ? t("dashboard.billing.history.cancels_on") : t("dashboard.billing.history.renews_on") %></span>
+              <span class="text-sm text-gray-600 dark:text-gray-400"><%= @subscription.promoted? ? t("dashboard.billing.history.promoted_expires_on") : (@subscription.cancel_at_period_end? ? t("dashboard.billing.history.cancels_on") : t("dashboard.billing.history.renews_on")) %></span>
               <span class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= @subscription.current_period_end.strftime("%b %d, %Y") %></span>
             </div>
           <% end %>
           <div class="pt-4">
-            <p class="text-xs text-gray-500 dark:text-gray-400"><%= t("dashboard.billing.history.portal_note") %></p>
+            <p class="text-xs text-gray-500 dark:text-gray-400"><%= @subscription.promoted? ? t("dashboard.billing.history.promoted_note") : t("dashboard.billing.history.portal_note") %></p>
           </div>
         </div>
       <% else %>
