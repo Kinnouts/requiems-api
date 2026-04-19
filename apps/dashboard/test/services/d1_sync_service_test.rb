@@ -7,9 +7,8 @@ class D1SyncServiceTest < ActiveSupport::TestCase
     user = create_user(email: "d1-sync-user@example.com")
     api_key = user.api_keys.create!(name: "Sync Key", environment: "test")
 
-    # Construct a D1/export-style payload (as returned from API Management export endpoint)
     d1_record = {
-      api_key: api_key.key_prefix + "rest",
+      api_key: "#{api_key.key_prefix}rest",
       endpoint: "/v1/text/advice",
       credits_used: 2,
       request_method: "PATCH",
@@ -18,7 +17,6 @@ class D1SyncServiceTest < ActiveSupport::TestCase
       used_at: Time.current.iso8601
     }
 
-    # Call D1SyncService to process the export record
     service = D1SyncService.new
     result = service.bulk_insert([ d1_record ])
 

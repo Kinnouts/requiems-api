@@ -63,7 +63,7 @@ services:
         apk update &&
         apk add --no-cache build-base postgresql-dev nodejs npm tzdata git yaml-dev &&
         bundle install &&
-        bundle exec rails db:create db:migrate &&
+        bundle exec rails db:create db:migrate db:seed &&
         bundle exec rails tailwindcss:build &&
         rm -f tmp/pids/server.pid &&
         bundle exec rails server -b 0.0.0.0 -p 3000

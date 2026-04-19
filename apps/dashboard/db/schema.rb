@@ -156,6 +156,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_04_19_000000) do
     t.date "usage_date"
     t.datetime "used_at"
     t.bigint "user_id", null: false
+    t.index ["api_key_id", "used_at", "endpoint"], name: "index_usage_logs_on_api_key_id_and_used_at_and_endpoint", unique: true
     t.index ["api_key_id", "used_at"], name: "index_usage_logs_on_api_key_and_time"
     t.index ["api_key_id"], name: "index_usage_logs_on_api_key_id"
     t.index ["endpoint", "used_at"], name: "index_usage_logs_on_endpoint_and_time"
