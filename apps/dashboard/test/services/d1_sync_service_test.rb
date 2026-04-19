@@ -20,7 +20,7 @@ class D1SyncServiceTest < ActiveSupport::TestCase
 
     # Call D1SyncService to process the export record
     service = D1SyncService.new
-    result = service.bulk_insert([d1_record])
+    result = service.bulk_insert([ d1_record ])
 
     assert_equal 1, result
 
