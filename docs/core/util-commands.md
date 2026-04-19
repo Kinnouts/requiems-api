@@ -78,12 +78,12 @@ docker compose logs -f       # Watch logs as services initialize and seed
 
 ### When to Use Each
 
-| Command | Data Persists? | When to Use |
-|---------|---|---|
-| `docker compose stop` | ✅ Yes | Quick pause, testing later |
-| `docker compose restart` | ✅ Yes | Quick restart, debugging |
-| `docker compose down` | ✅ Yes | Full shutdown, keep data |
-| `docker compose down -v` | ❌ **No** | Fresh start, clear all test data |
+| Command                  | Data Persists? | When to Use                      |
+| ------------------------ | -------------- | -------------------------------- |
+| `docker compose stop`    | ✅ Yes         | Quick pause, testing later       |
+| `docker compose restart` | ✅ Yes         | Quick restart, debugging         |
+| `docker compose down`    | ✅ Yes         | Full shutdown, keep data         |
+| `docker compose down -v` | ❌ **No**      | Fresh start, clear all test data |
 
 ### Automatic Test User Seeding
 
