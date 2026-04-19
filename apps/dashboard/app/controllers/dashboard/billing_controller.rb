@@ -55,6 +55,11 @@ class Dashboard::BillingController < ApplicationController
 
   def portal
     # Redirect to LemonSqueezy customer portal
+    if current_user.subscription&.promoted?
+      redirect_to dashboard_billing_path, alert: "Promotional plans do not have a customer portal."
+      return
+    end
+
     unless current_user.subscription&.lemonsqueezy_subscription_id
       redirect_to dashboard_billing_path, alert: "No active subscription found"
       return
