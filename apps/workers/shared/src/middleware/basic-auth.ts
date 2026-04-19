@@ -29,7 +29,7 @@ interface BasicAuthBindings {
 export const basicAuthMiddleware = async (c: Context, next: Next) => {
   const authHeader = c.req.header("Authorization");
 
-  if (!authHeader || !authHeader.startsWith("Basic ")) {
+  if (!authHeader?.startsWith("Basic ")) {
     return new Response("Unauthorized", {
       status: 401,
       headers: {

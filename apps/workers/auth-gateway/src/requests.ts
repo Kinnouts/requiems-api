@@ -74,7 +74,16 @@ export async function recordRequestUsage(
       INSERT INTO credit_usage (api_key, user_id, endpoint, credits_used, request_method, status_code, response_time_ms, used_at)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
     `)
-      .bind(apiKey, userId, endpoint, requests, requestMethod, statusCode, responseTimeMs, new Date().toISOString())
+      .bind(
+        apiKey,
+        userId,
+        endpoint,
+        requests,
+        requestMethod,
+        statusCode,
+        responseTimeMs,
+        new Date().toISOString(),
+      )
       .run(),
   );
 

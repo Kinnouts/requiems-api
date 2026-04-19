@@ -21,8 +21,8 @@ describe("Rate Limiting", () => {
         put: async (key: string, value: string, options?: { expirationTtl?: number }) => {
           mockKV.set(key, { value, expirationTtl: options?.expirationTtl });
         },
-      } as any,
-      DB: {} as any,
+      } as unknown as KVNamespace,
+      DB: {} as unknown as D1Database,
       BACKEND_URL: "http://test",
       BACKEND_SECRET: "test-secret",
       ENVIRONMENT: "development",

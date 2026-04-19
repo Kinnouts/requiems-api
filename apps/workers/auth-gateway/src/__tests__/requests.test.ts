@@ -4,7 +4,7 @@ import { recordRequestUsage } from "../requests";
 
 function makeBindings() {
   const kv = new Map<string, string>();
-  const bind = vi.fn((...args: unknown[]) => ({
+  const bind = vi.fn((..._args: unknown[]) => ({
     run: vi.fn().mockResolvedValue({ success: true, meta: {} }),
   }));
   const prepare = vi.fn((_sql: string) => ({
