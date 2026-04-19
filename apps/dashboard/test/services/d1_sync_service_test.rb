@@ -3,23 +3,28 @@
 require "test_helper"
 
 class D1SyncServiceTest < ActiveSupport::TestCase
-  test "bulk_insert processes request method and telemetry fields" do
+  test "bulk_insert persists telemetry fields from D1 export format" do
     user = create_user(email: "d1-sync-user@example.com")
     api_key = user.api_keys.create!(name: "Sync Key", environment: "test")
 
-    # Create a test record with all telemetry fields
-    UsageLog.create!(
-      user_id: user.id,
-      api_key_id: api_key.id,
+    # Construct a D1/export-style payload (as returned from API Management export endpoint)
+    d1_record = {
+      api_key: api_key.key_prefix + "rest",
       endpoint: "/v1/text/advice",
       credits_used: 2,
       request_method: "PATCH",
       status_code: 503,
       response_time_ms: 128,
-      used_at: Time.current
-    )
+      used_at: Time.current.iso8601
+    }
 
-    # Retrieve and verify all fields are persisted
+    # Call D1SyncService to process the export record
+    service = D1SyncService.new
+    result = service.bulk_insert([d1_record])
+
+    assert_equal 1, result
+
+    # Retrieve and verify all telemetry fields are persisted
     log = UsageLog.find_by(endpoint: "/v1/text/advice", api_key_id: api_key.id)
     assert_not_nil log
     assert_equal "PATCH", log.request_method

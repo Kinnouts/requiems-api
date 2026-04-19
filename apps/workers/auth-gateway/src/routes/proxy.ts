@@ -69,7 +69,7 @@ app.all("/*", async (c) => {
 
   const backendResponse = result.response;
 
-  // If backend returned an error, don't record usage
+  // If backend returned an error, record a zero-credit telemetry entry (for observability)
   if (!backendResponse.ok) {
     log.warn("Backend error response", {
       status: backendResponse.status,
