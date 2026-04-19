@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { recordRequestUsage } from "../requests";
 import type { WorkerBindings } from "../env";
+import { recordRequestUsage } from "../requests";
 
 function makeBindings() {
   const kv = new Map<string, string>();
@@ -44,7 +44,7 @@ describe("recordRequestUsage", () => {
     expect(mocks.prepare).toHaveBeenCalled();
     expect(mocks.bind).toHaveBeenCalled();
     const bindArgs = mocks.bind.mock.calls[0] as unknown[];
-    
+
     // Verify all arguments except the timestamp (which is generated at runtime)
     expect(bindArgs[0]).toBe("requiem_test_key");
     expect(bindArgs[1]).toBe("user-1");
