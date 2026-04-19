@@ -44,8 +44,8 @@ SMTP_PASSWORD=               # required for sending real emails
 Ask a teammate for the actual values. The app starts fine without `.env.local` —
 payments and email delivery just won't work end-to-end locally.
 
-> **Note:** Emails in development are logged to stdout (not sent). Check
-> `docker compose logs dashboard` to see email content.
+> **Note:** In development, emails open in Letter Opener Web (not sent).
+> Visit `http://localhost:3000/letter_opener` to preview them.
 
 ---
 

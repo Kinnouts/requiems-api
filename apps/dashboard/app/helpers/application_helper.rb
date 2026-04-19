@@ -33,6 +33,23 @@ module ApplicationHelper
     end
   end
 
+  def compact_number(value)
+    number_to_human(
+      value.to_i,
+      format: "%n%u",
+      precision: 3,
+      significant: true,
+      strip_insignificant_zeros: true,
+      units: {
+        thousand: "K",
+        million: "M",
+        billion: "B",
+        trillion: "T",
+        quadrillion: "Q"
+      }
+    )
+  end
+
   private
 
   def searchable_apis

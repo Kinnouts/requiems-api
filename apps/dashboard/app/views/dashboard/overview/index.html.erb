@@ -11,7 +11,7 @@
 </div>
 
 <!-- Quick Stats Cards -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
   <!-- Current Plan Usage -->
   <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
     <div class="flex items-center justify-between mb-4">
@@ -20,11 +20,11 @@
     </div>
 
     <div class="mb-2">
-      <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">
-        <%= number_with_delimiter(@usage_this_month) %>
+      <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 tabular-nums leading-tight" title="<%= number_with_delimiter(@usage_this_month) %>">
+        <%= compact_number(@usage_this_month) %>
       </p>
       <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
-        <%= t("dashboard.overview.of_requests", limit: number_with_delimiter(@usage_this_month + @requests_remaining)) %>
+        <%= t("dashboard.overview.of_requests", limit: compact_number(@plan_limit)) %>
       </p>
     </div>
 
@@ -35,10 +35,10 @@
     <p class="text-xs text-gray-500 dark:text-gray-400 mt-2"><%= t("dashboard.overview.used_this_month", percent: @usage_percentage) %></p>
   </div>
 
-  <!-- Total API Calls -->
+  <!-- Monthly Quota -->
   <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
     <div class="flex items-center justify-between mb-4">
-      <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400"><%= t("dashboard.overview.total_requests") %></h3>
+      <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400"><%= t("dashboard.overview.monthly_quota") %></h3>
       <div class="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
         <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
@@ -46,10 +46,10 @@
       </div>
     </div>
 
-    <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">
-      <%= number_with_delimiter(@total_requests) %>
+    <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 tabular-nums leading-tight" title="<%= number_with_delimiter(@plan_limit) %>">
+      <%= compact_number(@plan_limit) %>
     </p>
-    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1"><%= t("dashboard.overview.all_time") %></p>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1"><%= t("dashboard.overview.resets_monthly") %></p>
   </div>
 
   <!-- Requests Remaining -->
@@ -63,7 +63,7 @@
       </div>
     </div>
 
-    <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">
+    <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 tabular-nums leading-tight" title="<%= number_with_delimiter(@requests_remaining) %>">
       <%= number_with_delimiter(@requests_remaining) %>
     </p>
     <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
@@ -75,22 +75,6 @@
     </p>
   </div>
 
-  <!-- Average Response Time -->
-  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-    <div class="flex items-center justify-between mb-4">
-      <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400"><%= t("dashboard.overview.avg_response") %></h3>
-      <div class="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
-        <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
-        </svg>
-      </div>
-    </div>
-
-    <p class="text-3xl font-bold text-gray-900 dark:text-gray-100">
-      <%= @avg_response_time %>ms
-    </p>
-    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1"><%= t("dashboard.overview.last_7_days") %></p>
-  </div>
 </div>
 
 <!-- Recent Activity & Quick Actions Row -->
