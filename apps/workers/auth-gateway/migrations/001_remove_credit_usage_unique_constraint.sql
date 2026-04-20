@@ -23,11 +23,33 @@ CREATE TABLE credit_usage_new (
   user_id TEXT NOT NULL,
   endpoint TEXT NOT NULL,
   credits_used INTEGER NOT NULL,
+  request_method TEXT NOT NULL,
+  status_code INTEGER NOT NULL,
+  response_time_ms INTEGER NOT NULL,
   used_at TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
-INSERT OR IGNORE INTO credit_usage_new (id, api_key, user_id, endpoint, credits_used, used_at)
-SELECT id, api_key, user_id, endpoint, credits_used, used_at
+INSERT OR IGNORE INTO credit_usage_new (
+  id,
+  api_key,
+  user_id,
+  endpoint,
+  credits_used,
+  request_method,
+  status_code,
+  response_time_ms,
+  used_at
+)
+SELECT
+  id,
+  api_key,
+  user_id,
+  endpoint,
+  credits_used,
+  request_method,
+  status_code,
+  response_time_ms,
+  used_at
 FROM credit_usage;
 
 DROP TABLE credit_usage;

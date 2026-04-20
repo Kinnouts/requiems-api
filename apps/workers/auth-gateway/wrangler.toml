@@ -13,6 +13,7 @@ id = "7cc847da3f3143b2ba8f7c531f416b35"
 binding = "DB"
 database_name = "requiem-usage"
 database_id = "8cc5cae5-caff-4878-80f7-94eed1931ea8"
+preview_database_id = "8cc5cae5-caff-4878-80f7-94eed1931ea8"
 
 [observability]
 [observability.logs]

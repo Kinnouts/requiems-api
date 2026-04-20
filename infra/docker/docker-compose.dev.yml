@@ -92,6 +92,7 @@ services:
       "
     environment:
       - WRANGLER_PERSIST_TO=/workers/.wrangler/state
+      - COREPACK_ENABLE_DOWNLOAD_PROMPT=0
     env_file:
       - .env.example
       - path: .env.local
@@ -116,7 +117,8 @@ services:
       sh -c "
         pnpm install --frozen-lockfile &&
         pnpm install --frozen-lockfile --dir /workers/shared &&
-        pnpm exec wrangler d1 execute requiem-usage --local --yes --file=./schema.sql --persist-to=$$WRANGLER_PERSIST_TO &&
+        pnpm exec wrangler d1 execute requiem-usage --local --yes --persist-to=$$WRANGLER_PERSIST_TO --command=\"DROP TABLE IF EXISTS credit_usage; DROP TABLE IF EXISTS api_keys;\" &&
+          pnpm exec wrangler d1 execute requiem-usage --local --yes --persist-to=$$WRANGLER_PERSIST_TO --file=./schema.sql &&
         echo API_MANAGEMENT_API_KEY=$$API_MANAGEMENT_API_KEY > .dev.vars &&
         echo SWAGGER_USERNAME=$$SWAGGER_USERNAME >> .dev.vars &&
         echo SWAGGER_PASSWORD=$$SWAGGER_PASSWORD >> .dev.vars &&
@@ -124,6 +126,7 @@ services:
       "
     environment:
       - WRANGLER_PERSIST_TO=/workers/.wrangler/state
+      - COREPACK_ENABLE_DOWNLOAD_PROMPT=0
     env_file:
       - .env.example
       - path: .env.local

@@ -44,6 +44,12 @@ function withPersist(cmd: string): string {
 }
 
 console.log("Applying D1 schema...");
+// Local dev uses shared D1 persistence; reset tables first so schema changes are applied deterministically.
+run(
+  withPersist(
+    `${WRANGLER} d1 execute requiem-usage --local --yes --command="DROP TABLE IF EXISTS credit_usage; DROP TABLE IF EXISTS api_keys;"`,
+  ),
+);
 run(withPersist(`${WRANGLER} d1 execute requiem-usage --local --yes --file=./schema.sql`));
 
 console.log("Applying D1 migrations...");
