@@ -7,8 +7,8 @@ Target email:
 Run from host machine (inside `apps/dashboard`):
 
 ```bash
-  cd apps/dashboard
-  bin/rails runner "user = User.find_by!(email: 'eliaz.bobadilladeva@gmail.com'); user.update!(admin: true); puts \"#{user.email} admin=#{user.admin?}\""
+cd apps/dashboard
+bin/rails runner "user = User.find_by!(email: 'eliaz.bobadilladeva@gmail.com'); user.update!(admin: true); puts \"#{user.email} admin=#{user.admin?}\""
 ```
 
 Run in Docker container:
@@ -39,7 +39,8 @@ bin/rails runner "user = User.find_by!(email: 'eliaz.bobadilladeva@gmail.com'); 
 
 ### Persistence Notes
 
-Local users should remain after normal restarts because the PostgreSQL data lives in the named Docker volume `db_data`.
+Local users should remain after normal restarts because the PostgreSQL data
+lives in the named Docker volume `db_data`.
 
 - `docker compose stop` keeps users
 - `docker compose restart` keeps users
@@ -92,7 +93,9 @@ The dashboard service automatically creates test users on startup via `db:seed`:
 - **Email**: `eliaz.bobadilladeva@gmail.com` (admin: true)
 - **Email**: `test@example.com` (regular user)
 
-If containers are cleanly shut down with `docker compose stop` (not `down -v`), these users persist. After `docker compose down -v`, they're recreated automatically on the next `up`.
+If containers are cleanly shut down with `docker compose stop` (not `down -v`),
+these users persist. After `docker compose down -v`, they're recreated
+automatically on the next `up`.
 
 ### Check Database Status
 
