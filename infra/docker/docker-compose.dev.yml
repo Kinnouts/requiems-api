@@ -34,8 +34,6 @@ services:
       context: ../../apps/api
       dockerfile: ../../infra/docker/api.dev.Dockerfile
     working_dir: /app
-    environment:
-      - PATH=/usr/local/go/bin:$PATH
     env_file:
       - .env.example
       - path: .env.local
