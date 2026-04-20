@@ -2,8 +2,8 @@
 
 ## Purpose
 
-Create high-signal Plane tickets from commits/PRs with clear technical and
-business impact.
+Create self-contained, implementation-ready Plane tickets with enough context
+that a developer can start work immediately without chat follow-up.
 
 ## Mandatory Rules
 
@@ -16,6 +16,8 @@ business impact.
 3. If context is incomplete, investigate first. Do not publish low-context
    tickets.
 4. Always include business impact, not only technical details.
+5. Tickets must be self-contained handoff docs, not short reminders.
+6. Never leave implementation tickets with minimal one-paragraph descriptions.
 
 ## Required Investigation Before Writing
 
@@ -43,6 +45,16 @@ evidence.
 - Describe the real failure mode.
 - Include user/system symptom and scope.
 
+### Scope
+
+- Define what is in scope for this ticket.
+- Define explicit non-goals if adjacent work exists.
+
+### Technical Context
+
+- Name key services/files/routes/tables that the assignee must inspect.
+- Include current-state constraints the assignee must account for.
+
 ### Previous State
 
 - Explain how the system behaved before the change.
@@ -53,6 +65,16 @@ evidence.
 - Summarize the implemented changes by component.
 - Mention key files/services touched when useful.
 - Link behavior changes to the problem they resolve.
+
+### Acceptance Criteria
+
+- Provide concrete completion checks.
+- Include behavior expectations, not just "code added."
+
+### Dependencies
+
+- List prerequisite tickets/decisions.
+- If none, explicitly write "None."
 
 ### Result
 
@@ -67,6 +89,7 @@ evidence.
 ### Evidence
 
 - List commit subjects and PR references used to derive the ticket.
+- For planning/spec tickets, cite stakeholder/product inputs and docs analyzed.
 
 ## Quality Bar (Must Pass)
 
@@ -76,6 +99,8 @@ evidence.
 4. Business impact is present and non-generic.
 5. No dates appear anywhere in the ticket body/title.
 6. No placeholder text remains.
+7. Ticket has enough implementation context (files/flows/data model) to start work immediately.
+8. Acceptance criteria are testable and specific.
 
 ## Guardrails
 
@@ -91,6 +116,18 @@ Title: <specific outcome>
 Original Problem:
 <concrete failure and symptoms>
 
+Scope:
+
+- <in scope item>
+- <in scope item>
+- Non-goals: <what is out of scope>
+
+Technical Context:
+
+- <service/file/route/table context 1>
+- <service/file/route/table context 2>
+- <important current-state constraint>
+
 Previous State:
 <how things worked before and why that was insufficient>
 
@@ -99,6 +136,16 @@ Work Done:
 - <change 1>
 - <change 2>
 - <change 3>
+
+Acceptance Criteria:
+
+- <behavior check 1>
+- <behavior check 2>
+- <behavior check 3>
+
+Dependencies:
+
+- <ticket/decision dependency or None>
 
 Result:
 <post-change system behavior>
@@ -114,6 +161,8 @@ Evidence:
 - Commits:
   - <sha> <subject>
   - <sha> <subject>
+- Additional Context:
+  - <stakeholder requirement or design doc reference>
 
 ## Suggested Invocation
 
