@@ -12,7 +12,7 @@
 
 ```bash
 cd infra/docker
-docker compose -f docker-compose.dev.yml up
+docker compose -f docker-compose.dev.yml up --build
 ```
 
 Services available:
@@ -86,6 +86,18 @@ Seeded dev API keys (available automatically after stack starts):
 
 > **Tip:** You can also hit the Go backend directly on port 8080 without auth,
 > useful for quick endpoint testing without going through the gateway.
+
+### When to rebuild
+
+Rebuild the dev images after changing dependency manifests:
+
+- Go API: `apps/api/go.mod` or `apps/api/go.sum`
+- Rails Dashboard: `apps/dashboard/Gemfile` or `apps/dashboard/Gemfile.lock`
+
+```bash
+cd infra/docker
+docker compose -f docker-compose.dev.yml up --build
+```
 
 ### Go API lint in Docker
 

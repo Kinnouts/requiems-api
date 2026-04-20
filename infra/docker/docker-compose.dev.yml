@@ -30,17 +30,10 @@ services:
       retries: 5
 
   api:
-    image: golang:1.26-alpine
+    build:
+      context: ../../apps/api
+      dockerfile: ../../infra/docker/api.dev.Dockerfile
     working_dir: /app
-    environment:
-      - PATH=/usr/local/go/bin:$PATH
-    command: >
-      sh -c "
-        apk update &&
-        apk add --no-cache git &&
-        go install github.com/cosmtrek/air@v1.52.0 &&
-        /go/bin/air
-      "
     env_file:
       - .env.example
       - path: .env.local
@@ -56,13 +49,12 @@ services:
         condition: service_healthy
 
   dashboard:
-    image: ruby:3.4-alpine
+    build:
+      context: ../../apps/dashboard
+      dockerfile: ../../infra/docker/dashboard.dev.Dockerfile
     working_dir: /app
     command: >
       sh -c "
-        apk update &&
-        apk add --no-cache build-base postgresql-dev nodejs npm tzdata git yaml-dev &&
-        bundle install &&
         bundle exec rails db:create db:migrate db:seed &&
         bundle exec rails tailwindcss:build &&
         rm -f tmp/pids/server.pid &&
@@ -75,7 +67,6 @@ services:
     volumes:
       - ../../apps/dashboard:/app
       - ../../apps/workers/shared:/workers/shared
-      - bundle_cache:/usr/local/bundle
     ports:
       - "3000:3000"
     depends_on:
@@ -142,16 +133,15 @@ services:
       auth-gateway:
         condition: service_started
 
-  # Solid Queue for background jobs
+  # Sidekiq for background jobs
   sidekiq:
-    image: ruby:3.4-alpine
+    build:
+      context: ../../apps/dashboard
+      dockerfile: ../../infra/docker/dashboard.dev.Dockerfile
     working_dir: /app
     command: >
       sh -c "
-        apk update &&
-        apk add --no-cache build-base postgresql-dev tzdata yaml-dev &&
-        bundle install &&
-        bundle exec ruby bin/jobs start
+        bundle exec sidekiq
       "
     env_file:
       - .env.example
@@ -159,7 +149,6 @@ services:
         required: false
     volumes:
       - ../../apps/dashboard:/app
-      - bundle_cache:/usr/local/bundle
     depends_on:
       - db
       - redis
@@ -169,7 +158,6 @@ services:
 volumes:
   db_data:
   redis_data:
-  bundle_cache:
   auth_gateway_modules:
   api_management_modules:
   shared_modules:
