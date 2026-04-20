@@ -1,8 +1,8 @@
 sync_d1_usage:
-  cron: "*/5 * * * *"
+  cron: "*/3 * * * *"
   class: SyncD1UsageJob
   queue: default
-  description: "Sync usage data from Cloudflare D1 to PostgreSQL every 5 minutes"
+  description: "Sync usage data from Cloudflare D1 to PostgreSQL every 3 minutes"
 
 aggregate_daily_usage:
   cron: "5 0 * * *"

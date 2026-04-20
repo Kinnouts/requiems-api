@@ -12,10 +12,7 @@ class SyncD1UsageJob < ApplicationJob
   queue_as :default
 
   retry_on D1SyncService::Error, attempts: 5, wait: :polynomially_longer do |job, error|
-    Rails.logger.error(
-      "SyncD1UsageJob permanently failed after retries: #{error.message}",
-      job_id: job.job_id
-    )
+    Rails.logger.error("SyncD1UsageJob permanently failed: #{error.message} (job_id=#{job.job_id})")
   end
 
   LAST_SYNC_KEY = "d1_sync:last_sync_at"
@@ -25,7 +22,7 @@ class SyncD1UsageJob < ApplicationJob
     start_time = Time.current
     last_sync_at = get_last_sync_time
 
-    Rails.logger.info("Starting D1 usage sync from #{last_sync_at}")
+    Rails.logger.info("SyncD1UsageJob: starting since=#{last_sync_at.iso8601} (#{(start_time - last_sync_at).round}s window)")
 
     service = D1SyncService.new
     result = service.fetch_usage(since: last_sync_at)
@@ -75,12 +72,7 @@ class SyncD1UsageJob < ApplicationJob
 
   def track_sync_metrics(inserted, start_time)
     duration = (Time.current - start_time).round(2)
-
-    Rails.logger.info(
-      "D1 sync metrics",
-      records_inserted: inserted,
-      duration_seconds: duration,
-      records_per_second: (inserted / duration).round(2)
-    )
+    rps = duration > 0 ? (inserted.to_f / duration).round(2) : 0
+    Rails.logger.info("D1 sync metrics: records_inserted=#{inserted} duration_seconds=#{duration} records_per_second=#{rps}")
   end
 end
