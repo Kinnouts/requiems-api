@@ -6,7 +6,7 @@ Start all services with **hot reloading enabled**:
 
 ```bash
 cd infra/docker
-docker compose -f docker-compose.dev.yml up
+docker compose -f docker-compose.dev.yml up --build
 ```
 
 ### What You Get:
@@ -50,11 +50,22 @@ docker compose -f docker-compose.dev.yml up
 
 ### First Time Setup:
 
-The containers will automatically:
+The dev images will automatically:
 
-1. Install dependencies (Go modules, Ruby gems)
-2. Run database migrations
+1. Build the local Go and Rails development images
+2. Install dependencies (Go modules, Ruby gems) during image build
 3. Start all services
+
+On later restarts, containers reuse those built images, so startup is faster and
+less sensitive to runtime package-install failures.
+
+### When to rebuild:
+
+Rebuild after dependency changes or the first time you start the stack:
+
+1. `apps/api/go.mod` or `apps/api/go.sum`
+2. `apps/dashboard/Gemfile` or `apps/dashboard/Gemfile.lock`
+3. `infra/docker/api.dev.Dockerfile` or `infra/docker/dashboard.dev.Dockerfile`
 
 ### Development Workflow:
 
@@ -62,7 +73,7 @@ The containers will automatically:
 # Start everything
 docker compose -f docker-compose.dev.yml up
 
-# Rebuild if you change dependencies (Gemfile or go.mod)
+# Rebuild if you change dependencies or dev Dockerfiles
 docker compose -f docker-compose.dev.yml up --build
 
 # View logs for specific service
@@ -149,13 +160,12 @@ docker compose -f docker-compose.dev.yml logs db
 docker compose -f docker-compose.dev.yml restart db
 ```
 
-**Bundle install errors (Rails):**
+**Gem or bundle issues (Rails):**
 
 ```bash
-# Clear bundle cache and reinstall
-docker compose -f docker-compose.dev.yml down
-docker volume rm requiem-dev_bundle_cache
-docker compose -f docker-compose.dev.yml up --build
+# Rebuild the dashboard and sidekiq dev image
+docker compose -f docker-compose.dev.yml build dashboard sidekiq
+docker compose -f docker-compose.dev.yml up
 ```
 
 **Go module errors:**
@@ -248,5 +258,5 @@ be set via `wrangler secret put` — they are not read from `.env`.
    docker compose -f docker-compose.dev.yml up
    ```
 
-5. **Bundle cache:** The `bundle_cache` volume speeds up subsequent starts by
-   caching gems.
+5. **Dependency changes:** Rebuild the affected dev image after changing
+   `Gemfile.lock`, `go.sum`, or the dev Dockerfiles.
