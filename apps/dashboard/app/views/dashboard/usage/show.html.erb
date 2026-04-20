@@ -67,7 +67,7 @@
 </div>
 
 <!-- Summary Cards -->
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
   <!-- Total Requests -->
   <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
     <div class="flex items-center justify-between mb-4">
@@ -80,20 +80,6 @@
     </div>
     <p class="text-3xl font-bold text-gray-900 dark:text-gray-100"><%= number_with_delimiter(@total_requests) %></p>
     <p class="text-sm text-gray-600 dark:text-gray-400 mt-1"><%= t("dashboard.usage.cards.api_calls_in_period") %></p>
-  </div>
-
-  <!-- Total Requests Used -->
-  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-    <div class="flex items-center justify-between mb-4">
-      <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400"><%= t("dashboard.usage.cards.requests_used") %></h3>
-      <div class="p-2 bg-purple-100 dark:bg-purple-900 rounded-lg">
-        <svg class="h-6 w-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-        </svg>
-      </div>
-    </div>
-    <p class="text-3xl font-bold text-gray-900 dark:text-gray-100"><%= number_with_delimiter(@total_requests_used) %></p>
-    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1"><%= t("dashboard.usage.cards.counted_against_quota") %></p>
   </div>
 
   <!-- Average Response Time -->
@@ -166,65 +152,157 @@
 </div>
 
 <!-- Recent Requests Table -->
-<div class="bg-white dark:bg-gray-800 rounded-lg shadow">
-  <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
-    <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= t("dashboard.usage.table.heading") %></h2>
-    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1"><%= t("dashboard.usage.table.subheading") %></p>
-  </div>
+<%= turbo_frame_tag "recent-requests" do %>
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
+    <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between gap-4">
+      <div>
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= t("dashboard.usage.table.heading") %></h2>
+        <% if @pagy.count > 0 %>
+          <p class="text-sm text-gray-500 dark:text-gray-400 mt-0.5">
+            <%= t("dashboard.usage.table.showing_info",
+              from: @pagy.from,
+              to: @pagy.to,
+              total: number_with_delimiter(@pagy.count)) %>
+          </p>
+        <% else %>
+          <p class="text-sm text-gray-600 dark:text-gray-400 mt-1"><%= t("dashboard.usage.table.subheading") %></p>
+        <% end %>
+      </div>
+      <% if @pagy.pages > 1 %>
+        <span class="text-xs text-gray-400 dark:text-gray-500 shrink-0">
+          <%= t("dashboard.usage.table.page_of", page: @pagy.page, pages: @pagy.pages) %>
+        </span>
+      <% end %>
+    </div>
 
-  <% if @recent_requests.any? %>
-    <div class="overflow-x-auto">
-      <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-        <thead class="bg-gray-50 dark:bg-gray-700">
-          <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("dashboard.usage.table.col_time") %></th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("dashboard.usage.table.col_endpoint") %></th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("dashboard.usage.table.col_method") %></th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("dashboard.usage.table.col_status") %></th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("dashboard.usage.table.col_response") %></th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("dashboard.usage.table.col_requests") %></th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("dashboard.usage.table.col_api_key") %></th>
-          </tr>
-        </thead>
-        <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
-          <% @recent_requests.each do |log| %>
-            <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
-                <%= t("dashboard.usage.table.time_ago", time: time_ago_in_words(log.used_at)) %>
-              </td>
-              <td class="px-6 py-4 text-sm">
-                <code class="text-xs bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded"><%= log.endpoint %></code>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm">
-                <%= render "partials/shared/badge", text: log.request_method.presence || log.attributes["method"].presence || "POST", variant: "default", size: "xs" %>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm">
-                <%= render "partials/shared/badge", text: log.status_code.to_s, variant: status_code_variant(log.status_code), size: "xs" %>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
-                <%= log.response_time_ms || "—" %>ms
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
-                <%= log.credits_used || 1 %>
-              </td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
-                <%= log.api_key&.name || t("dashboard.usage.table.unknown_key") %>
-              </td>
+    <% if @recent_requests.any? %>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+          <thead class="bg-gray-50 dark:bg-gray-700 sticky top-0 z-10">
+            <tr>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("dashboard.usage.table.col_time") %></th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("dashboard.usage.table.col_endpoint") %></th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("dashboard.usage.table.col_method") %></th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("dashboard.usage.table.col_status") %></th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("dashboard.usage.table.col_response") %></th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("dashboard.usage.table.col_requests") %></th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("dashboard.usage.table.col_api_key") %></th>
             </tr>
-          <% end %>
-        </tbody>
-      </table>
-    </div>
-  <% else %>
-    <div class="px-6 py-12 text-center">
-      <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-      </svg>
-      <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100"><%= t("dashboard.usage.table.empty_heading") %></h3>
-      <p class="mt-1 text-sm text-gray-500 dark:text-gray-400"><%= t("dashboard.usage.table.empty_body") %></p>
-    </div>
-  <% end %>
-</div>
+          </thead>
+          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <% @recent_requests.each do |log| %>
+              <tr class="hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors">
+                <td class="px-4 py-3 whitespace-nowrap text-sm">
+                  <span class="text-gray-900 dark:text-gray-100 font-mono tabular-nums"
+                        title="<%= time_ago_in_words(log.used_at) %> ago">
+                    <%= log.used_at.strftime("%b %d, %H:%M:%S") %>
+                  </span>
+                </td>
+                <td class="px-4 py-3 text-sm max-w-xs">
+                  <code class="text-xs bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded break-all"><%= log.endpoint %></code>
+                </td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm">
+                  <%= render "partials/shared/badge", text: log.request_method.presence || "POST", variant: "default", size: "xs" %>
+                </td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm">
+                  <% status = log.status_code.to_i %>
+                  <% display_status = status > 0 ? status.to_s : "—" %>
+                  <% variant = status > 0 ? status_code_variant(status) : "default" %>
+                  <%= render "partials/shared/badge", text: display_status, variant: variant, size: "xs" %>
+                </td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm">
+                  <% ms = log.response_time_ms.to_i %>
+                  <span class="<%= ms > 1000 ? 'text-red-600 dark:text-red-400 font-medium' : ms > 500 ? 'text-amber-600 dark:text-amber-400' : 'text-gray-600 dark:text-gray-400' %>">
+                    <%= ms > 0 ? "#{ms}ms" : "—" %>
+                  </span>
+                </td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400 tabular-nums">
+                  <%= log.credits_used || 1 %>
+                </td>
+                <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
+                  <%= log.api_key&.name || t("dashboard.usage.table.unknown_key") %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+
+      <% if @pagy.pages > 1 %>
+        <div class="px-6 py-4 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between gap-4">
+          <div class="flex items-center gap-1">
+            <% prev_page = @pagy.page > 1 ? @pagy.page - 1 : nil %>
+            <% next_page = @pagy.page < @pagy.pages ? @pagy.page + 1 : nil %>
+            <% if prev_page %>
+              <%= link_to dashboard_usage_path(page: prev_page, range: params[:range], start_date: params[:start_date], end_date: params[:end_date]),
+                    class: "inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors",
+                    data: { turbo_frame: "recent-requests" } do %>
+                <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                <%= t("dashboard.usage.table.prev") %>
+              <% end %>
+            <% else %>
+              <span class="inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-md border border-gray-200 dark:border-gray-700 text-gray-300 dark:text-gray-600 cursor-not-allowed">
+                <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+                <%= t("dashboard.usage.table.prev") %>
+              </span>
+            <% end %>
+
+            <%# Page number pills — show at most 7 (first, last, current ±2, ellipsis) %>
+            <% pages = @pagy.pages
+               cur   = @pagy.page
+               shown = (([1, cur - 2].max..[cur + 2, pages].min).to_a)
+               shown = ([1] + shown).uniq if shown.first > 1
+               shown = (shown + [pages]).uniq if shown.last < pages %>
+            <% prev_p = nil %>
+            <% shown.each do |p| %>
+              <% if prev_p && p - prev_p > 1 %>
+                <span class="px-1 text-gray-400 dark:text-gray-500 text-sm select-none">…</span>
+              <% end %>
+              <% if p == cur %>
+                <span class="inline-flex items-center justify-center w-10 h-10 text-sm font-semibold rounded-md bg-blue-600 text-white tabular-nums"><%= p %></span>
+              <% else %>
+                <%= link_to p, dashboard_usage_path(page: p, range: params[:range], start_date: params[:start_date], end_date: params[:end_date]),
+                      class: "inline-flex items-center justify-center w-10 h-10 text-sm font-medium rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors tabular-nums",
+                      data: { turbo_frame: "recent-requests" } %>
+              <% end %>
+              <% prev_p = p %>
+            <% end %>
+
+            <% if next_page %>
+              <%= link_to dashboard_usage_path(page: next_page, range: params[:range], start_date: params[:start_date], end_date: params[:end_date]),
+                    class: "inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors",
+                    data: { turbo_frame: "recent-requests" } do %>
+                <%= t("dashboard.usage.table.next") %>
+                <svg class="h-4 w-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              <% end %>
+            <% else %>
+              <span class="inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-md border border-gray-200 dark:border-gray-700 text-gray-300 dark:text-gray-600 cursor-not-allowed">
+                <%= t("dashboard.usage.table.next") %>
+                <svg class="h-4 w-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+              </span>
+            <% end %>
+          </div>
+
+          <p class="text-xs text-gray-400 dark:text-gray-500 tabular-nums">
+            <%= t("dashboard.usage.table.showing_info",
+              from: @pagy.from,
+              to: @pagy.to,
+              total: number_with_delimiter(@pagy.count)) %>
+          </p>
+        </div>
+      <% end %>
+
+    <% else %>
+      <div class="px-6 py-12 text-center">
+        <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100"><%= t("dashboard.usage.table.empty_heading") %></h3>
+        <p class="mt-1 text-sm text-gray-500 dark:text-gray-400"><%= t("dashboard.usage.table.empty_body") %></p>
+      </div>
+    <% end %>
+  </div>
+<% end %>
 
 <!-- Load Chartkick for charts -->
 <%= javascript_include_tag "chartkick", "data-turbo-track": "reload" %>

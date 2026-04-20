@@ -283,6 +283,10 @@ en:
         col_api_key: "API Key"
         time_ago: "%{time} ago"
         unknown_key: "Unknown"
+        showing_info: "Showing %{from}–%{to} of %{total} requests"
+        page_of: "Page %{page} of %{pages}"
+        prev: "Prev"
+        next: "Next"
         empty_heading: "No usage data"
         empty_body: "No API calls found in the selected date range."
     quick_start:

@@ -283,6 +283,10 @@ es:
         col_api_key: "Clave API"
         time_ago: "hace %{time}"
         unknown_key: "Desconocida"
+        showing_info: "Mostrando %{from}–%{to} de %{total} solicitudes"
+        page_of: "Página %{page} de %{pages}"
+        prev: "Ant."
+        next: "Sig."
         empty_heading: "Sin datos de uso"
         empty_body: "No se encontraron llamadas a la API en el rango de fechas seleccionado."
     quick_start:

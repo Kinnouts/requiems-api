@@ -13,8 +13,12 @@ class Dashboard::UsageController < ApplicationController
     @avg_response_time = calculate_avg_response_time
     @error_rate = calculate_error_rate
 
-    # Recent requests (last 20 for the table)
-    @recent_requests = fetch_recent_requests(20)
+    # Paginated recent requests
+    scope = current_user.usage_logs
+      .includes(:api_key)
+      .where(used_at: @start_date..@end_date)
+      .order(used_at: :desc)
+    @pagy, @recent_requests = pagy(scope, limit: 25)
 
     # Data for charts (will be loaded via AJAX)
     # Charts will call by_endpoint, by_date, etc.
@@ -125,13 +129,6 @@ class Dashboard::UsageController < ApplicationController
     UsageLog.error_rate_for(scope)
   end
 
-  def fetch_recent_requests(limit = 20)
-    current_user.usage_logs
-      .where(used_at: @start_date..@end_date)
-      .order(used_at: :desc)
-      .limit(limit)
-  end
-
   DATE_FORMAT = /\A\d{4}-\d{2}-\d{2}\z/
 
   def parse_date_param(value)
@@ -154,8 +151,7 @@ class Dashboard::UsageController < ApplicationController
         "Status Code",
         "Response Time (ms)",
         "Requests",
-        "API Key",
-        "User Agent"
+        "API Key"
       ]
 
       # Data rows
@@ -167,8 +163,7 @@ class Dashboard::UsageController < ApplicationController
           log.status_code,
           log.response_time_ms,
           log.credits_used || 1,
-          log.api_key&.name || "Unknown",
-          log.user_agent
+          log.api_key&.name || "Unknown"
         ]
       end
     end
