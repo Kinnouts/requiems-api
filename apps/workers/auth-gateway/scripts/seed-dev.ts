@@ -44,11 +44,7 @@ function withPersist(cmd: string): string {
 }
 
 console.log("Applying D1 schema...");
-run(
-  withPersist(
-    `${WRANGLER} d1 execute requiem-usage --local --yes --file=./schema.sql`,
-  ),
-);
+run(withPersist(`${WRANGLER} d1 execute requiem-usage --local --yes --file=./schema.sql`));
 
 console.log("Applying D1 migrations...");
 run(

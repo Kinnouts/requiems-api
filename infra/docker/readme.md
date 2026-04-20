@@ -74,7 +74,7 @@ Rebuild after dependency changes or the first time you start the stack:
 ### Worker local state and migrations
 
 - Auth Gateway and API Management share the same local Wrangler persistence path
-   in Docker, so both services use the same local D1 database and KV namespace.
+  in Docker, so both services use the same local D1 database and KV namespace.
 - Auth Gateway startup seeds dev keys and applies D1 schema/migrations.
 - API Management startup also applies D1 schema before serving requests.
 

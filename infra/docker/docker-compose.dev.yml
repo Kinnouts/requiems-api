@@ -116,7 +116,7 @@ services:
       sh -c "
         pnpm install --frozen-lockfile &&
         pnpm install --frozen-lockfile --dir /workers/shared &&
-        pnpm exec wrangler d1 execute requiem-usage --local --yes --file=../auth-gateway/schema.sql --persist-to=$$WRANGLER_PERSIST_TO &&
+        pnpm exec wrangler d1 execute requiem-usage --local --yes --file=./schema.sql --persist-to=$$WRANGLER_PERSIST_TO &&
         echo API_MANAGEMENT_API_KEY=$$API_MANAGEMENT_API_KEY > .dev.vars &&
         echo SWAGGER_USERNAME=$$SWAGGER_USERNAME >> .dev.vars &&
         echo SWAGGER_PASSWORD=$$SWAGGER_PASSWORD >> .dev.vars &&
