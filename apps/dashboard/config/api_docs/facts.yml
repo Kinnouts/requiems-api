@@ -99,9 +99,9 @@ faq:
   - question: Does every fact have a source?
     answer: Yes. Every fact in the database includes source attribution from a reputable publication or institution.
 performance:
-  p50_ms: 863
-  p95_ms: 922
-  p99_ms: 962
-  avg_ms: 870
+  p50_ms: 943
+  p95_ms: 1233
+  p99_ms: 1266
+  avg_ms: 982
   samples: 50
-  measured_at: "2026-04-16"
+  measured_at: "2026-04-20"

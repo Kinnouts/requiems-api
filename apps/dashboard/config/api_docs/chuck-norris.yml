@@ -82,9 +82,9 @@ faq:
       The fact database is built into the API and may be expanded in future releases. The IDs of existing facts remain
       stable.
 performance:
-  p50_ms: 849
-  p95_ms: 940
-  p99_ms: 1031
-  avg_ms: 881
+  p50_ms: 969
+  p95_ms: 1137
+  p99_ms: 1249
+  avg_ms: 985
   samples: 50
-  measured_at: "2026-04-16"
+  measured_at: "2026-04-20"

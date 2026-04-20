@@ -119,9 +119,9 @@ faq:
   - question: Is the hexadecimal output upper or lower case?
     answer: Lower case. The API uses Go's standard strconv.FormatInt which produces lower-case hex digits (a–f).
 performance:
-  p50_ms: 865
-  p95_ms: 923
-  p99_ms: 957
-  avg_ms: 884
+  p50_ms: 775
+  p95_ms: 896
+  p99_ms: 1050
+  avg_ms: 795
   samples: 50
-  measured_at: "2026-04-16"
+  measured_at: "2026-04-20"

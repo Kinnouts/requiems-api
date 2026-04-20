@@ -80,7 +80,8 @@ class User < ApplicationRecord
   end
 
   def usage_this_month
-    usage_logs.this_month.count
+    period_start = subscription&.current_period_start || Time.current.beginning_of_month
+    usage_logs.where("used_at >= ?", period_start).count
   end
 
   def total_requests

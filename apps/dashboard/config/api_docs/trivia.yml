@@ -145,9 +145,9 @@ faq:
       No. While the options array is stable for a given question in the current dataset, the question returned is
       randomized per request.
 performance:
-  p50_ms: 855
-  p95_ms: 922
-  p99_ms: 1104
-  avg_ms: 896
+  p50_ms: 946
+  p95_ms: 1206
+  p99_ms: 1232
+  avg_ms: 989
   samples: 50
-  measured_at: "2026-04-16"
+  measured_at: "2026-04-20"

@@ -79,9 +79,9 @@ faq:
   - question: How many pieces of advice are in the database?
     answer: Our collection contains over 200 pieces of curated advice and wisdom, and we're constantly adding more.
 performance:
-  p50_ms: 873
-  p95_ms: 928
-  p99_ms: 1107
-  avg_ms: 929
+  p50_ms: 908
+  p95_ms: 1082
+  p99_ms: 1173
+  avg_ms: 968
   samples: 50
-  measured_at: "2026-04-16"
+  measured_at: "2026-04-20"

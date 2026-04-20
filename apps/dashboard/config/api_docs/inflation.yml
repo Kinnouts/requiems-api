@@ -139,9 +139,9 @@ faq:
   - question: Are the rates in percent or decimal form?
     answer: Percent. A rate of 2.9495 means 2.9495%, not 0.029495. The value is stored with 4 decimal places of precision.
 performance:
-  p50_ms: 897
-  p95_ms: 972
-  p99_ms: 980
-  avg_ms: 905
+  p50_ms: 853
+  p95_ms: 1365
+  p99_ms: 1386
+  avg_ms: 906
   samples: 50
-  measured_at: "2026-04-16"
+  measured_at: "2026-04-20"
