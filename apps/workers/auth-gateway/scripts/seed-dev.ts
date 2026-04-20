@@ -15,6 +15,7 @@ interface DevKey {
 }
 
 const WRANGLER = "pnpm exec wrangler";
+const WRANGLER_PERSIST_TO = process.env.WRANGLER_PERSIST_TO?.trim();
 
 // Keys use unique 12-char prefixes so D1 UNIQUE(key_prefix) constraint is satisfied.
 // Format: rq_{plan-abbr}_{6-digit-id}  →  prefix = first 12 chars
@@ -35,19 +36,32 @@ function run(cmd: string): void {
   execSync(cmd, { stdio: "inherit" });
 }
 
+function withPersist(cmd: string): string {
+  if (!WRANGLER_PERSIST_TO) {
+    return cmd;
+  }
+  return `${cmd} --persist-to=${WRANGLER_PERSIST_TO}`;
+}
+
 console.log("Applying D1 schema...");
-run(`${WRANGLER} d1 execute requiem-usage --local --yes --file=./schema.sql`);
+run(
+  withPersist(
+    `${WRANGLER} d1 execute requiem-usage --local --yes --file=./schema.sql`,
+  ),
+);
 
 console.log("Applying D1 migrations...");
 run(
-  `${WRANGLER} d1 execute requiem-usage --local --yes --file=./migrations/001_remove_credit_usage_unique_constraint.sql`,
+  withPersist(
+    `${WRANGLER} d1 execute requiem-usage --local --yes --file=./migrations/001_remove_credit_usage_unique_constraint.sql`,
+  ),
 );
 
 console.log("\nSeeding KV with dev test keys...");
 for (const { apiKey, userId, plan } of DEV_KEYS) {
   const kvKey = `key:${apiKey}`;
   const value = JSON.stringify({ userId, plan, createdAt: CREATED_AT });
-  run(`${WRANGLER} kv key put '${kvKey}' '${value}' --binding=KV --local`);
+  run(withPersist(`${WRANGLER} kv key put '${kvKey}' '${value}' --binding=KV --local`));
 }
 
 console.log("\nSeeding D1 api_keys with dev test keys...");
@@ -56,7 +70,7 @@ for (const { apiKey, userId, plan } of DEV_KEYS) {
   const sql =
     `INSERT OR REPLACE INTO api_keys (key_prefix, user_id, plan, active, created_at, billing_cycle_start)` +
     ` VALUES ('${keyPrefix}', '${userId}', '${plan}', 1, '${CREATED_AT}', '${CREATED_AT}')`;
-  run(`${WRANGLER} d1 execute requiem-usage --local --yes --command="${sql}"`);
+  run(withPersist(`${WRANGLER} d1 execute requiem-usage --local --yes --command="${sql}"`));
 }
 
 console.log("\nDev test keys seeded (header: requiems-api-key):");

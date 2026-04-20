@@ -78,17 +78,20 @@ services:
     tty: true
 
   auth-gateway:
-    image: node:24-slim
+    build:
+      context: ../../apps/workers/auth-gateway
+      dockerfile: ../../../infra/docker/auth-gateway.dev.Dockerfile
     working_dir: /workers/auth-gateway
     command: >
       sh -c "
-        corepack enable pnpm &&
         pnpm install --frozen-lockfile &&
         echo BACKEND_URL=$$BACKEND_URL > .dev.vars &&
         echo BACKEND_SECRET=$$BACKEND_SECRET >> .dev.vars &&
         node ./scripts/seed-dev.ts &&
-        pnpm exec wrangler dev --ip 0.0.0.0 --port 4455
+        pnpm exec wrangler dev --ip 0.0.0.0 --port 4455 --persist-to=$$WRANGLER_PERSIST_TO
       "
+    environment:
+      - WRANGLER_PERSIST_TO=/workers/.wrangler/state
     env_file:
       - .env.example
       - path: .env.local
@@ -97,7 +100,7 @@ services:
       - ../../apps/workers/auth-gateway:/workers/auth-gateway
       - ../../apps/workers/shared:/workers/shared
       - auth_gateway_modules:/workers/auth-gateway/node_modules
-      - wrangler_state:/workers/auth-gateway/.wrangler
+      - wrangler_state:/workers/.wrangler
     ports:
       - "4455:4455"
     depends_on:
@@ -105,18 +108,22 @@ services:
         condition: service_started
 
   api-management:
-    image: node:24-slim
+    build:
+      context: ../../apps/workers/api-management
+      dockerfile: ../../../infra/docker/api-management.dev.Dockerfile
     working_dir: /workers/api-management
     command: >
       sh -c "
-        corepack enable pnpm &&
         pnpm install --frozen-lockfile &&
         pnpm install --frozen-lockfile --dir /workers/shared &&
+        pnpm exec wrangler d1 execute requiem-usage --local --yes --file=../auth-gateway/schema.sql --persist-to=$$WRANGLER_PERSIST_TO &&
         echo API_MANAGEMENT_API_KEY=$$API_MANAGEMENT_API_KEY > .dev.vars &&
         echo SWAGGER_USERNAME=$$SWAGGER_USERNAME >> .dev.vars &&
         echo SWAGGER_PASSWORD=$$SWAGGER_PASSWORD >> .dev.vars &&
-        pnpm exec wrangler dev --ip 0.0.0.0 --port 5544
+        pnpm exec wrangler dev --ip 0.0.0.0 --port 5544 --persist-to=$$WRANGLER_PERSIST_TO
       "
+    environment:
+      - WRANGLER_PERSIST_TO=/workers/.wrangler/state
     env_file:
       - .env.example
       - path: .env.local
@@ -126,7 +133,7 @@ services:
       - ../../apps/workers/shared:/workers/shared
       - api_management_modules:/workers/api-management/node_modules
       - shared_modules:/workers/shared/node_modules
-      - wrangler_state:/workers/api-management/.wrangler
+      - wrangler_state:/workers/.wrangler
     ports:
       - "5544:5544"
     depends_on:

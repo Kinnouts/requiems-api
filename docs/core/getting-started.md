@@ -84,6 +84,10 @@ Seeded dev API keys (available automatically after stack starts):
 | `rq_bizz_000001` | business     |
 | `rq_prof_000001` | professional |
 
+Auth Gateway and API Management share the same local Wrangler persistence state
+in Docker, so they operate on the same local D1 and KV resources (matching
+production architecture expectations).
+
 > **Tip:** You can also hit the Go backend directly on port 8080 without auth,
 > useful for quick endpoint testing without going through the gateway.
 
@@ -93,9 +97,18 @@ Rebuild the dev images after changing dependency manifests:
 
 - Go API: `apps/api/go.mod` or `apps/api/go.sum`
 - Rails Dashboard: `apps/dashboard/Gemfile` or `apps/dashboard/Gemfile.lock`
+- Workers: `apps/workers/*/wrangler.toml` or `infra/docker/*worker*.dev.Dockerfile`
 
 ```bash
 cd infra/docker
+docker compose -f docker-compose.dev.yml up --build
+```
+
+If local usage export fails with D1 schema errors, reset volumes and rebuild:
+
+```bash
+cd infra/docker
+docker compose -f docker-compose.dev.yml down -v
 docker compose -f docker-compose.dev.yml up --build
 ```
 

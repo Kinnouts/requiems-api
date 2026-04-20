@@ -36,11 +36,13 @@ docker compose -f docker-compose.dev.yml up --build
 - Public-facing API entry point
 - Validates API keys, enforces rate limits, proxies to Go backend
 - Seeded with dev API keys automatically on start
+- Applies local D1 schema/migrations on start for dev
 - Access: http://localhost:4455/healthz
 
 ✅ **API Management** (Cloudflare Worker via Wrangler) on port **5544**
 
 - Internal service for API key CRUD, usage exports, analytics
+- Uses the same local Wrangler state as Auth Gateway (shared D1 + KV in dev)
 - Swagger docs at http://localhost:5544/docs (user: `local`, pass: `password`)
 - Access: http://localhost:5544/healthz
 
@@ -52,7 +54,7 @@ docker compose -f docker-compose.dev.yml up --build
 
 The dev images will automatically:
 
-1. Build the local Go and Rails development images
+1. Build the local Go, Rails, and Worker development images
 2. Install dependencies (Go modules, Ruby gems) during image build
 3. Start all services
 
@@ -66,6 +68,22 @@ Rebuild after dependency changes or the first time you start the stack:
 1. `apps/api/go.mod` or `apps/api/go.sum`
 2. `apps/dashboard/Gemfile` or `apps/dashboard/Gemfile.lock`
 3. `infra/docker/api.dev.Dockerfile` or `infra/docker/dashboard.dev.Dockerfile`
+4. `apps/workers/auth-gateway/wrangler.toml` or `apps/workers/api-management/wrangler.toml`
+5. `infra/docker/auth-gateway.dev.Dockerfile` or `infra/docker/api-management.dev.Dockerfile`
+
+### Worker local state and migrations
+
+- Auth Gateway and API Management share the same local Wrangler persistence path
+   in Docker, so both services use the same local D1 database and KV namespace.
+- Auth Gateway startup seeds dev keys and applies D1 schema/migrations.
+- API Management startup also applies D1 schema before serving requests.
+
+If local D1 schema drifts, reset Docker volumes and rebuild:
+
+```bash
+docker compose -f docker-compose.dev.yml down -v
+docker compose -f docker-compose.dev.yml up --build
+```
 
 ### Development Workflow:
 
