@@ -30,9 +30,11 @@ class D1SyncService
     all_records = []
     cursor = nil
     has_more = true
+    page_count = 0
 
     while has_more
       response = fetch_page(since: since_iso, limit: limit, cursor: cursor)
+      page_count += 1
 
       all_records.concat(response[:usage])
 
@@ -42,6 +44,8 @@ class D1SyncService
       # Safety: stop after 100 pages (100k records max per call)
       break if all_records.size >= 100_000
     end
+
+    Rails.logger.info("D1SyncService: fetched #{all_records.size} records (#{page_count} page(s)) since=#{since_iso}")
 
     {
       usage: all_records,
@@ -75,15 +79,14 @@ class D1SyncService
       status_code = record[:status_code].presence&.to_i
       response_time_ms = record[:response_time_ms].presence&.to_i
 
-      # Log when fields are missing for observability
       if record[:request_method].blank?
-        Rails.logger.debug("D1SyncService: request_method missing for record", endpoint: record[:endpoint], api_key: record[:api_key][0...12])
+        Rails.logger.debug { "D1SyncService: request_method missing (endpoint=#{record[:endpoint]} key=#{record[:api_key][0...12]})" }
       end
       if record[:status_code].blank?
-        Rails.logger.debug("D1SyncService: status_code missing for record", endpoint: record[:endpoint], api_key: record[:api_key][0...12])
+        Rails.logger.debug { "D1SyncService: status_code missing (endpoint=#{record[:endpoint]} key=#{record[:api_key][0...12]})" }
       end
       if record[:response_time_ms].blank?
-        Rails.logger.debug("D1SyncService: response_time_ms missing for record", endpoint: record[:endpoint], api_key: record[:api_key][0...12])
+        Rails.logger.debug { "D1SyncService: response_time_ms missing (endpoint=#{record[:endpoint]} key=#{record[:api_key][0...12]})" }
       end
 
       {
@@ -100,6 +103,9 @@ class D1SyncService
         updated_at: Time.current
       }
     end
+
+    skipped = records.size - values.size
+    Rails.logger.info("D1SyncService: bulk_insert records=#{records.size} inserting=#{values.size} skipped=#{skipped}")
 
     return 0 if values.empty?
 
@@ -119,6 +125,8 @@ class D1SyncService
       limit: limit
     }
     params[:cursor] = cursor if cursor
+
+    Rails.logger.debug { "D1SyncService: GET #{url} since=#{since} limit=#{limit} cursor=#{cursor.inspect}" }
 
     response = connection.get(url, params)
 
