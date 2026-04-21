@@ -24,7 +24,7 @@ func TestColor_HappyPath_HexToRGB(t *testing.T) {
 	req := httptest.NewRequest(
 		http.MethodGet,
 		"/color?from=hex&to=rgb&value=%23ffffff",
-		nil,
+		http.NoBody,
 	)
 
 	w := httptest.NewRecorder()
@@ -58,7 +58,7 @@ func TestColor_MissingParam(t *testing.T) {
 	req := httptest.NewRequest(
 		http.MethodGet,
 		"/color?from=hex&to=rgb",
-		nil,
+		http.NoBody,
 	)
 
 	w := httptest.NewRecorder()
@@ -75,7 +75,7 @@ func TestColor_InvalidValue(t *testing.T) {
 	req := httptest.NewRequest(
 		http.MethodGet,
 		"/color?from=hex&to=rgb&value=invalid",
-		nil,
+		http.NoBody,
 	)
 
 	w := httptest.NewRecorder()
@@ -92,7 +92,7 @@ func TestColor_ServiceError(t *testing.T) {
 	req := httptest.NewRequest(
 		http.MethodGet,
 		"/color?from=hex&to=rgb&value=notahex",
-		nil,
+		http.NoBody,
 	)
 
 	w := httptest.NewRecorder()
