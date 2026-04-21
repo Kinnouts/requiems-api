@@ -1,4 +1,4 @@
-package color
+package color_test
 
 import (
 	"encoding/json"
@@ -10,11 +10,12 @@ import (
 	"github.com/go-chi/chi/v5"
 
 	"requiems-api/platform/httpx"
+	"requiems-api/services/technology/color"
 )
 
 func setupRouter() chi.Router {
 	r := chi.NewRouter()
-	RegisterRoutes(r, NewService())
+	color.RegisterRoutes(r, color.NewService())
 	return r
 }
 
@@ -38,7 +39,7 @@ func TestColor_HappyPath_HexToRGB(t *testing.T) {
 		t.Fatalf("expected application/json, got %s", ct)
 	}
 
-	var res httpx.Response[Response]
+	var res httpx.Response[color.Response]
 	if err := json.NewDecoder(w.Body).Decode(&res); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
