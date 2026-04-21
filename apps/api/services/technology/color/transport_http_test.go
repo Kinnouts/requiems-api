@@ -65,7 +65,7 @@ func TestColor_MissingParam(t *testing.T) {
 	r.ServeHTTP(w, req)
 
 	if w.Code != http.StatusBadRequest {
-		t.Fatalf("expected 400, got %d: %s", w.Code, w.Body.String()) //Si falta un parámetro obligatorio, la API debe rechazar la request
+		t.Fatalf("expected 400, got %d: %s", w.Code, w.Body.String())
 	}
 }
 
