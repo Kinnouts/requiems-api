@@ -29,7 +29,7 @@ func TestColor_HappyPath_HexToRGB(t *testing.T) {
 	r.ServeHTTP(w, req)
 
 	if w.Code != http.StatusOK {
-		t.Fatalf("expected status 200, got %d: %s", w.Code)
+		t.Fatalf("expected status 200, got %d: %s", w.Code, w.Body.String())
 	}
 
 	if ct := w.Header().Get("Content-Type"); !strings.Contains(ct, "application/json") {
@@ -42,7 +42,7 @@ func TestColor_HappyPath_HexToRGB(t *testing.T) {
 	}
 
 	if res.Input != "#ffffff" {
-		t.Errorf("expected inpu1t #ffffff, got %s", res.Input)
+		t.Errorf("expected input #ffffff, got %s", res.Input)
 	}
 
 	if !strings.Contains(res.Result, "rgb") {
@@ -63,7 +63,7 @@ func TestColor_MissingParam(t *testing.T) {
 	r.ServeHTTP(w, req)
 
 	if w.Code != http.StatusBadRequest {
-		t.Fatalf("expected 400, got %d: %s", w.Code) //Si falta un parámetro obligatorio, la API debe rechazar la request
+		t.Fatalf("expected 400, got %d: %s", w.Code, w.Body.String()) //Si falta un parámetro obligatorio, la API debe rechazar la request
 	}
 }
 
@@ -80,7 +80,7 @@ func TestColor_InvalidValue(t *testing.T) {
 	r.ServeHTTP(w, req)
 
 	if w.Code != http.StatusUnprocessableEntity {
-		t.Fatalf("expected 422, got %d: %s", w.Code)
+		t.Fatalf("expected 422, got %d: %s", w.Code, w.Body.String())
 	}
 }
 
@@ -98,7 +98,7 @@ func TestColor_ServiceError(t *testing.T) {
 
 	if w.Code != http.StatusUnprocessableEntity &&
 		w.Code != http.StatusInternalServerError {
-		t.Fatalf("expected error status, got %d: %s", w.Code)
+		t.Fatalf("expected error status, got %d: %s", w.Code, w.Body.String())
 	}
 
 	ct := w.Header().Get("Content-Type")
