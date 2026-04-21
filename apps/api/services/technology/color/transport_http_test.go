@@ -8,6 +8,8 @@ import (
 	"testing"
 
 	"github.com/go-chi/chi/v5"
+
+	"requiems-api/platform/httpx"
 )
 
 func setupRouter() chi.Router {
@@ -36,17 +38,17 @@ func TestColor_HappyPath_HexToRGB(t *testing.T) {
 		t.Fatalf("expected application/json, got %s", ct)
 	}
 
-	var res Response
+	var res httpx.Response[Response]
 	if err := json.NewDecoder(w.Body).Decode(&res); err != nil {
 		t.Fatalf("failed to decode response: %v", err)
 	}
 
-	if res.Input != "#ffffff" {
-		t.Errorf("expected input #ffffff, got %s", res.Input)
+	if res.Data.Input != "#ffffff" {
+		t.Errorf("expected input #ffffff, got %s", res.Data.Input)
 	}
 
-	if !strings.Contains(res.Result, "rgb") {
-		t.Errorf("expected RGB result, got %s", res.Result)
+	if !strings.Contains(res.Data.Result, "rgb") {
+		t.Errorf("expected RGB result, got %s", res.Data.Result)
 	}
 }
 
@@ -89,20 +91,28 @@ func TestColor_ServiceError(t *testing.T) {
 
 	req := httptest.NewRequest(
 		http.MethodGet,
-		"/color?from=hex&to=rgb&value=%ZZZZZZ",
+		"/color?from=hex&to=rgb&value=notahex",
 		nil,
 	)
 
 	w := httptest.NewRecorder()
 	r.ServeHTTP(w, req)
 
-	if w.Code != http.StatusUnprocessableEntity &&
-		w.Code != http.StatusInternalServerError {
+	if w.Code != http.StatusUnprocessableEntity {
 		t.Fatalf("expected error status, got %d: %s", w.Code, w.Body.String())
 	}
 
 	ct := w.Header().Get("Content-Type")
 	if !strings.Contains(ct, "application/json") {
 		t.Fatalf("expected application/json, got %s", ct)
+	}
+
+	var resp httpx.ErrorResponse
+	if err := json.NewDecoder(w.Body).Decode(&resp); err != nil {
+		t.Fatalf("failed to decode error response: %v", err)
+	}
+
+	if resp.Error != "invalid_color" {
+		t.Fatalf("expected error code invalid_color, got %q", resp.Error)
 	}
 }
