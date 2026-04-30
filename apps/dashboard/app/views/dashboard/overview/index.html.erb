@@ -1,0 +1,233 @@
+<% content_for :title, t("dashboard.overview.title") %>
+
+<!-- Welcome Banner -->
+<div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg shadow-lg p-8 text-white mb-8">
+  <h1 class="text-3xl font-bold mb-2">
+    <%= t("dashboard.overview.welcome", name: current_user.display_name) %>
+  </h1>
+  <p class="text-blue-100">
+    <%= t("dashboard.overview.subtitle", date: l(Date.current, format: :month_year)) %>
+  </p>
+</div>
+
+<!-- Quick Stats Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+  <!-- Current Plan Usage -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400"><%= t("dashboard.overview.current_usage") %></h3>
+      <%= render "partials/shared/badge", text: t("dashboard.plans.#{@current_plan}"), variant: @current_plan == "free" ? "default" : "primary", size: "xs" %>
+    </div>
+
+    <div class="mb-2">
+      <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 tabular-nums leading-tight" title="<%= number_with_delimiter(@usage_this_month) %>">
+        <%= compact_number(@usage_this_month) %>
+      </p>
+      <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+        <%= t("dashboard.overview.of_requests", limit: compact_number(@plan_limit)) %>
+      </p>
+    </div>
+
+    <!-- Usage Progress Bar -->
+    <div class="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mt-3">
+      <div class="<%= @bar_color %> h-2 rounded-full transition-all" style="width: <%= @usage_percentage %>%"></div>
+    </div>
+    <p class="text-xs text-gray-500 dark:text-gray-400 mt-2"><%= t("dashboard.overview.used_this_month", percent: @usage_percentage) %></p>
+  </div>
+
+  <!-- Monthly Quota -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400"><%= t("dashboard.overview.monthly_quota") %></h3>
+      <div class="p-2 bg-green-100 dark:bg-green-900 rounded-lg">
+        <svg class="h-6 w-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"/>
+        </svg>
+      </div>
+    </div>
+
+    <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 tabular-nums leading-tight" title="<%= number_with_delimiter(@plan_limit) %>">
+      <%= compact_number(@plan_limit) %>
+    </p>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1"><%= t("dashboard.overview.resets_monthly") %></p>
+  </div>
+
+  <!-- Requests Remaining -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <div class="flex items-center justify-between mb-4">
+      <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400"><%= t("dashboard.overview.requests_remaining") %></h3>
+      <div class="p-2 bg-blue-100 dark:bg-blue-900 rounded-lg">
+        <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+    </div>
+
+    <p class="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-gray-100 tabular-nums leading-tight" title="<%= number_with_delimiter(@requests_remaining) %>">
+      <%= number_with_delimiter(@requests_remaining) %>
+    </p>
+    <p class="text-sm text-gray-600 dark:text-gray-400 mt-1">
+      <% if @requests_remaining < 100 %>
+        <span class="text-red-600 font-medium"><%= t("dashboard.overview.running_low") %></span>
+      <% else %>
+        <%= t("dashboard.overview.available_month") %>
+      <% end %>
+    </p>
+  </div>
+
+</div>
+
+<!-- Recent Activity & Quick Actions Row -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+  <!-- Recent API Activity (Takes 2 columns) -->
+  <div class="lg:col-span-2">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow">
+      <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 flex items-center justify-between">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= t("dashboard.overview.recent_activity") %></h2>
+        <%= link_to dashboard_usage_path, class: "text-sm font-medium text-blue-600 hover:text-blue-700" do %>
+          <%= t("dashboard.overview.view_all") %>
+          <svg class="inline h-4 w-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+          </svg>
+        <% end %>
+      </div>
+
+      <div class="max-h-[24rem] overflow-y-auto overflow-x-auto">
+        <% if @recent_activity.any? %>
+          <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <thead class="bg-gray-50 dark:bg-gray-700">
+              <tr>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("dashboard.overview.time_col") %></th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("dashboard.overview.endpoint_col") %></th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("dashboard.overview.status_col") %></th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("dashboard.overview.response_col") %></th>
+                <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider"><%= t("dashboard.overview.requests_col") %></th>
+              </tr>
+            </thead>
+            <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              <% @recent_activity.each do |log| %>
+                <tr class="hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                    <%= t("dashboard.overview.time_ago", time: time_ago_in_words(log.used_at)) %>
+                  </td>
+                  <td class="px-4 py-3 text-sm text-gray-900 dark:text-gray-100 max-w-[16rem]">
+                    <code class="inline-block max-w-full truncate align-middle text-xs bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded" title="<%= log.endpoint %>"><%= log.endpoint %></code>
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm">
+                    <%
+                      status_color = if log.status_code.to_s.start_with?("2")
+                        "success"
+                      elsif log.status_code.to_s.start_with?("4")
+                        "warning"
+                      else
+                        "danger"
+                      end
+                    %>
+                    <%= render "partials/shared/badge", text: log.status_code.to_s, variant: status_color, size: "xs" %>
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                    <%= log.response_time_ms || "—" %>ms
+                  </td>
+                  <td class="px-4 py-3 whitespace-nowrap text-sm text-gray-600 dark:text-gray-400">
+                    <%= log.credits_used || 1 %>
+                  </td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <% else %>
+          <div class="px-6 py-12 text-center">
+            <svg class="mx-auto h-12 w-12 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+            <h3 class="mt-2 text-sm font-medium text-gray-900 dark:text-gray-100"><%= t("dashboard.overview.no_activity") %></h3>
+            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400"><%= t("dashboard.overview.no_activity_desc") %></p>
+            <div class="mt-6">
+              <%= link_to apis_path, class: "inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors" do %>
+                <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                <%= t("dashboard.overview.browse_docs") %>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Sidebar Widgets (1 column) -->
+  <div class="space-y-6">
+    <!-- API Keys Quick View -->
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="font-semibold text-gray-900 dark:text-gray-100"><%= t("dashboard.overview.api_keys") %></h3>
+        <%= link_to dashboard_api_keys_path, class: "text-sm text-blue-600 hover:text-blue-700 font-medium" do %>
+          <%= t("dashboard.overview.manage") %>
+        <% end %>
+      </div>
+
+      <div class="flex items-center">
+        <div class="flex-shrink-0">
+          <div class="h-12 w-12 rounded-full bg-blue-100 dark:bg-blue-900 flex items-center justify-center">
+            <svg class="h-6 w-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+            </svg>
+          </div>
+        </div>
+        <div class="ml-4">
+          <p class="text-2xl font-bold text-gray-900 dark:text-gray-100"><%= @api_keys_count %></p>
+          <p class="text-sm text-gray-600 dark:text-gray-400"><%= t("dashboard.overview.active_key", count: @api_keys_count) %></p>
+        </div>
+      </div>
+
+      <%= link_to new_dashboard_api_key_path, class: "mt-4 block w-full text-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors" do %>
+        <svg class="inline h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/>
+        </svg>
+        <%= t("dashboard.overview.create_key") %>
+      <% end %>
+    </div>
+
+    <!-- Billing Status -->
+    <% if current_user.subscription %>
+      <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="font-semibold text-gray-900 dark:text-gray-100"><%= t("dashboard.overview.billing") %></h3>
+          <%= link_to dashboard_billing_path, class: "text-sm text-blue-600 hover:text-blue-700 font-medium" do %>
+            <%= t("dashboard.overview.manage") %>
+          <% end %>
+        </div>
+
+        <div class="space-y-3">
+          <div>
+            <p class="text-sm text-gray-600 dark:text-gray-300"><%= t("dashboard.overview.current_plan") %></p>
+            <p class="text-lg font-semibold text-gray-900 dark:text-gray-100"><%= t("dashboard.plans.#{@current_plan}") %></p>
+          </div>
+
+          <% if @next_billing_date %>
+            <div>
+              <p class="text-sm text-gray-600 dark:text-gray-300"><%= t("dashboard.overview.next_billing") %></p>
+              <p class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= l(@next_billing_date, format: :long) %></p>
+            </div>
+          <% end %>
+        </div>
+
+        <%= link_to dashboard_billing_path, class: "mt-4 block w-full text-center px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 text-sm font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" do %>
+          <%= t("dashboard.overview.view_details") %>
+        <% end %>
+      </div>
+    <% else %>
+      <!-- Upgrade CTA -->
+      <div class="bg-gradient-to-br from-blue-600 to-indigo-600 rounded-lg shadow p-6 text-white">
+        <h3 class="font-semibold mb-2"><%= t("dashboard.overview.upgrade_heading") %></h3>
+        <p class="text-sm text-blue-100 mb-4">
+          <%= t("dashboard.overview.upgrade_desc") %>
+        </p>
+        <%= link_to pricing_path, class: "block w-full text-center px-4 py-2 bg-white text-blue-600 text-sm font-medium rounded-lg hover:bg-blue-50 transition-colors" do %>
+          <%= t("dashboard.overview.view_pricing") %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

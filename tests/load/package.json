@@ -1,0 +1,9 @@
+{
+  "name": "requiems-load-tests",
+  "private": true,
+  "description": "k6 load testing suite for Requiems API",
+  "devDependencies": {
+    "@types/k6": "^1.7.0",
+    "typescript": "^6.0.2"
+  }
+}

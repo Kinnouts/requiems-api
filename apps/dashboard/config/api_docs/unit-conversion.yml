@@ -1,0 +1,319 @@
+api_id: unit-conversion
+api_name: Unit Conversion
+description: >-
+  Convert between units of measurement and discover available conversion types. Supports length, weight, volume,
+  temperature, area, and speed conversions.
+base_url: https://api.requiems.xyz
+overview:
+  use_cases:
+    - Scientific and engineering calculations
+    - Travel and distance planning
+    - Recipe scaling and cooking conversions
+    - Fitness and health tracking
+    - Educational tools
+    - Build unit selection dropdowns in UIs
+  features:
+    - Length, weight, volume, temperature, area, and speed conversions
+    - 39 supported units across 6 categories
+    - Human-readable formula in every response
+    - Results rounded to 6 decimal places
+    - Fast, no-database lookups
+    - Endpoint to discover all available units
+endpoints:
+  - name: Convert Units
+    method: GET
+    path: /v1/technology/convert
+    description: Convert a value from one unit to another
+    parameters:
+      - name: from
+        type: string
+        required: true
+        location: query
+        description: Source unit key (e.g. miles, kg, c)
+        example: miles
+      - name: to
+        type: string
+        required: true
+        location: query
+        description: Target unit key (e.g. km, lb, f)
+        example: km
+      - name: value
+        type: number
+        required: true
+        location: query
+        description: Numeric value to convert
+        example: 10
+    response_example: |
+      {
+        "data": {
+          "from": "miles",
+          "to": "km",
+          "input": 10,
+          "result": 16.09344,
+          "formula": "miles × 1.609344"
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+    response_fields:
+      - name: from
+        type: string
+        description: Source unit key
+      - name: to
+        type: string
+        description: Target unit key
+      - name: input
+        type: number
+        description: The original input value
+      - name: result
+        type: number
+        description: The converted value (rounded to 6 decimal places)
+      - name: formula
+        type: string
+        description: Human-readable conversion formula
+    code_examples:
+      curl: |
+        curl "https://api.requiems.xyz/v1/technology/convert?from=miles&to=km&value=10" \
+          -H "requiems-api-key: YOUR_API_KEY"
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/technology/convert"
+        params = {"from": "miles", "to": "km", "value": 10}
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+
+        response = requests.get(url, params=params, headers=headers)
+        print(response.json())
+      javascript: |
+        const params = new URLSearchParams({ from: 'miles', to: 'km', value: 10 });
+        const response = await fetch(`https://api.requiems.xyz/v1/technology/convert?${params}`, {
+          headers: {
+            'requiems-api-key': 'YOUR_API_KEY'
+          }
+        });
+
+        const { data } = await response.json();
+        console.log(data.result); // 16.09344
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/technology/convert')
+        uri.query = URI.encode_www_form(from: 'miles', to: 'km', value: 10)
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        data = JSON.parse(response.body)['data']
+        puts data['result'] # 16.09344
+  - name: List Available Units
+    method: GET
+    path: /v1/technology/convert/units
+    description: Returns all available unit conversion types grouped by measurement category
+    parameters: []
+    response_example: |
+      {
+        "data": {
+          "length": ["cm", "ft", "in", "km", "m", "miles", "mm", "nmi", "yd"],
+          "weight": ["g", "kg", "lb", "mg", "oz", "stone", "t"],
+          "volume": ["cup", "fl_oz", "gal", "l", "ml", "pt", "qt", "tbsp", "tsp"],
+          "temperature": ["c", "f", "k"],
+          "area": ["acre", "cm2", "ft2", "ha", "in2", "km2", "m2", "mm2", "yd2"],
+          "speed": ["km_h", "knots", "m_s", "mph"]
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+    response_fields:
+      - name: length
+        type: array
+        description: >-
+          Available length units: millimeter (mm), centimeter (cm), meter (m), kilometer (km), inch (in), foot (ft),
+          yard (yd), mile (miles), nautical mile (nmi)
+      - name: weight
+        type: array
+        description: >-
+          Available weight units: milligram (mg), gram (g), kilogram (kg), metric ton (t), ounce (oz), pound (lb), stone
+          (stone)
+      - name: volume
+        type: array
+        description: >-
+          Available volume units: milliliter (ml), liter (l), teaspoon (tsp), tablespoon (tbsp), fluid ounce (fl_oz),
+          cup (cup), pint (pt), quart (qt), gallon (gal)
+      - name: temperature
+        type: array
+        description: "Available temperature units: celsius (c), fahrenheit (f), kelvin (k)"
+      - name: area
+        type: array
+        description: >-
+          Available area units: square millimeter (mm2), square centimeter (cm2), square meter (m2), square kilometer
+          (km2), square inch (in2), square foot (ft2), square yard (yd2), acre (acre), hectare (ha)
+      - name: speed
+        type: array
+        description: >-
+          Available speed units: meters per second (m_s), kilometers per hour (km_h), miles per hour (mph), knots
+          (knots)
+    code_examples:
+      curl: |
+        curl https://api.requiems.xyz/v1/technology/convert/units \
+          -H "requiems-api-key: YOUR_API_KEY"
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/technology/convert/units"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+
+        response = requests.get(url, headers=headers)
+        units = response.json()['data']
+
+        # Print all length units
+        print("Length units:", units['length'])
+      javascript: |
+        const response = await fetch('https://api.requiems.xyz/v1/technology/convert/units', {
+          headers: {
+            'requiems-api-key': 'YOUR_API_KEY'
+          }
+        });
+
+        const { data } = await response.json();
+
+        // Build a dropdown with length units
+        data.length.forEach(unit => {
+          console.log(`<option value="${unit}">${unit}</option>`);
+        });
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/technology/convert/units')
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        units = JSON.parse(response.body)['data']
+        puts "Temperature units: #{units['temperature'].join(', ')}"
+supported_units:
+  length:
+    - key: mm
+      name: Millimeter
+    - key: cm
+      name: Centimeter
+    - key: m
+      name: Meter
+    - key: km
+      name: Kilometer
+    - key: in
+      name: Inch
+    - key: ft
+      name: Foot
+    - key: yd
+      name: Yard
+    - key: miles
+      name: Mile
+    - key: nmi
+      name: Nautical Mile
+  weight:
+    - key: mg
+      name: Milligram
+    - key: g
+      name: Gram
+    - key: kg
+      name: Kilogram
+    - key: t
+      name: Metric Ton
+    - key: oz
+      name: Ounce
+    - key: lb
+      name: Pound
+    - key: stone
+      name: Stone
+  volume:
+    - key: ml
+      name: Milliliter
+    - key: l
+      name: Liter
+    - key: tsp
+      name: Teaspoon
+    - key: tbsp
+      name: Tablespoon
+    - key: fl_oz
+      name: Fluid Ounce
+    - key: cup
+      name: Cup
+    - key: pt
+      name: Pint
+    - key: qt
+      name: Quart
+    - key: gal
+      name: Gallon
+  temperature:
+    - key: c
+      name: Celsius
+    - key: f
+      name: Fahrenheit
+    - key: k
+      name: Kelvin
+  area:
+    - key: mm2
+      name: Square Millimeter
+    - key: cm2
+      name: Square Centimeter
+    - key: m2
+      name: Square Meter
+    - key: km2
+      name: Square Kilometer
+    - key: in2
+      name: Square Inch
+    - key: ft2
+      name: Square Foot
+    - key: yd2
+      name: Square Yard
+    - key: acre
+      name: Acre
+    - key: ha
+      name: Hectare
+  speed:
+    - key: m_s
+      name: Meters per Second
+    - key: km_h
+      name: Kilometers per Hour
+    - key: mph
+      name: Miles per Hour
+    - key: knots
+      name: Knots
+faq:
+  - question: What unit categories are supported?
+    answer: >-
+      Length, weight, volume, temperature, area, and speed. You cannot convert between different categories (e.g. miles
+      to kg will return a 400 error).
+  - question: How precise are the results?
+    answer: Results are rounded to 6 decimal places. The formula field shows the exact conversion factor used.
+  - question: Are the unit keys case-sensitive?
+    answer: Yes. Unit keys must be lowercase exactly as shown in the supported units table (e.g. use "km" not "KM").
+  - question: Do I need to call the units list endpoint every time I convert?
+    answer: >-
+      No. Call the /v1/technology/convert/units endpoint once to discover available units, then cache the response. The
+      list of available units changes very infrequently.
+  - question: Can I convert between different categories (e.g., length to weight)?
+    answer: >-
+      No. You can only convert between units within the same category. For example, you can convert meters to feet (both
+      length), but not meters to kilograms. The API will return a 400 error for incompatible units.
+  - question: Will new units be added in the future?
+    answer: >-
+      Yes, we periodically add new units based on user requests. If you need a specific unit that's not currently
+      available, please contact support@requiems.xyz.
+performance:
+  p50_ms: 820
+  p95_ms: 861
+  p99_ms: 861
+  avg_ms: 1060
+  samples: 8
+  measured_at: "2026-04-20"

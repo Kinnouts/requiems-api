@@ -1,0 +1,111 @@
+<% content_for :title, t("home.terms.title") %>
+
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 md:p-12">
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6"><%= t("home.terms.heading") %></h1>
+
+      <p class="text-sm text-gray-600 dark:text-gray-400 mb-8">
+        <%= t("home.terms.last_updated", date: l(Rails.application.config.x.legal_effective_date, format: :long)) %>
+      </p>
+
+      <div class="prose prose-lg max-w-none">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.acceptance.heading") %></h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          <%= t("home.terms.acceptance.text") %>
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.api_access.heading") %></h2>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.terms.api_access.keys.heading") %></h3>
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          <%= t("home.terms.api_access.keys.text") %>
+        </p>
+
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.terms.api_access.rate_limits.heading") %></h3>
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          <%= t("home.terms.api_access.rate_limits.text") %>
+        </p>
+
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.terms.api_access.acceptable_use.heading") %></h3>
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          <%= t("home.terms.api_access.acceptable_use.intro") %>
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-6">
+          <% t("home.terms.api_access.acceptable_use.items").each do |item| %>
+            <li><%= item %></li>
+          <% end %>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.billing.heading") %></h2>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.terms.billing.plans.heading") %></h3>
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          <%= t("home.terms.billing.plans.text") %>
+        </p>
+
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.terms.billing.trials.heading") %></h3>
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          <%= t("home.terms.billing.trials.text") %>
+        </p>
+
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.terms.billing.overages.heading") %></h3>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          <%= t("home.terms.billing.overages.text") %>
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.sla.heading") %></h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          <%= t("home.terms.sla.intro") %>
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-6">
+          <% t("home.terms.sla.items").each do |item| %>
+            <li><%= item %></li>
+          <% end %>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.data_privacy.heading") %></h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          <%= t("home.terms.data_privacy.full", link: link_to(t("home.terms.data_privacy.policy_link"), privacy_path, class: "text-blue-600 hover:text-blue-700")).html_safe %>
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.ip.heading") %></h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          <%= t("home.terms.ip.text") %>
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.termination.heading") %></h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          <%= t("home.terms.termination.intro") %>
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-6">
+          <% t("home.terms.termination.items").each do |item| %>
+            <li><%= item %></li>
+          <% end %>
+        </ul>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          <%= t("home.terms.termination.self_cancel") %>
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.liability.heading") %></h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          <%= t("home.terms.liability.text") %>
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.changes.heading") %></h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          <%= t("home.terms.changes.text") %>
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.governing_law.heading") %></h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          <%= t("home.terms.governing_law.text") %>
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.terms.contact.heading") %></h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          <%= t("home.terms.contact.text") %>
+          <a href="mailto:eliaz@bobadilla.tech" class="text-blue-600 hover:text-blue-700 font-medium">eliaz@bobadilla.tech</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

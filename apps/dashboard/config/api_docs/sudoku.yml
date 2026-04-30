@@ -1,0 +1,135 @@
+api_id: sudoku
+api_name: Sudoku
+description: >-
+  Generate Sudoku puzzles of varying difficulty levels. Each response includes the puzzle grid (with 0 for empty cells)
+  and the complete solution.
+base_url: https://api.requiems.xyz
+overview:
+  use_cases:
+    - Puzzle and brain-training apps
+    - Educational platforms
+    - Games and entertainment widgets
+    - Daily challenge features
+  features:
+    - Three difficulty levels — easy, medium, and hard
+    - Solution always included in the response
+    - Each request produces a freshly shuffled, unique puzzle
+    - Standard 9×9 grid format
+endpoints:
+  - name: Get Sudoku Puzzle
+    method: GET
+    path: /v1/entertainment/sudoku
+    description: Returns a randomly generated Sudoku puzzle and its solution. Difficulty defaults to medium when not specified.
+    parameters:
+      - name: difficulty
+        location: query
+        type: string
+        required: false
+        description: "Puzzle difficulty level. One of: easy, medium, hard. Defaults to medium."
+    response_example: |
+      {
+        "data": {
+          "difficulty": "hard",
+          "puzzle": [
+            [5, 3, 0, 0, 7, 0, 0, 0, 0],
+            [6, 0, 0, 1, 9, 5, 0, 0, 0],
+            [0, 9, 8, 0, 0, 0, 0, 6, 0],
+            [8, 0, 0, 0, 6, 0, 0, 0, 3],
+            [4, 0, 0, 8, 0, 3, 0, 0, 1],
+            [7, 0, 0, 0, 2, 0, 0, 0, 6],
+            [0, 6, 0, 0, 0, 0, 2, 8, 0],
+            [0, 0, 0, 4, 1, 9, 0, 0, 5],
+            [0, 0, 0, 0, 8, 0, 0, 7, 9]
+          ],
+          "solution": [
+            [5, 3, 4, 6, 7, 8, 9, 1, 2],
+            [6, 7, 2, 1, 9, 5, 3, 4, 8],
+            [1, 9, 8, 3, 4, 2, 5, 6, 7],
+            [8, 5, 9, 7, 6, 1, 4, 2, 3],
+            [4, 2, 6, 8, 5, 3, 7, 9, 1],
+            [7, 1, 3, 9, 2, 4, 8, 5, 6],
+            [9, 6, 1, 5, 3, 7, 2, 8, 4],
+            [2, 8, 7, 4, 1, 9, 6, 3, 5],
+            [3, 4, 5, 2, 8, 6, 1, 7, 9]
+          ]
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+    response_fields:
+      - name: difficulty
+        type: string
+        description: The difficulty level of the returned puzzle (easy, medium, or hard)
+      - name: puzzle
+        type: array[array[integer]]
+        description: 9×9 grid representing the puzzle — 0 means an empty cell to be filled in
+      - name: solution
+        type: array[array[integer]]
+        description: 9×9 grid containing the complete, valid solution
+    errors:
+      - status: 400
+        code: bad_request
+        description: The difficulty parameter is not one of easy, medium, or hard
+      - status: 401
+        code: unauthorized
+        description: Missing API key
+      - status: 403
+        code: forbidden
+        description: Invalid or revoked API key
+    code_examples:
+      curl: |
+        curl "https://api.requiems.xyz/v1/entertainment/sudoku?difficulty=hard" \
+          -H "requiems-api-key: YOUR_API_KEY"
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/entertainment/sudoku"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+        params = {"difficulty": "hard"}
+
+        response = requests.get(url, headers=headers, params=params)
+        data = response.json()
+        print(data["data"]["puzzle"])
+      javascript: |
+        const response = await fetch(
+          'https://api.requiems.xyz/v1/entertainment/sudoku?difficulty=hard',
+          { headers: { 'requiems-api-key': 'YOUR_API_KEY' } }
+        );
+        const { data } = await response.json();
+        console.log(data.puzzle);
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/entertainment/sudoku')
+        uri.query = URI.encode_www_form(difficulty: 'hard')
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        data = JSON.parse(response.body)
+        puts data['data']['puzzle'].inspect
+faq:
+  - question: What does 0 mean in the puzzle grid?
+    answer: A value of 0 represents an empty cell — the cell the solver needs to fill in to complete the puzzle.
+  - question: Is the solution always valid?
+    answer: >-
+      Yes. The solution satisfies all standard Sudoku constraints — each row, column, and 3×3 box contains the digits
+      1–9 exactly once.
+  - question: Are puzzles the same across requests?
+    answer: No. Each request produces a freshly shuffled puzzle using a random seed, so results vary between calls.
+  - question: What difficulty levels are available?
+    answer: >-
+      Three levels are supported: easy (45 given cells), medium (35 given cells), and hard (29 given cells). When the
+      difficulty parameter is omitted, medium is used.
+performance:
+  p50_ms: 903
+  p95_ms: 992
+  p99_ms: 1022
+  avg_ms: 925
+  samples: 50
+  measured_at: "2026-04-20"

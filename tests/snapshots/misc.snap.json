@@ -1,0 +1,8 @@
+{
+  "createdAt": "2026-04-16T02:28:44.611Z",
+  "updatedAt": "2026-04-16T02:29:15.116Z",
+  "shapes": {
+    "random_user": "{data:{address:{city:string,country:string,state:string,street:string,zip:string},avatar:string,email:string,name:string,phone:string},metadata:{timestamp:string}}",
+    "convert_units": "{data:{formula:string,from:string,input:number,result:number,to:string},metadata:{timestamp:string}}"
+  }
+}

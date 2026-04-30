@@ -1,0 +1,85 @@
+<% content_for :title, t("home.privacy.title") %>
+
+<div class="min-h-screen bg-gray-50 dark:bg-gray-900 py-16">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8 md:p-12">
+      <h1 class="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6"><%= t("home.privacy.heading") %></h1>
+
+      <p class="text-sm text-gray-600 dark:text-gray-400 mb-8">
+        <%= t("home.privacy.last_updated", date: l(Rails.application.config.x.legal_effective_date, format: :long)) %>
+      </p>
+
+      <div class="prose prose-lg max-w-none">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.privacy.overview.heading") %></h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          <%= t("home.privacy.overview.text") %>
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.privacy.information_we_collect.heading") %></h2>
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.privacy.information_we_collect.account.heading") %></h3>
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          <%= t("home.privacy.information_we_collect.account.text") %>
+        </p>
+
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.privacy.information_we_collect.api_usage.heading") %></h3>
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          <%= t("home.privacy.information_we_collect.api_usage.text") %>
+        </p>
+
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2"><%= t("home.privacy.information_we_collect.technical.heading") %></h3>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          <%= t("home.privacy.information_we_collect.technical.text") %>
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.privacy.how_we_use.heading") %></h2>
+        <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-6">
+          <% t("home.privacy.how_we_use.items").each do |item| %>
+            <li><%= item %></li>
+          <% end %>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.privacy.data_storage.heading") %></h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          <%= t("home.privacy.data_storage.text") %>
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-6">
+          <% t("home.privacy.data_storage.items").each do |item| %>
+            <li><%= item %></li>
+          <% end %>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.privacy.data_retention.heading") %></h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          <%= t("home.privacy.data_retention.text") %>
+        </p>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.privacy.gdpr.heading") %></h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          <%= t("home.privacy.gdpr.intro") %>
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-6">
+          <% t("home.privacy.gdpr.items").each do |item| %>
+            <li><%= item %></li>
+          <% end %>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.privacy.third_party.heading") %></h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-4">
+          <%= t("home.privacy.third_party.text") %>
+        </p>
+        <ul class="list-disc pl-6 text-gray-700 dark:text-gray-300 space-y-2 mb-6">
+          <% t("home.privacy.third_party.items").each do |item| %>
+            <li><%= raw item %></li>
+          <% end %>
+        </ul>
+
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100 mt-8 mb-4"><%= t("home.privacy.contact.heading") %></h2>
+        <p class="text-gray-700 dark:text-gray-300 mb-6">
+          <%= t("home.privacy.contact.text") %>
+          <br/>
+          <a href="mailto:eliaz@bobadilla.tech" class="text-blue-600 hover:text-blue-700 font-medium">eliaz@bobadilla.tech</a>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

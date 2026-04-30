@@ -1,0 +1,778 @@
+es:
+  home:
+    index:
+      title: "Requiems API - Reemplaza meses de infraestructura con una sola llamada API"
+      hero:
+        title_line1: "Reemplaza meses de infraestructura"
+        title_line2: "con una sola llamada API."
+        description: "125 APIs empresariales que eliminan meses de obtención de datos, validación y dolores de cabeza de infraestructura."
+        cta_primary: "Obtener clave API gratis"
+        cta_secondary: "Ver documentación de APIs"
+        try_badge: "✨ Pruébalo ahora • Sin tarjeta de crédito"
+        api_request: "Solicitud API"
+      trusted_by:
+        label: "Usado por equipos que construyen productos en produccion"
+      social_proof:
+        label: "Impulsando productos en empresas como"
+      features:
+        heading: "Diseñado para la experiencia del desarrollador"
+        subheading: "Integraciones nativas para IA, documentacion precisa y playgrounds en vivo. Lanza en minutos, no en semanas."
+        playground_title: "Playground de APIs en vivo"
+        playground_desc: "Prueba cada endpoint directamente en la documentacion. Ve respuestas reales al instante, sin escribir codigo."
+        examples_title: "Ejemplos de codigo"
+        examples_desc: "Ejemplos listos para copiar en cURL, Python, JavaScript, Go y mas. Cada ejemplo incluye version en Markdown lista para herramientas de IA y agentes."
+        docs_title: "Documentacion precisa"
+        docs_desc: "Cada parametro, campo de respuesta y codigo de error documentado. Sin adivinar."
+        ai_title: "Construido para agentes de IA"
+        ai_desc: "Cada API incluye llms.txt, documentacion completa en Markdown y ejemplos en formato AI-paste. Abre cualquier endpoint directamente en Claude o ChatGPT con un clic. Ideal para agentes, copilots y productos con LLMs."
+      categories:
+        heading: "Categorías de APIs"
+        description: "Explora nuestra colección completa de APIs organizadas por categoría para encontrar exactamente lo que necesitas."
+        browse_all: "Ver todas las APIs"
+      metrics:
+        heading: "Rendimiento en el que puedes confiar"
+        subheading: "Infraestructura de nivel empresarial sin la complejidad empresarial"
+        latency_title: "Latencia mediana"
+        latency_subtitle: "Tiempo de respuesta P50"
+        uptime_title: "Disponibilidad"
+        uptime_subtitle: "SLA últimos 12 meses"
+        requests_title: "Solicitudes mensuales"
+        requests_subtitle: "Solicitudes procesadas/mes"
+        datacenters_title: "Centros de datos"
+        datacenters_subtitle: "Unión Europea"
+        datacenters_value: "UE"
+      security:
+        heading: "Seguridad y cumplimiento primero"
+        subheading: "Seguridad de nivel empresarial para equipos de todos los tamaños"
+        soc2_title: "Certificación SOC 2"
+        soc2_badge: "En progreso"
+        soc2_desc: "En progreso."
+        encryption_title: "Cifrado de datos"
+        encryption_badge: "Activo"
+        encryption_desc: "TLS 1.3 en tránsito, AES-256 en reposo. Política de cero almacenamiento de datos para entradas/salidas de la API."
+        eu_title: "Infraestructura UE"
+        eu_badge: "UE"
+        eu_desc: "Todos los centros de datos ubicados en la Unión Europea. Compatible con GDPR."
+        payments_title: "Pagos seguros"
+        payments_badge: "LemonSqueezy"
+        payments_desc: "Todos los pagos procesados a través de LemonSqueezy. Nunca vemos ni almacenamos tus datos de pago."
+        gdpr_title: "Compatible con GDPR / CCPA"
+        gdpr_badge: "Cumple"
+        gdpr_desc: "Cumplimiento total con GDPR, CCPA y regulaciones internacionales de privacidad."
+        api_security_title: "Seguridad de la API"
+        api_security_badge: "Con límite de tasa"
+        api_security_desc: "Limitación de tasa integrada, protección DDoS y prevención de abusos en el edge."
+      faq:
+        heading: "Preguntas frecuentes"
+        subheading: "Todo lo que necesitas saber sobre Requiems API"
+        q1: "¿Requiems API es realmente gratuito para comenzar?"
+        a1: "¡Sí! Obtienes 500 solicitudes al mes completamente gratis sin necesidad de tarjeta de crédito. Perfecto para pruebas, proyectos personales y aplicaciones pequeñas. Actualiza a planes de pago solo cuando necesites más capacidad."
+        q2: "¿Puedo usarlo para proyectos comerciales?"
+        a2: "¡Sí! Todos los planes, incluido el gratuito, se pueden usar para proyectos comerciales dentro de los límites de uso. Nuestro servicio gestionado está diseñado para uso en producción por empresas de todos los tamaños."
+        q3: "¿Dónde están ubicados sus servidores?"
+        a3: "Todos nuestros centros de datos están ubicados en la Unión Europea, respaldados por la red global edge de Cloudflare para el cumplimiento del GDPR."
+        q4: "¿Qué métodos de pago aceptan?"
+        a4: "Aceptamos todas las tarjetas de crédito principales (Visa, Mastercard, American Express) y tarjetas de débito a través de Stripe."
+        still_questions: "¿Aún tienes preguntas?"
+        contact_link: "Contacta a nuestro equipo de soporte"
+      cta:
+        heading: "¿Listo para desarrollar más rápido?"
+        subheading: "Únete a miles de desarrolladores que construyen con APIs listas para producción"
+        primary: "Comenzar gratis"
+        secondary: "Ver precios"
+        footer: "Sin tarjeta de crédito • Comienza gratis • Cancela en cualquier momento"
+
+    blog:
+      title: "Blog - Requiems API"
+      heading: "Blog - Próximamente"
+      description: "Estamos construyendo un centro de recursos para desarrolladores de API. Pronto encontrarás tutoriales, guías y mejores prácticas de API."
+      what_to_expect:
+        heading: "Qué esperar"
+        items:
+          - "Tutoriales técnicos y guías de integración"
+          - "Mejores prácticas de desarrollo de API"
+          - "Actualizaciones de la plataforma y anuncios de nuevas APIs"
+          - "Casos de éxito de desarrolladores"
+      meanwhile: "Mientras tanto, explora nuestra documentación y el directorio de APIs"
+      cta_docs: "Ver documentación"
+      cta_apis: "Explorar APIs"
+
+    docs:
+      redirecting: "Redirigiendo a la documentación de la API..."
+      click_here: "Haz clic aquí si no eres redirigido"
+
+    changelog:
+      title: "Registro de cambios - Requiems API"
+      heading: "Registro de cambios"
+      description: "Seguimiento de actualizaciones, nuevas funciones y mejoras de Requiems API."
+      badge_latest: "Reciente"
+      badge_coming_soon: "Próximamente"
+      v010:
+        ci:
+          heading: "Integración continua"
+          items:
+            - "Pipeline de CI completo con pruebas automatizadas en todas las aplicaciones"
+            - "Go API: pruebas con detección de condiciones de carrera, golangci-lint (21 linters), cobertura de código"
+            - "Rails Dashboard: suite de pruebas completa (60 pruebas, 207 aserciones), análisis de seguridad"
+            - "Cloudflare Worker: verificaciones TypeScript, suite Vitest (71 pruebas), linting Biome"
+            - "Ejecución basada en rutas para compilaciones eficientes"
+            - "Análisis de seguridad como requisitos de bloqueo (Brakeman, bundler-audit)"
+        bugs:
+          heading: "Corrección de errores"
+          items:
+            - "Corregido el orden de ejecución del callback de generación de claves API"
+            - "Resuelto el problema de inicialización del mapeo de Devise en el entorno de prueba"
+            - "Corregido el manejo del campo de estado de usuario para estados suspendidos/bloqueados"
+            - "Agregadas configuraciones de tiempo de espera del servidor HTTP para cumplimiento de seguridad"
+            - "Corregido el formato de código en todas las aplicaciones"
+        coverage:
+          heading: "Cobertura de pruebas"
+          items:
+            - "Rails Dashboard: 100% de tasa de aprobación de pruebas (60 pruebas)"
+            - "Cloudflare Worker: 71 pruebas aprobadas con 29% de cobertura"
+            - "Go API: suite de pruebas completa con detección de condiciones de carrera"
+      v002:
+        deploy:
+          heading: "Despliegue en producción"
+          items:
+            - "Go Backend API desplegado con base de datos PostgreSQL"
+            - "Aplicación Rails 8 Dashboard con autenticación de usuarios"
+            - "Sistema de gestión de claves API y seguimiento de uso"
+            - "Panel de administración para gestión de usuarios y suscripciones"
+            - "Entorno de desarrollo Docker Compose"
+        features:
+          heading: "Funcionalidades"
+          items:
+            - "Endpoints de validación de correo electrónico (detección de correo desechable)"
+            - "APIs de utilidades de texto (consejos, lorem ipsum, citas, palabras aleatorias)"
+            - "Registro y autenticación de usuarios (Devise)"
+            - "Panel de análisis de uso"
+            - "Integración de suscripción y facturación"
+            - "Endpoints de verificación de salud y monitoreo"
+      v001:
+        init:
+          heading: "Inicialización del proyecto"
+          items:
+            - "Arquitectura monorepo multi-lenguaje establecida"
+            - "Selección del stack tecnológico (Go, Rails 8, Cloudflare Workers)"
+            - "Diseño de arquitectura de tres niveles: Edge Gateway → Backend API → Base de datos"
+            - "Planificación del esquema de base de datos y endpoints de API"
+        gateway:
+          heading: "Cloudflare Worker Gateway"
+          items:
+            - "Validación de claves API usando Cloudflare KV"
+            - "Limitación de tasa con contadores KV"
+            - "Seguimiento de uso de solicitudes con D1 SQLite"
+            - "Proxy de solicitudes al backend API"
+            - "Análisis y registro de uso"
+      v020:
+        planned_release: "Lanzamiento planeado: Q1 2026"
+        features:
+          heading: "Funcionalidades planeadas"
+          items:
+            - "Documentación de API mejorada con playground interactivo"
+            - "Webhooks de uso para notificaciones en tiempo real"
+            - "Controles avanzados de limitación de tasa por clave API"
+            - "Exportación e informes de uso de API"
+            - "Funciones de colaboración en equipo (espacios de trabajo compartidos)"
+            - "APIs de validación adicionales (números de teléfono, tarjetas de crédito)"
+        roadmap:
+          heading: "Hoja de ruta futura (v1.0.0+)"
+          items:
+            - "APIs de datos (geolocalización IP, conversión de divisas)"
+            - "APIs financieras (cotizaciones de acciones, precios de criptomonedas)"
+            - "APIs de imágenes (optimización, marcadores de posición, códigos QR)"
+            - "Soporte para API GraphQL"
+            - "Bibliotecas SDK (Python, JavaScript, Go, Ruby)"
+            - "Certificación SOC 2 Tipo II"
+      stay_updated:
+        heading: "Mantente actualizado"
+        text: "¿Quieres recibir notificaciones sobre nuevas versiones y funcionalidades?"
+        signed_in: "Enviaremos notificaciones de actualización a tu correo registrado: %{email}"
+        sign_up_cta: "Crear una cuenta"
+
+    glossary:
+      title: "Glosario de API - Requiems API"
+      heading: "Glosario de API"
+      description: "Terminología esencial de API que todo desarrollador debe conocer"
+      terms:
+        - name: "API (Interfaz de programación de aplicaciones)"
+          definition: "Un conjunto de definiciones y protocolos que permite que diferentes aplicaciones de software se comuniquen entre sí. Las APIs definen los métodos y formatos de datos que las aplicaciones pueden usar para solicitar e intercambiar información."
+          example: "Ejemplo: Requiems API proporciona una API REST para validar direcciones de correo electrónico programáticamente."
+        - name: "Endpoint"
+          definition: "Una URL específica donde una API puede acceder a los recursos que necesita. Cada endpoint corresponde a una función o recurso específico en la API."
+          example: "Ejemplo: <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">POST /v1/networking/disposable/check</code>"
+        - name: "Autenticación"
+          definition: "El proceso de verificar la identidad de un usuario o aplicación. Las APIs generalmente requieren autenticación para garantizar que solo los usuarios autorizados puedan acceder al servicio."
+          example: "Ejemplo: Incluir tu clave API en el encabezado Authorization: <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">Authorization: Bearer TU_CLAVE_API</code>"
+        - name: "Clave API"
+          definition: "Un identificador único utilizado para autenticar solicitudes a una API. Las claves API actúan como identificador y token secreto para la autenticación."
+          example: "Ejemplo: <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">req_live_1234567890abcdef</code>"
+        - name: "Limitación de tasa"
+          definition: "Una técnica para controlar el número de solicitudes que un usuario puede hacer a una API dentro de un período de tiempo dado. Esto ayuda a prevenir abusos y garantiza un uso justo."
+          example: "Ejemplo: El plan gratuito permite 100 solicitudes por minuto"
+        - name: "Solicitudes"
+          definition: "La unidad de uso de la API. Cada llamada a la API cuenta como 1 solicitud contra tu cuota mensual del plan. Algunos endpoints pueden contar como más de 1 solicitud, lo cual siempre se indica explícitamente en la documentación de ese endpoint."
+          example: "Ejemplo: Llamar al endpoint de validación de correo una vez usa 1 solicitud de tu cuota mensual."
+        - name: "REST (Transferencia de estado representacional)"
+          definition: "Un estilo arquitectónico para diseñar aplicaciones en red. Las APIs REST usan solicitudes HTTP para realizar operaciones CRUD (Crear, Leer, Actualizar, Eliminar) sobre recursos."
+          example: "Ejemplo: Usar GET para recuperar datos, POST para crear, PUT para actualizar, DELETE para eliminar"
+        - name: "JSON (Notación de objetos de JavaScript)"
+          definition: "Un formato de intercambio de datos ligero que es fácil de leer y escribir para humanos, y fácil de analizar y generar para máquinas. La mayoría de las APIs modernas usan JSON para los cuerpos de solicitud y respuesta."
+          example: "Ejemplo: <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">{\"email\": \"test@example.com\", \"is_disposable\": false}</code>"
+        - name: "Códigos de estado HTTP"
+          definition: "Códigos de tres dígitos devueltos por los servidores web para indicar el resultado de una solicitud HTTP. Los códigos comunes incluyen 200 (éxito), 404 (no encontrado) y 500 (error del servidor)."
+          example: "Más información: <a href=\"/es/error_codes\" class=\"text-blue-600 hover:text-blue-700\">Referencia de códigos de error</a>"
+        - name: "Webhook"
+          definition: "Un método para que una aplicación proporcione información en tiempo real a otras aplicaciones. En lugar de que hagas solicitudes repetidas a la API, el servidor envía datos a tu URL especificada cuando ocurre un evento."
+          example: "Ejemplo: Recibir una notificación cuando tu saldo de solicitudes caiga por debajo de un umbral"
+        - name: "Parámetros de consulta"
+          definition: "Pares clave-valor añadidos a una URL para filtrar, ordenar o modificar la respuesta de la API. Aparecen después de un signo de interrogación (?) en la URL."
+          example: "Ejemplo: <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">/v1/words?limit=10&min_length=5</code>"
+        - name: "Encabezados"
+          definition: "Información adicional enviada con las solicitudes y respuestas HTTP. Los encabezados pueden contener tokens de autenticación, tipos de contenido, metadatos personalizados y más."
+          example: "Ejemplo: <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">Content-Type: application/json</code>"
+      help:
+        heading: "¿Necesitas más ayuda?"
+        text: "Consulta nuestra documentación completa o contacta a nuestro equipo de soporte"
+        cta_docs: "Ver documentación"
+        cta_contact: "Contactar soporte"
+
+    error_codes:
+      title: "Referencia de códigos de error - Requiems API"
+      heading: "Referencia de códigos de error"
+      description: "Comprende los códigos de estado HTTP y cómo manejarlos"
+      success_heading: "Éxito"
+      client_errors_heading: "Errores del cliente"
+      server_errors_heading: "Errores del servidor"
+      codes:
+        success:
+          - code: "200"
+            name: "OK"
+            description: "La solicitud fue exitosa y la respuesta contiene los datos solicitados."
+            note: "Común con: solicitudes GET, POST, PUT"
+          - code: "201"
+            name: "Creado"
+            description: "Se creó exitosamente un nuevo recurso."
+            note: "Común con: solicitudes POST para crear recursos"
+        client_errors:
+          - code: "400"
+            name: "Solicitud incorrecta"
+            description: "La solicitud estaba mal formada o contiene parámetros inválidos."
+            note: "Causas comunes: campos requeridos faltantes, JSON inválido, tipos de datos incorrectos"
+          - code: "401"
+            name: "No autorizado"
+            description: "Se requiere autenticación o ha fallado. Tu clave API puede estar faltando o ser inválida."
+            note: "Causas comunes: clave API faltante, clave API inválida, clave expirada"
+          - code: "403"
+            name: "Prohibido"
+            description: "No tienes permiso para acceder a este recurso. Tu clave API puede carecer de los permisos requeridos."
+            note: "Causas comunes: permisos insuficientes, cuenta suspendida, acceso a endpoint de prueba con clave de producción"
+          - code: "404"
+            name: "No encontrado"
+            description: "El recurso solicitado no existe. Verifica la URL de tu endpoint."
+            note: "Causas comunes: URL incorrecta, error tipográfico en la ruta del endpoint, recurso eliminado"
+          - code: "422"
+            name: "Entidad no procesable"
+            description: "La solicitud estaba bien formada pero contiene errores semánticos o fallas de validación."
+            note: "Causas comunes: formato de correo inválido, valores fuera de rango, fallas de validación de lógica de negocio"
+          - code: "429"
+            name: "Demasiadas solicitudes"
+            description: "Has superado tu límite de tasa. Espera antes de hacer más solicitudes o actualiza tu plan."
+            note: "Causas comunes: demasiadas solicitudes por minuto, cuota diaria superada"
+        server_errors:
+          - code: "500"
+            name: "Error interno del servidor"
+            description: "Ocurrió un error inesperado en nuestros servidores. Es un problema temporal."
+            note: "Acción: Reintenta la solicitud. Si el problema persiste, contacta al soporte."
+          - code: "502"
+            name: "Puerta de enlace incorrecta"
+            description: "La puerta de enlace recibió una respuesta inválida del servidor backend."
+            note: "Acción: Reintenta la solicitud después de una breve pausa."
+          - code: "503"
+            name: "Servicio no disponible"
+            description: "El servicio no está disponible temporalmente, generalmente por mantenimiento o sobrecarga."
+            note: "Acción: Verifica nuestra página de estado y reintenta después de una pausa."
+          - code: "504"
+            name: "Tiempo de espera de la puerta de enlace"
+            description: "La puerta de enlace no recibió respuesta del servidor backend a tiempo."
+            note: "Acción: Reintenta la solicitud. Considera implementar retroceso exponencial."
+      best_practices:
+        heading: "Mejores prácticas para el manejo de errores"
+        items:
+          - "Siempre verifica el código de estado antes de procesar la respuesta"
+          - "Implementa retroceso exponencial para la lógica de reintento en errores 5xx"
+          - "Registra detalles de errores para depuración pero nunca expongas datos sensibles"
+          - "Maneja los límites de tasa con elegancia respetando los encabezados retry-after"
+          - "Muestra mensajes de error amigables para el usuario en lugar de respuestas API sin procesar"
+        help_text: "¿Necesitas ayuda para solucionar problemas?"
+        cta_docs: "Ver documentación"
+        cta_contact: "Contactar soporte"
+        cta_status: "Ver estado de la API"
+
+    pricing:
+      title: "Precios - Requiems API"
+      header:
+        heading: "Precios simples y transparentes"
+        description: "Comienza gratis, escala a medida que creces. Todos los planes incluyen acceso a nuestro catálogo completo de APIs."
+      toggle:
+        monthly: "Mensual"
+        yearly: "Anual"
+        save: "Ahorra 17%"
+      plans:
+        per_month: "/mes"
+        popular_badge: "Más popular"
+        save_per_year: "Ahorra $%{amount}/año"
+        free:
+          name: "Gratuito"
+          description: "Perfecto para pruebas y proyectos pequeños"
+          requests: "500"
+          rate_limit: "30/min"
+          features:
+            - "500 solicitudes/mes"
+            - "30 solicitudes/minuto"
+            - "Todos los endpoints de la API"
+            - "Soporte de la comunidad"
+            - "Centros de datos en la UE"
+          cta: "Comenzar gratis"
+        developer:
+          name: "Desarrollador"
+          description: "Para desarrolladores que crean apps de producción"
+          requests: "100k"
+          rate_limit: "5.000/min"
+          features:
+            - "100.000 solicitudes/mes"
+            - "5.000 solicitudes/minuto"
+            - "Todos los endpoints de la API"
+            - "Soporte por correo (respuesta 24h)"
+            - "Centros de datos en la UE"
+          cta: "Iniciar prueba gratuita"
+        business:
+          name: "Negocio"
+          description: "Para empresas y equipos en crecimiento"
+          requests: "1M"
+          rate_limit: "10k/min"
+          popular_badge: "Más popular"
+          features:
+            - "1.000.000 solicitudes/mes"
+            - "10.000 solicitudes/minuto"
+            - "Todos los endpoints de la API"
+            - "Soporte prioritario por correo (respuesta 4h)"
+            - "Centros de datos en la UE"
+            - "SLAs personalizados disponibles"
+          cta: "Iniciar prueba gratuita"
+        professional:
+          name: "Profesional"
+          description: "Para aplicaciones de alto volumen"
+          requests: "10M"
+          rate_limit: "50k/min"
+          features:
+            - "10.000.000 solicitudes/mes"
+            - "50.000 solicitudes/minuto"
+            - "Todos los endpoints de la API"
+            - "Soporte prioritario (respuesta 1h)"
+            - "Centros de datos en la UE"
+            - "SLAs personalizados"
+          cta: "Iniciar prueba gratuita"
+        enterprise:
+          heading: "Empresarial"
+          description: "Soluciones personalizadas para despliegues a gran escala"
+          price: "Precio personalizado"
+          cta: "Contactar con ventas"
+          features:
+            - "Solicitudes de API ilimitadas"
+            - "Servidores dedicados privados"
+            - "Opciones de residencia de datos en la UE"
+            - "SLAs y soporte personalizados"
+            - "Soporte para despliegue en local"
+        private_deployment:
+          badge: "Despliegue Privado"
+          heading: "Tu propia instancia dedicada de API"
+          description: "Un VPS privado en Hetzner con solo los servicios que elijas, accesible en yourcompany.requiems.xyz. Facturación mensual o anual. Sin cargos por exceso, solicitudes ilimitadas."
+          yearly_note: "o $%{price}/mes facturado anualmente"
+          charge_annual: "$%{amount}/año"
+          charge_semiannual: "$%{amount} cada 6 meses"
+          units:
+            vcpu: "vCPU"
+            ram: "RAM"
+            ssd: "SSD"
+          features:
+            - "VPS dedicado en Hetzner"
+            - "Solo las APIs que necesitas"
+            - "HTTPS directo, sin capa de Cloudflare"
+            - "Tu subdominio en requiems.xyz"
+            - "Solicitudes ilimitadas"
+            - "Suscripción mensual o anual"
+            - "Listo en 24-48 horas"
+            - "15% de descuento con facturación anual"
+          cta: "Configurar y desplegar"
+          checkout_note: "Pago a través de LemonSqueezy"
+      table:
+        heading: "Comparar planes"
+        feature_col: "Característica"
+        rows:
+          monthly_requests: "Solicitudes mensuales"
+          rate_limit: "Límite de tasa"
+          api_endpoints: "Endpoints de la API"
+          data_centers: "Centros de datos"
+          support_response: "Tiempo de respuesta del soporte"
+          sla: "SLA"
+        values:
+          all: "Todos"
+          eu: "UE"
+          community: "Comunidad"
+          none: "-"
+      security:
+        heading: "Seguridad y cumplimiento"
+        soc2_title: "SOC 2 Tipo II"
+        soc2_desc: "En progreso."
+        eu_title: "Infraestructura UE"
+        eu_desc: "Todos los centros de datos ubicados en la UE para el cumplimiento del GDPR."
+        encryption_title: "Cifrado empresarial"
+        encryption_desc: "TLS 1.3 en tránsito, AES-256 en reposo. Cero registro de datos de solicitudes/respuestas de la API."
+      faq:
+        heading: "Preguntas frecuentes"
+        q1: "¿Qué pasa si supero mi cuota mensual?"
+        a1: "Tus solicitudes a la API devolverán un error 429 (Demasiadas solicitudes) una vez que alcances tu límite mensual. Recomendamos actualizar a un plan superior antes de alcanzar tu cuota. Puedes monitorear tu uso en tiempo real desde tu panel."
+        q2: "¿Puedo usar Requiems API para proyectos comerciales?"
+        a2: "¡Sí! Todos los planes, incluido el gratuito, se pueden usar para proyectos comerciales. Nuestro servicio en la nube gestionado proporciona fiabilidad, escalabilidad y soporte de nivel empresarial para aplicaciones en producción."
+        q3: "¿Ofrecen planes empresariales personalizados?"
+        a3: "¡Sí! Los planes empresariales incluyen precios personalizados, infraestructura dedicada, despliegues privados, residencia de datos en la UE, SLAs personalizados y soporte dedicado. Contacta a nuestro equipo de ventas en eliaz@bobadilla.tech para hablar sobre tus requisitos."
+        q4: "¿Qué centros de datos utilizan?"
+        a4: "Todos los planes se ejecutan en centros de datos de la UE para el cumplimiento del GDPR."
+        q5: "¿Hay una prueba gratuita para los planes de pago?"
+        a5: "¡Sí! Todos los planes de pago mensuales incluyen una prueba gratuita de 7 días con acceso completo a las funciones del plan. No se requiere tarjeta de crédito para iniciar la prueba. Puedes cancelar en cualquier momento durante el período de prueba."
+
+    team:
+      title: "Nuestro equipo - Requiems API"
+      heading: "Conoce a nuestro equipo"
+      subheading: "Las personas que construyen APIs listas para producción para desarrolladores de todo el mundo."
+      company_prefix: "Todos los miembros del equipo forman parte de"
+      company_sentence: "Todos los miembros del equipo forman parte de %{company_link}"
+      linkedin_cta: "Conectar en LinkedIn"
+      members:
+        eliaz:
+          role: "Ingeniero backend, Ingeniero fundador"
+          bio: "Liderando la arquitectura backend y construyendo la infraestructura principal que impulsa Requiems API."
+        leonardo:
+          role: "Ingeniero backend, Ingeniero fundador"
+          bio: "Construyendo sistemas backend escalables y optimizando el rendimiento de la API para nuestra creciente base de usuarios."
+        alexandra:
+          role: "Fundadora, Go-to-Market"
+          bio: "Impulsando nuestra estrategia de go-to-market y construyendo relaciones con desarrolladores y empresas de todo el mundo."
+      join:
+        heading: "Únete a nuestro equipo"
+        text: "Siempre buscamos ingenieros y constructores talentosos apasionados por crear productos orientados al desarrollador. ¿Te interesa unirte?"
+        cta: "Ponte en contacto"
+
+    status:
+      title: "Estado de la API - Requiems API"
+      all_operational: "Todos los sistemas están operativos"
+      all_operational_desc: "Todos los servicios de Requiems API funcionan correctamente"
+      operational: "Operativo"
+      services:
+        gateway:
+          name: "Puerta de enlace API"
+          desc: "Autenticación y enrutamiento en el edge"
+        backend:
+          name: "Servicios backend"
+          desc: "Procesamiento de API y lógica de negocio"
+        database:
+          name: "Base de datos"
+          desc: "Almacenamiento y recuperación de datos"
+        auth:
+          name: "Autenticación"
+          desc: "Validación de claves API y seguridad"
+      metrics:
+        heading: "Métricas de rendimiento"
+        uptime: "Disponibilidad"
+        latency: "Latencia promedio"
+        requests: "Solicitudes mensuales"
+        data_centers: "Centros de datos"
+      last_updated: "Última actualización: %{datetime}"
+      having_issues: "¿Tienes problemas?"
+      contact_support: "Contactar soporte"
+
+    terms:
+      title: "Términos de servicio - Requiems API"
+      heading: "Términos de servicio"
+      last_updated: "Última actualización: %{date}"
+      acceptance:
+        heading: "1. Aceptación de los términos"
+        text: "Al acceder o usar Requiems API, aceptas estar sujeto a estos Términos de servicio y a todas las leyes y reglamentos aplicables. Si no estás de acuerdo con alguno de estos términos, tienes prohibido usar o acceder a este servicio."
+      api_access:
+        heading: "2. Acceso y uso de la API"
+        keys:
+          heading: "2.1 Claves API"
+          text: "Eres responsable de mantener la confidencialidad de tus claves API. No compartas tus claves API públicamente ni las incluyas en código del lado del cliente. Eres responsable de toda la actividad que ocurra usando tus claves API."
+        rate_limits:
+          heading: "2.2 Límites de tasa"
+          text: "El uso de tu API está sujeto a límites de tasa basados en tu plan de suscripción. Superar estos límites puede resultar en la suspensión temporal del acceso a la API o cargos adicionales."
+        acceptable_use:
+          heading: "2.3 Uso aceptable"
+          intro: "Aceptas no usar la API para:"
+          items:
+            - "Actividades ilegales o para violar cualquier ley"
+            - "Intentar obtener acceso no autorizado a nuestros sistemas"
+            - "Transmitir malware, virus o código dañino"
+            - "Acoso, spam o comportamiento abusivo"
+            - "Reventa o redistribución del acceso a la API sin permiso"
+            - "Ingeniería inversa o intento de extraer el código fuente"
+      billing:
+        heading: "3. Facturación y pagos"
+        plans:
+          heading: "3.1 Planes de suscripción"
+          text: "Los planes de pago se facturan mensual o anualmente por adelantado. Todos los honorarios no son reembolsables, excepto cuando lo exija la ley o se indique explícitamente en estos términos."
+        trials:
+          heading: "3.2 Pruebas gratuitas"
+          text: "Los planes de pago mensuales incluyen una prueba gratuita de 7 días. No se te cobrará hasta que finalice el período de prueba. Puedes cancelar en cualquier momento durante el período de prueba."
+        overages:
+          heading: "3.3 Excedentes"
+          text: "Si superas la cuota mensual de solicitudes de tu plan, las solicitudes a la API serán bloqueadas con un error 429. Actualiza tu plan para restaurar el acceso."
+      sla:
+        heading: "4. Nivel de servicio y disponibilidad"
+        intro: "Apuntamos a una disponibilidad del 99,99%, pero no garantizamos un servicio ininterrumpido. No somos responsables de:"
+        items:
+          - "Ventanas de mantenimiento programado"
+          - "Eventos de fuerza mayor"
+          - "Fallos de servicios de terceros"
+          - "Problemas causados por el uso indebido de la API"
+      data_privacy:
+        heading: "5. Datos y privacidad"
+        text: "No registramos el contenido de las solicitudes o respuestas de la API. Los metadatos de uso (marcas de tiempo, endpoints, códigos de estado) se conservan para facturación y análisis. Consulta nuestra"
+        policy_link: "Política de privacidad"
+        policy_suffix: "para más detalles."
+        full: "No registramos el contenido de las solicitudes o respuestas de la API. Los metadatos de uso (marcas de tiempo, endpoints, códigos de estado) se conservan para facturación y análisis. Consulta nuestra %{link} para más detalles."
+      ip:
+        heading: "6. Propiedad intelectual"
+        text: "La API, la documentación y todos los materiales relacionados son propiedad de Bobadilla Tech y están protegidos por derechos de autor y otras leyes de propiedad intelectual. No puedes copiar, modificar ni crear obras derivadas sin permiso."
+      termination:
+        heading: "7. Rescisión"
+        intro: "Podemos suspender o terminar tu acceso a la API en cualquier momento por:"
+        items:
+          - "Violación de estos términos"
+          - "Falta de pago de honorarios"
+          - "Actividad fraudulenta o ilegal"
+          - "A nuestra discreción con 30 días de aviso"
+        self_cancel: "Puedes cancelar tu cuenta en cualquier momento desde la configuración de tu panel."
+      liability:
+        heading: "8. Limitación de responsabilidad"
+        text: "EN LA MÁXIMA MEDIDA PERMITIDA POR LA LEY, BOBADILLA TECH NO SERÁ RESPONSABLE DE NINGÚN DAÑO INDIRECTO, INCIDENTAL, ESPECIAL, CONSECUENTE O PUNITIVO, NI DE NINGUNA PÉRDIDA DE GANANCIAS O INGRESOS, YA SEA INCURRIDA DIRECTA O INDIRECTAMENTE, NI DE NINGUNA PÉRDIDA DE DATOS, USO, BUENA VOLUNTAD U OTRAS PÉRDIDAS INTANGIBLES."
+      changes:
+        heading: "9. Cambios en los términos"
+        text: "Nos reservamos el derecho de modificar estos términos en cualquier momento. Te notificaremos de cambios importantes por correo electrónico. El uso continuado de la API después de los cambios constituye la aceptación de los nuevos términos."
+      governing_law:
+        heading: "10. Ley aplicable"
+        text: "Estos términos se rigen por las leyes de la Unión Europea. Cualquier disputa se resolverá en los tribunales de la UE."
+      contact:
+        heading: "Contacto"
+        text: "¿Preguntas sobre estos términos? Contáctanos en"
+
+    privacy:
+      title: "Política de privacidad - Requiems API"
+      heading: "Política de privacidad"
+      last_updated: "Última actualización: %{date}"
+      overview:
+        heading: "Descripción general"
+        text: "Requiems API (\"nosotros\", \"nuestro\" o \"nos\") se compromete a proteger tu privacidad. Esta Política de privacidad explica cómo recopilamos, usamos, divulgamos y protegemos tu información cuando utilizas nuestra plataforma y servicios de API."
+      information_we_collect:
+        heading: "Información que recopilamos"
+        account:
+          heading: "Información de la cuenta"
+          text: "Cuando te registras en una cuenta, recopilamos tu dirección de correo electrónico, nombre e información de facturación."
+        api_usage:
+          heading: "Datos de uso de la API"
+          text: "Recopilamos metadatos sobre tus solicitudes a la API, incluidas marcas de tiempo, el endpoint al que se accedió y los códigos de respuesta. NO registramos los datos reales de solicitud o respuesta enviados a través de nuestras APIs."
+        technical:
+          heading: "Información técnica"
+          text: "Recopilamos automáticamente direcciones IP, cadenas de agente de usuario y otra información técnica con fines de seguridad y operativos."
+      how_we_use:
+        heading: "Cómo usamos tu información"
+        items:
+          - "Proporcionar, mantener y mejorar nuestros servicios"
+          - "Procesar tus transacciones y enviar información relacionada"
+          - "Enviarte avisos técnicos, actualizaciones y mensajes de soporte"
+          - "Monitorear y analizar patrones y tendencias de uso"
+          - "Detectar, prevenir y abordar problemas técnicos y fraudes"
+          - "Cumplir con las obligaciones legales"
+      data_storage:
+        heading: "Almacenamiento y seguridad de datos"
+        text: "Todos los datos se almacenan en servidores ubicados en la Unión Europea. Implementamos medidas de seguridad estándar de la industria que incluyen:"
+        items:
+          - "Cifrado TLS 1.3 para datos en tránsito"
+          - "Cifrado AES-256 para datos en reposo"
+          - "Auditorías de seguridad y monitoreo regulares"
+          - "Controles de acceso y mecanismos de autenticación"
+      data_retention:
+        heading: "Retención de datos"
+        text: "Conservamos la información de tu cuenta mientras esté activa. Los registros de uso se conservan durante 90 días. Puedes solicitar la eliminación de tu cuenta y los datos asociados en cualquier momento."
+      gdpr:
+        heading: "Tus derechos (GDPR)"
+        intro: "Si te encuentras en el Espacio Económico Europeo, tienes los siguientes derechos:"
+        items:
+          - "Derecho de acceso a tus datos personales"
+          - "Derecho de rectificación de datos inexactos"
+          - "Derecho de supresión (\"derecho al olvido\")"
+          - "Derecho a limitar el tratamiento"
+          - "Derecho a la portabilidad de datos"
+          - "Derecho de oposición al tratamiento"
+      third_party:
+        heading: "Servicios de terceros"
+        text: "Utilizamos los siguientes servicios de terceros:"
+        items:
+          - "<strong>LemonSqueezy:</strong> Procesamiento de pagos (consulta su política de privacidad)"
+          - "<strong>Cloudflare:</strong> Infraestructura y protección DDoS"
+      contact:
+        heading: "Contáctanos"
+        text: "Para preguntas relacionadas con la privacidad o para ejercer tus derechos, contáctanos en:"
+
+    about:
+      title: "Acerca de nosotros - Requiems API"
+      heading: "Acerca de Requiems API"
+      intro: "Construyendo APIs listas para producción para desarrolladores de todo el mundo."
+      company_info_html: "Requiems API es un producto de <a href=\"https://bobadilla.tech\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-blue-600 hover:text-blue-700 dark:text-blue-400 font-semibold\">Bobadilla Technologies</a>, un equipo dedicado a crear herramientas e infraestructura orientadas al desarrollador."
+      mission:
+        heading: "Nuestra misión"
+        text: "Requiems API proporciona a los desarrolladores infraestructura de API de nivel empresarial sin la complejidad empresarial. Creemos en hacer las APIs potentes accesibles para desarrolladores de todos los tamaños, desde desarrolladores independientes hasta grandes empresas."
+      offerings:
+        heading: "Lo que ofrecemos"
+        items:
+          - "APIs de validación y verificación de correo electrónico"
+          - "APIs de utilidades de texto (Lorem Ipsum, consejos, citas, palabras aleatorias)"
+          - "Infraestructura de nivel empresarial alojada en la UE"
+          - "Precios transparentes sin costos ocultos"
+          - "Documentación y soporte orientados al desarrollador"
+      values:
+        heading: "Nuestros valores"
+        dx_title: "Experiencia del desarrollador"
+        dx_text: "Nos obsesionamos con hacer que nuestras APIs sean fáciles de integrar y un placer de usar."
+        reliability_title: "Fiabilidad"
+        reliability_text: "SLA de disponibilidad del 99,99% respaldado por infraestructura y monitoreo empresarial."
+        transparency_title: "Transparencia"
+        transparency_text: "Precios claros, documentación detallada y comunicación honesta."
+        privacy_title: "Privacidad"
+        privacy_text: "Infraestructura alojada en la UE con cumplimiento del GDPR integrado desde el primer día."
+      contact:
+        heading: "Contáctanos"
+        intro: "¿Tienes preguntas o quieres saber más?"
+        get_in_touch: "Ponte en contacto"
+        or_email: "o escríbenos a"
+
+    faq:
+      title: "Preguntas frecuentes - Requiems API"
+      heading: "Preguntas frecuentes"
+      intro: "Encuentra respuestas a preguntas comunes sobre Requiems API"
+      getting_started:
+        heading: "Primeros pasos"
+        q1: "¿Cómo empiezo con Requiems API?"
+        a1_html: "¡Empezar es fácil! Crea una cuenta gratuita, genera tu clave API desde el panel y comienza a hacer solicitudes. Consulta nuestra %{docs_link} para guías detalladas de integración."
+        docs_link: "documentación"
+        q2: "¿Necesito una tarjeta de crédito para empezar?"
+        a2: "¡No! Nuestro plan gratuito incluye 500 solicitudes mensuales sin necesidad de tarjeta de crédito. Perfecto para pruebas y proyectos pequeños. Puedes actualizar en cualquier momento cuando necesites más."
+        q3: "¿Qué lenguajes de programación admiten?"
+        a3: "Nuestra API REST funciona con cualquier lenguaje de programación que pueda hacer solicitudes HTTP. Proporcionamos ejemplos de código para lenguajes populares como JavaScript/Node.js, Python, PHP, Ruby, Go y Java."
+      authentication:
+        heading: "Autenticación"
+        q1: "¿Cómo autentico mis solicitudes?"
+        a1: "Incluye tu clave API en el encabezado Authorization como token Bearer:"
+        q2: "¿Cuál es la diferencia entre las claves API de prueba y las de producción?"
+        a2_html: "Las claves de prueba (que comienzan con <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">req_test_</code>) son para desarrollo y pruebas. Funcionan con todos los endpoints pero no cuentan para tu cuota de solicitudes. Las claves de producción (<code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">req_live_</code>) son para uso en producción y cuentan para tu cuota mensual de solicitudes."
+        q3: "¿Puedo regenerar mi clave API?"
+        a3: "¡Sí! Ve a tu panel, haz clic en la clave API que deseas regenerar y selecciona \"Regenerar\". Ten en cuenta que la clave antigua dejará de funcionar de inmediato, así que actualiza todas tus aplicaciones."
+      billing:
+        heading: "Facturación y uso"
+        q1: "¿Cómo se calcula la facturación?"
+        a1: "Cada llamada a la API cuesta 1 solicitud. Tu plan incluye una asignación mensual de solicitudes que se restablece al inicio de cada período de facturación. Algunos endpoints pueden contar como más de 1 solicitud — esto siempre se indica explícitamente en la documentación de ese endpoint."
+        q2: "¿Qué pasa si supero mi límite de solicitudes?"
+        a2: "Cuando alcances el 75% de tu cuota, te enviaremos una alerta. Al 90%, recibirás otra advertencia. Si alcanzas el 100%, las solicitudes a la API devolverán un error 429 hasta que actualices tu plan o esperes tu próximo ciclo de facturación."
+        q3: "¿Puedo actualizar o reducir mi plan?"
+        a3: "¡Sí! Puedes cambiar tu plan en cualquier momento desde tu panel de facturación. Las actualizaciones surten efecto de inmediato. Las reducciones surten efecto al inicio de tu próximo período de facturación."
+        q4: "¿Las solicitudes no utilizadas se acumulan?"
+        a4: "No, las solicitudes no utilizadas no se acumulan para el mes siguiente. Tu asignación de solicitudes se restablece al inicio de cada período de facturación. Recomendamos elegir un plan que se ajuste a tu uso mensual típico."
+      rate_limits:
+        heading: "Límites de tasa"
+        q1: "¿Cuáles son los límites de tasa?"
+        a1: "Los límites de tasa varían según el plan:"
+        free: "Gratuito: 30 solicitudes/minuto"
+        developer: "Desarrollador: 5.000 solicitudes/minuto"
+        business: "Negocio: 10.000 solicitudes/minuto"
+        professional: "Profesional: 50.000 solicitudes/minuto"
+        q2: "¿Cómo debo manejar los errores de límite de tasa?"
+        a2_html: "Cuando recibas un error 429, implementa retroceso exponencial. Espera unos segundos y vuelve a intentarlo. Consulta el encabezado <code class=\"bg-gray-100 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded\">Retry-After</code> para el tiempo de espera recomendado. Considera actualizar tu plan si constantemente alcanzas los límites de tasa."
+      support:
+        heading: "Soporte"
+        q1: "¿Cómo puedo obtener ayuda?"
+        a1: "Ofrecemos múltiples canales de soporte:"
+        docs_channel:
+          label: "Documentación"
+          description: "Guías completas y referencia de la API"
+        contact_channel:
+          label: "Formulario de contacto"
+          description: "Soporte por correo (respuesta 24-48 horas)"
+        github_channel:
+          label: "Issues de GitHub"
+          description: "Reporta errores o solicita funciones"
+        q2: "¿Cuáles son sus tiempos de respuesta de soporte?"
+        a2: "Los tiempos de respuesta varían según el plan:"
+        free_dev: "Gratuito y Desarrollador: 48 horas"
+        business_time: "Negocio: 24 horas"
+        professional_time: "Profesional: 12 horas (soporte prioritario)"
+        q3: "¿Ofrecen soporte empresarial?"
+        a3_html: "¡Sí! Los clientes empresariales obtienen soporte dedicado con tiempos de respuesta garantizados, acceso directo a nuestro equipo de ingeniería y asistencia prioritaria. %{sales_link} para saber más."
+        contact_sales: "Contacta con ventas"
+      still_questions:
+        heading: "¿Aún tienes preguntas?"
+        text: "¡Estamos aquí para ayudar! Contacta a nuestro equipo de soporte o consulta nuestra documentación."
+        contact: "Contactar soporte"
+        docs: "Ver documentación"
+
+    contact:
+      title: "Contáctanos - Requiems API"
+      heading: "Contáctanos"
+      intro: "¿Tienes alguna pregunta sobre Requiems API? Puedes contactarnos por correo o usar el formulario para enviarnos un mensaje. ¡Esperamos saber de ti!"
+      general_questions:
+        heading: "Preguntas generales"
+        text: "Para consultas sobre nuestro negocio, planes de suscripción, políticas o colaboraciones, escríbenos a"
+      technical_support:
+        heading: "Soporte técnico"
+        badge: "Solo usuarios premium"
+        text: "Para soporte técnico, incluyendo depuración, problemas con claves API y validación de datos, ve a la pestaña 'Support Desk' en tu perfil de cuenta."
+      form:
+        heading: "Hablemos"
+        paid_notice: "Si ya eres suscriptor de pago, envía una solicitud desde la pestaña Support Desk de tu perfil de cuenta para obtener una respuesta más rápida."
+        name: "Nombre"
+        email: "Correo electrónico"
+        inquiry_type: "Tipo de consulta"
+        inquiry_existing_api: "API o función existente"
+        inquiry_technical: "Problema técnico"
+        inquiry_pricing: "Planes premium o precios"
+        inquiry_partnership: "Colaboración/Asociación"
+        inquiry_other: "Otro"
+        message: "¿Cómo podemos ayudarte?"
+        submit: "Enviar mensaje"
+      additional:
+        talk_to_sales: "Hablar con ventas"
+        suggest_api: "Sugerir una nueva API"
+    for_llms:
+      title: "Para LLMs y Herramientas de IA - Requiems API"
+      heading: "Para LLMs y Herramientas de IA"
+      intro: "Requiems API ofrece endpoints de documentación legibles por máquina siguiendo el estándar llms.txt, facilitando que las herramientas y agentes de IA descubran y usen nuestras APIs."
+      llms_txt:
+        heading: "llms.txt — Índice de APIs"
+        description: "Un directorio de todas las APIs disponibles con enlaces a sus páginas de documentación individuales. Sigue el estándar llms.txt para la descubribilidad por IA."
+      llms_full:
+        heading: "llms-full.txt — Documentación Completa"
+        description: "La documentación completa de todas las APIs en un único archivo de texto plano. Ideal para ingesta masiva, indexación offline o carga en modelos de contexto largo."
+      api_md:
+        heading: "Markdown por API"
+        description: "Obtén la documentación completa de cualquier API en formato Markdown añadiendo /index.md a su URL."
+        pattern: "Patrón: /apis/{api-id}/index.md"
+      open_in_ai:
+        heading: "Abrir en Claude / ChatGPT"
+        description: "Cada página de documentación de API incluye un botón «Abrir en Claude» y «Abrir en ChatGPT» que carga la referencia completa de la API como prompt para obtener ayuda de integración al instante."
+        note: "Encuentra estos botones en cualquier página individual de API en la sección de documentación."
+      cta:
+        heading: "¿Listo para integrar?"
+        text: "Explora el catálogo completo de APIs o descarga la documentación completa para empezar."
+        browse_apis: "Ver APIs"
+        full_docs: "Descargar llms-full.txt"

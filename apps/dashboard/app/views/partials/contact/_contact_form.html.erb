@@ -1,0 +1,47 @@
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg p-8">
+  <h2 class="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4"><%= t("home.contact.form.heading") %></h2>
+
+  <p class="text-gray-600 dark:text-gray-400 mb-8">
+    <%= t("home.contact.form.paid_notice") %>
+  </p>
+
+  <%= form_with url: contact_path, method: :post, local: true, class: "space-y-6" do |f| %>
+    <!-- Name -->
+    <div>
+      <%= f.label :name, t("home.contact.form.name"), class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+      <%= f.text_field :name, required: true, class: "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+    </div>
+
+    <!-- Email -->
+    <div>
+      <%= f.label :email, t("home.contact.form.email"), class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+      <%= f.email_field :email, required: true, class: "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+    </div>
+
+    <!-- Inquiry Type -->
+    <div>
+      <%= f.label :inquiry_type, t("home.contact.form.inquiry_type"), class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+      <%= f.select :inquiry_type,
+        [
+          [t("home.contact.form.inquiry_existing_api"), "existing_api"],
+          [t("home.contact.form.inquiry_technical"), "technical"],
+          [t("home.contact.form.inquiry_pricing"), "pricing"],
+          [t("home.contact.form.inquiry_partnership"), "partnership"],
+          [t("home.contact.form.inquiry_other"), "other"]
+        ],
+        {},
+        required: true,
+        class: "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+      %>
+    </div>
+
+    <!-- Message -->
+    <div>
+      <%= f.label :message, t("home.contact.form.message"), class: "block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2" %>
+      <%= f.text_area :message, rows: 6, required: true, class: "w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent" %>
+    </div>
+
+    <!-- Submit Button -->
+    <%= f.submit t("home.contact.form.submit"), class: "w-full bg-blue-900 text-white py-3 px-6 rounded-lg font-medium hover:bg-blue-800 transition-colors cursor-pointer" %>
+  <% end %>
+</div>

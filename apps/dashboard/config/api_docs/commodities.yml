@@ -1,0 +1,166 @@
+api_id: commodities
+api_name: Commodity Prices
+description: >-
+  Historical and current annual average prices for 16 major commodities — precious metals, energy, and agricultural
+  goods. Prices are annual averages sourced from FRED (Federal Reserve Economic Data).
+base_url: https://api.requiems.xyz
+overview:
+  use_cases:
+    - Financial dashboards and portfolio trackers
+    - Commodity price trend analysis
+    - Inflation-adjusted cost modelling
+    - Economic research and education
+    - Supply chain cost forecasting
+  features:
+    - 16 commodities covered (metals, energy, agricultural)
+    - Annual average prices sourced from FRED (Federal Reserve)
+    - Up to 10 years of historical data per commodity
+    - Year-over-year change percentage included
+    - Data going back to the 1960s for major commodities
+endpoints:
+  - name: Get Commodity Price
+    method: GET
+    path: /v1/finance/commodities/{commodity}
+    description: Returns the latest annual average price and up to 10 years of historical data for the requested commodity slug.
+    parameters:
+      - name: commodity
+        type: string
+        required: true
+        location: path
+        description: Commodity slug (e.g. gold, silver, oil). See supported slugs below.
+        example: gold
+    response_example: |
+      {
+        "data": {
+          "commodity": "gold",
+          "name": "Gold",
+          "price": 2386.3300,
+          "unit": "oz",
+          "currency": "USD",
+          "change_24h": 23.01,
+          "historical": [
+            { "period": "2023", "price": 1940.5400 },
+            { "period": "2022", "price": 1800.1200 },
+            { "period": "2021", "price": 1798.5200 },
+            { "period": "2020", "price": 1769.6400 },
+            { "period": "2019", "price": 1392.6000 },
+            { "period": "2018", "price": 1268.9300 },
+            { "period": "2017", "price": 1257.1500 },
+            { "period": "2016", "price": 1251.6500 },
+            { "period": "2015", "price": 1160.0600 },
+            { "period": "2014", "price": 1266.4000 }
+          ]
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+    response_fields:
+      - name: commodity
+        type: string
+        description: The commodity slug as provided in the request path
+      - name: name
+        type: string
+        description: Human-readable commodity name
+      - name: price
+        type: number
+        description: Latest annual average price in the commodity's display unit
+      - name: unit
+        type: string
+        description: Price unit (oz, barrel, mmbtu, lb, or metric_ton)
+      - name: currency
+        type: string
+        description: Currency code — always USD
+      - name: change_24h
+        type: number
+        description: Year-over-year percentage change from the prior year's annual average (positive = price increased)
+      - name: historical
+        type: array
+        description: Up to 10 prior years of annual average prices, ordered newest to oldest
+      - name: historical[].period
+        type: string
+        description: Year of the historical data point
+      - name: historical[].price
+        type: number
+        description: Annual average price for that year
+    errors:
+      - code: not_found
+        status: 404
+        description: No data found for the given commodity slug. Check the supported slugs list.
+      - code: internal_error
+        status: 500
+        description: Unexpected server error.
+    code_examples:
+      curl: |
+        curl "https://api.requiems.xyz/v1/finance/commodities/gold" \
+          -H "requiems-api-key: YOUR_API_KEY"
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/finance/commodities/gold"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+
+        response = requests.get(url, headers=headers)
+        data = response.json()["data"]
+        print(data["price"])      # 2386.33
+        print(data["change_24h"]) # 23.01
+        print(data["historical"][0]["period"])  # "2023"
+      javascript: |
+        const response = await fetch(
+          'https://api.requiems.xyz/v1/finance/commodities/gold',
+          { headers: { 'requiems-api-key': 'YOUR_API_KEY' } }
+        );
+
+        const { data } = await response.json();
+        console.log(data.price);       // 2386.33
+        console.log(data.change_24h);  // 23.01
+        console.log(data.historical.length); // up to 10
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/finance/commodities/gold')
+
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        data = JSON.parse(response.body)['data']
+        puts data['price']      # 2386.33
+        puts data['change_24h'] # 23.01
+faq:
+  - question: What slugs are supported?
+    answer: >-
+      gold, silver, platinum, palladium, oil (WTI), brent, natural-gas, copper, aluminum, wheat, corn, soybeans, coffee,
+      sugar, cotton, cocoa.
+  - question: What does change_24h represent?
+    answer: >-
+      Despite the field name, change_24h is the year-over-year percentage change between the latest annual average and
+      the prior year's annual average. The API stores annual data, not intraday prices.
+  - question: What unit is used for each commodity?
+    answer: >-
+      Precious metals (gold, silver, platinum, palladium) are priced per troy ounce. Oil and brent are per barrel.
+      Natural gas is per mmBtu. Copper and coffee are per pound (lb). Aluminum, wheat, corn, soybeans, and cocoa are per
+      metric ton. Sugar and cotton are per pound (lb).
+  - question: How often is the data updated?
+    answer: >-
+      Data is sourced from FRED and updated annually. Re-run the seed CLI (cmd/seed-commodities) to pull the latest
+      annual averages when new data is published.
+  - question: Are prices real-time?
+    answer: >-
+      No. Prices are annual averages, not real-time spot prices. For the most recent year, the price reflects the
+      full-year average once the year has closed. Use a dedicated market data provider for live quotes.
+  - question: Why does a commodity return 404?
+    answer: >-
+      The database must be seeded before queries work. Run docker exec requiem-dev-api-1 go run ./cmd/seed-commodities
+      --db-url ... to populate the table.
+performance:
+  p50_ms: 827
+  p95_ms: 980
+  p99_ms: 1066
+  avg_ms: 843
+  samples: 50
+  measured_at: "2026-04-20"

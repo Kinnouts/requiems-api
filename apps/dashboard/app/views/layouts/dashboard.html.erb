@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+  <head>
+    <script>
+      (function() {
+        var theme = localStorage.getItem('theme');
+        if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+          document.documentElement.classList.add('dark');
+        }
+      })();
+    </script>
+    <title><%= content_for(:title) || "Dashboard" %> - Requiems API</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="turbo-visit-control" content="reload">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <meta name="robots" content="noindex, nofollow">
+
+    <%= favicon_link_tag "logo.png", rel: "icon", type: "image/png" %>
+    <%= favicon_link_tag "logo.png", rel: "apple-touch-icon" %>
+
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11.9.0/styles/github-dark.min.css">
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="bg-gray-50 dark:bg-gray-900">
+    <!-- Top Navbar -->
+    <%= render "layouts/navbar" %>
+
+    <!-- Dashboard Container -->
+    <div class="min-h-screen">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+          <!-- Sidebar -->
+          <aside class="lg:col-span-3">
+            <%= render "partials/dashboard/sidebar" %>
+          </aside>
+
+          <!-- Main Content -->
+          <main class="lg:col-span-9 mt-8 lg:mt-0">
+            <!-- Flash Messages -->
+            <% if notice %>
+              <%= render "partials/shared/alert", message: notice, variant: "success", dismissible: true, class_names: "mb-6" %>
+            <% end %>
+
+            <% if alert %>
+              <%= render "partials/shared/alert", message: alert, variant: "error", dismissible: true, class_names: "mb-6" %>
+            <% end %>
+
+            <%= yield %>
+          </main>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <%= render "layouts/footer" %>
+  </body>
+</html>

@@ -1,0 +1,103 @@
+name: requiem-backend
+
+services:
+  api:
+    build:
+      context: ../../apps/api
+      dockerfile: ../../infra/docker/api.Dockerfile
+    env_file: .env
+    environment:
+      - PORT=8080
+      - ENVIRONMENT=production
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:8080/healthz || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
+
+  db:
+    image: postgres:16-alpine
+    env_file: .env
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER}"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  redis:
+    image: redis:7-alpine
+    volumes:
+      - redis_data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  dashboard:
+    build:
+      context: ../../apps/dashboard
+      dockerfile: ../../infra/docker/dashboard.Dockerfile
+    env_file: .env
+    environment:
+      - RAILS_ENV=production
+      - RAILS_LOG_LEVEL=warn
+    ports:
+      - "3000:80"
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      api:
+        condition: service_healthy
+    command: >
+      sh -c "./bin/rails db:prepare &&
+             ./bin/thrust ./bin/rails server"
+
+  worker:
+    build:
+      context: ../../apps/dashboard
+      dockerfile: ../../infra/docker/dashboard.Dockerfile
+    env_file: .env
+    environment:
+      - RAILS_ENV=production
+      - RAILS_LOG_LEVEL=warn
+    depends_on:
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: bundle exec sidekiq
+
+  caddy:
+    image: caddy:2-alpine
+    env_file: .env
+    depends_on:
+      - api
+      - dashboard
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ../caddy/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  db_data: {}
+  redis_data: {}
+  caddy_data: {}
+  caddy_config: {}

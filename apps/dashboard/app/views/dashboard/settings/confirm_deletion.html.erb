@@ -1,0 +1,86 @@
+<% content_for :title, t("dashboard.settings.confirm_deletion.title") %>
+
+<!-- Header -->
+<div class="mb-8">
+  <div class="flex items-center gap-3 mb-2">
+    <%= link_to dashboard_settings_path, class: "text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 flex items-center gap-1" do %>
+      <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+      </svg>
+      <%= t("dashboard.settings.confirm_deletion.back") %>
+    <% end %>
+  </div>
+  <h1 class="text-3xl font-bold text-gray-900 dark:text-gray-100"><%= t("dashboard.settings.confirm_deletion.title") %></h1>
+  <p class="mt-2 text-sm text-gray-600 dark:text-gray-400"><%= t("dashboard.settings.confirm_deletion.subtitle") %></p>
+</div>
+
+<!-- Your reason -->
+<div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700 rounded-lg p-5 mb-6">
+  <div class="flex items-start gap-3">
+    <svg class="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+    </svg>
+    <div>
+      <p class="text-sm font-semibold text-amber-800 dark:text-amber-300 mb-1"><%= t("dashboard.settings.confirm_deletion.reason_heading") %></p>
+      <p class="text-sm text-amber-700 dark:text-amber-400"><%= @reason %></p>
+    </div>
+  </div>
+</div>
+
+<!-- Consequences card -->
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow border-2 border-red-200 dark:border-red-800 mb-8">
+  <div class="px-6 py-4 bg-red-50 dark:bg-red-900/30 border-b border-red-200 dark:border-red-800 rounded-t-lg">
+    <div class="flex items-center gap-2">
+      <svg class="h-5 w-5 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+      </svg>
+      <h2 class="text-base font-semibold text-red-900 dark:text-red-300"><%= t("dashboard.settings.confirm_deletion.consequences_heading") %></h2>
+    </div>
+  </div>
+  <div class="p-6">
+    <ul class="space-y-3">
+      <li class="flex items-start gap-3">
+        <svg class="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+        </svg>
+        <div>
+          <p class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= t("dashboard.settings.confirm_deletion.api_keys_bullet_title") %></p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5"><%= t("dashboard.settings.confirm_deletion.api_keys_bullet_body") %></p>
+        </div>
+      </li>
+      <li class="flex items-start gap-3">
+        <svg class="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+        </svg>
+        <div>
+          <p class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= t("dashboard.settings.confirm_deletion.subscription_bullet_title") %></p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5"><%= t("dashboard.settings.confirm_deletion.subscription_bullet_body") %></p>
+        </div>
+      </li>
+      <li class="flex items-start gap-3">
+        <svg class="h-5 w-5 text-red-500 flex-shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/>
+        </svg>
+        <div>
+          <p class="text-sm font-medium text-gray-900 dark:text-gray-100"><%= t("dashboard.settings.confirm_deletion.data_bullet_title") %></p>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-0.5"><%= t("dashboard.settings.confirm_deletion.data_bullet_body") %></p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- Final action -->
+<div class="flex items-center justify-between">
+  <%= link_to dashboard_settings_path,
+    class: "px-6 py-3 text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors" do %>
+    <%= t("dashboard.settings.confirm_deletion.cancel") %>
+  <% end %>
+
+  <%= form_with url: execute_deletion_dashboard_settings_path, method: :delete, local: true do |f| %>
+    <%= f.hidden_field :token, value: @token %>
+    <%= f.submit t("dashboard.settings.confirm_deletion.confirm_btn"),
+      class: "px-6 py-3 bg-red-600 text-white text-sm font-semibold rounded-lg hover:bg-red-700 active:bg-red-800 transition-colors focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 cursor-pointer",
+      data: { disable_with: t("dashboard.settings.confirm_deletion.deleting") } %>
+  <% end %>
+</div>

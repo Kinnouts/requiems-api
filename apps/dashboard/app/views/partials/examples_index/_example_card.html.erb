@@ -1,0 +1,120 @@
+<%
+  example_data = local_assigns.fetch(:example, {})
+  example_id = example_data["id"]
+  example_title = example_data["title"]
+  example_category = example_data["category"]
+  example_description = example_data["description"]
+  example_difficulty = example_data["difficulty"]
+  example_duration = example_data["duration"]
+  example_technologies = example_data["technologies"] || []
+  example_apis_used = example_data["apis_used"] || []
+  example_github_url = example_data["github_url"]
+  example_demo_url = example_data["demo_url"]
+
+  difficulty_color = case example_difficulty
+  when "Beginner" then "success"
+  when "Intermediate" then "warning"
+  when "Advanced" then "danger"
+  else "default"
+  end
+%>
+
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow cursor-pointer"
+     data-controller="clickable-card"
+     data-clickable-card-url-value="<%= example_path(example_id) %>"
+     data-action="click->clickable-card#navigate keydown->clickable-card#navigateOnKeydown"
+     role="link" tabindex="0"
+     aria-label="<%= example_title %> - View Tutorial">
+  <!-- Thumbnail Placeholder -->
+  <div class="bg-gradient-to-br from-blue-500 to-indigo-600 h-48 flex items-center justify-center">
+    <div class="text-white text-center p-6">
+      <svg class="h-16 w-16 mx-auto mb-3 opacity-75" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+      </svg>
+      <p class="text-sm font-medium opacity-90"><%= example_category %></p>
+    </div>
+  </div>
+
+  <div class="p-6">
+    <!-- Header -->
+    <div class="flex items-start justify-between mb-3">
+      <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 flex-1">
+        <%= example_title %>
+      </h3>
+      <%= render "partials/shared/badge", text: example_difficulty, variant: difficulty_color, size: "sm" %>
+    </div>
+
+    <!-- Description -->
+    <p class="text-gray-600 dark:text-gray-400 text-sm mb-4 line-clamp-3">
+      <%= example_description %>
+    </p>
+
+    <!-- Meta Info -->
+    <div class="flex items-center text-sm text-gray-500 dark:text-gray-400 mb-4 space-x-4">
+      <div class="flex items-center">
+        <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        <%= example_duration %>
+      </div>
+      <div class="flex items-center">
+        <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 20l4-16m2 16l4-16M6 9h14M4 15h14"/>
+        </svg>
+        <%= example_technologies.count %> <%= "tech".pluralize(example_technologies.count) %>
+      </div>
+    </div>
+
+    <!-- Technologies -->
+    <div class="flex flex-wrap gap-2 mb-4">
+      <% example_technologies.take(3).each do |tech| %>
+        <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+          <%= tech %>
+        </span>
+      <% end %>
+      <% if example_technologies.count > 3 %>
+        <span class="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300">
+          +<%= example_technologies.count - 3 %>
+        </span>
+      <% end %>
+    </div>
+
+    <!-- APIs Used -->
+    <% if example_apis_used.any? %>
+      <div class="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+        <p class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2">APIs Used</p>
+        <div class="flex flex-wrap gap-1">
+          <% example_apis_used.each do |api| %>
+            <span class="text-xs text-blue-600 dark:text-blue-400">• <%= api %></span>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Actions -->
+    <div class="flex gap-3">
+      <%= link_to example_path(example_id), class: "flex-1 inline-flex items-center justify-center px-4 py-2 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 transition-colors" do %>
+        <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        View Tutorial
+      <% end %>
+
+      <% if example_github_url.present? %>
+        <a href="<%= example_github_url %>" target="_blank" rel="noopener" class="inline-flex items-center justify-center px-4 py-2 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" title="View on GitHub">
+          <svg class="h-4 w-4" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+          </svg>
+        </a>
+      <% end %>
+
+      <% if example_demo_url.present? %>
+        <a href="<%= example_demo_url %>" target="_blank" rel="noopener" class="inline-flex items-center justify-center px-4 py-2 border-2 border-blue-600 dark:border-blue-500 text-blue-600 dark:text-blue-400 font-medium rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors" title="View Demo">
+          <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+          </svg>
+        </a>
+      <% end %>
+    </div>
+  </div>
+</div>

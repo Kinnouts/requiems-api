@@ -1,0 +1,87 @@
+api_id: advice
+api_name: Random Advice
+description: Get random pieces of advice and wisdom for inspiration, daily motivation, or content generation.
+base_url: https://api.requiems.xyz
+overview:
+  use_cases:
+    - Daily motivation apps
+    - Chatbot responses
+    - Content placeholders
+    - Quote widgets
+  features:
+    - Curated collection of advice
+    - Simple REST API
+    - No authentication required for testing
+    - Fast response times
+endpoints:
+  - name: Get Random Advice
+    method: GET
+    path: /v1/text/advice
+    description: Returns a random piece of advice
+    parameters: []
+    response_example: |
+      {
+        "data": {
+          "id": 42,
+          "advice": "Don't compare yourself to others. Compare yourself to the person you were yesterday."
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+    response_fields:
+      - name: id
+        type: integer
+        description: Unique identifier for the advice
+      - name: advice
+        type: string
+        description: A random piece of advice
+    code_examples:
+      curl: |
+        curl https://api.requiems.xyz/v1/text/advice \
+          -H "requiems-api-key: YOUR_API_KEY"
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/text/advice"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+
+        response = requests.get(url, headers=headers)
+        print(response.json())
+      javascript: |
+        const response = await fetch('https://api.requiems.xyz/v1/text/advice', {
+          headers: {
+            'requiems-api-key': 'YOUR_API_KEY'
+          }
+        });
+
+        const data = await response.json();
+        console.log(data.data.advice);
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/text/advice')
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        data = JSON.parse(response.body)
+        puts data['data']['advice']
+faq:
+  - question: Can I request specific types of advice?
+    answer: >-
+      Currently, the API returns random advice from our curated collection. Category filtering is planned for a future
+      update.
+  - question: How many pieces of advice are in the database?
+    answer: Our collection contains over 200 pieces of curated advice and wisdom, and we're constantly adding more.
+performance:
+  p50_ms: 908
+  p95_ms: 1082
+  p99_ms: 1173
+  avg_ms: 968
+  samples: 50
+  measured_at: "2026-04-20"

@@ -1,0 +1,127 @@
+api_id: number-base-conversion
+api_name: Number Base Conversion
+description: Convert integers between binary (base 2), octal (base 8), decimal (base 10), and hexadecimal (base 16).
+base_url: https://api.requiems.xyz
+overview:
+  use_cases:
+    - Developer tools and calculators
+    - Converting memory addresses or CPU flags between hex and binary
+    - Teaching or learning number systems
+    - Debugging low-level protocol data
+  features:
+    - Supports binary, octal, decimal, and hexadecimal
+    - Accepts optional base prefixes (0x, 0b, 0o)
+    - Supports negative integers
+    - Fast, in-memory only — no database required
+endpoints:
+  - name: Convert Base
+    method: GET
+    path: /v1/technology/base
+    description: Convert an integer from one number base to another.
+    parameters:
+      - name: from
+        type: integer
+        required: true
+        location: query
+        description: Source base (2, 8, 10, or 16)
+        example: 10
+      - name: to
+        type: integer
+        required: true
+        location: query
+        description: Target base (2, 8, 10, or 16)
+        example: 16
+      - name: value
+        type: string
+        required: true
+        location: query
+        description: "The number as a string. Accepts optional prefixes: 0x (hex), 0b (binary), 0o (octal)."
+        example: "255"
+    response_example: |
+      {
+        "data": {
+          "input": "255",
+          "from": 10,
+          "to": 16,
+          "result": "ff"
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+    response_fields:
+      - name: input
+        type: string
+        description: The original value as provided in the request
+      - name: from
+        type: integer
+        description: The source base
+      - name: to
+        type: integer
+        description: The target base
+      - name: result
+        type: string
+        description: The converted value in the target base
+    errors:
+      - code: bad_request
+        status: 400
+        description: A required parameter is missing, the base is not one of 2/8/10/16, or value is not valid for the given base.
+    code_examples:
+      curl: |
+        # Decimal to hex
+        curl "https://api.requiems.xyz/v1/technology/base?from=10&to=16&value=255" \
+          -H "requiems-api-key: YOUR_API_KEY"
+
+        # Hex to binary (using 0x prefix)
+        curl "https://api.requiems.xyz/v1/technology/base?from=16&to=2&value=0xff" \
+          -H "requiems-api-key: YOUR_API_KEY"
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/technology/base"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+        params = {"from": 10, "to": 16, "value": "255"}
+
+        response = requests.get(url, params=params, headers=headers)
+        print(response.json()["data"]["result"])  # ff
+      javascript: |
+        const params = new URLSearchParams({ from: 10, to: 16, value: '255' });
+        const response = await fetch(
+          `https://api.requiems.xyz/v1/technology/base?${params}`,
+          { headers: { 'requiems-api-key': 'YOUR_API_KEY' } }
+        );
+
+        const { data } = await response.json();
+        console.log(data.result); // ff
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/technology/base')
+        uri.query = URI.encode_www_form(from: 10, to: 16, value: '255')
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        puts JSON.parse(response.body)['data']['result']  # ff
+faq:
+  - question: Which bases are supported?
+    answer: >-
+      Binary (2), octal (8), decimal (10), and hexadecimal (16). Passing any other value for from or to returns a 400
+      error.
+  - question: Can I use 0x, 0b, or 0o prefixes?
+    answer: Yes. The API strips common base prefixes before parsing, so 0xff, 0b11111111, and 0o377 are all accepted.
+  - question: Are negative numbers supported?
+    answer: Yes. A leading minus sign is preserved — for example, -255 in decimal converts to -ff in hexadecimal.
+  - question: Is the hexadecimal output upper or lower case?
+    answer: Lower case. The API uses Go's standard strconv.FormatInt which produces lower-case hex digits (a–f).
+performance:
+  p50_ms: 775
+  p95_ms: 896
+  p99_ms: 1050
+  avg_ms: 795
+  samples: 50
+  measured_at: "2026-04-20"

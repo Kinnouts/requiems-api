@@ -1,0 +1,196 @@
+<%
+  endpoint_data = local_assigns.fetch(:endpoint, {})
+  endpoint_index = local_assigns.fetch(:index, 0)
+  endpoint_base_url = local_assigns.fetch(:base_url, "")
+
+  endpoint_name = endpoint_data["name"]
+  endpoint_method = endpoint_data["method"]
+  endpoint_path = endpoint_data["path"]
+  endpoint_description = endpoint_data["description"]
+  endpoint_parameters = endpoint_data["parameters"] || []
+  endpoint_request_example = endpoint_data["request_example"]
+  endpoint_response_example = endpoint_data["response_example"]
+  endpoint_response_fields = endpoint_data["response_fields"] || []
+  endpoint_errors = endpoint_data["errors"] || []
+  endpoint_code_examples = endpoint_data["code_examples"] || {}
+
+  endpoint_full_url = "#{endpoint_base_url}#{endpoint_path}"
+
+  # Method badge variant
+  endpoint_method_variant = case endpoint_method
+  when "GET" then "primary"
+  when "POST" then "success"
+  when "PUT", "PATCH" then "warning"
+  when "DELETE" then "danger"
+  else "default"
+  end
+%>
+
+<div id="endpoint-<%= endpoint_index %>" class="mb-12 pb-8 <%= 'border-b border-gray-200 dark:border-gray-700' unless endpoint_index == 0 %>">
+  <!-- Endpoint Header -->
+  <div class="flex items-start justify-between mb-4">
+    <div>
+      <h3 class="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2"><%= endpoint_name %></h3>
+      <p class="text-gray-600 dark:text-gray-400"><%= endpoint_description %></p>
+    </div>
+  </div>
+
+  <!-- Method and URL -->
+  <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 mb-6 flex items-center space-x-3">
+    <%= render "partials/shared/badge", text: endpoint_method, variant: endpoint_method_variant, size: "md" %>
+    <div class="flex-1 min-w-0 overflow-x-auto">
+      <code class="text-sm font-mono text-gray-800 dark:text-gray-200 whitespace-nowrap"><%= endpoint_full_url %></code>
+    </div>
+    <button type="button"
+            data-controller="copy"
+            data-copy-text-value="<%= endpoint_full_url %>"
+            data-action="click->copy#copy"
+            class="p-2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 transition-colors"
+            title="Copy URL">
+      <svg class="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Parameters -->
+  <% if endpoint_parameters.any? %>
+    <div class="mb-6">
+      <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">Parameters</h4>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 border border-gray-200 dark:border-gray-700 rounded-lg">
+          <thead class="bg-gray-50 dark:bg-gray-700">
+            <tr>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Name</th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Type</th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Required</th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Description</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <% endpoint_parameters.each do |param| %>
+              <tr>
+                <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-gray-100"><%= param["name"] %></td>
+                <td class="px-4 py-3 text-sm text-gray-600 dark:text-gray-400"><code class="text-xs bg-gray-100 dark:bg-gray-600 px-2 py-1 rounded"><%= param["type"] %></code></td>
+                <td class="px-4 py-3 text-sm">
+                  <% if param["required"] %>
+                    <%= render "partials/shared/badge", text: "Required", variant: "danger", size: "xs" %>
+                  <% else %>
+                    <%= render "partials/shared/badge", text: "Optional", variant: "default", size: "xs" %>
+                  <% end %>
+                </td>
+                <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300"><%= param["description"] %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Live Playground -->
+  <div class="mb-6 bg-gradient-to-r from-blue-50 dark:from-blue-900/20 to-indigo-50 dark:to-indigo-900/20 rounded-lg p-6 border-2 border-blue-200 dark:border-blue-800">
+    <div class="flex items-center justify-between mb-4">
+      <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center">
+        <svg class="h-5 w-5 text-blue-600 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/>
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        Try it out
+      </h4>
+      <%= render "partials/shared/badge", text: "Live Demo", variant: "success", size: "sm" %>
+    </div>
+
+    <%= render "partials/apis_show/playground", endpoint: endpoint_data, endpoint_path: endpoint_path, index: endpoint_index %>
+  </div>
+
+  <!-- Response Schema -->
+  <% if endpoint_response_fields.any? %>
+    <div class="mb-6">
+      <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">Response Fields</h4>
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-gray-700 border border-gray-200 dark:border-gray-700 rounded-lg">
+          <thead class="bg-gray-50 dark:bg-gray-700">
+            <tr>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Field</th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Type</th>
+              <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase">Description</th>
+            </tr>
+          </thead>
+          <tbody class="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+            <% endpoint_response_fields.each do |field| %>
+              <tr>
+                <td class="px-4 py-3 text-sm font-mono text-gray-900 dark:text-gray-100"><%= field["name"] %></td>
+                <td class="px-4 py-3 text-sm"><code class="text-xs bg-gray-100 dark:bg-gray-600 px-2 py-1 rounded"><%= field["type"] %></code></td>
+                <td class="px-4 py-3 text-sm text-gray-700 dark:text-gray-300"><%= field["description"] %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Code Examples -->
+  <% if endpoint_code_examples.any? %>
+    <div class="mb-6">
+      <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">Code Examples</h4>
+
+      <div data-controller="code-tabs highlight">
+        <!-- Tabs -->
+        <div class="flex space-x-2 border-b border-gray-200 dark:border-gray-700 mb-4">
+          <% endpoint_code_examples.each_with_index do |(language, code), idx| %>
+            <button type="button"
+                    class="px-4 py-2 text-sm font-medium transition-colors <%= idx == 0 ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100' %>"
+                    data-code-tabs-target="tab"
+                    data-action="click->code-tabs#switch"
+                    data-index="<%= idx %>">
+              <%= language.titleize %>
+            </button>
+          <% end %>
+        </div>
+
+        <!-- Code blocks -->
+        <% endpoint_code_examples.each_with_index do |(language, code), idx| %>
+          <div class="<%= 'hidden' unless idx == 0 %>" data-code-tabs-target="content">
+            <div class="relative">
+              <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code class="language-<%= language == 'curl' ? 'bash' : language %>"><%= code.strip %></code></pre>
+              <button type="button"
+                      data-controller="copy"
+                      data-copy-text-value="<%= code.strip %>"
+                      data-action="click->copy#copy"
+                      class="absolute top-2 right-2 p-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded transition-colors"
+                      title="Copy code">
+                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Error Codes -->
+  <% if endpoint_errors.any? %>
+    <div class="mb-6">
+      <h4 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3">Error Responses</h4>
+      <div class="space-y-3">
+        <% endpoint_errors.each do |error| %>
+          <div class="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">
+            <div class="flex items-start">
+              <span class="inline-flex items-center px-2.5 py-0.5 rounded text-xs font-medium bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-300 mr-3">
+                <%= error["code"] %>
+              </span>
+              <div>
+                <p class="font-medium text-red-900 dark:text-red-200"><%= error["message"] %></p>
+                <p class="text-sm text-red-700 dark:text-red-300 mt-1"><%= error["description"] %></p>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+</div>

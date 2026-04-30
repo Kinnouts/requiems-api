@@ -1,0 +1,176 @@
+<% content_for :title, t("dashboard.quick_start.title") %>
+
+<!-- Header -->
+<div class="bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg shadow-lg p-8 text-white mb-8">
+  <h1 class="text-3xl font-bold mb-2">
+    <%= t("dashboard.quick_start.heading") %>
+  </h1>
+  <p class="text-blue-100">
+    <%= t("dashboard.quick_start.subtitle") %>
+  </p>
+</div>
+
+<div class="space-y-6">
+
+  <!-- Step 1: Create Account -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <div class="flex items-start">
+      <div class="flex-shrink-0 h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm mr-4 mt-0.5">1</div>
+      <div class="flex-1">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+          <%= t("dashboard.quick_start.step_1.heading") %>
+        </h2>
+        <p class="text-gray-600 dark:text-gray-400 mb-3">
+          <%= t("dashboard.quick_start.step_1.body") %>
+        </p>
+        <span class="inline-flex items-center px-3 py-1.5 bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-sm font-medium rounded-lg">
+          <svg class="h-4 w-4 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+          </svg>
+          <%= t("dashboard.quick_start.step_1.cta") %>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 2: Get API Key -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <div class="flex items-start">
+      <div class="flex-shrink-0 h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm mr-4 mt-0.5">2</div>
+      <div class="flex-1">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+          <%= t("dashboard.quick_start.step_2.heading") %>
+        </h2>
+        <p class="text-gray-600 dark:text-gray-400 mb-4">
+          <%= t("dashboard.quick_start.step_2.body") %>
+        </p>
+
+        <p class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          <%= t("dashboard.quick_start.step_2.header_label") %>
+        </p>
+        <div class="relative mb-4" data-controller="highlight">
+          <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 text-sm overflow-x-auto"><code class="language-bash">requiems-api-key: YOUR_API_KEY</code></pre>
+          <button type="button"
+                  data-controller="copy"
+                  data-copy-text-value="requiems-api-key: YOUR_API_KEY"
+                  data-action="click->copy#copy"
+                  class="absolute top-2 right-2 p-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded transition-colors text-xs"
+                  title="<%= t("dashboard.quick_start.copy_btn") %>">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+          </button>
+        </div>
+
+        <%= link_to dashboard_api_keys_path, class: "inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-medium rounded-lg hover:bg-blue-700 transition-colors" do %>
+          <svg class="h-4 w-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 7a2 2 0 012 2m4 0a6 6 0 01-7.743 5.743L11 17H9v2H7v2H4a1 1 0 01-1-1v-2.586a1 1 0 01.293-.707l5.964-5.964A6 6 0 1121 9z"/>
+          </svg>
+          <%= t("dashboard.quick_start.step_2.cta") %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 3: First API Call -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <div class="flex items-start">
+      <div class="flex-shrink-0 h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm mr-4 mt-0.5">3</div>
+      <div class="flex-1">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+          <%= t("dashboard.quick_start.step_3.heading") %>
+        </h2>
+        <p class="text-gray-600 dark:text-gray-400 mb-4">
+          <%= t("dashboard.quick_start.step_3.body") %>
+        </p>
+
+        <% first_call_example = "curl https://api.requiems.xyz/v1/text/advice \\\n  -H 'requiems-api-key: YOUR_API_KEY'" %>
+        <div class="relative mb-3" data-controller="highlight">
+          <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 text-sm overflow-x-auto"><code class="language-bash"><%= first_call_example %></code></pre>
+          <button type="button"
+                  data-controller="copy"
+                  data-copy-text-value="<%= first_call_example %>"
+                  data-action="click->copy#copy"
+                  class="absolute top-2 right-2 p-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded transition-colors"
+                  title="<%= t("dashboard.quick_start.copy_btn") %>">
+            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+            </svg>
+          </button>
+        </div>
+        <p class="text-xs text-gray-500 dark:text-gray-400">
+          <%= t("dashboard.quick_start.step_3.note") %>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Step 4: Code Examples -->
+  <div class="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+    <div class="flex items-start">
+      <div class="flex-shrink-0 h-8 w-8 rounded-full bg-blue-600 flex items-center justify-center text-white font-bold text-sm mr-4 mt-0.5">4</div>
+      <div class="flex-1">
+        <h2 class="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">
+          <%= t("dashboard.quick_start.step_4.heading") %>
+        </h2>
+        <p class="text-gray-600 dark:text-gray-400 mb-4">
+          <%= t("dashboard.quick_start.step_4.body") %>
+        </p>
+
+        <%
+          examples = {
+            "curl" => "curl https://api.requiems.xyz/v1/text/advice \\\n  -H 'requiems-api-key: YOUR_API_KEY'",
+            "javascript" => "const response = await fetch('https://api.requiems.xyz/v1/text/advice', {\n  headers: {\n    'requiems-api-key': 'YOUR_API_KEY'\n  }\n});\n\nconst data = await response.json();\nconsole.log(data);",
+            "python" => "import requests\n\nresponse = requests.get(\n    'https://api.requiems.xyz/v1/text/advice',\n    headers={'requiems-api-key': 'YOUR_API_KEY'}\n)\n\nprint(response.json())",
+            "go" => "package main\n\nimport (\n\t\"fmt\"\n\t\"io\"\n\t\"net/http\"\n)\n\nfunc main() {\n\treq, _ := http.NewRequest(\"GET\", \"https://api.requiems.xyz/v1/text/advice\", nil)\n\treq.Header.Set(\"requiems-api-key\", \"YOUR_API_KEY\")\n\n\tclient := &http.Client{}\n\tresp, _ := client.Do(req)\n\tdefer resp.Body.Close()\n\n\tbody, _ := io.ReadAll(resp.Body)\n\tfmt.Println(string(body))\n}"
+          }
+        %>
+
+        <div data-controller="code-tabs highlight">
+          <!-- Tabs -->
+          <div class="flex space-x-2 border-b border-gray-200 dark:border-gray-700 mb-4">
+            <% examples.each_with_index do |(language, _), idx| %>
+              <button type="button"
+                      class="px-4 py-2 text-sm font-medium transition-colors <%= idx == 0 ? 'text-blue-600 border-b-2 border-blue-600' : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100' %>"
+                      data-code-tabs-target="tab"
+                      data-action="click->code-tabs#switch"
+                      data-index="<%= idx %>">
+                <%= language.titleize %>
+              </button>
+            <% end %>
+          </div>
+
+          <!-- Code blocks -->
+          <% examples.each_with_index do |(language, code), idx| %>
+            <div class="<%= 'hidden' unless idx == 0 %>" data-code-tabs-target="content">
+              <div class="relative">
+                <pre class="bg-gray-900 text-gray-100 rounded-lg p-4 overflow-x-auto text-sm"><code class="language-<%= language == 'curl' ? 'bash' : language %>"><%= code %></code></pre>
+                <button type="button"
+                        data-controller="copy"
+                        data-copy-text-value="<%= code %>"
+                        data-action="click->copy#copy"
+                        class="absolute top-2 right-2 p-2 bg-gray-800 hover:bg-gray-700 text-gray-300 rounded transition-colors"
+                        title="<%= t("dashboard.quick_start.copy_btn") %>">
+                  <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                  </svg>
+                </button>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Browse APIs CTA -->
+  <div class="text-center pb-4">
+    <%= link_to apis_path, class: "inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 font-medium rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors" do %>
+      <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+      </svg>
+      <%= t("dashboard.quick_start.browse_apis") %>
+    <% end %>
+  </div>
+
+</div>

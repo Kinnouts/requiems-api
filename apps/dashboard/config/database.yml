@@ -1,0 +1,21 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  max_connections: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  host: <%= ENV.fetch("DB_HOST") { "localhost" } %>
+  port: <%= ENV.fetch("DB_PORT") { 5432 } %>
+  username: <%= ENV.fetch("DB_USER") { "requiem" } %>
+  password: <%= ENV.fetch("DB_PASSWORD") { "requiem" } %>
+
+development:
+  <<: *default
+  database: <%= ENV.fetch("DB_NAME") { "requiem" } %>
+
+test:
+  <<: *default
+  database: dashboard_test
+
+production:
+  primary:
+    <<: *default
+    url: <%= ENV.fetch("DATABASE_URL", "postgres://dummy:dummy@localhost/dummy") %>

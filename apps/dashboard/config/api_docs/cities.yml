@@ -1,0 +1,125 @@
+api_id: cities
+api_name: Cities
+description: Look up metadata for cities worldwide including population, IANA timezone, and geographic coordinates. Covers ~22,000 cities with a population above 15,000 from the GeoNames dataset.
+base_url: https://api.requiems.xyz
+
+overview:
+  use_cases:
+    - Display city info in a travel or relocation app
+    - Resolve a city name to coordinates for further lookups
+    - Determine the timezone of a user-selected city
+    - Power city-autocomplete search with population context
+
+  features:
+    - "~22,000 cities worldwide (population > 15,000)"
+    - Population, timezone, country, and coordinates in one response
+    - Case-insensitive city name lookup
+    - When multiple cities share a name, the most populous one is returned
+
+endpoints:
+  - name: Get City Info
+    method: GET
+    path: /v1/places/cities/{city}
+    description: Returns metadata for a city by name. Lookup is case-insensitive.
+
+    parameters:
+      - name: city
+        location: path
+        type: string
+        required: true
+        description: City name to look up (e.g. london, tokyo, new york city)
+        example: london
+
+    response_example: |
+      {
+        "data": {
+          "name": "London",
+          "country": "GB",
+          "population": 7556900,
+          "timezone": "Europe/London",
+          "lat": 51.5085,
+          "lon": -0.1257
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: name
+        type: string
+        description: Official city name as listed in the GeoNames dataset
+      - name: country
+        type: string
+        description: ISO 3166-1 alpha-2 country code (uppercase)
+      - name: population
+        type: integer
+        description: City population from the GeoNames dataset
+      - name: timezone
+        type: string
+        description: IANA timezone identifier for the city (e.g. "America/New_York")
+      - name: lat
+        type: number
+        description: Latitude of the city centre
+      - name: lon
+        type: number
+        description: Longitude of the city centre
+
+    errors:
+      - code: not_found
+        status: 404
+        description: No city with that name was found in the dataset.
+      - code: internal_error
+        status: 500
+        description: Unexpected server error.
+
+    code_examples:
+      curl: |
+        curl "https://api.requiems.xyz/v1/places/cities/london" \
+          -H "requiems-api-key: YOUR_API_KEY"
+
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/places/cities/london"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+
+        response = requests.get(url, headers=headers)
+        data = response.json()
+        print(data["data"]["timezone"])  # Europe/London
+
+      javascript: |
+        const response = await fetch(
+          'https://api.requiems.xyz/v1/places/cities/london',
+          { headers: { 'requiems-api-key': 'YOUR_API_KEY' } }
+        );
+        const data = await response.json();
+        console.log(data.data.timezone);  // Europe/London
+
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/places/cities/london')
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        data = JSON.parse(response.body)
+        puts data['data']['timezone']
+
+faq:
+  - question: What cities are included?
+    answer: The dataset covers approximately 22,000 cities worldwide with a population above 15,000, sourced from GeoNames (cities15000).
+
+  - question: Is the lookup case-sensitive?
+    answer: No. City names are normalised to lowercase before lookup, so "London", "LONDON", and "london" all return the same result.
+
+  - question: What happens when multiple cities share the same name?
+    answer: The most populous city with that name is returned. For example, "london" returns London, UK rather than London, Ontario, Canada.
+
+  - question: "Can I search for multi-word city names like 'New York'?"
+    answer: Yes. Pass the full city name in the URL path, for example /v1/places/cities/new%20york%20city or /v1/places/cities/new york city.

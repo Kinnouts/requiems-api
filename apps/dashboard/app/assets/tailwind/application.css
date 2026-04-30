@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+/* Date Picker */
+@import "https://cdn.jsdelivr.net/npm/flatpickr@4.6.13/dist/flatpickr.min.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Logo dark mode: white circle backdrop */
+.logo-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-circle img {
+  filter: saturate(1.4) drop-shadow(0 1px 6px rgba(99, 102, 241, 0.45));
+  transition: filter 0.2s ease;
+}
+
+.logo-circle:hover img {
+  filter: saturate(1.6) drop-shadow(0 2px 8px rgba(99, 102, 241, 0.65));
+}
+
+.dark .logo-circle {
+  background-color: white;
+  border-radius: 9999px;
+  padding: 0.25rem;
+}
+
+/* APIs index main content padding */
+.apis-content {
+  padding: 2rem 3.5rem;
+}

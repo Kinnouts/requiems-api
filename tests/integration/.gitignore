@@ -1,0 +1,8 @@
+node_modules/
+dist/
+
+# Environment file with real API key — never commit this
+.env
+
+# Auto-generated performance reports
+reports/

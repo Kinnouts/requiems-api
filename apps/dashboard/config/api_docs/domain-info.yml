@@ -1,0 +1,138 @@
+api_id: domain-info
+api_name: Domain Info
+description: Look up DNS records and check availability for any domain. Returns A, AAAA, MX, NS, TXT, and CNAME records alongside a registration availability flag derived from NS delegation.
+base_url: https://api.requiems.xyz
+
+overview:
+  use_cases:
+    - Domain availability checking before registration
+    - Email deliverability checks (MX record presence)
+    - Security audits and DNS reconnaissance
+    - Monitoring DNS propagation after record changes
+
+  features:
+    - A and AAAA (IPv4 and IPv6) record lookup
+    - MX record lookup for mail server detection
+    - NS record lookup with availability inference
+    - TXT record lookup for SPF, DKIM, and verification tokens
+    - CNAME alias detection
+    - Availability flag — true when the domain has no NS delegation (NXDOMAIN)
+
+endpoints:
+  - name: Get Domain Info
+    method: GET
+    path: /v1/networking/domain/{domain}
+    description: Returns DNS records and availability status for the given domain.
+
+    parameters:
+      - name: domain
+        type: string
+        required: true
+        location: path
+        description: "The domain to look up (e.g. example.com)"
+        example: example.com
+
+    response_example: |
+      {
+        "data": {
+          "domain": "example.com",
+          "available": false,
+          "dns": {
+            "a": ["93.184.216.34"],
+            "aaaa": ["2606:2800:220:1:248:1893:25c8:1946"],
+            "mx": [],
+            "ns": ["a.iana-servers.net.", "b.iana-servers.net."],
+            "txt": ["v=spf1 -all"],
+            "cname": ""
+          }
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: domain
+        type: string
+        description: The domain that was looked up
+      - name: available
+        type: boolean
+        description: "True when the domain appears to be unregistered (NS lookup returns NXDOMAIN). False when name servers are delegated."
+      - name: dns.a
+        type: array of strings
+        description: IPv4 addresses (A records)
+      - name: dns.aaaa
+        type: array of strings
+        description: IPv6 addresses (AAAA records)
+      - name: dns.mx
+        type: array of objects
+        description: Mail exchange records, each with host and priority fields
+      - name: dns.ns
+        type: array of strings
+        description: Authoritative name server hostnames
+      - name: dns.txt
+        type: array of strings
+        description: TXT record values (SPF, DKIM, verification tokens, etc.)
+      - name: dns.cname
+        type: string
+        description: "CNAME alias target, if the domain is an alias. Empty string when no alias exists."
+
+    errors:
+      - code: bad_request
+        status: 400
+        description: "The domain parameter is not a valid hostname (e.g. missing TLD, invalid characters, or leading/trailing hyphens)."
+
+    code_examples:
+      curl: |
+        curl "https://api.requiems.xyz/v1/networking/domain/example.com" \
+          -H "requiems-api-key: YOUR_API_KEY"
+
+      python: |
+        import requests
+
+        domain = "example.com"
+        url = f"https://api.requiems.xyz/v1/networking/domain/{domain}"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+
+        response = requests.get(url, headers=headers)
+        data = response.json()
+        print(data["data"]["available"], data["data"]["dns"]["a"])
+
+      javascript: |
+        const domain = 'example.com';
+        const response = await fetch(`https://api.requiems.xyz/v1/networking/domain/${domain}`, {
+          headers: { 'requiems-api-key': 'YOUR_API_KEY' }
+        });
+
+        const data = await response.json();
+        console.log(data.data.available, data.data.dns.a);
+
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        domain = 'example.com'
+        uri = URI("https://api.requiems.xyz/v1/networking/domain/#{domain}")
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        data = JSON.parse(response.body)
+        puts data['data']['available']
+        puts data['data']['dns']['a'].inspect
+
+faq:
+  - question: How is availability determined?
+    answer: Availability is inferred from the NS (name server) lookup. When a domain has no delegated name servers the DNS resolver returns NXDOMAIN, which the API interprets as the domain being unregistered. Registered domains always have at least one NS record. Note that this is a heuristic — for authoritative availability data use a WHOIS service.
+
+  - question: What does an empty dns.cname field mean?
+    answer: An empty string means the domain is not a CNAME alias. The field is only populated when the domain resolves to a different canonical name.
+
+  - question: Why do some records return empty arrays?
+    answer: DNS record types are looked up independently. A domain may legitimately have no MX records (it doesn't receive email) or no AAAA records (IPv4 only). Empty arrays are always returned so the response shape is consistent.
+
+  - question: Are subdomain lookups supported?
+    answer: "Yes. Any valid hostname is accepted, including subdomains (e.g. mail.example.com or api.example.com)."

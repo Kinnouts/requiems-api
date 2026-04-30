@@ -1,0 +1,871 @@
+categories:
+  - id: finance
+    name: Finance
+    icon: "💰"
+    short_description: Payment card data, exchange rates, and financial reference APIs for fintech apps.
+    description: Financial APIs for payment processing, card validation, and financial reference data. Look up BIN/IIN card metadata, validate payment instruments, and access financial reference datasets. Built for fintech apps, payment processors, and fraud detection systems.
+
+  - id: validation
+    name: Validation
+    icon: "✓"
+    short_description: Stop bad data at the door. Fake emails, bad phone numbers, and toxic content cause real problems downstream.
+    description: Bad data compounds. A fake email means a wasted send. A bad phone number means a failed delivery. Profanity in a user submission means a moderation incident. These APIs let you reject garbage at the point of entry, so it never reaches your database in the first place.
+
+  - id: networking
+    name: Networking & Internet
+    icon: "🌐"
+    short_description: IP intelligence, domain data, and network lookup tools for security and infrastructure work.
+    description: Understand the network behind any request. Look up IP geolocation, detect VPNs and proxies, inspect ASN data, query WHOIS and DNS records, and check MX configuration — all the tools you need to validate, investigate, and secure traffic at the network layer.
+
+  - id: places
+    name: Places
+    icon: "📍"
+    short_description: Build for a global audience without timezone and holiday edge cases biting you.
+    description: Shipping to users in multiple countries means dealing with timezones, local holidays, and business calendars that vary by region. Getting these wrong means missed deadlines, broken scheduling flows, and confused users. These APIs handle the edge cases so you don't have to.
+
+  - id: text
+    name: Text & Language
+    icon: "📝"
+    short_description: Text utilities that cover the full lifecycle, from design scaffolding to production content moderation.
+    description: Some text APIs help you ship faster during development. Placeholder copy, random words for testing, a thesaurus when you're stuck. Others run in production on every user submission — sentiment analysis, language detection, spell checking. This category covers both sides.
+
+  - id: technology
+    name: Developer Tools
+    icon: "💻"
+    short_description: The boring-but-essential utilities every app eventually needs, already built.
+    description: At some point every app needs a password generator, a way to detect bots, some fake data for tests, or a hit counter for analytics. These are the utilities developers end up reinventing across every project. They're already here.
+
+  - id: entertainment
+    name: Entertainment
+    icon: "🎬"
+    short_description: Fun, low-stakes content that makes your app feel alive without building a content team.
+    description: Not every endpoint needs to be serious. Horoscopes, quotes, puzzles, and emoji add personality to apps and keep users engaged between the moments that matter. These are the APIs that make a product feel human.
+
+  - id: health
+    name: Health
+    icon: "🏥"
+    short_description: Nutrition data, fitness metrics, and wellness insights for healthcare platforms and fitness apps.
+    description: Power health and wellness applications with reliable data on nutrition, fitness metrics, medical information, and wellness insights. Designed for healthcare platforms, fitness trackers, diet apps, and any product that helps people make informed decisions about their health.
+
+apis:
+  # Finance APIs
+  - id: exchange-rate
+    name: Exchange Rate
+    categories:
+      - finance
+    description: "Get live currency exchange rates and convert amounts between currencies. Rates are sourced from the ECB and cached for up to one hour."
+    endpoints_count: 2
+    status: live
+    popular: false
+    documentation_url: /apis/exchange-rate
+    tags:
+      - Currency
+      - Exchange Rate
+      - Finance
+      - Conversion
+      - Forex
+
+  - id: crypto
+    name: Crypto Prices
+    categories:
+      - finance
+    description: "Get live cryptocurrency prices, 24h change, market cap, and trading volume for 20+ major coins including BTC, ETH, SOL, and more."
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/crypto
+    tags:
+      - Crypto
+      - Bitcoin
+      - Finance
+      - Prices
+
+  - id: bin-lookup
+    name: BIN Lookup
+    categories:
+      - finance
+    description: Pass the first 6–8 digits of any payment card and get back the issuing bank, card network, type, and country
+    endpoints_count: 1
+    status: live
+    popular: true
+    documentation_url: /apis/bin-lookup
+    tags:
+      - BIN
+      - Payment Cards
+      - Fraud Prevention
+      - Fintech
+
+  - id: iban
+    name: IBAN Validator
+    categories:
+      - finance
+    description: Validate IBAN numbers and extract the bank code and account number. Supports all countries in the official SWIFT IBAN Registry (~80 countries).
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/iban
+    tags:
+      - IBAN
+      - Banking
+      - Validation
+      - Finance
+
+  - id: swift-code
+    name: SWIFT Code
+    categories:
+      - finance
+    description: Validate and look up bank information by SWIFT/BIC code, including institution, location, and branch metadata.
+    endpoints_count: 3
+    status: live
+    popular: false
+    documentation_url: /apis/swift-code
+    tags:
+      - SWIFT
+      - BIC
+      - Banking
+      - Finance
+
+  - id: mortgage
+    name: Mortgage Calculator
+    categories:
+      - finance
+    description: Calculate monthly mortgage payments and full amortization schedules. Pass principal, annual interest rate, and loan term in years.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/mortgage
+    tags:
+      - Mortgage
+      - Finance
+      - Calculator
+      - Amortization
+
+  - id: commodities
+    name: Commodity Prices
+    categories:
+      - finance
+    description: Historical and current annual average prices for 16 major commodities — precious metals, energy, and agricultural goods. Sourced from FRED (Federal Reserve Economic Data).
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/commodities
+    tags:
+      - Commodities
+      - Metals
+      - Energy
+      - Agriculture
+      - Finance
+
+  - id: inflation
+    name: Inflation
+    categories:
+      - finance
+    description: Historical and current CPI inflation rates for 241 countries, sourced from the World Bank. Includes up to 30 years of annual data.
+    endpoints_count: 2
+    status: live
+    popular: false
+    documentation_url: /apis/inflation
+    tags:
+      - Inflation
+      - CPI
+      - Economics
+      - Macroeconomics
+      - World Bank
+
+  # Validation APIs
+  - id: email-validate
+    name: Email Validator
+    categories:
+      - validation
+    description: Full email validation in one call. Syntax check, MX record lookup, disposable domain detection, normalization, and typo suggestions. Includes everything from the Disposable Domain Checker and Email Normalizer in a single request.
+    endpoints_count: 1
+    status: live
+    popular: true
+    documentation_url: /apis/email-validate
+    tags:
+      - Email
+      - Validation
+      - Data Quality
+
+  - id: phone-validation
+    name: Phone Validation
+    categories:
+      - validation
+    description: Validate phone numbers globally. Detect carrier, country, type, and VOIP or virtual risk using only phone metadata.
+    endpoints_count: 2
+    status: live
+    popular: true
+    documentation_url: /apis/phone-validation
+    tags:
+      - Phone
+      - Validation
+      - Telecommunications
+
+  - id: profanity
+    name: Profanity Filter
+    categories:
+      - validation
+      - text
+    description: Detect and censor profanity in text for content moderation
+    endpoints_count: 1
+    status: live
+    popular: true
+    documentation_url: /apis/profanity
+    tags:
+      - Content Moderation
+      - Text Analysis
+      - Safety
+
+  # Networking & Internet APIs
+  - id: ip-info
+    name: IP Geolocation
+    categories:
+      - networking
+    description: Get geolocation data for any IP address including country, city, ISP, and VPN detection.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/ip-info
+    tags:
+      - IP
+      - Geolocation
+      - Location
+      - VPN
+
+  - id: ip-asn
+    name: ASN Lookup
+    categories:
+      - networking
+    description: Look up Autonomous System Number (ASN), organization, ISP, and network route information for any IP address.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/ip-asn
+    tags:
+      - ASN
+      - IP
+      - Network
+      - Lookup
+
+  - id: vpn-detection
+    name: VPN & Proxy Detection
+    categories:
+      - networking
+    description: Detect if an IP address belongs to a VPN, proxy, Tor exit node, or hosting provider. Returns threat scores and fraud indicators for fraud prevention and risk assessment.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/vpn-detection
+    tags:
+      - VPN
+      - Proxy
+      - Tor
+      - Security
+      - Fraud Prevention
+      - IP Intelligence
+
+  - id: whois
+    name: WHOIS Lookup
+    categories:
+      - networking
+    description: Get domain registration details including registrar, name servers, status, creation and expiry dates, and DNSSEC information.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/whois
+    tags:
+      - WHOIS
+      - Domain
+      - DNS
+      - Registration
+
+  - id: domain-info
+    name: Domain Info
+    categories:
+      - networking
+    description: Look up DNS records and check domain availability. Returns A, AAAA, MX, NS, TXT, and CNAME records alongside a registration availability flag.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/domain-info
+    tags:
+      - Domain
+      - DNS
+      - Availability
+      - WHOIS
+
+  - id: mx-lookup
+    name: MX Lookup
+    categories:
+      - networking
+    description: Look up MX (Mail Exchange) records for any domain. Returns all mail server hostnames with their priorities, sorted from highest to lowest priority.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/mx-lookup
+    tags:
+      - MX
+      - DNS
+      - Email
+      - Mail Server
+      - Lookup
+
+  - id: disposable-email
+    name: Disposable Domain Checker
+    categories:
+      - networking
+    description: Check whether an email domain belongs to a known disposable or temporary email provider. Use this for targeted domain lookups. For full email validation including syntax, MX records, and normalization, see the Email Validator.
+    endpoints_count: 5
+    status: live
+    popular: false
+    documentation_url: /apis/disposable-email
+    tags:
+      - Email
+      - Fraud Prevention
+      - Data Quality
+
+  # Places APIs
+  - id: timezone
+    name: Timezone
+    categories:
+      - places
+    description: Get timezone information for any location by coordinates or city name
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/timezone
+    tags:
+      - Timezone
+      - Location
+      - Geography
+
+  - id: world-time
+    name: World Time
+    categories:
+      - places
+    description: Get the current time for any IANA timezone by name
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/world-time
+    tags:
+      - Time
+      - Timezone
+      - World Clock
+
+  - id: working-days
+    name: Working Days Calculator
+    categories:
+      - places
+    description: Calculate the number of working days between two dates with optional country-specific holidays
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/working-days
+    tags:
+      - Business Days
+      - Calendar
+      - Holidays
+
+  - id: holidays
+    name: Holidays
+    categories:
+      - places
+    description: Get a list of holidays for a specific country and year
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/holidays
+    tags:
+      - Calendar
+      - Holidays
+
+  - id: geocode
+    name: Geocoding
+    categories:
+      - places
+    description: Convert addresses to coordinates and coordinates back to addresses
+    endpoints_count: 2
+    status: live
+    popular: false
+    documentation_url: /apis/geocode
+    tags:
+      - Geocoding
+      - Coordinates
+      - Address
+
+  - id: postal-code
+    name: Postal Code
+    categories:
+      - places
+    description: Look up city, state, and coordinates for any postal code worldwide
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/postal-code
+    tags:
+      - Postal Code
+      - Zip Code
+      - Location
+
+  - id: cities
+    name: Cities
+    categories:
+      - places
+    description: Look up city metadata including population, timezone, and coordinates
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/cities
+    tags:
+      - Cities
+      - Population
+      - Timezone
+
+  # Text & Language APIs
+  - id: spell-check
+    name: Spell Check
+    categories:
+      - text
+    description: Check spelling and get correction suggestions for misspelled words
+    endpoints_count: 1
+    status: live
+    popular: true
+    documentation_url: /apis/spell-check
+    tags:
+      - Spell Check
+      - Text Analysis
+
+  - id: thesaurus
+    name: Thesaurus
+    categories:
+      - text
+    description: Find synonyms and antonyms for any word to enhance vocabulary and writing
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/thesaurus
+    tags:
+      - Synonyms
+      - Antonyms
+      - Vocabulary
+      - Writing
+
+  - id: dictionary
+    name: Dictionary
+    categories:
+      - text
+    description: Get word definitions, phonetics, usage examples, and synonyms
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/dictionary
+    tags:
+      - Definitions
+      - Phonetics
+      - Vocabulary
+      - Education
+
+  - id: sentiment
+    name: Sentiment Analysis
+    categories:
+      - text
+    description: Analyze the sentiment of any text and get a positive, negative, or neutral classification with a confidence score and full class breakdown.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/sentiment
+    tags:
+      - Sentiment
+      - NLP
+      - AI
+      - Text Analysis
+
+  - id: detect-language
+    name: Language Detection
+    categories:
+      - text
+    description: Detect the language of any text with confidence scoring
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/detect-language
+    tags:
+      - Language Detection
+      - NLP
+      - AI
+
+  - id: text-similarity
+    name: Text Similarity
+    categories:
+      - text
+    description: Compare two texts and get a cosine similarity score between 0 and 1
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/text-similarity
+    tags:
+      - Text Analysis
+      - NLP
+      - Similarity
+
+  - id: markdown
+    name: Markdown to HTML
+    categories:
+      - text
+      - technology
+    description: Convert Markdown to HTML in a single API call. Optionally sanitize the output to strip unsafe tags and prevent XSS.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/markdown
+    tags:
+      - Markdown
+      - HTML
+      - Conversion
+      - Utilities
+
+  - id: lorem-ipsum
+    name: Lorem Ipsum Generator
+    categories:
+      - text
+    description: Generate placeholder text for design mockups and prototypes
+    endpoints_count: 3
+    status: live
+    popular: false
+    documentation_url: /apis/lorem-ipsum
+    tags:
+      - Placeholder
+      - Design
+      - Testing
+
+  - id: words
+    name: Random Words
+    categories:
+      - text
+    description: Generate random words for testing, games, and creative projects
+    endpoints_count: 2
+    status: live
+    popular: false
+    documentation_url: /apis/words
+    tags:
+      - Random
+      - Testing
+      - Games
+
+  - id: email-normalize
+    name: Email Normalizer
+    categories:
+      - text
+    description: Normalize email addresses to their canonical form. Lowercased, trimmed, and canonicalized with provider-specific rules including alias-domain resolution. Also available as part of the full Email Validator.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/email-normalize
+    tags:
+      - Email
+      - Normalization
+      - Data Quality
+
+  # Developer Tools APIs
+  - id: qr-code
+    name: QR Code Generator
+    categories:
+      - technology
+    description: Generate QR codes from any text or URL, returned as a PNG image or base64-encoded JSON
+    endpoints_count: 2
+    status: live
+    popular: true
+    documentation_url: /apis/qr-code
+    tags:
+      - QR Code
+      - Image
+      - Barcode
+
+  - id: barcode
+    name: Barcode Generator
+    categories:
+      - technology
+    description: Generate barcodes in multiple formats (Code 128, Code 93, Code 39, EAN-8, EAN-13), returned as a PNG image or base64-encoded JSON
+    endpoints_count: 2
+    status: live
+    popular: true
+    documentation_url: /apis/barcode
+    tags:
+      - Barcode
+      - Image
+      - Code 128
+
+  - id: password-generator
+    name: Password Generator
+    categories:
+      - technology
+    description: Generate cryptographically secure random passwords with customizable length and character sets
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/password-generator
+    tags:
+      - Security
+      - Password
+      - Random
+
+  - id: useragent
+    name: User Agent Parser
+    categories:
+      - technology
+    description: Parse user agent strings to extract browser, OS, device type, and bot detection
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/useragent
+    tags:
+      - User Agent
+      - Browser Detection
+      - Device Detection
+
+  - id: counter
+    name: Counter
+    categories:
+      - technology
+    description: Atomic, namespace-isolated hit counter
+    endpoints_count: 2
+    status: live
+    popular: false
+    documentation_url: /apis/counter
+    tags:
+      - Counter
+      - Analytics
+      - Tracking
+
+  - id: random-user
+    name: Random User
+    categories:
+      - technology
+    description: Generate random fake user profiles for testing and prototyping — names, emails, phone numbers, addresses, and avatars
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/random-user
+    tags:
+      - Random
+      - Testing
+      - Fake Data
+
+  - id: base64
+    name: Base64 Encode / Decode
+    categories:
+      - technology
+    description: Encode strings to Base64 and decode Base64 back to plain text. Supports standard and URL-safe (base64url) variants.
+    endpoints_count: 2
+    status: live
+    popular: false
+    documentation_url: /apis/base64
+    tags:
+      - Base64
+      - Encoding
+      - Utilities
+
+  - id: number-base-conversion
+    name: Number Base Conversion
+    categories:
+      - technology
+    description: Convert integers between binary, octal, decimal, and hexadecimal. Accepts optional 0x, 0b, and 0o prefixes.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/number-base-conversion
+    tags:
+      - Numbers
+      - Conversion
+      - Utilities
+
+  - id: color-conversion
+    name: Color Format Conversion
+    categories:
+      - technology
+    description: Convert color values between HEX, RGB, HSL, and CMYK. Every response includes all four representations.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/color-conversion
+    tags:
+      - Color
+      - Conversion
+      - Design
+      - CSS
+      - Utilities
+
+  - id: unit-conversion
+    name: Unit Conversion
+    categories:
+      - technology
+    description: Convert between units of measurement — length, weight, volume, temperature, area, and speed
+    endpoints_count: 2
+    status: live
+    popular: false
+    documentation_url: /apis/unit-conversion
+    tags:
+      - Conversion
+      - Utilities
+      - Measurement
+
+  - id: data-format-conversion
+    name: Data Format Conversion
+    categories:
+      - technology
+    description: Convert structured data between JSON, YAML, CSV, XML, and TOML in a single API call.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/data-format-conversion
+    tags:
+      - JSON
+      - YAML
+      - CSV
+      - XML
+      - TOML
+      - Conversion
+      - Utilities
+
+  # Entertainment APIs
+  - id: quotes
+    name: Random Quotes
+    categories:
+      - entertainment
+    description: Access a database of inspirational and famous quotes
+    endpoints_count: 2
+    status: live
+    popular: false
+    documentation_url: /apis/quotes
+    tags:
+      - Random
+      - Inspiration
+      - Literature
+
+  - id: trivia
+    name: Trivia
+    categories:
+      - entertainment
+    description: Get random trivia questions with multiple-choice answers. Filter by category (science, history, geography, sports, music, movies, literature, math, technology, nature) and difficulty (easy, medium, hard).
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/trivia
+    tags:
+      - Quiz
+      - Trivia
+
+  - id: facts
+    name: Random Facts
+    categories:
+      - entertainment
+    description: Get random interesting facts from a curated database. Filter by category — science, history, technology, nature, space, or food. Includes source attribution.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/facts
+    tags:
+      - Facts
+      - Education
+      - Trivia
+      - Entertainment
+
+  - id: emoji
+    name: Emoji
+    categories:
+      - entertainment
+    description: Look up emoji by name, search by keyword, or get a random emoji with full Unicode metadata.
+    endpoints_count: 3
+    status: live
+    popular: false
+    documentation_url: /apis/emoji
+    tags:
+      - Emoji
+      - Unicode
+      - Entertainment
+
+  - id: horoscope
+    name: Horoscope
+    categories:
+      - entertainment
+    description: Get daily horoscope readings for all 12 zodiac signs
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/horoscope
+    tags:
+      - Astrology
+      - Daily
+      - Entertainment
+
+  - id: sudoku
+    name: Sudoku
+    categories:
+      - entertainment
+    description: Generate Sudoku puzzles with solutions across multiple difficulty levels
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/sudoku
+    tags:
+      - Puzzle
+      - Game
+
+  - id: dad-jokes
+    name: Dad Jokes
+    categories:
+      - entertainment
+    description: Get a random dad joke. Classic groan-worthy puns and wholesome humor, served one at a time.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/dad-jokes
+    tags:
+      - Jokes
+      - Humor
+      - Entertainment
+
+  - id: chuck-norris
+    name: Chuck Norris Facts
+    categories:
+      - entertainment
+    description: Get a random Chuck Norris fact from a curated built-in database. Every call returns a different fact with a stable unique ID.
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/chuck-norris
+    tags:
+      - Jokes
+      - Humor
+      - Entertainment
+
+  - id: advice
+    name: Random Advice
+    categories:
+      - entertainment
+    description: Get random pieces of advice and wisdom for inspiration
+    endpoints_count: 1
+    status: live
+    popular: false
+    documentation_url: /apis/advice
+    tags:
+      - Random
+      - Inspiration
+
+  # Health APIs
+  - id: fitness-exercises
+    name: Fitness Exercises
+    categories:
+      - health
+    description: "Browse 1,500+ exercises with step-by-step instructions, target muscles, secondary muscles, equipment requirements, and body part filters."
+    endpoints_count: 6
+    status: live
+    popular: false
+    documentation_url: /apis/fitness-exercises
+    tags:
+      - Fitness
+      - Exercise
+      - Health
+      - Workout
+      - Muscles

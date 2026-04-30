@@ -1,0 +1,212 @@
+api_id: ip-asn
+api_name: ASN Lookup
+description: Look up Autonomous System Number (ASN), organization, ISP, domain, and network route information for any IP address. Use this endpoint to identify which organization or ISP owns an IP address and understand the network topology.
+base_url: https://api.requiems.xyz
+
+overview:
+  use_cases:
+    - Network diagnostics and troubleshooting
+    - Fraud detection and risk assessment
+    - Content delivery optimization
+    - Threat intelligence and IP reputation
+    - Network mapping and analytics
+
+  features:
+    - Autonomous System Number (ASN) lookup
+    - Organization name retrieval
+    - ISP identification
+    - Domain and network route information
+    - Support for both IPv4 and IPv6 addresses
+
+endpoints:
+  - name: Lookup ASN (Caller IP)
+    method: GET
+    path: /v1/networking/ip/asn
+    description: Look up ASN, organization, ISP, and network details for the requesting client's IP address. Useful when you want information about the user making the request without specifying an IP explicitly.
+
+    response_example: |
+      {
+        "data": {
+          "ip": "8.8.8.8",
+          "asn": "AS15169",
+          "org": "Google LLC",
+          "isp": "Google Public DNS",
+          "domain": "google.com",
+          "route": "8.8.8.0/24",
+          "type": "hosting"
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: ip
+        type: string
+        description: The IP address that was looked up (the requesting client's IP)
+      - name: asn
+        type: string
+        description: Autonomous System Number in format "ASxxxx" (e.g., "AS15169")
+      - name: org
+        type: string
+        description: Organization name owning the IP address range
+      - name: isp
+        type: string
+        description: Internet Service Provider providing the IP
+      - name: domain
+        type: string
+        description: Domain name associated with the IP or IP range
+      - name: route
+        type: string
+        description: CIDR notation of the network route (e.g., "8.8.8.0/24")
+      - name: type
+        type: string
+        description: Type of network (e.g., "hosting", "isp", "business", "cdn")
+
+    errors:
+      - code: internal_error
+        status: 500
+        description: Unexpected server error
+
+    code_examples:
+      curl: |
+        curl "https://api.requiems.xyz/v1/networking/ip/asn" \
+          -H "requiems-api-key: YOUR_API_KEY"
+
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/networking/ip/asn"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+
+        response = requests.get(url, headers=headers)
+        print(response.json())
+
+      javascript: |
+        const response = await fetch('https://api.requiems.xyz/v1/networking/ip/asn', {
+          headers: { 'requiems-api-key': 'YOUR_API_KEY' }
+        });
+
+        const data = await response.json();
+        console.log(data.data.asn, data.data.org);
+
+      ruby: |
+        require 'net/http'
+
+        uri = URI('https://api.requiems.xyz/v1/networking/ip/asn')
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        puts JSON.parse(response.body)
+
+  - name: Lookup ASN for IP
+    method: GET
+    path: /v1/networking/ip/asn/{ip}
+    description: Look up ASN, organization, ISP, and network details for a specific IP address.
+
+    parameters:
+      - name: ip
+        type: string
+        required: true
+        location: path
+        description: The IP address to look up (supports IPv4 and IPv6)
+        example: 8.8.8.8
+
+    response_example: |
+      {
+        "data": {
+          "ip": "8.8.8.8",
+          "asn": "AS15169",
+          "org": "Google LLC",
+          "isp": "Google Public DNS",
+          "domain": "google.com",
+          "route": "8.8.8.0/24",
+          "type": "hosting"
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: ip
+        type: string
+        description: The IP address that was looked up
+      - name: asn
+        type: string
+        description: Autonomous System Number in format "ASxxxx" (e.g., "AS15169")
+      - name: org
+        type: string
+        description: Organization name owning the IP address range
+      - name: isp
+        type: string
+        description: Internet Service Provider providing the IP
+      - name: domain
+        type: string
+        description: Domain name associated with the IP or IP range
+      - name: route
+        type: string
+        description: CIDR notation of the network route (e.g., "8.8.8.0/24")
+      - name: type
+        type: string
+        description: Type of network (e.g., "hosting", "isp", "business", "cdn")
+
+    errors:
+      - code: bad_request
+        status: 400
+        description: The IP address is invalid
+      - code: internal_error
+        status: 500
+        description: Unexpected server error
+
+    code_examples:
+      curl: |
+        curl "https://api.requiems.xyz/v1/networking/ip/asn/8.8.8.8" \
+          -H "requiems-api-key: YOUR_API_KEY"
+
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/networking/ip/asn/8.8.8.8"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+
+        response = requests.get(url, headers=headers)
+        print(response.json())
+
+      javascript: |
+        const response = await fetch('https://api.requiems.xyz/v1/networking/ip/asn/8.8.8.8', {
+          headers: { 'requiems-api-key': 'YOUR_API_KEY' }
+        });
+
+        const data = await response.json();
+        console.log(data.data.asn, data.data.org);
+
+      ruby: |
+        require 'net/http'
+
+        uri = URI('https://api.requiems.xyz/v1/networking/ip/asn/8.8.8.8')
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        puts JSON.parse(response.body)
+
+faq:
+  - question: What is an ASN?
+    answer: An Autonomous System Number (ASN) is a unique identifier assigned to a group of IP networks and routers that operate under a common administration. It's used by Border Gateway Protocol (BGP) to route traffic between different autonomous systems on the internet.
+
+  - question: What is the difference between org and ISP fields?
+    answer: The "org" field represents the organization that owns the IP block, while "isp" identifies the Internet Service Provider providing connectivity. For large companies like Google, these may differ — the organization owns the IP block but multiple ISPs provide connectivity.
+
+  - question: Does this support IPv6?
+    answer: Yes, both IPv4 and IPv6 addresses are fully supported.
+
+  - question: What happens with private IP addresses?
+    answer: Private IP addresses (like 192.168.x.x, 10.x.x.x, 172.16-31.x.x) do not have ASN information publicly assigned. The API returns the IP with empty ASN fields for private addresses.

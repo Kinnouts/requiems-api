@@ -1,0 +1,150 @@
+api_id: text-similarity
+api_name: Text Similarity
+description: Compare two pieces of text and get a similarity score between 0 and 1 using cosine similarity on word-frequency vectors.
+base_url: https://api.requiems.xyz
+
+overview:
+  use_cases:
+    - Duplicate content detection
+    - Plagiarism checking
+    - Search and recommendation relevance scoring
+    - Document clustering and deduplication
+    - FAQ matching and chatbot response selection
+
+  features:
+    - Cosine similarity on bag-of-words vectors
+    - Normalised score between 0 (no overlap) and 1 (identical)
+    - Case-insensitive, punctuation-agnostic tokenisation
+    - Fast, in-memory computation — no external ML model required
+
+endpoints:
+  - name: Compare Text Similarity
+    method: POST
+    path: /v1/text/similarity
+    description: Compares two texts and returns a cosine similarity score.
+
+    parameters:
+      - name: text1
+        type: string
+        required: true
+        location: body
+        description: The first text to compare.
+        example: The cat sat on the mat
+      - name: text2
+        type: string
+        required: true
+        location: body
+        description: The second text to compare.
+        example: A cat was sitting on a mat
+
+    request_example: |
+      {
+        "text1": "The cat sat on the mat",
+        "text2": "A cat was sitting on a mat"
+      }
+
+    response_example: |
+      {
+        "data": {
+          "similarity": 0.4364,
+          "method": "cosine"
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: similarity
+        type: number
+        description: "Cosine similarity score between the two texts, in the range [0, 1]."
+      - name: method
+        type: string
+        description: "The algorithm used. Currently always 'cosine'."
+
+    errors:
+      - code: validation_failed
+        status: 422
+        description: One or both text fields are missing or empty.
+      - code: bad_request
+        status: 400
+        description: The request body is missing or malformed.
+      - code: internal_error
+        status: 500
+        description: Unexpected server error.
+
+    code_examples:
+      curl: |
+        curl -X POST https://api.requiems.xyz/v1/text/similarity \
+          -H "requiems-api-key: YOUR_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d '{"text1": "The cat sat on the mat", "text2": "A cat was sitting on a mat"}'
+
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/text/similarity"
+        headers = {
+            "requiems-api-key": "YOUR_API_KEY",
+            "Content-Type": "application/json"
+        }
+        payload = {
+            "text1": "The cat sat on the mat",
+            "text2": "A cat was sitting on a mat"
+        }
+
+        response = requests.post(url, headers=headers, json=payload)
+        data = response.json()
+        print(data["data"]["similarity"])
+        print(data["data"]["method"])
+
+      javascript: |
+        const response = await fetch('https://api.requiems.xyz/v1/text/similarity', {
+          method: 'POST',
+          headers: {
+            'requiems-api-key': 'YOUR_API_KEY',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            text1: 'The cat sat on the mat',
+            text2: 'A cat was sitting on a mat'
+          })
+        });
+
+        const data = await response.json();
+        console.log(data.data.similarity);
+        console.log(data.data.method);
+
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/text/similarity')
+        request = Net::HTTP::Post.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+        request['Content-Type'] = 'application/json'
+        request.body = {
+          text1: 'The cat sat on the mat',
+          text2: 'A cat was sitting on a mat'
+        }.to_json
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        data = JSON.parse(response.body)
+        puts data['data']['similarity']
+        puts data['data']['method']
+
+faq:
+  - question: What does a similarity score of 0 mean?
+    answer: A score of 0 means the two texts share no words in common. A score of 1 means both texts have an identical word distribution.
+
+  - question: Is the comparison case-sensitive?
+    answer: No. Both texts are lowercased before comparison, so "Cat" and "cat" are treated as the same word.
+
+  - question: Is punctuation included in the comparison?
+    answer: No. Only alphanumeric characters are considered. Punctuation and whitespace are stripped before tokenisation.
+
+  - question: What algorithm is used?
+    answer: "Cosine similarity on term-frequency (bag-of-words) vectors. Each word becomes a dimension and its frequency is the weight. The score is computed as: similarity = (A · B) / (|A| × |B|), where A and B are the word-frequency vectors of the two texts."

@@ -1,0 +1,108 @@
+api_id: horoscope
+api_name: Horoscope
+description: Get daily horoscope readings for all 12 zodiac signs. Each reading is deterministically generated per sign per day.
+base_url: https://api.requiems.xyz
+overview:
+  use_cases:
+    - Daily horoscope widgets
+    - Astrology apps
+    - Entertainment platforms
+    - Personalized daily content
+  features:
+    - All 12 zodiac signs supported
+    - Consistent daily readings (same sign returns same reading throughout the day)
+    - Lucky number and mood included
+    - Case-insensitive sign parameter
+endpoints:
+  - name: Get Daily Horoscope
+    method: GET
+    path: /v1/entertainment/horoscope/{sign}
+    description: Returns a daily horoscope reading for the specified zodiac sign.
+    parameters:
+      - name: sign
+        location: path
+        type: string
+        required: true
+        description: >-
+          Zodiac sign (case-insensitive). Supported values: aries, taurus, gemini, cancer, leo, virgo, libra, scorpio,
+          sagittarius, capricorn, aquarius, pisces
+    response_example: |
+      {
+        "data": {
+          "sign": "aries",
+          "date": "2024-12-15",
+          "horoscope": "Today is a great day for new beginnings. Trust your instincts and take that first step toward your goals.",
+          "lucky_number": 7,
+          "mood": "energetic"
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+    response_fields:
+      - name: sign
+        type: string
+        description: Normalized zodiac sign (lowercase)
+      - name: date
+        type: string
+        description: Today's date in YYYY-MM-DD format (UTC)
+      - name: horoscope
+        type: string
+        description: Daily horoscope reading
+      - name: lucky_number
+        type: integer
+        description: Lucky number for the day (1-99)
+      - name: mood
+        type: string
+        description: Suggested mood for the day
+    code_examples:
+      curl: |
+        curl https://api.requiems.xyz/v1/entertainment/horoscope/aries \
+          -H "requiems-api-key: YOUR_API_KEY"
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/entertainment/horoscope/aries"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+
+        response = requests.get(url, headers=headers)
+        print(response.json())
+      javascript: |
+        const response = await fetch(
+          'https://api.requiems.xyz/v1/entertainment/horoscope/aries',
+          { headers: { 'requiems-api-key': 'YOUR_API_KEY' } }
+        );
+        const data = await response.json();
+        console.log(data.data.horoscope);
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/entertainment/horoscope/aries')
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+
+        data = JSON.parse(response.body)
+        puts data['data']['horoscope']
+faq:
+  - question: Are horoscope readings the same for all users on the same day?
+    answer: >-
+      Yes. Readings are deterministic per sign per day, so every user requesting the same sign on the same day receives
+      the same horoscope.
+  - question: Is the sign parameter case-sensitive?
+    answer: No. You can pass the sign in any case (e.g., "Aries", "ARIES", or "aries") and the API will normalize it.
+  - question: Which zodiac signs are supported?
+    answer: >-
+      All 12 signs are supported — aries, taurus, gemini, cancer, leo, virgo, libra, scorpio, sagittarius, capricorn,
+      aquarius, and pisces.
+performance:
+  p50_ms: 890
+  p95_ms: 1095
+  p99_ms: 1210
+  avg_ms: 931
+  samples: 50
+  measured_at: "2026-04-20"

@@ -1,0 +1,224 @@
+# Barcode Generator API Documentation
+
+api_id: barcode
+api_name: Barcode Generator
+description: Generate barcodes in multiple industry-standard formats. Returns a raw PNG image or base64-encoded JSON, supporting Code 128, Code 93, Code 39, EAN-8, and EAN-13.
+base_url: https://api.requiems.xyz
+
+overview:
+  use_cases:
+    - Product labeling and inventory management
+    - Retail point-of-sale systems
+    - Shipping and logistics labels
+    - Library and asset tracking systems
+    - Event ticketing and check-in workflows
+
+  features:
+    - Five barcode formats (Code 128, Code 93, Code 39, EAN-8, EAN-13)
+    - Dedicated endpoints for raw PNG and base64-encoded JSON
+    - EAN types validate input length and digit-only content before encoding
+    - Fixed 300×100 px output suitable for standard label widths
+
+endpoints:
+  - name: Generate Barcode (PNG)
+    method: GET
+    path: /v1/technology/barcode
+    description: Returns a raw PNG image of the barcode. Ideal for direct embedding or file download.
+
+    parameters:
+      - name: data
+        type: string
+        required: true
+        location: query
+        description: The text or numeric string to encode in the barcode
+        example: 123456789
+
+      - name: type
+        type: string
+        required: true
+        location: query
+        description: "Barcode format: code128, code93, code39, ean8, ean13"
+        example: code128
+
+    response_example: |
+      <binary PNG image data>
+
+    response_fields:
+      - name: (binary)
+        type: bytes
+        description: Raw PNG image bytes. Content-Type is image/png.
+
+    errors:
+      - code: 400
+        message: bad_request
+        description: "Missing or invalid parameters (e.g. data not provided, unsupported type)"
+      - code: 422
+        message: unprocessable_entity
+        description: "Data is invalid for the chosen barcode type (e.g. wrong digit count for EAN-8/EAN-13, non-numeric EAN data)"
+
+    code_examples:
+      curl: |
+        # Save a Code 128 barcode as PNG
+        curl "https://api.requiems.xyz/v1/technology/barcode?data=123456789&type=code128" \
+          -H "requiems-api-key: YOUR_API_KEY" \
+          --output barcode.png
+
+        # Save an EAN-13 barcode (12 digits, checksum auto-calculated)
+        curl "https://api.requiems.xyz/v1/technology/barcode?data=123456789012&type=ean13" \
+          -H "requiems-api-key: YOUR_API_KEY" \
+          --output barcode.png
+
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/technology/barcode"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+        params = {"data": "123456789", "type": "code128"}
+
+        response = requests.get(url, headers=headers, params=params)
+        with open("barcode.png", "wb") as f:
+            f.write(response.content)
+
+      javascript: |
+        const params = new URLSearchParams({
+          data: '123456789',
+          type: 'code128'
+        });
+
+        const response = await fetch(
+          `https://api.requiems.xyz/v1/technology/barcode?${params}`,
+          { headers: { 'requiems-api-key': 'YOUR_API_KEY' } }
+        );
+        const blob = await response.blob();
+        const imgUrl = URL.createObjectURL(blob);
+
+      ruby: |
+        require 'net/http'
+
+        uri = URI('https://api.requiems.xyz/v1/technology/barcode')
+        uri.query = URI.encode_www_form(data: '123456789', type: 'code128')
+
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+        File.write('barcode.png', response.body, mode: 'wb')
+
+  - name: Generate Barcode (Base64 JSON)
+    method: GET
+    path: /v1/technology/barcode/base64
+    description: Returns a JSON envelope containing the barcode as a base64-encoded PNG string, along with its type and dimensions.
+
+    parameters:
+      - name: data
+        type: string
+        required: true
+        location: query
+        description: The text or numeric string to encode in the barcode
+        example: 123456789
+
+      - name: type
+        type: string
+        required: true
+        location: query
+        description: "Barcode format: code128, code93, code39, ean8, ean13"
+        example: code128
+
+    response_example: |
+      {
+        "data": {
+          "image": "<base64-encoded PNG data>",
+          "type": "code128",
+          "width": 300,
+          "height": 100
+        },
+        "metadata": {
+          "timestamp": "2026-01-01T00:00:00Z"
+        }
+      }
+
+    response_fields:
+      - name: image
+        type: string
+        description: Base64-encoded PNG image data
+      - name: type
+        type: string
+        description: The barcode format that was used
+      - name: width
+        type: integer
+        description: Width of the generated image in pixels
+      - name: height
+        type: integer
+        description: Height of the generated image in pixels
+
+    errors:
+      - code: 400
+        message: bad_request
+        description: "Missing or invalid parameters (e.g. data not provided, unsupported type)"
+      - code: 422
+        message: unprocessable_entity
+        description: "Data is invalid for the chosen barcode type (e.g. wrong digit count for EAN-8/EAN-13, non-numeric EAN data)"
+
+    code_examples:
+      curl: |
+        curl "https://api.requiems.xyz/v1/technology/barcode/base64?data=123456789&type=code128" \
+          -H "requiems-api-key: YOUR_API_KEY"
+
+      python: |
+        import requests
+
+        url = "https://api.requiems.xyz/v1/technology/barcode/base64"
+        headers = {"requiems-api-key": "YOUR_API_KEY"}
+        params = {"data": "123456789", "type": "code128"}
+
+        response = requests.get(url, headers=headers, params=params)
+        result = response.json()["data"]
+        print(f"Image (base64): {result['image'][:40]}...")
+
+      javascript: |
+        const params = new URLSearchParams({
+          data: '123456789',
+          type: 'code128'
+        });
+
+        const response = await fetch(
+          `https://api.requiems.xyz/v1/technology/barcode/base64?${params}`,
+          { headers: { 'requiems-api-key': 'YOUR_API_KEY' } }
+        );
+        const { data } = await response.json();
+        // Use as an <img> src
+        document.getElementById('barcode').src = `data:image/png;base64,${data.image}`;
+
+      ruby: |
+        require 'net/http'
+        require 'json'
+
+        uri = URI('https://api.requiems.xyz/v1/technology/barcode/base64')
+        uri.query = URI.encode_www_form(data: '123456789', type: 'code128')
+
+        request = Net::HTTP::Get.new(uri)
+        request['requiems-api-key'] = 'YOUR_API_KEY'
+
+        response = Net::HTTP.start(uri.hostname, uri.port, use_ssl: true) do |http|
+          http.request(request)
+        end
+        data = JSON.parse(response.body)['data']
+        puts data['image'][0..39] + '...'
+
+faq:
+  - question: Which barcode formats are supported?
+    answer: "Code 128 (alphanumeric, any length), Code 93 (alphanumeric, compact), Code 39 (alphanumeric, legacy), EAN-8 (7 or 8 digits), and EAN-13 (12 or 13 digits)."
+
+  - question: What is the output image size?
+    answer: "All barcodes are scaled to 300×100 pixels, which matches standard label dimensions for most use cases."
+
+  - question: What data can I encode with Code 128?
+    answer: Code 128 supports the full ASCII character set including letters, digits, and symbols. It is the most flexible format and recommended for general use.
+
+  - question: What data format does EAN-8/EAN-13 require?
+    answer: "EAN-8 requires 7 digits (checksum auto-calculated) or 8 digits (checksum validated). EAN-13 requires 12 digits (checksum auto-calculated) or 13 digits (checksum validated). Only numeric characters are accepted."
+
+  - question: What is the difference between the two endpoints?
+    answer: "GET /v1/technology/barcode returns a raw image/png binary — ideal for direct download or embedding with an <img> tag pointing at the API. GET /v1/technology/barcode/base64 returns a JSON envelope containing the base64-encoded image — useful when you need to embed the image inline in a JSON response or store the data in a database."

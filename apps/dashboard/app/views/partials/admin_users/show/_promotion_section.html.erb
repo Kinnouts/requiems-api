@@ -1,0 +1,116 @@
+<div class="bg-white dark:bg-gray-800 rounded-lg shadow border-2 border-purple-200 dark:border-purple-800 mb-8">
+  <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-purple-50 dark:bg-purple-900/20">
+    <h2 class="text-lg font-semibold text-purple-900 dark:text-purple-300">Promotional Plan Upgrade</h2>
+    <p class="text-sm text-purple-700 dark:text-purple-400 mt-1">Grant or revoke a temporary plan upgrade for this user without requiring payment.</p>
+  </div>
+
+  <div class="p-6">
+    <% subscription = user.subscription %>
+
+    <% if subscription&.promoted? %>
+      <%# Active promotion — show details and revoke button %>
+      <div class="mb-6 p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-lg">
+        <div class="flex items-start justify-between">
+          <div class="space-y-2">
+            <div class="flex items-center gap-2">
+              <%= render "partials/shared/badge",
+                    text: subscription.plan_name.titleize,
+                    variant: "primary",
+                    size: "sm" %>
+              <%= render "partials/shared/badge",
+                    text: "Promotional",
+                    variant: "warning",
+                    size: "xs" %>
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2 mt-3">
+              <div>
+                <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Granted by</span>
+                <p class="text-sm text-gray-900 dark:text-gray-100 mt-0.5">
+                  <%= subscription.promoted_by&.email || "—" %>
+                </p>
+              </div>
+              <div>
+                <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Expires</span>
+                <p class="text-sm text-gray-900 dark:text-gray-100 mt-0.5">
+                  <%= subscription.promotion_expires_at&.strftime("%B %d, %Y") || "—" %>
+                  <% if subscription.promotion_expires_at %>
+                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                      (<%= time_ago_in_words(subscription.promotion_expires_at) %> from now)
+                    </span>
+                  <% end %>
+                </p>
+              </div>
+              <% if subscription.promotion_reason.present? %>
+                <div class="sm:col-span-2">
+                  <span class="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">Reason</span>
+                  <p class="text-sm text-gray-900 dark:text-gray-100 mt-0.5"><%= subscription.promotion_reason %></p>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <%= button_to admin_user_promotion_path(user),
+            method: :delete,
+            class: "px-4 py-2 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors text-sm",
+            data: { turbo_confirm: "Are you sure you want to revoke this promotional upgrade? #{user.email} will be returned to the free plan immediately." } do %>
+        Revoke Promotion
+      <% end %>
+
+    <% else %>
+      <%# No active promotion — show grant form %>
+      <%= form_with url: admin_user_promotion_path(user), method: :post, scope: :promotion, class: "space-y-5" do |f| %>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Plan</label>
+            <%= f.select :plan_name,
+                  [["Developer", "developer"], ["Business", "business"], ["Professional", "professional"]],
+                  {},
+                  class: "w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent" %>
+          </div>
+
+          <div>
+            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Duration</label>
+            <div class="flex gap-2 flex-wrap mb-2" id="duration-presets">
+              <% [["1 mo", 1.month], ["3 mo", 3.months], ["6 mo", 6.months], ["1 yr", 1.year]].each do |label, duration| %>
+                <button type="button"
+                        class="px-3 py-1.5 text-xs font-medium rounded border border-purple-300 dark:border-purple-600 text-purple-700 dark:text-purple-300 hover:bg-purple-50 dark:hover:bg-purple-900/30 transition-colors duration-preset-btn"
+                        data-expires-at="<%= (Time.current + duration).strftime('%Y-%m-%dT%H:%M') %>">
+                  <%= label %>
+                </button>
+              <% end %>
+            </div>
+            <%= f.date_field :expires_at,
+                  class: "w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent",
+                  min: Date.tomorrow.iso8601,
+                  id: "promotion_expires_at" %>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+            Reason <span class="text-red-500">*</span>
+          </label>
+          <%= f.text_area :reason,
+                rows: 2,
+                placeholder: "e.g. YouTube video collaboration, blog post on requiems.xyz",
+                class: "w-full rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-3 py-2 text-sm focus:ring-2 focus:ring-purple-500 focus:border-transparent resize-none" %>
+          <p class="text-xs text-gray-500 dark:text-gray-400 mt-1">Required for audit trail. Describe why this promotion is being granted.</p>
+        </div>
+
+        <%= f.submit "Upgrade Plan",
+              class: "px-5 py-2.5 bg-purple-600 text-white font-medium rounded-lg hover:bg-purple-700 transition-colors text-sm cursor-pointer" %>
+      <% end %>
+
+      <script>
+        document.querySelectorAll(".duration-preset-btn").forEach(function(btn) {
+          btn.addEventListener("click", function() {
+            var expiresAt = btn.getAttribute("data-expires-at");
+            document.getElementById("promotion_expires_at").value = expiresAt.split("T")[0];
+          });
+        });
+      </script>
+    <% end %>
+  </div>
+</div>
